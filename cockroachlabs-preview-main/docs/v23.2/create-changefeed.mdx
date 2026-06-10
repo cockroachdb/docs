@@ -1,0 +1,426 @@
+---
+title: "CREATE CHANGEFEED"
+old_description: "The CREATE CHANGEFEED statement creates a changefeed of row-level change subscriptions in a configurable format to a configurable sink."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+import { CreateChangefeed2 } from "/snippets/syntax-diagrams/CreateChangefeed2.jsx";
+
+The `CREATE CHANGEFEED` [statement](/docs/v23.2/sql-statements) creates a new Enterprise changefeed, which targets an allowlist of tables called "watched rows". Every change to a watched row is emitted as a record in a configurable format (`JSON` or Avro) to a configurable sink ([Kafka](https://kafka.apache.org/), [Google Cloud Pub/Sub](https://cloud.google.com/pubsub), a [cloud storage sink](/docs/v23.2/changefeed-sinks#cloud-storage-sink), or a [webhook sink](/docs/v23.2/changefeed-sinks#webhook-sink)). You can [create](#examples), [pause](#pause-a-changefeed), [resume](#resume-a-paused-changefeed), [alter](/docs/v23.2/alter-changefeed), or [cancel](#cancel-a-changefeed) an Enterprise changefeed.
+
+To get started with changefeeds, refer to the [Create and Configure Changefeeds](/docs/v23.2/create-and-configure-changefeeds) page for important usage considerations. For detail on how changefeeds emit messages, refer to the [Changefeed Messages](/docs/v23.2/changefeed-messages) page.
+
+The [examples](#examples) on this page provide the foundational syntax of the `CREATE CHANGEFEED` statement. For examples on more specific use cases with changefeeds, refer to the following pages:
+
+- [Change Data Capture Queries](/docs/v23.2/cdc-queries)
+- [Changefeeds on Tables with Column Families](/docs/v23.2/changefeeds-on-tables-with-column-families)
+- [Export Data with Changefeeds](/docs/v23.2/export-data-with-changefeeds)
+
+Cockroach Labs recommends monitoring your changefeeds to track [retryable errors](/docs/v23.2/monitor-and-debug-changefeeds#changefeed-retry-errors) and [protected timestamp](/docs/v23.2/architecture/storage-layer#protected-timestamps) usage. Refer to the [Monitor and Debug Changefeeds](/docs/v23.2/monitor-and-debug-changefeeds) page for more information.
+
+## Required privileges
+
+You can [grant](/docs/v23.2/grant#grant-privileges-on-specific-tables-in-a-database) a user the `CHANGEFEED` privilege to allow them to create changefeeds on a specific table:
+
+```sql
+GRANT CHANGEFEED ON TABLE example_table TO user;
+```
+
+When you grant a user the `CHANGEFEED` privilege on a set of tables, they can:
+
+- Create changefeeds on the target tables even if the user does **not** have the [`CONTROLCHANGEFEED` role option](/docs/v23.2/alter-role#role-options) or the `SELECT` privilege on the tables.
+- Manage the changefeed jobs running on the tables using the [`SHOW CHANGEFEED JOB`](/docs/v23.2/show-jobs#show-changefeed-jobs), [`PAUSE JOB`](/docs/v23.2/pause-job), [`RESUME JOB`](/docs/v23.2/resume-job), and [`CANCEL JOB`](/docs/v23.2/cancel-job) commands.
+
+These users will be able to create changefeeds, but they will not be able to run a `SELECT` query on that data directly. However, they could still read this data indirectly if they have read access to the [sink](/docs/v23.2/changefeed-sinks).
+
+To restrict a user's access to changefeed data and sink credentials, enable the `changefeed.permissions.require_external_connection_sink.enabled` cluster setting. When you enable this setting, users with the [`CHANGEFEED` privilege](/docs/v23.2/create-changefeed#required-privileges) on a set of tables can only create changefeeds into [external connections](/docs/v23.2/create-external-connection).
+
+You can add `CHANGEFEED` to the user or role's [default privileges](/docs/v23.2/security-reference/authorization#default-privileges) with [`ALTER DEFAULT PRIVILEGES`](/docs/v23.2/alter-default-privileges#grant-default-privileges-to-a-specific-role):
+
+```sql
+ALTER DEFAULT PRIVILEGES GRANT CHANGEFEED ON TABLES TO user;
+```
+
+### Privilege model
+
+<Tip>
+For fine-grained access control, we recommend using the system-level privileges `CHANGEFEED` and `CONTROLJOB` / `VIEWJOB`.
+</Tip>
+
+The following summarizes the operations users can run when they have changefeed privileges on a table:
+
+<table><thead><tr><th>Granted privileges</th><th>Usage</th></tr></thead><tbody><tr><td><code>CHANGEFEED</code></td><td>Create changefeeds on tables.<br/>View and manage changefeed jobs on tables.</td></tr><tr><td><code>CHANGEFEED</code> + <a href="/docs/v23.2/create-external-connection#required-privileges"><code>USAGE</code></a> on external connection</td><td>Create changefeeds on tables to an external connection URI.<br/>Manage changefeed jobs on tables.<br/><strong>Note:</strong> If you need to manage access to changefeed sink URIs, set the <code>changefeed.permissions.require&#95;external&#95;connection&#95;sink.enabled=true</code> cluster setting. This will mean that users with these privileges can <strong>only</strong> create changefeeds on external connections.</td></tr><tr><td><code>SELECT</code></td><td>Create a sinkless changefeed that emits messages to a SQL client.</td></tr><tr><td><strong>Deprecated</strong><code>CONTROLCHANGEFEED</code> role option + <code>SELECT</code></td><td>Create changefeeds on tables. Users with the <code>CONTROLCHANGEFEED</code> role option must have <code>SELECT</code> on each table, even if they are also granted the <code>CHANGEFEED</code> privilege.<br/><br/>The <code>CONTROLCHANGEFEED</code> role option will be removed in a future release. We recommend using the <a href="/docs/v23.2/security-reference/authorization#supported-privileges">system-level privileges</a><code>CHANGEFEED</code> and <code>CONTROLJOB</code>/ <code>VIEWJOB</code> for fine-grained access control.</td></tr><tr><td><code>admin</code></td><td>Create, view, and manage changefeed jobs.</td></tr></tbody></table>
+
+## Synopsis
+
+<CreateChangefeed2 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table (or tables in a comma separated list) to create a changefeed for.<br/><br/><strong>Note:</strong> Before creating a changefeed, consider the number of changefeeds versus the number of tables to include in a single changefeed. Each scenario can have an impact on total memory usage or changefeed performance. Refer to <a href="/docs/v23.2/create-and-configure-changefeeds">Create and Configure Changefeeds</a> for more detail.</td></tr><tr><td><code>sink</code></td><td>The location of the configurable sink. The scheme of the URI indicates the type. For more information, refer to <a href="#sink-uri">Sink URI</a>.<br/><br/><strong>Note:</strong> If you create a changefeed without a sink, your changefeed will run like a <a href="/docs/v23.2/changefeed-for">basic changefeed</a> sending messages to the SQL client. For more detail, refer to the <a href="/docs/v23.2/create-and-configure-changefeeds#create">Create and Configure Changefeeds</a> page.</td></tr><tr><td><code>option</code> / <code>value</code></td><td>For a list of available options and their values, refer to <a href="#options">Options</a>.</td></tr></tbody></table>
+
+### CDC query parameters
+
+Change data capture queries allow you to define the change data emitted to your sink when you create a changefeed. See the [Change Data Capture Queries](/docs/v23.2/cdc-queries) page for detail on the functionality, syntax, and use cases for changefeeds created with queries.
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>sink</code></td><td>The location of the configurable sink. The scheme of the URI indicates the type. For more information, see <a href="#sink-uri">Sink URI</a>.</td></tr><tr><td><code>option</code> / <code>value</code></td><td>For a list of available options and their values, see <a href="#options">Options</a>.</td></tr><tr><td><code>target&#95;list</code></td><td>The columns to emit data from.</td></tr><tr><td><code>changefeed&#95;target&#95;expr</code></td><td>The target table for the changefeed.</td></tr><tr><td><code>opt&#95;where&#95;clause</code></td><td>An optional <code>WHERE</code> clause to apply filters to the table.</td></tr></tbody></table>
+
+### Sink URI
+
+This section provides example URIs for each of the sinks that CockroachDB changefeeds support. For more comprehensive detail of using and configuring each sink, refer to the [Changefeed Sinks](/docs/v23.2/changefeed-sinks) page.
+
+```text
+'{scheme}://{host}:{port}?{query_parameters}'
+```
+
+<table><thead><tr><th>URI Component</th><th>Description</th></tr></thead><tbody><tr><td><code>scheme</code></td><td>The type of sink: <a href="#kafka"><code>kafka</code></a>, <a href="#google-cloud-pub-sub"><code>gcpubsub</code></a>, any <a href="#cloud-storage">cloud storage sink</a>, or <a href="#webhook">webhook sink</a>.</td></tr><tr><td><code>host</code></td><td>The sink's hostname or IP address.</td></tr><tr><td><code>port</code></td><td>The sink's port.</td></tr><tr><td><code>query&#95;parameters</code></td><td>The sink's <a href="#query-parameters">query parameters</a>.</td></tr></tbody></table>
+
+You can create an external connection to represent a changefeed sink URI. This allows you to specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](/docs/v23.2/create-external-connection) page.
+
+#### Kafka
+
+Example of a [Kafka sink](/docs/v23.2/changefeed-sinks#kafka) URI:
+
+```text
+'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
+```
+
+<Note>
+[VPC Peering](/docs/cockroachcloud/network-authorization#vpc-peering) and [AWS PrivateLink](/docs/cockroachcloud/network-authorization#aws-privatelink) in CockroachDB Advanced clusters do **not** support connecting to a [Kafka](/docs/v23.2/changefeed-sinks#kafka) sink's internal IP addresses for [changefeeds](/docs/v23.2/change-data-capture-overview). To connect to a Kafka sink from CockroachDB Advanced, it is necessary to expose the Kafka cluster's external IP address and open ports with firewall rules to allow access from a CockroachDB Advanced cluster.
+</Note>
+
+#### Confluent Cloud
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2: Example of a [Confluent Cloud sink](/docs/v23.2/changefeed-sinks#confluent-cloud) URI:
+
+```text
+'confluent-cloud://pkc-lzvrd.us-west4.gcp.confluent.cloud:9092?api_key={API key}&api_secret={url-encoded API secret}'
+```
+
+#### Google Cloud Pub/Sub
+
+<Note>
+**This feature is in [preview](/docs/v23.2/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+Example of a Google Cloud Pub/Sub sink URI:
+
+```text
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded key}'
+```
+
+In CockroachDB v23.2 and later, the `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved throughput. For details on the changes to the message format, refer to [Pub/Sub sink messages](/docs/v23.2/changefeed-sinks#pub-sub-sink-messages).
+
+[Use Cloud Storage for Bulk Operations](/docs/v23.2/cloud-storage-authentication) explains the requirements for the authentication parameter with `specified` or `implicit`. Refer to [Changefeed Sinks](/docs/v23.2/changefeed-sinks#google-cloud-pub-sub) for further consideration.
+
+#### Cloud Storage
+
+The following are example file URLs for each of the cloud storage schemes:
+
+<table><thead><tr><th>Location</th><th>Example</th></tr></thead><tbody><tr><td>Amazon S3</td><td><code>'s3://&#123;BUCKET NAME&#125;/&#123;PATH&#125;?AWS&#95;ACCESS&#95;KEY&#95;ID=&#123;KEY ID&#125;&amp;AWS&#95;SECRET&#95;ACCESS&#95;KEY=&#123;SECRET ACCESS KEY&#125;'</code></td></tr><tr><td>Azure Blob Storage</td><td><code>'azure://&#123;CONTAINER NAME&#125;/&#123;PATH&#125;?AZURE&#95;ACCOUNT&#95;NAME=&#123;ACCOUNT NAME&#125;&amp;AZURE&#95;ACCOUNT&#95;KEY=&#123;URL-ENCODED KEY&#125;'</code></td></tr><tr><td>Google Cloud</td><td><code>'gs://&#123;BUCKET NAME&#125;/&#123;PATH&#125;?AUTH=specified&amp;CREDENTIALS=&#123;ENCODED KEY&#125;'</code></td></tr><tr><td>HTTP</td><td><code>'file-http(s)://localhost:8080/&#123;PATH&#125;'</code> or <code>'http(s)://localhost:8080/&#123;PATH&#125;'</code><br/><br/><strong>Note:</strong> Using <code>http(s)</code> without the <code>file-</code> prefix is deprecated as a <a href="/docs/v23.2/changefeed-sinks">changefeed sink</a> scheme. There is continued support for <code>http(s)</code>, but it will be removed in a future release. We recommend implementing the <code>file-http(s)</code> scheme for changefeed messages.</td></tr></tbody></table>
+
+For detail on authentication to cloud storage, refer to the [Cloud Storage Authentication](/docs/v23.2/cloud-storage-authentication) page. Refer to [Changefeed Sinks](/docs/v23.2/changefeed-sinks#cloud-storage-sink) for considerations when using cloud storage.
+
+#### Webhook
+
+Example of a webhook URI:
+
+```text
+'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
+```
+
+Refer to [Changefeed Sinks](/docs/v23.2/changefeed-sinks#webhook-sink) for specifics on webhook sink configuration.
+
+### Query parameters
+
+<Note>
+Parameters should always be URI-encoded before they are included the changefeed's URI, as they often contain special characters. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
+</Note>
+
+Query parameters include:
+
+<table><thead><tr><th>Parameter</th><th>Sink Type</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>ASSUME&#95;ROLE</code></td><td><a href="/docs/v23.2/changefeed-sinks">Amazon S3</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Pass the <a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces">ARN</a> of the role to assume. Use in combination with <code>AUTH=implicit</code> or <code>specified</code>.<br/><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2:<code>external&#95;id</code>: Use as a value to <code>ASSUME&#95;ROLE</code> to specify the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid">external ID</a> for third-party access to your S3 bucket.</td></tr><tr><td><code>AUTH</code></td><td><a href="/docs/v23.2/changefeed-sinks">Amazon S3</a>, <a href="#cloud-storage">Google Cloud Storage</a>, <a href="#google-cloud-pub-sub">Google Cloud Pub/Sub</a>, <a href="#cloud-storage">Azure Blob Storage</a></td><td>The authentication parameter can define either <code>specified</code> (default) or <code>implicit</code> authentication. To use <code>specified</code> authentication, pass your <a href="https://cloud.google.com/iam/docs/understanding-service-accounts">Service Account</a> credentials with the URI. To use <code>implicit</code> authentication, configure these credentials via an environment variable. Refer to the <a href="/docs/v23.2/cloud-storage-authentication">Cloud Storage Authentication page</a> page for examples of each of these.</td><td></td></tr><tr><td><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2:<code>api&#95;key</code></td><td><a href="/docs/v23.2/changefeed-sinks#confluent-cloud">Confluent Cloud</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>The API key created for the cluster in Confluent Cloud.</td></tr><tr><td><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2:<code>api&#95;secret</code></td><td><a href="/docs/v23.2/changefeed-sinks#confluent-cloud">Confluent Cloud</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>The API key's secret generated in Confluent Cloud. <strong>Note:</strong> This must be <a href="https://www.urlencoder.org/">URL-encoded</a> before passing into the connection string.</td></tr><tr><td><code>ca&#95;cert</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a>, <a href="/docs/v23.2/changefeed-sinks#webhook-sink">webhook</a>, <a href="https://docs.confluent.io/platform/current/schema-registry">Confluent schema registry</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>The base64-encoded <code>ca&#95;cert</code> file. Specify <code>ca&#95;cert</code> for a Kafka sink, webhook sink, and/or a Confluent schema registry.<br/><br/>For usage with a Kafka sink, see <a href="/docs/v23.2/changefeed-sinks#kafka">Kafka Sink URI</a>.<br/><br/>It's necessary to state <code>https</code> in the schema registry's address when passing <code>ca&#95;cert</code>:<br/><code>confluent&#95;schema&#95;registry='https://schema&#95;registry:8081?ca&#95;cert=LS0tLS1CRUdJTiBDRVJUSUZ'</code><br/>See <a href="#confluent-registry"><code>confluent&#95;schema&#95;registry</code></a> for more detail on using this option.<br/><br/>Note: To encode your <code>ca.cert</code>, run <code>base64 -w 0 ca.cert</code>.</td></tr><tr><td><code>client&#95;cert</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a>, <a href="/docs/v23.2/changefeed-sinks#webhook-sink">webhook</a>, <a href="https://docs.confluent.io/platform/current/schema-registry">Confluent schema registry</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with <code>client&#95;key</code>.</td></tr><tr><td><code>client&#95;key</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a>, <a href="/docs/v23.2/changefeed-sinks#webhook-sink">webhook</a>, <a href="https://docs.confluent.io/platform/current/schema-registry">Confluent schema registry</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>The base64-encoded private key for the PEM certificate. This is used with <code>client&#95;cert</code>.<br/><br/><strong>Note:</strong> Client keys are often encrypted. You will receive an error if you pass an encrypted client key in your changefeed statement. To decrypt the client key, run: <code>openssl rsa -in key.pem -out key.decrypt.pem -passin pass:&#123;PASSWORD&#125;</code>. Once decrypted, be sure to update your changefeed statement to use the new <code>key.decrypt.pem</code> file instead.</td></tr><tr><td><a></a><code>file&#95;size</code></td><td><a href="/docs/v23.2/changefeed-sinks#cloud-storage-sink">cloud</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the <a href="#options"><code>WITH resolved</code> option</a>, which flushes on a specified cadence. When you change or increase <code>file&#95;size</code>, ensure that you adjust the <code>changefeed.memory.per&#95;changefeed&#95;limit</code><a href="/docs/v23.2/cluster-settings">cluster setting</a>, which has a default of <code>512MiB</code>. Buffering messages can quickly reach this limit if you have increased the file size. Refer to <a href="/docs/v23.2/advanced-changefeed-configuration">Advanced Changefeed Configuration</a> for more detail.<br/><br/><strong>Default:</strong><code>16MB</code></td></tr><tr><td><a></a><code>insecure&#95;tls&#95;skip&#95;verify</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a>, <a href="/docs/v23.2/changefeed-sinks#webhook-sink">webhook</a></td><td><a href="/docs/v23.2/bool"><code>BOOL</code></a></td><td>If <code>true</code>, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. <strong>Warning:</strong> Use this query parameter with caution, as it creates <a href="https://wikipedia.org/wiki/Man-in-the-middle_attack">MITM</a> vulnerabilities unless combined with another method of authentication.<br/><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><a></a><code>partition&#95;format</code></td><td><a href="/docs/v23.2/changefeed-sinks#cloud-storage-sink">cloud</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Specify how changefeed <a href="#general-file-format">file paths</a> are partitioned in cloud storage sinks. Use <code>partition&#95;format</code> with the following values:<br/><br/>- <code>daily</code> is the default behavior that organizes directories by dates (<code>2022-05-18/</code>, <code>2022-05-19/</code>, etc.).<br/><br/>- <code>hourly</code> will further organize directories by hour within each date directory (<code>2022-05-18/06</code>, <code>2022-05-18/07</code>, etc.).<br/><br/>- <code>flat</code> will not partition the files at all.<br/><br/>For example: <code>CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&amp;partition&#95;format=hourly'</code><br/><br/><strong>Default:</strong><code>daily</code></td></tr><tr><td><code>S3&#95;STORAGE&#95;CLASS</code></td><td><a href="/docs/v23.2/changefeed-sinks#amazon-s3">Amazon S3 cloud storage sink</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Specify the Amazon S3 storage class for files created by the changefeed. See <a href="#create-a-changefeed-with-an-s3-storage-class">Create a changefeed with an S3 storage class</a> for the available classes and an example.<br/><br/><strong>Default:</strong><code>STANDARD</code></td></tr><tr><td><code>sasl&#95;client&#95;id</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Client ID for OAuth authentication from a third-party provider. This parameter is only applicable with <code>sasl&#95;mechanism=OAUTHBEARER</code>.</td></tr><tr><td><code>sasl&#95;client&#95;secret</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Client secret for OAuth authentication from a third-party provider. This parameter is only applicable with <code>sasl&#95;mechanism=OAUTHBEARER</code>. <strong>Note:</strong> You must <a href="https://www.base64encode.org/">base64 encode</a> this value when passing it in as part of a sink URI.</td></tr><tr><td><code>sasl&#95;enabled</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a>, <a href="/docs/v23.2/changefeed-sinks#confluent-cloud">Confluent Cloud</a></td><td><a href="/docs/v23.2/bool"><code>BOOL</code></a></td><td>If <code>true</code>, the authentication protocol can be set to SCRAM or PLAIN using the <code>sasl&#95;mechanism</code> parameter. You must have <code>tls&#95;enabled</code> set to <code>true</code> to use SASL. For Confluent Cloud sinks, <code>sasl&#95;enabled</code> must be set to <code>true</code> if specified.<br/><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>sasl&#95;grant&#95;type</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Override the default OAuth client credentials grant type for other implementations. This parameter is only applicable with <code>sasl&#95;mechanism=OAUTHBEARER</code>.</td></tr><tr><td><code>sasl&#95;mechanism</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a>, <a href="/docs/v23.2/changefeed-sinks#confluent-cloud">Confluent Cloud</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Can be set to <a href="https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_oauth"><code>OAUTHBEARER</code></a>, <a href="https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram"><code>SCRAM-SHA-256</code></a>, <a href="https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram"><code>SCRAM-SHA-512</code></a>, or <a href="https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain"><code>PLAIN</code></a>. A <code>sasl&#95;user</code> and <code>sasl&#95;password</code> are required.<br/><br/>See the <a href="/docs/v23.2/connect-to-a-changefeed-kafka-sink-with-oauth-using-okta">Connect to a Changefeed Kafka sink with OAuth Using Okta</a> tutorial for detail setting up OAuth using Okta.<br/><br/><strong>Default:</strong><code>PLAIN</code></td></tr><tr><td><code>sasl&#95;scopes</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>A list of scopes that the OAuth token should have access for. This parameter is only applicable with <code>sasl&#95;mechanism=OAUTHBEARER</code>.</td></tr><tr><td><code>sasl&#95;token&#95;url</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Client token URL for OAuth authentication from a third-party provider. <strong>Note:</strong> You must <a href="https://www.urlencoder.org/">URL encode</a> this value before passing in a URI. This parameter is only applicable with <code>sasl&#95;mechanism=OAUTHBEARER</code>.</td></tr><tr><td><code>sasl&#95;user</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Your SASL username.</td></tr><tr><td><code>sasl&#95;password</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Your SASL password. <strong>Note:</strong> Passwords should be <a href="https://wikipedia.org/wiki/Percent-encoding">URL encoded</a> since the value can contain characters that would cause authentication to fail.</td></tr><tr><td><code>tls&#95;enabled</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a>, <a href="/docs/v23.2/changefeed-sinks#confluent-cloud">Confluent Cloud</a></td><td><a href="/docs/v23.2/bool"><code>BOOL</code></a></td><td>If <code>true</code>, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a <code>ca&#95;cert</code> (see below).<br/><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><a></a><code>topic&#95;name</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a>, <a href="/docs/v23.2/changefeed-sinks#confluent-cloud">Confluent Cloud</a>, <a href="/docs/v23.2/changefeed-sinks#google-cloud-pub-sub">GC Pub/Sub</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Allows arbitrary topic naming for Kafka and GC Pub/Sub topics. See the <a href="/docs/v23.2/changefeed-sinks#topic-naming">Kafka topic naming limitations</a> or <a href="/docs/v23.2/changefeed-sinks#pub-sub-topic-naming">GC Pub/Sub topic naming</a> for detail on supported characters etc.<br/><br/>For example, <code>CREATE CHANGEFEED FOR foo,bar INTO 'kafka://sink?topic&#95;name=all'</code> will emit all records to a topic named <code>all</code>. Note that schemas will still be registered separately. When using Kafka, this parameter can be combined with the <a href="#topic-prefix-param"><code>topic&#95;prefix</code> parameter</a> (this is not supported for GC Pub/Sub).<br/><br/><strong>Default:</strong> table name.</td></tr><tr><td><a></a><code>topic&#95;prefix</code></td><td><a href="/docs/v23.2/changefeed-sinks#kafka">Kafka</a>, <a href="/docs/v23.2/changefeed-sinks#confluent-cloud">Confluent Cloud</a></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Adds a prefix to all topic names.<br/><br/>For example, <code>CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic&#95;prefix=bar&#95;'</code> would emit rows under the topic <code>bar&#95;foo</code> instead of <code>foo</code>.</td></tr></tbody></table>
+
+### Options
+
+<table><thead><tr><th>Option</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>avro&#95;schema&#95;prefix</code></td><td>Schema prefix name</td><td>Provide a namespace for the schema of a table in addition to the default, the table name. This allows multiple databases or clusters to share the same schema registry when the same table name is present in multiple databases.<br/><br/>Example: <code>CREATE CHANGEFEED FOR foo WITH format=avro, confluent&#95;schema&#95;registry='registry&#95;url', avro&#95;schema&#95;prefix='super'</code> will register subjects as <code>superfoo-key</code> and <code>superfoo-value</code> with the namespace <code>super</code>.</td></tr><tr><td><a></a><code>compression</code></td><td><code>gzip</code>, <code>zstd</code></td><td>Compress changefeed data files written to a <a href="/docs/v23.2/changefeed-sinks#cloud-storage-sink">cloud storage sink</a>. For compression options when using a Kafka sink, see <a href="/docs/v23.2/changefeed-sinks#kafka-sink-configuration">Kafka sink configuration</a>.</td></tr><tr><td><a></a><code>confluent&#95;schema&#95;registry</code></td><td>Schema Registry address</td><td>The <a href="https://docs.confluent.io/current/schema-registry/docs#sr">Schema Registry</a> address is required to use <code>avro</code>.<br/><br/>Use the <code>timeout=&#123;duration&#125;</code> query parameter (<a href="https://pkg.go.dev/time#ParseDuration">duration string</a>) in your Confluent Schema Registry URI to change the default timeout for contacting the schema registry. By default, the timeout is 30 seconds.<br/><br/>To connect to Confluent Cloud, use the following URL structure: <code>'https://&#123;API&#95;KEY&#95;ID&#125;:&#123;API&#95;SECRET&#95;URL&#95;ENCODED&#125;@&#123;CONFLUENT&#95;REGISTRY&#95;URL&#125;:443'</code>. See the <a href="/docs/v23.2/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster#step-8-create-a-changefeed">Stream a Changefeed to a Confluent Cloud Kafka Cluster</a> tutorial for further detail.<br/><br/>Use the <code>changefeed.schema&#95;registry.retry&#95;count</code> metric to measure the number of request retries performed when sending requests to the schema registry. For more detail on monitoring changefeeds, refer to <a href="/docs/v23.2/monitor-and-debug-changefeeds">Monitor and Debug Changefeeds</a>.</td></tr><tr><td><a></a><code>cursor</code></td><td><a href="/docs/v23.2/as-of-system-time#parameters">Timestamp</a></td><td>Emit any changes after the given timestamp. <code>cursor</code> does not output the current state of the table first. When <code>cursor</code> is not specified, the changefeed starts by doing an initial scan of all the watched rows and emits the current value, then moves to emitting any changes that happen after the scan.<br/><br/>The changefeed will encounter an error if you specify a timestamp that is before the configured garbage collection window for the target table. (Refer to <a href="/docs/v23.2/configure-replication-zones#replication-zone-variables"><code>gc.ttlseconds</code></a>.) With default garbage collection settings, this means you cannot create a changefeed that starts more than <a href="/docs/v23.2/configure-replication-zones#gc-ttlseconds">the default MVCC garbage collection interval</a> in the past.<br/><br/>You can use <code>cursor</code> to <a href="#start-a-new-changefeed-where-another-ended">start a new changefeed where a previous changefeed ended.</a><br/><br/>Example: <code>cursor='1536242855577149065.0000000000'</code></td></tr><tr><td><a></a><code>diff</code></td><td>N/A</td><td>Publish a <a href="/docs/v23.2/changefeed-messages#wrapped-and-diff"><code>before</code> field</a> with each message, which includes the value of the row before the update was applied. Changefeeds must use the <code>diff</code> option with the default <a href="#envelope"><code>wrapped</code> envelope</a> to emit the <code>before</code> field.</td></tr><tr><td><a></a><code>end&#95;time</code></td><td><a href="/docs/v23.2/as-of-system-time#parameters">Timestamp</a></td><td>Indicate the timestamp up to which the changefeed will emit all events and then complete with a <code>successful</code> status. Provide a future timestamp to <code>end&#95;time</code> in number of nanoseconds since the <a href="https://wikipedia.org/wiki/Unix_time">Unix epoch</a>. For example, <code>end&#95;time="1655402400000000000"</code>. You cannot use <code>end&#95;time</code> and <a href="#initial-scan"><code>initial&#95;scan = 'only'</code></a> simultaneously.</td></tr><tr><td><a></a><code>envelope</code></td><td><code>wrapped</code> / <code>bare</code> / <code>key&#95;only</code> / <code>row</code></td><td><code>wrapped</code> the default envelope structure for changefeed messages containing an array of the primary key, a top-level field for the type of message, and the current state of the row (or <code>null</code> for deleted rows).<br/><br/><code>bare</code> removes the <code>after</code> key from the changefeed message and stores any metadata in a <code>crdb</code> field. When used with <code>avro</code> format, <code>record</code> will replace the <code>after</code> key. <strong>Note:</strong> This is the default envelope format for <a href="/docs/v23.2/cdc-queries">CDC queries</a>. For an example, refer to <a href="/docs/v23.2/cdc-queries#filter-columns">Filter columns</a>.<br/><br/><code>key&#95;only</code> emits only the key and no value, which is faster if you only need to know the key of the changed row. This envelope option is only supported for <a href="/docs/v23.2/changefeed-sinks#kafka">Kafka sinks</a> or sinkless changefeeds.<br/><br/><code>row</code> emits the row without any additional metadata fields in the message. This envelope option is only supported in <a href="/docs/v23.2/changefeed-sinks#kafka">Kafka sinks</a> or sinkless changefeeds. <code>row</code> does not support <a href="#format"><code>avro</code> format</a>.<br/><br/>Refer to <a href="/docs/v23.2/changefeed-messages#responses">Responses</a> for more detail on message format.<br/><br/>Default: <code>envelope=wrapped</code>. Default for <a href="/docs/v23.2/cdc-queries">CDC queries</a>: <code>envelope=bare</code>.</td></tr><tr><td><a></a><code>execution&#95;locality</code></td><td>Key-value pairs</td><td>Restricts the execution of a changefeed to nodes that match the defined locality filter requirements, e.g., <code>WITH execution&#95;locality = 'region=us-west-1a,cloud=aws'</code>.<br/><br/>Refer to <a href="/docs/v23.2/changefeeds-in-multi-region-deployments#run-a-changefeed-job-by-locality">Run a changefeed job by locality</a> for usage and limitation details.</td></tr><tr><td><a></a><code>format</code></td><td><code>json</code> / <code>avro</code> / <code>csv</code> / <code>parquet</code></td><td>Format of the emitted message.<br/><br/><code>avro</code>: For mappings of CockroachDB types to Avro types, <a href="/docs/v23.2/changefeed-messages#avro-types">refer to the table</a> and detail on <a href="/docs/v23.2/changefeed-messages#avro-limitations">Avro limitations</a>. <strong>Note:</strong><a href="#confluent-registry"><code>confluent&#95;schema&#95;registry</code></a> is required with <code>format=avro</code>.<br/><br/><code>csv</code>: You cannot combine <code>format=csv</code> with the <a href="#diff-opt"><code>diff</code></a> or <a href="#resolved-option"><code>resolved</code></a> options. Changefeeds use the same CSV format as the <a href="/docs/v23.2/export"><code>EXPORT</code></a> statement. Refer to <a href="/docs/v23.2/export-data-with-changefeeds">Export data with changefeeds</a> for details using these options to create a changefeed as an alternative to <code>EXPORT</code>. <strong>Note:</strong><a href="#initial-scan"><code>initial&#95;scan = 'only'</code></a> is required with <code>format=csv</code>.<br/><br/><code>parquet</code>: Cloud storage is the only supported sink. The <a href="#topic-in-value"><code>topic&#95;in&#95;value</code></a> option is not compatible with <code>parquet</code> format.<br/><br/>Default: <code>format=json</code>.</td></tr><tr><td><a></a><code>full&#95;table&#95;name</code></td><td>N/A</td><td>Use fully qualified table name in topics, subjects, schemas, and record output instead of the default table name. This can prevent unintended behavior when the same table name is present in multiple databases.<br/><br/><strong>Note:</strong> This option cannot modify existing table names used as topics, subjects, etc., as part of an <a href="/docs/v23.2/alter-changefeed"><code>ALTER CHANGEFEED</code></a> statement. To modify a topic, subject, etc., to use a fully qualified table name, create a new changefeed with this option.<br/><br/>Example: <code>CREATE CHANGEFEED FOR foo... WITH full&#95;table&#95;name</code> will create the topic name <code>defaultdb.public.foo</code> instead of <code>foo</code>.</td></tr><tr><td><a></a><code>gc&#95;protect&#95;expires&#95;after</code></td><td><a href="https://pkg.go.dev/time#ParseDuration">Duration string</a></td><td>Automatically expires protected timestamp records that are older than the defined duration. In the case where a changefeed job remains paused, <code>gc&#95;protect&#95;expires&#95;after</code> will trigger the underlying protected timestamp record to expire and cancel the changefeed job to prevent accumulation of protected data.<br/><br/>Refer to <a href="/docs/v23.2/protect-changefeed-data">Protect Changefeed Data from Garbage Collection</a> for more detail on protecting changefeed data.</td></tr><tr><td><a></a><code>initial&#95;scan</code></td><td><code>yes</code>/<code>no</code>/<code>only</code></td><td>Control whether or not an initial scan will occur at the start time of a changefeed. Only one <code>initial&#95;scan</code> option (<code>yes</code>, <code>no</code>, or <code>only</code>) can be used. If none of these are set, an initial scan will occur if there is no <a href="#cursor-option"><code>cursor</code></a>, and will not occur if there is one. This preserves the behavior from previous releases. With <code>initial&#95;scan = 'only'</code> set, the changefeed job will end with a successful status (<code>succeeded</code>) after the initial scan completes. You cannot specify <code>yes</code>, <code>no</code>, <code>only</code> simultaneously.<br/><br/>If used in conjunction with <code>cursor</code>, an initial scan will be performed at the cursor timestamp. If no <code>cursor</code> is specified, the initial scan is performed at <code>now()</code>.<br/><br/>Although the <a href="/docs/v23.2/create-changefeed#initial-scan"><code>initial&#95;scan</code> / <code>no&#95;initial&#95;scan</code></a> syntax from previous versions is still supported, you cannot combine the previous and current syntax.<br/><br/>Default: <code>initial&#95;scan = 'yes'</code></td></tr><tr><td><code>kafka&#95;sink&#95;config</code></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Set fields to configure the required level of message acknowledgement from the Kafka server, the version of the server, and batching parameters for Kafka sinks. Set the message file compression type. See <a href="/docs/v23.2/changefeed-sinks#kafka-sink-configuration">Kafka sink configuration</a> for more detail on configuring all the available fields for this option.<br/><br/>Example: <code>CREATE CHANGEFEED FOR table INTO 'kafka://localhost:9092' WITH kafka&#95;sink&#95;config='&#123;"Flush": &#123;"MaxMessages": 1, "Frequency": "1s"&#125;, "RequiredAcks": "ONE"&#125;'</code></td></tr><tr><td><a></a><code>key&#95;column</code></td><td><code>'column'</code></td><td>Override the key used in <a href="/docs/v23.2/changefeed-messages">message metadata</a>. This changes the key hashed to determine downstream partitions. In sinks that support partitioning by message, CockroachDB uses the <a href="https://wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function">32-bit FNV-1a</a> hashing algorithm to determine which partition to send to.<br/><br/><strong>Note:</strong><code>key&#95;column</code> does not preserve ordering of messages from CockroachDB to the downstream sink, therefore you must also include the <a href="#unordered"><code>unordered</code></a> option in your changefeed creation statement. It does not affect per-key <a href="/docs/v23.2/changefeed-messages#ordering-and-delivery-guarantees">ordering guarantees</a> or the output of <a href="#key-in-value"><code>key&#95;in&#95;value</code></a>.<br/><br/>See the <a href="#define-a-key-to-determine-the-changefeed-sink-partition">Define a key to determine the changefeed sink partition</a> example.</td></tr><tr><td><a></a><code>key&#95;in&#95;value</code></td><td>N/A</td><td>Add a primary key array to the emitted message. This makes the <a href="/docs/v23.2/primary-key">primary key</a> of a deleted row recoverable in sinks where each message has a value but not a key (most have a key and value in each message). <code>key&#95;in&#95;value</code> is automatically used for <a href="/docs/v23.2/changefeed-sinks#cloud-storage-sink">cloud storage sinks</a>, <a href="/docs/v23.2/changefeed-sinks#webhook-sink">webhook sinks</a>, and <a href="/docs/v23.2/changefeed-sinks#google-cloud-pub-sub">GC Pub/Sub sinks</a>.</td></tr><tr><td><a></a><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2:<code>lagging&#95;ranges&#95;threshold</code></td><td><a href="https://pkg.go.dev/time#ParseDuration">Duration string</a></td><td>Set a duration from the present that determines the length of time a range is considered to be lagging behind, which will then track in the <a href="/docs/v23.2/monitor-and-debug-changefeeds#lagging-ranges-metric"><code>lagging&#95;ranges</code></a> metric. Note that ranges undergoing an <a href="#initial-scan">initial scan</a> for longer than the threshold duration are considered to be lagging. Starting a changefeed with an initial scan on a large table will likely increment the metric for each range in the table. As ranges complete the initial scan, the number of ranges lagging behind will decrease.<br/><br/><strong>Default:</strong><code>3m</code></td></tr><tr><td><a></a><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2:<code>lagging&#95;ranges&#95;polling&#95;interval</code></td><td><a href="https://pkg.go.dev/time#ParseDuration">Duration string</a></td><td>Set the interval rate for when lagging ranges are checked and the <code>lagging&#95;ranges</code> metric is updated. Polling adds latency to the <code>lagging&#95;ranges</code> metric being updated. For example, if a range falls behind by 3 minutes, the metric may not update until an additional minute afterward.<br/><br/><strong>Default:</strong><code>1m</code></td></tr><tr><td><code>metrics&#95;label</code></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Define a metrics label to which the metrics for one or multiple changefeeds increment. All changefeeds also have their metrics aggregated.<br/><br/>The maximum length of a label is 128 bytes. There is a limit of 1024 unique labels.<br/><br/><code>WITH metrics&#95;label=label&#95;name</code><br/><br/>For more detail on usage and considerations, see <a href="/docs/v23.2/monitor-and-debug-changefeeds#using-changefeed-metrics-labels">Using changefeed metrics labels</a>.</td></tr><tr><td><a></a><code>min&#95;checkpoint&#95;frequency</code></td><td><a href="https://pkg.go.dev/time#ParseDuration">Duration string</a></td><td>Controls how often a node's changefeed <a href="/docs/v23.2/how-does-an-enterprise-changefeed-work">aggregator</a> will flush their progress to the <a href="/docs/v23.2/how-does-an-enterprise-changefeed-work">coordinating changefeed node</a>. A node's changefeed aggregator will wait at least the specified duration between sending progress updates for the ranges it is watching to the coordinator. This can help you control the flush frequency of higher latency sinks to achieve better throughput. However, more frequent checkpointing can increase CPU usage. If this is set to <code>0s</code>, a node will flush messages as long as the high-water mark has increased for the ranges that particular node is processing. If a changefeed is resumed, then <code>min&#95;checkpoint&#95;frequency</code> is the amount of time that changefeed will need to catch up. That is, it could emit <a href="/docs/v23.2/changefeed-messages#duplicate-messages">duplicate messages</a> during this time.<br/><br/><strong>Note:</strong><a href="#resolved-option"><code>resolved</code></a> messages will not be emitted more frequently than the configured <code>min&#95;checkpoint&#95;frequency</code> (but may be emitted less frequently). If you require <code>resolved</code> messages more frequently than <code>30s</code>, you must configure <code>min&#95;checkpoint&#95;frequency</code> to at least the desired <code>resolved</code> message frequency. For more details, refer to <a href="/docs/v23.2/changefeed-messages#resolved-timestamp-frequency">Resolved message frequency</a>.<br/><br/><strong>Default:</strong><code>30s</code></td></tr><tr><td><code>mvcc&#95;timestamp</code></td><td>N/A</td><td>Include the <a href="/docs/v23.2/architecture/storage-layer#mvcc">MVCC</a> timestamp for each emitted row in a changefeed. With the <code>mvcc&#95;timestamp</code> option, each emitted row will always contain its MVCC timestamp, even during the changefeed's initial backfill.</td></tr><tr><td><a></a><code>on&#95;error</code></td><td><code>pause</code> / <code>fail</code></td><td>Use <code>on&#95;error=pause</code> to pause the changefeed when encountering <strong>non</strong>-retryable errors. <code>on&#95;error=pause</code> will pause the changefeed instead of sending it into a terminal failure state. <strong>Note:</strong> Retryable errors will continue to be retried with this option specified.<br/><br/>Use with <a href="#protect-pause"><code>protect&#95;data&#95;from&#95;gc&#95;on&#95;pause</code></a> to protect changes from <a href="/docs/v23.2/configure-replication-zones#gc-ttlseconds">garbage collection</a>.<br/><br/>If a changefeed with <code>on&#95;error=pause</code> is running when a watched table is <a href="/docs/v23.2/truncate">truncated</a>, the changefeed will pause but will not be able to resume reads from that table. Using <a href="/docs/v23.2/alter-changefeed"><code>ALTER CHANGEFEED</code></a> to drop the table from the changefeed and then <a href="/docs/v23.2/resume-job">resuming the job</a> will work, but you cannot add the same table to the changefeed again. Instead, you will need to <a href="#start-a-new-changefeed-where-another-ended">create a new changefeed</a> for that table.<br/><br/>Default: <code>on&#95;error=fail</code></td></tr><tr><td><a></a><code>protect&#95;data&#95;from&#95;gc&#95;on&#95;pause</code></td><td>N/A</td><td>This option is deprecated as of v23.2 and will be removed in a future release.<br/><br/>When a <a href="/docs/v23.2/pause-job">changefeed is paused</a>, ensure that the data needed to <a href="/docs/v23.2/resume-job">resume the changefeed</a> is not garbage collected. If <code>protect&#95;data&#95;from&#95;gc&#95;on&#95;pause</code> is <strong>unset</strong>, pausing the changefeed will release the existing protected timestamp records. It is also important to note that pausing and adding <code>protect&#95;data&#95;from&#95;gc&#95;on&#95;pause</code> to a changefeed will not protect data if the <a href="/docs/v23.2/configure-replication-zones#gc-ttlseconds">garbage collection</a> window has already passed.<br/><br/>Use with <a href="#on-error"><code>on&#95;error=pause</code></a> to protect changes from garbage collection when encountering non-retryable errors.<br/><br/>Refer to <a href="/docs/v23.2/protect-changefeed-data">Protect Changefeed Data from Garbage Collection</a> for more detail on protecting changefeed data.<br/><br/><strong>Note:</strong> If you use this option, changefeeds that are left paused for long periods of time can prevent garbage collection. Use with the <a href="#gc-protect-expire"><code>gc&#95;protect&#95;expires&#95;after</code></a> option to set a limit for protected data and for how long a changefeed will remain paused.</td></tr><tr><td><code>pubsub&#95;sink&#95;config</code></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Set fields to configure sink batching and retries. The schema is as follows:<br/><br/><code>&#123; "Flush": &#123; "Messages": ..., "Bytes": ..., "Frequency": ..., &#125;, "Retry": &#123;"Max": ..., "Backoff": ..., &#125; &#125;</code>.<br/><br/><strong>Note</strong> that if either <code>Messages</code> or <code>Bytes</code> are nonzero, then a non-zero value for <code>Frequency</code> must be provided.<br/><br/>Refer to <a href="/docs/v23.2/changefeed-sinks#pub-sub-sink-configuration">Pub/Sub sink configuration</a> for more details on using this option.</td></tr><tr><td><a></a><code>resolved</code></td><td><a href="https://pkg.go.dev/time#ParseDuration">Duration string</a></td><td>Emit <a href="/docs/v23.2/changefeed-messages#resolved-messages">resolved timestamps</a> in a format dependent on the connected sink. Resolved timestamps do not emit until the changefeed job's progress has been checkpointed.<br/><br/>Set a minimum amount of time that the changefeed's high-water mark (overall resolved timestamp) must advance by before another resolved timestamp is emitted. Example: <code>resolved='10s'</code>. This option will <strong>only</strong> emit a resolved timestamp if the timestamp has advanced (and by at least the optional duration, if set). If a duration is unspecified, all resolved timestamps are emitted as the high-water mark advances.<br/><br/><strong>Note:</strong> If you set <code>resolved</code> lower than <code>30s</code>, then you <strong>must</strong> also set <a href="#min-checkpoint-frequency"><code>min&#95;checkpoint&#95;frequency</code></a> to at minimum the same value as <code>resolved</code>, because <code>resolved</code> messages may be emitted less frequently than <code>min&#95;checkpoint&#95;frequency</code>, but cannot be emitted more frequently.<br/><br/>Refer to <a href="/docs/v23.2/changefeed-messages#resolved-messages">Resolved messages</a> for more detail.</td></tr><tr><td><a></a><code>schema&#95;change&#95;events</code></td><td><code>default</code> / <code>column&#95;changes</code></td><td>The type of schema change event that triggers the behavior specified by the <code>schema&#95;change&#95;policy</code> option:<br/><br/>- <code>default</code>: Include all <a href="/docs/v23.2/alter-table#add-column"><code>ADD COLUMN</code></a> events for columns that have a non-<code>NULL</code><a href="/docs/v23.2/default-value"><code>DEFAULT</code> value</a> or are <a href="/docs/v23.2/computed-columns">computed</a>, and all <a href="/docs/v23.2/alter-table#drop-column"><code>DROP COLUMN</code></a> events.<br/><br/>- <code>column&#95;changes</code>: Include all schema change events that add or remove any column.<br/><br/>Default: <code>schema&#95;change&#95;events=default</code></td></tr><tr><td><a></a><code>schema&#95;change&#95;policy</code></td><td><code>backfill</code> / <code>nobackfill</code> / <code>stop</code></td><td>The behavior to take when an event specified by the <code>schema&#95;change&#95;events</code> option occurs:<br/><br/>- <code>backfill</code>: When <a href="/docs/v23.2/changefeed-messages#schema-changes-with-column-backfill">schema changes with column backfill</a> are finished, output all watched rows using the new schema.<br/><br/>- <code>nobackfill</code>: For <a href="/docs/v23.2/changefeed-messages#schema-changes-with-column-backfill">schema changes with column backfill</a>, perform no logical backfills. The changefeed will not emit any messages about the schema change. However, if the schema change is executed inside an <a href="/docs/v23.2/begin-transaction">explicit transaction</a>, CockroachDB will emit all rows in the table to the changefeed once the transaction commits.<br/><br/>- <code>stop</code>: For <a href="/docs/v23.2/changefeed-messages#schema-changes-with-column-backfill">schema changes with column backfill</a>, wait for all data preceding the schema change to be resolved before exiting with an error indicating the timestamp at which the schema change occurred. An <code>error: schema change occurred at &lt;timestamp&gt;</code> will display in the <code>cockroach.log</code> file.<br/><br/>Default: <code>schema&#95;change&#95;policy=backfill</code></td></tr><tr><td><a></a><code>split&#95;column&#95;families</code></td><td>N/A</td><td>Use this option to create a changefeed on a table with multiple <a href="/docs/v23.2/column-families">column families</a>. The changefeed will emit messages for each of the table's column families. See <a href="/docs/v23.2/changefeeds-on-tables-with-column-families">Changefeeds on tables with column families</a> for more usage detail.</td></tr><tr><td><a></a><code>topic&#95;in&#95;value</code></td><td><a href="/docs/v23.2/bool"><code>BOOL</code></a></td><td>Set to include the topic in each emitted row update. This option is automatically set for <a href="/docs/v23.2/changefeed-sinks#webhook-sink">webhook sinks</a>. <strong>Note:</strong><code>topic&#95;in&#95;value</code> is not compatible with changefeeds running in <a href="#format"><code>parquet</code> format</a>.</td></tr><tr><td><a></a><code>unordered</code></td><td>N/A</td><td>Run a changefeed to <a href="/docs/v23.2/changefeed-sinks#google-cloud-pub-sub">Google Cloud Pub/Sub</a> without specifying a region.<br/><br/>You must include the <code>unordered</code> option with <a href="#key-column"><code>key&#95;column</code></a> in your changefeed creation statement.<br/><br/>You cannot use <code>unordered</code> with <code>resolved</code>, because resolved timestamps may not be correct in unordered mode.</td></tr><tr><td><a></a><code>updated</code></td><td>N/A</td><td>Include updated timestamps with each row.<br/><br/>If a <code>cursor</code> is provided, the "updated" timestamps will match the <a href="/docs/v23.2/architecture/storage-layer#mvcc">MVCC</a> timestamps of the emitted rows, and there is no initial scan. If a <code>cursor</code> is not provided, the changefeed will perform an initial scan (as of the time the changefeed was created), and the "updated" timestamp for each change record emitted in the initial scan will be the timestamp of the initial scan. Similarly, when a <a href="/docs/v23.2/changefeed-messages#schema-changes-with-column-backfill">backfill is performed for a schema change</a>, the "updated" timestamp is set to the first timestamp for when the new schema is valid.</td></tr><tr><td><a></a><code>virtual&#95;columns</code></td><td><code>STRING</code></td><td>Changefeeds omit <a href="/docs/v23.2/computed-columns">virtual computed columns</a> from emitted <a href="/docs/v23.2/changefeed-messages">messages</a> by default. To maintain the behavior of previous CockroachDB versions where the changefeed would emit <a href="/docs/v23.2/null-handling"><code>NULL</code></a> values for virtual computed columns, set <code>virtual&#95;columns = "null"</code> when you start a changefeed.<br/><br/>You may also define <code>virtual&#95;columns = "omitted"</code>, though this is already the default behavior for v22.1+. If you do not set <code>"omitted"</code> on a table with virtual computed columns when you create a changefeed, you will receive a warning that changefeeds will filter out virtual computed values.<br/><br/><strong>Default:</strong><code>"omitted"</code></td></tr><tr><td><code>webhook&#95;auth&#95;header</code></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Pass a value (password, token etc.) to the HTTP <a href="https://developer.mozilla.org/docs/Web/HTTP/Headers/Authorization">Authorization header</a> with a webhook request for a "Basic" HTTP authentication scheme.<br/><br/>Example: With a username of "user" and password of "pwd", add a colon between "user:pwd" and then base64 encode, which results in "dXNlcjpwd2Q=". <code>WITH webhook&#95;auth&#95;header='Basic dXNlcjpwd2Q='</code>.</td></tr><tr><td><code>webhook&#95;client&#95;timeout</code></td><td><a href="/docs/v23.2/interval"><code>INTERVAL</code></a></td><td>If a response is not recorded from the sink within this timeframe, it will error and retry to connect. Note this must be a positive value.<br/><br/><strong>Default:</strong><code>"3s"</code></td></tr><tr><td><code>webhook&#95;sink&#95;config</code></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Set fields to configure sink batching and retries. The schema is as follows:<br/><br/><code>&#123; "Flush": &#123; "Messages": ..., "Bytes": ..., "Frequency": ..., &#125;, "Retry": &#123;"Max": ..., "Backoff": ..., &#125; &#125;</code>.<br/><br/><strong>Note</strong> that if either <code>Messages</code> or <code>Bytes</code> are nonzero, then a non-zero value for <code>Frequency</code> must be provided.<br/><br/>See <a href="/docs/v23.2/changefeed-sinks#webhook-sink-configuration">Webhook sink configuration</a> for more details on using this option.</td></tr></tbody></table>
+
+<Note>
+Using the `format=avro`, `envelope=key_only`, and `updated` options together is rejected. `envelope=key_only` prevents any rows with updated fields from being emitted, which makes the `updated` option meaningless.
+</Note>
+
+## Files
+
+The files emitted to a sink use the following naming conventions:
+
+- [General file format](#general-file-format)
+- [Resolved file format](#resolved-file-format)
+
+<Note>
+The timestamp format is `YYYYMMDDHHMMSSNNNNNNNNNLLLLLLLLLL`.
+</Note>
+
+### General file format
+
+```text
+/[date]/[timestamp]-[uniquer]-[topic]-[schema-id]
+```
+
+For example:
+
+```text
+/2020-04-02/202004022058072107140000000000000-56087568dba1e6b8-1-72-00000000-test_table-1.ndjson
+```
+
+When emitting changefeed messages to a [cloud storage sink](/docs/v23.2/changefeed-sinks#cloud-storage-sink), you can specify a partition format for your files using the [`partition_format`](#partition-format) query parameter. This will result in the following file path formats:
+
+- `daily`: This is the default option and will follow the same pattern as the previous general file format.
+- `hourly`: This will partition into an hourly directory as the changefeed emits messages, like the following:
+
+    ```text
+    /2020-04-02/20/202004022058072107140000000000000-56087568dba1e6b8-1-72-00000000-test_table-1.ndjson
+    ```
+- `flat`: This will result in no file partitioning. The cloud storage path you specify when creating a changefeed will store all of the message files with no additional directories created.
+
+### Resolved file format
+
+```text
+/[date]/[timestamp].RESOLVED
+```
+
+For example:
+
+```text
+/2020-04-04/202004042351304139680000000000000.RESOLVED
+```
+
+## Examples
+
+Before running any of the examples in this section it is necessary to [enable the `kv.rangefeed.enabled` cluster setting](/docs/v23.2/create-and-configure-changefeeds#enable-rangefeeds). If you are working on a CockroachDB Standard or Basic cluster, this cluster setting is enabled by default.
+
+The following examples show the syntax for managing changefeeds and starting changefeeds with different use cases and features. The [Options](#options) table on this page provides a list of all the available options. For information on sink-specific query parameters and configurations, refer to the [Changefeed Sinks](/docs/v23.2/changefeed-sinks) page.
+
+You can create an external connection to represent a changefeed sink URI. This allows you to specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](/docs/v23.2/create-external-connection) page.
+
+<Note>
+We recommend limiting the number of changefeeds per cluster to 80.
+</Note>
+
+### Create a changefeed connected to a sink
+
+You can connect a changefeed to the following sinks:
+
+- Kafka
+- Cloud storage / HTTP
+- Google Cloud Pub/Sub
+- Webhook
+
+```sql
+CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
+  INTO 'scheme://host:port'
+  WITH updated, resolved;
+```
+
+For guidance on the sink URI, refer to:
+
+- The [Changefeed Sinks](/docs/v23.2/changefeed-sinks) page for general detail on query parameters and sink configuration.
+- The [Cloud Storage Authentication](/docs/v23.2/cloud-storage-authentication) page for instructions on setting up each supported cloud storage authentication.
+
+### Create a changefeed that filters and transforms change data
+
+[CDC queries](/docs/v23.2/cdc-queries) can filter and transform change data before emitting it to a sink or [a SQL client](#create-a-sinkless-changefeed).
+
+You can adapt a changefeed with CDC queries by including `SELECT` and `WHERE` clauses in your `CREATE` statement:
+
+```sql
+CREATE CHANGEFEED INTO 'scheme://host:port'
+  WITH updated, resolved
+  AS SELECT owner_id, status
+  FROM vehicles
+  WHERE status = 'lost';
+```
+
+CDC queries can only run on a single table per changefeed and require an Enterprise license.
+
+### Create a sinkless changefeed
+
+You can create a changefeed that will send messages to the SQL client rather than a sink:
+
+```sql
+CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
+  WITH updated, resolved;
+```
+
+Sinkless changefeeds do not require an Enterprise license; however, a sinkless changefeed with CDC queries **does** require an Enterprise license.
+
+To create a sinkless changefeed using CDC queries:
+
+```sql
+CREATE CHANGEFEED WITH updated, resolved
+  AS SELECT owner_id, status
+  FROM vehicles
+  WHERE status = 'lost';
+```
+
+### Use an external connection to specify a changefeed sink
+
+[External connections](/docs/v23.2/create-external-connection) provide a way to define a name for a sink, which you can use instead of the provider-specific URI.
+
+To restrict a user's access to changefeed data and sink credentials, enable the `changefeed.permissions.require_external_connection_sink.enabled` cluster setting. When you enable this setting, users with the [`CHANGEFEED` privilege](/docs/v23.2/create-changefeed#required-privileges) on a set of tables can only create changefeeds into [external connections](/docs/v23.2/create-external-connection).
+
+External connections support all changefeed sinks.
+
+```sql
+CREATE EXTERNAL CONNECTION kafka_sink
+  AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256';
+```
+
+In the changefeed statement, you specify the external connection name:
+
+```sql
+CREATE CHANGEFEED FOR TABLE table_name INTO 'external://kafka_sink'
+  WITH resolved;
+```
+
+### Disallow schema changes on tables to improve changefeed performance
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2.1: Use the `schema_locked` [storage parameter](/docs/v23.2/with-storage-parameter) to disallow [schema changes](/docs/v23.2/online-schema-changes) on a watched table, which helps to decrease the latency between a write committing to a table and it emitting to the [changefeed's sink](/docs/v23.2/changefeed-sinks). You can lock the table before creating a changefeed or while a changefeed is running, which will enable the performance improvement for changefeeds watching the particular table.
+
+Enable `schema_locked` on the watched table with the [`ALTER TABLE`](/docs/v23.2/alter-table) statement:
+
+```sql
+ALTER TABLE watched_table SET (schema_locked = true);
+```
+
+While `schema_locked` is enabled on a table, attempted schema changes on the table will be rejected and an error returned. If you need to run a schema change on the locked table, unlock the table with `schema_locked = false`, complete the schema change, and then lock the table again with `schema_locked = true`. The changefeed will run as normal while `schema_locked = false`, but it will not benefit from the performance optimization.
+
+```sql
+ALTER TABLE watched_table SET (schema_locked = false);
+```
+
+### Manage a changefeed
+
+For Enterprise changefeeds, use [`SHOW CHANGEFEED JOBS`](/docs/v23.2/show-jobs) to check the status of your changefeed jobs:
+
+```sql
+SHOW CHANGEFEED JOBS;
+```
+
+Use the following SQL statements to pause, resume, or cancel a changefeed.
+
+#### Pause a changefeed
+
+```sql
+PAUSE JOB job_id;
+```
+
+For more information, see [`PAUSE JOB`](/docs/v23.2/pause-job).
+
+#### Resume a paused changefeed
+
+```sql
+RESUME JOB job_id;
+```
+
+For more information, see [`RESUME JOB`](/docs/v23.2/resume-job).
+
+#### Cancel a changefeed
+
+```sql
+CANCEL JOB job_id;
+```
+
+For more information, see [`CANCEL JOB`](/docs/v23.2/cancel-job).
+
+#### Modify a changefeed
+
+To modify an Enterprise changefeed, [pause](/docs/v23.2/create-and-configure-changefeeds#pause) the job and then use:
+
+```sql
+ALTER CHANGEFEED job_id {ADD table DROP table SET option UNSET option};
+```
+
+You can add new table targets, remove them, set new [changefeed options](/docs/v23.2/create-changefeed#options), and unset them.
+
+For more information, see [`ALTER CHANGEFEED`](/docs/v23.2/alter-changefeed).
+
+#### Configuring all changefeeds
+
+It is useful to be able to pause all running changefeeds during troubleshooting, testing, or when a decrease in CPU load is needed.
+
+To pause all running changefeeds:
+
+```sql
+PAUSE JOBS (WITH x AS (SHOW CHANGEFEED JOBS) SELECT job_id FROM x WHERE status = ('running'));
+```
+
+This will change the status for each of the running changefeeds to `paused`, which can be verified with [`SHOW CHANGEFEED JOBS`](/docs/v23.2/show-jobs#show-changefeed-jobs).
+
+To resume all running changefeeds:
+
+```sql
+RESUME JOBS (WITH x AS (SHOW CHANGEFEED JOBS) SELECT job_id FROM x WHERE status = ('paused'));
+```
+
+This will resume the changefeeds and update the status for each of the changefeeds to `running`.
+
+### Start a new changefeed where another ended
+
+In some situations, you may want to start a changefeed where a previously running changefeed ended. For example, a changefeed could encounter an error it cannot recover from, such as when a [`TRUNCATE` is performed](/docs/v23.2/create-and-configure-changefeeds#known-limitations), and you need to restart the changefeed.
+
+1. Use [`SHOW CHANGEFEED JOB`](/docs/v23.2/show-jobs#show-changefeed-jobs) to find the [high-water timestamp](/docs/v23.2/monitor-and-debug-changefeeds#monitor-a-changefeed) for the ended changefeed:
+
+    ```sql
+    SHOW CHANGEFEED JOB {job_id};
+    ```
+
+    ```text
+            job_id       | ... |      high_water_timestamp      | ...
+    +--------------------+ ... +--------------------------------+ ...
+      383870400694353921 | ... | 1537279405671006870.0000000000 | ...
+    (1 row)
+    ```
+
+    <Note>
+    If a changefeed has failed, you must restart the changefeed from a timestamp **after** the event that caused the failure.
+    </Note>
+2. Use the `high_water_timestamp` to start the new changefeed:
+
+    ```sql
+    CREATE CHANGEFEED FOR TABLE table_name, table_name2, table_name3
+      INTO 'scheme//host:port'
+      WITH cursor = '<high_water_timestamp>';
+    ```
+
+When you use the `cursor` option to start a changefeed, it will not perform an [initial scan](#initial-scan).
+
+### Create a changefeed with an S3 storage class
+
+To associate the changefeed message files with a [specific storage class](/docs/v23.2/use-cloud-storage#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+```sql
+CREATE CHANGEFEED FOR TABLE table_name
+  INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
+  WITH resolved;
+```
+
+Use the parameter to set one of these [storage classes](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject#AmazonS3-PutObject-request-header-StorageClass) listed in Amazon's documentation. For more general usage information, see Amazon's [Using Amazon S3 storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro) documentation.
+
+### Define a key to determine the changefeed sink partition
+
+With the [`key_column`](#key-column) option, you can define the key used in message metadata that determines the partition for the changefeed message at your [downstream sink](/docs/v23.2/changefeed-sinks). This option overrides the default [primary key](/docs/v23.2/primary-key):
+
+```sql
+CREATE CHANGEFEED FOR TABLE table_name
+  INTO 'external://kafka-sink'
+  WITH key_column='partition_column', unordered;
+```
+
+`key_column` does not preserve ordering of messages from CockroachDB to the downstream sink, therefore you **must** include the [`unordered`](#unordered) option. It does not affect per-key [ordering guarantees](/docs/v23.2/changefeed-messages#ordering-and-delivery-guarantees) or the output of [`key_in_value`](#key-in-value).
+
+## See also
+
+- [Change Data Capture Overview](/docs/v23.2/change-data-capture-overview)
+- [SQL Statements](/docs/v23.2/sql-statements)
+- [Changefeed Dashboard](/docs/v23.2/ui-cdc-dashboard)
+- [Monitor and Debug Changefeeds](/docs/v23.2/monitor-and-debug-changefeeds)

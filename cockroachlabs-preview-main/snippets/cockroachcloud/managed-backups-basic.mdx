@@ -1,0 +1,216 @@
+---
+title: "Managed Backups in CockroachDB Basic Clusters"
+old_description: "Learn about CockroachDB Cloud managed backups."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/backup-and-restore-overview" data-versioned="true">*Managed backups*</a> are automated backups of CockroachDB Cloud clusters that are stored by Cockroach Labs in cloud storage. By default, Cockroach Labs takes and retains managed backups in all Cloud clusters. In Standard and Advanced clusters, you can adjust the default managed backup settings to meet your organization's disaster recovery requirements.
+
+<LinkedPageTabs
+  currentPath="/docs/cockroachcloud/managed-backups-basic"
+  items={[
+    {
+      title: "CockroachDB Basic",
+      href: "/docs/cockroachcloud/managed-backups-basic",
+    },
+    {
+      title: "CockroachDB Standard",
+      href: "/docs/cockroachcloud/managed-backups",
+    },
+    {
+      title: "CockroachDB Advanced",
+      href: "/docs/cockroachcloud/managed-backups-advanced",
+    },
+  ]}
+/>
+
+This page describes managed backups in Basic clusters, which have a default non-configurable schedule.
+
+<Note>
+In addition to managed backups, you can take manual backups to your own storage bucket with self-managed backups. Refer to the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/take-and-restore-self-managed-backups" data-versioned="true">Take and Restore Self-Managed Backups</a> page.
+</Note>
+
+Cockroach Labs will take a managed backup every 24 hours. By default, managed backups will be retained for 30 days in Basic clusters.
+
+When a Basic cluster is deleted, or the customer’s agreement with Cockroach Labs has terminated, managed backups taken on the cluster will be retained for 30 days, after which the backups will be deleted.
+
+For details on viewing and managing the backups, refer to the [Cloud Console](#restore-a-cluster) section.
+
+## Upgrades and downgrades
+
+If you have upgraded from a Basic cluster to a Standard cluster, the existing backup schedules will still apply, but you can then configure the frequency and retention of future managed backups in the Standard cluster.
+
+If you have downgraded from a Standard cluster to a Basic cluster, existing managed backups will be retained for the configured retention duration. The default managed backups in Basic clusters will be taken every 24 hours and have a 30-day retention.
+
+## Considerations
+
+- Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
+
+For details on the storage costs of managed backups, refer to the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/costs#backups" data-versioned="true">Understand CockroachDB Cloud Costs</a> page.
+
+### Required permissions to restore managed backups
+
+To restore a managed backup successfully in CockroachDB Cloud, you must have the appropriate <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization" data-versioned="true">permissions</a> on both the source and destination clusters:
+
+- You must have either the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-admin" data-versioned="true">Cluster Admin</a> or <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-operator" data-versioned="true">Cluster Operator</a> role on the **destination cluster**, or at the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-authorization-model" data-versioned="true">organization level</a>. Without one of these roles, the restore job will fail.
+- You must also have either the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-admin" data-versioned="true">Cluster Admin</a> or <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-operator" data-versioned="true">Cluster Operator</a> role on the **source cluster** (the cluster from which the backup was taken), or at the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-authorization-model" data-versioned="true">organization level</a>. If you do not have the required permissions on the source cluster, the restore will fail.
+
+<Note>
+Organization-level permissions take precedence over cluster-specific permissions. If you have the appropriate role at the organization level, you are authorized to perform restore operations on all clusters within that organization.
+</Note>
+
+## Cloud Console
+
+### View backups
+
+Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
+
+This page displays a list of your cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+
+For each backup, the following details display:
+
+- **Data From**: The date and time the backup was taken.
+- **Status**: The backup's status, `In Progress` or `Complete`.
+- **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
+- **Restore**: Restore a particular cluster backup, click [**Restore**](#restore-a-cluster) in the corresponding row.
+
+### Restore a cluster
+
+<Note>
+Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore job fails if the destination cluster contains any databases/schemas/tables.
+</Note>
+
+Performing a restore will cause your cluster to be unavailable for the duration of the restore. All current data is deleted, and the cluster will be restored to the state it was in at the time of the backup.
+
+To restore a cluster:
+
+1. Find the cluster backup on the **Backup Recovery** page.
+2. Click **Restore** for the cluster you want to restore.
+
+    The **Restore cluster** module displays with backup details.
+3. You can restore a backup to the same cluster.
+
+    <Note>
+    If you need to restore data into a new or different cluster, use <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/take-and-restore-self-managed-backups" data-versioned="true">self-managed backups</a> or <a href="/docs/VERSION_PLACEHOLDER/support-resources" data-versioned="true">contact support</a>.
+    </Note>
+4. Click **Restore**.
+
+## Cloud API
+
+You can use the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api" data-versioned="true">CockroachDB Cloud API</a> to [view managed backups](#view-managed-backups) or [restore clusters](#restore-from-a-managed-backup) from a managed backup.
+
+<Note>
+The <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#service-accounts" data-versioned="true">service account</a> associated with the secret key must have the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-admin" data-versioned="true">Cluster Admin</a> role.
+</Note>
+
+### View managed backups
+
+To view a list of managed backups on a cluster with timestamps and their respective IDs, send a `GET` request to the `/v1/clusters/{cluster_id}/backups` endpoint:
+
+```shell
+curl --request GET \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups \
+--header "Authorization: Bearer {secret_key}" \
+```
+
+If the request is successful, the client recieves a JSON response listing backups with their unique `{id}`. The `{as_of_time}` timestamp describes the system time of the cluster when the backup was created:
+
+```json
+{
+  "backups": [
+    {
+      "id": "example-157a-4b04-8f72-3179369a50d9",
+      "as_of_time": "2025-07-25T15:45:00Z"
+    },
+    {
+      "id": "example-c090-429c-9f84-2b1297f5de89",
+      "as_of_time": "2025-07-25T15:35:32Z"
+    },
+    {
+      "id": "example-4e41-44ec-926a-0cc368efdea2",
+      "as_of_time": "2025-07-25T15:00:00Z"
+    },
+    {
+      "id": "example-3c67-4822-b7b9-90c2d8cc06a3",
+      "as_of_time": "2025-07-25T14:56:15Z"
+    },
+    {
+      "id": "example-abef-4191-aa98-36a019da97c2",
+      "as_of_time": "2025-07-25T14:52:05.637170Z"
+    }
+  ],
+  "pagination": null
+```
+
+### Restore from a managed backup
+
+You can use the `/v1/clusters/{destination_cluster_id}/restores` endpoint to restore the contents of a managed backup to a specified destination cluster.
+
+On Standard and Basic clusters, restore operations can only be performed into the same cluster where the managed backup is stored. Managed backups can only be restored at the cluster level.
+
+#### Restore a cluster
+
+<Note>
+Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore operation fails if the destination cluster contains any databases/schemas/tables.
+</Note>
+
+To restore a cluster to a recent managed backup, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "CLUSTER"`:
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{cluster_id}",
+    "type": "CLUSTER"
+}'
+```
+
+By default, the restore job uses the most recent backup stored within the last 7 days on the cluster specified in `source_cluster_id`. To restore a specific backup, include the `backup_id` field and specify a backup ID from the [managed backups list](#view-managed-backups):
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
+    "type": "CLUSTER"
+}'
+```
+
+If the request is successful, the client recieves a JSON response that describes the request operation:
+
+```json
+{
+  "id": "example-aeb7-4daa-9e2c-eda541765f8a",
+  "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
+  "status": "PENDING",
+  "created_at": "2025-07-25T16:45:14.064208710Z",
+  "type": "CLUSTER",
+  "completion_percent": 1
+}
+```
+
+### Get status of a restore job
+
+To view the status of a restore job using the cloud API, send a `GET` request to the `/v1/clusters/{cluster_id}/restores/{restore_id}` endpoint where `restore_id` is the `id` from the JSON response:
+
+```shell
+curl --request GET \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores/{restore_id} \
+--header "Authorization: Bearer {secret_key}"
+```
+
+If the request is successful, the client recieves a response containing JSON describing the status of the specified request operation:
+
+```json
+{
+  "id": "example-aeb7-4daa-9e2c-eda541765f8a",
+  "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
+  "status": "SUCCESS",
+  "created_at": "2025-07-25T16:45:14.064208710Z",
+  "type": "CLUSTER",
+  "completion_percent": 1
+}
+```

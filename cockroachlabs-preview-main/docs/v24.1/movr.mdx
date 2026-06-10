@@ -1,0 +1,167 @@
+---
+title: "MovR"
+old_description: "The MovR application uses CockroachDB to store information about vehicles, users, and rides."
+---
+
+MovR is a fictional vehicle-sharing company created to demonstrate CockroachDB's features.
+
+## Overview
+
+The MovR example consists of the following:
+
+- The `movr` dataset, which contains rows of data that populate tables in the `movr` database. The `movr` dataset is built into [`cockroach demo`](/docs/v24.1/cockroach-demo) and [`cockroach workload`](/docs/v24.1/cockroach-workload).
+- The MovR application, a fully-functional vehicle-sharing application, written in Python. All of MovR application source code is open-source, and available on the [movr](https://github.com/cockroachdb/movr) GitHub repository.
+
+## The `movr` database
+
+The six tables in the `movr` database store user, vehicle, and ride data for MovR:
+
+<table><thead><tr><th>Table</th><th>Description</th></tr></thead><tbody><tr><td><code>users</code></td><td>People registered for the service.</td></tr><tr><td><code>vehicles</code></td><td>The pool of vehicles available for the service.</td></tr><tr><td><code>rides</code></td><td>When and where users have rented a vehicle.</td></tr><tr><td><code>promo&#95;codes</code></td><td>Promotional codes for users.</td></tr><tr><td><code>user&#95;promo&#95;codes</code></td><td>Promotional codes in use by users.</td></tr><tr><td><code>vehicle&#95;location&#95;histories</code></td><td>Vehicle location history.</td></tr></tbody></table>
+
+<Frame>
+  ![Geo-partitioning schema](/images/v24.1/movr-schema.png)
+</Frame>
+
+## Generating schemas and data for MovR
+
+You can use the `cockroach demo` and `cockroach workload` commands to load the `movr` database and dataset into a CockroachDB cluster.
+
+[`cockroach demo`](/docs/v24.1/cockroach-demo) opens a SQL shell to a temporary, in-memory cluster. To open a SQL shell to a demo cluster with the `movr` database preloaded and set as the [current database](/docs/v24.1/sql-name-resolution#current-database), use the following command:
+
+```shell
+$ cockroach demo movr
+```
+
+[`cockroach workload`](/docs/v24.1/cockroach-workload) loads sample datasets and workloads into running clusters. To load the `movr` database and some sample data into a running cluster, do the following:
+
+1. Start a [secure](/docs/v24.1/secure-a-cluster) or [insecure](/docs/v24.1/start-a-local-cluster) local cluster.
+2. Use `cockroach workload` to load the `movr` dataset:
+
+    <CodeGroup>
+    
+    ```shell Secure
+    $ cockroach workload init movr 'postgresql://root@localhost:26257?sslcert=certs%2Fclient.root.crt&sslkey=certs%2Fclient.root.key&sslmode=verify-full&sslrootcert=certs%2Fca.crt'
+    ```
+
+    
+    ```shell Insecure
+    $ cockroach workload init movr 'postgresql://root@localhost:26257?sslmode=disable'
+    ```
+
+    </CodeGroup>
+<Tabs>
+<Tab title="Secure">
+
+3. Use [`cockroach sql`](/docs/v24.1/cockroach-sql) to open an interactive SQL shell and set `movr` as the [current database](/docs/v24.1/sql-name-resolution#current-database):
+
+    ```shell
+    $ cockroach sql --certs-dir=certs --host=localhost:26257
+    ```
+
+    ```sql
+    > USE movr;
+    ```
+
+</Tab>
+<Tab title="Insecure">
+
+3. Use [`cockroach sql`](/docs/v24.1/cockroach-sql) to open an interactive SQL shell and set `movr` as the [current database](/docs/v24.1/sql-name-resolution#current-database):
+
+    ```shell
+    $ cockroach sql --insecure --host=localhost:26257
+    ```
+
+    ```sql
+    > USE movr;
+    ```
+
+</Tab>
+</Tabs>
+
+## How the MovR application works
+
+The workflow for MovR is as follows:
+
+1. A user loads the app and sees the 25 closest vehicles.
+
+    For example:
+
+    ```sql
+    > SELECT id, city, status FROM vehicles WHERE city='amsterdam' limit 25;
+    ```
+2. The user signs up for the service.
+
+    For example:
+
+    ```sql
+    > INSERT INTO users (id, name, address, city, credit_card) 
+      VALUES ('66666666-6666-4400-8000-00000000000f', 'Mariah Lam', '88194 Angela Gardens Suite 60', 'amsterdam', '123245696');
+    ```
+
+    <Note>
+    Usually for [Universally Unique Identifier (UUID)](/docs/v24.1/uuid#create-a-table-with-auto-generated-unique-row-ids) you would need to generate it automatically but for the sake of this follow up we will use predetermined UUID to keep track of them in our examples.
+    </Note>
+3. In some cases, the user adds their own vehicle to share.
+
+    For example:
+
+    ```sql
+    > INSERT INTO vehicles (id, city, type, owner_id,creation_time,status, current_location, ext) 
+      VALUES ('ffffffff-ffff-4400-8000-00000000000f', 'amsterdam', 'skateboard', '66666666-6666-4400-8000-00000000000f', current_timestamp(), 'available', '88194 Angela Gardens Suite 60', '{"color": "blue"}');
+    ```
+4. More often, the user reserves a vehicle and starts a ride, applying a promo code, if available and valid.
+
+    For example:
+
+    ```sql
+    > SELECT code FROM user_promo_codes WHERE user_id ='66666666-6666-4400-8000-00000000000f';
+    ```
+
+    ```sql
+    > UPDATE vehicles SET status = 'in_use' WHERE id='bbbbbbbb-bbbb-4800-8000-00000000000b';
+    ```
+
+    ```sql
+    > INSERT INTO rides (id, city, vehicle_city, rider_id, vehicle_id, start_address,end_address, start_time, end_time, revenue) 
+      VALUES ('cd032f56-cf1a-4800-8000-00000000066f', 'amsterdam', 'amsterdam', '66666666-6666-4400-8000-00000000000f', 'bbbbbbbb-bbbb-4800-8000-00000000000b', '70458 Mary Crest', '', TIMESTAMP '2020-10-01 10:00:00.123456', NULL, 0.0);
+    ```
+5. During the ride, MovR tracks the location of the vehicle.
+
+    For example:
+
+    ```sql
+    > INSERT INTO vehicle_location_histories (city, ride_id, timestamp, lat, long) 
+      VALUES ('amsterdam', 'cd032f56-cf1a-4800-8000-00000000066f', current_timestamp(), -101, 60);
+    ```
+6. The user ends the ride and releases the vehicle.
+
+    For example:
+
+    ```sql
+    > UPDATE vehicles SET status = 'available' WHERE id='bbbbbbbb-bbbb-4800-8000-00000000000b';
+    ```
+
+    ```sql
+    > UPDATE rides SET end_address ='33862 Charles Junctions Apt. 49', end_time=TIMESTAMP '2020-10-01 10:30:00.123456', revenue=88.6 
+      WHERE id='cd032f56-cf1a-4800-8000-00000000066f';
+    ```
+
+## Extended examples
+
+For a tutorial on running MovR against a multi-region cluster, using two important multi-region [data topologies](/docs/v24.1/topology-patterns) to get very low latency reads and writes, see [Low Latency, Multi-Region Deployment](/docs/v24.1/demo-low-latency-multi-region-deployment).
+
+### Develop and deploy a global application
+
+For a tutorial on developing and deploying a globally-available web application for MovR, use the following docs:
+
+1. [MovR: A Global Application Use-case](/docs/v24.1/movr-flask-use-case)
+2. [Create a Multi-region Database Schema](/docs/v24.1/movr-flask-database)
+3. [Set up a Virtual Environment for Developing Global Applications](/docs/v24.1/movr-flask-setup)
+4. [Develop a Global Application](/docs/v24.1/movr-flask-application)
+5. [Deploy a Global Application](/docs/v24.1/movr-flask-deployment)
+
+## See also
+
+- [Learn CockroachDB SQL](/docs/v24.1/learn-cockroachdb-sql)
+- [Build an App with CockroachDB](/docs/v24.1/example-apps)
+- [Features in Preview](/docs/v24.1/cockroachdb-feature-availability)

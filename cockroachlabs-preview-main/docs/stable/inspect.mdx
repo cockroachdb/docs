@@ -1,0 +1,128 @@
+---
+title: "INSPECT"
+old_description: "Use the INSPECT statement to run data consistency validation checks against tables or databases."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+import { Inspect } from "/snippets/syntax-diagrams/Inspect.jsx";
+import { Inspect2 } from "/snippets/syntax-diagrams/Inspect2.jsx";
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v26.1: The `INSPECT` [statement](/docs/v26.1/sql-statements) runs a data consistency validation job against a table or database and records any errors it finds. To display errors recorded by an inspection job, use [`SHOW INSPECT ERRORS`](/docs/v26.1/show-inspect-errors).
+
+`INSPECT` is the generally available replacement for the deprecated `EXPERIMENTAL SCRUB` command.
+
+<Note>
+`INSPECT` is used to verify data integrity. It does not automatically repair errors.
+</Note>
+
+## Required privileges
+
+To run `INSPECT` and view its results, the user must have:
+
+- The `INSPECT` system-level [privilege](/docs/v26.1/security-reference/authorization#supported-privileges), which is required to run the `INSPECT` statement.
+
+## Synopsis
+
+<Inspect />
+
+<Inspect2 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The <a href="/docs/v26.1/create-table">table</a> to inspect.</td></tr><tr><td><code>db&#95;name</code></td><td>The <a href="/docs/v26.1/create-database">database</a> to inspect.</td></tr><tr><td><code>opt&#95;as&#95;of&#95;clause</code></td><td>Optional. Run the inspection against a historical read timestamp using <code>INSPECT ... AS OF SYSTEM TIME &#123;expr&#125;</code>. For an example, see <a href="#inspect-at-a-specific-timestamp"><code>INSPECT</code> at a specific timestamp</a>. For more information about historical reads, see <a href="/docs/v26.1/as-of-system-time"><code>AS OF SYSTEM TIME</code></a>.</td></tr><tr><td><code>opt&#95;inspect&#95;options&#95;clause</code></td><td>Optional. Control which <a href="/docs/v26.1/indexes">indexes</a> are inspected using <code>INSPECT ... WITH OPTIONS (...)</code>. For an example, see <a href="#inspect-a-table-for-specific-indexes"><code>INSPECT</code> a table for specific indexes</a>. See <a href="#options">Options</a>.</td></tr></tbody></table>
+
+### Options
+
+<table><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td><code>INDEX ALL</code></td><td>Inspect all supported index types in the target table or database. This is the default.</td></tr><tr><td><code>INDEX (&#123;index&#95;name&#125; &#91;, ...&#93;)</code></td><td>Inspect only the specified indexes. Note that <code>INDEX ALL</code> and this option are mutually exclusive.</td></tr><tr><td><code>DETACHED</code></td><td>Run <code>INSPECT</code> in detached mode so the statement returns to the SQL client after the job is created (instead of waiting for the job to complete). For an example, see <a href="#inspect-a-table-without-waiting-for-completion"><code>INSPECT</code> a table without waiting for completion</a>. This option allows <code>INSPECT</code> to run inside a <a href="/docs/v26.1/run-multi-statement-transactions">multi-statement transaction</a>.</td></tr></tbody></table>
+
+## Considerations
+
+- `INSPECT` always runs as a [background job](/docs/v26.1/show-jobs).
+- By default, `INSPECT` causes the SQL client to wait for the background job to complete and returns a `NOTICE` with the job ID. To return to the client as soon as the job is created (without waiting for it to finish), use the [`DETACHED` option](#options).
+- `INSPECT` can be run inside a [multi-statement transaction](/docs/v26.1/run-multi-statement-transactions) if the `DETACHED` option is used. Otherwise, it needs to be run in an [implicit transaction](/docs/v26.1/transactions#individual-statements).
+- `INSPECT` runs with low priority under the [admission control](/docs/v26.1/admission-control) subsystem and may take time on large datasets. Plan to run it during periods of lower system load.
+- The following index types are unsupported:
+    - [Vector indexes](/docs/v26.1/vector-indexes)
+    - [Partial indexes](/docs/v26.1/partial-indexes)
+    - [Expression indexes](/docs/v26.1/expression-indexes)
+    - [Hash-sharded indexes](/docs/v26.1/hash-sharded-indexes)
+    - [Inverted indexes](/docs/v26.1/inverted-indexes)
+- Unsupported index types are automatically skipped when using the default `INDEX ALL` behavior. If an unsupported index type is directly requested using `INDEX {index_name}`, the statement will fail before starting.
+
+## Examples
+
+### `INSPECT` a table (all supported indexes)
+
+```sql
+INSPECT TABLE movr.public.users;
+```
+
+```text
+NOTICE: waiting for INSPECT job to complete: 1141477630617223169
+If the statement is canceled, the job will continue in the background.
+```
+
+### `INSPECT` a table for specific indexes
+
+```sql
+INSPECT TABLE movr.public.vehicles WITH OPTIONS INDEX (vehicles_auto_index_fk_city_ref_users);
+```
+
+```text
+NOTICE: waiting for INSPECT job to complete: 1141477560713150465
+If the statement is canceled, the job will continue in the background.
+```
+
+### `INSPECT` a table without waiting for completion
+
+```sql
+INSPECT TABLE movr.public.vehicles WITH OPTIONS DETACHED;
+```
+
+```text
+NOTICE:  INSPECT job 1141773037670301697 running in the background
+```
+
+### `INSPECT` at a specific timestamp
+
+```sql
+INSPECT TABLE movr.public.users AS OF SYSTEM TIME '-10s';
+```
+
+```text
+NOTICE:  waiting for INSPECT job to complete: 1141477013029322753
+If the statement is canceled, the job will continue in the background.
+```
+
+### Checking `INSPECT` job status
+
+When you issue the `INSPECT` statement, a `NOTICE` message is returned to the client showing the job ID:
+
+```text
+NOTICE:  waiting for INSPECT job to complete: 1141477013029322753
+If the statement is canceled, the job will continue in the background.
+```
+
+You can check the status of the `INSPECT` [job](/docs/v26.1/show-jobs) using a statement like the following:
+
+```sql
+SELECT * FROM [SHOW JOBS] WHERE job_id = 1141477013029322753;
+```
+
+```text
+        job_id        | job_type |           description           | user_name |  status   | running_status |        created         |        started         |        finished        |        modified        | fraction_completed | error | coordinator_id
+----------------------+----------+---------------------------------+-----------+-----------+----------------+------------------------+------------------------+------------------------+------------------------+--------------------+-------+-----------------
+  1141477013029322753 | INSPECT  | INSPECT TABLE movr.public.users | node      | succeeded | NULL           | 2026-01-14 20:12:19+00 | 2026-01-14 20:12:19+00 | 2026-01-14 20:12:19+00 | 2026-01-14 20:12:19+00 |                  1 |       |              1
+```
+
+### Viewing `INSPECT` results
+
+To view errors found by an inspection job, use [`SHOW INSPECT ERRORS`](/docs/v26.1/show-inspect-errors). Errors are stored in an internal system table and are subject to a 90 day retention policy.
+
+## See also
+
+- [`SHOW INSPECT ERRORS`](/docs/v26.1/show-inspect-errors)
+- [`SHOW JOBS`](/docs/v26.1/show-jobs)
+- [Jobs page in DB Console](/docs/v26.1/ui-jobs-page)
+- [`AS OF SYSTEM TIME`](/docs/v26.1/as-of-system-time)
+- [Supported privileges](/docs/v26.1/security-reference/authorization#supported-privileges)

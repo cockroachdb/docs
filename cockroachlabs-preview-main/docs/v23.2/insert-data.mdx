@@ -1,0 +1,144 @@
+---
+title: "Insert Data"
+old_description: "How to insert data into CockroachDB during application development"
+---
+
+This page has instructions for getting data into CockroachDB with various programming languages, using the [`INSERT`](/docs/v23.2/insert) SQL statement.
+
+## Before you begin
+
+Before reading this page, do the following:
+
+- [Create a CockroachDB Standard cluster](/docs/cockroachcloud/quickstart) or [start a local cluster](/docs/cockroachcloud/quickstart?filters=local).
+- [Install a Driver or ORM Framework](/docs/v23.2/install-client-drivers).
+- [Connect to the database](/docs/v23.2/connect-to-the-database).
+
+<Note>
+Your application should [use a retry loop to handle transaction errors](/docs/v23.2/query-behavior-troubleshooting#transaction-retry-errors) that can occur under [contention](/docs/v23.2/performance-best-practices-overview#understanding-and-avoiding-transaction-contention).
+</Note>
+
+## Insert rows
+
+When inserting multiple rows, a single [multi-row insert statement](/docs/v23.2/insert#insert-multiple-rows-into-an-existing-table) is faster than multiple single-row statements.
+
+<Tabs>
+<Tab title="SQL">
+
+```sql
+CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT);
+INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250);
+```
+
+For more information about how to use the built-in SQL client, see the [`cockroach sql`](/docs/v23.2/cockroach-sql) reference docs.
+
+</Tab>
+<Tab title="Go">
+
+```go
+// 'db' is an open database connection
+
+// Insert two rows into the "accounts" table.
+if _, err := db.Exec(
+    "INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)"); err != nil {
+    log.Fatal(err)
+}
+```
+
+For complete examples, see:
+
+- [Build a Go App with CockroachDB](/docs/v23.2/build-a-go-app-with-cockroachdb) (pgx)
+- [Build a Go App with CockroachDB and GORM](/docs/v23.2/build-a-go-app-with-cockroachdb)
+
+</Tab>
+<Tab title="Java">
+
+```java
+// ds is an org.postgresql.ds.PGSimpleDataSource
+
+try (Connection connection = ds.getConnection()) {
+    connection.setAutoCommit(false);
+    PreparedStatement pstmt = connection.prepareStatement("INSERT INTO accounts (id, balance) VALUES (?, ?)");
+
+    pstmt.setInt(1, 1);
+    pstmt.setInt(2, 1000);
+    pstmt.addBatch();
+
+    pstmt.executeBatch();
+    connection.commit();
+} catch (SQLException e) {
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n",
+                      e.getSQLState(), e.getCause(), e.getMessage());
+}
+```
+
+For complete examples, see:
+
+- [Build a Java App with CockroachDB](/docs/v23.2/build-a-java-app-with-cockroachdb) (JDBC)
+- [Build a Java App with CockroachDB and Hibernate](/docs/v23.2/build-a-java-app-with-cockroachdb-hibernate)
+
+</Tab>
+<Tab title="Python">
+
+```python
+# conn is a psycopg2 connection
+
+with conn.cursor() as cur:
+    cur.execute('INSERT INTO accounts (id, balance) VALUES (1, 1000), (2, 250)')
+
+conn.commit()
+```
+
+For complete examples, see:
+
+- [Build a Python App with CockroachDB](/docs/v23.2/build-a-python-app-with-cockroachdb-psycopg3) (psycopg3)
+- [Build a Python App with CockroachDB and SQLAlchemy](/docs/v23.2/build-a-python-app-with-cockroachdb-sqlalchemy)
+- [Build a Python App with CockroachDB and Django](/docs/v23.2/build-a-python-app-with-cockroachdb-django)
+- [Build a Python App with CockroachDB and asyncpg](/docs/v23.2/build-a-python-app-with-cockroachdb-asyncpg)
+
+</Tab>
+</Tabs>
+
+## Bulk insert
+
+If you need to get a lot of data into a CockroachDB cluster quickly, use the [`IMPORT`](/docs/v23.2/import) statement instead of sending SQL [`INSERT`s](/docs/v23.2/insert) from application code. It will be much faster because it bypasses the SQL layer altogether and writes directly to the data store using low-level commands. For instructions, see the [Migration Overview](/docs/molt/migration-overview).
+
+## Limit the size of rows
+
+To help you avoid failures arising from misbehaving applications that bloat the size of rows, you can specify the behavior when a row or individual [column family](/docs/v23.2/column-families) larger than a specified size is written to the database. Use the [cluster settings](/docs/v23.2/cluster-settings) `sql.guardrails.max_row_size_log` to discover large rows and `sql.guardrails.max_row_size_err` to reject large rows.
+
+When you write a row that exceeds `sql.guardrails.max_row_size_log`:
+
+- `INSERT`, `UPSERT`, `UPDATE`, `CREATE TABLE AS`, `CREATE INDEX`, `ALTER TABLE`, `ALTER INDEX`, `IMPORT`, or `RESTORE` statements will log a `LargeRow` to the [`SQL_PERF`](/docs/v23.2/logging#sql_perf) channel.
+- `SELECT`, `DELETE`, `TRUNCATE`, and `DROP` are not affected.
+
+When you write a row that exceeds `sql.guardrails.max_row_size_err`:
+
+- `INSERT`, `UPSERT`, and `UPDATE` statements will fail with a code `54000 (program_limit_exceeded)` error.
+- `CREATE TABLE AS`, `CREATE INDEX`, `ALTER TABLE`, `ALTER INDEX`, `IMPORT`, and `RESTORE` statements will log a `LargeRowInternal` event to the [`SQL_INTERNAL_PERF`](/docs/v23.2/logging#sql_internal_perf) channel.
+- `SELECT`, `DELETE`, `TRUNCATE`, and `DROP` are not affected.
+
+You **cannot** update existing rows that violate the limit unless the update shrinks the size of the row below the limit. You **can** select, delete, alter, back up, and restore such rows. We recommend using the accompanying setting `sql.guardrails.max_row_size_log` in conjunction with `SELECT pg_column_size()` queries to detect and fix any existing large rows before lowering `sql.guardrails.max_row_size_err`.
+
+## See also
+
+Reference information related to this task:
+
+- [Migration Overview](/docs/molt/migration-overview)
+- [`IMPORT`](/docs/v23.2/import)
+- [Import performance](/docs/v23.2/import#performance)
+- [`INSERT`](/docs/v23.2/insert)
+- [`UPSERT`](/docs/v23.2/upsert)
+- [Transaction Contention](/docs/v23.2/performance-best-practices-overview#transaction-contention)
+- [Multi-row DML best practices](/docs/v23.2/performance-best-practices-overview#dml-best-practices)
+- [Insert Multiple Rows](/docs/v23.2/insert#insert-multiple-rows-into-an-existing-table)
+
+Other common tasks:
+
+- [Connect to the Database](/docs/v23.2/connect-to-the-database)
+- [Query Data](/docs/v23.2/query-data)
+- [Update Data](/docs/v23.2/update-data)
+- [Delete Data](/docs/v23.2/delete-data)
+- [Run Multi-Statement Transactions](/docs/v23.2/run-multi-statement-transactions)
+- [Troubleshoot SQL Statements](/docs/v23.2/query-behavior-troubleshooting)
+- [Optimize Statement Performance](/docs/v23.2/make-queries-fast)
+- [Example Apps](/docs/v23.2/example-apps)

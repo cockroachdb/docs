@@ -1,0 +1,186 @@
+---
+title: "Install CockroachDB on Mac"
+old_description: "Install CockroachDB on Mac, Linux, or Windows. Sign up for product release notes."
+---
+
+<Tip>
+To try CockroachDB Cloud instead of running CockroachDB yourself, refer to the [Cloud Quickstart](/docs/cockroachcloud/quickstart).
+</Tip>
+
+CockroachDB v25.2 is the latest supported production release. It is a required [Regular release](/docs/releases/release-support-policy#support-types). To learn more, refer to [CockroachDB v25.2 Release Notes](https://cockroachlabs.com/docs/releases/v25.2).
+
+<Note>
+CockroachDB on macOS is experimental and not suitable for production deployments.
+</Note>
+
+Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to v25.2](/docs/v25.2/upgrade-cockroach-version). For limitations specific to geospatial features, refer to [Limitations](#limitations).
+
+## Use Homebrew
+
+For CockroachDB v22.2.x and above, Homebrew installs binaries for your system architecture, either Intel or ARM ([Apple Silicon](https://support.apple.com/HT211814)).
+
+For previous releases, Homebrew installs Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is **experimental** and is not yet qualified for production use and not eligible for support or uptime SLA commitments.
+
+1. [Install Homebrew](http://brew.sh/).
+2. Instruct Homebrew to install CockroachDB:
+
+    ```text
+    $ brew install cockroachdb/tap/cockroach
+    ```
+3. Keep up-to-date with CockroachDB releases and best practices:
+
+<Tip>
+If you previously installed CockroachDB via Homebrew, you can [upgrade](/docs/v25.2/upgrade-cockroach-version) the CockroachDB binary to the next major version or to a patch version using HomeBrew. After updating the binary on each node, restart the `cockroach` process on the node. When upgrading to a new major version, you must complete additional steps to [finalize](/docs/v25.2/upgrade-cockroach-version#finalize-a-major-version-upgrade-manually) the upgrade. If you need to upgrade through multiple major versions, you must complete each major-version upgrade separately, including finalizing the upgrade, before beginning the next one.
+
+Before starting the upgrade, review the [release notes](/docs/releases/v25.2), including temporary limitations during the upgrade.
+
+To upgrade CockroachDB via HomeBrew:
+
+```shell
+brew update
+```
+
+```shell
+brew update
+brew upgrade cockroach
+```
+</Tip>
+
+## Download the binary
+
+For CockroachDB v22.2.x and above, download the binaries for your system architecture, either Intel or ARM ([Apple Silicon](https://support.apple.com/en-us/HT211814)).
+
+For previous releases, download Intel binaries. Intel binaries can run on ARM systems, but with a significant reduction in performance. CockroachDB on ARM for macOS is **experimental** and is not yet qualified for production use and not eligible for support or uptime SLA commitments.
+
+1. Visit [Releases](/docs/releases) to download the CockroachDB archive for the architecture of your macOS host. The archive contains the `cockroach` binary and the supporting libraries that are used to provide [spatial features](/docs/v25.2/spatial-data-overview).
+
+    You can download the binary using a web browser or you can copy the link and use a utility like `curl` to download it. If you download the ARM binary using a web browser and you plan to use CockroachDB's spatial features, an additional step is required before you can install the library, as outlined in the next step.
+
+    Extract the archive and optionally copy the `cockroach` binary into your `PATH` so you can execute [cockroach commands](/docs/v25.2/cockroach-commands) from any shell. If you get a permission error, use `sudo`.
+
+    <Note>
+    If you plan to use CockroachDB's [spatial features](/docs/v25.2/spatial-data-overview), you must complete all of the following steps. Otherwise, your installation is now complete.
+    </Note>
+2. CockroachDB uses custom-built versions of the [GEOS](/docs/v25.2/architecture/glossary#geos) libraries. To install those libraries:
+    1. Note that [spatial features are currently disabled for Mac ARM users](/docs/v25.2/known-limitations#spatial-features-disabled-for-arm-macs), for whom these steps do not apply. For an upcoming patch release where this functionality is reenabled, if you downloaded the CockroachDB ARM binary archive using a web browser, macOS flags the GEOS libraries in the extracted archive as quarantined. This flag must be removed before CockroachDB can use the libraries. To remove the quarantine flag from the libraries:
+
+        ```shell
+        xattr -d com.apple.quarantine lib/libgeos*
+        ```
+
+        This step is not required for Intel systems.
+    2. Copy these libraries to one of the locations where CockroachDB expects to find them. By default, CockroachDB looks for external libraries in `/usr/local/lib/cockroach` or a `lib` subdirectory of the CockroachDB binary's current directory. If you place these libraries in another location, you must pass the location in the [`--spatial-libs` flag to `cockroach start`](/docs/v25.2/cockroach-start#flags-spatial-libs). The instructions below assume the `/usr/local/lib/cockroach` location.
+        1. Create the directory where the external libraries will be stored:
+
+            ```shell
+            mkdir -p /usr/local/lib/cockroach
+            ```
+        2. Copy the library files to the directory:
+
+            ```shell
+            cp -i cockroach-v25.2.15.darwin-10.9-amd64/lib/libgeos.dylib /usr/local/lib/cockroach/
+            ```
+
+            ```shell
+            cp -i cockroach-v25.2.15.darwin-10.9-amd64/lib/libgeos_c.dylib /usr/local/lib/cockroach/
+            ```
+
+            If you get a permissions error, prefix the command with `sudo`.
+3. Verify that CockroachDB can execute spatial queries.
+    1. Make sure the `cockroach` binary you just installed is the one that runs when you type `cockroach` in your shell:
+
+        ```shell
+        which cockroach
+        ```
+
+        ```text
+        /usr/local/bin/cockroach
+        ```
+    2. Start a temporary, in-memory cluster using [`cockroach demo`](/docs/v25.2/cockroach-demo):
+
+        ```shell
+        cockroach demo
+        ```
+    3. In the demo cluster's interactive SQL shell, run the following command to test that the spatial libraries have loaded properly:
+
+        ```sql
+        > SELECT ST_IsValid(ST_MakePoint(1,2));
+        ```
+
+        You should see the following output:
+
+        ```shell
+        st_isvalid
+        --------------
+        true
+        (1 row)
+        ```
+
+        If your `cockroach` binary is not properly accessing the dynamically linked C libraries in `/usr/local/lib/cockroach`, it will output an error message like the one below.
+
+        ```text
+        ERROR: st_isvalid(): geos: error during GEOS init: geos: cannot load GEOS from dir "/usr/local/lib/cockroach": failed to execute dlopen
+                  Failed running "sql"
+        ```
+4. Keep up-to-date with CockroachDB releases and best practices:
+
+## Use Kubernetes
+
+To orchestrate CockroachDB locally using [Kubernetes](https://kubernetes.io/), either with configuration files or the [Helm](https://helm.sh/) package manager, see [Orchestrate CockroachDB Locally with Minikube](/docs/v25.2/orchestrate-a-local-cluster-with-kubernetes).
+
+## Use Docker
+
+<Warning>
+Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.
+</Warning>
+
+CockroachDB's Docker images are [multi-platform images](https://docs.docker.com/build/building/multi-platform) that contain binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.
+
+Experimental images are not qualified for production use and not eligible for support or uptime SLA commitments.
+
+1. Install a container runtime, such as [Docker Desktop](https://docs.docker.com/desktop).
+2. Verify that the runtime service is installed correctly and running in the background. Refer to the runtime's documentation. For Docker, start a terminal and run `docker version`. If you get an error, verify your installation and try again.
+3. Visit [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach) and decide which image tag to pull. Releases are rolled out gradually. Docker images for a new release are published when other binary artifacts are published. The following tag formats are commonly used, although other tags are available.
+
+    <table><thead><tr><td>Tag</td><td>Example</td><td>Description</td></tr></thead><tbody><tr><td>An exact patch</td><td><code>v25.2.15</code></td><td>Pins a cluster to an exact patch. The cluster is upgraded to a newer patch or major version only when you pull a newer tag.</td></tr><tr><td>Latest patch within a major version</td><td><code>latest-v25.2</code></td><td>Automatically updates a cluster to the latest patch of the version you specify. This tag is recommended in production, because it keeps your cluster updated within a major version but does not automatically upgrade your cluster to a new major version.</td></tr><tr><td><code>latest</code></td><td>The latest patch within the latest major version. This is the default if you do not specify a tag. It updates your cluster automatically to each new patch and major version, and is not recommended in production.</td></tr></tbody></table>
+
+    Copy the tag you want to pull.
+4. Pull the image. Replace `{TAG}` with the tag from the previous step.
+
+    ```shell
+    docker pull cockroachdb/cockroach:{TAG}
+    ```
+5. Start a cluster by starting the container on each node using `docker start`. The default command is `cockroach start`. Pass your desired flags as the final argument. For details, refer to [Deploy a local container in Docker](/docs/v25.2/start-a-local-cluster-in-docker).
+
+## Build from source
+
+See the [public wiki](https://wiki.crdb.io/wiki/spaces/CRDB/pages/181338446/Getting+and+building+CockroachDB+from+source) for guidance. When building on the ARM architecture, refer to [Limitations](#limitations).
+
+## Limitations
+
+CockroachDB runtimes built for the ARM architecture have the following limitations:
+
+- CockroachDB on ARM for macOS is **experimental** and is not yet qualified for production use and not eligible for support or uptime SLA commitments.
+- Clusters with a mix of Intel and ARM nodes are untested. Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, hardware, and software.
+- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://developer.arm.com/documentation/dui0375/g/Compiler-specific-Features/Fused-Multiply-Add--FMA--intrinsics).
+- When [building from source](#install-source) on ARM, consider disabling FMA intrinsics in your compiler. For GCC, refer to [Options That Control Optimization](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options) in the GCC documentation.
+
+## What's next?
+
+- If you're just getting started with CockroachDB:
+    - [Create a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?experience=enterprise) where you can [generate and manage licenses](/docs/v25.2/licensing-faqs) for CockroachDB installations
+    - [Start a cluster locally](/docs/v25.2/start-a-local-cluster) and talk to it via the built-in SQL client
+    - [Learn more about CockroachDB SQL](/docs/v25.2/learn-cockroachdb-sql)
+    - [Build a simple application](/docs/v25.2/example-apps) with CockroachDB using PostgreSQL-compatible client drivers and ORMs
+    - [Explore CockroachDB features](/docs/v25.2/demo-replication-and-rebalancing) like automatic replication, rebalancing, and fault tolerance
+- If you're ready to run CockroachDB in production:
+    - Review the [Production Checklist](/docs/v25.2/recommended-production-settings)
+    - [Deploy CockroachDB manually](/docs/v25.2/manual-deployment) or [use an orchestration system like Kubernetes](/docs/v25.2/kubernetes-overview)
+
+<Note>
+By default, each node of a CockroachDB cluster periodically shares anonymous usage details with Cockroach Labs. For an explanation of the details that get shared and how to opt-out of reporting, see [Diagnostics Reporting](/docs/v25.2/diagnostics-reporting).
+</Note>
+
+## Limitations
+
+On macOS ARM systems, [spatial features](/docs/v25.2/spatial-data-overview) are disabled due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [run the Intel binary](#install-the-binary) or use the[Docker container image](#use-docker). Refer to [GitHub issue #93161](https://github.com/cockroachdb/cockroach/issues/93161) for more information.

@@ -1,0 +1,396 @@
+---
+title: "Online Schema Changes"
+old_description: "Update table schemas without external tools or downtime."
+---
+
+CockroachDB's online schema changes provide a simple way to update a table schema without imposing any negative consequences on an application — including downtime. The schema change engine is a built-in feature requiring no additional tools, resources, or ad hoc sequencing of operations.
+
+Benefits of online schema changes include:
+
+- Changes to your table schema happen while the database is running.
+- The schema change runs as a [background job](/docs/v24.3/show-jobs) without holding locks on the underlying table data.
+- Your application's queries can run normally, with no effect on read/write latency. The schema is cached for performance.
+- Your data is kept in a safe, [consistent](/docs/v24.3/frequently-asked-questions#how-is-cockroachdb-strongly-consistent) state throughout the entire schema change process.
+
+<Warning>
+Schema changes consume additional resources, and if they are run when the cluster is near peak capacity, latency spikes can occur. This is especially true for any schema change that adds columns, drops columns, or adds an index. We do not recommend doing more than one schema change at a time while in production.
+</Warning>
+
+<Note>
+CockroachDB [does not support schema changes within explicit transactions](#schema-changes-within-transactions) with full atomicity guarantees. CockroachDB only supports DDL changes within implicit transactions (individual statements). If a schema management tool uses transactions on your behalf, it should only execute one schema change operation per transaction.
+
+Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](#enable-automatic-commit-before-running-schema-changes-inside-transactions).
+</Note>
+
+## How online schema changes work
+
+At a high level, online schema changes are accomplished by using a bridging strategy involving concurrent uses of multiple versions of the schema. The process is as follows:
+
+1. You initiate a schema change by executing [`ALTER TABLE`](/docs/v24.3/alter-table), [`CREATE INDEX`](/docs/v24.3/create-index), [`TRUNCATE`](/docs/v24.3/truncate), etc.
+2. The schema change engine converts the original schema to the new schema in discrete steps while ensuring that the underlying table data is always in a consistent state. These changes are executed as a [background job](/docs/v24.3/show-jobs), and can be [paused](/docs/v24.3/pause-job), [resumed](/docs/v24.3/resume-job), and [canceled](/docs/v24.3/cancel-job).
+
+This approach allows the schema change engine to roll out a new schema while the previous version is still in use. It then backfills or deletes the underlying table data as needed in the background, while the cluster is still running and servicing reads and writes from your application.
+
+During the backfilling process, the schema change engine updates the underlying table data to make sure all instances of the table are stored according to the requirements of the new schema.
+
+Once backfilling is complete, all nodes will switch over to the new schema, and will allow reads and writes of the table using the new schema.
+
+For more technical details, see [How online schema changes are possible in CockroachDB](https://cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb).
+
+The following online schema changes pause if the node executing the schema change is running out of disk space:
+
+- Changes that trigger an index backfill (adding data to an index).
+- The following statements:
+    - [`ADD COLUMN`](/docs/v24.3/alter-table#add-column) when the statement also features `INDEX` or `UNIQUE`.
+    - [`ALTER PRIMARY KEY`](/docs/v24.3/alter-table#alter-primary-key)
+    - [`CREATE INDEX`](/docs/v24.3/create-index)
+    - [`CREATE MATERIALIZED VIEW`](/docs/v24.3/views#materialized-views)
+    - [`CREATE TABLE AS`](/docs/v24.3/create-table-as)
+    - [`REFRESH`](/docs/v24.3/refresh)
+    - [`SET LOCALITY`](/docs/v24.3/alter-table#set-locality) under one of the following conditions:
+    - The locality changes from [`REGIONAL BY ROW`](/docs/v24.3/alter-table#regional-by-row) to something that is not `REGIONAL BY ROW`.
+    - The locality changes from something that is not `REGIONAL BY ROW` to `REGIONAL BY ROW`.
+
+<Note>
+If a schema change job is paused, any jobs waiting on that schema change will stop waiting and return an error.
+</Note>
+
+<Note>
+If a schema change fails, the schema change job will be cleaned up automatically. However, there are limitations with rolling back schema changes within a transaction; for more information, see [Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
+</Note>
+
+For advice about how to avoid running out of space during an online schema change, refer to [Estimate your storage capacity before performing online schema changes](#estimate-your-storage-capacity-before-performing-online-schema-changes).
+
+## Best practices for online schema changes
+
+### Estimate your storage capacity before performing online schema changes
+
+Some schema change operations, like adding or dropping columns or altering primary keys, will temporarily increase a cluster's storage consumption. Specifically, these operations may temporarily require up to three times more storage space for the range size while the schema change is being applied, and this may cause the cluster to run out of storage space or fail to apply the schema change.
+
+To estimate the size of the indexes in your table, use the [`SHOW RANGES`](/docs/v24.3/show-ranges) statement.
+
+```shell
+SHOW RANGES FROM TABLE {table name} WITH DETAILS, KEYS, INDEXES;
+```
+
+The output includes a `range_size_mb` column that shows the size of the range in megabytes for each index.
+
+In many cases this range size is trivial, but when the range size is many gigabytes or terabytes, you will need at least three times that amount of free storage space to successfully apply an online schema change.
+
+#### Example of finding the range size of an index
+
+1. Start a 3 node [`cockroach demo`](/docs/v24.3/cockroach-demo) cluster with the MovR dataset.
+
+    ```shell
+    cockroach demo --nodes 3
+    ```
+2. Turn off the deprecated behavior of `SHOW RANGES`:
+
+    ```sql
+    SET CLUSTER SETTING sql.show_ranges_deprecated_behavior.enabled TO 'false';
+    ```
+3. Find the range size of the indexes in the `movr.vehicles` table:
+
+    ```sql
+    WITH x AS (
+            SHOW RANGES FROM TABLE movr.vehicles WITH DETAILS, KEYS, INDEXES
+         )
+    SELECT index_name,
+           round(range_size_mb, 4) as range_size_mb
+      FROM x;
+    ```
+
+    ```text
+                  index_name               | range_size_mb
+    ----------------------------------------+----------------
+      vehicles_pkey                         |        0.0005
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0005
+      vehicles_pkey                         |        0.0006
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0002
+      vehicles_pkey                         |        0.0103
+      vehicles_auto_index_fk_city_ref_users |        0.0103
+    (10 rows)
+    ```
+
+### Run schema changes with large backfills during off-peak hours
+
+Online schema changes that result in large backfill operations (for example, [`ALTER TABLE... ALTER COLUMN`](/docs/v24.3/alter-table#alter-column) statements) are computationally expensive, and can result in degraded performance. The [admission control system](/docs/v24.3/admission-control) will help keep high-priority operations running, but it's recommended to run backfill-heavy schema changes during times when the cluster is under relatively low loads.
+
+### Schema changes in multi-region clusters
+
+To reduce latency while making online schema changes, we recommend specifying a `lease_preference` [zone configuration](/docs/v24.3/configure-replication-zones) on the `system` database to a single region and running all subsequent schema changes from a node within that region. For example, if the majority of online schema changes come from machines that are geographically close to `us-east1`, run the following:
+
+```sql
+ALTER DATABASE system CONFIGURE ZONE USING constraints = '{"+region=us-east1": 1}', lease_preferences = '[[+region=us-east1]]';
+```
+
+Run all subsequent schema changes from a node in the specified region.
+
+If you do not intend to run more schema changes from that region, you can safely [remove the lease preference from the zone configuration](/docs/v24.3/alter-database#remove-a-replication-zone) for the system database.
+
+## Examples
+
+<Tip>
+For more examples of schema change statements, see the [`ALTER TABLE`](/docs/v24.3/alter-table) subcommands.
+</Tip>
+
+### Run schema changes inside a transaction with `CREATE TABLE`
+
+As noted in [Known limitations](#known-limitations), you cannot run schema changes inside transactions in general.
+
+However, you can run schema changes inside the same transaction as a [`CREATE TABLE`](/docs/v24.3/create-table) statement. For example:
+
+```sql
+> BEGIN;
+  SAVEPOINT cockroach_restart;
+  CREATE TABLE fruits (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        name STRING,
+        color STRING
+    );
+  INSERT INTO fruits (name, color) VALUES ('apple', 'red');
+  ALTER TABLE fruits ADD COLUMN inventory_count INTEGER DEFAULT 5;
+  ALTER TABLE fruits ADD CONSTRAINT name CHECK (name IN ('apple', 'banana', 'orange'));
+  SELECT name, color, inventory_count FROM fruits;
+  RELEASE SAVEPOINT cockroach_restart;
+  COMMIT;
+```
+
+The transaction succeeds with the following output:
+
+```text
+BEGIN
+SAVEPOINT
+CREATE TABLE
+INSERT 0 1
+ALTER TABLE
+ALTER TABLE
++-------+-------+-----------------+
+| name  | color | inventory_count |
++-------+-------+-----------------+
+| apple | red   |               5 |
++-------+-------+-----------------+
+(1 row)
+COMMIT
+COMMIT
+```
+
+### Run multiple schema changes in a single `ALTER TABLE` statement
+
+Some schema changes can be used in combination in a single `ALTER TABLE` statement. For a list of commands that can be combined, see [`ALTER TABLE`](/docs/v24.3/alter-table). For a demonstration, see [Add and rename columns atomically](/docs/v24.3/alter-table#add-and-rename-columns-atomically).
+
+### Show all schema change jobs
+
+You can check on the status of the schema change jobs on your system at any time using the [`SHOW JOBS`](/docs/v24.3/show-jobs) statement:
+
+```sql
+> WITH x AS (SHOW JOBS) SELECT * FROM x WHERE job_type = 'SCHEMA CHANGE';
+```
+
+```text
++--------------------+---------------+-----------------------------------------------------------------------------+-----------+-----------+----------------------------+----------------------------+----------------------------+----------------------------+--------------------+-------+----------------+
+|             job_id | job_type      | description                                                                 | user_name | status    | created                    | started                    | finished                   | modified                   | fraction_completed | error | coordinator_id |
+|--------------------+---------------+-----------------------------------------------------------------------------+-----------+-----------+----------------------------+----------------------------+----------------------------+----------------------------+--------------------+-------+----------------|
+| 368863345707909121 | SCHEMA CHANGE | ALTER TABLE test.public.fruits ADD COLUMN inventory_count INTEGER DEFAULT 5 | root      | succeeded | 2018-07-26 20:55:59.698793 | 2018-07-26 20:55:59.739032 | 2018-07-26 20:55:59.816007 | 2018-07-26 20:55:59.816008 |                  1 |       | NULL           |
+| 370556465994989569 | SCHEMA CHANGE | ALTER TABLE test.public.foo ADD COLUMN bar VARCHAR                          | root      | pending   | 2018-08-01 20:27:38.708813 | NULL                       | NULL                       | 2018-08-01 20:27:38.708813 |                  0 |       | NULL           |
+| 370556522386751489 | SCHEMA CHANGE | ALTER TABLE test.public.foo ADD COLUMN bar VARCHAR                          | root      | pending   | 2018-08-01 20:27:55.830832 | NULL                       | NULL                       | 2018-08-01 20:27:55.830832 |                  0 |       | NULL           |
++--------------------+---------------+-----------------------------------------------------------------------------+-----------+-----------+----------------------------+----------------------------+----------------------------+----------------------------+--------------------+-------+----------------+
+(1 row)
+```
+
+All schema change jobs can be [paused](/docs/v24.3/pause-job), [resumed](/docs/v24.3/resume-job), and [canceled](/docs/v24.3/cancel-job).
+
+### Enable automatic commit before running schema changes inside transactions
+
+When the [`autocommit_before_ddl` session setting](/docs/v24.3/set-vars#autocommit-before-ddl) is set to `on`, any schema change statement that is sent during an [explicit transaction](/docs/v24.3/transactions) will cause the transaction to [commit](/docs/v24.3/commit-transaction) before executing the schema change.
+
+This setting can be used to:
+
+- Improve compatibility with some third-party tools that do not work well due to our [limitations on schema changes in explicit transactions](#schema-changes-within-transactions).
+- Use schema changes more easily under the [`READ COMMITTED` isolation level](/docs/v24.3/read-committed). The error message returned when running schema changes under `READ COMMITTED` isolation includes a hint to use this setting.
+
+With `autocommit_before_ddl` enabled, [`COMMIT`](/docs/v24.3/commit-transaction), [`ROLLBACK`](/docs/v24.3/rollback-transaction), and other statements that normally return **errors** when used outside of an explicit transaction will instead return **warnings**. This behavior change is necessary because this setting can cause a transaction to end earlier than a client application may expect.
+
+To enable this setting for the current [session](/docs/v24.3/show-sessions):
+
+```sql
+SET autocommit_before_ddl = on;
+```
+
+To enable it for [all users](/docs/v24.3/alter-role#set-default-session-variable-values-for-all-users):
+
+```sql
+ALTER ROLE ALL SET autocommit_before_ddl = on
+```
+
+You can also enable the setting [from your application's connection string](/docs/v24.3/connection-parameters#supported-options-parameters).
+
+## Demo videos
+
+### Updating primary key columns
+
+To see a demo of an online schema change against a primary key column, watch the following video:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/xvBBQVIGYio" title="YouTube video player" width="560"></iframe>
+</Frame>
+
+### Updating foreign key columns
+
+To see a demo of an online schema change against a foreign key column, watch the following video:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/HXAIB6bJuZQ" title="YouTube video player" width="560"></iframe>
+</Frame>
+
+## Undoing a schema change
+
+Prior to [garbage collection](/docs/v24.3/architecture/storage-layer#garbage-collection), it's possible to recover data that may have been lost prior to schema changes by using the [`AS OF SYSTEM TIME`](/docs/v24.3/as-of-system-time) parameter. However, this solution is limited in terms of time, and doesn't work beyond the designated garbage collection window.
+
+For more long-term recovery solutions, consider taking either a [full or incremental backup](/docs/v24.3/take-full-and-incremental-backups) of your cluster.
+
+## Known limitations
+
+##### Schema changes within transactions
+
+Most schema changes should not be performed within an explicit transaction with multiple statements, as they do not have the same atomicity guarantees as other SQL statements. Execute schema changes either as single statements (as an implicit transaction), or in an explicit transaction consisting of the single schema change statement. There are some exceptions to this, detailed below.
+
+Schema changes keep your data consistent at all times, but they do not run inside [transactions](/docs/v24.3/transactions) in the general case. Making schema changes transactional would mean requiring a given schema change to propagate across all the nodes of a cluster. This would block all user-initiated transactions being run by your application, since the schema change would have to commit before any other transactions could make progress. This would prevent the cluster from servicing reads and writes during the schema change, requiring application downtime.
+
+<Tip>
+Some tools and applications may be able to workaround CockroachDB's lack of transactional schema changes by [enabling a setting that automatically commits before running schema changes inside transactions](/docs/v24.3/online-schema-changes#enable-automatic-commit-before-running-schema-changes-inside-transactions).
+</Tip>
+
+Some schema change operations can be run within explicit, multiple statement transactions. `CREATE TABLE` and `CREATE INDEX` statements can be run within the same transaction with the same atomicity guarantees as other SQL statements. There are no performance or rollback issues when using these statements within a multiple statement transaction.
+
+Within a single [transaction](/docs/v24.3/transactions):
+
+- You can run schema changes inside the same transaction as a [`CREATE TABLE`](/docs/v24.3/create-table) statement. For more information, see [Run schema changes inside a transaction with `CREATE TABLE`](/docs/v24.3/online-schema-changes#run-schema-changes-inside-a-transaction-with-create-table). However, a `CREATE TABLE` statement containing [`FOREIGN KEY`](/docs/v24.3/foreign-key) clauses cannot be followed by statements that reference the new table.
+- [Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed](#schema-change-ddl-statements-inside-a-multi-statement-transaction-can-fail-while-other-statements-succeed).
+- [`DROP COLUMN`](/docs/v24.3/alter-table#drop-column) can result in data loss if one of the other schema changes in the transaction fails or is canceled. To work around this, move the `DROP COLUMN` statement to its own explicit transaction or run it in a single statement outside the existing transaction.
+
+<Note>
+If a schema change within a transaction fails, manual intervention may be needed to determine which statement has failed. After determining which schema change(s) failed, you can then retry the schema change.
+</Note>
+
+##### Schema change DDL statements inside a multi-statement transaction can fail while other statements succeed
+
+Most schema change [DDL](https://wikipedia.org/wiki/Data_definition_language#ALTER_statement) statements that run inside a multi-statement transaction with non-DDL statements can fail at [`COMMIT`](/docs/v24.3/commit-transaction) time, even if other statements in the transaction succeed. This leaves such transactions in a "partially committed, partially aborted" state that may require manual intervention to determine whether the DDL statements succeeded.
+
+Some DDL statements do not have this limitation. `CREATE TABLE` and `CREATE INDEX` statements have the same atomicity guarantees as other statements within a transaction.
+
+If such a failure occurs, CockroachDB will emit a CockroachDB-specific error code, `XXA00`, and the following error message:
+
+```text
+transaction committed but schema change aborted with error: <description of error>
+HINT: Some of the non-DDL statements may have committed successfully, but some of the DDL statement(s) failed.
+Manual inspection may be required to determine the actual state of the database.
+```
+
+<Warning>
+If you must execute schema change DDL statements inside a multi-statement transaction, we **strongly recommend** checking for this error code and handling it appropriately every time you execute such transactions.
+</Warning>
+
+This error will occur in various scenarios, including but not limited to:
+
+- Creating a unique index fails because values aren't unique.
+- The evaluation of a computed value fails.
+- Adding a constraint (or a column with a constraint) fails because the constraint is violated for the default/computed values in the column.
+
+To see an example of this error, start by creating the following table.
+
+```sql
+CREATE TABLE T(x INT);
+INSERT INTO T(x) VALUES (1), (2), (3);
+```
+
+Then, enter the following multi-statement transaction, which will trigger the error.
+
+```sql
+BEGIN;
+ALTER TABLE t ADD CONSTRAINT unique_x UNIQUE(x);
+INSERT INTO T(x) VALUES (3);
+COMMIT;
+```
+
+```text
+pq: transaction committed but schema change aborted with error: (23505): duplicate key value (x)=(3) violates unique constraint "unique_x"
+HINT: Some of the non-DDL statements may have committed successfully, but some of the DDL statement(s) failed.
+Manual inspection may be required to determine the actual state of the database.
+```
+
+In this example, the [`INSERT`](/docs/v24.3/insert) statement committed, but the [`ALTER TABLE`](/docs/v24.3/alter-table) statement adding a [`UNIQUE` constraint](/docs/v24.3/unique) failed. We can verify this by looking at the data in table `t` and seeing that the additional non-unique value `3` was successfully inserted.
+
+```sql
+SELECT * FROM t;
+```
+
+```text
+  x
++---+
+  1
+  2
+  3
+  3
+(4 rows)
+```
+
+##### No online schema changes if primary key change in progress
+
+You cannot start an online schema change on a table if a [primary key change](/docs/v24.3/alter-table#alter-primary-key) is currently in progress on the same table.
+
+##### No online schema changes between executions of prepared statements
+
+When the schema of a table targeted by a prepared statement changes after the prepared statement is created, future executions of the prepared statement could result in an error. For example, adding a column to a table referenced in a prepared statement with a `SELECT *` clause will result in an error:
+
+```sql
+CREATE TABLE users (id INT PRIMARY KEY);
+```
+
+```sql
+PREPARE prep1 AS SELECT * FROM users;
+```
+
+```sql
+ALTER TABLE users ADD COLUMN name STRING;
+```
+
+```sql
+INSERT INTO users VALUES (1, 'Max Roach');
+```
+
+```sql
+EXECUTE prep1;
+```
+
+```text
+ERROR: cached plan must not change result type
+SQLSTATE: 0A000
+```
+
+It's therefore recommended to explicitly list result columns instead of using `SELECT *` in prepared statements, when possible.
+
+## See also
+
+- [How online schema changes are possible in CockroachDB](https://cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb): Blog post with more technical details about how our schema change engine works.
+- [`ALTER DATABASE`](/docs/v24.3/alter-database)
+- [`ALTER INDEX`](/docs/v24.3/alter-index)
+- [`ALTER RANGE`](/docs/v24.3/alter-range)
+- [`ALTER SEQUENCE`](/docs/v24.3/alter-sequence)
+- [`ALTER TABLE`](/docs/v24.3/alter-table)
+- [`ALTER VIEW`](/docs/v24.3/alter-view)
+- [`CREATE DATABASE`](/docs/v24.3/create-database)
+- [`CREATE INDEX`](/docs/v24.3/create-index)
+- [`CREATE SEQUENCE`](/docs/v24.3/create-sequence)
+- [`CREATE TABLE`](/docs/v24.3/create-table)
+- [`CREATE VIEW`](/docs/v24.3/create-view)
+- [`DROP DATABASE`](/docs/v24.3/drop-database)
+- [`DROP INDEX`](/docs/v24.3/drop-index)
+- [`DROP SEQUENCE`](/docs/v24.3/drop-sequence)
+- [`DROP TABLE`](/docs/v24.3/drop-table)
+- [`DROP VIEW`](/docs/v24.3/drop-view)
+- [`TRUNCATE`](/docs/v24.3/truncate)

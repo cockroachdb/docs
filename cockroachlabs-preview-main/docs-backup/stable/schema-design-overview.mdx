@@ -1,0 +1,151 @@
+---
+title: Database Schemas
+description: "This page provides an overview of database schemas in CockroachDB."
+---
+
+The follow-up pages listed in [What's next](https://www.cockroachlabs.com/docs/stable/#whats-next) provide best practices for designing a database schema that optimizes performance and storage resources.
+
+## Database schema objects
+
+The following sections provide a brief overview of the logical objects that make up a database schema in CockroachDB.
+
+For detailed documentation on object name resolution, see [Name Resolution](https://www.cockroachlabs.com/docs/v25.3/sql-name-resolution).
+
+### Databases
+
+Database objects make up the first level of the [CockroachDB naming hierarchy](https://www.cockroachlabs.com/docs/v25.3/sql-name-resolution#naming-hierarchy). They contain [schemas](https://www.cockroachlabs.com/docs/stable/#schemas).
+
+All CockroachDB clusters include a preloaded database named `defaultdb`. Rather than using the `defaultdb` database, we recommend creating your own database.
+
+For guidance on creating databases, see [Create a Database](https://www.cockroachlabs.com/docs/v25.3/schema-design-database).
+
+<Note>
+**Note:**
+
+To avoid confusion with the general term "[database](https://en.wikipedia.org/wiki/Database)", throughout this guide we refer to the logical object as a *database*, to CockroachDB by name, and to a deployment of CockroachDB as a [*cluster*](https://www.cockroachlabs.com/docs/v25.3/architecture/glossary#cockroachdb-architecture-terms).
+</Note>
+
+### Schemas
+
+Schemas make up the second level of the naming hierarchy. Each schema belongs to a single database. Schemas contain [tables](https://www.cockroachlabs.com/docs/stable/#tables) and other objects, like [views](https://www.cockroachlabs.com/docs/stable/#views) and [sequences](https://www.cockroachlabs.com/docs/stable/#sequences).
+
+All CockroachDB clusters include a preloaded schema named `public`. CockroachDB also supports creating your own *user-defined schema*.
+
+For guidance on creating user-defined schemas, see [Create a User-defined Schema](https://www.cockroachlabs.com/docs/v25.3/schema-design-schema).
+
+<Note>
+**Note:**
+
+To avoid confusion with the general term "[schema](https://wiktionary.org/wiki/schema)", in this guide we refer to the logical object as a *user-defined schema*, and to the relationship structure of logical objects in a cluster as a *database schema*.
+</Note>
+
+### Tables
+
+Tables belong to the third and lowest level of the naming hierarchy. Each table can belong to a single [schema](https://www.cockroachlabs.com/docs/stable/#schemas).
+
+Tables contain *rows* of data. Each value in a row of data belongs to a particular *column*. Each column allows values of data of a single data type. Columns can be further qualified with [column-level constraints](https://www.cockroachlabs.com/docs/v25.3/constraints), or computed with [scalar expressions](https://www.cockroachlabs.com/docs/v25.3/computed-columns).
+
+For guidance on defining tables, see [Tables](https://www.cockroachlabs.com/docs/v25.3/schema-design-table).
+
+### Indexes
+
+An *index* is a copy of the rows in a single table, sorted by a column or set of columns. CockroachDB queries use indexes to find data more efficiently in a table, given the values of a particular column. Each index belongs to a single table.
+
+The two main types of indexes are the primary index, an index on the row-identifying [primary key columns](https://www.cockroachlabs.com/docs/v25.3/primary-key), and the secondary index, an index created on non-primary-key columns of your choice.
+
+For guidance on defining primary keys, see [Select primary key columns](https://www.cockroachlabs.com/docs/v25.3/schema-design-table#select-primary-key-columns). For guidance on defining secondary indexes, see [Secondary Indexes](https://www.cockroachlabs.com/docs/v25.3/schema-design-indexes).
+
+#### Specialized indexes
+
+CockroachDB supports some specialized types of indexes, designed to improve query performance in specific use cases. For guidance on specialized indexes, see the following pages:
+
+<CardGroup cols={2}>
+  <Card title="Index a Subset of Rows" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/partial-indexes" horizontal />
+  <Card title="Index Sequential Keys" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/hash-sharded-indexes" horizontal />
+  <Card title="Index JSON and Array Data" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/inverted-indexes" horizontal />
+  <Card title="Index Expressions" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/expression-indexes" horizontal />
+  <Card title="Index Spatial Data" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/spatial-indexes" horizontal />
+</CardGroup>
+
+### Other objects
+
+CockroachDB supports several other objects at the third level of the naming hierarchy, including reusable [views](https://www.cockroachlabs.com/docs/stable/#views), [sequences](https://www.cockroachlabs.com/docs/stable/#sequences), and [temporary objects](https://www.cockroachlabs.com/docs/stable/#temporary-objects).
+
+#### Views
+
+A *view* is a stored and named selection query.
+
+For guidance on using views, see [Views](https://www.cockroachlabs.com/docs/v25.3/views).
+
+#### Sequences
+
+A *sequence* creates and stores sequential data.
+
+For guidance on using sequences, see [the `CREATE SEQUENCE` syntax page](https://www.cockroachlabs.com/docs/v25.3/create-sequence).
+
+#### Temporary objects
+
+A *temporary object* is an object, such as a table, view, or sequence, that is not stored to persistent memory.
+
+For guidance on using temporary objects, see [Temporary Tables](https://www.cockroachlabs.com/docs/v25.3/temporary-tables).
+
+## Control access to objects
+
+CockroachDB supports both user-based and role-based access control. With roles, or with direct assignment, you can grant a [SQL user](https://www.cockroachlabs.com/docs/v25.3/security-reference/authorization#sql-users) the [privileges](https://www.cockroachlabs.com/docs/v25.3/security-reference/authorization#privileges) required to view, modify, and delete database schema objects.
+
+By default, the user that creates an object is that object's *owner*. [Object owners](https://www.cockroachlabs.com/docs/v25.3/security-reference/authorization#object-ownership) have all privileges required to view, modify, or delete that object and the data stored within it.
+
+For more information about ownership, privileges, and authorization, see [Authorization](https://www.cockroachlabs.com/docs/v25.3/authorization).
+
+## Executing database schema changes
+
+We do not recommend using client drivers or ORM frameworks to execute database schema changes. As a best practice, we recommend creating database schemas and performing database schema changes with one of the following methods:
+
+- Use a database schema migration tool.
+	CockroachDB is compatible with most PostgreSQL database schema migration tools, including [Flyway](https://flywaydb.org/) and [Liquibase](https://www.liquibase.com/). For a tutorial on performing database schema changes using Liquibase, see our [Liquibase tutorial](https://www.cockroachlabs.com/docs/v25.3/liquibase). For a tutorial on performing schema changes with Flyway, see our [Flyway tutorial](https://www.cockroachlabs.com/docs/v25.3/flyway).
+- Use the [CockroachDB SQL client](https://www.cockroachlabs.com/docs/v25.3/cockroach-sql#execute-sql-statements-from-a-file).
+	The CockroachDB SQL client allows you to execute commands from the command line, or through the [CockroachDB SQL shell](https://www.cockroachlabs.com/docs/v25.3/cockroach-sql#sql-shell) interface. From the command line, you can pass a string to the client for execution, or you can pass a `.sql` file populated with SQL commands. From the SQL shell, you can execute SQL commands directly. Throughout the guide, we pass a `.sql` file to the SQL client to perform most database schema changes.
+
+## Object size and scaling considerations
+
+CockroachDB does not place hard limits on most database objects. Extremely large attributes are not supported in certain scenarios as described in this section.
+
+### Hard limitsThe following table lists specific limits imposed by CockroachDB.
+
+| Object | Limit | Comments |
+| :--- | :--- | :--- |
+| Role names | 63 bytes | Other [restrictions](https://www.cockroachlabs.com/docs/v25.3/create-role#considerations) apply. |
+| User names | 63 bytes | These are [equivalent](https://www.cockroachlabs.com/docs/v25.3/create-user) to role names. |
+| Identifier length | 128 bytes | This limit is specified in the `max_identifier_length` variable for compatibility with other databases, but is not enforced. It may be enforced in future versions of CockroachDB, so we recommended remaining within this limit. |
+
+### Quantity of tables and other schema objects
+
+CockroachDB has been shown to perform well with clusters containing 10,000 tables. Greater numbers are possible, depending on the complexity of the tables (number of columns and indexes) and hardware specifications.
+
+As you scale to a large number of tables, note that:
+
+- The amount of RAM per node is the limiting factor for the number of tables and other schema objects the cluster can support. This includes columns, indexes, GIN indexes, constraints, and partitions. Increasing RAM is likely to have the greatest impact on the number of these objects that a cluster can support, while increasing the number of nodes will not have a substantial effect.
+- The number of databases or schemas on the cluster has minimal impact on the total number of tables that it can support.
+- Performance at larger numbers of tables may be affected by your use of [backup and restore](https://www.cockroachlabs.com/docs/v25.3/backup-and-restore-overview) and [Change data capture (CDC)](https://www.cockroachlabs.com/docs/v25.3/change-data-capture-overview).
+
+See the [Hardware](https://www.cockroachlabs.com/docs/v25.3/recommended-production-settings#hardware) section for additional recommendations based on your expected workloads.
+
+### Quantity of rowsCockroach
+
+DB can support any number of rows by adding additional nodes and [storage](https://www.cockroachlabs.com/docs/v25.3/recommended-production-settings#storage).
+
+## What's next?
+
+<CardGroup cols={2}>
+  <Card title="Create a Database" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/schema-design-database" horizontal />
+  <Card title="Create a User-defined Schema" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/schema-design-database" horizontal />
+</CardGroup>
+
+You might also be interested in the following pages:
+
+<CardGroup cols={2}>
+  <Card title="CockroachDB naming hierarchy" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/sql-name-resolution#naming-hierarchy" horizontal />
+  <Card title="Authorization" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/authorization" horizontal />
+  <Card title="Liquibase" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/liquibase" horizontal />
+  <Card title="Flyway" icon="angles-right" href="https://www.cockroachlabs.com/docs/v25.3/flyway" horizontal />
+</CardGroup>

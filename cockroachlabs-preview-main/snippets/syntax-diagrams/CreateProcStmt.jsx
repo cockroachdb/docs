@@ -1,0 +1,77 @@
+export const CreateProcStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="103" width="727" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="72" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">CREATE</text><a xlink:href="#opt_or_replace" xlink:title="opt_or_replace">
+<rect height="32" width="116" x="125" y="3"></rect>
+<rect class="nonterminal" height="32" width="116" x="123" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="92" font-size="10" class="nonterminal" x="135" y="21">opt_or_replace</text></a><rect height="32" rx="10" width="104" x="261" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="104" x="259" y="1"></rect>
+<text class="terminal" x="269" y="21">PROCEDURE</text><a xlink:href="#routine_create_name" xlink:title="routine_create_name">
+<rect height="32" width="156" x="385" y="3"></rect>
+<rect class="nonterminal" height="32" width="156" x="383" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="132" font-size="11" class="nonterminal" x="395" y="21">routine_create_name</text></a><rect height="32" rx="10" width="26" x="561" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="559" y="1"></rect>
+<text class="terminal" x="569" y="21">(</text><a xlink:href="#opt_routine_param_with_default_list" xlink:title="opt_routine_param_with_default_list">
+<rect height="32" width="256" x="25" y="69"></rect>
+<rect class="nonterminal" height="32" width="256" x="23" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="232" font-size="10" class="nonterminal" x="35" y="87">opt_routine_param_with_default_list</text></a><rect height="32" rx="10" width="26" x="301" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="299" y="67"></rect>
+<text class="terminal" x="309" y="87">)</text><a xlink:href="#opt_create_routine_opt_list" xlink:title="opt_create_routine_opt_list">
+<rect height="32" width="198" x="347" y="69"></rect>
+<rect class="nonterminal" height="32" width="198" x="345" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="174" font-size="10" class="nonterminal" x="357" y="87">opt_create_routine_opt_list</text></a><a xlink:href="#opt_routine_body" xlink:title="opt_routine_body">
+<rect height="32" width="134" x="565" y="69"></rect>
+<rect class="nonterminal" height="32" width="134" x="563" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="110" font-size="11" class="nonterminal" x="575" y="87">opt_routine_body</text></a><path class="line" d="m19 17 h2 m0 0 h10 m72 0 h10 m0 0 h10 m116 0 h10 m0 0 h10 m104 0 h10 m0 0 h10 m156 0 h10 m0 0 h10 m26 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-606 66 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m256 0 h10 m0 0 h10 m26 0 h10 m0 0 h10 m198 0 h10 m0 0 h10 m134 0 h10 m3 0 h-3"></path>
+<polygon points="717 83 725 79 725 87"></polygon>
+<polygon points="717 83 709 79 709 87"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

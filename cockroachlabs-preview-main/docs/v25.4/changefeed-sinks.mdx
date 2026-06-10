@@ -1,0 +1,730 @@
+---
+title: "Changefeed Sinks"
+old_description: "Define a changefeed sink URI and configure specific sinks."
+---
+
+Changefeeds emit messages to configurable downstream sinks. This page details the URIs, parameters, and configurations available for each changefeed sink.
+
+CockroachDB supports the following sinks:
+
+- [Amazon MSK](#amazon-msk)
+- [Apache Pulsar](#apache-pulsar) (in Preview)
+- [Azure Event Hubs](#azure-event-hubs)
+- [Cloud Storage](#cloud-storage-sink) / HTTP
+- [Confluent Cloud](#confluent-cloud)
+- [Google Cloud Pub/Sub](#google-cloud-pub-sub)
+- [Kafka](#kafka)
+- [Webhook](#webhook-sink)
+
+For a guide to using changefeeds with [Amazon Simple Notification Service (Amazon SNS)](https://docs.aws.amazon.com/sns/latest/dg/welcome), refer to [this blog](https://dev.to/cockroachlabs/from-cockroachdb-to-aws-sns-via-cdc-and-aws-api-gateway-bna) that uses the [webhook sink](#webhook-sink) with [Amazon API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome) to publish messages to Amazon SNS.
+
+The [`CREATE CHANGEFEED`](/docs/v25.4/create-changefeed) page provides detail on using the SQL statement and a complete list of the [query parameters](/docs/v25.4/create-changefeed#query-parameters) and options available when setting up a changefeed.
+
+For a step-by-step example connecting a changefeed to a sink, see the [Changefeed Examples](/docs/v25.4/changefeed-examples) page.
+
+## Sink URI
+
+The sink URI follows the basic format of:
+
+```text
+'{scheme}://{host}:{port}?{query_parameters}'
+```
+
+<table><thead><tr><th>URI Component</th><th>Description</th></tr></thead><tbody><tr><td><code>scheme</code></td><td>The type of sink: <a href="#kafka"><code>kafka</code></a>, <a href="#google-cloud-pub-sub"><code>gcpubsub</code></a>, any <a href="#cloud-storage-sink">cloud storage sink</a>, or <a href="#webhook-sink">webhook sink</a>.</td></tr><tr><td><code>host</code></td><td>The sink's hostname or IP address.</td></tr><tr><td><code>port</code></td><td>The sink's port.</td></tr><tr><td><code>query&#95;parameters</code></td><td>The sink's <a href="/docs/v25.4/create-changefeed#query-parameters">query parameters</a>.</td></tr></tbody></table>
+
+You can create an external connection to represent a changefeed sink URI. This allows you to specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](/docs/v25.4/create-external-connection) page.
+
+To set a different sink URI to an existing changefeed, use the [`sink` option](/docs/v25.4/alter-changefeed#sink-example) with `ALTER CHANGEFEED`.
+
+<Note>
+Cockroach Labs recommends enabling Egress Perimeter Controls on CockroachDB Advanced clusters to mitigate the risk of data exfiltration when accessing external resources, such as cloud storage for change data capture or backup and restore operations. See [Egress Perimeter Controls](/docs/cockroachcloud/egress-perimeter-controls) for detail and setup instructions.
+</Note>
+
+## Kafka
+
+### Kafka sink connection
+
+Example of a Kafka sink URI using `SCRAM-SHA-256` authentication:
+
+```text
+'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert=LS0tLS1CRUdJTiBDRVJUSUZ&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256'
+```
+
+Example of a Kafka sink URI using `OAUTHBEARER` authentication:
+
+```text
+'kafka://{kafka cluster address}:9093?topic_name={vehicles}&sasl_client_id={your client ID}&sasl_client_secret={your base64-encoded client secret}&sasl_enabled=true&sasl_mechanism=OAUTHBEARER&sasl_token_url={your token URL}'
+```
+
+[OAuth 2.0](https://oauth.net/2) authentication uses credentials managed by a third-party provider (IdP) to authenticate with Kafka instead of requiring you to provide your Kafka cluster credentials directly in a [`CREATE CHANGEFEED`](/docs/v25.4/create-changefeed) statement. Your provider's authentication server will issue a temporary token, giving you flexibility to apply access rules on the credentials that your IdP provides.
+
+To authenticate to Kafka with OAuth using Okta, see the [Connect to a Changefeed Kafka sink with OAuth Using Okta](/docs/v25.4/connect-to-a-changefeed-kafka-sink-with-oauth-using-okta) tutorial.
+
+<Note>
+[VPC Peering](/docs/cockroachcloud/network-authorization#vpc-peering) and [AWS PrivateLink](/docs/cockroachcloud/network-authorization#aws-privatelink) in CockroachDB Advanced clusters do **not** support connecting to a [Kafka](/docs/v25.4/changefeed-sinks#kafka) sink's internal IP addresses for [changefeeds](/docs/v25.4/change-data-capture-overview). To connect to a Kafka sink from CockroachDB Advanced, it is necessary to expose the Kafka cluster's external IP address and open ports with firewall rules to allow access from a CockroachDB Advanced cluster.
+</Note>
+
+The following table lists the available parameters for Kafka URIs:
+
+<table><thead><tr><th>URI Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>topic&#95;name</code></td><td>The topic name to which messages will be sent. See the following section on <a href="#topic-naming">Topic Naming</a> for detail on how topics are created.</td></tr><tr><td><code>topic&#95;prefix</code></td><td>Adds a prefix to all topic names.<br/><br/>For example, <code>CREATE CHANGEFEED FOR TABLE foo INTO 'kafka://...?topic&#95;prefix=bar&#95;'</code> would emit rows under the topic <code>bar&#95;foo</code> instead of <code>foo</code>.</td></tr><tr><td><code>tls&#95;enabled</code></td><td>If <code>true</code>, enable Transport Layer Security (TLS) on the connection to Kafka. This can be used with a <code>ca&#95;cert</code> (see below).<br/><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>ca&#95;cert</code></td><td>The base64-encoded <code>ca&#95;cert</code> file. Specify <code>ca&#95;cert</code> for a Kafka sink.<br/><br/>Note: To encode your <code>ca.cert</code>, run <code>base64 -w 0 ca.cert</code>.</td></tr><tr><td><code>client&#95;cert</code></td><td>The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with <code>client&#95;key</code>.</td></tr><tr><td><code>client&#95;key</code></td><td>The base64-encoded private key for the PEM certificate. This is used with <code>client&#95;cert</code>.<br/><br/><strong>Note:</strong> Client keys are often encrypted. You will receive an error if you pass an encrypted client key in your changefeed statement. To decrypt the client key, run: <code>openssl rsa -in key.pem -out key.decrypt.pem -passin pass:&#123;PASSWORD&#125;</code>. Once decrypted, be sure to update your changefeed statement to use the new <code>key.decrypt.pem</code> file instead.</td></tr><tr><td><code>sasl&#95;client&#95;id</code></td><td>Client ID for OAuth authentication from a third-party provider. This parameter is only applicable with <code>sasl&#95;mechanism=OAUTHBEARER</code>.</td></tr><tr><td><code>sasl&#95;client&#95;secret</code></td><td>Client secret for OAuth authentication from a third-party provider. This parameter is only applicable with <code>sasl&#95;mechanism=OAUTHBEARER</code>. <strong>Note:</strong> You must <a href="https://www.base64encode.org/">base64 encode</a> this value when passing it in as part of a sink URI.</td></tr><tr><td><code>sasl&#95;enabled</code></td><td>If <code>true</code>, the authentication protocol can be set to SCRAM or PLAIN using the <code>sasl&#95;mechanism</code> parameter. You must have <code>tls&#95;enabled</code> set to <code>true</code> to use SASL.<br/><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>sasl&#95;grant&#95;type</code></td><td>Override the default OAuth client credentials grant type for other implementations. This parameter is only applicable with <code>sasl&#95;mechanism=OAUTHBEARER</code>.</td></tr><tr><td><code>sasl&#95;mechanism</code></td><td>Can be set to <a href="https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_oauth"><code>OAUTHBEARER</code></a>, <a href="https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram"><code>SCRAM-SHA-256</code></a>, <a href="https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_scram"><code>SCRAM-SHA-512</code></a>, or <a href="https://docs.confluent.io/current/kafka/authentication_sasl/authentication_sasl_plain"><code>PLAIN</code></a>. A <code>sasl&#95;user</code> and <code>sasl&#95;password</code> are required.<br/><br/><strong>Default:</strong><code>PLAIN</code></td></tr><tr><td><code>sasl&#95;scopes</code></td><td>A list of scopes that the OAuth token should have access for. This parameter is only applicable with <code>sasl&#95;mechanism=OAUTHBEARER</code>.</td></tr><tr><td><code>sasl&#95;token&#95;url</code></td><td>Client token URL for OAuth authentication from a third-party provider. This parameter is only applicable with <code>sasl&#95;mechanism=OAUTHBEARER</code>. <strong>Note:</strong> You must <a href="https://www.urlencoder.org/">URL encode</a> this value before passing in a URI.</td></tr><tr><td><code>sasl&#95;user</code></td><td>Your SASL username.</td></tr><tr><td><code>sasl&#95;password</code></td><td>Your SASL password</td></tr><tr><td><code>insecure&#95;tls&#95;skip&#95;verify</code></td><td>If <code>true</code>, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. <strong>Warning:</strong> Use this query parameter with caution, as it creates <a href="https://wikipedia.org/wiki/Man-in-the-middle_attack">MITM</a> vulnerabilities unless combined with another method of authentication.<br/><br/><strong>Default:</strong><code>false</code></td></tr></tbody></table>
+
+This table shows the parameters for changefeeds to a specific sink. The `CREATE CHANGEFEED` page provides a list of all the available [options](/docs/v25.4/create-changefeed#options).
+
+### Topic naming
+
+By default, a Kafka topic has the same name as the table on which a changefeed was created. If you create a changefeed on multiple tables, the changefeed will write to multiple topics corresponding to those table names. When you run `CREATE CHANGEFEED` to a Kafka sink, the output will display the job ID as well as the topic name(s) that the changefeed will emit to.
+
+To modify the default topic naming, you can specify a [topic prefix](/docs/v25.4/create-changefeed#topic-prefix), [an arbitrary topic name](/docs/v25.4/create-changefeed#topic-name), or use the [`full_table_name` option](/docs/v25.4/create-changefeed#full-table-name). Using the [`topic_name`](/docs/v25.4/create-changefeed#topic-name) parameter, you can specify an arbitrary topic name and feed all tables into that topic.
+
+You can either manually create a topic in your Kafka cluster before starting the changefeed, or the topic will be automatically created when the changefeed connects to your Kafka cluster.
+
+<Note>
+You must have the Kafka cluster setting [`auto.create.topics.enable`](https://kafka.apache.org/documentation#brokerconfigs_auto.create.topics.enable) set to `true` for automatic topic creation. This will create the topic when the changefeed sends its first message. If you create the consumer before that, you will also need the Kafka consumer configuration [`allow.auto.create.topics`](https://kafka.apache.org/documentation#consumerconfigs_allow.auto.create.topics) to be set to `true`.
+</Note>
+
+Kafka has the following topic limitations:
+
+- [Legal characters](https://github.com/apache/kafka/blob/0.10.2/core/src/main/scala/kafka/common/Topic.scala#L29) are numbers, letters, and `[._-]`.
+- The maximum character length of a topic name is 249.
+- Topics with a period ( `.` ) and underscore ( `_` ) can collide on internal Kafka data structures, so you should use either but not both.
+- Characters not accepted by Kafka will be automatically encoded as unicode characters by CockroachDB.
+
+### Kafka sink configuration
+
+You can configure flushing, acknowledgments, compression, and concurrency behavior of changefeeds running to a Kafka sink with the following:
+
+- Set the [`changefeed.sink_io_workers` cluster setting](/docs/v25.4/cluster-settings#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a Kafka sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed](/docs/v25.4/pause-job), set `changefeed.sink_io_workers`, and then [resume the changefeed](/docs/v25.4/resume-job). `changefeed.sink_io_workers` will also affect changefeeds running to [Google Cloud Pub/Sub](#google-cloud-pub-sub) sinks and [webhook sinks](#webhook-sink).
+
+    <Note>
+    `changefeed.sink_io_workers` only applies to Kafka sinks created in v24.2.1+, or if the `changefeed.new_kafka_sink.enabled` cluster setting has been enabled in CockroachDB clusters running v23.2.10+ and v24.1.4+.
+    </Note>
+- The `kafka_sink_config` option allows configuration of a changefeed's message delivery, Kafka server version, and batching parameters.
+
+<Warning>
+Each of the following settings have significant impact on a changefeed's behavior, such as latency. For example, it is possible to configure batching parameters to be very high, which would negatively impact changefeed latency. As a result it would take a long time to see messages coming through to the sink. Also, large batches may be rejected by the Kafka server unless it's separately configured to accept a high [`max.message.bytes`](https://kafka.apache.org/documentation#brokerconfigs_message.max.bytes).
+</Warning>
+
+```text
+kafka_sink_config='{"Flush": {"MaxMessages": 1, "Frequency": "1s"}, "ClientID": "kafka_client_ID", "Version": "0.8.2.0", "RequiredAcks": "ONE", "Compression": "GZIP", "CompressionLevel": 3}'
+```
+
+Using the default values or not setting fields in `kafka_sink_config` will mean that changefeed messages emit immediately.
+
+The configurable fields are as follows:
+
+<table><thead><tr><th>Field</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td><code>"ClientID"</code></td><td><a href="/docs/v25.4/string"><code>STRING</code></a></td><td>Applies a Kafka client ID per changefeed. Configure <a href="https://kafka.apache.org/documentation#quotas">quotas</a> within your Kafka configuration that apply to a unique client ID. The <code>ClientID</code> field can only contain the characters <code>A-Za-z0-9.&#95;-</code>. For more details, refer to <a href="#clientid"><code>ClientID</code></a>.</td><td>""</td></tr><tr><td><a></a><code>"Compression"</code></td><td><a href="/docs/v25.4/string"><code>STRING</code></a></td><td>Sets a compression protocol that the changefeed should use when emitting events. The possible values are: <code>"NONE"</code>, <code>"GZIP"</code>, <code>"SNAPPY"</code>, <code>"LZ4"</code>, <code>"ZSTD"</code>.</td><td><code>"NONE"</code></td></tr><tr><td><code>"CompressionLevel"</code></td><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>Sets the level of compression. This determines the level of compression ratio versus compression speed, i.e., how much the data size is reduced (better compression) and how quickly the compression process is completed. For the compression protocol ranges, refer to <a href="#compressionlevel"><code>CompressionLevel</code></a>.<br/><br/><strong>Note:</strong> If you have the <code>changefeed.new&#95;kafka&#95;sink.enabled</code> cluster setting disabled, <code>CompressionLevel</code> will not affect <code>LZ4</code> compression. <code>SNAPPY</code> does not support <code>CompressionLevel</code>.</td><td>Refer to <a href="#compressionlevel"><code>CompressionLevel</code></a></td></tr><tr><td><code>"Flush"."Bytes"</code></td><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>When the total byte size of all the messages in the batch reaches this amount, it should be flushed.</td><td><code>0</code></td></tr><tr><td><code>"Flush"."Frequency"</code></td><td><a href="https://pkg.go.dev/time#ParseDuration">Duration string</a></td><td>When this amount of time has passed since the <strong>first</strong> received message in the batch without it flushing, it should be flushed. For more details, refer to <a href="#flush"><code>Flush</code></a>.</td><td><code>"0s"</code></td></tr><tr><td><code>"Flush"."MaxMessages"</code></td><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>Sets the maximum number of messages the producer can send in a single broker request. Any messages beyond the configured limit will be blocked. Increasing this value allows all messages to be sent in a batch. For more details, refer to <a href="#flush"><code>Flush</code></a>.</td><td><code>1000</code></td></tr><tr><td><code>"Flush"."Messages"</code></td><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>Configures the number of messages the changefeed should batch before flushing.</td><td><code>0</code></td></tr><tr><td><code>"RequiredAcks"</code></td><td><a href="/docs/v25.4/string"><code>STRING</code></a></td><td>Specifies what a successful write to Kafka is. CockroachDB <a href="/docs/v25.4/changefeed-messages#ordering-and-delivery-guarantees">guarantees at least once delivery of messages</a> — this value defines the <strong>delivery</strong>. The possible values are: <code>ONE</code>, <code>NONE</code>, <code>ALL</code>. For details on each value, refer to <a href="#requiredacks"><code>RequiredAcks</code></a>.</td><td><code>"ONE"</code></td></tr><tr><td><code>"Version"</code></td><td><a href="/docs/v25.4/string"><code>STRING</code></a></td><td>Sets the appropriate Kafka cluster version, which can be used to connect to <a href="https://docs.confluent.io/platform/current/installation/versions-interoperability">Kafka versions &lt; v1.0</a> (<code>kafka&#95;sink&#95;config='&#123;"Version": "0.8.2.0"&#125;'</code>).</td><td><code>"1.0.0.0"</code></td></tr></tbody></table>
+
+#### `ClientID`
+
+Implement a Kafka resource usage limit per changefeed by setting a client ID and Kafka quota. You can set the quota for the client ID in your Kafka server's configuration:
+
+```shell
+bin/kafka-configs.sh --bootstrap-server localhost:9092 --alter --add-config 'producer_byte_rate=1024,consumer_byte_rate=2048' --entity-type clients --entity-name client-changefeed-1
+```
+
+When you create a changefeed, include the `"ClientID"` field with the unique client ID (e.g., `kafka_client_ID_1`) you have configured in your Kafka server configuration. This will subject the changefeed to the Kafka quota applied to that client ID. We recommend tracking the [`changefeed.kafka_throttling_hist_nanos` metric](/docs/v25.4/metrics) to monitor the time spent throttling due to changefeed messages exceeding Kafka quotas.
+
+For details on setting quotas to client IDs, refer to the [Kafka documentation](https://kafka.apache.org/documentation#quotas).
+
+#### `CompressionLevel`
+
+The `CompressionLevel` field allows you to implement a level of compression for your set `Compression` protocol. `CompressionLevel` determines the level of the compression ratio versus the compression speed. That is, how much the data is reduced for *better* compression and how quickly the compression is completed for *faster* compression. The compression protocols support the following values:
+
+- `GZIP`:
+    - `-2`: [Huffman-only compression](https://en.wikipedia.org/wiki/Huffman_coding)
+    - `-1`: Default compression
+    - `0`: No compression
+    - `1` to `9`: From fastest compression to best compression
+- `ZSTD`:
+    - `1`: Fastest compression
+    - `2`: Default compression
+    - `3`: Better compression
+    - `4`: Best compression
+- `LZ4`: The supported values from fastest compression to best compression:
+    - `0`: Fastest compression (Default)
+    - `512`
+    - `1024`
+    - `2048`
+    - `4096`
+    - `8192`
+    - `16384`
+    - `32768`
+    - `65536`
+    - `131072`: Best compression
+
+        If you have the `changefeed.new_kafka_sink.enabled` cluster setting disabled, `CompressionLevel` will not affect `LZ4` compression.
+- `SNAPPY` does not support the `CompressionLevel` field.
+
+#### `Flush`
+
+`"Flush"."MaxMessages"` and `"Flush"."Frequency"` are configurable batching parameters depending on latency and throughput needs. For example, if `"MaxMessages"` is set to 1000 and `"Frequency"` to 1 second, it will flush to Kafka either after 1 second or after 1000 messages are batched, whichever comes first. It's important to consider that if there are not many messages, then a `"1s"` frequency will add 1 second latency. However, if there is a larger influx of messages these will be flushed quicker.
+
+#### `RequiredAcks`
+
+The `RequiredAcks` field defines what a successful write to Kafka is. The possible values are:
+
+- `"ONE"`: A write to Kafka is successful once the leader node has committed and acknowledged the write. Note that this has the potential risk of dropped messages; if the leader node acknowledges before replicating to a quorum of other Kafka nodes, but then fails.
+- `"NONE"`: No Kafka brokers are required to acknowledge that they have committed the message. This will decrease latency and increase throughput, but comes at the cost of lower consistency.
+- `"ALL"`: A quorum must be reached (that is, most Kafka brokers have committed the message) before the leader can acknowledge. This is the highest consistency level. You must also set `acks` to `ALL` in your [server-side Kafka configuration](https://kafka.apache.org/documentation#producerconfigs_acks) for this to provide high durability delivery.
+
+### Kafka sink messages
+
+The following shows the [Avro](/docs/v25.4/changefeed-messages#avro) messages for a changefeed emitting to Kafka:
+
+```text
+{
+    "after":{
+       "users":{
+          "name":{
+             "string":"Michael Clark"
+          },
+          "address":{
+             "string":"85957 Ashley Junctions"
+          },
+          "credit_card":{
+             "string":"4144089313"
+          },
+          "id":{
+             "string":"d84cf3b6-7029-4d4d-aa81-e5caa9cce09e"
+          },
+          "city":{
+             "string":"seattle"
+          }
+       }
+    },
+    "updated":{
+       "string":"1659643584586630201.0000000000"
+    }
+ }
+ {
+    "after":{
+       "users":{
+          "address":{
+             "string":"17068 Christopher Isle"
+          },
+          "credit_card":{
+             "string":"6664835435"
+          },
+          "id":{
+             "string":"11b99275-92ce-4244-be61-4dae21973f87"
+          },
+          "city":{
+             "string":"amsterdam"
+          },
+          "name":{
+             "string":"John Soto"
+          }
+       }
+    },
+    "updated":{
+       "string":"1659643585384406152.0000000000"
+    }
+ }
+```
+
+See the [Changefeed Examples](/docs/v25.4/changefeed-examples) page and the [Stream a Changefeed to a Confluent Cloud Kafka Cluster](/docs/v25.4/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster) tutorial for examples to set up a Kafka sink.
+
+For an overview of the messages emitted from changefeeds, see the [Changefeed Messages](/docs/v25.4/changefeed-messages) page.
+
+## Amazon MSK
+
+<Note>
+On CockroachDB self-hosted clusters, you must create instances in the same VPC as the MSK or MSK Serverless cluster in order for the changefeed to authenticate successfully.
+
+If you would like to connect a CockroachDB Advanced cluster to an Amazon MSK cluster, contact your Cockroach Labs account team.
+</Note>
+
+Changefeeds can deliver messages to Amazon MSK clusters ([Amazon Managed Streaming for Apache Kafka](https://docs.aws.amazon.com/msk/latest/developerguide/what-is-msk)). Amazon MSK cluster types include: [MSK](https://docs.aws.amazon.com/msk/latest/developerguide/create-cluster) and [MSK Serverless](https://docs.aws.amazon.com/msk/latest/developerguide/serverless). Changefeeds support the following authentication methods for these MSK cluster types:
+
+- MSK: `SCRAM` or `IAM`
+- MSK Serverless: `IAM`
+
+Changefeeds can deliver messages to MSK and MSK Serverless clusters using AWS IAM roles.
+
+For initial setup guides, refer to the AWS documentation:
+
+- [MSK clusters](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started)
+- [MSK Serverless clusters](/docs/v25.4/stream-a-changefeed-to-amazon-msk-serverless)
+
+Changefeeds connecting to Amazon MSK clusters use the `kafka://` scheme. The example URIs show the necessary parameters for MSK and MSK Serverless clusters depending on the authentication type:
+
+- To connect to an MSK cluster using `SCRAM` authentication, you must include the following parameters in the URI:
+
+    ```text
+      kafka://{cluster_endpoint}/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=SCRAM-SHA-512&sasl_user={user}&sasl_password={password}
+    ```
+
+    For SCRAM authentication, add your SASL username and password to the URI.
+- To connect to an MSK or MSK Serverless cluster using AWS IAM roles, you must include the following parameters in the URI:
+
+    ```text
+      kafka://{cluster_endpoint}/?tls_enabled=true&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&sasl_aws_region={region}&sasl_aws_iam_role_arn={arn}&sasl_aws_iam_session_name={your_session_name}
+    ```
+
+    For IAM authentication, add the MSK cluster region, IAM role ARN, and session name to the URI.
+
+This table outlines the available parameters for Amazon MSK URIs:
+
+<table><thead><tr><th>URI Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>cluster&#95;endpoint</code></td><td>The endpoint listed for your Amazon MSK cluster in the AWS Console. For example, <code>boot-a1test.c3.kafka-serverless.us-east-2.amazonaws.com:9098</code>.</td></tr><tr><td><code>sasl&#95;aws&#95;iam&#95;role&#95;arn</code></td><td>The ARN for the IAM role that has the permissions to create a topic and send data to the topic.</td></tr><tr><td><code>sasl&#95;aws&#95;iam&#95;session&#95;name</code></td><td>The user-specified string that identifies the session in AWS.</td></tr><tr><td><code>sasl&#95;aws&#95;region</code></td><td>The region of the Amazon MSK cluster.</td></tr><tr><td><code>sasl&#95;enabled</code></td><td>Enable SASL authentication. Set this to <code>true</code>.</td></tr><tr><td><code>sasl&#95;mechanism</code></td><td>Set to <code>AWS&#95;MSK&#95;IAM</code>, <code>SCRAM-SHA-512</code>, or <code>SCRAM-SHA-256</code>.</td></tr><tr><td><code>sasl&#95;password</code></td><td>Your SASL password.</td></tr><tr><td><code>sasl&#95;user</code></td><td>Your SASL username.</td></tr><tr><td><code>tls&#95;enabled</code></td><td>Enable Transport Layer Security (TLS) on the connection to Amazon MSK clusters. Set this to <code>true</code>.</td></tr></tbody></table>
+
+For more detail on each of these parameters, refer to [Query Parameters](/docs/v25.4/create-changefeed#query-parameters).
+
+## Confluent Cloud
+
+Changefeeds can deliver messages to Kafka clusters hosted on [Confluent Cloud](https://www.confluent.io/confluent-cloud/tryfree).
+
+A Confluent Cloud sink connection URI must include the following:
+
+```text
+'confluent-cloud://{bootstrap server}:9092?api_key={key}&api_secret={secret}'
+```
+
+The `api_key` and `api_secret` are the required parameters for the Confluent Cloud sink connection URI.
+
+<table><thead><tr><th>URI Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>bootstrap server</code></td><td>The bootstrap server listed for your Kafka cluster in the Confluent Cloud console.</td></tr><tr><td><code>api&#95;key</code></td><td>The API key created for the cluster in Confluent Cloud.</td></tr><tr><td><code>api&#95;secret</code></td><td>The API key's secret generated in Confluent Cloud. <strong>Note:</strong> This must be <a href="https://www.urlencoder.org/">URL-encoded</a> before passing into the connection string.</td></tr></tbody></table>
+
+Changefeeds emitting to a Confluent Cloud Kafka cluster support the standard [Kafka parameters](#kafka-parameters), such as `topic_name` and `topic_prefix`. Confluent Cloud sinks also support the standard Kafka [changefeed options](/docs/v25.4/create-changefeed#options) and the [Kafka sink configuration](#kafka-sink-configuration) option.
+
+For a Confluent Cloud setup example, refer to the [Changefeed Examples](/docs/v25.4/changefeed-examples#create-a-changefeed-connected-to-a-confluent-cloud-sink) page.
+
+The following parameters are also needed, but are **set by default** in CockroachDB:
+
+- `tls_enabled=true`
+- `sasl_enabled=true`
+- `sasl_handshake=true`
+- `sasl_mechanism=PLAIN`
+
+## Google Cloud Pub/Sub
+
+Changefeeds can deliver messages to a Google Cloud Pub/Sub sink, which is integrated with Google Cloud Platform.
+
+<Note>
+Since CockroachDB v23.2, the `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved throughput. Without this cluster setting enabled, changefeeds emit JSON-encoded events with the top-level message fields all lowercase. With `changefeed.new_pubsub_sink_enabled`, the top-level fields are capitalized. For more details, refer to the [Pub/Sub sink messages](#pub-sub-sink-messages) section.
+</Note>
+
+A Pub/Sub sink URI follows this example:
+
+```text
+'gcpubsub://{project name}?region={region}&topic_name={topic name}&AUTH=specified&CREDENTIALS={base64-encoded credentials}'
+```
+
+<table><thead><tr><th>URI Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>project name</code></td><td>The <a href="https://cloud.google.com/resource-manager/docs/creating-managing-projects">Google Cloud Project</a> name.</td></tr><tr><td><code>region</code></td><td>(Optional) The single region to which all output will be sent. If you do not include <code>region</code>, then you must create your changefeed with the <a href="/docs/v25.4/create-changefeed#unordered"><code>unordered</code></a> option.</td></tr><tr><td><code>topic&#95;name</code></td><td>(Optional) The topic name to which messages will be sent. See the following section on <a href="#topic-naming">Topic Naming</a> for detail on how topics are created.</td></tr><tr><td><code>AUTH</code></td><td>The authentication parameter can define either <code>specified</code> (default) or <code>implicit</code> authentication. To use <code>specified</code> authentication, pass your <a href="https://cloud.google.com/iam/docs/understanding-service-accounts">Service Account</a> credentials with the URI. To use <code>implicit</code> authentication, configure these credentials via an environment variable. Refer to the <a href="/docs/v25.4/cloud-storage-authentication">Cloud Storage Authentication page</a> page for examples of each of these.</td></tr><tr><td><code>CREDENTIALS</code></td><td>(Required with <code>AUTH=specified</code>) The base64-encoded credentials of your Google <a href="https://cloud.google.com/iam/docs/understanding-service-accounts">Service Account</a>.</td></tr><tr><td><code>ASSUME&#95;ROLE</code></td><td>The service account of the role to assume. Use in combination with <code>AUTH=implicit</code> or <code>specified</code>. Refer to the <a href="/docs/v25.4/cloud-storage-authentication">Cloud Storage Authentication</a> page for an example on setting up assume role authentication.</td></tr></tbody></table>
+
+This table shows the parameters for changefeeds to a specific sink. The `CREATE CHANGEFEED` page provides a list of all the available [options](/docs/v25.4/create-changefeed#options).
+
+When using Pub/Sub as your downstream sink, consider the following:
+
+- Pub/Sub sinks support `JSON` message format. You can use the [`format=csv`](/docs/v25.4/create-changefeed#format) option in combination with [`initial_scan='only'`](/docs/v25.4/create-changefeed#initial-scan) for CSV-formatted messages.
+- Use the [`unordered`](/docs/v25.4/create-changefeed#unordered) option for multi-region Pub/Sub. Google Cloud's multi-region Pub/Sub will have lower latency when emitting from multiple regions, but Google Cloud Pub/Sub does not support message ordering for multi-region topics.
+- Changefeeds connecting to a Pub/Sub sink do not support the `topic_prefix` option.
+
+Ensure one of the following [Pub/Sub roles](https://cloud.google.com/iam/docs/understanding-roles#pub-sub-roles) are set in your Google Service Account at the [project level](https://cloud.google.com/resource-manager/docs/access-control-proj#using_predefined_roles):
+
+- To create topics on changefeed creation, you must use the Pub/Sub Editor role, which contains the permissions to create a topic.
+- If the topic the changefeed is writing to already exists, then you can use the more limited Pub/Sub Publisher role, which can only write to existing topics.
+
+For more information, read about compatible changefeed [options](/docs/v25.4/create-changefeed#options) and the [Create a changefeed connected to a Google Cloud Pub/Sub sink](/docs/v25.4/changefeed-examples#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example.
+
+<Note>
+You can use [Google's Pub/Sub emulator](https://cloud.google.com/pubsub/docs/emulator), which allows you to run Pub/Sub locally for testing. CockroachDB uses the [Google Cloud SDK](https://cloud.google.com/sdk), which means that you can follow Google's instructions for [Setting environment variables](https://cloud.google.com/pubsub/docs/emulator#env) to run the Pub/Sub emulator.
+</Note>
+
+### Pub/Sub topic naming
+
+When running a `CREATE CHANGEFEED` statement to a Pub/Sub sink, consider the following regarding topic names:
+
+- Changefeeds will try to create a topic automatically. When you do not specify the topic in the URI with the [`topic_name`](/docs/v25.4/create-changefeed#topic-name) parameter, the changefeed will use the table name to create the topic name.
+- If the topic already exists in your Pub/Sub sink, the changefeed will write to it.
+- Changefeeds watching multiple tables will write to multiple topics corresponding to those table names.
+- The [`full_table_name`](/docs/v25.4/create-changefeed#full-table-name) option will create a topic using the fully qualified table name for each table the changefeed is watching.
+- The output from `CREATE CHANGEFEED` will display the job ID as well as the topic name(s) to which the changefeed will emit.
+
+You can manually create a topic in your Pub/Sub sink before starting the changefeed. Refer to the [Creating a changefeed to Google Cloud Pub/Sub](/docs/v25.4/changefeed-examples#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example for more detail. To understand restrictions on user-specified topic names, refer to Google's documentation on [Guidelines to name a topic or subscription](https://cloud.google.com/pubsub/docs/admin#resource_names).
+
+For a list of compatible parameters and options, refer to [Parameters](/docs/v25.4/create-changefeed#parameters) on the `CREATE CHANGEFEED` page.
+
+### Pub/Sub sink configuration
+
+You can configure flushing, retry, and concurrency behavior of changefeeds running to a Pub/Sub sink with the following:
+
+- Set the [`changefeed.sink_io_workers` cluster setting](/docs/v25.4/cluster-settings#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a Pub/Sub sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed](/docs/v25.4/pause-job), set `changefeed.sink_io_workers`, and then [resume the changefeed](/docs/v25.4/resume-job). Note that this cluster setting will also affect changefeeds running to [webhook sinks](#webhook-sink) and [Kafka](#kafka).
+- Set the `pubsub_sink_config` option to configure the changefeed flushing and retry behavior to your webhook sink. For details on the `pubsub_sink_config` option's configurable fields, refer to the following table and examples.
+
+<table><thead><tr><th>Field</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td><code>Flush.Messages</code></td><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>The batch is flushed and its messages are sent when it contains this many messages.</td><td><code>0</code></td></tr><tr><td><code>Flush.Bytes</code></td><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>The batch is flushed when the total byte sizes of all its messages reaches this threshold.</td><td><code>0</code></td></tr><tr><td><code>Flush.Frequency</code></td><td><a href="/docs/v25.4/interval"><code>INTERVAL</code></a></td><td>When this amount of time has passed since the <strong>first</strong> received message in the batch without it flushing, it should be flushed.</td><td><code>"0s"</code></td></tr><tr><td><code>Retry.Max</code></td><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>The maximum number of attempted batch emit retries after sending a message batch in a request fails. Specify either an integer greater than zero or the string <code>inf</code> to retry indefinitely. This only affects batch emit retries, not other causes of <a href="/docs/v25.4/changefeed-messages#duplicate-messages">duplicate messages</a>. Note that setting this field will not prevent the whole changefeed job from retrying indefinitely.</td><td><code>3</code></td></tr><tr><td><code>Retry.Backoff</code></td><td><a href="/docs/v25.4/interval"><code>INTERVAL</code></a></td><td>How long the sink waits before retrying after the first failure. The backoff will double until it reaches the maximum retry time of 30 seconds.<br/><br/>For example, if <code>Retry.Max = 4</code> and <code>Retry.Backoff = 10s</code>, then the sink will try at most <code>4</code> retries, with <code>10s</code>, <code>20s</code>, <code>30s</code>, and <code>30s</code> backoff times.</td><td><code>"500ms"</code></td></tr></tbody></table>
+
+For example:
+
+```text
+pubsub_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": { "Max": 4, "Backoff": "10s"} }'
+```
+
+<Warning>
+Setting either `Messages` or `Bytes` with a non-zero value without setting `Frequency` will cause the sink to assume `Frequency` has an infinity value. If either `Messages` or `Bytes` have a non-zero value, then a non-zero value for `Frequency` **must** be provided. This configuration is invalid and will cause an error, since the messages could sit in a batch indefinitely if the other conditions do not trigger.
+</Warning>
+
+Some complexities to consider when setting `Flush` fields for batching:
+
+- When all batching parameters are zero (`"Messages"`, `"Bytes"`, and `"Frequency"`) the sink will interpret this configuration as "send batch every time a message is available." This would be the same as not providing any configuration at all:
+
+    ```text
+    {
+      "Flush": {
+        "Messages": 0,
+        "Bytes": 0,
+        "Frequency": "0s"
+      }
+    }
+    ```
+- If one or more fields are set as non-zero values, any fields with a zero value the sink will interpret as infinity. For example, in the following configuration, the sink will send a batch whenever the size reaches 100 messages, **or**, when 5 seconds has passed since the batch was populated with its first message. `Bytes` is unset, so the batch size is unlimited. No flush will be triggered due to batch size:
+
+    ```text
+    {
+      "Flush": {
+        "Messages": 100,
+        "Frequency": "5s"
+      }
+    }
+    ```
+
+### Pub/Sub sink messages
+
+The `changefeed.new_pubsub_sink_enabled` cluster setting is enabled by default, which provides improved changefeed throughput peformance. With `changefeed.new_pubsub_sink_enabled` enabled, the changefeed JSON-encoded message format have top-level fields that are capitalized:
+
+```text
+{Key: ..., Value: ..., Topic: ...}
+```
+
+<Warning>
+By default in v23.2, the capitalization of top-level fields in the message has changed. Before upgrading to CockroachDB v23.2 and later, you may need to reconfigure downstream systems to parse the new message format.
+</Warning>
+
+With `changefeed.new_pubsub_sink_enabled` set to `false`, changefeeds emit JSON messages with the top-level fields all lowercase:
+
+```text
+{key: ..., value: ..., topic: ...}
+```
+
+If `changefeed.new_pubsub_sink_enabled` is set to `false`, changefeeds will not benefit from the improved throughput performance that this setting enables.
+
+The following shows the default JSON messages for a changefeed emitting to Pub/Sub. These changefeed messages were emitted as part of the [Create a changefeed connected to a Google Cloud Pub/Sub sink](/docs/v25.4/changefeed-examples#create-a-changefeed-connected-to-a-google-cloud-pub-sub-sink) example:
+
+```text
+┌─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬───────────────────┬──────────────┬────────────┬──────────────────┬────────────┐
+│                                                                                                                                     DATA                                                                                                                                    │     MESSAGE_ID    │ ORDERING_KEY │ ATTRIBUTES │ DELIVERY_ATTEMPT │ ACK_STATUS │
+├─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼───────────────────┼──────────────┼────────────┼──────────────────┼────────────┤
+│ {"Key":["amsterdam", "09ee2856-5856-40c4-85d3-7d65bed978f0"],"Value":{"after": {"address": "84579 Peter Divide Apt. 47", "city": "amsterdam", "credit_card": "0100007510", "id": "09ee2856-5856-40c4-85d3-7d65bed978f0", "name": "Timothy Jackson"}},"Topic":"users"}       │ 11249015757941393 │              │            │                  │ SUCCESS    │
+│ {"Key":["new york", "8803ab9e-5001-4994-a2e6-68d587f95f1d"],"Value":{"after": {"address": "37546 Andrew Roads Apt. 68", "city": "new york", "credit_card": "4731676650", "id": "8803ab9e-5001-4994-a2e6-68d587f95f1d", "name": "Susan Harrington"}},"Topic":"users"}        │ 11249015757941394 │              │            │                  │ SUCCESS    │
+│ {"Key":["seattle", "32e27201-ca0d-4a0c-ada2-fbf47f6a4711"],"Value":{"after": {"address": "86725 Stephen Gardens", "city": "seattle", "credit_card": "3639690115", "id": "32e27201-ca0d-4a0c-ada2-fbf47f6a4711", "name": "Brad Hill"}},"Topic":"users"}                      │ 11249015757941395 │              │            │                  │ SUCCESS    │
+│ {"Key":["san francisco", "27b03637-ef9f-49a0-9b58-b16d7a9e34f4"],"Value":{"after": {"address": "85467 Tiffany Field", "city": "san francisco", "credit_card": "0016125921", "id": "27b03637-ef9f-49a0-9b58-b16d7a9e34f4", "name": "Mark Garcia"}},"Topic":"users"}          │ 11249015757941396 │              │            │                  │ SUCCESS    │
+│ {"Key":["rome", "982e1863-88d4-49cb-adee-0a35baae7e0b"],"Value":{"after": {"address": "54918 Sutton Isle Suite 74", "city": "rome", "credit_card": "6015706174", "id": "982e1863-88d4-49cb-adee-0a35baae7e0b", "name": "Kimberly Nichols"}},"Topic":"users"}                │ 11249015757941397 │              │            │                  │ SUCCESS    │
+│ {"Key":["washington dc", "7b298994-7b12-414c-90ef-353c7105f012"],"Value":{"after": {"address": "45205 Romero Ford Apt. 86", "city": "washington dc", "credit_card": "3519400314", "id": "7b298994-7b12-414c-90ef-353c7105f012", "name": "Taylor Bullock"}},"Topic":"users"} │ 11249015757941398 │              │            │                  │ SUCCESS    │
+│ {"Key":["boston", "4f012f57-577b-4853-b5ab-0d79d0df1369"],"Value":{"after": {"address": "15765 Vang Ramp", "city": "boston", "credit_card": "6747715133", "id": "4f012f57-577b-4853-b5ab-0d79d0df1369", "name": "Ryan Garcia"}},"Topic":"users"}                            │ 11249015757941399 │              │            │                  │ SUCCESS    │
+│ {"Key":["seattle", "9ba85917-5545-4674-8ab2-497fa47ac00f"],"Value":{"after": {"address": "24354 Whitney Lodge", "city": "seattle", "credit_card": "8642661685", "id": "9ba85917-5545-4674-8ab2-497fa47ac00f", "name": "Donald Walsh"}},"Topic":"users"}                     │ 11249015757941400 │              │            │                  │ SUCCESS    │
+│ {"Key":["seattle", "98312fb3-230e-412d-9b22-074ec97329ff"],"Value":{"after": {"address": "72777 Carol Shoal", "city": "seattle", "credit_card": "7789799678", "id": "98312fb3-230e-412d-9b22-074ec97329ff", "name": "Christopher Davis"}},"Topic":"users"}                  │ 11249015757941401 │              │            │                  │ SUCCESS    │
+└─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴───────────────────┴──────────────┴────────────┴──────────────────┴────────────┘
+```
+
+For an overview of the messages emitted from changefeeds, see the [Changefeed Messages](/docs/v25.4/changefeed-messages) page.
+
+## Cloud storage sink
+
+Use a cloud storage sink to deliver changefeed data to OLAP or big data systems without requiring transport via Kafka.
+
+Some considerations when using cloud storage sinks:
+
+- Cloud storage sinks work with `JSON` and emit newline-delimited `JSON` files. You can use the [`format=csv`](/docs/v25.4/create-changefeed#format) option in combination with [`initial_scan='only'`](/docs/v25.4/create-changefeed#initial-scan) for CSV-formatted messages.
+- Cloud storage sinks can be configured to store emitted changefeed messages in one or more subdirectories organized by date. See [file partitioning](#partition-format) and the [General file format](/docs/v25.4/create-changefeed#general-file-format) examples.
+- The supported cloud schemes are: `s3`, `gs`, `azure`, `http`, and `https`.
+- Both `http://` and `https://` are cloud storage sinks, **not** webhook sinks. It is necessary to prefix the scheme with `webhook-` for [webhook sinks](#webhook-sink).
+
+You can authenticate to cloud storage sinks using `specified` or `implicit` authentication. CockroachDB also supports assume role authentication for Amazon S3 and Google Cloud Storage, which allows you to limit the control specific users have over your storage buckets. For detail and instructions on authenticating to cloud storage sinks, see [Cloud Storage Authentication](/docs/v25.4/cloud-storage-authentication).
+
+Examples of supported cloud storage sink URIs:
+
+### Amazon S3
+
+```text
+'s3://{BUCKET NAME}/{PATH}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+```
+
+### Azure Blob Storage
+
+```text
+'azure://{CONTAINER NAME}/{PATH}?AZURE_ACCOUNT_NAME={ACCOUNT NAME}&AZURE_ACCOUNT_KEY={URL-ENCODED KEY}'
+```
+
+### Google Cloud Storage
+
+```text
+'gs://{BUCKET NAME}/{PATH}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+```
+
+### HTTP
+
+```text
+'http://localhost:8080/{PATH}'
+```
+
+### Cloud storage parameters
+
+The following table lists the available parameters for cloud storage sink URIs:
+
+<table><thead><tr><th>URI Parameter</th><th>Storage</th><th>Description</th></tr></thead><tbody><tr><td><code>AWS&#95;ACCESS&#95;KEY&#95;ID</code></td><td>AWS</td><td>The access key ID to your AWS account.</td></tr><tr><td><code>AWS&#95;SECRET&#95;ACCESS&#95;KEY</code></td><td>AWS</td><td>The secret access key to your AWS account.</td></tr><tr><td><code>ASSUME&#95;ROLE</code></td><td>AWS S3, GCS</td><td>The <a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces">ARN</a> (AWS) or <a href="https://cloud.google.com/iam/docs/creating-managing-service-accounts">service account</a> (GCS) of the role to assume. Use in combination with <code>AUTH=implicit</code> or <code>specified</code>.<br/><br/>AWS S3 only: Use <code>external&#95;id</code> with <code>ASSUME&#95;ROLE</code> to specify a third-party assigned external ID as part of the role. Refer to <a href="/docs/v25.4/cloud-storage-authentication#set-up-amazon-s3-assume-role">Amazon S3 assume role</a> for setup details.</td></tr><tr><td><code>AUTH</code></td><td>AWS S3, Azure Blob Storage, GCS</td><td>The authentication parameter can define either <code>specified</code> (default) or <code>implicit</code> authentication. To use <code>specified</code> authentication, pass your account credentials with the URI. To use <code>implicit</code> authentication, configure these credentials via an environment variable. See <a href="/docs/v25.4/cloud-storage-authentication">Cloud Storage Authentication</a> for examples of each of these.</td></tr><tr><td><code>AZURE&#95;ACCOUNT&#95;NAME</code></td><td>Azure Blob Storage</td><td>The name of your Azure account.</td></tr><tr><td><code>AZURE&#95;ACCOUNT&#95;KEY</code></td><td>Azure Blob Storage</td><td>The URL-encoded account key for your Azure account.</td></tr><tr><td><code>AZURE&#95;CLIENT&#95;ID</code></td><td>Azure Blob Storage</td><td>Application (client) ID for your <a href="https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app#register-an-application">App Registration</a>.</td></tr><tr><td><code>AZURE&#95;CLIENT&#95;SECRET</code></td><td>Azure Blob Storage</td><td>Client credentials secret generated for your App Registration.</td></tr><tr><td><code>AZURE&#95;ENVIRONMENT</code></td><td>Azure Blob Storage</td><td>The <a href="https://learn.microsoft.com/azure/deployment-environments/concept-environments-key-concepts#environments">Azure environment</a> that the storage account belongs to. The accepted values are: <code>AZURECHINACLOUD</code>, <code>AZUREGERMANCLOUD</code>, <code>AZUREPUBLICCLOUD</code>, and <a href="https://learn.microsoft.com/azure/azure-government/documentation-government-developer-guide"><code>AZUREUSGOVERNMENTCLOUD</code></a>. These are cloud environments that meet security, compliance, and data privacy requirements for the respective instance of Azure cloud. If the parameter is not specified, it will default to <code>AZUREPUBLICCLOUD</code>.</td></tr><tr><td><code>AZURE&#95;TENANT&#95;ID</code></td><td>Azure Blob Storage</td><td>Directory (tenant) ID for your App Registration.</td></tr><tr><td><code>CREDENTIALS</code></td><td>GCS</td><td>(Required with <code>AUTH=specified</code>) The base64-encoded credentials of your Google <a href="https://cloud.google.com/iam/docs/understanding-service-accounts">Service Account</a> credentials.</td></tr><tr><td><code>file&#95;size</code></td><td>All</td><td>The file will be flushed (i.e., written to the sink) when it exceeds the specified file size. This can be used with the <a href="/docs/v25.4/create-changefeed#options"><code>WITH resolved</code> option</a>, which flushes on a specified cadence.<br/><br/><strong>Default:</strong><code>16MB</code></td></tr><tr><td><a></a><code>partition&#95;format</code></td><td>All</td><td>Specify how changefeed <a href="/docs/v25.4/create-changefeed#general-file-format">file paths</a> are partitioned in cloud storage sinks. Use <code>partition&#95;format</code> with the following values:<br/><br/>- <code>daily</code> is the default behavior that organizes directories by dates (<code>2022-05-18/</code>, <code>2022-05-19/</code>, etc.).<br/><br/>- <code>hourly</code> will further organize directories by hour within each date directory (<code>2022-05-18/06</code>, <code>2022-05-18/07</code>, etc.).<br/><br/>- <code>flat</code> will not partition the files at all.<br/><br/>For example: <code>CREATE CHANGEFEED FOR TABLE users INTO 'gs://...?AUTH...&amp;partition&#95;format=hourly'</code><br/><br/><strong>Default:</strong><code>daily</code></td></tr><tr><td><code>S3&#95;STORAGE&#95;CLASS</code></td><td>AWS S3</td><td>Specify the S3 storage class for files created by the changefeed. See <a href="/docs/v25.4/create-changefeed#create-a-changefeed-with-an-s3-storage-class">Create a changefeed with an S3 storage class</a> for the available classes and an example.<br/><br/><strong>Default:</strong><code>STANDARD</code></td></tr><tr><td><code>topic&#95;prefix</code></td><td>All</td><td>Adds a prefix to all topic names.<br/><br/>For example, <code>CREATE CHANGEFEED FOR TABLE foo INTO 's3://...?topic&#95;prefix=bar&#95;'</code> would emit rows under the topic <code>bar&#95;foo</code> instead of <code>foo</code>.</td></tr></tbody></table>
+
+This table shows the parameters for changefeeds to a specific sink. The `CREATE CHANGEFEED` page provides a list of all the available [options](/docs/v25.4/create-changefeed#options).
+
+[Use Cloud Storage for Bulk Operations](/docs/v25.4/cloud-storage-authentication) provides more detail on authentication to cloud storage sinks.
+
+### Cloud storage sink messages
+
+The following shows the default JSON messages for a changefeed emitting to a cloud storage sink:
+
+```text
+{
+    "after":{
+       "address":"51438 Janet Valleys",
+       "city":"boston",
+       "credit_card":"0904722368",
+       "id":"33333333-3333-4400-8000-00000000000a",
+       "name":"Daniel Hernandez MD"
+    },
+    "key":[
+       "boston",
+       "33333333-3333-4400-8000-00000000000a"
+    ]
+ }
+ {
+    "after":{
+       "address":"15074 Richard Falls",
+       "city":"boston",
+       "credit_card":"0866384459",
+       "id":"370117cf-d77d-4778-b0b9-01ac17c15a06",
+       "name":"Cheyenne Morales"
+    },
+    "key":[
+       "boston",
+       "370117cf-d77d-4778-b0b9-01ac17c15a06"
+    ]
+ }
+ {
+    "after":{
+       "address":"69687 Jessica Islands Apt. 68",
+       "city":"boston",
+       "credit_card":"6837062320",
+       "id":"3851eb85-1eb8-4200-8000-00000000000b",
+       "name":"Sarah Wang DDS"
+    },
+    "key":[
+       "boston",
+       "3851eb85-1eb8-4200-8000-00000000000b"
+    ]
+ }
+. . .
+```
+
+For an overview of the messages emitted from changefeeds, see the [Changefeed Messages](/docs/v25.4/changefeed-messages) page.
+
+## Webhook sink
+
+Use a webhook sink to deliver changefeed messages to an arbitrary HTTP endpoint.
+
+Example of a webhook sink URL:
+
+```text
+'webhook-https://{your-webhook-endpoint}?insecure_tls_skip_verify=true'
+```
+
+The following table lists the parameters you can use in your webhook URI:
+
+<table><thead><tr><th>URI Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>ca&#95;cert</code></td><td>The base64-encoded <code>ca&#95;cert</code> file. Specify <code>ca&#95;cert</code> for a webhook sink.<br/><br/>Note: To encode your <code>ca.cert</code>, run <code>base64 -w 0 ca.cert</code>.</td></tr><tr><td><code>client&#95;cert</code></td><td>The base64-encoded Privacy Enhanced Mail (PEM) certificate. This is used with <code>client&#95;key</code>.</td></tr><tr><td><code>client&#95;key</code></td><td>The base64-encoded private key for the PEM certificate. This is used with <code>client&#95;cert</code>.<br/><br/><strong>Note:</strong> Client keys are often encrypted. You will receive an error if you pass an encrypted client key in your changefeed statement. To decrypt the client key, run: <code>openssl rsa -in key.pem -out key.decrypt.pem -passin pass:&#123;PASSWORD&#125;</code>. Once decrypted, be sure to update your changefeed statement to use the new <code>key.decrypt.pem</code> file instead.</td></tr><tr><td><code>insecure&#95;tls&#95;skip&#95;verify</code></td><td>If <code>true</code>, disable client-side validation of responses. Note that a CA certificate is still required; this parameter means that the client will not verify the certificate. <strong>Warning:</strong> Use this query parameter with caution, as it creates <a href="https://wikipedia.org/wiki/Man-in-the-middle_attack">MITM</a> vulnerabilities unless combined with another method of authentication.<br/><br/><strong>Default:</strong><code>false</code></td></tr></tbody></table>
+
+This table shows the parameters for changefeeds to a specific sink. The `CREATE CHANGEFEED` page provides a list of all the available [options](/docs/v25.4/create-changefeed#options).
+
+The following are considerations when using the webhook sink:
+
+- Only supports HTTPS. Use the [`insecure_tls_skip_verify`](/docs/v25.4/create-changefeed#insecure-tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates.
+- Supports JSON output format. You can use the [`format=csv`](/docs/v25.4/create-changefeed#format) option in combination with [`initial_scan='only'`](/docs/v25.4/create-changefeed#initial-scan) for CSV-formatted messages.
+
+### Webhook sink configuration
+
+You can configure flushing, retry, and concurrency behavior of changefeeds running to a webhook sink with the following:
+
+- Set the [`changefeed.sink_io_workers` cluster setting](/docs/v25.4/cluster-settings#setting-changefeed-sink-io-workers) to configure the number of concurrent workers used by changefeeds in the cluster when sending requests to a webhook sink. When you set `changefeed.sink_io_workers`, it will not affect running changefeeds; [pause the changefeed](/docs/v25.4/pause-job), set `changefeed.sink_io_workers`, and then [resume the changefeed](/docs/v25.4/resume-job). Note that this cluster setting will also affect changefeeds running to [Google Cloud Pub/Sub sinks](#google-cloud-pub-sub) and [Kafka](#kafka).
+- Set the `webhook_sink_config` option to configure the changefeed flushing and retry behavior to your webhook sink. For details on the `webhook_sink_config` option's configurable fields, refer to the following table and examples.
+
+<table><thead><tr><th>Field</th><th>Type</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td><code>Flush.Messages</code></td><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>The batch is flushed and its messages are sent when it contains this many messages.</td><td><code>0</code></td></tr><tr><td><code>Flush.Bytes</code></td><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>The batch is flushed when the total byte sizes of all its messages reaches this threshold.</td><td><code>0</code></td></tr><tr><td><code>Flush.Frequency</code></td><td><a href="/docs/v25.4/interval"><code>INTERVAL</code></a></td><td>When this amount of time has passed since the <strong>first</strong> received message in the batch without it flushing, it should be flushed.</td><td><code>"0s"</code></td></tr><tr><td><code>Retry.Max</code></td><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>The maximum number of attempted HTTP retries after sending a message batch in an HTTP request fails. Specify either an integer greater than zero or the string <code>inf</code> to retry indefinitely. This only affects HTTP retries, not other causes of <a href="/docs/v25.4/changefeed-messages#duplicate-messages">duplicate messages</a>. Note that setting this field will not prevent the changefeed from retrying indefinitely.</td><td><code>3</code></td></tr><tr><td><code>Retry.Backoff</code></td><td><a href="/docs/v25.4/interval"><code>INTERVAL</code></a></td><td>How long the sink waits before retrying after the first failure. The backoff will double until it reaches the maximum retry time of 30 seconds.<br/><br/>For example, if <code>Retry.Max = 4</code> and <code>Retry.Backoff = 10s</code>, then the sink will try at most <code>4</code> retries, with <code>10s</code>, <code>20s</code>, <code>30s</code>, and <code>30s</code> backoff times.</td><td><code>"500ms"</code></td></tr></tbody></table>
+
+For example:
+
+```text
+webhook_sink_config = '{ "Flush": {"Messages": 100, "Frequency": "5s"}, "Retry": { "Max": 4, "Backoff": "10s"} }'
+```
+
+<Warning>
+Setting either `Messages` or `Bytes` with a non-zero value without setting `Frequency` will cause the sink to assume `Frequency` has an infinity value. If either `Messages` or `Bytes` have a non-zero value, then a non-zero value for `Frequency` **must** be provided. This configuration is invalid and will cause an error, since the messages could sit in a batch indefinitely if the other conditions do not trigger.
+</Warning>
+
+Some complexities to consider when setting `Flush` fields for batching:
+
+- When all batching parameters are zero (`"Messages"`, `"Bytes"`, and `"Frequency"`) the sink will interpret this configuration as "send batch every time a message is available." This would be the same as not providing any configuration at all:
+
+    ```text
+    {
+      "Flush": {
+        "Messages": 0,
+        "Bytes": 0,
+        "Frequency": "0s"
+      }
+    }
+    ```
+- If one or more fields are set as non-zero values, any fields with a zero value the sink will interpret as infinity. For example, in the following configuration, the sink will send a batch whenever the size reaches 100 messages, **or**, when 5 seconds has passed since the batch was populated with its first message. `Bytes` is unset, so the batch size is unlimited. No flush will be triggered due to batch size:
+
+    ```text
+    {
+      "Flush": {
+        "Messages": 100,
+        "Frequency": "5s"
+      }
+    }
+    ```
+
+### Webhook sink messages
+
+The following shows the default JSON messages for a changefeed emitting to a webhook sink. These changefeed messages were emitted as part of the [Create a changefeed connected to a Webhook sink](/docs/v25.4/changefeed-examples#create-a-changefeed-connected-to-a-webhook-sink) example:
+
+```text
+"2021/08/24 14":"00":21
+{
+    "payload":[
+       {
+          "after":{
+             "city":"rome",
+             "creation_time":"2019-01-02T03:04:05",
+             "current_location":"39141 Travis Curve Suite 87",
+             "ext":{
+                "brand":"Schwinn",
+                "color":"red"
+             },
+             "id":"d7b18299-c0c4-4304-9ef7-05ae46fd5ee1",
+             "dog_owner_id":"5d0c85b5-8866-47cf-a6bc-d032f198e48f",
+             "status":"in_use",
+             "type":"bike"
+          },
+          "key":[
+             "rome",
+             "d7b18299-c0c4-4304-9ef7-05ae46fd5ee1"
+          ],
+          "topic":"vehicles",
+          "updated":"1629813621680097993.0000000000"
+       }
+    ],
+    "length":1
+ }
+
+ "2021/08/24 14":"00":22
+ {
+    "payload":[
+       {
+          "after":{
+             "city":"san francisco",
+             "creation_time":"2019-01-02T03:04:05",
+             "current_location":"84888 Wallace Wall",
+             "ext":{
+                "color":"black"
+             },
+             "id":"020cf7f4-6324-48a0-9f74-6c9010fb1ab4",
+             "dog_owner_id":"b74ea421-fcaf-4d80-9dcc-d222d49bdc17",
+             "status":"available",
+             "type":"scooter"
+          },
+          "key":[
+             "san francisco",
+             "020cf7f4-6324-48a0-9f74-6c9010fb1ab4"
+          ],
+          "topic":"vehicles",
+          "updated":"1629813621680097993.0000000000"
+       }
+    ],
+    "length":1
+ }
+```
+
+For an overview of the messages emitted from changefeeds, see the [Changefeed Messages](/docs/v25.4/changefeed-messages) page.
+
+## Azure Event Hubs
+
+Changefeeds can deliver messages to an [Azure Event Hub](https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-about), which is compatible with Apache Kafka.
+
+An Azure Event Hubs sink URI:
+
+```text
+'azure-event-hub://{event-hubs-namespace}.servicebus.windows.net:9093?shared_access_key_name={policy-name}&shared_access_key={url-encoded key}'
+```
+
+You can also use a `kafka://` scheme in the URI:
+
+```text
+'kafka://{event-hubs-namespace}.servicebus.windows.net:9093?shared_access_key_name={policy-name}&shared_access_key={url-encoded key}'
+```
+
+The `shared_access_key` and `shared_access_key_name` are the required parameters for an Azure Event Hubs connection URI.
+
+<table><thead><tr><th>URI Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;event&#95;hubs&#95;namespace&#125;</code></td><td>The Event Hub namespace.</td></tr><tr><td><code>shared&#95;access&#95;key&#95;name</code></td><td>The name of the shared access policy created for the namespace.</td></tr><tr><td><code>shared&#95;access&#95;key</code></td><td>The key for the shared access policy. <strong>Note:</strong> You must <a href="https://www.urlencoder.org/">URL encode</a> the shared access key before passing it in the connection string.</td></tr></tbody></table>
+
+Changefeeds emitting to an Azure Event hub support `topic_name` and `topic_prefix`. Azure Event Hubs also supports the standard Kafka [changefeed options](/docs/v25.4/create-changefeed#options) and the [Kafka sink configuration](#kafka-sink-configuration) option.
+
+For an Azure Event Hub setup example, refer to the [Changefeed Examples](/docs/v25.4/changefeed-examples#create-a-changefeed-connected-to-an-azure-event-hubs-sink) page.
+
+The following parameters are also needed, but are **set by default** in CockroachDB:
+
+- `tls_enabled=true`
+- `sasl_enabled=true`
+- `sasl_handshake=true`
+- `sasl_mechanism=PLAIN`
+
+## Apache Pulsar
+
+<Note>
+**This feature is in [preview](/docs/v25.4/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+Changefeeds can deliver messages to [Apache Pulsar](https://pulsar.apache.org/docs).
+
+A Pulsar sink URI:
+
+```text
+pulsar://{host IP}:6650
+```
+
+By default, Apache Pulsar listens for client connections on port `:6650`. For more detail on configuration, refer to the [Apache Pulsar documentation](https://pulsar.apache.org/docs/2.10.x/reference-configuration).
+
+Changefeeds emitting to an Apache Pulsar sink support `json` and `csv` [format options](/docs/v25.4/create-changefeed#format).
+
+Changefeeds emitting to an Apache Pulsar sink do **not** support:
+
+- [`format=avro`](/docs/v25.4/create-changefeed#format)
+- [`confluent_schema_registry`](/docs/v25.4/create-changefeed#confluent-schema-registry)
+- [`topic_prefix`](/docs/v25.4/create-changefeed#topic-prefix)
+- Any batching configuration
+- [Authentication query parameters](/docs/v25.4/create-changefeed#query-parameters)
+- [External connections](/docs/v25.4/create-external-connection)
+
+For an Apache Pulsar setup example, refer to the [Changefeed Examples](/docs/v25.4/changefeed-examples#create-a-changefeed-connected-to-an-apache-pulsar-sink) page.
+
+### Apache Pulsar sink messages
+
+```text
+----- got message -----
+key:[null], properties:[], content:{"Key":["seattle", "09265ab7-5f3a-40cb-a543-d37c8c893793"],"Value":{"after": {"city": "seattle", "end_address": null, "end_time": null, "id": "09265ab7-5f3a-40cb-a543-d37c8c893793", "revenue": 53.00, "rider_id": "44576296-d4a7-4e79-add9-f880dd951064", "start_address": "25795 Alyssa Extensions", "start_time": "2024-05-09T12:18:42.022952", "vehicle_city": "seattle", "vehicle_id": "a0c935f6-8872-408e-bc12-4d0b5a85fa71"}},"Topic":"rides"}
+----- got message -----
+key:[null], properties:[], content:{"Key":["amsterdam", "b3548485-9475-44cf-9769-66617b9cb151"],"Value":{"after": {"city": "amsterdam", "end_address": null, "end_time": null, "id": "b3548485-9475-44cf-9769-66617b9cb151", "revenue": 25.00, "rider_id": "adf4656f-6a0d-4315-b035-eaf7fa6b85eb", "start_address": "49614 Victoria Cliff Apt. 25", "start_time": "2024-05-09T12:18:42.763718", "vehicle_city": "amsterdam", "vehicle_id": "eb1d1d2c-865e-4a40-a7d7-8f396c1c063f"}},"Topic":"rides"}
+----- got message -----
+key:[null], properties:[], content:{"Key":["amsterdam", "d119f344-318f-41c0-bfc0-b778e6e38f9a"],"Value":{"after": {"city": "amsterdam", "end_address": null, "end_time": null, "id": "d119f344-318f-41c0-bfc0-b778e6e38f9a", "revenue": 24.00, "rider_id": "1a242414-f704-4e1f-9f5e-2b468af0c2d1", "start_address": "54909 Douglas Street Suite 51", "start_time": "2024-05-09T12:18:42.369755", "vehicle_city": "amsterdam", "vehicle_id": "99d98e05-3114-460e-bb02-828bcd745d44"}},"Topic":"rides"}
+----- got message -----
+key:[null], properties:[], content:{"Key":["rome", "3c7d6676-f713-4985-ba52-4c19fe6c3692"],"Value":{"after": {"city": "rome", "end_address": null, "end_time": null, "id": "3c7d6676-f713-4985-ba52-4c19fe6c3692", "revenue": 27.00, "rider_id": "c15a4926-fbb2-4931-a9a0-6dfabc6c506b", "start_address": "39415 Brandon Avenue Apt. 29", "start_time": "2024-05-09T12:18:42.055498", "vehicle_city": "rome", "vehicle_id": "627dad1a-3531-4214-a173-16bcc6b93036"}},"Topic":"rides"}
+```
+
+## See also
+
+- [Use Cloud Storage](/docs/v25.4/use-cloud-storage)
+- [`CREATE CHANGEFEED`](/docs/v25.4/create-changefeed)

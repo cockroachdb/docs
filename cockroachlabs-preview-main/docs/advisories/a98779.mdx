@@ -1,0 +1,40 @@
+---
+title: "Technical Advisory 98779"
+old_description: "A restore job can potentially skip some data files upon resumption of an in-progress RESTORE, which could lead to missing rows after the job succeeds."
+---
+
+Publication date: March 29, 2023
+
+## Description
+
+A bug was introduced in CockroachDB v22.2.6 that can cause a restore job to skip some data files upon resumption of an in-progress [`RESTORE`](https://www.cockroachlabs.com/docs/v22.2/restore). This could potentially lead to some missing rows after the restore job succeeds.
+
+A resumption could occur due to manual user action, such as [pausing](https://www.cockroachlabs.com/docs/v22.2/pause-job) and [resuming](https://www.cockroachlabs.com/docs/v22.2/resume-job) the job, or, if a job is automatically retried internally, such as after a node restart. Therefore, this failure might not be noticed by an operator.
+
+## Statement
+
+This is resolved in CockroachDB by [#99066](https://github.com/cockroachdb/cockroach/pull/99066), which removes the incorrect optimization, and reverts back to the behavior of v22.2.5.
+
+The fix has been applied to maintenance releases of CockroachDB [v22.2.7](/docs/releases/v22.2#v22-2-7) and later. This problem can also be mitigated immediately by updating the `bulkio.restore.use_simple_import_spans` cluster setting. See the following [Mitigation](#mitigation) section for details.
+
+This public issue is tracked by [#98779](https://github.com/cockroachdb/cockroach/issues/98779).
+
+## Mitigation
+
+Users of CockroachDB v22.2.6 are encouraged to upgrade to [v22.2.7](/docs/releases/v22.2#v22-2-7) or a later version.
+
+Until such an upgrade, users of v22.2.6 can mitigate immediately by running:
+
+```sql
+SET CLUSTER SETTING bulkio.restore.use_simple_import_spans = true;
+```
+
+This setting has already been automatically applied to all affected CockroachDB Cloud clusters.
+
+## Impact
+
+For users of CockroachDB v22.2.6, a restore that is resumed for any reason may give incorrect results. The resume could be due to manual job control actions, automatic retries if nodes restart, or after some types of internal rebalancing events.
+
+Enabling the cluster setting described in the [Mitigation](#mitigation) section, or upgrading to v22.2.7 or later, will prevent this.
+
+Questions about any technical alert can be directed to our [support team](https://support.cockroachlabs.com/).

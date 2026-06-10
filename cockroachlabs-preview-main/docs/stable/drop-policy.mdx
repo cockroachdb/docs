@@ -1,0 +1,36 @@
+---
+title: "DROP POLICY"
+old_description: "The DROP POLICY statement removes an existing row-level security (RLS) policy from a table."
+---
+
+The `DROP POLICY` statement removes an existing [row-level security (RLS)](/docs/v26.1/enum) policy from a table.
+
+## Syntax
+
+```text
+DROP POLICY [ IF EXISTS ] policy_name ON table_name [ CASCADE | RESTRICT ];
+```
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>policy&#95;name</code></td><td>Unique identifier for the policy on the table.</td></tr><tr><td><code>table&#95;name</code></td><td>The table to which the policy applies.</td></tr><tr><td><code>IF EXISTS</code></td><td>Suppresses an error if the policy doesn't exist.</td></tr><tr><td><code>CASCADE, RESTRICT</code></td><td>Standard dependency handling (not relevant for policies themselves).</td></tr></tbody></table>
+
+## Examples
+
+### Drop a policy
+
+To drop an existing policy, issue the following statement:
+
+```sql
+DROP POLICY IF EXISTS your_policy ON orders;
+```
+
+## See also
+
+- [Row-level security (RLS) overview](/docs/v26.1/row-level-security)
+- [`CREATE POLICY`](/docs/v26.1/create-policy)
+- [`ALTER POLICY`](/docs/v26.1/alter-policy)
+- [`SHOW POLICIES`](/docs/v26.1/show-policies)
+- [`ALTER TABLE... ENABLE ROW LEVEL SECURITY`](/docs/v26.1/alter-table#enable-row-level-security)
+- [`ALTER ROLE... WITH BYPASSRLS`](/docs/v26.1/alter-role#allow-a-role-to-bypass-row-level-security-rls)
+- [`CREATE ROLE... WITH BYPASSRLS`](/docs/v26.1/create-role#create-a-role-that-can-bypass-row-level-security-rls)

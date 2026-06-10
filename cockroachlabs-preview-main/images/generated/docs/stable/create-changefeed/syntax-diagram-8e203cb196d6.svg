@@ -1,0 +1,143 @@
+<svg height="413" width="1709" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 61 1 57 1 65"></polygon>
+<polygon points="17 61 9 57 9 65"></polygon>
+<rect height="32" rx="10" width="72" x="51" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="49" y="45"></rect>
+<text class="terminal" x="59" y="65">CREATE</text>
+<rect height="32" rx="10" width="110" x="143" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="110" x="141" y="45"></rect>
+<text class="terminal" x="151" y="65">CHANGEFEED</text><a xlink:href="/docs/stable/sql-grammar#for_with_lookahead_variants" xlink:title="for_with_lookahead_variants">
+<rect height="32" width="204" x="293" y="47"></rect>
+<rect class="nonterminal" height="32" width="204" x="291" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="180" font-size="10" class="nonterminal" x="303" y="65">for_with_lookahead_variants</text></a><a xlink:href="/docs/stable/sql-grammar#changefeed_table_target" xlink:title="changefeed_table_target">
+<rect height="32" width="182" x="537" y="47"></rect>
+<rect class="nonterminal" height="32" width="182" x="535" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="158" font-size="11" class="nonterminal" x="547" y="65">changefeed_table_target</text></a><rect height="32" rx="10" width="24" x="537" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="535" y="1"></rect>
+<text class="terminal" x="545" y="21">,</text>
+<rect height="32" rx="10" width="56" x="759" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="757" y="45"></rect>
+<text class="terminal" x="767" y="65">INTO</text>
+<rect height="32" width="44" x="835" y="47"></rect>
+<rect class="nonterminal" height="32" width="44" x="833" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="20" font-size="10" class="nonterminal" x="845" y="65">sink</text><rect height="32" rx="10" width="58" x="919" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="917" y="45"></rect>
+<text class="terminal" x="927" y="65">WITH</text>
+<rect height="32" width="60" x="1017" y="47"></rect>
+<rect class="nonterminal" height="32" width="60" x="1015" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="36" font-size="10" class="nonterminal" x="1027" y="65">option</text><rect height="32" rx="10" width="30" x="1117" y="79"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="1115" y="77"></rect>
+<text class="terminal" x="1125" y="97">=</text>
+<rect height="32" width="54" x="1167" y="79"></rect>
+<rect class="nonterminal" height="32" width="54" x="1165" y="77"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="30" font-size="10" class="nonterminal" x="1177" y="97">value</text><rect height="32" rx="10" width="24" x="1017" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="1015" y="1"></rect>
+<text class="terminal" x="1025" y="21">,</text>
+<rect height="32" rx="10" width="56" x="293" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="291" y="187"></rect>
+<text class="terminal" x="301" y="207">INTO</text>
+<rect height="32" width="44" x="369" y="189"></rect>
+<rect class="nonterminal" height="32" width="44" x="367" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="20" font-size="10" class="nonterminal" x="379" y="207">sink</text><rect height="32" rx="10" width="58" x="453" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="451" y="187"></rect>
+<text class="terminal" x="461" y="207">WITH</text>
+<rect height="32" width="60" x="551" y="189"></rect>
+<rect class="nonterminal" height="32" width="60" x="549" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="36" font-size="10" class="nonterminal" x="561" y="207">option</text><rect height="32" rx="10" width="30" x="651" y="221"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="649" y="219"></rect>
+<text class="terminal" x="659" y="239">=</text>
+<rect height="32" width="54" x="701" y="221"></rect>
+<rect class="nonterminal" height="32" width="54" x="699" y="219"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="30" font-size="10" class="nonterminal" x="711" y="239">value</text><rect height="32" rx="10" width="24" x="551" y="145"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="549" y="143"></rect>
+<text class="terminal" x="559" y="163">,</text>
+<rect height="32" rx="10" width="38" x="835" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="833" y="187"></rect>
+<text class="terminal" x="843" y="207">AS</text>
+<rect height="32" rx="10" width="70" x="893" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="891" y="187"></rect>
+<text class="terminal" x="901" y="207">SELECT</text><a xlink:href="/docs/stable/sql-grammar#target_list" xlink:title="target_list">
+<rect height="32" width="86" x="983" y="189"></rect>
+<rect class="nonterminal" height="32" width="86" x="981" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="62" font-size="10" class="nonterminal" x="993" y="207">target_list</text></a><rect height="32" rx="10" width="60" x="1089" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="1087" y="187"></rect>
+<text class="terminal" x="1097" y="207">FROM</text><a xlink:href="/docs/stable/sql-grammar#changefeed_target_expr" xlink:title="changefeed_target_expr">
+<rect height="32" width="178" x="1169" y="189"></rect>
+<rect class="nonterminal" height="32" width="178" x="1167" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="154" font-size="11" class="nonterminal" x="1179" y="207">changefeed_target_expr</text></a><a xlink:href="/docs/stable/sql-grammar#opt_where_clause" xlink:title="opt_where_clause">
+<rect height="32" width="136" x="1367" y="189"></rect>
+<rect class="nonterminal" height="32" width="136" x="1365" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="112" font-size="11" class="nonterminal" x="1377" y="207">opt_where_clause</text></a><rect height="32" rx="10" width="290" x="51" y="331"></rect>
+<rect class="terminal" height="32" rx="10" width="290" x="49" y="329"></rect>
+<text class="terminal" x="59" y="349">CREATE_CHANGEFEED_FOR_DATABASE</text>
+<rect height="32" rx="10" width="110" x="361" y="331"></rect>
+<rect class="terminal" height="32" rx="10" width="110" x="359" y="329"></rect>
+<text class="terminal" x="369" y="349">CHANGEFEED</text>
+<rect height="32" rx="10" width="48" x="491" y="331"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="489" y="329"></rect>
+<text class="terminal" x="499" y="349">FOR</text>
+<rect height="32" rx="10" width="92" x="559" y="331"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="557" y="329"></rect>
+<text class="terminal" x="567" y="349">DATABASE</text><a xlink:href="/docs/stable/sql-grammar#database_option" xlink:title="database_option">
+<rect height="32" width="128" x="671" y="331"></rect>
+<rect class="nonterminal" height="32" width="128" x="669" y="329"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="11" class="nonterminal" x="681" y="349">database_option</text></a><a xlink:href="/docs/stable/sql-grammar#optional_db_level_changefeed_filter_option" xlink:title="optional_db_level_changefeed_filter_option">
+<rect height="32" width="300" x="819" y="331"></rect>
+<rect class="nonterminal" height="32" width="300" x="817" y="329"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="276" font-size="10" class="nonterminal" x="829" y="349">optional_db_level_changefeed_filter_option</text></a><rect height="32" rx="10" width="56" x="1139" y="331"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="1137" y="329"></rect>
+<text class="terminal" x="1147" y="349">INTO</text>
+<rect height="32" width="44" x="1215" y="331"></rect>
+<rect class="nonterminal" height="32" width="44" x="1213" y="329"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="20" font-size="10" class="nonterminal" x="1225" y="349">sink</text><rect height="32" rx="10" width="58" x="1299" y="331"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="1297" y="329"></rect>
+<text class="terminal" x="1307" y="349">WITH</text>
+<rect height="32" width="60" x="1397" y="331"></rect>
+<rect class="nonterminal" height="32" width="60" x="1395" y="329"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="36" font-size="10" class="nonterminal" x="1407" y="349">option</text><rect height="32" rx="10" width="30" x="1497" y="363"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="1495" y="361"></rect>
+<text class="terminal" x="1505" y="381">=</text>
+<rect height="32" width="54" x="1547" y="363"></rect>
+<rect class="nonterminal" height="32" width="54" x="1545" y="361"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="30" font-size="10" class="nonterminal" x="1557" y="381">value</text><rect height="32" rx="10" width="24" x="1397" y="287"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="1395" y="285"></rect>
+<text class="terminal" x="1405" y="305">,</text>
+<path class="line" d="m17 61 h2 m20 0 h10 m72 0 h10 m0 0 h10 m110 0 h10 m20 0 h10 m204 0 h10 m20 0 h10 m182 0 h10 m-222 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m202 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-202 0 h10 m24 0 h10 m0 0 h158 m20 44 h10 m56 0 h10 m0 0 h10 m44 0 h10 m20 0 h10 m58 0 h10 m20 0 h10 m60 0 h10 m20 0 h10 m0 0 h114 m-144 0 h20 m124 0 h20 m-164 0 q10 0 10 10 m144 0 q0 -10 10 -10 m-154 10 v12 m144 0 v-12 m-144 12 q0 10 10 10 m124 0 q10 0 10 -10 m-134 10 h10 m30 0 h10 m0 0 h10 m54 0 h10 m-244 -32 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m244 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-244 0 h10 m24 0 h10 m0 0 h200 m-362 44 h20 m362 0 h20 m-402 0 q10 0 10 10 m382 0 q0 -10 10 -10 m-392 10 v46 m382 0 v-46 m-382 46 q0 10 10 10 m362 0 q10 0 10 -10 m-372 10 h10 m0 0 h352 m20 -66 h222 m-1250 0 h20 m1230 0 h20 m-1270 0 q10 0 10 10 m1250 0 q0 -10 10 -10 m-1260 10 v122 m1250 0 v-122 m-1250 122 q0 10 10 10 m1230 0 q10 0 10 -10 m-1240 10 h10 m56 0 h10 m0 0 h10 m44 0 h10 m20 0 h10 m58 0 h10 m20 0 h10 m60 0 h10 m20 0 h10 m0 0 h114 m-144 0 h20 m124 0 h20 m-164 0 q10 0 10 10 m144 0 q0 -10 10 -10 m-154 10 v12 m144 0 v-12 m-144 12 q0 10 10 10 m124 0 q10 0 10 -10 m-134 10 h10 m30 0 h10 m0 0 h10 m54 0 h10 m-244 -32 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m244 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-244 0 h10 m24 0 h10 m0 0 h200 m-362 44 h20 m362 0 h20 m-402 0 q10 0 10 10 m382 0 q0 -10 10 -10 m-392 10 v46 m382 0 v-46 m-382 46 q0 10 10 10 m362 0 q10 0 10 -10 m-372 10 h10 m0 0 h352 m20 -66 h10 m38 0 h10 m0 0 h10 m70 0 h10 m0 0 h10 m86 0 h10 m0 0 h10 m60 0 h10 m0 0 h10 m178 0 h10 m0 0 h10 m136 0 h10 m20 -142 h138 m-1650 0 h20 m1630 0 h20 m-1670 0 q10 0 10 10 m1650 0 q0 -10 10 -10 m-1660 10 v264 m1650 0 v-264 m-1650 264 q0 10 10 10 m1630 0 q10 0 10 -10 m-1640 10 h10 m290 0 h10 m0 0 h10 m110 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m92 0 h10 m0 0 h10 m128 0 h10 m0 0 h10 m300 0 h10 m0 0 h10 m56 0 h10 m0 0 h10 m44 0 h10 m20 0 h10 m58 0 h10 m20 0 h10 m60 0 h10 m20 0 h10 m0 0 h114 m-144 0 h20 m124 0 h20 m-164 0 q10 0 10 10 m144 0 q0 -10 10 -10 m-154 10 v12 m144 0 v-12 m-144 12 q0 10 10 10 m124 0 q10 0 10 -10 m-134 10 h10 m30 0 h10 m0 0 h10 m54 0 h10 m-244 -32 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m244 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-244 0 h10 m24 0 h10 m0 0 h200 m-362 44 h20 m362 0 h20 m-402 0 q10 0 10 10 m382 0 q0 -10 10 -10 m-392 10 v46 m382 0 v-46 m-382 46 q0 10 10 10 m362 0 q10 0 10 -10 m-372 10 h10 m0 0 h352 m43 -350 h-3"></path>
+<polygon points="1699 61 1707 57 1707 65"></polygon>
+<polygon points="1699 61 1691 57 1691 65"></polygon></svg>

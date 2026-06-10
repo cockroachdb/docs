@@ -1,0 +1,116 @@
+---
+title: "Create a CockroachDB Standard Cluster"
+old_description: "Learn how to create your CockroachDB Standard cluster."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<Note>
+CockroachDB Standard is currently in [Preview](/docs/v25.4/cockroachdb-feature-availability).
+</Note>
+
+<LinkedPageTabs
+  currentPath="/docs/cockroachcloud/create-your-cluster"
+  items={[
+    {
+      title: "CockroachDB Basic",
+      href: "/docs/cockroachcloud/create-a-basic-cluster",
+    },
+    {
+      title: "CockroachDB Standard",
+      href: "/docs/cockroachcloud/create-your-cluster",
+    },
+    {
+      title: "CockroachDB Advanced",
+      href: "/docs/cockroachcloud/create-an-advanced-cluster",
+    },
+  ]}
+/>
+
+This page guides you through the process of creating a CockroachDB Standard cluster using the [Cloud Console](https://cockroachlabs.cloud/). To use the Cloud API instead, refer to [Create a Standard cluster](/docs/cockroachcloud/cloud-api#create-a-standard-cluster) in the API documentation.
+
+If you need permission to create a cluster, contact an CockroachDB Cloud Organization Admin.
+
+<Tip>
+To create and connect to a 30-day free CockroachDB Standard cluster and run your first query, refer to the [Quickstart](/docs/cockroachcloud/quickstart-trial-cluster).
+</Tip>
+
+## Step 1. Start the cluster creation process
+
+1. If you haven't already, [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?referralId=docs_create_account), then [log in](https://cockroachlabs.cloud/).
+
+    <Note>
+    We recommend that CockroachDB Cloud Console users log in with [Single Sign-On (SSO)](/docs/cockroachcloud/cloud-org-sso), optionally with two-factor authentication (2FA) enabled for the SSO provider. This prevents potential attackers from using stolen credentials to access or tamper with your critical data.
+    </Note>
+
+    CockroachDB Cloud [Basic SSO](/docs/cockroachcloud/cloud-org-sso#basic-sso) supports SSO with GitHub, Google, and Microsoft. [Cloud Organization SSO](/docs/cockroachcloud/cloud-org-sso#cloud-organization-sso) provides additional configuration and flexibility, and includes support for OIDC or SAML protocols, autoprovisioning, and limiting the email domains that can use a given authentication method.
+
+    Visit your CockroachDB Cloud Console's [account settings page](https://cockroachlabs.cloud/account/profile) and switch to SSO to improve the security of your cluster.
+2. [Log in](https://cockroachlabs.cloud/) to your CockroachDB Cloud account.
+3. If there are multiple organizations in your account, select the correct organization in the top right corner.
+4. On the **Overview** page, click **Create Cluster**.
+5. On the **Select a plan** page, select the **Standard** plan.
+
+## Step 2. Select the cloud provider
+
+On the **Cloud &amp; Regions page**, in the **Cloud provider** section, select your deployment environment: **Google Cloud** or **AWS**. Creating a CockroachDB Standard cluster on Azure is not yet supported.
+
+You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. For optimal performance, create your cluster on the cloud provider and in the regions that best align with your existing cloud services.
+
+Pricing depends on your cloud provider and region selections.
+
+Pricing depends on your cloud provider and region selections. Refer to [Pricing](https://www.cockroachlabs.com/pricing) for details.
+
+## Step 3. Configure regions
+
+In the **Regions** section, select at least one region. Refer to [CockroachDB Cloud Regions](/docs/cockroachcloud/regions) for the regions where CockroachDB Standard clusters can be deployed.
+
+For optimal performance, create your cluster on the cloud provider and in the regions that best align with your existing cloud services. For example, if your application is deployed in GCP's `us-east1` region, create your cluster on GCP and select `us-east1` for your CockroachDB Standard cluster.
+
+A multi-region cluster can survive the loss of a single region. For multi-region clusters, CockroachDB will optimize access to data from the primary region. Refer to [Planning your cluster](/docs/cockroachcloud/plan-your-cluster) for the configuration requirements and recommendations for CockroachDB Standard clusters.
+
+<Note>
+You cannot remove a region.
+</Note>
+
+After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink (Limited Access)](/docs/cockroachcloud/network-authorization#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
+
+Private connectivity is not available for Standard clusters on GCP.
+
+Click **Next: Capacity**.
+
+## Step 4. Provision cluster capacity
+
+Provisioned capacity refers to the reserved compute capacity for your cluster, expressed in vCPUs. We recommend at minimum 4-8 vCPUs for production workloads, and allowing for at least 40% above expected peak workload to avoid performance issues. Refer to [Plan your cluster](/docs/cockroachcloud/plan-your-cluster) for the configuration requirements and recommendations for CockroachDB Standard clusters.
+
+Click **Next: Finalize**.
+
+## Step 5. Enter billing details
+
+1. On the **Finalize** page, verify:
+    - Your cluster's cloud provider, regions, and configuration.
+    - The hourly estimated cost for the cluster. The cost displayed does not include taxes. You will be billed monthly.
+2. Add your preferred [payment method](/docs/cockroachcloud/billing-management).
+3. If applicable, the 30-day trial code is pre-applied to your cluster.
+
+    <Note>
+    Make sure that you [delete your trial cluster](/docs/cockroachcloud/cluster-management#delete-cluster) before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the [Billing](/docs/cockroachcloud/billing-management) page.
+    </Note>
+
+## Step 6. Name the cluster
+
+The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
+
+Click **Create cluster**. Your cluster will be created in a few seconds.
+
+## Step 7. Finish creating the cluster
+
+Click **Create cluster**. Your cluster will be created in approximately 20-30 minutes.
+
+## What's next
+
+To start using your CockroachDB Standard cluster, refer to:
+
+- [Connect to your cluster](/docs/cockroachcloud/connect-to-your-cluster)
+- [Authorize users](/docs/cockroachcloud/managing-access)
+- For a multi-region cluster, it is important to choose the most appropriate [survival goal](/docs/v25.4/multiregion-survival-goals) for each database and the most appropriate [table locality](/docs/v25.4/table-localities) for each table. Otherwise, your cluster may experience unexpected latency and reduced resiliency. For more information, refer to [Multi-Region Capabilities Overview](/docs/v25.4/multiregion-overview).

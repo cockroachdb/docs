@@ -1,0 +1,354 @@
+---
+title: "Migrate from Oracle"
+old_description: "Learn how to migrate data from Oracle into a CockroachDB cluster."
+---
+
+<Warning>
+The instructions on this page are outdated. Use the [MOLT Schema Conversion Tool](/docs/cockroachcloud/migrations-page?filters=oracle) to convert an Oracle schema into a compatible CockroachDB schema, and a tool such as [AWS Database Migration Service (DMS)](/docs/v26.1/aws-dms) or [Qlik](/docs/v26.1/qlik) to migrate data from Oracle to CockroachDB.
+</Warning>
+
+This page has instructions for migrating data from Oracle into CockroachDB by [importing](/docs/v26.1/import-into) CSV files.
+
+To illustrate this process, we use the following sample data and tools:
+
+- [Swingbench OrderEntry data set](http://www.dominicgiles.com/swingbench), which is based on the `oe` schema that ships with Oracle Database 11g and Oracle Database 12c.
+- [Oracle Data Pump](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump), which enables the movement of data and metadata from one database to another, and comes with all Oracle installations.
+- [SQL*Plus](https://docs.oracle.com/database/121/SQPUG/ch_three.htm), the interactive and batch query tool that comes with every Oracle Database installation.
+
+<Tip>
+For best practices for optimizing import performance in CockroachDB, see [Import Performance Best Practices](/docs/v26.1/import-performance-best-practices).
+</Tip>
+
+## Step 1. Export the Oracle schema
+
+Using [Oracle's Data Pump Export utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/oracle-data-pump-export-utility), export the schema:
+
+```shell
+$ expdp user/password directory=datapump dumpfile=oracle_example.dmp content=metadata_only logfile=example.log
+```
+
+The schema is stored in an Oracle-specific format (e.g., `oracle_example.dmp`).
+
+## Step 2. Convert the Oracle schema to SQL
+
+Using [Oracle's Data Pump Import utility](https://docs.oracle.com/en/database/oracle/oracle-database/12.2/sutil/datapump-import-utility), load the exported DMP file to convert it to a SQL file:
+
+```shell
+$ impdp user/password directory=datapump dumpfile=oracle_example.dmp sqlfile=example_sql.sql TRANSFORM=SEGMENT_ATTRIBUTES:N:table PARTITION_OPTIONS=MERGE
+```
+
+This SQL output will be used later, in [Step 7](#step-7-map-oracle-to-cockroachdb-data-types).
+
+## Step 3. Export table data
+
+You need to extract each table's data into a data list file (`.lst`). We wrote a simple SQL script (`spool.sql`) to do this:
+
+```shell
+$ cat spool.sql
+
+SET ECHO OFF
+SET TERMOUT OFF
+SET FEEDBACK OFF
+SET PAGESIZE 0
+SET TRIMSPOOL ON
+SET WRAP OFF
+set linesize 30000
+SET RECSEP OFF
+SET VERIFY OFF
+SET ARRAYSIZE 10000
+SET COLSEP '|'
+
+SPOOL '&1'
+
+ALTER SESSION SET nls_date_format = 'YYYY-MM-DD HH24:MI:SS';
+  # Used to set a properly formatted date for CockroachDB
+
+SELECT * from &1;
+
+SPOOL OFF
+
+SET PAGESIZE 24
+SET FEEDBACK ON
+SET TERMOUT ON
+```
+
+<Note>
+In the example SQL script, `|` is used as a delimiter. Choose a delimiter that will not also occur in the rows themselves. For more information, see [`IMPORT INTO`](/docs/v26.1/import-into#delimited-data-files).
+</Note>
+
+To extract the data, we ran the script for each table in SQL*Plus:
+
+```sql
+$ sqlplus user/password
+```
+
+```sql
+> @spool CUSTOMERS
+  @spool ADDRESSES
+  @spool CARD_DETAILS
+  @spool WAREHOUSES
+  @spool ORDER_ITEMS
+  @spool ORDERS
+  @spool INVENTORIES
+  @spool PRODUCT_INFORMATION
+  @spool LOGON
+  @spool PRODUCT_DESCRIPTIONS
+  @spool ORDERENTRY_METADATA
+```
+
+A data list file (`.lst`) with leading and trailing spaces is created for each table.
+
+Exit SQL*Plus:
+
+```sql
+> EXIT
+```
+
+## Step 4. Configure and convert the table data to CSV
+
+Each table's data list file needs to be converted to CSV and formatted for CockroachDB. We wrote a simple Python script (`fix-example.py`) to do this:
+
+```python
+$ cat fix-example.py
+
+import csv
+import string
+import sys
+
+for lstfile in sys.argv[1:]:
+  filename = lstfile.split(".")[0]
+
+  with open(lstfile) as f:
+    reader = csv.reader(f, delimiter="|")
+    with open(filename+".csv", "w") as fo:
+      writer = csv.writer(fo)
+      for rec in reader:
+        writer.writerow(map(string.strip, rec))
+```
+
+```shell
+$ python3 fix-example.py CUSTOMERS.lst ADDRESSES.lst CARD_DETAILS.lst WAREHOUSES.lst ORDER_ITEMS.lst ORDERS.lst INVENTORIES.lst PRODUCT_INFORMATION.lst LOGON.lst PRODUCT_DESCRIPTIONS.lst ORDERENTRY_METADATA.lst
+```
+
+Format the generated CSV files to meet the CockroachDB's [CSV requirements](#csv-requirements).
+
+### CSV requirements
+
+You will need to export one CSV file per table, with the following requirements:
+
+- Files must be in [valid CSV format](https://tools.ietf.org/html/rfc4180).
+- Files must be UTF-8 encoded.
+- If one of the following characters appears in a field, the field must be enclosed by double quotes:
+    - delimiter ( `,` by default)
+    - double quote ( `"` )
+    - newline ( `\n` )
+    - carriage return ( `\r` )
+- If double quotes are used to enclose fields, then a double quote appearing inside a field must be escaped by preceding it with another double quote. For example: `"aaa","b""bb","ccc"`
+- If a column is of type [`BYTES`](/docs/v26.1/bytes), it can either be a valid UTF-8 string or a [hex-encoded byte literal](/docs/v26.1/sql-constants#hexadecimal-encoded-byte-array-literals) beginning with `\x`. For example, a field whose value should be the bytes `1`, `2` would be written as `\x0102`.
+
+### CSV configuration options
+
+The following options are available to [`IMPORT INTO... CSV DATA`](/docs/v26.1/import-into):
+
+- [Column delimiter](/docs/v26.1/migrate-from-csv#column-delimiter)
+- [Comment syntax](/docs/v26.1/migrate-from-csv#comment-syntax)
+- [Skip header rows](/docs/v26.1/migrate-from-csv#skip-header-rows)
+- [Null strings](/docs/v26.1/migrate-from-csv#null-strings)
+- [File compression](/docs/v26.1/migrate-from-csv#file-compression)
+
+For usage examples, see [Migrate from CSV - Configuration Options](/docs/v26.1/migrate-from-csv#configuration-options).
+
+## Step 5. Compress the CSV files
+
+Compress the CSV files for a faster import:
+
+```shell
+$ gzip CUSTOMERS.csv ADDRESSES.csv CARD_DETAILS.csv WAREHOUSES.csv ORDER_ITEMS.csv ORDERS.csv INVENTORIES.csv PRODUCT_INFORMATION.csv LOGON.csv PRODUCT_DESCRIPTIONS.csv ORDERENTRY_METADATA.csv
+```
+
+These compressed CSV files will be used to import your data into CockroachDB.
+
+## Step 6. Host the files where the cluster can access them
+
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for more information on the types of storage [`IMPORT INTO`](/docs/v26.1/import-into) can pull from, see the following:
+
+- [Use Cloud Storage](/docs/v26.1/use-cloud-storage)
+- [Use a Local File Server](/docs/v26.1/use-a-local-file-server)
+
+<Tip>
+We strongly recommend using cloud storage such as Amazon S3 or Google Cloud to host the data files you want to import.
+</Tip>
+
+## Step 7. Map Oracle to CockroachDB data types
+
+Using the SQL file created in [Step 2](#step-2-convert-the-oracle-schema-to-sql), write [`CREATE TABLE`](/docs/v26.1/create-table) statements that match the schemas of the table data you're importing. Remove all Oracle-specific attributes and remap all Oracle data types.
+
+For example, to create a `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
+
+```sql
+CREATE TABLE customers (
+  customer_id       DECIMAL
+                    NOT NULL
+                    PRIMARY KEY,
+  cust_first_name   VARCHAR(40) NOT NULL,
+  cust_last_name    VARCHAR(40) NOT NULL,
+  nls_language      VARCHAR(3),
+  nls_territory     VARCHAR(30),
+  credit_limit      DECIMAL(9,2),
+  cust_email        VARCHAR(100),
+  account_mgr_id    DECIMAL,
+  customer_since    DATE,
+  customer_class    VARCHAR(40),
+  suggestions       VARCHAR(40),
+  dob               DATE,
+  mailshot          VARCHAR(1),
+  partner_mailshot  VARCHAR(1),
+  preferred_address DECIMAL,
+  preferred_card    DECIMAL,
+  INDEX cust_email_ix (cust_email),
+  INDEX cust_dob_ix (dob),
+  INDEX cust_account_manager_ix (
+      account_mgr_id
+  )
+ );
+```
+
+### Data type mapping
+
+Use the table below for data type mappings:
+
+<table><thead><tr><th>Oracle Data Type</th><th>CockroachDB Data Type</th></tr></thead><tbody><tr><td><code>BLOB</code></td><td><a href="/docs/v26.1/bytes"><code>BYTES</code></a><a href="#considerations"><sup>1</sup></a></td></tr><tr><td><code>CHAR(n)</code>, <code>CHARACTER(n)</code><br/>n &lt; 256</td><td><a href="/docs/v26.1/string"><code>CHAR(n)</code>, <code>CHARACTER(n)</code></a></td></tr><tr><td><code>CLOB</code></td><td><a href="/docs/v26.1/string"><code>STRING</code></a><a href="#considerations"><sup>1</sup></a></td></tr><tr><td><code>DATE</code></td><td><a href="/docs/v26.1/date"><code>DATE</code></a></td></tr><tr><td><code>FLOAT(n)</code></td><td><a href="/docs/v26.1/decimal"><code>DECIMAL(n)</code></a></td></tr><tr><td><code>INTERVAL YEAR(p) TO MONTH</code></td><td><a href="/docs/v26.1/string"><code>VARCHAR</code></a>, <a href="/docs/v26.1/interval"><code>INTERVAL</code></a></td></tr><tr><td><code>INTERVAL DAY(p) TO SECOND(s)</code></td><td><a href="/docs/v26.1/string"><code>VARCHAR</code></a>, <a href="/docs/v26.1/interval"><code>INTERVAL</code></a></td></tr><tr><td><code>JSON</code></td><td><a href="/docs/v26.1/jsonb"><code>JSON</code></a><a href="#considerations"><sup>2</sup></a></td></tr><tr><td><code>LONG</code></td><td><a href="/docs/v26.1/string"><code>STRING</code></a></td></tr><tr><td><code>LONG RAW</code></td><td><a href="/docs/v26.1/bytes"><code>BYTES</code></a></td></tr><tr><td><code>NCHAR(n)</code><br/>n &lt; 256</td><td><a href="/docs/v26.1/string"><code>CHAR(n)</code></a></td></tr><tr><td><code>NCHAR(n)</code><br/>n &gt; 255</td><td><a href="/docs/v26.1/string"><code>VARCHAR</code>, <code>STRING</code></a></td></tr><tr><td><code>NCLOB</code></td><td><a href="/docs/v26.1/string"><code>STRING</code></a></td></tr><tr><td><code>NUMBER(p,0)</code>, <code>NUMBER(p)</code><br/>1 &lt;= p &lt; 5</td><td><a href="/docs/v26.1/int"><code>INT2</code></a><a href="#considerations"><sup>3</sup></a></td></tr><tr><td><code>NUMBER(p,0)</code>, <code>NUMBER(p)</code><br/>5 &lt;= p &lt; 9</td><td><a href="/docs/v26.1/int"><code>INT4</code></a><a href="#considerations"><sup>3</sup></a></td></tr><tr><td><code>NUMBER(p,0)</code>, <code>NUMBER(p)</code><br/>9 &lt;= p &lt; 19</td><td><a href="/docs/v26.1/int"><code>INT8</code></a><a href="#considerations"><sup>3</sup></a></td></tr><tr><td><code>NUMBER(p,0)</code>, <code>NUMBER(p)</code><br/>19 &lt;= p &lt;= 38</td><td><a href="/docs/v26.1/decimal"><code>DECIMAL(p)</code></a></td></tr><tr><td><code>NUMBER(p,s)</code><br/>s &gt; 0</td><td><a href="/docs/v26.1/decimal"><code>DECIMAL(p,s)</code></a></td></tr><tr><td><code>NUMBER</code>, <code>NUMBER(\&#42;)</code></td><td><a href="/docs/v26.1/decimal"><code>DECIMAL</code></a></td></tr><tr><td><code>NVARCHAR2(n)</code></td><td><a href="/docs/v26.1/string"><code>VARCHAR(n)</code></a></td></tr><tr><td><code>RAW(n)</code></td><td><a href="/docs/v26.1/bytes"><code>BYTES</code></a></td></tr><tr><td><code>TIMESTAMP(p)</code></td><td><a href="/docs/v26.1/timestamp"><code>TIMESTAMP</code></a></td></tr><tr><td><code>TIMESTAMP(p) WITH TIME ZONE</code></td><td><a href="/docs/v26.1/timestamp"><code>TIMESTAMP WITH TIMEZONE</code></a></td></tr><tr><td><code>VARCHAR(n)</code>, <code>VARCHAR2(n)</code></td><td><a href="/docs/v26.1/string"><code>VARCHAR(n)</code></a></td></tr><tr><td><code>XML</code></td><td><a href="/docs/v26.1/jsonb"><code>JSON</code></a><a href="#considerations"><sup>2</sup></a></td></tr></tbody></table>
+
+- 1 `BLOBS` and `CLOBS` should be converted to [`BYTES`](/docs/v26.1/bytes), or [`STRING`](/docs/v26.1/string) where the size is variable, but it's recommended to keep values under 1 MB to ensure performance. Anything above 1 MB would require refactoring into an object store with a pointer embedded in the table in place of the object.
+- 2 `JSON` and `XML` types can be converted to [`JSONB`](/docs/v26.1/jsonb) using any XML to JSON conversion. `XML` must be converted to `JSONB` before importing into CockroachDB.
+- 3 When converting `NUMBER(p,0)`, consider `NUMBER` types with Base-10 limits map to the Base-10 Limits for CockroachDB [`INT`](/docs/v26.1/int) types. Optionally, `NUMBERS` can be converted to [`DECIMAL`](/docs/v26.1/decimal).
+
+When moving from Oracle to CockroachDB data types, consider the following:
+
+- [Schema changes within transactions](/docs/v26.1/online-schema-changes#known-limitations)
+- [Schema changes between executions of prepared statements](/docs/v26.1/online-schema-changes#no-online-schema-changes-between-executions-of-prepared-statements)
+- If [`JSON`](/docs/v26.1/jsonb) columns are used only for payload, consider switching to [`BYTES`](/docs/v26.1/bytes).
+- Max size of a single [column family](/docs/v26.1/column-families) (by default, the [maximum size of a range](/docs/v26.1/configure-replication-zones#range-max-bytes) ).
+
+For more information, refer to [Online Schema Changes](/docs/v26.1/online-schema-changes) and [Transactions](/docs/v26.1/transactions).
+
+### NULLs
+
+For information on how CockroachDB handles `NULL`s, see [NULL Handling](/docs/v26.1/null-handling) and [NOT NULL Constraint](/docs/v26.1/not-null).
+
+### Primary key, constraints, and secondary indexes
+
+Cockroach distributes a table by the [primary key](/docs/v26.1/primary-key) or by a default `ROWID` when a primary key is not provided. This also requires the primary key creation to be part of the table creation. Using the above [data type mapping](#data-type-mapping), refactor each table DDL to include the [primary key](/docs/v26.1/primary-key), [constraints](/docs/v26.1/constraints), and [secondary indexes](/docs/v26.1/indexes).
+
+For more information and examples, refer to the following:
+
+- [`CREATE TABLE` - Create a table](/docs/v26.1/create-table)
+- [Define Table Partitions](/docs/v26.1/partitioning)
+- [Constraints - Supported constraints](/docs/v26.1/constraints#supported-constraints)
+
+### Privileges for users and roles
+
+The Oracle privileges for [users](/docs/v26.1/create-user) and [roles](/docs/v26.1/create-role) must be rewritten for CockroachDB. Once the CockroachDB cluster is [secured](/docs/v26.1/security-reference/security-overview), CockroachDB follows the same [role-based access control](/docs/v26.1/authorization) methodology as Oracle.
+
+## Step 8. Import the CSV
+
+Use [`IMPORT INTO`](/docs/v26.1/import-into) to import data into each table created in [Step 7](#step-7-map-oracle-to-cockroachdb-data-types).
+
+For example, to import the data from `CUSTOMERS.csv.gz` into an existing `CUSTOMERS` table, issue the following statement in the CockroachDB SQL shell:
+
+```sql
+IMPORT INTO CUSTOMERS
+  CSV DATA ('https://your-bucket-name.s3.us-east-2.amazonaws.com/CUSTOMERS.csv.gz')
+  WITH delimiter = e'\t',
+   "nullif" = '',
+   decompress = 'gzip';
+```
+
+```text
+       job_id       |  status   | fraction_completed |  rows  | index_entries | system_records |  bytes
+--------------------+-----------+--------------------+--------+---------------+----------------+----------
+ 381866942129111041 | succeeded |                  1 | 300024 |             0 |              0 | 13258389
+(1 row)
+```
+
+Then add the [computed columns](/docs/v26.1/computed-columns), [constraints](/docs/v26.1/alter-table#add-constraint), and [function-based indexes](/docs/v26.1/create-index). For example:
+
+```sql
+> UPDATE CUSTOMERS SET credit_limit = 50000 WHERE credit_limit > 50000;
+  ALTER TABLE CUSTOMERS ADD CONSTRAINT CUSTOMER_CREDIT_LIMIT_MAX CHECK (credit_limit <= 50000);
+  ALTER TABLE CUSTOMERS ADD COLUMN LOW_CUST_LAST_NAME STRING AS (lower(CUST_LAST_NAME)) STORED;
+  ALTER TABLE CUSTOMERS ADD COLUMN LOW_CUST_FIRST_NAME STRING AS (lower(CUST_FIRST_NAME)) STORED;
+  CREATE INDEX CUST_FUNC_LOWER_NAME_IX on CUSTOMERS (LOW_CUST_LAST_NAME,CUST_FIRST_NAME);
+```
+
+Repeat the preceding steps for each CSV file you want to import.
+
+## Step 9. Refactor application SQL
+
+The last phase of the migration process is to change the [transactional behavior](#transactions-locking-and-concurrency-control) and [SQL dialect](#sql-dialect) of your application.
+
+### Transactions, locking, and concurrency control
+
+Both Oracle and CockroachDB support [multi-statement transactions](/docs/v26.1/transactions), which are atomic and guarantee ACID semantics. However, CockroachDB operates under [`SERIALIZABLE`](/docs/v26.1/demo-serializable) isolation by default, while Oracle defaults to [`READ COMMITTED`](/docs/v26.1/read-committed), which can create both [non-repeatable reads and phantom reads](/docs/v26.1/read-committed#non-repeatable-reads-and-phantom-reads) when a transaction reads data twice. It is typical that Oracle developers will use `SELECT FOR UPDATE` to work around `READ COMMITTED` concurrency anomalies. Both the [`READ COMMITTED`](/docs/v26.1/read-committed) isolation level and the [`SELECT FOR UPDATE`](/docs/v26.1/select-for-update) statement are supported in CockroachDB.
+
+Regarding locks, Cockroach utilizes a [lightweight latch](/docs/v26.1/architecture/transaction-layer#latch-manager) to serialize access to common keys across concurrent transactions. Oracle and CockroachDB transaction control flows only have a few minor differences; for more details, refer to [Transactions - SQL statements](/docs/v26.1/transactions#sql-statements).
+
+Because CockroachDB does not allow serializable anomalies under `SERIALIZABLE` isolation, [transactions](/docs/v26.1/begin-transaction) may experience deadlocks or [read/write contention](/docs/v26.1/performance-best-practices-overview#transaction-contention). This is expected during concurrency on the same keys. These can be addressed with either [automatic retries](/docs/v26.1/transactions#automatic-retries) or [client-side transaction retry handling](/docs/v26.1/transaction-retry-error-reference#client-side-retry-handling).
+
+### SQL dialect
+
+Cockroach is ANSI SQL compliant with a PostgreSQL dialect, which allows you to use [native drivers](/docs/v26.1/install-client-drivers) to connect applications and ORMs to CockroachDB. CockroachDB’s [SQL layer](/docs/v26.1/architecture/sql-layer#sql-api) supports full relational schema and SQL (similar to Oracle).
+
+You will have to refactor Oracle SQL and functions that do not comply with [ANSI SQL-92](https://wikipedia.org/wiki/SQL-92) in order to work with CockroachDB. For more information about the [Cockroach SQL Grammar](/docs/v26.1/sql-grammar) and a [SQL comparison](/docs/v26.1/sql-feature-support), see below:
+
+- [SQL best practices](/docs/v26.1/performance-best-practices-overview)
+- [Common table expressions (CTE)](/docs/v26.1/common-table-expressions)
+- `DUAL` table
+
+    Oracle requires use of the `DUAL` table, as Oracle requires a `SELECT... FROM`. In CockroachDB, all reference to the `DUAL` table should be eliminated.
+- [Function call syntax](/docs/v26.1/functions-and-operators#string-and-byte-functions)
+- [Hints](/docs/v26.1/cost-based-optimizer#join-hints)
+
+    See also: [Table Expressions - Force index selection](/docs/v26.1/table-expressions#force-index-selection)
+- [Joins](/docs/v26.1/joins)
+
+    CockroachDB supports [`HASH`](/docs/v26.1/joins#hash-joins), [`MERGE`](/docs/v26.1/joins#merge-joins), and [`LOOKUP`](/docs/v26.1/joins#lookup-joins) joins. Oracle uses the `+` operator for `LEFT` and `RIGHT` joins, but CockroachDB uses the ANSI join syntax.
+- [Sequences](/docs/v26.1/create-sequence)
+
+    Sequences in CockroachDB do not require a trigger to self-increment; place the sequence in the table DDL:
+
+    ```text
+    > CREATE TABLE customer_list (
+        id INT PRIMARY KEY DEFAULT nextval('customer_seq'),
+        customer string,
+        address string
+      );
+    ```
+- [Subqueries](/docs/v26.1/subqueries)
+- `SYSDATE`
+
+    CockroachDB does not support `SYSDATE`; however, it does support date and time with the following:
+
+    ```text
+    > SELECT transaction_timestamp(), clock_timestamp();
+    ```
+
+    ```text
+    > SELECT current_timestamp
+    ```
+
+    ```text
+    > SELECT now();
+    ```
+- [Window functions](/docs/v26.1/window-functions)
+
+## See also
+
+- [`IMPORT INTO`](/docs/v26.1/import-into)
+- [Import Performance Best Practices](/docs/v26.1/import-performance-best-practices)
+- [Migrate from CSV](/docs/v26.1/migrate-from-csv)
+- [Migrate from MySQL](/docs/molt/migrate-to-cockroachdb?filters=mysql)
+- [Migrate from PostgreSQL](/docs/molt/migrate-to-cockroachdb)
+- [Back Up and Restore Data](/docs/v26.1/take-full-and-incremental-backups)
+- [Use the Built-in SQL Client](/docs/v26.1/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v26.1/cockroach-commands)

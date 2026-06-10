@@ -1,0 +1,205 @@
+---
+title: "CockroachDB Cloud Access Management (Authorization) Overview"
+old_description: "Learn about CockroachDB Cloud authorization features and concepts"
+---
+
+This page covers the essential concepts related to access management (authorization) in CockroachDB Cloud. Procedures for managing access are covered in [Managing Users, Roles, and Service Accounts in CockroachDB Cloud](/docs/cockroachcloud/managing-access).
+
+## Overview of the CockroachDB Cloud authorization model
+
+**The CockroachDB Cloud console**, found at `https://cockroachlabs.cloud/`, is a 'single pane of glass' for managing users, billing, and all functions for administering clusters in CockroachDB Cloud. When accessing the console, users must sign in to a CockroachDB Cloud **organization** (or create a new one).
+
+You can also execute many administrative commands using the `ccloud` command-line utility and the CockroachDB Cloud API:
+
+- `ccloud` allows human users to authenticate their terminal via a browser token from the CockroachDB Cloud console.
+- The CockroachDB Cloud API allows [service accounts](#service-accounts) to authenticate via API keys, which are issued through the console.
+- You can [use Terraform to provision users and other aspects of your CockroachDB Cloud clusters](/docs/cockroachcloud/provision-a-cluster-with-terraform). However, note that currently Terraform can only be used to provision admin SQL users, as this is a current limitation of the API, on which Terraform depends.
+
+In CockroachDB Cloud, an organization corresponds to an authorization hierarchy linked to a billing account. Within each CockroachDB Cloud organization, the unit of database functionality is the *CockroachDB cluster*, which corresponds to a networked set of CockroachDB cluster nodes. SQL operations and data storage are distributed over a cluster. Every cluster belongs to an organization.
+
+CockroachDB Cloud has a hierarchical authorization model, where roles can be assigned at different scopes:
+
+1. Organization: A CockroachDB Cloud organization assigns permissions based on [roles](#organization-user-roles) assigned to a Cloud Console user account, which allow these accounts to perform administrative tasks relating to the management of clusters, Console user management, SQL user management, and billing.
+2. Folder: Cloud Console [roles](#organization-user-roles) can be assigned to a folder containing a group of clusters. Role inheritance is transitive; a role applied with the organization or folder scope is inherited by descendent resources.
+
+    <Tip>
+    Organizing clusters using folders is available in [Preview](/docs/v25.4/cockroachdb-feature-availability#feature-availability-phases). To learn more, refer to [Organize Clusters Using Folders](/docs/cockroachcloud/folders).
+    </Tip>
+3. Cluster: Each CockroachDB cluster defines its own set of [SQL users](/docs/v25.4/security-reference/authorization#create-and-manage-users) and SQL user [roles](/docs/v25.4/security-reference/authorization#roles) which manage permission to execute SQL statements on the cluster.
+
+The levels within the hierarchy intersect, because administering SQL-level users on specific clusters within an organization is an organization-level function.
+
+<Note>
+SQL users are granted a distinct set of roles and privileges that are specific to data management on the cluster, independent of the Cloud user roles and permissions described on this page. For the main pages covering users and roles at the SQL level within a specific database cluster, refer to the main [Authorization in CockroachDB documentation](/docs/v25.4/security-reference/authorization)
+</Note>
+
+. The [GRANT](/docs/v25.4/grant) SQL statement cannot be used to assign Cloud roles and permissions.
+
+## Organization user roles
+
+When a user or service account is first added to an organization, they are assigned the default Console role, **Organization Member**, which adds no permissions and only indicates membership in the organization. Users with the Organization or Cluster Admin role may [edit the roles assigned to organization users](/docs/cockroachcloud/managing-access#change-a-team-members-role) in the CockroachDB Cloud Console's [**Access Management** page](https://cockroachlabs.cloud/access), or using the CockroachDB Cloud API or Terraform Provider.
+
+<Note>
+The user who creates a new organization is assigned the following [roles](/docs/cockroachcloud/authorization#organization-user-roles) at the organization scope:
+
+- [Organization Admin](/docs/cockroachcloud/authorization#organization-admin)
+- [Billing Coordinator](/docs/cockroachcloud/authorization#billing-coordinator)
+- [Cluster Admin](/docs/cockroachcloud/authorization#cluster-admin)
+- [Folder Administrator](/docs/cockroachcloud/authorization#folder-admin)
+
+Any of these roles may subsequently be removed by a user with both the Organization Admin role and the Cluster Admin role at the organization scope. This is to ensure that at least one user has both of these roles.
+</Note>
+
+To learn more, refer to [Manage organization users](/docs/cockroachcloud/managing-access#manage-an-organizations-users).
+
+The following table describes the high level permissions given by each CockroachDB Cloud user role. Permissions are additive, so a user with multiple roles is given all permissions in each area across all assigned roles.
+
+<table><thead><tr><th></th><th><a href="/docs/cockroachcloud/authorization#organization-member">Org. Member</a></th><th><a href="/docs/cockroachcloud/authorization#organization-admin">Org. Admin</a></th><th><a href="/docs/cockroachcloud/authorization#billing-coordinator">Billing Coord.</a></th><th><a href="/docs/cockroachcloud/authorization#billing-viewer">Billing Viewer</a></th><th><a href="/docs/cockroachcloud/authorization#cluster-creator">Cluster Creator</a></th><th><a href="/docs/cockroachcloud/authorization#cluster-operator">Cluster Operator</a></th><th><a href="/docs/cockroachcloud/authorization#cluster-admin">Cluster Admin</a></th><th><a href="/docs/cockroachcloud/authorization#cluster-developer">Cluster Developer</a></th><th><a href="/docs/cockroachcloud/authorization#cluster-monitor">Cluster Monitor</a></th><th><a href="/docs/cockroachcloud/authorization#metrics-viewer">Metrics Viewer</a></th><th><a href="/docs/cockroachcloud/authorization#folder-admin">Folder Admin</a></th><th><a href="/docs/cockroachcloud/authorization#folder-mover">Folder Mover</a></th></tr></thead><tbody><tr><td><strong>User/Access Management</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Assign and revoke roles</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Assign Cloud user and service account roles</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage SQL users</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage Cloud users and service accounts</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Apply roles at the <a href="/docs/cockroachcloud/folders">folder</a> scope</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td></tr><tr><td><strong>Cluster &amp; Infrastructure</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Create cluster or <a href="/docs/cockroachcloud/private-clusters">private cluster</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Create / edit / delete cluster</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Edit / delete clusters created by this user</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Create / delete / manage <a href="/docs/cockroachcloud/folders">folders</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td></tr><tr><td>Move cluster between <a href="/docs/cockroachcloud/folders">folders</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td></tr><tr><td>Scale nodes</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Upgrade CockroachDB</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Configure <a href="/docs/cockroachcloud/advanced-cluster-management#set-a-maintenance-window">maintenance windows</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Use the <a href="/docs/cockroachcloud/provision-a-cluster-with-terraform">Cloud Terraform provider</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td><strong>Monitoring &amp; Observability</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>View cluster details</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/cloud-org-audit-logs">audit logs</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/insights-page">insights</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/jobs-page">jobs</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/statements-page">sql activity</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/metrics">metrics</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td></tr><tr><td>Send <a href="/docs/cockroachcloud/alerts-page#send-a-test-alert">test alerts</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Access <a href="/docs/cockroachcloud/network-authorization#db-console">DB console</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td><strong>Security</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Configure <a href="/docs/cockroachcloud/cloud-sso-sql">cluster SSO</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage <a href="/docs/cockroachcloud/egress-perimeter-controls">egress perimeter controls</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage <a href="/docs/cockroachcloud/network-authorization">network authorization</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View PCI status</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td><strong>Database &amp; Data</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Manage databases</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View / restore <a href="/docs/cockroachcloud/backup-and-restore-overview">backups</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td><strong>Billing &amp; Licensing</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Manage <a href="/docs/cockroachcloud/billing-management">billing</a></td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/billing-management">billing</a> details</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage <a href="/docs/cockroachcloud/alerts-page#configure-alerts">email alerts</a></td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage CockroachDB <a href="/docs/v25.4/licensing-faqs#obtain-a-license">Self-Hosted cluster licenses</a></td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
+
+Some roles can be assigned to users at specific levels of scope to provide more granular permission control:
+
+<table><thead><tr><th><strong>Scope level</strong></th><th><strong>Description</strong></th><th><strong>Applicable roles</strong></th></tr></thead><tbody><tr><td><code>Organization</code></td><td>Applies to the entire CockroachDB Cloud organization, including all clusters and folders</td><td><code>Cluster Operator</code>, <code>Cluster Admin</code>, <code>Cluster Creator</code>, <code>Cluster Developer</code>, <code>Cluster Monitor</code>, <code>Metrics Viewer</code>, <code>Billing Coordinator</code>, <code>Billing Viewer</code>, <code>Organization Admin</code>, <code>Folder Admin</code>, <code>Folder Mover</code></td></tr><tr><td><code>Folder</code></td><td>Applies to clusters within a specific <a href="/docs/cockroachcloud/folders">folder</a>. Only available as a selectable scope if folders have been created within the organization by a user with the <code>Folder Admin</code> role</td><td><code>Cluster Operator</code>, <code>Cluster Admin</code>, <code>Cluster Creator</code>, <code>Cluster Developer</code>, <code>Cluster Monitor</code>, <code>Metrics Viewer</code>, <code>Folder Admin</code>, <code>Folder Mover</code></td></tr><tr><td><code>Cluster</code></td><td>Applies to a specific cluster</td><td><code>Cluster Operator</code>, <code>Cluster Admin</code>, <code>Cluster Developer</code>, <code>Cluster Monitor</code>, <code>Metrics Viewer</code></td></tr></tbody></table>
+
+The following sections describe the available CockroachDB Cloud roles in more detail:
+
+### Organization Member
+
+The **Organization Member** role is assigned by default to all organization users when they are invited or provisioned. This role gives no additional permissions.
+
+### Organization Admin
+
+The **Organization Admin** role allows users to perform the following actions:
+
+- [Invite users to join that organization](/docs/cockroachcloud/managing-access#invite-team-members-to-an-organization).
+- [Create service accounts](/docs/cockroachcloud/managing-access#create-a-service-account).
+- Assign and revoke Cloud roles for both [users](/docs/cockroachcloud/managing-access#manage-an-organizations-users) and [service accounts](/docs/cockroachcloud/managing-access#manage-service-accounts).
+
+Organization Admins automatically receive [email alerts](/docs/cockroachcloud/alerts-page) about planned cluster maintenance and when CockroachDB Cloud detects that a cluster is overloaded or experiencing issues. In addition, Organization Admins can subscribe other members to the email alerts, and configure how alerts work for the organization.
+
+This role can be assigned only at the organization scope.
+
+### Billing Coordinator
+
+The **Billing Coordinator** role allows users to [manage and view billing details, invoices, and usage for that organization](/docs/cockroachcloud/billing-management) through the CockroachDB Cloud console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
+
+### Billing Viewer
+
+The **Billing Viewer** role allows users to [view billing details, invoices, and usage for that organization](/docs/cockroachcloud/billing-management) through the CockroachDB Cloud console billing page at [`https://cockroachlabs.cloud/billing/overview`](https://cockroachlabs.cloud/billing/overview).
+
+### Cluster Operator
+
+The **Cluster Operator** role allows actions that are dependent on whether it is assigned to a user or a service account.
+
+- *Users* with this role can perform the following *console operations*:
+    - View a cluster's [Overview page](/docs/cockroachcloud/cluster-overview-page), which displays its configuration, attributes and statistics, including cloud provider, region topography, and available and maximum storage and request units.
+    - Manage a cluster's databases from the [Databases Page](/docs/cockroachcloud/databases-page).
+    - [Scale a cluster's nodes](/docs/cockroachcloud/advanced-cluster-management#scale-your-cluster).
+    - View and configure a cluster's authorized networks from the [Networking Page](/docs/cockroachcloud/network-authorization).
+    - [Manage network authorization](/docs/cockroachcloud/network-authorization) for a cluster.
+    - View backups in a cluster's [Backup and Restore Page](/docs/cockroachcloud/managed-backups#cloud-console).
+    - [Restore a cluster from a backup](/docs/cockroachcloud/managed-backups?filters=standard#restore-a-cluster).
+    - View a cluster's Jobs from the [Jobs page](/docs/cockroachcloud/jobs-page).
+    - View a cluster's Metrics from the [Metrics page](/docs/cockroachcloud/metrics#cockroachdb-cloud-console-metrics-page).
+    - View a cluster's Insights from the [Insights page](/docs/cockroachcloud/insights-page).
+    - [Upgrade](/docs/cockroachcloud/upgrade-cockroach-version) a cluster's major version of CockroachDB.
+    - View a cluster's [PCI-readiness status (Advanced clusters with Security add-on only)](/docs/cockroachcloud/cluster-overview-page?filters=advanced#pci-ready-with-security-add-on).
+    - Send a test alert from the [Alerts Page](/docs/cockroachcloud/alerts-page).
+    - Configure single sign-on (SSO) enforcement.
+    - Access the [DB Console](/docs/cockroachcloud/network-authorization#db-console).
+    - Configure a cluster's [maintenance window](/docs/cockroachcloud/advanced-cluster-management#set-a-maintenance-window).
+    - [Edit a cluster's labels](/docs/cockroachcloud/labels).
+- *Service accounts* with this role can perform the following *API operations*:
+    - [Read a cluster summary](/docs/cockroachcloud/cloud-api#get-information-about-a-specific-cluster).
+    - [Manage Customer-Managed Encryption Keys (CMEK) for Advanced Clusters](/docs/cockroachcloud/managing-cmek)
+    - [Export a cluster's logs](/docs/cockroachcloud/export-logs).
+    - [Export a cluster's metrics](/docs/cockroachcloud/export-metrics).
+    - [Manage network authorization](/docs/cockroachcloud/network-authorization) for a cluster.
+    - [View and configure a cluster's Egress Rules](/docs/cockroachcloud/egress-perimeter-controls).
+    - [Configure the export of metrics to DataDog or Amazon CloudWatch](/docs/cockroachcloud/export-metrics).
+
+This role can be considered a more restricted alternative to [Cluster Admin](#cluster-admin), as it gives all of the permissions of that role but does **not** allow users to:
+
+- Manage cluster-scoped roles on organization users.
+- Manage SQL users from the cloud console.
+- Create or delete a cluster.
+
+This role can be assigned at the scope of the organization, on an individual cluster, or on a folder. If assigned to a folder, the role is inherited on the folder's clusters, descendent folders, and their descendants.
+
+### Cluster Admin
+
+The **Cluster Admin** role allows users to perform all [Cluster Operator](#cluster-operator) actions, as well as the following:
+
+- [Provision SQL users for a cluster using the console](/docs/cockroachcloud/managing-access#create-a-sql-user).
+- [Create Service Accounts](/docs/cockroachcloud/managing-access#change-a-team-members-role).
+- Edit cluster-scope role assignments (specifically, the Cluster Admin, Cluster Operator, and Cluster Developer roles) on [users](/docs/cockroachcloud/managing-access#change-a-team-members-role), and [service accounts](/docs/cockroachcloud/managing-access#edit-roles-on-a-service-account).
+- [Edit or delete a cluster](/docs/cockroachcloud/cluster-management).
+- Cluster Admins for the whole organization (rather than scoped to a single cluster) can [create new clusters](/docs/cockroachcloud/create-your-cluster).
+- Access the [DB Console](/docs/cockroachcloud/network-authorization#db-console).
+- Configure a cluster's [maintenance window](/docs/cockroachcloud/advanced-cluster-management#set-a-maintenance-window).
+
+This role can be assigned at the scope of the organization, on an individual cluster, or on a folder. If assigned to a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
+### Cluster Creator
+
+The **Cluster Creator** role allows users to create clusters in an organization. A cluster's creator is automatically assigned the [Cluster Admin](#cluster-admin) role for that cluster upon creation.
+
+This role can be assigned at the scope of the organization or on a folder. If assigned to a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
+### Cluster Developer
+
+The **Cluster Developer** role allows users to view cluster details and access the [DB Console](/docs/cockroachcloud/network-authorization#db-console), allowing them to [export a connection string from the cluster page UI](/docs/cockroachcloud/authentication#the-connection-string), although they will still need a Cluster Admin to [provision their SQL credentials](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster) for the cluster.
+
+This role can be assigned at the scope of the organization, on an individual cluster, or on a folder. If assigned to a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
+### Cluster Monitor
+
+The **Cluster Monitor** role provides read‑only visibility into SQL activity and workload health without broader administrative privileges. Users with this role can view the SQL Activity pages ([Sessions](/docs/cockroachcloud/sessions-page), [Statements](/docs/cockroachcloud/statements-page), and [Transactions](/docs/cockroachcloud/transactions-page)), the [Jobs page](/docs/cockroachcloud/jobs-page), and the [Insights page](/docs/cockroachcloud/insights-page).
+
+This role can be assigned at the scope of the organization, on an individual cluster, or on a folder. If assigned to a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
+### Metrics Viewer
+
+The **Metrics Viewer** role grants read‑only access to observability metrics for a cluster without any administrative or data‑manipulation privileges.
+
+- Users with this role can view a cluster's Metrics from the [Metrics page](/docs/cockroachcloud/metrics#cockroachdb-cloud-console-metrics-page).
+- Service accounts with this role can access the [metrics export API](/docs/cockroachcloud/export-metrics#the-metricexport-endpoint) and the [log export API](/docs/cockroachcloud/export-logs#the-logexport-endpoint) to integrate with external observability systems.
+
+This role can be assigned at the scope of the organization, on an individual cluster, or on a folder. If assigned to a folder, it is inherited on the folder's clusters, descendent folders, and their descendants.
+
+<Note>
+To give a developer the ability to both connect to a cluster and monitor performance with least privilege, combine [**Cluster Developer**](#cluster-developer) with **Metrics Viewer** (and optionally [**Cluster Monitor**](#cluster-monitor)).
+</Note>
+
+### Folder Admin
+
+The **Folder Admin** role allows users to create, rename, move, delete, and manage access to folders where they are assigned the role. Users can also [edit folder labels](/docs/cockroachcloud/labels). This role can be assigned at the level of the organization or on a specific folder. If assigned at the level of the organization, the role allows users to view all users and service accounts in the organization. If assigned to a specific folder, the role is inherited by descendant folders.
+
+A user with the [Organization Admin](#organization-admin) role can assign themselves, another user, or a service account the Folder Admin role.
+
+To create or manage clusters in a folder, a Folder Admin also needs the [Cluster Admin](#cluster-admin) or [Cluster Creator](#cluster-creator) role on that folder directly or by inheritance. To delete a cluster, the Cluster Admin role is required on the cluster directly or by inheritance.
+
+### Folder Mover
+
+The **Folder Mover** role allows users to rename or move descendant folders, and move clusters within the folder hierarchy where they have the role. However, a Folder Mover cannot create or delete folders or clusters and cannot assign roles. A Folder Mover can move clusters within the folder hierarchy even if they do not have a role that allows them to connect to the cluster, such as [Cluster Creator](#cluster-creator) or [Cluster Operator](#cluster-operator).
+
+<Note>
+A cluster inside a folder cannot be renamed.
+</Note>
+
+A user with the [Organization Admin](#organization-admin) or [Folder Admin](#folder-admin) role can assign another user or a service account the Folder Mover role. Because the Folder Admin role is a superset of Folder Mover, there is no need for a Folder Admin to assign themselves the Folder Mover role.
+
+## Service accounts
+
+Service accounts authenticate with API keys to the CockroachDB Cloud API, rather than to the CockroachDB Cloud Console UI.
+
+Service accounts operate under a unified authorization model with organization users, and can be assigned all of the same [roles](#organization-user-roles) as users, but note that some actions are available in the console but not the API, or vice versa (For example, in the [Cluster Operator Role](#cluster-operator)).
+
+Refer to [Manage Service Accounts](/docs/cockroachcloud/managing-access#manage-service-accounts).
+
+## Cluster roles for organization users using Cluster SSO
+
+Cluster Single Sign-On (SSO) for CockroachDB Cloud allows authorized organization users to directly access clusters within the organization via [`ccloud`](/docs/cockroachcloud/ccloud-get-started), the CockroachDB Cloud command line interface.
+
+However, because organization users and cluster SQL users are logically separate, a corresponding SQL user must be created for each SSO organization user, on each particular cluster.
+
+This correspondence lies in the SQL user name, which must be in the format `sso_{email_name}`. Replace `(email_name}` with the portion of the user's email address before `@`. For example, the SQL username of a user with the email address `docs@cockroachlabs.com` is `sso_docs`. If the role is not set up correctly, `ccloud` prompts you to create or add it. Only an SQL admin can manage SQL users.

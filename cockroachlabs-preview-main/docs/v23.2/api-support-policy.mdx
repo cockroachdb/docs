@@ -1,0 +1,67 @@
+---
+title: "API Support Policy"
+old_description: "Learn about Cockroach Labs's policy for supporting CockroachDB APIs."
+---
+
+Cockroach Labs exposes various application programming interfaces (APIs).
+
+The vast majority of changes to these interfaces are seamless additions of new functionality. However, some changes are backward-incompatible and may require you to adjust your integration. Changes to an API are introduced according to its support policy.
+
+This page includes the following information:
+
+- Our API [support policies](#support-policies).
+- Our definitions of [backward-incompatible](#backward-incompatible-changes) and [backward-compatible](#backward-compatible-changes) changes.
+- A summary of [APIs](#apis) that CockroachDB makes available.
+
+## Support policies
+
+<table><thead><tr><th>Type</th><th>Description</th><th>Guarantees</th></tr></thead><tbody><tr><td>Stable</td><td>Supported for interfacing with third-party automated tools.</td><td><a href="#backward-incompatible-changes">Backward-incompatible changes</a> may be introduced in new major versions.<br/><a href="#backward-compatible-changes">Backward-compatible changes</a> may be introduced in new patch versions.</td></tr><tr><td>Unstable</td><td>Supported for consumption by humans. Not supported for automation.</td><td><a href="#backward-incompatible-changes">Backward-incompatible changes</a> may be introduced in new major and patch versions.</td></tr><tr><td>Reserved</td><td>Intended for use by CockroachDB developers. Not supported for public use.</td><td>N/A</td></tr></tbody></table>
+
+Backward-incompatible changes to **stable APIs** are highlighted in the [release notes](/docs/releases#supported-releases) for major CockroachDB versions. Users are asked to [consider backward-incompatible changes before upgrading](/docs/v23.2/upgrade-cockroach-version#review-breaking-changes) to a new CockroachDB version.
+
+### Backward-incompatible changes
+
+A change is *backward-incompatible* when existing automation requires an update in order to continue working. These changes are also known as "breaking changes":
+
+- Removal or renaming of an endpoint, [built-in function](/docs/v23.2/functions-and-operators#built-in-functions), [cluster setting](/docs/v23.2/cluster-settings), or session variable.
+- Removal or renaming of a SQL statement or syntax.
+- Addition, removal, or renaming of a mandatory command-line flag or HTTP field.
+- Removal or renaming of an optional command-line flag or HTTP field.
+- Change in behavior of a [built-in function](/docs/v23.2/functions-and-operators#built-in-functions) without fixing a bug or PostgreSQL incompatibility.
+- Removal or renaming of possible values in an `ENUM` session variable or [cluster setting](/docs/v23.2/cluster-settings).
+- Change in non-interactive [`cockroach sql`](/docs/v23.2/cockroach-sql) shell input or output.
+- Change in behavior of a [structured log event](/docs/v23.2/eventlog) type, including the [logging channel](/docs/v23.2/logging-overview#logging-channels) it is emitted on.
+- Renaming of a [structured log event](/docs/v23.2/eventlog) type or payload field.
+
+### Backward-compatible changes
+
+A change is *backward-compatible* when existing automation continues to work without updates.
+
+The following list is not exhaustive:
+
+- Addition of an optional command-line flag or HTTP field.
+- Removal or change of any functionality documented as Preview or otherwise not fully supported.
+- Marking functionality as deprecated via in-line documentation, hints, or warnings without removing it altogether.
+- Addition or removal of a metric.
+- Addition of a structured log event type or payload field.
+- Addition of a new [logging channel](/docs/v23.2/logging-overview#logging-channels).
+
+### Versioning
+
+A stable API may be assigned a new version number in two situations:
+
+- When changes are introduced to the API.
+- When a new CockroachDB version is released.
+
+## APIs
+
+<Note>
+A *mixed* API includes both stable and unstable features.
+</Note>
+
+<table><thead><tr><th>Interface</th><th>Policy</th><th>Versioning</th><th>Notes</th><th>Availability</th></tr></thead><tbody><tr><td><a href="/docs/v23.2/postgresql-compatibility">PostgreSQL wire protocol</a></td><td>Stable</td><td>Versioned concurrently with CockroachDB.</td><td>Compatible with PostgreSQL version 13.</td><td>All products</td></tr><tr><td><a href="/docs/v23.2/sql-feature-support">SQL syntax</a></td><td>Mixed</td><td>Versioned concurrently with CockroachDB.</td><td>Best-effort policy to add and not remove SQL syntax. All <code>SHOW</code> statements are unstable, as described in the following row.</td><td>All products</td></tr><tr><td><code>SHOW</code> SQL statements</td><td>Unstable</td><td>Versioned concurrently with CockroachDB.</td><td>This includes all documented SQL <code>SHOW</code> statements, which display unstable output.</td><td>All products</td></tr><tr><td><a href="/docs/v23.2/information-schema"><code>information&#95;schema</code> system catalog</a></td><td>Stable</td><td>Versioned concurrently with CockroachDB.</td><td></td><td>All products</td></tr><tr><td><a href="/docs/v23.2/pg-catalog"><code>pg&#95;catalog</code> system catalog</a></td><td>Stable</td><td>Versioned concurrently with CockroachDB.</td><td></td><td>All products</td></tr><tr><td><a href="/docs/v23.2/pg-extension"><code>pg&#95;extension</code> system catalog</a></td><td>Stable</td><td>Versioned concurrently with CockroachDB.</td><td></td><td>All products</td></tr><tr><td><a href="/docs/v23.2/crdb-internal"><code>crdb&#95;internal</code> system catalog</a></td><td>Reserved</td><td>Versioned concurrently with CockroachDB.</td><td>A <a href="/docs/v23.2/crdb-internal#tables">subset of the <code>crdb&#95;internal</code> system catalog</a> is stable.</td><td>All products</td></tr><tr><td><a href="/docs/v23.2/functions-and-operators#built-in-functions">Built-in functions</a></td><td>Mixed</td><td>Versioned concurrently with CockroachDB.</td><td>Any built-in functions prefixed with <code>crdb&#95;internal</code> are reserved.</td><td>All products</td></tr><tr><td><a href="/docs/v23.2/cockroach-commands"><code>cockroach</code> commands</a></td><td>Mixed</td><td>Versioned concurrently with CockroachDB.</td><td>Stability considerations for <code>cockroach sql</code> are described in the following row.</td><td>All products</td></tr><tr><td><a href="/docs/v23.2/cockroach-sql"><code>cockroach sql</code> shell</a></td><td>Mixed</td><td>Versioned concurrently with CockroachDB.</td><td>When used non-interactively, <code>cockroach sql</code> is stable unless your usage relies on unstable input or output. Any <code>cockroach sql</code> output prefixed by <code>#</code> is unstable. When used interactively, <code>cockroach sql</code> is unstable.</td><td>All products</td></tr><tr><td><a href="/docs/v23.2/monitoring-and-alerting#health-endpoints">Health endpoints</a></td><td>Stable</td><td>No new versions forthcoming.</td><td></td><td>All products</td></tr><tr><td><a href="/docs/v23.2/monitoring-and-alerting#prometheus-endpoint">Prometheus endpoint</a></td><td>Stable</td><td>No new versions forthcoming.</td><td>Although this endpoint is not versioned, individual metrics may be added or removed in each CockroachDB release. No changes are expected to response format.</td><td>CockroachDB Dedicated, CockroachDB self-hosted</td></tr><tr><td><a href="/docs/v23.2/cluster-api">Cluster API</a></td><td>Mixed</td><td><a href="/docs/v23.2/cluster-api#versioning-and-stability">Versioned independently from CockroachDB.</a></td><td>For information on supported endpoints, see <a href="/docs/v23.2/cluster-api">Cluster API</a>.</td><td>CockroachDB Dedicated, CockroachDB self-hosted</td></tr><tr><td><a href="/docs/v23.2/ui-overview">DB Console</a></td><td>Unstable</td><td>N/A</td><td>For stable access to the information present in this tool, use the <a href="/docs/v23.2/cluster-api">Cluster API</a>.</td><td>CockroachDB Dedicated, CockroachDB self-hosted</td></tr><tr><td><a href="/docs/v23.2/logging-overview">Logging</a></td><td>Mixed</td><td>Versioned concurrently with CockroachDB.</td><td>Stability varies by <a href="/docs/v23.2/eventlog">event type</a>. Structured events are stable and unstructured events are unstable.</td><td>CockroachDB Dedicated, CockroachDB self-hosted</td></tr><tr><td><a href="/docs/cockroachcloud/ccloud-get-started"><code>ccloud</code> CLI</a></td><td>Mixed</td><td>Versioned independently from CockroachDB.</td><td>Default output is unstable. Specify the <code>–json</code> argument in the CLI for stable output that follows the versioning scheme.</td><td>CockroachDB Cloud</td></tr><tr><td><a href="/docs/cockroachcloud/cloud-api">CockroachDB Cloud API</a></td><td>Stable</td><td>Versioned independently from CockroachDB.</td><td></td><td>CockroachDB Cloud</td></tr><tr><td>CockroachDB Cloud Console</td><td>Unstable</td><td>N/A</td><td></td><td>CockroachDB Cloud</td></tr><tr><td><a href="/docs/v23.2/ui-debug-pages">Advanced Debug endpoints</a></td><td>Reserved</td><td>N/A</td><td></td><td>N/A</td></tr></tbody></table>
+
+## See also
+
+- [Release Support Policy](/docs/releases/release-support-policy)
+- [Monitoring and Alerting](/docs/v23.2/monitoring-and-alerting)

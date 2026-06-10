@@ -1,0 +1,59 @@
+export const SessionVarParts = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="53" width="283" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 33 1 29 1 37"></polygon>
+<polygon points="17 33 9 29 9 37"></polygon>
+<rect height="32" rx="10" width="24" x="51" y="19"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="49" y="17"></rect>
+<text class="terminal" x="59" y="37">.</text><a xlink:href="#unrestricted_name" xlink:title="unrestricted_name">
+<rect height="32" width="140" x="95" y="19"></rect>
+<rect class="nonterminal" height="32" width="140" x="93" y="17"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="116" font-size="11" class="nonterminal" x="105" y="37">unrestricted_name</text></a><path class="line" d="m17 33 h2 m20 0 h10 m24 0 h10 m0 0 h10 m140 0 h10 m-224 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -12 q0 -10 10 -10 m204 32 l20 0 m-20 0 q10 0 10 -10 l0 -12 q0 -10 -10 -10 m-204 0 h10 m0 0 h194 m23 32 h-3"></path>
+<polygon points="273 33 281 29 281 37"></polygon>
+<polygon points="273 33 265 29 265 37"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

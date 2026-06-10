@@ -1,0 +1,20 @@
+---
+title: "Row-Level TTL metrics"
+old_description: "The Row-Level TTL metrics let you monitor the performance of your Row-Level TTL jobs."
+---
+
+import MetricsRowLevelTtl from "/snippets/cockroachcloud/metrics-row-level-ttl.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MetricsRowLevelTtl />

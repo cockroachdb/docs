@@ -1,0 +1,20 @@
+---
+title: "CockroachDB Cloud Support and Upgrade Policy"
+old_description: "Learn about the upgrade policy for clusters deployed in CockroachDB Cloud."
+---
+
+import UpgradePolicy from "/snippets/cockroachcloud/upgrade-policy.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<UpgradePolicy />

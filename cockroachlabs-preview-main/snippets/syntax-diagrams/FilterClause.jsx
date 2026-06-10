@@ -1,0 +1,68 @@
+export const FilterClause = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="57" width="433" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 5 1 1 1 9"></polygon>
+<polygon points="17 5 9 1 9 9"></polygon>
+<rect height="32" rx="10" width="68" x="51" y="23"></rect>
+<rect class="terminal" height="32" rx="10" width="68" x="49" y="21"></rect>
+<text class="terminal" x="59" y="41">FILTER</text>
+<rect height="32" rx="10" width="26" x="139" y="23"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="137" y="21"></rect>
+<text class="terminal" x="147" y="41">(</text>
+<rect height="32" rx="10" width="70" x="185" y="23"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="183" y="21"></rect>
+<text class="terminal" x="193" y="41">WHERE</text><a xlink:href="#a_expr" xlink:title="a_expr">
+<rect height="32" width="64" x="275" y="23"></rect>
+<rect class="nonterminal" height="32" width="64" x="273" y="21"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="40" font-size="10" class="nonterminal" x="285" y="41">a_expr</text></a><rect height="32" rx="10" width="26" x="359" y="23"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="357" y="21"></rect>
+<text class="terminal" x="367" y="41">)</text>
+<path class="line" d="m17 5 h2 m20 0 h10 m0 0 h344 m-374 0 h20 m354 0 h20 m-394 0 q10 0 10 10 m374 0 q0 -10 10 -10 m-384 10 v12 m374 0 v-12 m-374 12 q0 10 10 10 m354 0 q10 0 10 -10 m-364 10 h10 m68 0 h10 m0 0 h10 m26 0 h10 m0 0 h10 m70 0 h10 m0 0 h10 m64 0 h10 m0 0 h10 m26 0 h10 m23 -32 h-3"></path>
+<polygon points="423 5 431 1 431 9"></polygon>
+<polygon points="423 5 415 1 415 9"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

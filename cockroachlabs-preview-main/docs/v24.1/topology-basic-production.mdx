@@ -1,0 +1,117 @@
+---
+title: "Basic Production Topology"
+old_description: "Guidance for a single-region production deployment."
+---
+
+When you're ready to run CockroachDB in production in a single region, it's important to deploy at least 3 CockroachDB nodes to take advantage of CockroachDB's automatic replication, distribution, rebalancing, and resiliency capabilities.
+
+<Tip>
+If you haven't already, [review the full range of topology patterns](/docs/v24.1/topology-patterns) to ensure you choose the right one for your use case.
+</Tip>
+
+## Before you begin
+
+- Multi-region topology patterns are almost always table-specific. If you haven't already, [review the full range of patterns](/docs/v24.1/topology-patterns#multi-region) to ensure you choose the right one for each of your tables.
+- Review how data is replicated and distributed across a cluster, and how this affects performance. It is especially important to understand the concept of the "leaseholder". For a summary, see [Reads and Writes in CockroachDB](/docs/v24.1/architecture/reads-and-writes-overview). For a deeper dive, see the CockroachDB [Architecture Overview](/docs/v24.1/architecture/overview).
+- Review the concept of [locality](/docs/v24.1/cockroach-start#locality), which CockroachDB uses to place and balance data based on how you define [replication controls](/docs/v24.1/configure-replication-zones).
+- Review the recommendations and requirements in our [Production Checklist](/docs/v24.1/recommended-production-settings).
+- This topology doesn't account for hardware specifications, so be sure to follow our [hardware recommendations](/docs/v24.1/recommended-production-settings#hardware) and perform a POC to size hardware for your use case. For optimal cluster performance, Cockroach Labs recommends that all nodes use the same hardware and operating system.
+- Adopt relevant [SQL Best Practices](/docs/v24.1/performance-best-practices-overview) to ensure optimal performance.
+
+## Configuration
+
+<Frame>
+  ![Basic production topology](/images/v24.1/topology-patterns/topology_basic_production1.png)
+</Frame>
+
+1. Provision hardware as follows:
+    - 1 region with 3 AZs
+    - 3+ VMs evenly distributed across AZs; add more VMs to increase throughput
+    - App and load balancer in same region as VMs for CockroachDB
+        - The load balancer redirects to CockroachDB nodes in the region
+2. Start each node on a separate VM, setting the [`--locality`](/docs/v24.1/cockroach-start#locality) flag to the node's region and AZ combination. For example, the following command starts a node in the east1 availability zone of the us-east region:
+
+    ```shell
+    $ cockroach start \
+    --locality=region=us-east,zone=east1 \
+    --certs-dir=certs \
+    --advertise-addr=<node1 internal address> \
+    --join=<node1 internal address>:26257,<node2 internal address>:26257,<node3 internal address>:26257 \
+    --cache=.25 \
+    --max-sql-memory=.25
+    ```
+
+With the default 3-way replication factor and `--locality` set as described, CockroachDB balances each range of table data across AZs, one replica per AZ. System data is replicated 5 times by default and also balanced across AZs, thus increasing the [resiliency of the cluster](/docs/v24.1/configure-replication-zones#create-a-replication-zone-for-a-system-range) as a whole.
+
+## Characteristics
+
+### Latency
+
+#### Reads
+
+Since all ranges, including leaseholder replicas, are in a single region, read latency is very low.
+
+For example, in the animation below:
+
+1. The read request reaches the load balancer.
+2. The load balancer routes the request to a gateway node.
+3. The gateway node routes the request to the relevant leaseholder.
+4. The leaseholder retrieves the results and returns to the gateway node.
+5. The gateway node returns the results to the client.
+
+<Frame>
+  ![Basic production topology reads](/images/v24.1/topology-patterns/topology_basic_production_reads.png)
+</Frame>
+
+#### Writes
+
+Since all ranges are in a single region, writes achieve consensus without leaving the region and, thus, write latency is very low as well.
+
+For example, in the animation below:
+
+1. The write request reaches the load balancer.
+2. The load balancer routes the request to a gateway node.
+3. The gateway node routes the request to the leaseholder replicas for the relevant table and secondary index.
+4. While each leaseholder appends the write to its Raft log, it notifies its follower replicas.
+5. In each case, as soon as one follower has appended the write to its Raft log (and thus a majority of replicas agree based on identical Raft logs), it notifies the leaseholder and the write is committed on the agreeing replicas.
+6. The leaseholders then return acknowledgement of the commit to the gateway node.
+7. The gateway node returns the acknowledgement to the client.
+
+<Frame>
+  ![Leaseholder preferences topology writes](/images/v24.1/topology-patterns/topology_basic_production_writes.gif)
+</Frame>
+
+### Resiliency
+
+Because each range is balanced across AZs, one AZ can fail without interrupting access to any data:
+
+<Frame>
+  ![Basic production topology single zone failure](/images/v24.1/topology-patterns/topology_basic_production_resiliency1.png)
+</Frame>
+
+However, if an additional AZ fails at the same time, the ranges that lose consensus become unavailable for reads and writes:
+
+<Frame>
+  ![Basic production topology double zone failure](/images/v24.1/topology-patterns/topology_basic_production_resiliency2.png)
+</Frame>
+
+## See also
+
+- [Multi-Region Capabilities Overview](/docs/v24.1/multiregion-overview)
+- [How to Choose a Multi-Region Configuration](/docs/v24.1/choosing-a-multi-region-configuration)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](/docs/v24.1/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](/docs/v24.1/table-localities#when-to-use-regional-vs-global-tables)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.1/demo-low-latency-multi-region-deployment)
+- [Migrate to Multi-Region SQL](/docs/v24.1/migrate-to-multiregion-sql)
+- [Secondary regions](/docs/v24.1/multiregion-overview#secondary-regions)
+- [`ALTER DATABASE... SET SECONDARY REGION`](/docs/v24.1/alter-database#set-secondary-region)
+- [`ALTER DATABASE... DROP SECONDARY REGION`](/docs/v24.1/alter-database#drop-secondary-region)
+- [Topology Patterns Overview](/docs/v24.1/topology-patterns)
+    - Single-region patterns
+        - [Development](/docs/v24.1/topology-development)
+        - [Basic Production](/docs/v24.1/topology-basic-production)
+    - Multi-region patterns
+        - [`REGIONAL` Tables](/docs/v24.1/regional-tables)
+        - [`GLOBAL` Tables](/docs/v24.1/global-tables)
+        - [Follower Reads](/docs/v24.1/topology-follower-reads)
+        - [Follow-the-Workload](/docs/v24.1/topology-follow-the-workload)

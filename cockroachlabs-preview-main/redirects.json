@@ -1,0 +1,642 @@
+[
+  {
+    "source": "docs/v26.1/:path*",
+    "destination": "docs/stable/:path*"
+  },
+  {
+    "source": "/docs/cockroachcloud",
+    "destination": "/docs/stable/cockroachcloud"
+  },
+  {
+    "source": "/docs/cockroachcloud/advanced-cluster-management",
+    "destination": "/docs/stable/cockroachcloud/advanced-cluster-management"
+  },
+  {
+    "source": "/docs/cockroachcloud/alerts-page",
+    "destination": "/docs/stable/cockroachcloud/alerts-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/authentication",
+    "destination": "/docs/stable/cockroachcloud/authentication"
+  },
+  {
+    "source": "/docs/cockroachcloud/authorization",
+    "destination": "/docs/stable/cockroachcloud/authorization"
+  },
+  {
+    "source": "/docs/cockroachcloud/aws-privatelink",
+    "destination": "/docs/stable/cockroachcloud/aws-privatelink"
+  },
+  {
+    "source": "/docs/cockroachcloud/backup-and-restore-monitoring",
+    "destination": "/docs/stable/cockroachcloud/backup-and-restore-monitoring"
+  },
+  {
+    "source": "/docs/cockroachcloud/backup-and-restore-overview",
+    "destination": "/docs/stable/cockroachcloud/backup-and-restore-overview"
+  },
+  {
+    "source": "/docs/cockroachcloud/basic-cluster-management",
+    "destination": "/docs/stable/cockroachcloud/basic-cluster-management"
+  },
+  {
+    "source": "/docs/cockroachcloud/billing-management",
+    "destination": "/docs/stable/cockroachcloud/billing-management"
+  },
+  {
+    "source": "/docs/cockroachcloud/byoc-deployment",
+    "destination": "/docs/stable/cockroachcloud/byoc-deployment"
+  },
+  {
+    "source": "/docs/cockroachcloud/ccloud-get-started",
+    "destination": "/docs/stable/cockroachcloud/ccloud-get-started"
+  },
+  {
+    "source": "/docs/cockroachcloud/ccloud-reference",
+    "destination": "/docs/stable/cockroachcloud/ccloud-reference"
+  },
+  {
+    "source": "/docs/cockroachcloud/change-plan-between-basic-and-standard",
+    "destination": "/docs/stable/cockroachcloud/change-plan-between-basic-and-standard"
+  },
+  {
+    "source": "/docs/cockroachcloud/client-certs-advanced",
+    "destination": "/docs/stable/cockroachcloud/client-certs-advanced"
+  },
+  {
+    "source": "/docs/cockroachcloud/cloud-api",
+    "destination": "/docs/stable/cockroachcloud/cloud-api"
+  },
+  {
+    "source": "/docs/cockroachcloud/cloud-org-audit-logs",
+    "destination": "/docs/stable/cockroachcloud/cloud-org-audit-logs"
+  },
+  {
+    "source": "/docs/cockroachcloud/cloud-org-sso",
+    "destination": "/docs/stable/cockroachcloud/cloud-org-sso"
+  },
+  {
+    "source": "/docs/cockroachcloud/cloud-sso-sql",
+    "destination": "/docs/stable/cockroachcloud/cloud-sso-sql"
+  },
+  {
+    "source": "/docs/cockroachcloud/cluster-management",
+    "destination": "/docs/stable/cockroachcloud/cluster-management"
+  },
+  {
+    "source": "/docs/cockroachcloud/cluster-overview-page",
+    "destination": "/docs/stable/cockroachcloud/cluster-overview-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/cmek",
+    "destination": "/docs/stable/cockroachcloud/cmek"
+  },
+  {
+    "source": "/docs/cockroachcloud/cockroachdb-advanced-on-azure",
+    "destination": "/docs/stable/cockroachcloud/cockroachdb-advanced-on-azure"
+  },
+  {
+    "source": "/docs/cockroachcloud/compliance",
+    "destination": "/docs/stable/cockroachcloud/compliance"
+  },
+  {
+    "source": "/docs/cockroachcloud/configure-cloud-org-sso",
+    "destination": "/docs/stable/cockroachcloud/configure-cloud-org-sso"
+  },
+  {
+    "source": "/docs/cockroachcloud/configure-scim-provisioning",
+    "destination": "/docs/stable/cockroachcloud/configure-scim-provisioning"
+  },
+  {
+    "source": "/docs/cockroachcloud/connect-to-a-basic-cluster",
+    "destination": "/docs/stable/cockroachcloud/connect-to-a-basic-cluster"
+  },
+  {
+    "source": "/docs/cockroachcloud/connect-to-an-advanced-cluster",
+    "destination": "/docs/stable/cockroachcloud/connect-to-an-advanced-cluster"
+  },
+  {
+    "source": "/docs/cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server",
+    "destination": "/docs/stable/cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server"
+  },
+  {
+    "source": "/docs/cockroachcloud/connect-to-your-cluster",
+    "destination": "/docs/stable/cockroachcloud/connect-to-your-cluster"
+  },
+  {
+    "source": "/docs/cockroachcloud/costs",
+    "destination": "/docs/stable/cockroachcloud/costs"
+  },
+  {
+    "source": "/docs/cockroachcloud/create-a-basic-cluster",
+    "destination": "/docs/stable/cockroachcloud/create-a-basic-cluster"
+  },
+  {
+    "source": "/docs/cockroachcloud/create-an-account",
+    "destination": "/docs/stable/cockroachcloud/create-an-account"
+  },
+  {
+    "source": "/docs/cockroachcloud/create-an-advanced-cluster",
+    "destination": "/docs/stable/cockroachcloud/create-an-advanced-cluster"
+  },
+  {
+    "source": "/docs/cockroachcloud/create-your-cluster",
+    "destination": "/docs/stable/cockroachcloud/create-your-cluster"
+  },
+  {
+    "source": "/docs/cockroachcloud/custom-metrics-chart-page",
+    "destination": "/docs/stable/cockroachcloud/custom-metrics-chart-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/databases-page",
+    "destination": "/docs/stable/cockroachcloud/databases-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/egress-perimeter-controls",
+    "destination": "/docs/stable/cockroachcloud/egress-perimeter-controls"
+  },
+  {
+    "source": "/docs/cockroachcloud/egress-private-endpoints",
+    "destination": "/docs/stable/cockroachcloud/egress-private-endpoints"
+  },
+  {
+    "source": "/docs/cockroachcloud/export-logs-advanced",
+    "destination": "/docs/stable/cockroachcloud/export-logs-advanced"
+  },
+  {
+    "source": "/docs/cockroachcloud/export-logs",
+    "destination": "/docs/stable/cockroachcloud/export-logs"
+  },
+  {
+    "source": "/docs/cockroachcloud/export-metrics-advanced",
+    "destination": "/docs/stable/cockroachcloud/export-metrics-advanced"
+  },
+  {
+    "source": "/docs/cockroachcloud/export-metrics",
+    "destination": "/docs/stable/cockroachcloud/export-metrics"
+  },
+  {
+    "source": "/docs/cockroachcloud/folders",
+    "destination": "/docs/stable/cockroachcloud/folders"
+  },
+  {
+    "source": "/docs/cockroachcloud/insights-page",
+    "destination": "/docs/stable/cockroachcloud/insights-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/jobs-page",
+    "destination": "/docs/stable/cockroachcloud/jobs-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/labels",
+    "destination": "/docs/stable/cockroachcloud/labels"
+  },
+  {
+    "source": "/docs/cockroachcloud/managed-backups-advanced",
+    "destination": "/docs/stable/cockroachcloud/managed-backups-advanced"
+  },
+  {
+    "source": "/docs/cockroachcloud/managed-backups-basic",
+    "destination": "/docs/stable/cockroachcloud/managed-backups-basic"
+  },
+  {
+    "source": "/docs/cockroachcloud/managed-backups",
+    "destination": "/docs/stable/cockroachcloud/managed-backups"
+  },
+  {
+    "source": "/docs/cockroachcloud/managing-access",
+    "destination": "/docs/stable/cockroachcloud/managing-access"
+  },
+  {
+    "source": "/docs/cockroachcloud/managing-cmek",
+    "destination": "/docs/stable/cockroachcloud/managing-cmek"
+  },
+  {
+    "source": "/docs/cockroachcloud/metrics-changefeeds",
+    "destination": "/docs/stable/cockroachcloud/metrics-changefeeds"
+  },
+  {
+    "source": "/docs/cockroachcloud/metrics-essential",
+    "destination": "/docs/stable/cockroachcloud/metrics-essential"
+  },
+  {
+    "source": "/docs/cockroachcloud/metrics-overview",
+    "destination": "/docs/stable/cockroachcloud/metrics-overview"
+  },
+  {
+    "source": "/docs/cockroachcloud/metrics-request-units",
+    "destination": "/docs/stable/cockroachcloud/metrics-request-units"
+  },
+  {
+    "source": "/docs/cockroachcloud/metrics-row-level-ttl",
+    "destination": "/docs/stable/cockroachcloud/metrics-row-level-ttl"
+  },
+  {
+    "source": "/docs/cockroachcloud/metrics-sql",
+    "destination": "/docs/stable/cockroachcloud/metrics-sql"
+  },
+  {
+    "source": "/docs/cockroachcloud/metrics",
+    "destination": "/docs/stable/cockroachcloud/metrics"
+  },
+  {
+    "source": "/docs/cockroachcloud/migrate-from-standard-to-advanced",
+    "destination": "/docs/stable/cockroachcloud/migrate-from-standard-to-advanced"
+  },
+  {
+    "source": "/docs/cockroachcloud/migrations-page",
+    "destination": "/docs/stable/cockroachcloud/migrations-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/network-authorization",
+    "destination": "/docs/stable/cockroachcloud/network-authorization"
+  },
+  {
+    "source": "/docs/cockroachcloud/overview-page",
+    "destination": "/docs/stable/cockroachcloud/overview-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/pci-dss",
+    "destination": "/docs/stable/cockroachcloud/pci-dss"
+  },
+  {
+    "source": "/docs/cockroachcloud/physical-cluster-replication",
+    "destination": "/docs/stable/cockroachcloud/physical-cluster-replication"
+  },
+  {
+    "source": "/docs/cockroachcloud/plan-your-cluster-advanced",
+    "destination": "/docs/stable/cockroachcloud/plan-your-cluster-advanced"
+  },
+  {
+    "source": "/docs/cockroachcloud/plan-your-cluster-basic",
+    "destination": "/docs/stable/cockroachcloud/plan-your-cluster-basic"
+  },
+  {
+    "source": "/docs/cockroachcloud/plan-your-cluster",
+    "destination": "/docs/stable/cockroachcloud/plan-your-cluster"
+  },
+  {
+    "source": "/docs/cockroachcloud/private-clusters",
+    "destination": "/docs/stable/cockroachcloud/private-clusters"
+  },
+  {
+    "source": "/docs/cockroachcloud/production-checklist",
+    "destination": "/docs/stable/cockroachcloud/production-checklist"
+  },
+  {
+    "source": "/docs/cockroachcloud/provision-a-cluster-with-terraform",
+    "destination": "/docs/stable/cockroachcloud/provision-a-cluster-with-terraform"
+  },
+  {
+    "source": "/docs/cockroachcloud/quickstart",
+    "destination": "/docs/stable/cockroachcloud/quickstart"
+  },
+  {
+    "source": "/docs/cockroachcloud/regions",
+    "destination": "/docs/stable/cockroachcloud/regions"
+  },
+  {
+    "source": "/docs/cockroachcloud/resource-usage-basic",
+    "destination": "/docs/stable/cockroachcloud/resource-usage-basic"
+  },
+  {
+    "source": "/docs/cockroachcloud/resource-usage",
+    "destination": "/docs/stable/cockroachcloud/resource-usage"
+  },
+  {
+    "source": "/docs/cockroachcloud/security-overview",
+    "destination": "/docs/stable/cockroachcloud/security-overview"
+  },
+  {
+    "source": "/docs/cockroachcloud/sessions-page",
+    "destination": "/docs/stable/cockroachcloud/sessions-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/sql-audit-logging",
+    "destination": "/docs/stable/cockroachcloud/sql-audit-logging"
+  },
+  {
+    "source": "/docs/cockroachcloud/sql-shell",
+    "destination": "/docs/stable/cockroachcloud/sql-shell"
+  },
+  {
+    "source": "/docs/cockroachcloud/statements-page",
+    "destination": "/docs/stable/cockroachcloud/statements-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/stream-changefeed-to-snowflake-aws",
+    "destination": "/docs/stable/cockroachcloud/stream-changefeed-to-snowflake-aws"
+  },
+  {
+    "source": "/docs/cockroachcloud/take-and-restore-self-managed-backups",
+    "destination": "/docs/stable/cockroachcloud/take-and-restore-self-managed-backups"
+  },
+  {
+    "source": "/docs/cockroachcloud/tools-page",
+    "destination": "/docs/stable/cockroachcloud/tools-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/transactions-page",
+    "destination": "/docs/stable/cockroachcloud/transactions-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/troubleshooting-page",
+    "destination": "/docs/stable/cockroachcloud/troubleshooting-page"
+  },
+  {
+    "source": "/docs/cockroachcloud/upgrade-cockroach-version",
+    "destination": "/docs/stable/cockroachcloud/upgrade-cockroach-version"
+  },
+  {
+    "source": "/docs/cockroachcloud/upgrade-policy",
+    "destination": "/docs/stable/cockroachcloud/upgrade-policy"
+  },
+  {
+    "source": "docs/molt/migrate-bulk-load",
+    "destination": "docs/stable/molt/migrate-bulk-load"
+  },
+  {
+    "source": "docs/molt/migrate-failback",
+    "destination": "docs/stable/molt/migrate-failback"
+  },
+  {
+    "source": "docs/molt/migrate-load-replicate",
+    "destination": "docs/stable/molt/migrate-load-replicate"
+  },
+  {
+    "source": "docs/molt/migrate-resume-replication",
+    "destination": "docs/stable/molt/migrate-resume-replication"
+  },
+  {
+    "source": "docs/molt/migration-overview",
+    "destination": "docs/stable/molt/migration-overview"
+  },
+  {
+    "source": "docs/molt/migration-strategy",
+    "destination": "docs/stable/molt/migration-strategy"
+  },
+  {
+    "source": "docs/molt/molt-fetch",
+    "destination": "docs/stable/molt/molt-fetch"
+  },
+  {
+    "source": "docs/molt/molt-replicator",
+    "destination": "docs/stable/molt/molt-replicator"
+  },
+  {
+    "source": "docs/molt/molt-verify",
+    "destination": "docs/stable/molt/molt-verify"
+  },
+  {
+    "source": "docs/molt/replicator-flags",
+    "destination": "docs/stable/molt/replicator-flags"
+  },
+  {
+    "source": "docs/molt/replicator-metrics",
+    "destination": "docs/stable/molt/replicator-metrics"
+  },
+  {
+    "source": "docs/molt/tree.",
+    "destination": "docs/stable/molt/tree."
+  },
+  {
+    "source": "docs/molt/userscript-api",
+    "destination": "docs/stable/molt/userscript-api"
+  },
+  {
+    "source": "docs/molt/userscript-cookbook",
+    "destination": "docs/stable/molt/userscript-cookbook"
+  },
+  {
+    "source": "docs/molt/userscript-metrics",
+    "destination": "docs/stable/molt/userscript-metrics"
+  },
+  {
+    "source": "docs/molt/userscript-overview",
+    "destination": "docs/stable/molt/userscript-overview"
+  },
+  {
+    "source": "docs/molt/userscript-quickstart",
+    "destination": "docs/stable/molt/userscript-quickstart"
+  },
+  {
+    "source": "docs/releases/archived-documentation",
+    "destination": "docs/stable/releases/archived-documentation"
+  },
+  {
+    "source": "docs/releases/cloud",
+    "destination": "docs/stable/releases/cloud"
+  },
+  {
+    "source": "docs/releases/downloads-archive",
+    "destination": "docs/stable/releases/downloads-archive"
+  },
+  {
+    "source": "docs/releases/index",
+    "destination": "docs/stable/releases/index"
+  },
+  {
+    "source": "docs/releases/kubernetes-operator",
+    "destination": "docs/stable/releases/kubernetes-operator"
+  },
+  {
+    "source": "docs/releases/molt",
+    "destination": "docs/stable/releases/molt"
+  },
+  {
+    "source": "docs/releases/release-support-policy",
+    "destination": "docs/stable/releases/release-support-policy"
+  },
+  {
+    "source": "docs/releases/staged-release-process",
+    "destination": "docs/stable/releases/staged-release-process"
+  },
+  {
+    "source": "docs/releases/tree.",
+    "destination": "docs/stable/releases/tree."
+  },
+  {
+    "source": "docs/releases/unsupported-versions",
+    "destination": "docs/stable/releases/unsupported-versions"
+  },
+  {
+    "source": "docs/releases/v1.0",
+    "destination": "docs/stable/releases/v1.0"
+  },
+  {
+    "source": "docs/releases/v1.1",
+    "destination": "docs/stable/releases/v1.1"
+  },
+  {
+    "source": "docs/releases/v19.1",
+    "destination": "docs/stable/releases/v19.1"
+  },
+  {
+    "source": "docs/releases/v19.2",
+    "destination": "docs/stable/releases/v19.2"
+  },
+  {
+    "source": "docs/releases/v2.0",
+    "destination": "docs/stable/releases/v2.0"
+  },
+  {
+    "source": "docs/releases/v2.1",
+    "destination": "docs/stable/releases/v2.1"
+  },
+  {
+    "source": "docs/releases/v20.1",
+    "destination": "docs/stable/releases/v20.1"
+  },
+  {
+    "source": "docs/releases/v20.2",
+    "destination": "docs/stable/releases/v20.2"
+  },
+  {
+    "source": "docs/releases/v21.1",
+    "destination": "docs/stable/releases/v21.1"
+  },
+  {
+    "source": "docs/releases/v21.2",
+    "destination": "docs/stable/releases/v21.2"
+  },
+  {
+    "source": "docs/releases/v22.1",
+    "destination": "docs/stable/releases/v22.1"
+  },
+  {
+    "source": "docs/releases/v22.2",
+    "destination": "docs/stable/releases/v22.2"
+  },
+  {
+    "source": "docs/releases/v23.1",
+    "destination": "docs/stable/releases/v23.1"
+  },
+  {
+    "source": "docs/releases/v23.2",
+    "destination": "docs/stable/releases/v23.2"
+  },
+  {
+    "source": "docs/releases/v24.1",
+    "destination": "docs/stable/releases/v24.1"
+  },
+  {
+    "source": "docs/releases/v24.2",
+    "destination": "docs/stable/releases/v24.2"
+  },
+  {
+    "source": "docs/releases/v24.3",
+    "destination": "docs/stable/releases/v24.3"
+  },
+  {
+    "source": "docs/releases/v25.1",
+    "destination": "docs/stable/releases/v25.1"
+  },
+  {
+    "source": "docs/releases/v25.2",
+    "destination": "docs/stable/releases/v25.2"
+  },
+  {
+    "source": "docs/releases/v25.3",
+    "destination": "docs/stable/releases/v25.3"
+  },
+  {
+    "source": "docs/releases/v25.4",
+    "destination": "docs/stable/releases/v25.4"
+  },
+  {
+    "source": "docs/releases/v26.1",
+    "destination": "docs/stable/releases/v26.1"
+  },
+  {
+    "source": "docs/releases/v26.2",
+    "destination": "docs/stable/releases/v26.2"
+  },
+  {
+    "source": "docs/advisories",
+    "destination": "docs/stable/advisories"
+  },
+  {
+    "source": "/docs/v23.2/demo-cockroachdb-resilience",
+    "destination": "/docs/v24.3/demo-cockroachdb-resilience"
+  },
+  {
+    "source": "/docs/v23.2/disaster-recovery-overview",
+    "destination": "/docs/v24.1/disaster-recovery-overview"
+  },
+  {
+    "source": "/docs/v23.2/how-does-a-changefeed-work",
+    "destination": "/docs/v24.3/how-does-a-changefeed-work"
+  },
+  {
+    "source": "/docs/v23.2/inspect",
+    "destination": "/docs/stable/inspect"
+  },
+  {
+    "source": "/docs/v23.2/migrate-cockroachdb-kubernetes-helm",
+    "destination": "/docs/v25.2/migrate-cockroachdb-kubernetes-helm"
+  },
+  {
+    "source": "/docs/v23.2/migrate-cockroachdb-kubernetes-operator",
+    "destination": "/docs/v25.2/migrate-cockroachdb-kubernetes-operator"
+  },
+  {
+    "source": "/docs/v23.2/set-up-logical-data-replication",
+    "destination": "/docs/v24.3/set-up-logical-data-replication"
+  },
+  {
+    "source": "/docs/v23.2/vector",
+    "destination": "/docs/v24.3/vector"
+  },
+  {
+    "source": "/docs/v24.1/demo-cockroachdb-resilience",
+    "destination": "/docs/v24.3/demo-cockroachdb-resilience"
+  },
+  {
+    "source": "/docs/v24.1/how-does-a-changefeed-work",
+    "destination": "/docs/v24.3/how-does-a-changefeed-work"
+  },
+  {
+    "source": "/docs/v24.1/inspect",
+    "destination": "/docs/stable/inspect"
+  },
+  {
+    "source": "/docs/v24.1/migrate-cockroachdb-kubernetes-helm",
+    "destination": "/docs/v25.2/migrate-cockroachdb-kubernetes-helm"
+  },
+  {
+    "source": "/docs/v24.1/migrate-cockroachdb-kubernetes-operator",
+    "destination": "/docs/v25.2/migrate-cockroachdb-kubernetes-operator"
+  },
+  {
+    "source": "/docs/v24.1/set-up-logical-data-replication",
+    "destination": "/docs/v24.3/set-up-logical-data-replication"
+  },
+  {
+    "source": "/docs/v24.1/vector",
+    "destination": "/docs/v24.3/vector"
+  },
+  {
+    "source": "/docs/v24.3/inspect",
+    "destination": "/docs/stable/inspect"
+  },
+  {
+    "source": "/docs/v24.3/migrate-cockroachdb-kubernetes-helm",
+    "destination": "/docs/v25.2/migrate-cockroachdb-kubernetes-helm"
+  },
+  {
+    "source": "/docs/v24.3/migrate-cockroachdb-kubernetes-operator",
+    "destination": "/docs/v25.2/migrate-cockroachdb-kubernetes-operator"
+  },
+  {
+    "source": "/docs/v25.2/inspect",
+    "destination": "/docs/stable/inspect"
+  },
+  {
+    "source": "/docs/v25.4/inspect",
+    "destination": "/docs/stable/inspect"
+  },
+  {
+    "source": "/docs/v23.2/agent-skills",
+    "destination": "/docs/v24.1/agent-skills"
+  }
+]

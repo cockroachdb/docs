@@ -1,0 +1,82 @@
+---
+title: "Export Data with Changefeeds"
+old_description: "Use changefeeds to export table data from CockroachDB"
+---
+
+When you create a changefeed, you can include the [`initial_scan = 'only'`](/docs/v24.3/create-changefeed#initial-scan) option to specify that the changefeed should only complete a table scan. The changefeed emits messages for the table scan and then the job completes with a `succeeded` status. As a result, you can create a changefeed with `initial_scan = 'only'` to [`EXPORT`](/docs/v24.3/export) data out of your database.
+
+You can also [schedule a changefeed](#create-a-scheduled-changefeed-to-export-filtered-data) that is emitting messages to a downstream sink, which allows you to use a changefeed initial scan for exporting data on a regular cadence.
+
+The benefits of using changefeeds for this use case instead of [export](/docs/v24.3/export), include:
+
+- Changefeeds are jobs, which can be [paused](/docs/v24.3/pause-job), [resumed](/docs/v24.3/resume-job), [cancelled](/docs/v24.3/cancel-job), [scheduled](/docs/v24.3/create-schedule-for-changefeed), and [altered](/docs/v24.3/alter-changefeed).
+- There is observability into a changefeed job using [`SHOW CHANGEFEED JOBS`](/docs/v24.3/show-jobs#show-changefeed-jobs) and the [Changefeeds Dashboard](/docs/v24.3/ui-cdc-dashboard) in the DB Console.
+- Changefeed jobs have built-in [checkpointing](/docs/v24.3/how-does-a-changefeed-work) and [retries](/docs/v24.3/monitor-and-debug-changefeeds#changefeed-retry-errors).
+- [Changefeed sinks](/docs/v24.3/changefeed-sinks) provide additional endpoints for your data.
+- You can use the [`format=csv`](/docs/v24.3/create-changefeed#format) option with `initial_scan= 'only'` to emit messages in CSV format.
+
+Changefeeds emit the same CSV format as [`EXPORT`](/docs/v24.3/export). In v22.1, changefeeds emitted CSV data that wrapped some values in single quotes, which were not wrapped when exporting data with the `EXPORT` statement.
+
+## Message formats
+
+By default, changefeeds emit messages in JSON format. You can use a different format by [creating a changefeed](/docs/v24.3/create-changefeed) with the [`format`](/docs/v24.3/create-changefeed#format) option and specifying one of the following:
+
+- `json`
+- `csv`
+- `avro`
+- `parquet`
+
+## Examples
+
+### Export data with a changefeed
+
+To create a changefeed that will only complete an initial scan of a table(s), run the following:
+
+```sql
+CREATE CHANGEFEED FOR TABLE movr.users INTO '{scheme}://{host}:{port}?{query_parameters}' WITH initial_scan = 'only', format=csv;
+```
+
+Or, use [CDC queries](/docs/v24.3/cdc-queries) to filter the data that your changefeed emits:
+
+```sql
+CREATE CHANGEFEED INTO '{scheme}://{host}:{port}?{query_parameters}'
+  WITH initial_scan = 'only', format=csv AS SELECT name, city FROM movr.users;
+```
+
+The job will return a job ID once it has started. You can use `SHOW CHANGEFEED JOBS` to check on the status:
+
+```sql
+SHOW CHANGEFEED JOB {job ID};
+```
+
+When the scan has completed you will find the output shows `succeeded` in the `status` field.
+
+### Create a scheduled changefeed to export filtered data
+
+This example creates a nightly export of some filtered table data with a [scheduled changefeed](/docs/v24.3/create-schedule-for-changefeed) that will run just after midnight every night. The changefeed uses [CDC queries](/docs/v24.3/cdc-queries) to query the table and filter the data it will send to the sink:
+
+```sql
+CREATE SCHEDULE sf_skateboard FOR CHANGEFEED INTO 'external://cloud-sink' WITH format=csv
+  AS SELECT current_location, id, type, status FROM vehicles
+  WHERE city = 'san francisco' AND type = 'skateboard'
+  RECURRING '1 0 * * *' WITH SCHEDULE OPTIONS on_execution_failure=retry, on_previous_running=start;
+```
+
+The [schedule options](/docs/v24.3/create-schedule-for-changefeed#schedule-options) control the schedule's behavior:
+
+- If it runs into a failure, `on_execution_failure=retry` will ensure that the schedule retries the changefeed immediately.
+- If the previous scheduled changefeed is still running, `on_previous_running=start` will start a new changefeed at the defined cadence.
+
+### Video Demo
+
+For a demo on how to use changefeeds to export large amounts of data, watch the following video:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/UXsKuXbkjws" title="YouTube video player" width="560"></iframe>
+</Frame>
+
+## See also
+
+- [Changefeed Messages](/docs/v24.3/changefeed-messages)
+- [`CREATE CHANGEFEED`](/docs/v24.3/create-changefeed)
+- [`CREATE SCHEDULE FOR CHANGEFEED`](/docs/v24.3/create-schedule-for-changefeed)

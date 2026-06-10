@@ -1,0 +1,58 @@
+---
+title: "Take Backups with Revision History and Restore from a Point-in-time"
+old_description: "Learn about the advanced options you can use when you backup and restore a CockroachDB cluster."
+---
+
+This page provides information about how to take backups with revision history and restore from a point-in-time.
+
+You can create full or incremental backups [with revision history](/docs/v23.2/backup#with-revision-history):
+
+- Taking full backups with revision history allows you to back up every change made within the garbage collection period leading up to and including the given timestamp.
+- Taking incremental backups with revision history allows you to back up every change made since the last backup and within the garbage collection period leading up to and including the given timestamp. You can take incremental backups with revision history even when your previous full or incremental backups were taken without revision history.
+
+You can configure garbage collection periods using the `ttlseconds` [replication zone setting](/docs/v23.2/configure-replication-zones). Taking backups with revision history allows for point-in-time restores within the revision history.
+
+<Note>
+If you are creating incremental backups as part of a [backup schedule](/docs/v23.2/create-schedule-for-backup), [protected timestamps](/docs/v23.2/architecture/storage-layer#protected-timestamps) will ensure the backup revision data is not garbage collected, which allows you to lower the GC TTL. See [Protected timestamps and scheduled backups](/docs/v23.2/create-schedule-for-backup#protected-timestamps-and-scheduled-backups) for more detail.
+</Note>
+
+## Supported products
+
+The feature described on this page is available in **CockroachDB Basic**, **CockroachDB Standard**, **CockroachDB Advanced**, and **CockroachDB self-hosted** clusters when you are running [self-managed backups](/docs/cockroachcloud/take-and-restore-self-managed-backups). For a full list of features, refer to [Backup and restore product support](/docs/v23.2/backup-and-restore-overview#backup-and-restore-support).
+
+## Create a backup with revision history
+
+```sql
+> BACKUP INTO '{collectionURI}' AS OF SYSTEM TIME '-10s' WITH revision_history;
+```
+
+For guidance on connecting to Amazon S3, Google Cloud Storage, Azure Storage, and other storage options, read [Use Cloud Storage](/docs/v23.2/use-cloud-storage).
+
+## Point-in-time restore
+
+<Warning>
+`RESTORE` will only restore the latest data in an object (table, database, cluster), or the latest data as per an `AS OF SYSTEM TIME` restore. A restore will not include historical data even if you ran your backup with `revision_history`. This means that if you issue an `AS OF SYSTEM TIME` query on a restored object, the query will fail or the response will be incorrect because there is no historical data to query.
+</Warning>
+
+If the full or incremental backup was taken [with revision history](#create-a-backup-with-revision-history), you can restore the data as it existed at an arbitrary point-in-time within the revision history captured by that backup. Use the [`AS OF SYSTEM TIME`](/docs/v23.2/as-of-system-time) clause to specify the point-in-time.
+
+Additionally, if you want to restore a specific incremental backup, you can do so by specifying the `end_time` of the backup by using the [`AS OF SYSTEM TIME`](/docs/v23.2/as-of-system-time) clause. To find the incremental backup's `end_time`, use [`SHOW BACKUP`](/docs/v23.2/show-backup).
+
+If you do not specify a point-in-time, the data will be restored to the backup timestamp; that is, the restore will work as if the data was backed up without revision history.
+
+```sql
+> RESTORE FROM '/2021/12/13-211056.62' IN '{collectionURI}' AS OF SYSTEM TIME '2021-12-13 10:00:00';
+```
+
+To view the available backup subdirectories you can restore from, use [`SHOW BACKUPS`](/docs/v23.2/restore#view-the-backup-subdirectories).
+
+## See also
+
+- [`BACKUP`](/docs/v23.2/backup)
+- [`RESTORE`](/docs/v23.2/restore)
+- [Take Full and Incremental Backups](/docs/v23.2/take-full-and-incremental-backups)
+- [Take and Restore Encrypted Backups](/docs/v23.2/take-and-restore-encrypted-backups)
+- [Take and Restore Locality-aware Backups](/docs/v23.2/take-and-restore-locality-aware-backups)
+- [Migration Overview](/docs/molt/migration-overview)
+- [Use the Built-in SQL Client](/docs/v23.2/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v23.2/cockroach-commands)

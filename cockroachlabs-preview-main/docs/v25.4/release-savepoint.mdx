@@ -1,0 +1,85 @@
+---
+title: "RELEASE SAVEPOINT"
+old_description: "The RELEASE SAVEPOINT statement commits the nested transaction starting at the corresponding SAVEPOINT statement using the same savepoint name."
+---
+
+import { ReleaseSavepoint6 } from "/snippets/syntax-diagrams/ReleaseSavepoint6.jsx";
+
+The `RELEASE SAVEPOINT` statement commits the [nested transaction](/docs/v25.4/transactions#nested-transactions) starting at the corresponding `SAVEPOINT` statement using the same savepoint name, including all its nested sub-transactions. This is in addition to continued support for working with [retry savepoints](/docs/v25.4/savepoint#savepoints-for-client-side-transaction-retries).
+
+## Synopsis
+
+<ReleaseSavepoint6 />
+
+## Required privileges
+
+No [privileges](/docs/v25.4/security-reference/authorization#managing-privileges) are required to release a savepoint. However, privileges are required for each statement within a transaction.
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td>name</td><td>The name of the savepoint. <a href="/docs/v25.4/savepoint#savepoints-for-client-side-transaction-retries">Retry savepoints</a> default to using the name <code>cockroach&#95;restart</code>, but this can be customized using a session variable. For more information, see <a href="/docs/v25.4/savepoint#customizing-the-retry-savepoint-name">Customizing the retry savepoint name</a>.</td></tr></tbody></table>
+
+## Handling errors
+
+The `RELEASE SAVEPOINT` statement is invalid after the nested transaction has encountered an error. After an error, the following statements can be used:
+
+- [`ROLLBACK TO SAVEPOINT`](/docs/v25.4/rollback-transaction#rollback-a-nested-transaction) to roll back to the previous savepoint.
+- [`ROLLBACK` or `ABORT`](/docs/v25.4/rollback-transaction#rollback-a-transaction) to roll back the entire surrounding transaction.
+- [`COMMIT`](/docs/v25.4/commit-transaction) to commit the entire surrounding transaction. In case of error, `COMMIT` is synonymous with [`ROLLBACK`/`ABORT`](/docs/v25.4/rollback-transaction) and also rolls back the entire transaction.
+
+When a (sub-)transaction encounters a retry error, the client should repeat `ROLLBACK TO SAVEPOINT` and the statements in the transaction until the statements complete without error, then issue `RELEASE`.
+
+To completely remove the marker of a nested transaction after it encounters an error and begin other work in the outer transaction, use [`ROLLBACK TO SAVEPOINT`](/docs/v25.4/rollback-transaction#rollback-a-nested-transaction) immediately followed by `RELEASE`.
+
+## Examples
+
+### Commit a nested transaction by releasing a savepoint
+
+<Note>
+This example uses the [MovR data set](/docs/v25.4/movr).
+</Note>
+
+In the example below, we roll back the inner [nested transaction](/docs/v25.4/transactions#nested-transactions) (marked by the savepoint `lower`) and release (commit) the outer savepoint `higher`, which raises the promo code discount to 15% using CockroachDB's [JSONB functions](/docs/v25.4/jsonb#functions).
+
+```sql
+> BEGIN;
+SAVEPOINT higher;
+UPDATE promo_codes SET rules = jsonb_set(rules, '{value}', '"15%"') WHERE rules @> '{"type": "percent_discount"}';
+SAVEPOINT lower;
+UPDATE promo_codes SET rules = jsonb_set(rules, '{value}', '"7.5%"') WHERE rules @> '{"type": "percent_discount"}';
+ROLLBACK TO SAVEPOINT lower;
+RELEASE SAVEPOINT higher;
+COMMIT;
+```
+
+```text
+COMMIT
+```
+
+### Commit a transaction by releasing a retry savepoint
+
+A savepoint defined with the name `cockroach_restart` is a "retry savepoint" and is used to implement [advanced client-side transaction retries](/docs/v25.4/advanced-client-side-transaction-retries). For more information, see [Retry savepoints](/docs/v25.4/advanced-client-side-transaction-retries#retry-savepoints).
+
+After declaring a retry savepoint, commit the transaction with `RELEASE SAVEPOINT` and then prepare the connection for the next transaction with [`COMMIT`](/docs/v25.4/commit-transaction):
+
+```sql
+> BEGIN;
+SAVEPOINT cockroach_restart;
+UPDATE products SET inventory = 0 WHERE sku = '8675309';
+INSERT INTO orders (customer, sku, status) VALUES (1001, '8675309', 'new');
+RELEASE SAVEPOINT cockroach_restart;
+COMMIT;
+```
+
+Applications using `SAVEPOINT` for client-side transaction retries must also include functions to execute retries with [`ROLLBACK TO SAVEPOINT`](/docs/v25.4/rollback-transaction#retry-a-transaction).
+
+Note that you can [customize the retry savepoint name](/docs/v25.4/savepoint#customizing-the-retry-savepoint-name) to something other than `cockroach_restart` with a session variable if you need to.
+
+## See also
+
+- [Transactions](/docs/v25.4/transactions)
+- [`SAVEPOINT`](/docs/v25.4/savepoint)
+- [`SHOW SAVEPOINT STATUS`](/docs/v25.4/show-savepoint-status)
+- [`ROLLBACK`](/docs/v25.4/rollback-transaction)
+- [`BEGIN`](/docs/v25.4/begin-transaction)
+- [`COMMIT`](/docs/v25.4/commit-transaction)

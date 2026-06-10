@@ -1,0 +1,105 @@
+---
+title: "ALTER USER"
+old_description: "The ALTER USER statement can be used to add or change a user's password."
+---
+
+The `ALTER USER` [statement](/docs/v25.2/sql-statements) can be used to add, change, or remove a [user's](/docs/v25.2/create-user) password and to change the role options for a user.
+
+You can use the keywords `ROLE` and `USER` interchangeably. `ALTER USER` is an alias for [`ALTER ROLE`](/docs/v25.2/alter-role).
+
+## Considerations
+
+- Password creation and alteration is supported only in secure clusters.
+
+## Required privileges
+
+To alter other users, the user must be a member of the `admin` role or have the [`CREATEROLE`](/docs/v25.2/create-role#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) [role option](#role-options).
+
+## Synopsis
+
+See [`ALTER ROLE`: Synopsis](/docs/v25.2/alter-role#synopsis).
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td>The name of the user whose password or role options to alter.</td></tr></tbody></table>
+
+### Role options
+
+<table><thead><tr><th>Role option</th><th>Description</th></tr></thead><tbody><tr><td><a></a><code>BYPASSRLS</code>/<code>NOBYPASSRLS</code></td><td><strong>New in v25.2</strong>: Allow or disallow a role to bypass <a href="/docs/v25.2/row-level-security">row-level security (RLS)</a> policies on a table. This option controls the access from an RLS perspective only; the user also needs sufficient <a href="/docs/v25.2/grant"><code>GRANT</code></a> privileges to read or write to the table.</td></tr><tr><td><code>CANCELQUERY</code>/<code>NOCANCELQUERY</code></td><td><strong>Deprecated in v22.2: Use the <code>CANCELQUERY</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to cancel <a href="/docs/v25.2/cancel-query">queries</a> and <a href="/docs/v25.2/cancel-session">sessions</a> of other roles. Without this role option, roles can only cancel their own queries and sessions. Even with the <code>CANCELQUERY</code> role option, non-<code>admin</code> roles cannot cancel <code>admin</code> queries or sessions. This option should usually be combined with <code>VIEWACTIVITY</code> so that the role can view other roles' query and session information.<br/><br/>By default, the role option is set to <code>NOCANCELQUERY</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CONTROLCHANGEFEED</code>/<code>NOCONTROLCHANGEFEED</code></td><td><strong>Deprecated in v23.1: Use the <code>CHANGEFEED</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">privilege</a>.</strong> Allow or disallow a role to run <a href="/docs/v25.2/create-changefeed"><code>CREATE CHANGEFEED</code></a> on tables they have <code>SELECT</code> privileges on.<br/><br/>By default, the role option is set to <code>NOCONTROLCHANGEFEED</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CONTROLJOB</code>/<code>NOCONTROLJOB</code></td><td>Allow or disallow a role to <a href="/docs/v25.2/pause-job">pause</a>, <a href="/docs/v25.2/resume-job">resume</a>, and <a href="/docs/v25.2/cancel-job">cancel</a> jobs. Non-<code>admin</code> roles cannot control jobs created by <code>admin</code> roles.<br/><br/>By default, the role option is set to <code>NOCONTROLJOB</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CREATEDB</code>/<code>NOCREATEDB</code></td><td>Allow or disallow a role to <a href="/docs/v25.2/create-database">create</a> or <a href="/docs/v25.2/alter-database#rename-to">rename</a> a database. The role is assigned as the owner of the database.<br/><br/>By default, the role option is set to <code>NOCREATEDB</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CREATELOGIN</code>/<code>NOCREATELOGIN</code></td><td>Allow or disallow a role to manage authentication using the <code>WITH PASSWORD</code>, <code>VALID UNTIL</code>, and <code>LOGIN/NOLOGIN</code> role options.<br/><br/>By default, the role option is set to <code>NOCREATELOGIN</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CREATEROLE</code>/<code>NOCREATEROLE</code></td><td>Allow or disallow the new role to <a href="/docs/v25.2/create-role">create</a>, alter, and <a href="/docs/v25.2/drop-role">drop</a> other non-<code>admin</code> roles.<br/><br/>By default, the role option is set to <code>NOCREATEROLE</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>LOGIN</code>/<code>NOLOGIN</code></td><td>Allow or disallow a role to log in with one of the <a href="/docs/v25.2/authentication#client-authentication">client authentication methods</a>. Setting the role option to <code>NOLOGIN</code> prevents the role from logging in using any authentication method.</td></tr><tr><td><code>MODIFYCLUSTERSETTING</code>/<code>NOMODIFYCLUSTERSETTING</code></td><td>Allow or disallow a role to modify the <a href="/docs/v25.2/cluster-settings">cluster settings</a> with the <code>sql.defaults</code> prefix.<br/><br/>By default, the role option is set to <code>NOMODIFYCLUSTERSETTING</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>PASSWORD password</code>/<code>PASSWORD NULL</code></td><td>The credential the role uses to <a href="/docs/v25.2/authentication#client-authentication">authenticate their access to a secure cluster</a>. A password should be entered as a <a href="/docs/v25.2/sql-constants#string-literals">string literal</a>. For compatibility with PostgreSQL, a password can also be entered as an identifier.<br/><br/>To prevent a role from using <a href="/docs/v25.2/authentication#client-authentication">password authentication</a> and to mandate <a href="/docs/v25.2/authentication#client-authentication">certificate-based client authentication</a>, <a href="/docs/v25.2/create-role#prevent-a-role-from-using-password-authentication">set the password as <code>NULL</code></a>.</td></tr><tr><td><code>SQLLOGIN</code>/<code>NOSQLLOGIN</code></td><td><strong>Deprecated in v22.2: Use the <code>NOSQLLOGIN</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to log in using the SQL CLI with one of the <a href="/docs/v25.2/authentication#client-authentication">client authentication methods</a>. The role option to <code>NOSQLLOGIN</code> prevents the role from logging in using the SQL CLI with any authentication method while retaining the ability to log in to DB Console. It is possible to have both <code>NOSQLLOGIN</code> and <code>LOGIN</code> set for a role and <code>NOSQLLOGIN</code> takes precedence on restrictions.<br/><br/>Without any role options all login behavior is permitted.</td></tr><tr><td><code>VALID UNTIL</code></td><td>The date and time (in the <a href="/docs/v25.2/timestamp"><code>timestamp</code></a> format) after which the <a href="#parameters">password</a> is not valid.</td></tr><tr><td><code>VIEWACTIVITY</code>/<code>NOVIEWACTIVITY</code></td><td><strong>Deprecated in v22.2: Use the <code>VIEWACTIVITY</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to see other roles' <a href="/docs/v25.2/show-statements">queries</a> and <a href="/docs/v25.2/show-sessions">sessions</a> using <code>SHOW STATEMENTS</code>, <code>SHOW SESSIONS</code>, and the <a href="/docs/v25.2/ui-statements-page"><strong>Statements</strong></a> and <a href="/docs/v25.2/ui-transactions-page"><strong>Transactions</strong></a> pages in the DB Console. <code>VIEWACTIVITY</code> also permits visibility of node hostnames and IP addresses in the DB Console. With <code>NOVIEWACTIVITY</code>, the <code>SHOW</code> commands show only the role's own data, and DB Console pages redact node hostnames and IP addresses.<br/><br/>By default, the role option is set to <code>NOVIEWACTIVITY</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>VIEWCLUSTERSETTING</code> / <code>NOVIEWCLUSTERSETTING</code></td><td><strong>Deprecated in v22.2: Use the <code>VIEWCLUSTERSETTING</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to view the <a href="/docs/v25.2/cluster-settings">cluster settings</a> with <code>SHOW CLUSTER SETTING</code> or to access the <a href="/docs/v25.2/ui-debug-pages"><strong>Cluster Settings</strong></a> page in the DB Console.<br/><br/>By default, the role option is set to <code>NOVIEWCLUSTERSETTING</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>VIEWACTIVITYREDACTED</code>/<code>NOVIEWACTIVITYREDACTED</code></td><td><strong>Deprecated in v22.2: Use the <code>VIEWACTIVITYREDACTED</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to see other roles' queries and sessions using <code>SHOW STATEMENTS</code>, <code>SHOW SESSIONS</code>, and the Statements and Transactions pages in the DB Console. With <code>VIEWACTIVITYREDACTED</code>, a user will not have access to the usage of statements diagnostics bundle (which can contain PII information) in the DB Console, and will not be able to list queries containing <a href="/docs/v25.2/sql-constants">constants</a> for other users when using the <code>listSessions</code> endpoint through the <a href="/docs/v25.2/cluster-api">Cluster API</a>. It is possible to have both <code>VIEWACTIVITY</code> and <code>VIEWACTIVITYREDACTED</code>, and <code>VIEWACTIVITYREDACTED</code> takes precedence on restrictions. If the user has <code>VIEWACTIVITY</code> but doesn't have <code>VIEWACTIVITYREDACTED</code>, they will be able to see DB Console pages and have access to the statements diagnostics bundle.<br/><br/>By default, the role option is set to <code>NOVIEWACTIVITYREDACTED</code> for all non-<code>admin</code> roles.</td></tr></tbody></table>
+
+## Examples
+
+<Note>
+The following statements are run by the `root` user that is a member of the `admin` role and has `ALL` privileges.
+</Note>
+
+### Change a user's password
+
+```sql
+root@:26257/defaultdb> ALTER USER carl WITH PASSWORD 'An0ther$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
+```
+
+### Prevent a user from using password authentication
+
+The following statement prevents the user from using password authentication and mandates certificate-based [client authentication](/docs/v25.2/authentication#client-authentication):
+
+```sql
+root@:26257/defaultdb> ALTER USER carl WITH PASSWORD NULL;
+```
+
+### Allow a user to create other users and manage authentication methods for the new users
+
+The following example allows the user to [create other users](/docs/v25.2/create-user) and [manage authentication methods](/docs/v25.2/authentication#client-authentication) for them:
+
+```sql
+root@:26257/defaultdb> ALTER USER carl WITH CREATEROLE CREATELOGIN;
+```
+
+### Allow a user to create and rename databases
+
+The following example allows the user to [create](/docs/v25.2/create-database) or [rename](/docs/v25.2/alter-database#rename-to) databases:
+
+```sql
+root@:26257/defaultdb> ALTER USER carl WITH CREATEDB;
+```
+
+### Allow a user to pause, resume, and cancel non-admin jobs
+
+The following example allows the user to [pause](/docs/v25.2/pause-job), [resume](/docs/v25.2/resume-job), and [cancel](/docs/v25.2/cancel-job) jobs:
+
+```sql
+root@:26257/defaultdb> ALTER USER carl WITH CONTROLJOB;
+```
+
+### Allow a user to see and cancel non-admin queries and sessions
+
+The following example allows the user to cancel [queries](/docs/v25.2/cancel-query) and [sessions](/docs/v25.2/cancel-session) for other non-`admin` roles:
+
+```sql
+root@:26257/defaultdb> ALTER USER carl WITH CANCELQUERY VIEWACTIVITY;
+```
+
+### Allow a user to control changefeeds
+
+The following example allows the user to run [`CREATE CHANGEFEED`](/docs/v25.2/create-changefeed):
+
+```sql
+root@:26257/defaultdb> ALTER USER carl WITH CONTROLCHANGEFEED;
+```
+
+### Allow a user to modify cluster settings
+
+The following example allows the user to modify [cluster settings](/docs/v25.2/cluster-settings):
+
+```sql
+root@:26257/defaultdb> ALTER USER carl WITH MODIFYCLUSTERSETTING;
+```
+
+## See also
+
+- [`DROP USER`](/docs/v25.2/drop-user)
+- [`SHOW USERS`](/docs/v25.2/show-users)
+- [`GRANT`](/docs/v25.2/grant)
+- [`SHOW GRANTS`](/docs/v25.2/show-grants)
+- [Create Security Certificates](/docs/v25.2/cockroach-cert)
+- [SQL Statements](/docs/v25.2/sql-statements)

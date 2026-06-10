@@ -1,0 +1,146 @@
+---
+title: "Connect to a CockroachDB Basic Cluster"
+old_description: "Learn how to connect and start interacting with your Basic cluster."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/cockroachcloud/connect-to-a-basic-cluster"
+  items={[
+    {
+      title: "CockroachDB Basic",
+      href: "/docs/cockroachcloud/connect-to-a-basic-cluster",
+    },
+    {
+      title: "CockroachDB Standard",
+      href: "/docs/cockroachcloud/connect-to-your-cluster",
+    },
+    {
+      title: "CockroachDB Advanced",
+      href: "/docs/cockroachcloud/connect-to-an-advanced-cluster",
+    },
+  ]}
+/>
+
+This page shows you how to connect to your CockroachDB Basic cluster.
+
+<Note>
+AWS PrivateLink is not available on CockroachDB Basic. For Basic clusters that were migrated from CockroachDB Serverless, existing [PrivateLink connections](/docs/cockroachcloud/aws-privatelink) continue to work, but new PrivateLink connections cannot be added.
+</Note>
+
+## Before you start
+
+- [Create a CockroachDB Basic cluster](/docs/cockroachcloud/create-a-basic-cluster).
+- [Create a new SQL user](/docs/cockroachcloud/managing-access#create-a-sql-user).
+- Understand [Network Authorization for CockroachDB Cloud Clusters](/docs/cockroachcloud/network-authorization)
+
+## Authorize your network
+
+When it is created, a Basic cluster is open to all traffic as it is created with a `0.0.0.0/0` IP allowlist.
+
+It is recommended to restrict your network to allow access only from specific IP address ranges controlled by your organization. These might include specific networks for your application deployments, hardened administrator access points, or backup-restore pipelines for disaster recovery. Therefore, if possible you should replace the `0.0.0.0/0` allowlist entry with more specific CIDR ranges for legitimate access.
+
+Removing or adding an authorized network on your CockroachDB Basic cluster may take up to 30 seconds to take effect.
+
+<Note>
+IPv6 addresses are currently not supported.
+</Note>
+
+To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, it is recommended to restrict your cluster network to allow access only from specific IP address ranges controlled by your organization, corresponding to, for example, your application deployments, hardened administrator access points, or disaster recovery pipelines.
+
+### Add IP addresses to the allowlist
+
+1. Navigate to your cluster's **Networking &gt; IP Allowlist** tab.
+
+    The **IP Allowlist** tab displays a list of authorized networks (i.e., an IP network allowlist) that can access the cluster.
+2. If the network is not listed, authorize it:
+    1. Click the **Add Network** button. The **Add Network** dialog displays.
+    2. *(Optional)* Enter a **Network name**.
+    3. From the **Network** dropdown, select:
+        - **New Network** to authorize the network of your local machine or application deployment or another valid source. Enter the public IPv4 address of the source machine in the **Network** field. To add a range of source IP addresses, use the CIDR (Classless Inter-Domain Routing) notation. For a general introduction to IP routing, refer to [Digital Ocean—Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+        - **Current Network** to auto-populate your local machine's IP address.
+        - **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
+3. Select whether the network can connect to the cluster's **DB Console to monitor the cluster**, **CockroachDB Client to access databases**, or both.
+
+    The DB Console is where you can observe your cluster's health and performance. For more information, see [DB Console Overview](/docs/v25.4/ui-overview).
+4. Click **Apply**.
+
+## Connect to your cluster
+
+1. Select your cluster to navigate to the cluster [**Overview** page](/docs/cockroachcloud/cluster-overview-page).
+2. In the top right corner of the CockroachDB Cloud Console, click the **Connect** button.
+
+    The **Connect to cluster** dialog displays.
+3. *(Optional)* If you have multiple SQL users or databases, you can:
+    - Select the SQL user you want to connect with from the **SQL user** dropdown.
+    - Select the database you want to connect to from the **Database** dropdown.
+4. Select a connection method from the **Select option / Language** dropdown (the instructions below will adjust accordingly):
+
+    <Tabs>
+    <Tab title="Command line">
+
+    You can connect to your cluster with any [supported version](/docs/releases/release-support-policy#supported-versions) of the full CockroachDB binary or the [built-in SQL client](/docs/v25.4/cockroach-sql). To download the full binary and connect to your cluster, follow these steps.
+
+    1. Select **CockroachDB Client** from the **Select option/language** dropdown.
+    2. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install the latest downloadable version of CockroachDB on your local system.
+    3. Copy the [`cockroach sql`](/docs/v25.4/cockroach-sql) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
+    4. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](/docs/v25.4/cockroach-sql).
+    5. Enter the SQL user's password and hit enter.
+
+        <Warning>
+        PostgreSQL connection URIs do not support special characters. If you have special characters in your password, you will have to [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) them (e.g., `password!` should be entered as `password%21`) to connect to your cluster.
+        </Warning>
+
+        A welcome message displays:
+
+        ```text
+        #
+        # Welcome to the CockroachDB SQL shell.
+        # All statements must be terminated by a semicolon.
+        # To exit, type: \q.
+        #
+        ```
+
+        You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](/docs/v25.4/sql-statements).
+
+    </Tab>
+    <Tab title="General connection string">
+
+    1. In the **Download CA Cert** section of the dialog, you can optionally download the CA certificate. The CA certificate is signed by Let's Encrypt, which may already be trusted by your local system. However, some use cases, such as developing with Python, do not use the operating system's local certificate store and require the CA certificate to be available locally. When developing with Javascript or Node, you do not need to download the CA certificate locally. To download the CA certificate, select your operating system, then use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+    2. Copy the connection string provided in the **General connection string** section of the dialog, which will be used to connect your application to your cluster.
+    3. Add your copied connection string to your application code. For information about connecting to your cluster with a [supported client](/docs/v25.4/third-party-database-tools), see [Connect to a CockroachDB Cluster](/docs/v25.4/connect-to-the-database).
+
+    <Warning>
+    PostgreSQL connection URIs do not support special characters. If you have special characters in your password, you will have to [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) them (e.g., `password!` should be entered as `password%21`) to connect to your cluster.
+    </Warning>
+
+    <Note>
+    If you forget your SQL user's password, an [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+    </Note>
+
+    For connection examples and code snippets in your language, see the following:
+
+    - [Build a Python App with CockroachDB](/docs/v25.4/build-a-python-app-with-cockroachdb)
+    - [Build a Go App with CockroachDB](/docs/v25.4/build-a-go-app-with-cockroachdb)
+    - [Build a Java App with CockroachDB](/docs/v25.4/build-a-java-app-with-cockroachdb)
+    - [Build a Ruby App with CockroachDB](/docs/v25.4/build-a-ruby-app-with-cockroachdb)
+    - [Build a Javascript App with CockroachDB](/docs/v25.4/build-a-nodejs-app-with-cockroachdb)
+
+    </Tab>
+    <Tab title="Connection parameters">
+
+    1. If you need to download the CA certificate, first set **Select option/language** to **General Connection String** and expand the **Downloada CA Cert** section. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+    2. Select the **Parameters only** option of the **Select option** dropdown.
+    3. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](/docs/v25.4/third-party-database-tools).
+
+        <table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;username&#125;</code></td><td>The <a href="/docs/cockroachcloud/managing-access#create-a-sql-user">SQL user</a> connecting to the cluster.</td></tr><tr><td><code>&#123;host&#125;</code></td><td>The host on which the CockroachDB node is running.</td></tr><tr><td><code>&#123;port&#125;</code></td><td>The port at which the CockroachDB node is listening.</td></tr><tr><td><code>&#123;database&#125;</code></td><td>The name of the (existing) database.</td></tr></tbody></table>
+
+    Additionally, you will need the SQL user's [password](/docs/cockroachcloud/managing-access#create-a-sql-user). If you forget your SQL user's password, an [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+
+    </Tab>
+    </Tabs>
+
+## What's next
+
+- [Build a "Hello, World" app](/docs/v25.4/build-a-python-app-with-cockroachdb-django)

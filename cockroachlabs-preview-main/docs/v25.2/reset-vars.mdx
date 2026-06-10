@@ -1,0 +1,104 @@
+---
+title: "RESET {session variable}"
+old_description: "The SET statement resets a session variable to its default value."
+---
+
+import { ResetVars5 } from "/snippets/syntax-diagrams/ResetVars5.jsx";
+
+The `RESET` [statement](/docs/v25.2/sql-statements) resets a [session variable](/docs/v25.2/set-vars) to its default value for the client session.
+
+## Required privileges
+
+No [privileges](/docs/v25.2/security-reference/authorization#managing-privileges) are required to reset a session setting.
+
+## Synopsis
+
+<ResetVars5 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>session&#95;var</code></td><td>The name of the <a href="/docs/v25.2/set-vars#supported-variables">session variable</a>.</td></tr></tbody></table>
+
+## Example
+
+<Tip>
+You can use [`SET.. TO DEFAULT`](/docs/v25.2/set-vars#reset-a-variable-to-its-default-value) to reset a session variable as well.
+</Tip>
+
+```sql
+> SET extra_float_digits = -10;
+```
+
+```sql
+> SHOW extra_float_digits;
+```
+
+```text
+ extra_float_digits
+--------------------
+ -10
+(1 row)
+```
+
+```sql
+> SELECT random();
+```
+
+```text
+ random
+---------
+ 0.20286
+(1 row)
+```
+
+```sql
+> RESET extra_float_digits;
+```
+
+```sql
+> SHOW extra_float_digits;
+```
+
+```text
+ extra_float_digits
+--------------------
+ 0
+(1 row)
+```
+
+```sql
+> SELECT random();
+```
+
+```text
+      random
+-------------------
+ 0.561354028296755
+(1 row)
+```
+
+## Known Limitations
+
+[`SET`](/docs/v25.2/set-vars) and `RESET` do not properly apply [`ROLLBACK`](/docs/v25.2/rollback-transaction) within a transaction. For example, in the following transaction, showing the `TIME ZONE` [variable](/docs/v25.2/set-vars#supported-variables) does not return `2` as expected after the rollback:
+
+```sql
+SET TIME ZONE +2;
+BEGIN;
+SET TIME ZONE +3;
+ROLLBACK;
+SHOW TIME ZONE;
+```
+
+```sql
+timezone
+------------
+3
+```
+
+[#69396](https://github.com/cockroachdb/cockroach/issues/69396), [#148766](https://github.com/cockroachdb/cockroach/issues/148766)
+
+## See also
+
+- [`SET {session variable}`](/docs/v25.2/set-vars)
+- [`SHOW {session variable}`](/docs/v25.2/show-vars)
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`](/docs/v25.2/show-default-session-variables-for-role)

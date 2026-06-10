@@ -1,0 +1,43 @@
+---
+title: "ALTER JOB"
+old_description: "Use the ALTER JOB statement to transfer ownership of a job between users or roles."
+---
+
+import { AlterJob } from "/snippets/syntax-diagrams/AlterJob.jsx";
+
+The `ALTER JOB` statement transfers ownership of a [job](/docs/v26.1/show-jobs) between [users](/docs/v26.1/create-user) or [roles](/docs/v26.1/create-role).
+
+## Required privileges
+
+To alter job ownership, the user must be one of the following:
+
+- The current job owner.
+- A member of the role that is the current owner.
+- An `admin`.
+
+Unless the user is an `admin`, they can only transfer ownership of a job to themselves or to a role of which they are a member.
+
+To add a user to a role, refer to the [`GRANT`](/docs/v26.1/grant) statement.
+
+## Synopsis
+
+<AlterJob />
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>a&#95;expr</code></td><td>The job ID to modify.</td></tr><tr><td><code>role&#95;spec</code></td><td>The role or user.</td></tr></tbody></table>
+
+## Example
+
+To transfer job ownership from the user who created the job to a role they're a member of:
+
+```sql
+ALTER JOB job_id OWNER TO role_name;
+```
+
+## See also
+
+- [`SHOW JOBS`](/docs/v26.1/show-jobs)
+- [`PAUSE JOB`](/docs/v26.1/pause-job)
+- [`RESUME JOB`](/docs/v26.1/resume-job)
+- [`CANCEL JOB`](/docs/v26.1/cancel-job)

@@ -1,0 +1,142 @@
+---
+title: "Overview Dashboard"
+old_description: "The Overview dashboard lets you monitor important SQL performance, replication, and storage metrics."
+---
+
+The **Overview** dashboard lets you monitor important SQL performance, replication, and storage metrics.
+
+To view this dashboard, [access the DB Console](/docs/v23.2/ui-overview#db-console-access) and click **Metrics** on the left-hand navigation bar. The **Overview** dashboard is displayed by default.
+
+The time-series data displayed in DB Console graphs is stored within the CockroachDB cluster and steadily increases for the first several days of a cluster's life, before an automatic job begins to prune it. By default, time-series data is stored for at 10-second resolution for 10 days, and at 30-minute resolution for 90 days. For details about managing this process, see [Can I reduce the storage of time-series data?](/docs/v23.2/operational-faqs#can-i-reduce-the-storage-of-time-series-data). In a new cluster, you will observe a steady increase in disk usage and the number of ranges even if you aren't writing data to the cluster.
+
+## Dashboard navigation
+
+Use the **Graph** menu to display metrics for your entire cluster or for a specific node.
+
+To the right of the Graph and Dashboard menus, a time interval selector allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected in the [SQL Activity](/docs/v23.2/ui-overview#sql-activity) pages. However, if you select 10 or 30 minutes, the interval defaults to 1 hour in SQL Activity pages.
+
+Hovering your mouse pointer over the graph title will display a tooltip with a description and the [metrics](/docs/v23.2/essential-metrics-self-hosted) used to create the graph.
+
+When hovering on graphs, crosshair lines will appear at your mouse pointer. The series' values corresponding to the given time in the cross hairs are displayed in the legend under the graph. Hovering the mouse pointer on a given series displays the corresponding value near the mouse pointer and highlights the series line (graying out other series lines). Click anywhere within the graph to freeze the values in place. Click anywhere within the graph again to cause the values to change with your mouse movements once more.
+
+In the legend, click on an individual series to isolate it on the graph. The other series will be hidden, while the hover will still work. Click the individual series again to make the other series visible. If there are many series, a scrollbar may appear on the right of the legend. This is to limit the size of the legend so that it does not get endlessly large, particularly on clusters with many nodes.
+
+The **Overview** dashboard displays the following time series graphs.
+
+## SQL Statements
+
+- In the node view, the graph shows the 10-second average of the number of `SELECT`/`INSERT`/`UPDATE`/`DELETE` queries per second issued by SQL clients on the node.
+- In the cluster view, the graph shows the sum of the per-node averages, that is, an aggregate estimation of the current query load over the cluster, assuming the last 10 seconds of activity per node are representative of this load.
+
+See the [Statements page](/docs/v23.2/ui-statements-page) for more details on the cluster's SQL statements.
+
+Metrics: `sql.select.count`, `sql.update.count`, `sql.insert.count`, `sql.delete.count`
+
+The following SQL statements update the `INSERT` metric (`sql.insert.count`):
+
+- [`INSERT... ON CONFLICT DO UPDATE...`](/docs/v23.2/insert#on-conflict-clause): Even when the `DO UPDATE` clause is actually executed, the root of the [abstract syntax tree (AST)](/docs/v23.2/architecture/sql-layer#parsing) is used to increment the metric, rather than the actual execution details.
+- [`UPSERT`](/docs/v23.2/upsert)
+
+<Note>
+[Data manipulation statements](/docs/v23.2/sql-statements#data-manipulation-statements) other than `SELECT`/`INSERT`/`UPDATE`/`DELETE`/`UPSERT` update the `sql.misc.count` metric, which is *not* displayed on this graph.
+</Note>
+
+## Service Latency: SQL, 99th percentile
+
+Service latency is calculated as the time in nanoseconds between when the cluster [receives a query and finishes executing the query](/docs/v23.2/architecture/sql-layer). This time does not include returning results to the client. Service latency includes metrics only from DML (`SELECT`,`INSERT`, `UPDATE`, and `DELETE`) statements.
+
+- In the node view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency for the node. Over the last minute this node executed 99% of queries within this time, not including network latency between the node and the client.
+- In the cluster view, the graph shows the 99th [percentile](https://wikipedia.org/wiki/Percentile#The_normal_distribution_and_percentiles) of service latency across all nodes in the cluster. There are lines for each node in the cluster. Over the last minute the node executed 99% of queries within this time, not including network latency between the node and the client.
+
+## SQL Statement Contention
+
+The statement contention metric is a counter that represents the number of statements that have experienced [contention](/docs/v23.2/performance-best-practices-overview#transaction-contention). If a statement experiences at least one contention "event" (i.e., the statement is forced to wait for another transaction), the counter is incremented at most once.
+
+- In the node view, the graph shows the total number of SQL statements that experienced [contention](/docs/v23.2/performance-best-practices-overview#transaction-contention) on that node.
+- In the cluster view, the graph shows the total number of SQL statements that experienced [contention](/docs/v23.2/performance-best-practices-overview#transaction-contention) across all nodes in the cluster.
+
+See the [Statements page](/docs/v23.2/ui-statements-page) for more details on the cluster's SQL statements.
+
+## Replicas per Node
+
+<Frame>
+  ![DB Console Replicas per node graph](/images/v23.2/ui_replicas_per_node.png)
+</Frame>
+
+Ranges are subsets of your data, which are replicated to ensure survivability. Ranges are replicated to a configurable number of CockroachDB nodes.
+
+- In the node view, the graph shows the number of range replicas on the selected node.
+- In the cluster view, the graph shows the number of range replicas on each node in the cluster.
+
+For details about how to control the number and location of replicas, see [Replication Controls](/docs/v23.2/configure-replication-zones).
+
+## Capacity
+
+<Frame>
+  ![DB Console Capacity graph](/images/v23.2/ui_capacity.png)
+</Frame>
+
+You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](/docs/v23.2/cockroach-start)).
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Capacity</strong></td><td>The maximum store size. This value may be set per node using <a href="/docs/v23.2/cockroach-start#store"><code>--store</code></a>. If a store size has not been set, this metric displays the actual disk capacity. See <a href="#capacity-metrics">Capacity metrics</a>.</td></tr><tr><td><strong>Available</strong></td><td>The free disk space available to CockroachDB data.</td></tr><tr><td><strong>Used</strong></td><td>The disk space in use by CockroachDB data. This excludes the Cockroach binary, operating system, and other system files.</td></tr></tbody></table>
+
+**Expected values for a healthy cluster**: Used capacity should not persistently exceed 80% of the total capacity.
+
+### Capacity metrics
+
+The **Capacity** graph displays disk usage by CockroachDB data in relation to the maximum [store](/docs/v23.2/architecture/storage-layer) size, which is determined as follows:
+
+- If a store size was specified using the [`--store`](/docs/v23.2/cockroach-start#store) flag when starting nodes, this value is used as the limit for CockroachDB data.
+- If no store size has been explicitly set, the actual disk capacity is used as the limit for CockroachDB data.
+
+The **available** capacity thus equals the amount of empty disk space, up to the value of the maximum store size. The **used** capacity refers only to disk space occupied by CockroachDB data, which resides in the store directory on each node.
+
+The disk usage of the Cockroach binary, operating system, and other system files is not shown on the **Capacity** graph.
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v23.2/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v23.2/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+## Summary and events
+
+### Summary panel
+
+A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Total Nodes</td><td>The total number of nodes in the cluster. <a href="/docs/v23.2/node-shutdown?filters=decommission">Decommissioned nodes</a> are not included in this count.</td></tr><tr><td>Capacity Used</td><td>The storage capacity used as a percentage of <a href="/docs/v23.2/ui-cluster-overview-page#capacity-metrics">usable capacity</a> allocated across all nodes.</td></tr><tr><td>Unavailable Ranges</td><td>The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.</td></tr><tr><td>Queries per second</td><td>The total number of <code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, and <code>DELETE</code> queries executed per second across the cluster.</td></tr><tr><td>P99 Latency</td><td>The 99th percentile of service latency.</td></tr></tbody></table>
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v23.2/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v23.2/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+### Events panel
+
+Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
+
+<Frame>
+  ![DB Console Events](/images/v23.2/ui_events.png)
+</Frame>
+
+The following types of events are listed:
+
+- Database created
+- Database dropped
+- Table created
+- Table dropped
+- Table altered
+- Index created
+- Index dropped
+- View created
+- View dropped
+- Schema change reversed
+- Schema change finished
+- Node joined
+- Node decommissioned
+- Node restarted
+- Cluster setting changed
+
+## See also
+
+- [Troubleshooting Overview](/docs/v23.2/troubleshooting-overview)
+- [Support Resources](/docs/v23.2/support-resources)
+- [Raw Status Endpoints](/docs/v23.2/monitoring-and-alerting#raw-status-endpoints)

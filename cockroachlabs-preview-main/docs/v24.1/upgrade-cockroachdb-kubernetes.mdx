@@ -1,0 +1,433 @@
+---
+title: "Cluster Upgrades"
+old_description: "How to upgrade a secure 3-node CockroachDB cluster with Kubernetes."
+---
+
+<Note>
+This article assumes you have already [deployed CockroachDB on a single Kubernetes cluster](/docs/v24.1/deploy-cockroachdb-with-kubernetes).
+</Note>
+
+We strongly recommend that you regularly upgrade your CockroachDB version in order to pick up bug fixes, performance improvements, and new features.
+
+The upgrade process on Kubernetes is a [staged update](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set#staging-an-update) in which the Docker image is applied to the pods one at a time, with each pod being stopped and restarted in turn. This is to ensure that the cluster remains available during the upgrade.
+
+<Tabs>
+<Tab title="Operator">
+
+<Note>
+All `kubectl` steps should be performed in the [namespace where you installed the Operator](/docs/v24.1/deploy-cockroachdb-with-kubernetes#install-the-operator). By default, this is `cockroach-operator-system`.
+</Note>
+
+<Tip>
+If you [deployed CockroachDB on Red Hat OpenShift](/docs/v24.1/deploy-cockroachdb-with-kubernetes-openshift), substitute `kubectl` with `oc` in the following commands.
+</Tip>
+
+1. Verify that you can upgrade.
+
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release](/docs/releases) and not a testing release (alpha/beta).
+
+    Therefore, in order to upgrade to v24.1, you must be on a production release of v23.2.
+
+    1. If you are upgrading to v24.1 from a production release earlier than v23.2, or from a testing release (alpha/beta), first [upgrade to a production release of v23.2](/docs/v23.2/upgrade-cockroachdb-kubernetes). Be sure to complete all the steps.
+    2. Then return to this page and perform a second upgrade to v24.1.
+    3. If you are upgrading from a production release of v23.2, or from any earlier v24.1 patch release, you do not have to go through intermediate releases; continue to step 2.
+2. Verify the overall health of your cluster using the [DB Console](/docs/v24.1/ui-overview). On the **Overview**:
+    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](/docs/v24.1/scale-cockroachdb-kubernetes#remove-nodes) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
+    - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to [identify and resolve the cause of range under-replication and/or unavailability](/docs/v24.1/cluster-setup-troubleshooting#replication-issues) before beginning your upgrade.
+    - In the **Node List**:
+        - Make sure all nodes are on the same version. If not all nodes are on the same version, upgrade them to the cluster's highest current version first, and then start this process over.
+        - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics &gt; Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](/docs/v24.1/scale-cockroachdb-kubernetes#add-nodes) to your cluster before beginning your upgrade.
+3. Review the [backward-incompatible changes in v24.1](/docs/releases/v24.1#v24-1-0-backward-incompatible-changes) and [deprecated features](/docs/releases/v24.1#v24-1-0-deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v24.1.
+4. Change the desired Docker image in the custom resource:
+
+    ```text
+    image:
+      name: cockroachdb/cockroach:v24.1.26
+    ```
+5. Apply the new settings to the cluster:
+
+    ```shell
+    $ kubectl apply -f example.yaml
+    ```
+
+    The Operator will perform the staged update.
+
+    <Note>
+    The Operator automatically sets the `cluster.preserve_downgrade_option` [cluster setting](/docs/v24.1/cluster-settings) to the version you are upgrading from. This disables auto-finalization of the upgrade so that you can monitor the stability and performance of the upgraded cluster before manually finalizing the upgrade. This will enable certain features and performance improvements introduced in v24.1.
+
+    Note that after finalization, it will no longer be possible to perform a downgrade to v23.2. In the event of a catastrophic failure or corruption, the only option will be to start a new cluster using the previous binary and then restore from a [backup](/docs/v24.1/take-full-and-incremental-backups) created prior to performing the upgrade.
+
+    Finalization only applies when performing a major version upgrade (for example, from v23.2.x to v24.1). Patch version upgrades (for example, within the v24.1.x series) can always be downgraded.
+    </Note>
+6. To check the status of the rolling upgrade, run `kubectl get pods`. The pods are restarted one at a time with the new image.
+7. Verify that all pods have been upgraded by running:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+    You can also check the CockroachDB version of each node in the [DB Console](/docs/v24.1/ui-cluster-overview-page#node-details).
+8. Monitor the stability and performance of your cluster until you are comfortable with the upgrade (generally at least a day).
+
+    If you decide to roll back the upgrade, revert the image name in the custom resource and apply the new value.
+
+    <Note>
+    This is only possible when performing a major version upgrade (for example, from v23.2.x to v24.1). Patch version upgrades (for example, within the v24.1.x series) are auto-finalized.
+    </Note>
+
+    To finalize the upgrade, re-enable auto-finalization:
+
+    1. Start the CockroachDB [built-in SQL client](/docs/v24.1/cockroach-sql). For example, if you followed the steps in [Deploy CockroachDB with Kubernetes](/docs/v24.1/deploy-cockroachdb-with-kubernetes#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
+
+        ```shell
+        $ kubectl exec -it cockroachdb-client-secure \-- ./cockroach sql \
+        --certs-dir=/cockroach/cockroach-certs \
+        --host={cluster-name}-public
+        ```
+    2. Re-enable auto-finalization:
+
+        ```sql
+        > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
+        ```
+
+        After the upgrade to v24.1 is finalized, you may notice an increase in [compaction](/docs/v24.1/architecture/storage-layer#compaction) activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](/docs/v24.1/ui-storage-dashboard) in the DB Console or monitor the `storage.marked-for-compaction-files` [time-series metric](/docs/v24.1/metrics). When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels. By default, the [storage engine](/docs/v24.1/architecture/storage-layer) uses a compaction concurrency of 3. If you have sufficient IOPS and CPU headroom, you can consider increasing this setting via the `COCKROACH_COMPACTION_CONCURRENCY` environment variable. This may help to reshape the LSM more quickly in [inverted LSM](/docs/v24.1/architecture/storage-layer#inverted-lsms) scenarios; and it can lead to increased overall performance for some workloads. Cockroach Labs **strongly recommends** testing your workload against non-default values of this setting.
+    3. Exit the SQL shell and pod:
+
+        ```sql
+        > \q
+        ```
+
+</Tab>
+<Tab title="Manual Configs">
+
+1. Verify that you can upgrade.
+
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release](/docs/releases) and not a testing release (alpha/beta).
+
+    Therefore, in order to upgrade to v24.1, you must be on a production release of v23.2.
+
+    1. If you are upgrading to v24.1 from a production release earlier than v23.2, or from a testing release (alpha/beta), first [upgrade to a production release of v23.2](/docs/v23.2/upgrade-cockroachdb-kubernetes?filters=manual). Be sure to complete all the steps.
+    2. Then return to this page and perform a second upgrade to v24.1.
+    3. If you are upgrading from any production release of v23.2, or from any earlier v24.1 patch release, you do not have to go through intermediate releases; continue to step 2.
+2. Verify the overall health of your cluster using the [DB Console](/docs/v24.1/ui-overview). On the **Overview**:
+    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](/docs/v24.1/scale-cockroachdb-kubernetes?filters=manual#remove-nodes) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
+    - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to [identify and resolve the cause of range under-replication and/or unavailability](/docs/v24.1/cluster-setup-troubleshooting#replication-issues) before beginning your upgrade.
+    - In the **Node List**:
+        - Make sure all nodes are on the same version. If not all nodes are on the same version, upgrade them to the cluster's highest current version first, and then start this process over.
+        - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics &gt; Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](/docs/v24.1/scale-cockroachdb-kubernetes?filters=manual#add-nodes) to your cluster before beginning your upgrade.
+3. Review the [backward-incompatible changes in v24.1](/docs/releases/v24.1#v24-1-0-backward-incompatible-changes) and [deprecated features](/docs/releases/v24.1#v24-1-0-deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v24.1.
+4. Decide how the upgrade will be finalized.
+
+    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v24.1. After finalization, however, it will no longer be possible to perform a downgrade to v23.2. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup](/docs/v24.1/take-full-and-incremental-backups) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
+
+    <Note>
+    Finalization only applies when performing a major version upgrade (for example, from v23.2.x to v24.1). Patch version upgrades (for example, within the v24.1.x series) can always be downgraded.
+    </Note>
+
+    1. Start the CockroachDB [built-in SQL client](/docs/v24.1/cockroach-sql). For example, if you followed the steps in [Deploy CockroachDB with Kubernetes](/docs/v24.1/deploy-cockroachdb-with-kubernetes?filters=manual#step-3-use-the-built-in-sql-client) to launch a secure client pod, get a shell into the `cockroachdb-client-secure` pod:
+
+        ```shell
+        $ kubectl exec -it cockroachdb-client-secure \-- ./cockroach sql \
+        --certs-dir=/cockroach-certs \
+        --host=cockroachdb-public
+        ```
+    2. Set the `cluster.preserve_downgrade_option` [cluster setting](/docs/v24.1/cluster-settings) to the version you are upgrading from:
+
+        ```sql
+        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '["23.2"]';
+        ```
+    3. Exit the SQL shell and delete the temporary pod:
+
+        ```sql
+        > \q
+        ```
+5. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
+
+    ```shell
+    $ kubectl patch statefulset cockroachdb \
+    -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":2}}}}'
+    ```
+
+    ```text
+    statefulset.apps/cockroachdb patched
+    ```
+6. Kick off the upgrade process by changing the Docker image used in the CockroachDB StatefulSet:
+
+    ```shell
+    $ kubectl patch statefulset cockroachdb \
+    --type='json' \
+    -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:v24.1.26"}]'
+    ```
+
+    ```text
+    statefulset.apps/cockroachdb patched
+    ```
+7. Check the status of your cluster's pods. You should see one of them being restarted:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME            READY     STATUS        RESTARTS   AGE
+    cockroachdb-0   1/1       Running       0          2m
+    cockroachdb-1   1/1       Running       0          2m
+    cockroachdb-2   0/1       Terminating   0          1m
+    ...
+    ```
+8. After the pod has been restarted with the new image, start the CockroachDB [built-in SQL client](/docs/v24.1/cockroach-sql):
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \-- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
+    ```
+9. Run the following SQL query to verify that the number of underreplicated ranges is zero:
+
+    ```sql
+    SELECT sum((metrics->>'ranges.underreplicated')::DECIMAL)::INT AS ranges_underreplicated FROM crdb_internal.kv_store_status;
+    ```
+
+    ```text
+      ranges_underreplicated
+    --------------------------
+                           0
+    (1 row)
+    ```
+
+    This indicates that it is safe to proceed to the next pod.
+10. Exit the SQL shell:
+
+    ```sql
+    > \q
+    ```
+11. Decrement the partition value by 1 to allow the next pod in the cluster to update:
+
+    ```shell
+    $ kubectl patch statefulset cockroachdb \
+    -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":1}}}}'
+    ```
+
+    ```text
+    statefulset.apps/cockroachdb patched
+    ```
+12. Repeat steps 4-8 until all pods have been restarted and are running the new image (the final partition value should be `0`).
+13. Check the image of each pod to confirm that all have been upgraded:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+    ```text
+    cockroachdb-0   cockroachdb/cockroach:v24.1.26
+    cockroachdb-1   cockroachdb/cockroach:v24.1.26
+    cockroachdb-2   cockroachdb/cockroach:v24.1.26
+    ...
+    ```
+
+    You can also check the CockroachDB version of each node in the [DB Console](/docs/v24.1/ui-cluster-overview-page#node-details).
+14. If you disabled auto-finalization earlier, monitor the stability and performance of your cluster until you are comfortable with the upgrade (generally at least a day).
+
+    If you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
+
+    <Note>
+    This is only possible when performing a major version upgrade (for example, from v23.2.x to v24.1). Patch version upgrades (for example, within the v24.1.x series) are auto-finalized.
+    </Note>
+
+    To finalize the upgrade, re-enable auto-finalization:
+
+    1. Start the CockroachDB [built-in SQL client](/docs/v24.1/cockroach-sql):
+
+        ```shell
+        $ kubectl exec -it cockroachdb-client-secure \
+        -- ./cockroach sql \
+        --certs-dir=/cockroach-certs \
+        --host=cockroachdb-public
+        ```
+    2. Re-enable auto-finalization:
+
+        ```sql
+        > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
+        ```
+
+        After the upgrade to v24.1 is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](/docs/v24.1/ui-storage-dashboard) in the DB Console or monitor the `storage.marked-for-compaction-files` [time-series metric](/docs/v24.1/metrics). When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+    3. Exit the SQL shell and delete the temporary pod:
+
+        ```sql
+        > \q
+        ```
+
+</Tab>
+<Tab title="Helm">
+
+1. Verify that you can upgrade.
+
+    To upgrade to a new major version, you must first be on a production release of the previous version. The release does not need to be the latest production release of the previous version, but it must be a production [release](/docs/releases) and not a testing release (alpha/beta).
+
+    Therefore, in order to upgrade to v24.1, you must be on a production release of v23.2.
+
+    1. If you are upgrading to v24.1 from a production release earlier than v23.2, or from a testing release (alpha/beta), first [upgrade to a production release of v23.2](/docs/v23.2/upgrade-cockroachdb-kubernetes?filters=helm). Be sure to complete all the steps.
+    2. Then return to this page and perform a second upgrade to v24.1.
+    3. If you are upgrading from any production release of v23.2, or from any earlier v24.1 patch release, you do not have to go through intermediate releases; continue to step 2.
+2. Verify the overall health of your cluster using the [DB Console](/docs/v24.1/ui-overview). On the **Overview**:
+    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as suspect or dead, identify why the nodes are offline and either restart them or [decommission](/docs/v24.1/scale-cockroachdb-kubernetes?filters=helm#remove-nodes) them before beginning your upgrade. If there are dead and non-decommissioned nodes in your cluster, it will not be possible to finalize the upgrade (either automatically or manually).
+    - Under **Replication Status**, make sure there are 0 under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to [identify and resolve the cause of range under-replication and/or unavailability](/docs/v24.1/cluster-setup-troubleshooting#replication-issues) before beginning your upgrade.
+    - In the **Node List**:
+        - Make sure all nodes are on the same version. If not all nodes are on the same version, upgrade them to the cluster's highest current version first, and then start this process over.
+        - Make sure capacity and memory usage are reasonable for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. Also go to **Metrics &gt; Dashboard: Hardware** and make sure CPU percent is reasonable across the cluster. If there's not enough headroom on any of these metrics, consider [adding nodes](/docs/v24.1/scale-cockroachdb-kubernetes?filters=helm#add-nodes) to your cluster before beginning your upgrade.
+3. Review the [backward-incompatible changes in v24.1](/docs/releases/v24.1#v24-1-0-backward-incompatible-changes) and [deprecated features](/docs/releases/v24.1#v24-1-0-deprecations). If any affect your deployment, make the necessary changes before starting the rolling upgrade to v24.1.
+4. Decide how the upgrade will be finalized.
+
+    By default, after all nodes are running the new version, the upgrade process will be **auto-finalized**. This will enable certain [features and performance improvements introduced in v24.1. After finalization, however, it will no longer be possible to perform a downgrade to v23.2. In the event of a catastrophic failure or corruption, the only option is to start a new cluster using the old binary and then restore from a [backup](/docs/v24.1/take-full-and-incremental-backups) created prior to the upgrade. For this reason, **we recommend disabling auto-finalization** so you can monitor the stability and performance of the upgraded cluster before finalizing the upgrade, but note that you will need to follow all of the subsequent directions, including the manual finalization in a later step.
+
+    <Note>
+    Finalization only applies when performing a major version upgrade (for example, from v23.2.x to v24.1). Patch version upgrades (for example, within the v24.1.x series) can always be downgraded.
+    </Note>
+
+    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](/docs/v24.1/cockroach-sql):
+
+        ```shell
+        $ kubectl exec -it cockroachdb-client-secure \
+        -- ./cockroach sql \
+        --certs-dir=/cockroach-certs \
+        --host=my-release-cockroachdb-public
+        ```
+    2. Set the `cluster.preserve_downgrade_option` [cluster setting](/docs/v24.1/cluster-settings) to the version you are upgrading from:
+
+        ```sql
+        > SET CLUSTER SETTING cluster.preserve_downgrade_option = '["23.2"]';
+        ```
+    3. Exit the SQL shell and delete the temporary pod:
+
+        ```sql
+        > \q
+        ```
+5. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set statefulset.updateStrategy.rollingUpdate.partition=2
+    ```
+6. Kick off the upgrade process by changing the Docker image used in the CockroachDB StatefulSet:
+
+    <Note>
+    For Helm, you must remove the cluster initialization job from when the cluster was created before the cluster version can be changed.
+    </Note>
+
+    ```shell
+    $ kubectl delete job my-release-cockroachdb-init
+    ```
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set image.tag=v24.1.26 \
+    --reuse-values
+    ```
+7. Check the status of your cluster's pods. You should see one of them being restarted:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME                                READY     STATUS              RESTARTS   AGE
+    my-release-cockroachdb-0            1/1       Running             0          2m
+    my-release-cockroachdb-1            1/1       Running             0          3m
+    my-release-cockroachdb-2            0/1       ContainerCreating   0          25s
+    my-release-cockroachdb-init-nwjkh   0/1       ContainerCreating   0          6s
+    ...
+    ```
+
+    <Note>
+    Ignore the pod for cluster initialization. It is re-created as a byproduct of the StatefulSet configuration but does not impact your existing cluster.
+    </Note>
+8. After the pod has been restarted with the new image, start the CockroachDB [built-in SQL client](/docs/v24.1/cockroach-sql):
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=my-release-cockroachdb-public
+    ```
+9. Run the following SQL query to verify that the number of underreplicated ranges is zero:
+
+    ```sql
+    SELECT sum((metrics->>'ranges.underreplicated')::DECIMAL)::INT AS ranges_underreplicated FROM crdb_internal.kv_store_status;
+    ```
+
+    ```text
+      ranges_underreplicated
+    --------------------------
+                           0
+    (1 row)
+    ```
+
+    This indicates that it is safe to proceed to the next pod.
+10. Exit the SQL shell:
+
+    ```sql
+    > \q
+    ```
+11. Decrement the partition value by 1 to allow the next pod in the cluster to update:
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set statefulset.updateStrategy.rollingUpdate.partition=1 \
+    ```
+12. Repeat steps 4-8 until all pods have been restarted and are running the new image (the final partition value should be `0`).
+13. Check the image of each pod to confirm that all have been upgraded:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+    ```text
+    my-release-cockroachdb-0    cockroachdb/cockroach:v24.1.26
+    my-release-cockroachdb-1    cockroachdb/cockroach:v24.1.26
+    my-release-cockroachdb-2    cockroachdb/cockroach:v24.1.26
+    ...
+    ```
+
+    You can also check the CockroachDB version of each node in the [DB Console](/docs/v24.1/ui-cluster-overview-page#node-details).
+14. If you disabled auto-finalization earlier, monitor the stability and performance of your cluster until you are comfortable with the upgrade (generally at least a day).
+
+    If you decide to roll back the upgrade, repeat the rolling restart procedure with the old binary.
+
+    <Note>
+    This is only possible when performing a major version upgrade (for example, from v23.2.x to v24.1). Patch version upgrades (for example, within the v24.1.x series) are auto-finalized.
+    </Note>
+
+    To finalize the upgrade, re-enable auto-finalization:
+
+    1. Get a shell into the pod with the `cockroach` binary created earlier and start the CockroachDB [built-in SQL client](/docs/v24.1/cockroach-sql):
+
+        ```shell
+        $ kubectl exec -it cockroachdb-client-secure \
+        -- ./cockroach sql \
+        --certs-dir=/cockroach-certs \
+        --host=my-release-cockroachdb-public
+        ```
+    2. Re-enable auto-finalization:
+
+        ```sql
+        > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
+        ```
+
+        After the upgrade to v24.1 is finalized, you may notice an increase in compaction activity due to a background migration within the storage engine. To observe the migration's progress, check the **Compactions** section of the [Storage Dashboard](/docs/v24.1/ui-storage-dashboard) in the DB Console or monitor the `storage.marked-for-compaction-files` [time-series metric](/docs/v24.1/metrics). When the metric's value nears or reaches `0`, the migration is complete and compaction activity will return to normal levels.
+    3. Exit the SQL shell and delete the temporary pod:
+
+        ```sql
+        > \q
+        ```
+
+</Tab>
+</Tabs>

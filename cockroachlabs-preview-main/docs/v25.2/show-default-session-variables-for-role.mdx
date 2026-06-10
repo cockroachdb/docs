@@ -1,0 +1,135 @@
+---
+title: "SHOW DEFAULT SESSION VARIABLES FOR ROLE"
+old_description: "The SHOW DEFAULT SESSION VARIABLES FOR ROLE statement lists the default values for session variables applied to a given user."
+---
+
+import { ShowDefaultSessionVariablesForRole4 } from "/snippets/syntax-diagrams/ShowDefaultSessionVariablesForRole4.jsx";
+
+The `SHOW DEFAULT SESSION VARIABLES FOR ROLE` [statement](/docs/v25.2/sql-statements) lists the values for updated [session variables](/docs/v25.2/set-vars) that are applied to a given [user or role](/docs/v25.2/security-reference/authorization#roles).
+
+The results returned only include the values of session variables that are changed from the defaults. When no session variables have been changed from the defaults for a given role, the statement [returns no values](#output-when-no-session-variables-have-been-changed).
+
+## Synopsis
+
+<ShowDefaultSessionVariablesForRole4 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>FOR &#123;role&#95;or&#95;group&#95;or&#95;user&#125;</code></td><td>The <a href="/docs/v25.2/security-reference/authorization#roles">user, group, or role</a> whose updated <a href="/docs/v25.2/session-variables">session variables</a> should be displayed.</td></tr><tr><td><code>FOR ROLE ALL</code></td><td>Denotes that changes to default <a href="/docs/v25.2/session-variables">session variables</a> across all <a href="/docs/v25.2/security-reference/authorization#roles">roles</a> should be displayed.</td></tr><tr><td><code>FOR USER ALL</code></td><td>Alias for <code>FOR ROLE ALL</code>.</td></tr></tbody></table>
+
+## Response
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>session&#95;variables</code></td><td>The name of the <a href="/docs/v25.2/session-variables">session variable</a> that has had its default value changed.</td></tr><tr><td><code>default&#95;values</code></td><td>The updated value of the <a href="/docs/v25.2/session-variables">session variable</a>.</td></tr><tr><td><code>database</code></td><td>The <a href="/docs/v25.2/show-databases">database</a> where the change to the session variable will be applied.</td></tr><tr><td><code>inherited&#95;globally</code></td><td>Whether the change to the variable's value is applied to all users. For more information, see <a href="/docs/v25.2/alter-role#set-default-session-variable-values-for-all-users"><code>ALTER ROLE ALL</code></a>.</td></tr></tbody></table>
+
+## Required Privileges
+
+The [user](/docs/v25.2/security-reference/authorization#sql-users) issuing this statement must have at least one of the following [privileges](/docs/v25.2/security-reference/authorization#privileges):
+
+- `CREATEROLE`
+- `MODIFYCLUSTERSETTING`
+- `MODIFYSQLCLUSTERSETTING`
+
+## Examples
+
+### Output when no session variables have been changed
+
+When no session variables have been changed from the defaults for a given role, the statement returns no values:
+
+```sql
+SHOW DEFAULT SESSION VARIABLES FOR ROLE public;
+```
+
+```text
+SHOW DEFAULT SESSION VARIABLES FOR ROLE 0
+```
+
+Another way of confirming zero rows of output:
+
+```sql
+SELECT * FROM [SHOW DEFAULT SESSION VARIABLES FOR ROLE public];
+```
+
+```text
+  session_variables | default_values | database | inherited_globally
+--------------------+----------------+----------+---------------------
+(0 rows)
+```
+
+### Show changed session variables that apply to a user
+
+```sql
+CREATE USER movr_auditor;
+```
+
+```sql
+ALTER ROLE ALL SET application_name = 'movr';
+```
+
+```sql
+SHOW DEFAULT SESSION VARIABLES FOR ROLE movr_auditor;
+```
+
+```text
+  session_variables | default_values | database | inherited_globally
+--------------------+----------------+----------+---------------------
+  application_name  | movr           | NULL     |         t
+(1 row)
+```
+
+### Show changed session variables that apply to a user in different databases
+
+```sql
+CREATE DATABASE movr_audit;
+```
+
+```sql
+ALTER ROLE ALL IN DATABASE movr_audit SET application_name = 'movr_audit';
+```
+
+```sql
+SHOW DEFAULT SESSION VARIABLES FOR ROLE movr_auditor;
+```
+
+```text
+  session_variables | default_values |  database  | inherited_globally
+--------------------+----------------+------------+---------------------
+  application_name  | movr_audit     | movr_audit |         t
+  application_name  | movr           | NULL       |         t
+(2 rows)
+```
+
+### Show updated default session variables that apply to all users
+
+```sql
+SHOW DEFAULT SESSION VARIABLES FOR ROLE ALL;
+```
+
+```text
+  session_variables | default_values |  database
+--------------------+----------------+-------------
+  application_name  | movr_audit     | movr_audit
+  application_name  | movr           | NULL
+(2 rows)
+```
+
+### Get inline help in the SQL shell
+
+```sql
+\h SHOW DEFAULT SESSION VARIABLES FOR ROLE
+```
+
+```text
+Command:     SHOW DEFAULT SESSION VARIABLES FOR ROLE
+Description: list default session variables for role
+Category:    privileges and security
+Syntax:
+SHOW DEFAULT SESSION VARIABLES FOR ROLE <name>
+```
+
+## See also
+
+- [`ALTER ROLE ALL`](/docs/v25.2/alter-role#set-default-session-variable-values-for-all-users)
+- [Session Variables](/docs/v25.2/session-variables)
+- [`SHOW {session variable}`](/docs/v25.2/show-vars)
+- [SQL Statements](/docs/v25.2/sql-statements)
+- [Default Privileges](/docs/v25.2/security-reference/authorization#default-privileges)

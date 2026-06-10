@@ -1,0 +1,78 @@
+---
+title: "cockroach debug merge-logs"
+old_description: "Learn the command for merging the collected debug logs from all nodes in your cluster."
+---
+
+The `cockroach debug merge-logs` [command](/docs/v24.3/cockroach-commands) merges log files from multiple nodes into a single time-ordered stream of messages with an added per-message prefix to indicate the corresponding node. You can use it in conjunction with logs collected using the [`debug zip`](/docs/v24.3/cockroach-debug-zip) command to aid in debugging.
+
+<Warning>
+The file produced by `cockroach debug zip` can contain highly [sensitive, identifiable information](/docs/v24.3/configure-logs#redact-logs), such as usernames, hashed passwords, and possibly your table's data. You can use the [`--redact`](#example) flag to redact the sensitive data out of log files and crash reports before sharing them with Cockroach Labs.
+</Warning>
+
+## Subcommands
+
+While the `cockroach debug` command has a few subcommands, users are expected to use only the [`zip`](/docs/v24.3/cockroach-debug-zip), [`encryption-active-key`](/docs/v24.3/cockroach-debug-encryption-active-key), [`merge-logs`](/docs/v24.3/cockroach-debug-merge-logs), [`list-files`](/docs/v24.3/cockroach-debug-list-files), [`tsdump`](/docs/v24.3/cockroach-debug-tsdump), and [`ballast`](/docs/v24.3/cockroach-debug-ballast) subcommands.
+
+We recommend using the [`encryption-decrypt`](/docs/v24.3/cockroach-debug-encryption-decrypt) and [`job-trace`](/docs/v24.3/cockroach-debug-job-trace) subcommands only when directed by the [Cockroach Labs support team](/docs/v24.3/support-resources).
+
+The other `debug` subcommands are useful only to Cockroach Labs. Output of `debug` commands may contain sensitive or secret information.
+
+## Synopsis
+
+```shell
+$ cockroach debug merge-logs [log file directory] [flags]
+```
+
+## Flags
+
+The `debug merge-logs` subcommand supports the following flags:
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--format</code></td><td><strong>Required</strong> The <a href="/docs/v24.3/log-formats">format of the logs</a> in the log file directory. The logs in a <code>.zip</code> generated using <a href="/docs/v24.3/cockroach-debug-zip"><code>cockroach debug zip</code></a> are of type <a href="/docs/v24.3/log-formats#format-crdb-v1"><code>crdb-v1</code></a>.</td></tr><tr><td><code>--filter</code></td><td>Limit the results to the specified regular expression</td></tr><tr><td><code>--from</code></td><td>Start time for the time range filter.</td></tr><tr><td><code>--to</code></td><td>End time for the time range filter.</td></tr><tr><td><code>--redact</code></td><td>Redact <a href="/docs/v24.3/configure-logs#redact-logs">sensitive data</a> from the log files.</td></tr></tbody></table>
+
+## Example
+
+Generate a debug zip file:
+
+```shell
+cockroach debug zip ./cockroach-data/logs/debug.zip --insecure
+```
+
+Unzip the file:
+
+```shell
+unzip ./cockroach-data/logs/debug.zip
+```
+
+Merge the logs in the debug folder:
+
+```shell
+cockroach debug merge-logs debug/nodes/*/logs/* --format=crdb-v1
+```
+
+Alternatively, filter the merged logs for a specified time range:
+
+```shell
+cockroach debug merge-logs debug/nodes/*/logs/* --format=crdb-v1 --from="231031 19:19:50.917185" --to="231031 19:19:57.189263"
+```
+
+You can also filter the merged logs for a regular expression:
+
+```shell
+cockroach debug merge-logs debug/nodes/*/logs/* --format=crdb-v1 --filter="ALL SECURITY CONTROLS HAVE BEEN DISABLED"
+```
+
+You can redact sensitive information from the merged logs:
+
+```shell
+cockroach debug merge-logs debug/nodes/*/logs/* --format=crdb-v1 --redact
+```
+
+## Considerations
+
+As of v23.2, logs can be configured to use a [timezone with formats `crdb-v1` or `crdb-v2`](/docs/v24.3/configure-logs#set-timezone). This is a [backward-incompatible change](/docs/releases/v23.2#v23-2-0-alpha-1-backward-incompatible-changes). `cockroach debug merge-logs` requires v23.2 or later if run against logs with the timezone configured. With versions prior to v23.2, `cockroach debug merge-logs` will return an error if run against logs with the timezone configured.
+
+## See also
+
+- [File an Issue](/docs/v24.3/file-an-issue)
+- [`cockroach` Commands Overview](/docs/v24.3/cockroach-commands)
+- [Troubleshooting Overview](/docs/v24.3/troubleshooting-overview)

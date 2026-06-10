@@ -1,0 +1,83 @@
+---
+title: "SHOW SYSTEM GRANTS"
+old_description: "The SHOW SYSTEM GRANTS statement lists the system privileges granted to users."
+---
+
+The `SHOW SYSTEM GRANTS` [statement](/docs/v23.2/sql-statements) lists the [system privileges](/docs/v23.2/security-reference/authorization#supported-privileges) [granted](/docs/v23.2/grant) to [users](/docs/v23.2/security-reference/authorization#sql-users).
+
+## Syntax
+
+Use the following syntax to show the [system privileges](/docs/v23.2/security-reference/authorization#supported-privileges) granted to users:
+
+```text
+SHOW SYSTEM GRANTS [FOR <users...>]
+```
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>users</code></td><td>The <a href="/docs/v23.2/security-reference/authorization#sql-users">user</a>, or comma-separated list of users, whose system privileges you want to show.</td></tr></tbody></table>
+
+## Response
+
+### Privilege grants
+
+The `SHOW SYSTEM GRANTS` statement returns the following fields:
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>grantee</code></td><td>The name of the user.</td></tr><tr><td><code>privilege&#95;type</code></td><td>The name of the <a href="/docs/v23.2/security-reference/authorization#supported-privileges">system privilege</a> granted to the user.</td></tr><tr><td><code>is&#95;grantable</code></td><td><code>t</code> (true) if the user has the grant option on the object; <code>f</code> (false) if not.</td></tr></tbody></table>
+
+## Required privileges
+
+- No [privileges](/docs/v23.2/security-reference/authorization#supported-privileges) are required to use `SHOW SYSTEM GRANTS`.
+
+## Examples
+
+### Show all system grants
+
+To list all system grants for all users and roles:
+
+```sql
+> SHOW SYSTEM GRANTS;
+```
+
+```text
+  grantee |    privilege_type    | is_grantable
+----------+----------------------+---------------
+  max     | VIEWACTIVITY         |      t
+  max     | VIEWCLUSTERMETADATA  |      t
+  max     | VIEWDEBUG            |      t
+  alice   | VIEWACTIVITYREDACTED |      f
+  alice   | NOSQLLOGIN           |      f
+(5 rows)
+```
+
+### Show a specific user or role's grants
+
+To list all system grants for a specific user or role:
+
+```sql
+> CREATE USER max;
+```
+
+```sql
+> GRANT SYSTEM ALL TO max WITH GRANT OPTION;
+```
+
+```sql
+> SHOW SYSTEM GRANTS FOR max;
+```
+
+```text
+  grantee | privilege_type | is_grantable
+----------+----------------+---------------
+  max     | ALL            |      t
+(1 row)
+```
+
+## See also
+
+- [Authorization](/docs/v23.2/authorization)
+- [System Privileges](/docs/v23.2/security-reference/authorization#supported-privileges)
+- [`GRANT`](/docs/v23.2/grant)
+- [`REVOKE`](/docs/v23.2/revoke)
+- [Manage Users](/docs/v23.2/security-reference/authorization#create-and-manage-users)
+- [Information Schema](/docs/v23.2/information-schema)

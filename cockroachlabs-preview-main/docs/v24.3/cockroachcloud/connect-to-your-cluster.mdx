@@ -1,0 +1,20 @@
+---
+title: "Connect to a CockroachDB Standard Cluster"
+old_description: "Learn how to connect and start interacting with your cluster."
+---
+
+import ConnectToYourCluster from "/snippets/cockroachcloud/connect-to-your-cluster.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ConnectToYourCluster />

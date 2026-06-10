@@ -1,0 +1,77 @@
+export const AlterVirtualClusterServiceStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="81" width="737" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="62" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">ALTER</text><a xlink:href="#virtual_cluster" xlink:title="virtual_cluster">
+<rect height="32" width="110" x="113" y="3"></rect>
+<rect class="nonterminal" height="32" width="110" x="111" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="86" font-size="10" class="nonterminal" x="123" y="21">virtual_cluster</text></a><a xlink:href="#virtual_cluster_spec" xlink:title="virtual_cluster_spec">
+<rect height="32" width="148" x="243" y="3"></rect>
+<rect class="nonterminal" height="32" width="148" x="241" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="124" font-size="10" class="nonterminal" x="253" y="21">virtual_cluster_spec</text></a><rect height="32" rx="10" width="64" x="431" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="429" y="1"></rect>
+<text class="terminal" x="439" y="21">START</text>
+<rect height="32" rx="10" width="78" x="515" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="513" y="1"></rect>
+<text class="terminal" x="523" y="21">SERVICE</text>
+<rect height="32" rx="10" width="76" x="613" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="611" y="1"></rect>
+<text class="terminal" x="621" y="21">SHARED</text>
+<rect height="32" rx="10" width="56" x="431" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="429" y="45"></rect>
+<text class="terminal" x="439" y="65">STOP</text>
+<rect height="32" rx="10" width="78" x="507" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="505" y="45"></rect>
+<text class="terminal" x="515" y="65">SERVICE</text>
+<path class="line" d="m17 17 h2 m0 0 h10 m62 0 h10 m0 0 h10 m110 0 h10 m0 0 h10 m148 0 h10 m20 0 h10 m64 0 h10 m0 0 h10 m78 0 h10 m0 0 h10 m76 0 h10 m-298 0 h20 m278 0 h20 m-318 0 q10 0 10 10 m298 0 q0 -10 10 -10 m-308 10 v24 m298 0 v-24 m-298 24 q0 10 10 10 m278 0 q10 0 10 -10 m-288 10 h10 m56 0 h10 m0 0 h10 m78 0 h10 m0 0 h104 m23 -44 h-3"></path>
+<polygon points="727 17 735 13 735 21"></polygon>
+<polygon points="727 17 719 13 719 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

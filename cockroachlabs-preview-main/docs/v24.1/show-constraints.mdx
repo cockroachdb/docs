@@ -1,0 +1,73 @@
+---
+title: "SHOW CONSTRAINTS"
+old_description: "The SHOW CONSTRAINTS statement lists the constraints on a table."
+---
+
+import { ShowConstraints3 } from "/snippets/syntax-diagrams/ShowConstraints3.jsx";
+
+The `SHOW CONSTRAINTS` [statement](/docs/v24.1/sql-statements) lists all named [constraints](/docs/v24.1/constraints) as well as any unnamed [`CHECK`](/docs/v24.1/check) constraints on a table.
+
+## Required privileges
+
+The user must have any [privilege](/docs/v24.1/security-reference/authorization#managing-privileges) on the target table.
+
+## Aliases
+
+`SHOW CONSTRAINT` is an alias for `SHOW CONSTRAINTS`.
+
+## Synopsis
+
+<ShowConstraints3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table for which to show constraints.</td></tr></tbody></table>
+
+## Response
+
+The following fields are returned for each constraint.
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table.</td></tr><tr><td><code>constraint&#95;name</code></td><td>The name of the constraint.</td></tr><tr><td><code>constraint&#95;type</code></td><td>The type of constraint.</td></tr><tr><td><code>details</code></td><td>The definition of the constraint, including the column(s) to which it applies.</td></tr><tr><td><code>validated</code></td><td>Whether values in the column(s) match the constraint.</td></tr></tbody></table>
+
+## Example
+
+```sql
+> CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    date TIMESTAMP NOT NULL,
+    priority INT DEFAULT 1,
+    customer_id INT UNIQUE,
+    status STRING DEFAULT 'open',
+    CHECK (priority BETWEEN 1 AND 5),
+    CHECK (status in ('open', 'in progress', 'done', 'cancelled')),
+    FAMILY (id, date, priority, customer_id, status)
+);
+```
+
+```sql
+> SHOW CONSTRAINTS FROM orders;
+```
+
+```text
++------------+------------------------+-----------------+--------------------------------------------------------------------------+-----------+
+| table_name |    constraint_name     | constraint_type |                                 details                                  | validated |
++------------+------------------------+-----------------+--------------------------------------------------------------------------+-----------+
+| orders     | check_priority         | CHECK           | CHECK (priority BETWEEN 1 AND 5)                                         |   true    |
+| orders     | check_status           | CHECK           | CHECK (status IN ('open':::STRING, 'in progress':::STRING,               |   true    |
+|            |                        |                 | 'done':::STRING, 'cancelled':::STRING))                                  |           |
+| orders     | orders_customer_id_key | UNIQUE          | UNIQUE (customer_id ASC)                                                 |   true    |
+| orders     | primary                | PRIMARY KEY     | PRIMARY KEY (id ASC)                                                     |   true    |
++------------+------------------------+-----------------+--------------------------------------------------------------------------+-----------+
+(4 rows)
+```
+
+## See also
+
+- [Constraints](/docs/v24.1/constraints)
+- [`ADD CONSTRAINT`](/docs/v24.1/alter-table#add-constraint)
+- [`RENAME CONSTRAINT`](/docs/v24.1/alter-table#rename-constraint)
+- [`DROP CONSTRAINT`](/docs/v24.1/alter-table#drop-constraint)
+- [`VALIDATE CONSTRAINT`](/docs/v24.1/alter-table#validate-constraint)
+- [`CREATE TABLE`](/docs/v24.1/create-table)
+- [Information Schema](/docs/v24.1/information-schema)
+- [SQL Statements](/docs/v24.1/sql-statements)

@@ -1,0 +1,101 @@
+<svg height="487" width="533" xmlns="http://www.w3.org/2000/svg"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="62" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">ALTER</text>
+<rect height="32" rx="10" width="74" x="115" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="113" y="1"></rect>
+<text class="terminal" x="123" y="21">BACKUP</text>
+<rect height="32" rx="10" width="92" x="209" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="207" y="1"></rect>
+<text class="terminal" x="217" y="21">SCHEDULE</text>
+<rect height="32" width="96" x="321" y="3"></rect>
+<rect class="nonterminal" height="32" width="96" x="319" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="10" class="nonterminal" x="331" y="21">schedule_id</text><rect height="32" rx="10" width="44" x="65" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="63" y="111"></rect>
+<text class="terminal" x="73" y="131">SET</text>
+<rect height="32" rx="10" width="62" x="149" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="147" y="111"></rect>
+<text class="terminal" x="157" y="131">LABEL</text>
+<rect height="32" width="114" x="231" y="113"></rect>
+<rect class="nonterminal" height="32" width="114" x="229" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="90" font-size="10" class="nonterminal" x="241" y="131">schedule_label</text><rect height="32" rx="10" width="56" x="149" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="147" y="155"></rect>
+<text class="terminal" x="157" y="175">INTO</text>
+<rect height="32" width="102" x="225" y="157"></rect>
+<rect class="nonterminal" height="32" width="102" x="223" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="78" font-size="10" class="nonterminal" x="235" y="175">collectionURI</text><rect height="32" rx="10" width="58" x="149" y="201"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="147" y="199"></rect>
+<text class="terminal" x="157" y="219">WITH</text>
+<rect height="32" width="60" x="227" y="201"></rect>
+<rect class="nonterminal" height="32" width="60" x="225" y="199"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="36" font-size="10" class="nonterminal" x="237" y="219">option</text><rect height="32" rx="10" width="100" x="149" y="245"></rect>
+<rect class="terminal" height="32" rx="10" width="100" x="147" y="243"></rect>
+<text class="terminal" x="157" y="263">RECURRING</text>
+<rect height="32" width="68" x="269" y="245"></rect>
+<rect class="nonterminal" height="32" width="68" x="267" y="243"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="44" font-size="10" class="nonterminal" x="279" y="263">crontab</text><rect height="32" rx="10" width="112" x="149" y="289"></rect>
+<rect class="terminal" height="32" rx="10" width="112" x="147" y="287"></rect>
+<text class="terminal" x="157" y="307">FULL BACKUP</text>
+<rect height="32" width="68" x="301" y="289"></rect>
+<rect class="nonterminal" height="32" width="68" x="299" y="287"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="44" font-size="10" class="nonterminal" x="311" y="307">crontab</text><rect height="32" rx="10" width="78" x="301" y="333"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="299" y="331"></rect>
+<text class="terminal" x="309" y="351">ALWAYS</text>
+<rect height="32" rx="10" width="152" x="149" y="377"></rect>
+<rect class="terminal" height="32" rx="10" width="152" x="147" y="375"></rect>
+<text class="terminal" x="157" y="395">SCHEDULE OPTION</text>
+<rect height="32" width="124" x="321" y="377"></rect>
+<rect class="nonterminal" height="32" width="124" x="319" y="375"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="100" font-size="10" class="nonterminal" x="331" y="395">schedule_option</text><rect height="32" rx="10" width="80" x="65" y="421"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="63" y="419"></rect>
+<text class="terminal" x="73" y="439">EXECUTE</text>
+<rect height="32" rx="10" width="54" x="185" y="453"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="183" y="451"></rect>
+<text class="terminal" x="193" y="471">FULL</text>
+<rect height="32" rx="10" width="116" x="279" y="421"></rect>
+<rect class="terminal" height="32" rx="10" width="116" x="277" y="419"></rect>
+<text class="terminal" x="287" y="439">IMMEDIATELY</text>
+<rect height="32" rx="10" width="24" x="45" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="43" y="67"></rect>
+<text class="terminal" x="53" y="87">,</text>
+<path class="line" d="m19 17 h2 m0 0 h10 m62 0 h10 m0 0 h10 m74 0 h10 m0 0 h10 m92 0 h10 m0 0 h10 m96 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-436 110 l2 0 m2 0 l2 0 m2 0 l2 0 m42 0 h10 m44 0 h10 m20 0 h10 m62 0 h10 m0 0 h10 m114 0 h10 m0 0 h100 m-336 0 h20 m316 0 h20 m-356 0 q10 0 10 10 m336 0 q0 -10 10 -10 m-346 10 v24 m336 0 v-24 m-336 24 q0 10 10 10 m316 0 q10 0 10 -10 m-326 10 h10 m56 0 h10 m0 0 h10 m102 0 h10 m0 0 h118 m-326 -10 v20 m336 0 v-20 m-336 20 v24 m336 0 v-24 m-336 24 q0 10 10 10 m316 0 q10 0 10 -10 m-326 10 h10 m58 0 h10 m0 0 h10 m60 0 h10 m0 0 h158 m-326 -10 v20 m336 0 v-20 m-336 20 v24 m336 0 v-24 m-336 24 q0 10 10 10 m316 0 q10 0 10 -10 m-326 10 h10 m100 0 h10 m0 0 h10 m68 0 h10 m0 0 h108 m-326 -10 v20 m336 0 v-20 m-336 20 v24 m336 0 v-24 m-336 24 q0 10 10 10 m316 0 q10 0 10 -10 m-326 10 h10 m112 0 h10 m20 0 h10 m68 0 h10 m0 0 h10 m-118 0 h20 m98 0 h20 m-138 0 q10 0 10 10 m118 0 q0 -10 10 -10 m-128 10 v24 m118 0 v-24 m-118 24 q0 10 10 10 m98 0 q10 0 10 -10 m-108 10 h10 m78 0 h10 m20 -44 h46 m-326 -10 v20 m336 0 v-20 m-336 20 v68 m336 0 v-68 m-336 68 q0 10 10 10 m316 0 q10 0 10 -10 m-326 10 h10 m152 0 h10 m0 0 h10 m124 0 h10 m-420 -264 h20 m420 0 h20 m-460 0 q10 0 10 10 m440 0 q0 -10 10 -10 m-450 10 v288 m440 0 v-288 m-440 288 q0 10 10 10 m420 0 q10 0 10 -10 m-430 10 h10 m80 0 h10 m20 0 h10 m0 0 h64 m-94 0 h20 m74 0 h20 m-114 0 q10 0 10 10 m94 0 q0 -10 10 -10 m-104 10 v12 m94 0 v-12 m-94 12 q0 10 10 10 m74 0 q10 0 10 -10 m-84 10 h10 m54 0 h10 m20 -32 h10 m116 0 h10 m0 0 h70 m-460 -308 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m460 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-460 0 h10 m24 0 h10 m0 0 h416 m23 44 h-3"></path>
+<polygon points="523 127 531 123 531 131"></polygon>
+<polygon points="523 127 515 123 515 131"></polygon></svg>

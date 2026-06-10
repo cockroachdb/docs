@@ -1,0 +1,20 @@
+---
+title: "Change a Cluster's Plan Between Basic and Standard"
+old_description: "Learn how to change a cluster's plan between a CockroachDB Basic cluster and a CockroachDB Standard cluster."
+---
+
+import ChangePlanBetweenBasicAndStandard from "/snippets/cockroachcloud/change-plan-between-basic-and-standard.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ChangePlanBetweenBasicAndStandard />

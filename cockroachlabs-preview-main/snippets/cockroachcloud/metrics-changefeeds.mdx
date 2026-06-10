@@ -1,0 +1,45 @@
+---
+title: "Changefeed metrics"
+old_description: "The Changefeed metrics let you monitor the performance of your changefeeds."
+---
+
+The Changefeed metrics let you monitor the performance of your <a href="/docs/VERSION_PLACEHOLDER/change-data-capture-overview" data-versioned="true">changefeeds</a>.
+
+To view these graphs, select a cluster from the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-management#view-clusters-page" data-versioned="true">**Clusters** page</a>, and click **Metrics** in the **Monitoring** section of the left side navigation. On the **Metrics** page, click the **Changefeeds** tab.
+
+## Time interval selection
+
+The time interval selector at the top of each tab allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected for all charts on the **Metrics** page.
+
+## Changefeed Status
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Running</td><td><code>changefeed.running</code></td><td>Number of currently running changefeeds, including sinkless</td><td>This metric tracks the total number of all running changefeeds.</td></tr><tr><td>Paused</td><td><code>jobs.changefeed.currently&#95;paused</code></td><td>Number of changefeed jobs currently considered Paused</td><td>Monitor and alert on this metric to safeguard against an inadvertent operational error of leaving a changefeed job in a paused state for an extended period of time. Changefeed jobs should not be paused for a long time because the protected timestamp prevents garbage collection.</td></tr><tr><td>Failures</td><td><code>changefeed.failures</code></td><td>Total number of changefeed jobs which have failed</td><td>This metric tracks the permanent changefeed job failures that the jobs system will not try to restart. Any increase in this counter should be investigated. An alert on this metric is recommended.</td></tr></tbody></table>
+
+## Retryable Errors
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Errors</td><td><code>changefeed.error&#95;retries</code></td><td>Total retryable errors encountered by all changefeeds</td><td>This metric tracks transient changefeed errors. Alert on "too many" errors, such as 50 retries in 15 minutes. For example, during a rolling upgrade this counter will increase because the changefeed jobs will restart following node restarts. There is an exponential backoff, up to 10 minutes. But if there is no rolling upgrade in process or other cluster maintenance, and the error rate is high, investigate the changefeed job.</td></tr></tbody></table>
+
+## Emitted Messages
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Emitted messages</td><td><code>changefeed.emitted&#95;messages</code></td><td>Messages emitted by all feeds</td><td>This metric provides a useful context when assessing the state of changefeeds. This metric characterizes the rate of changes being streamed from the CockroachDB cluster.</td></tr></tbody></table>
+
+## Emitted Bytes
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Emitted bytes</td><td><code>changefeed.emitted&#95;bytes</code></td><td>Bytes emitted by all feeds</td><td>This metric provides a useful context when assessing the state of changefeeds. This metric characterizes the throughput bytes being streamed from the CockroachDB cluster.</td></tr></tbody></table>
+
+## Commit Latency
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>P99, P90</td><td><code>changefeed.commit&#95;latency</code></td><td>Event commit latency: a difference between event MVCC timestamp and the time it was acknowledged by the downstream sink. If the sink batches events, then the difference between the oldest event in the batch and acknowledgement is recorded; Excludes latency during backfill</td><td>This metric provides a useful context when assessing the state of changefeeds. This metric characterizes the end-to-end lag between a committed change and that change applied at the destination.</td></tr></tbody></table>
+
+## Oldest Protected Timestamp
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Protected Timestamp Age</td><td><code>jobs.changefeed.protected&#95;age&#95;sec</code></td><td>The age of the oldest PTS record protected by changefeed jobs</td><td>Changefeeds use protected timestamps to protect the data from being garbage collected. Ensure the protected timestamp age does not significantly exceed the GC TTL zone configuration. Alert on this metric if the protected timestamp age is greater than 3 times the GC TTL.</td></tr></tbody></table>
+
+## See also
+
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/metrics" data-versioned="true">Metrics Overview</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/metrics-overview" data-versioned="true">Overview metrics tab</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/metrics-request-units" data-versioned="true">Request Unit metrics</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/metrics-sql" data-versioned="true">SQL metrics</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/metrics-row-level-ttl" data-versioned="true">Row-Level TTL metrics</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/metrics-essential" data-versioned="true">Essential Metrics for Standard</a>

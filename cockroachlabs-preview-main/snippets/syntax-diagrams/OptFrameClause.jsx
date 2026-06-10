@@ -1,0 +1,68 @@
+export const OptFrameClause = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="145" width="515" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 5 1 1 1 9"></polygon>
+<polygon points="17 5 9 1 9 9"></polygon>
+<rect height="32" rx="10" width="66" x="71" y="23"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="69" y="21"></rect>
+<text class="terminal" x="79" y="41">RANGE</text>
+<rect height="32" rx="10" width="62" x="71" y="67"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="69" y="65"></rect>
+<text class="terminal" x="79" y="85">ROWS</text>
+<rect height="32" rx="10" width="78" x="71" y="111"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="69" y="109"></rect>
+<text class="terminal" x="79" y="129">GROUPS</text><a xlink:href="#frame_extent" xlink:title="frame_extent">
+<rect height="32" width="106" x="189" y="23"></rect>
+<rect class="nonterminal" height="32" width="106" x="187" y="21"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="82" font-size="11" class="nonterminal" x="199" y="41">frame_extent</text></a><a xlink:href="#opt_frame_exclusion" xlink:title="opt_frame_exclusion">
+<rect height="32" width="152" x="315" y="23"></rect>
+<rect class="nonterminal" height="32" width="152" x="313" y="21"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="128" font-size="10" class="nonterminal" x="325" y="41">opt_frame_exclusion</text></a><path class="line" d="m17 5 h2 m20 0 h10 m0 0 h426 m-456 0 h20 m436 0 h20 m-476 0 q10 0 10 10 m456 0 q0 -10 10 -10 m-466 10 v12 m456 0 v-12 m-456 12 q0 10 10 10 m436 0 q10 0 10 -10 m-426 10 h10 m66 0 h10 m0 0 h12 m-118 0 h20 m98 0 h20 m-138 0 q10 0 10 10 m118 0 q0 -10 10 -10 m-128 10 v24 m118 0 v-24 m-118 24 q0 10 10 10 m98 0 q10 0 10 -10 m-108 10 h10 m62 0 h10 m0 0 h16 m-108 -10 v20 m118 0 v-20 m-118 20 v24 m118 0 v-24 m-118 24 q0 10 10 10 m98 0 q10 0 10 -10 m-108 10 h10 m78 0 h10 m20 -88 h10 m106 0 h10 m0 0 h10 m152 0 h10 m23 -32 h-3"></path>
+<polygon points="505 5 513 1 513 9"></polygon>
+<polygon points="505 5 497 1 497 9"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,230 @@
+---
+title: "Quickstart with CockroachDB"
+old_description: "Learn how to use free trial credits to deploy a CockroachDB cluster on CockroachDB Standard (Preview) and run your first queries."
+---
+
+This page shows you how to use free trial credits to deploy a CockroachDB cluster on CockroachDB Standard (Preview) and use sample code to run your first queries.
+
+## Create a free trial cluster
+
+1. [Create a CockroachDB Cloud account](/docs/cockroachcloud/create-an-account). If this is your first CockroachDB Cloud organization, it will be credited with &#36;400 in [free trial credits](/docs/cockroachcloud/free-trial) to get you started.
+2. On the **Get Started** page, click **Create cluster**.
+3. On the **Select a plan** page, select **Standard**.
+4. On the **Cloud &amp; Regions** page, select a cloud provider (GCP or AWS).
+5. In the **Regions** section, select a region for the cluster. Refer to [CockroachDB Cloud Regions](/docs/cockroachcloud/regions) for the regions where CockroachDB Standard clusters can be deployed. To create a multi-region cluster, click **Add region** and select additional regions.
+6. Click **Next: Capacity**.
+7. On the **Capacity** page, keep the [**Provisioned capacity**](/docs/cockroachcloud/plan-your-cluster) at the default value of 2 vCPUs.
+
+    Click **Next: Finalize**.
+8. On the **Finalize** page, name your cluster. If an active free trial is listed in the right pane, you will not need to add a payment method, though you will need to do this by the [end of the trial](/docs/cockroachcloud/free-trial#add-payment-methods) to maintain your organization's clusters.
+
+    Click **Create cluster**.
+
+    Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.
+
+## Create a SQL user
+
+The **Create SQL user** dialog allows you to create a new SQL user and password.
+
+1. Enter a username in the **SQL user** field or use the one provided by default.
+2. Click **Generate &amp; save password**.
+3. Copy the generated password and save it in a secure location.
+4. Click **Next**.
+
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Managing SQL users on a cluster](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster).
+
+## Connect to the cluster
+
+Select a language to connect a sample application to your cluster. To connect to your cluster directly from the command line, refer to [Connect to a Standard Cluster](/docs/cockroachcloud/connect-to-your-cluster).
+
+<Tabs>
+<Tab title="Java">
+
+Once you create a SQL user, the **Connect to cluster** dialog will show information about how to connect to your cluster.
+
+1. Select **Java** from the **Select option/language** dropdown.
+2. Copy the `JDBC_DATABASE_URL` environment variable command provided and save it in a secure location.
+
+    <Note>
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Admin can reset it. Refer to: [Managing SQL users on a cluster](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster)
+    </Note>
+
+## Configure the connection environment variable
+
+<Tabs>
+<Tab title="Mac">
+
+In a terminal, set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
+
+```shell
+export JDBC_DATABASE_URL="<jdbc-connection-string>"
+```
+
+The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
+
+</Tab>
+<Tab title="Linux">
+
+In a terminal, set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
+
+```shell
+export JDBC_DATABASE_URL="<jdbc-connection-string>"
+```
+
+The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
+
+</Tab>
+<Tab title="Windows">
+
+In a terminal set the `JDBC_DATABASE_URL` environment variable to the JDBC connection string:
+
+```shell
+$env:JDBC_DATABASE_URL = "<jdbc-connection-string>"
+```
+
+The code sample uses the connection string stored in the environment variable `JDBC_DATABASE_URL` to connect to your cluster.
+
+</Tab>
+</Tabs>
+
+## Run the Java sample code
+
+1. Clone the `quickstart-code-samples` repo:
+
+    ```shell
+    git clone https://github.com/cockroachdb/quickstart-code-samples
+    ```
+2. Navigate to the `java` directory of the repo:
+
+    ```shell
+    cd quickstart-code-samples/java
+    ```
+
+    The code sample in this directory does the following:
+
+    1. Connects to CockroachDB Cloud with the [JDBC driver](https://jdbc.postgresql.org/) using the JDBC connection string set in the `JDBC_DATABASE_URL` environment variable.
+    2. Creates a table.
+    3. Inserts some data into the table.
+    4. Reads the inserted data.
+    5. Prints the data to the terminal.
+3. Run the application using `gradlew`:
+
+    ```shell
+    ./gradlew run
+    ```
+
+    The output should look like this:
+
+    ```text
+    > Task :app:run
+    Hello world!
+
+    BUILD SUCCESSFUL in 3s
+    2 actionable tasks: 2 executed
+    ```
+
+</Tab>
+<Tab title="Node.js">
+
+Once you create a SQL user, the **Connect to cluster** dialog will show information about how to connect to your cluster.
+
+1. Select **General connection string** from the **Select option** dropdown.
+2. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
+
+    <Note>
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only* once. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, a Cluster Admin can reset it. Refer to: [Managing SQL users on a cluster](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster)
+    </Note>
+
+## Configure the connection environment variable
+
+<Tabs>
+<Tab title="Mac">
+
+In a terminal set the `DATABASE_URL` environment variable to the connection string:
+
+```shell
+export DATABASE_URL="<connection-string>"
+```
+
+The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
+
+</Tab>
+<Tab title="Linux">
+
+In a terminal set the `DATABASE_URL` environment variable to the connection string:
+
+```shell
+export DATABASE_URL="<connection-string>"
+```
+
+The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
+
+</Tab>
+<Tab title="Windows">
+
+In a terminal set the `DATABASE_URL` environment variable to the connection string:
+
+```shell
+$env:DATABASE_URL = "<connection-string>"
+```
+
+The code sample uses the connection string stored in the environment variable `DATABASE_URL` to connect to your cluster.
+
+</Tab>
+</Tabs>
+
+## Run the Node.js sample code
+
+1. Clone the `quickstart-code-samples` repo:
+
+    ```shell
+    git clone https://github.com/cockroachdb/quickstart-code-samples
+    ```
+2. Navigate to the `node` directory of the repo:
+
+    ```shell
+    cd quickstart-code-samples/node
+    ```
+
+    The code sample in this directory does the following:
+
+    1. Connects to CockroachDB Cloud with the [node-postgres driver](https://node-postgres.com/) using the connection string set in the `DATABASE_URL` environment variable.
+    2. Creates a table.
+    3. Inserts some data into the table.
+    4. Reads the inserted data.
+    5. Prints the data to the terminal.
+3. Install the app requirements:
+
+    ```shell
+    $ npm install
+    ```
+4. Run the app:
+
+    ```shell
+    $ node app.js
+    ```
+
+    The output will look like this:
+
+    ```text
+    Hello world!
+    ```
+
+</Tab>
+</Tabs>
+
+## Learn more
+
+Now that you have a CockroachDB Standard cluster running, try out the following:
+
+- Build a simple CRUD application in [Go](/docs/v25.4/build-a-go-app-with-cockroachdb), [Java](/docs/v25.4/build-a-java-app-with-cockroachdb), [Node.js](/docs/v25.4/build-a-nodejs-app-with-cockroachdb), or [Python](/docs/v25.4/build-a-python-app-with-cockroachdb).
+- Learn [CockroachDB SQL](/docs/v25.4/sql-statements).
+- [Create and manage SQL users](/docs/cockroachcloud/managing-access).
+- [Migrate your existing data](/docs/molt/migration-overview).
+
+This page highlights just one way you can get started with CockroachDB. For information on other options that are available when creating a CockroachDB cluster, see the following:
+
+- To create a Self-Hosted cluster, see [Start a Local Cluster](/docs/v25.4/start-a-local-cluster).
+- To create a CockroachDB Advanced cluster, see [Quickstart with CockroachDB Advanced](/docs/cockroachcloud/quickstart-trial-cluster).
+- To create a CockroachDB Standard cluster with other configurations (e.g., a different cloud provider, region, or provisioned capacity), see [Create a CockroachDB Standard Cluster](/docs/cockroachcloud/create-your-cluster).
+- To connect to a CockroachDB Standard cluster with other options (e.g., a different SQL user) and connection methods (with an application or [CockroachDB compatible tool](/docs/v25.4/third-party-database-tools) ), see [Connect to a CockroachDB Standard Cluster](/docs/cockroachcloud/connect-to-your-cluster).

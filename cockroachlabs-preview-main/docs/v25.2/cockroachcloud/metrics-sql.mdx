@@ -1,0 +1,20 @@
+---
+title: "SQL metrics"
+old_description: "The SQL metrics let you monitor SQL performance."
+---
+
+import MetricsSql from "/snippets/cockroachcloud/metrics-sql.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MetricsSql />

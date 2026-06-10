@@ -1,0 +1,218 @@
+---
+title: "cockroach debug zip"
+old_description: "Learn the commands for collecting debug information from all nodes in your cluster."
+---
+
+The `cockroach debug zip` [command](/docs/v25.2/cockroach-commands) connects to your cluster and gathers information from each active node into a single `.zip` file (inactive nodes are not included). For details on the `.zip` contents, see [Files](#files).
+
+You can use the [`cockroach debug merge-logs`](/docs/v25.2/cockroach-debug-merge-logs) command in conjunction with `cockroach debug zip` to merge the collected logs into one file, making them easier to parse.
+
+<Warning>
+The files produced by `cockroach debug zip` can contain highly [sensitive, personally-identifiable information (PII)](/docs/v25.2/configure-logs#redact-logs), such as usernames, hashed passwords, and possibly table data. Use the [`--redact`](#redact) flag to configure CockroachDB to redact sensitive data when generating the `.zip` file (excluding range keys) if intending to share it with Cockroach Labs.
+</Warning>
+
+## Details
+
+### Use cases
+
+<Warning>
+`cockroach debug zip` is an expensive operation and impacts cluster performance.
+
+Only use this command as an emergency measure under the guidance of Cockroach Labs.
+
+Particularly fetching stack traces for all goroutines is a "stop-the-world" operation, which can momentarily but significantly increase SQL service latency. Exclude these goroutine stacks by using the [`--include-goroutine-stacks=false` flag](#include-goroutine-stacks).
+</Warning>
+
+There are two scenarios in which `debug zip` is useful:
+
+- If you experience severe or difficult-to-reproduce issues with your cluster, Cockroach Labs might ask you to send us your cluster's debugging information using `cockroach debug zip`. We recommend reducing the `*.zip` file size by only [retrieving debugging information for the relevant time range](#generate-a-debug-zip-file-for-a-time-range) of the issue by using the `--files-from`, and/or `--files-until` [flags](#flags).
+- To collect all of your nodes' logs, which you can then parse to locate issues. You can optionally use the [flags](#flags) to [retrieve only the log files](#generate-a-debug-zip-file-with-logs-only). For more information about logs, see [Logging](/docs/v25.2/logging-overview). Also note:
+    - Nodes that are currently [down](/docs/v25.2/cluster-setup-troubleshooting#node-liveness-issues) cannot deliver their logs over the network. For these nodes, you must log on to the machine where the `cockroach` process would otherwise be running, and gather the files manually.
+    - Nodes that are currently up but disconnected from other nodes (e.g., because of a [network partition](/docs/v25.2/cluster-setup-troubleshooting#network-partition) ) may not be able to respond to `debug zip` requests forwarded by other nodes, but can still respond to requests for data when asked directly. In such situations, we recommend using the [`--host` flag](#client-connection) to point `debug zip` at each of the disconnected nodes until data has been gathered for the entire cluster.
+
+### Files
+
+`cockroach debug zip` collects log files, heap profiles, CPU profiles, and goroutine dumps from the last 48 hours, by default.
+
+<Tip>
+These files can greatly increase the size of the `cockroach debug zip` output. To limit the `.zip` file size for a large cluster, we recommend first experimenting with [`cockroach debug list-files`](/docs/v25.2/cockroach-debug-list-files) and then using [flags](#flags) to filter the files.
+</Tip>
+
+The following files collected by `cockroach debug zip`, which are found in the individual node directories, can be filtered using the `--exclude-files`, `--include-files`, `--files-from`, and/or `--files-until` [flags](#flags):
+
+<table><thead><tr><th>Information</th><th>Filename</th></tr></thead><tbody><tr><td><a href="/docs/v25.2/configure-logs#log-file-naming">Log files</a></td><td><code>cockroach-&#123;log-file-group&#125;.&#123;host&#125;.&#123;user&#125;.&#123;start timestamp in UTC&#125;.&#123;process ID&#125;.log</code></td></tr><tr><td>Goroutine dumps</td><td><code>goroutine&#95;dump.&#123;date-and-time&#125;.&#123;metadata&#125;.double&#95;since&#95;last&#95;dump.&#123;metadata&#125;.txt.gz</code></td></tr><tr><td>Heap profiles</td><td><code>memprof.&#123;date-and-time&#125;.&#123;heapsize&#125;.pprof</code></td></tr><tr><td>Memory statistics</td><td><code>memstats.&#123;date-and-time&#125;.&#123;heapsize&#125;.txt</code></td></tr><tr><td>CPU profiles</td><td><code>cpuprof.&#123;date-and-time&#125;</code></td></tr><tr><td><a href="/docs/v25.2/cluster-setup-troubleshooting#out-of-memory-oom-crash">Active query dumps</a></td><td><code>activequeryprof.&#123;date-and-time&#125;.csv</code></td></tr></tbody></table>
+
+The following information is also contained in the `.zip` file, and cannot be filtered:
+
+- System tables. The following system tables are not included:
+    - `system.users`
+    - `system.web_sessions`
+    - `system.join_tokens`
+    - `system.comments`
+    - `system.ui`
+    - `system.zones`
+    - `system.statement_bundle_chunks`
+    - `system.statement_statistics`
+    - `system.transaction_statistics`
+- Cluster events
+- Database details
+- Schema change events
+- Database, table, node, and range lists
+- Node details
+- Node liveness
+- Gossip data
+- Stack traces
+- Range details
+- Jobs
+- [Cluster Settings](/docs/v25.2/cluster-settings)
+- [Metrics](/docs/v25.2/metrics)
+- CPU profiles
+- A script ( `hot-ranges.sh` ) that summarizes the hottest ranges (ranges receiving a high number of reads or writes)
+
+## Subcommands
+
+While the `cockroach debug` command has a few subcommands, users are expected to use only the [`zip`](/docs/v25.2/cockroach-debug-zip), [`encryption-active-key`](/docs/v25.2/cockroach-debug-encryption-active-key), [`merge-logs`](/docs/v25.2/cockroach-debug-merge-logs), [`list-files`](/docs/v25.2/cockroach-debug-list-files), [`tsdump`](/docs/v25.2/cockroach-debug-tsdump), and [`ballast`](/docs/v25.2/cockroach-debug-ballast) subcommands.
+
+We recommend using the [`encryption-decrypt`](/docs/v25.2/cockroach-debug-encryption-decrypt) and [`job-trace`](/docs/v25.2/cockroach-debug-job-trace) subcommands only when directed by the [Cockroach Labs support team](/docs/v25.2/support-resources).
+
+The other `debug` subcommands are useful only to Cockroach Labs. Output of `debug` commands may contain sensitive or secret information.
+
+## Synopsis
+
+```shell
+$ cockroach debug zip {ZIP file destination} {flags}
+```
+
+<Note>
+The following [flags](#flags) must apply to an active CockroachDB node. If no nodes are live, you must [start at least one node](/docs/v25.2/cockroach-start).
+</Note>
+
+## Flags
+
+The `debug zip` subcommand supports the following [general-use](#general), [client connection](#client-connection), and [logging](#logging) flags.
+
+### General
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--cpu-profile-duration</code></td><td>Fetch CPU profiles from the cluster with the specified sample duration in seconds. The <code>debug zip</code> command will block for the duration specified. A value of <code>0</code> disables this feature.<br/><br/><strong>Default:</strong><code>5s</code></td></tr><tr><td><code>--concurrency</code></td><td>The maximum number of nodes to concurrently poll for data. This can be any value between <code>1</code> and <code>15</code>.</td></tr><tr><td><code>--exclude-files</code></td><td><a href="#files">Files</a> to exclude from the generated <code>.zip</code>. This can be used to limit the size of the generated <code>.zip</code>, and affects logs, heap profiles, goroutine dumps, and/or CPU profiles. The files are specified as a comma-separated list of double-quoted <a href="https://wikipedia.org/wiki/Glob_(programming)">glob patterns</a>. For example:<br/><br/>- <code>--exclude-files="&#42;.log"</code><br/><br/>- <code>--exclude-files="cockroach-storage&#42;","cockroach-sessions&#42;","memprof&#42;","memstats&#42;"</code><br/><br/>Note that this flag is applied <em>after</em><code>--include&#95;files</code>. Use <a href="/docs/v25.2/cockroach-debug-list-files"><code>cockroach debug list-files</code></a> with this flag to see a list of files that will be contained in the <code>.zip</code>.</td></tr><tr><td><code>--exclude-nodes</code></td><td>Specify nodes to exclude from inspection as a comma-separated list or range of node IDs. For example:<br/><br/><code>--exclude-nodes=1,10,13-15</code></td></tr><tr><td><code>--files-from</code></td><td>Start timestamp for log file, goroutine dump, and heap profile collection. This can be used to limit the size of the generated <code>.zip</code>, which is increased by these files. The timestamp uses the format <code>YYYY-MM-DD</code>, followed optionally by <code>HH:MM:SS</code> or <code>HH:MM</code>. For example:<br/><br/><code>--files-from='2021-07-01 15:00'</code><br/><br/>When specifying a narrow time window, we recommend adding extra seconds/minutes to account for uncertainties such as clock drift.<br/><br/><strong>Default:</strong> 48 hours before now</td></tr><tr><td><code>--files-until</code></td><td>End timestamp for log file, goroutine dump, and heap profile collection. This can be used to limit the size of the generated <code>.zip</code>, which is increased by these files. The timestamp uses the format <code>YYYY-MM-DD</code>, followed optionally by <code>HH:MM:SS</code> or <code>HH:MM</code>. For example:<br/><br/><code>--files-until='2021-07-01 16:00'</code><br/><br/>When specifying a narrow time window, we recommend adding extra seconds/minutes to account for uncertainties such as clock drift.<br/><br/><strong>Default:</strong> 24 hours beyond now (to include files created during <code>.zip</code> creation)</td></tr><tr><td><code>--include-files</code></td><td><a href="#files">Files</a> to include in the generated <code>.zip</code>. This can be used to limit the size of the generated <code>.zip</code>, and affects logs, heap profiles, goroutine dumps, and/or CPU profiles. The files are specified as a comma-separated list of double-quoted <a href="https://wikipedia.org/wiki/Glob_(programming)">glob patterns</a>. For example:<br/><br/>- <code>--include-files="&#42;.pprof"</code><br/><br/>- <code>--include-files="cockroach-storage&#42;","cockroach-sessions&#42;","memprof&#42;","memstats&#42;"</code><br/><br/>Note that this flag is applied <em>before</em><code>--exclude-files</code>. Use <a href="/docs/v25.2/cockroach-debug-list-files"><code>cockroach debug list-files</code></a> with this flag to see a list of files that will be contained in the <code>.zip</code>.</td></tr><tr><td><a></a><code>--include-goroutine-stacks</code></td><td>Fetch stack traces for all goroutines running on each targeted node in <code>nodes/&#42;/stacks.txt</code> and <code>nodes/&#42;/stacks&#95;with&#95;labels.txt</code> files. Note that fetching stack traces for all goroutines is a "stop-the-world" operation, which can momentarily have negative impacts on SQL service latency. Exclude these goroutine stacks by using the <code>--include-goroutine-stacks=false</code> flag. Note that any periodic goroutine dumps previously taken on the node will still be included in <code>nodes/&#42;/goroutines/&#42;.txt.gz</code>, as these would have already been generated and don't require any additional stop-the-world operations to be collected.<br/><br/><strong>Default:</strong> true</td></tr><tr><td><code>--include-range-info</code></td><td>Include one file per node with information about the KV ranges stored on that node, in <code>nodes/&#123;node ID&#125;/ranges.json</code>.<br/><br/>This information can be vital when debugging issues that involve the <a href="/docs/v25.2/architecture/overview#layers">KV layer</a> (which includes everything below the SQL layer), such as data placement, load balancing, performance or other behaviors. In certain situations, on large clusters with large numbers of ranges, these files can be omitted if and only if the issue being investigated is already known to be in another layer of the system (for example, an error message about an unsupported feature or incompatible value in a SQL schema change or statement). However, many higher-level issues are ultimately related to the underlying KV layer described by these files. Only set this to <code>false</code> if directed to do so by Cockroach Labs support.<br/><br/>In addition, include problem ranges information in <code>reports/problemranges.json</code>.<br/><br/><strong>Default:</strong> true</td></tr><tr><td><code>--include-running-job-traces</code></td><td>Include information about each traceable job that is running or reverting (such as <a href="/docs/v25.2/backup">backup</a>, <a href="/docs/v25.2/restore">restore</a>, <a href="/docs/v25.2/import-into">import</a>, <a href="/docs/v25.2/physical-cluster-replication-technical-overview">physical cluster replication</a>) in <code>jobs/&#42;/&#42;/trace.zip</code> files. This involves collecting cluster-wide traces for each running job in the cluster.<br/><br/><strong>Default:</strong> true</td></tr><tr><td><code>--nodes</code></td><td>Specify nodes to inspect as a comma-separated list or range of node IDs. For example:<br/><br/><code>--nodes=1,10,13-15</code></td></tr><tr><td><a></a><code>--redact</code></td><td>Redact sensitive data from the generated <code>.zip</code>, with the exception of range keys, which must remain unredacted because they are essential to support CockroachDB. This flag replaces the deprecated <code>--redact-logs</code> flag, which only applied to log messages contained within <code>.zip</code>.<br/><br/>To redact hostnames and IP addresses in <code>.json</code> files, such as <code>status.json</code>, <code>details.json</code>, and <code>ranges.json</code>, you will also need to enable the <a href="/docs/v25.2/cluster-settings#setting-debug-zip-redact-addresses-enabled">cluster setting <code>debug.zip.redact&#95;addresses.enabled</code></a>. Note that enabling this cluster setting will not redact all hostnames and IP addresses in the <code>nodes.json</code> and <code>gossip.json</code> files.<br/><br/>For examples, refer to <a href="#redact-sensitive-information">Redact sensitive information</a>.</td></tr><tr><td><code>--redact-logs</code></td><td><strong>Deprecated</strong> Redact sensitive data from collected log files only. Use the <code>--redact</code> flag instead, which redacts sensitive data across the entire generated <code>.zip</code> as well as the collected log files. Passing the <code>--redact-logs</code> flag will be interpreted as the <code>--redact</code> flag.</td></tr><tr><td><code>--timeout</code></td><td>In the process of generating a debug zip, many internal requests are made. Each request is allowed the maximum duration specified by the timeout. If an internal request does not complete within the timeout duration, an error is displayed for that request and its artifact is not included in the zip file.<br/><br/>The timeout is suffixed with <code>s</code> (seconds), <code>m</code> (minutes), or <code>h</code> (hours).<br/><br/><strong>Default:</strong><code>60s</code></td></tr></tbody></table>
+
+### Client connection
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--cert-principal-map</code></td><td>A comma-separated list of <code>&lt;cert-principal&gt;:&lt;db-principal&gt;</code> mappings. This allows mapping the principal in a cert to a DB principal such as <code>node</code> or <code>root</code> or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the <code>Subject.CommonName</code> or <code>SubjectAlternateName</code> fields in the certificate (e.g., disallowing a <code>CommonName</code> like <code>node</code> or <code>root</code>). If multiple mappings are provided for the same <code>&lt;cert-principal&gt;</code>, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A cert is allowed to authenticate a DB principal if the DB principal name is contained in the mapped <code>CommonName</code> or DNS-type <code>SubjectAlternateName</code> fields.</td></tr><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v25.2/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr><tr><td><code>--cluster-name</code></td><td>The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, you must include this flag. For more information, see <a href="/docs/v25.2/cockroach-start#general"><code>cockroach start</code></a>.</td></tr><tr><td><code>--disable-cluster-name-verification</code></td><td>Disables the cluster name check for this command. This flag must be paired with <code>--cluster-name</code>. For more information, see <a href="/docs/v25.2/cockroach-start#general"><code>cockroach start</code></a>.</td></tr><tr><td><code>--host</code></td><td>The server host and port number to connect to. This can be the address of any node in the cluster.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;HOST</code><br/><strong>Default:</strong><code>localhost:26257</code></td></tr><tr><td><code>--insecure</code></td><td>Use an insecure connection.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;INSECURE</code><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><a></a><code>--url</code></td><td>A <a href="/docs/v25.2/connection-parameters#connect-using-a-url">connection URL</a> to use instead of the other arguments. To convert a connection URL to the syntax that works with your client driver, run <a href="/docs/v25.2/connection-parameters#convert-a-url-for-different-drivers"><code>cockroach convert-url</code></a>.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;URL</code><br/><strong>Default:</strong> no URL</td></tr></tbody></table>
+
+### Logging
+
+By default, this command logs messages to `stderr`. This includes events with `WARNING` [severity](/docs/v25.2/logging#logging-levels-severities) and higher.
+
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior](/docs/v25.2/configure-logs).
+
+## Examples
+
+### Generate a debug zip file
+
+Generate the debug zip file for an insecure cluster:
+
+```shell
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --insecure --host=200.100.50.25
+```
+
+Generate the debug zip file for a secure cluster:
+
+```shell
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --host=200.100.50.25
+```
+
+<Note>
+Secure examples assume you have the appropriate certificates in the default certificate directory, `${HOME}/.cockroach-certs/`.
+</Note>
+
+### Generate a debug zip file for a time range
+
+Generate a debug zip file containing only debugging information for a specified time range:
+
+```shell
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --files-from='2023-10-03 13:30' --files-until='2023-10-03 14:30'
+```
+
+### Generate a debug zip file with logs only
+
+Generate a debug zip file containing only log files:
+
+```shell
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --include-files=*.log
+```
+
+### Redact sensitive information
+
+#### Log redaction
+
+Example of a log string without redaction enabled:
+
+```text
+server/server.go:1423 ⋮ password of user ‹admin› was set to ‹"s3cr34?!@x_"›
+```
+
+Enable log redaction:
+
+```shell
+$ cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host=200.100.50.25
+```
+
+```text
+server/server.go:1423 ⋮ password of user ‹×› was set to ‹×›
+```
+
+#### Hostname and IP address redaction
+
+Example of `status.json` without hostname and IP address redaction enabled:
+
+```text
+{
+  "node_id": 1,
+  "address": {
+    "network_field": "tcp",
+    "address_field": "200.100.50.25:26257"
+  },
+  "sql_address": {
+    "network_field": "tcp",
+    "address_field": "200.100.50.25:26257"
+  }
+}
+```
+
+First, [enable the cluster setting](/docs/v25.2/set-cluster-setting):
+
+```sql
+SET CLUSTER SETTING debug.zip.redact_addresses.enabled = true;
+```
+
+<Note>
+Enabling the `debug.zip.redact_addresses.enabled` cluster setting will not redact all hostnames and IP addresses in the `nodes.json` and `gossip.json` files.
+</Note>
+
+Then, generate `.zip` with log redaction as well as hostname and IP address redaction:
+
+```shell
+cockroach debug zip ./cockroach-data/logs/debug.zip --redact --insecure --host=200.100.50.25
+```
+
+`status.json` with hostname and IP address redaction:
+
+```text
+{
+  "node_id": 1,
+  "address": {
+    "network_field": "tcp",
+    "address_field": "‹×›"
+  },
+  "sql_address": {
+    "network_field": "tcp",
+    "address_field": "‹×›"
+  }
+}
+```
+
+## See also
+
+- [File an Issue](/docs/v25.2/file-an-issue)
+- [`cockroach` Commands Overview](/docs/v25.2/cockroach-commands)
+- [Troubleshooting Overview](/docs/v25.2/troubleshooting-overview)

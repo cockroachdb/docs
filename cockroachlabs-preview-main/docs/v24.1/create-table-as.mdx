@@ -1,0 +1,284 @@
+---
+title: "CREATE TABLE AS"
+old_description: "The CREATE TABLE AS statement persists the result of a query into the database for later reuse."
+---
+
+import { CreateTable17 } from "/snippets/syntax-diagrams/CreateTable17.jsx";
+import { CreateTableAs7 } from "/snippets/syntax-diagrams/CreateTableAs7.jsx";
+import { CreateTableAs8 } from "/snippets/syntax-diagrams/CreateTableAs8.jsx";
+import { CreateTableAs9 } from "/snippets/syntax-diagrams/CreateTableAs9.jsx";
+
+The `CREATE TABLE... AS` [statement](/docs/v24.1/sql-statements) creates a new table from a [selection query](/docs/v24.1/selection-queries).
+
+<Note>
+The `CREATE TABLE AS` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v24.1/online-schema-changes).
+</Note>
+
+## Intended use
+
+Tables created with `CREATE TABLE... AS` are intended to persist the result of a query for later reuse.
+
+This can be more efficient than a [view](/docs/v24.1/create-view) when the following two conditions are met:
+
+- The result of the query is used as-is multiple times.
+- The copy needs not be kept up-to-date with the original table over time.
+
+When the results of a query are reused multiple times within a larger query, a view is advisable instead. The query optimizer can "peek"into the view and optimize the surrounding query using the primary key and indices of the tables mentioned in the view query.
+
+A view is also advisable when the results must be up-to-date; a view always retrieves the current data from the tables that the view query mentions.
+
+<Note>
+The default rules for [column families](/docs/v24.1/column-families) apply.
+</Note>
+
+## Required privileges
+
+The user must have the `CREATE` [privilege](/docs/v24.1/security-reference/authorization#managing-privileges) on the parent database.
+
+## Synopsis
+
+<Tabs>
+<Tab title="Basic">
+
+<CreateTableAs7 />
+
+</Tab>
+<Tab title="Expanded">
+
+<CreateTableAs7 />
+
+**create_as_col_qual_list::=**
+
+<CreateTableAs8 />
+
+**create_as_constraint_def::=**
+
+<CreateTableAs9 />
+
+**opt_with_storage_parameter_list::=**
+
+<CreateTable17 />
+
+</Tab>
+</Tabs>
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF NOT EXISTS</code></td><td>Create a new table only if a table of the same name does not already exist in the database; if one does exist, do not return an error.<br/><br/>Note that <code>IF NOT EXISTS</code> checks the table name only; it does not check if an existing table has the same columns, indexes, constraints, etc., of the new table.</td></tr><tr><td><code>table&#95;name</code></td><td>The name of the table to create, which must be unique within its database and follow these <a href="/docs/v24.1/keywords-and-identifiers#identifiers">identifier rules</a>. When the parent database is not set as the default, the name must be formatted as <code>database.name</code>.<br/><br/>The <a href="/docs/v24.1/upsert"><code>UPSERT</code></a> and <a href="/docs/v24.1/insert"><code>INSERT ON CONFLICT</code></a> statements use a temporary table called <code>excluded</code> to handle uniqueness conflicts during execution. It's therefore not recommended to use the name <code>excluded</code> for any of your tables.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the column you want to use instead of the name of the column from <code>select&#95;stmt</code>.</td></tr><tr><td><code>create&#95;as&#95;col&#95;qual&#95;list</code></td><td>An optional column definition, which may include <a href="/docs/v24.1/primary-key">primary key constraints</a> and <a href="/docs/v24.1/column-families">column family assignments</a>.</td></tr><tr><td><code>family&#95;def</code></td><td>An optional <a href="/docs/v24.1/column-families">column family definition</a>. Column family names must be unique within the table but can have the same name as columns, constraints, or indexes.</td></tr><tr><td><code>create&#95;as&#95;constraint&#95;def</code></td><td>An optional <a href="/docs/v24.1/primary-key">primary key constraint</a>.</td></tr><tr><td><code>select&#95;stmt</code></td><td>A <a href="/docs/v24.1/selection-queries">selection query</a> to provide the data.</td></tr><tr><td><code>opt&#95;persistence&#95;temp&#95;table</code></td><td>Defines the table as a session-scoped temporary table. For more information, see <a href="/docs/v24.1/temporary-tables">Temporary Tables</a>.<br/><br/>Note that the <code>LOCAL</code>, <code>GLOBAL</code>, and <code>UNLOGGED</code> options are no-ops, allowed by the parser for PostgreSQL compatibility.<br/><br/><strong>Support for temporary tables is <a href="/docs/v24.1/cockroachdb-feature-availability#temporary-objects">in preview</a></strong>.</td></tr><tr><td><code>opt&#95;with&#95;storage&#95;parameter&#95;list</code></td><td>A comma-separated list of <a href="/docs/v24.1/spatial-indexes#index-tuning-parameters">spatial index tuning parameters</a>. Supported parameters include <code>fillfactor</code>, <code>s2&#95;max&#95;level</code>, <code>s2&#95;level&#95;mod</code>, <code>s2&#95;max&#95;cells</code>, <code>geometry&#95;min&#95;x</code>, <code>geometry&#95;max&#95;x</code>, <code>geometry&#95;min&#95;y</code>, and <code>geometry&#95;max&#95;y</code>. The <code>fillfactor</code> parameter is a no-op, allowed for PostgreSQL-compatibility.<br/><br/>For details, see <a href="/docs/v24.1/spatial-indexes#index-tuning-parameters">Spatial index tuning parameters</a>. For an example, see <a href="/docs/v24.1/spatial-indexes#create-a-spatial-index-that-uses-all-of-the-tuning-parameters">Create a spatial index that uses all of the tuning parameters</a>.</td></tr><tr><td><code>ON COMMIT PRESERVE ROWS</code></td><td>This clause is a no-op, allowed by the parser for PostgreSQL compatibility. CockroachDB only supports session-scoped <a href="/docs/v24.1/temporary-tables">temporary tables</a>, and does not support the clauses <code>ON COMMIT DELETE ROWS</code> and <code>ON COMMIT DROP</code>, which are used to define transaction-scoped temporary tables in PostgreSQL.</td></tr></tbody></table>
+
+## Known limitations
+
+The [primary key](/docs/v24.1/primary-key) of tables created with `CREATE TABLE... AS` is not automatically derived from the query results. You must specify new primary keys at table creation. For examples, see [Specify a primary key](/docs/v24.1/create-table-as#specify-a-primary-key).
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v24.1/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v24.1/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Create a table from a `SELECT` query
+
+```sql
+> SELECT * FROM users WHERE city = 'new york';
+```
+
+```text
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+  19999999-9999-4a00-8000-000000000005 | new york | Nicole Mcmahon   | 11540 Patton Extensions     | 0303726947
+(6 rows)
+```
+
+```sql
+> CREATE TABLE users_ny AS SELECT * FROM users WHERE city = 'new york';
+```
+
+```sql
+> SELECT * FROM users_ny;
+```
+
+```text
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+  19999999-9999-4a00-8000-000000000005 | new york | Nicole Mcmahon   | 11540 Patton Extensions     | 0303726947
+(6 rows)
+```
+
+### Change column names
+
+This statement creates a copy of an existing table but with changed column names:
+
+```sql
+> CREATE TABLE users_ny_names (user_id, user_name) AS SELECT id, name FROM users WHERE city = 'new york';
+```
+
+```sql
+> SELECT * FROM users_ny_names;
+```
+
+```text
+                user_id                |    user_name
++--------------------------------------+------------------+
+  00000000-0000-4000-8000-000000000000 | Robert Murphy
+  051eb851-eb85-4ec0-8000-000000000001 | James Hamilton
+  0a3d70a3-d70a-4d80-8000-000000000002 | Judy White
+  0f5c28f5-c28f-4c00-8000-000000000003 | Devin Jordan
+  147ae147-ae14-4b00-8000-000000000004 | Catherine Nelson
+  19999999-9999-4a00-8000-000000000005 | Nicole Mcmahon
+(6 rows)
+```
+
+### Create a table from a `VALUES` clause
+
+```sql
+> CREATE TABLE drivers (id, city, name) AS VALUES (gen_random_uuid(), 'new york', 'Harry Potter'), (gen_random_uuid(), 'seattle', 'Evelyn Martin');
+```
+
+```sql
+> SELECT * FROM drivers;
+```
+
+```text
+                   id                  |   city   |     name
++--------------------------------------+----------+---------------+
+  146eebc4-c913-4678-8ea3-c5797d2b7f83 | new york | Harry Potter
+  43cafd3b-2537-4fd8-a987-8138f88a22a4 | seattle  | Evelyn Martin
+(2 rows)
+```
+
+### Create a copy of an existing table
+
+```sql
+> CREATE TABLE users_ny_copy AS TABLE users_ny;
+```
+
+```sql
+> SELECT * FROM users_ny_copy;
+```
+
+```text
+                   id                  |   city   |       name       |           address           | credit_card
++--------------------------------------+----------+------------------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy    | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton   | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White       | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan     | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson | 1149 Lee Alley              | 0792553487
+  19999999-9999-4a00-8000-000000000005 | new york | Nicole Mcmahon   | 11540 Patton Extensions     | 0303726947
+(6 rows)
+```
+
+When a table copy is created this way, the copy is not associated to any primary key, secondary index, or constraint that was present on the original table.
+
+### Specify a primary key
+
+You can specify the [primary key](/docs/v24.1/primary-key) of a new table created from a selection query:
+
+```sql
+> CREATE TABLE users_ny_pk (id, city, name PRIMARY KEY) AS SELECT id, city, name FROM users WHERE city = 'new york';
+```
+
+```sql
+> SELECT * FROM users_ny_pk;
+```
+
+```text
+                   id                  |   city   |       name
++--------------------------------------+----------+------------------+
+  147ae147-ae14-4b00-8000-000000000004 | new york | Catherine Nelson
+  0f5c28f5-c28f-4c00-8000-000000000003 | new york | Devin Jordan
+  051eb851-eb85-4ec0-8000-000000000001 | new york | James Hamilton
+  0a3d70a3-d70a-4d80-8000-000000000002 | new york | Judy White
+  19999999-9999-4a00-8000-000000000005 | new york | Nicole Mcmahon
+  00000000-0000-4000-8000-000000000000 | new york | Robert Murphy
+(6 rows)
+```
+
+```sql
+> SHOW CREATE TABLE users_ny_pk;
+```
+
+```text
+    table_name   |                 create_statement
++----------------+--------------------------------------------------+
+  users_ny_extra | CREATE TABLE users_ny_extra (
+                 |     id UUID NULL,
+                 |     city VARCHAR NULL,
+                 |     name VARCHAR NOT NULL,
+                 |     CONSTRAINT "primary" PRIMARY KEY (name ASC),
+                 |     FAMILY "primary" (id, city, name)
+                 | )
+(1 row)
+```
+
+### Define column families
+
+You can define the [column families](/docs/v24.1/column-families) of a new table created from a selection query:
+
+```sql
+> CREATE TABLE users_ny_alt (id PRIMARY KEY FAMILY ids, name, city FAMILY locs, address, credit_card FAMILY payments) AS SELECT id, name, city, address, credit_card FROM users WHERE city = 'new york';
+```
+
+```sql
+> SELECT * FROM users_ny_alt;
+```
+
+```text
+                   id                  |       name       |   city   |           address           | credit_card
++--------------------------------------+------------------+----------+-----------------------------+-------------+
+  00000000-0000-4000-8000-000000000000 | Robert Murphy    | new york | 99176 Anderson Mills        | 8885705228
+  051eb851-eb85-4ec0-8000-000000000001 | James Hamilton   | new york | 73488 Sydney Ports Suite 57 | 8340905892
+  0a3d70a3-d70a-4d80-8000-000000000002 | Judy White       | new york | 18580 Rosario Ville Apt. 61 | 2597958636
+  0f5c28f5-c28f-4c00-8000-000000000003 | Devin Jordan     | new york | 81127 Angela Ferry Apt. 8   | 5614075234
+  147ae147-ae14-4b00-8000-000000000004 | Catherine Nelson | new york | 1149 Lee Alley              | 0792553487
+  19999999-9999-4a00-8000-000000000005 | Nicole Mcmahon   | new york | 11540 Patton Extensions     | 0303726947
+(6 rows)
+```
+
+```sql
+> SHOW CREATE TABLE users_ny_alt;
+```
+
+```text
+   table_name  |                create_statement
++--------------+------------------------------------------------+
+  users_ny_alt | CREATE TABLE users_ny_alt (
+               |     id UUID NOT NULL,
+               |     name VARCHAR NULL,
+               |     city VARCHAR NULL,
+               |     address VARCHAR NULL,
+               |     credit_card VARCHAR NULL,
+               |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+               |     FAMILY ids (id, name, address),
+               |     FAMILY locs (city),
+               |     FAMILY payments (credit_card)
+               | )
+(1 row)
+```
+
+## See also
+
+- [Selection Queries](/docs/v24.1/selection-queries)
+- [Simple `SELECT` Clause](/docs/v24.1/select-clause)
+- [`CREATE TABLE`](/docs/v24.1/create-table)
+- [`CREATE VIEW`](/docs/v24.1/create-view)
+- [`INSERT`](/docs/v24.1/insert)
+- [`DROP TABLE`](/docs/v24.1/drop-table)
+- [SQL Statements](/docs/v24.1/sql-statements)
+- [`ALTER PRIMARY KEY`](/docs/v24.1/alter-table#alter-primary-key)
+- [`ALTER TABLE`](/docs/v24.1/alter-table)
+- [Online Schema Changes](/docs/v24.1/online-schema-changes)

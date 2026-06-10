@@ -1,0 +1,644 @@
+---
+title: "Build a Simple CRUD Go App with CockroachDB and the Go pgx Driver"
+old_description: "Learn how to use CockroachDB from a simple Go application with the Go pgx driver."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v24.1/build-a-go-app-with-cockroachdb"
+  items={[
+    {
+      title: "Use pgx",
+      href: "/docs/v24.1/build-a-go-app-with-cockroachdb",
+    },
+    {
+      title: "Use GORM",
+      href: "/docs/v24.1/build-a-go-app-with-cockroachdb-gorm",
+    },
+    {
+      title: "Use lib/pq",
+      href: "/docs/v24.1/build-a-go-app-with-cockroachdb-pq",
+    },
+    {
+      title: "Use upper/db",
+      href: "/docs/v24.1/build-a-go-app-with-cockroachdb-upperdb",
+    },
+  ]}
+/>
+
+This tutorial shows you how build a simple CRUD Go application with CockroachDB and the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx).
+
+## Step 1. Start CockroachDB
+
+<Tabs>
+<Tab title="Use CockroachDB Standard">
+
+### Choose your installation method
+
+You can install a CockroachDB Standard cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or `ccloud`, a command-line interface (CLI) tool.
+
+<Tabs>
+<Tab title="Use the Cloud Console (GUI)">
+
+### Create a free trial cluster
+
+1. [Create a CockroachDB Cloud account](/docs/cockroachcloud/create-an-account). If this is your first CockroachDB Cloud organization, it will be credited with &#36;400 in [free trial credits](/docs/cockroachcloud/free-trial) to get you started.
+2. On the **Get Started** page, click **Create cluster**.
+3. On the **Select a plan** page, select **Standard**.
+4. On the **Cloud &amp; Regions** page, select a cloud provider (GCP or AWS).
+5. In the **Regions** section, select a region for the cluster. Refer to [CockroachDB Cloud Regions](/docs/cockroachcloud/regions) for the regions where CockroachDB Standard clusters can be deployed. To create a multi-region cluster, click **Add region** and select additional regions.
+6. Click **Next: Capacity**.
+7. On the **Capacity** page, keep the [**Provisioned capacity**](/docs/cockroachcloud/plan-your-cluster) at the default value of 2 vCPUs.
+
+    Click **Next: Finalize**.
+8. On the **Finalize** page, name your cluster. If an active free trial is listed in the right pane, you will not need to add a payment method, though you will need to do this by the [end of the trial](/docs/cockroachcloud/free-trial#add-payment-methods) to maintain your organization's clusters.
+
+    Click **Create cluster**.
+
+    Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.
+
+### Create a SQL user
+
+The **Create SQL user** dialog allows you to create a new SQL user and password.
+
+1. Enter a username in the **SQL user** field or use the one provided by default.
+2. Click **Generate &amp; save password**.
+3. Copy the generated password and save it in a secure location.
+4. Click **Next**.
+
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Manage SQL users on a cluster](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster).
+
+### Get the connection string
+
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **General connection string** from the **Select option** dropdown.
+2. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
+
+    <Note>
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
+    </Note>
+
+</Tab>
+<Tab title="Use ccloud (CLI)">
+
+Follow these steps to create a CockroachDB Standard cluster using the `ccloud` CLI tool.
+
+<Note>
+The `ccloud` CLI tool is in Preview.
+</Note>
+
+### Install `ccloud`
+
+Choose your OS:
+
+<Tabs>
+<Tab title="Mac">
+
+You can install `ccloud` using either Homebrew or by downloading the binary.
+
+### Use Homebrew
+
+1. [Install Homebrew](http://brew.sh/).
+2. Install using the `ccloud` tap:
+
+    ```shell
+    brew install cockroachdb/tap/ccloud
+    ```
+
+### Download the binary
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-amd64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+Use the ARM 64 binary if you have an M-series Mac:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-arm64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Linux">
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.6.12.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Windows">
+
+In a PowerShell window, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud/ccloud_windows-amd64_0.6.12.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force ccloud/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
+```
+
+</Tab>
+</Tabs>
+
+### Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrieve the connection string.
+
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB Basic cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+
+```shell
+ccloud quickstart
+```
+
+The `ccloud quickstart` command will open a browser window to log you in to CockroachDB Cloud. If you are new to CockroachDB Cloud, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
+
+The `ccloud quickstart` command will prompt you for the cluster name, cloud provider, and cloud provider region, then ask if you want to connect to the cluster. Each prompt has default values that you can select, or change if you want a different option.
+
+Select **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting `postgresql://`.
+
+```text
+? How would you like to connect? General connection string
+Retrieving cluster info: succeeded
+ Downloading cluster cert to /Users/maxroach/.postgresql/root.crt: succeeded
+postgresql://maxroach:ThisIsNotAGoodPassword@blue-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
+```
+
+</Tab>
+</Tabs>
+
+## Step 2. Get the code
+
+Clone the code's GitHub repo:
+
+```shell
+$ git clone https://github.com/cockroachlabs/example-app-go-pgx/
+```
+
+The project has the following directory structure:
+
+```text
+├── README.md
+└── main.go
+```
+
+The `main.go` file contains the code for `CREATE TABLE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations. The file also executes the `main` method of the program.
+
+```go
+package main
+
+import (
+    "context"
+    "log"
+    "os"
+
+    "github.com/cockroachdb/cockroach-go/v2/crdb/crdbpgxv5"
+    "github.com/google/uuid"
+    "github.com/jackc/pgx/v5"
+)
+
+func initTable(ctx context.Context, tx pgx.Tx) error {
+    // Dropping existing table if it exists
+    log.Println("Drop existing accounts table if necessary.")
+    if _, err := tx.Exec(ctx, "DROP TABLE IF EXISTS accounts"); err != nil {
+        return err
+    }
+
+    // Create the accounts table
+    log.Println("Creating accounts table.")
+    if _, err := tx.Exec(ctx,
+        "CREATE TABLE accounts (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), balance INT8)"); err != nil {
+        return err
+    }
+    return nil
+}
+
+func insertRows(ctx context.Context, tx pgx.Tx, accts [4]uuid.UUID) error {
+    // Insert four rows into the "accounts" table.
+    log.Println("Creating new rows...")
+    if _, err := tx.Exec(ctx,
+        "INSERT INTO accounts (id, balance) VALUES ($1, $2), ($3, $4), ($5, $6), ($7, $8)", accts[0], 250, accts[1], 100, accts[2], 500, accts[3], 300); err != nil {
+        return err
+    }
+    return nil
+}
+
+func printBalances(conn *pgx.Conn) error {
+    rows, err := conn.Query(context.Background(), "SELECT id, balance FROM accounts")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+    for rows.Next() {
+        var id uuid.UUID
+        var balance int
+        if err := rows.Scan(&id, &balance); err != nil {
+            log.Fatal(err)
+        }
+        log.Printf("%s: %d\n", id, balance)
+    }
+    return nil
+}
+
+func transferFunds(ctx context.Context, tx pgx.Tx, from uuid.UUID, to uuid.UUID, amount int) error {
+    // Read the balance.
+    var fromBalance int
+    if err := tx.QueryRow(ctx,
+        "SELECT balance FROM accounts WHERE id = $1", from).Scan(&fromBalance); err != nil {
+        return err
+    }
+
+    if fromBalance < amount {
+        log.Println("insufficient funds")
+    }
+
+    // Perform the transfer.
+    log.Printf("Transferring funds from account with ID %s to account with ID %s...", from, to)
+    if _, err := tx.Exec(ctx,
+        "UPDATE accounts SET balance = balance - $1 WHERE id = $2", amount, from); err != nil {
+        return err
+    }
+    if _, err := tx.Exec(ctx,
+        "UPDATE accounts SET balance = balance + $1 WHERE id = $2", amount, to); err != nil {
+        return err
+    }
+    return nil
+}
+
+func deleteRows(ctx context.Context, tx pgx.Tx, one uuid.UUID, two uuid.UUID) error {
+    // Delete two rows into the "accounts" table.
+    log.Printf("Deleting rows with IDs %s and %s...", one, two)
+    if _, err := tx.Exec(ctx,
+        "DELETE FROM accounts WHERE id IN ($1, $2)", one, two); err != nil {
+        return err
+    }
+    return nil
+}
+
+func main() {
+    // Read in connection string
+    config, err := pgx.ParseConfig(os.Getenv("DATABASE_URL"))
+    if err != nil {
+        log.Fatal(err)
+    }
+    config.RuntimeParams["application_name"] = "$ docs_simplecrud_gopgx"
+    conn, err := pgx.ConnectConfig(context.Background(), config)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer conn.Close(context.Background())
+
+    // Set up table
+    err = crdbpgx.ExecuteTx(context.Background(), conn, pgx.TxOptions{}, func(tx pgx.Tx) error {
+        return initTable(context.Background(), tx)
+    })
+
+    // Insert initial rows
+    var accounts [4]uuid.UUID
+    for i := 0; i < len(accounts); i++ {
+        accounts[i] = uuid.New()
+    }
+
+    err = crdbpgx.ExecuteTx(context.Background(), conn, pgx.TxOptions{}, func(tx pgx.Tx) error {
+        return insertRows(context.Background(), tx, accounts)
+    })
+    if err == nil {
+        log.Println("New rows created.")
+    } else {
+        log.Fatal("error: ", err)
+    }
+
+    // Print out the balances
+    log.Println("Initial balances:")
+    printBalances(conn)
+
+    // Run a transfer
+    err = crdbpgx.ExecuteTx(context.Background(), conn, pgx.TxOptions{}, func(tx pgx.Tx) error {
+        return transferFunds(context.Background(), tx, accounts[2], accounts[1], 100)
+    })
+    if err == nil {
+        log.Println("Transfer successful.")
+    } else {
+        log.Fatal("error: ", err)
+    }
+
+    // Print out the balances
+    log.Println("Balances after transfer:")
+    printBalances(conn)
+
+    // Delete rows
+    err = crdbpgx.ExecuteTx(context.Background(), conn, pgx.TxOptions{}, func(tx pgx.Tx) error {
+        return deleteRows(context.Background(), tx, accounts[0], accounts[1])
+    })
+    if err == nil {
+        log.Println("Rows deleted.")
+    } else {
+        log.Fatal("error: ", err)
+    }
+
+    // Print out the balances
+    log.Println("Balances after deletion:")
+    printBalances(conn)
+}
+```
+
+<Note>
+CockroachDB may require the [client to retry a transaction](/docs/v24.1/transactions#transaction-retries) in the case of read/write [contention](/docs/v24.1/performance-best-practices-overview#transaction-contention). The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
+</Note>
+
+## Step 3. Initialize the database
+
+1. Navigate to the `example-app-go-pgx` directory:
+
+    ```shell
+    $ cd example-app-go-pgx
+    ```
+2. Set the `DATABASE_URL` environment variable to the connection string for your cluster:
+
+    ```shell
+    export DATABASE_URL="{connection-string}"
+    ```
+
+    Where `{connection-string}` is the connection string you copied earlier.
+
+</Tab>
+<Tab title="Use a Local Cluster">
+
+1. If you haven't already, [download the CockroachDB binary](/docs/v24.1/install-cockroachdb).
+2. Run the [`cockroach start-single-node`](/docs/v24.1/cockroach-start-single-node) command:
+
+    ```shell
+    $ cockroach start-single-node --advertise-addr 'localhost' --insecure
+    ```
+
+    This starts an insecure, single-node cluster.
+3. Take note of the following connection information in the SQL shell welcome text:
+
+    ```text
+    CockroachDB node starting at 2021-08-30 17:25:30.06524 +0000 UTC (took 4.3s)
+    build:               CCL v21.1.6 @ 2021/07/20 15:33:43 (go1.15.11)
+    webui:               http://localhost:8080
+    sql:                 postgresql://root@localhost:26257?sslmode=disable
+    ```
+
+    You'll use the `sql` connection string to connect to the cluster later in this tutorial.
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+## Step 2. Get the code
+
+Clone the code's GitHub repo:
+
+```shell
+$ git clone https://github.com/cockroachlabs/example-app-go-pgx/
+```
+
+The project has the following directory structure:
+
+```text
+├── README.md
+└── main.go
+```
+
+The `main.go` file contains the code for `CREATE TABLE`, `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations. The file also executes the `main` method of the program.
+
+```go
+package main
+
+import (
+    "context"
+    "log"
+    "os"
+
+    "github.com/cockroachdb/cockroach-go/v2/crdb/crdbpgxv5"
+    "github.com/google/uuid"
+    "github.com/jackc/pgx/v5"
+)
+
+func initTable(ctx context.Context, tx pgx.Tx) error {
+    // Dropping existing table if it exists
+    log.Println("Drop existing accounts table if necessary.")
+    if _, err := tx.Exec(ctx, "DROP TABLE IF EXISTS accounts"); err != nil {
+        return err
+    }
+
+    // Create the accounts table
+    log.Println("Creating accounts table.")
+    if _, err := tx.Exec(ctx,
+        "CREATE TABLE accounts (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), balance INT8)"); err != nil {
+        return err
+    }
+    return nil
+}
+
+func insertRows(ctx context.Context, tx pgx.Tx, accts [4]uuid.UUID) error {
+    // Insert four rows into the "accounts" table.
+    log.Println("Creating new rows...")
+    if _, err := tx.Exec(ctx,
+        "INSERT INTO accounts (id, balance) VALUES ($1, $2), ($3, $4), ($5, $6), ($7, $8)", accts[0], 250, accts[1], 100, accts[2], 500, accts[3], 300); err != nil {
+        return err
+    }
+    return nil
+}
+
+func printBalances(conn *pgx.Conn) error {
+    rows, err := conn.Query(context.Background(), "SELECT id, balance FROM accounts")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer rows.Close()
+    for rows.Next() {
+        var id uuid.UUID
+        var balance int
+        if err := rows.Scan(&id, &balance); err != nil {
+            log.Fatal(err)
+        }
+        log.Printf("%s: %d\n", id, balance)
+    }
+    return nil
+}
+
+func transferFunds(ctx context.Context, tx pgx.Tx, from uuid.UUID, to uuid.UUID, amount int) error {
+    // Read the balance.
+    var fromBalance int
+    if err := tx.QueryRow(ctx,
+        "SELECT balance FROM accounts WHERE id = $1", from).Scan(&fromBalance); err != nil {
+        return err
+    }
+
+    if fromBalance < amount {
+        log.Println("insufficient funds")
+    }
+
+    // Perform the transfer.
+    log.Printf("Transferring funds from account with ID %s to account with ID %s...", from, to)
+    if _, err := tx.Exec(ctx,
+        "UPDATE accounts SET balance = balance - $1 WHERE id = $2", amount, from); err != nil {
+        return err
+    }
+    if _, err := tx.Exec(ctx,
+        "UPDATE accounts SET balance = balance + $1 WHERE id = $2", amount, to); err != nil {
+        return err
+    }
+    return nil
+}
+
+func deleteRows(ctx context.Context, tx pgx.Tx, one uuid.UUID, two uuid.UUID) error {
+    // Delete two rows into the "accounts" table.
+    log.Printf("Deleting rows with IDs %s and %s...", one, two)
+    if _, err := tx.Exec(ctx,
+        "DELETE FROM accounts WHERE id IN ($1, $2)", one, two); err != nil {
+        return err
+    }
+    return nil
+}
+
+func main() {
+    // Read in connection string
+    config, err := pgx.ParseConfig(os.Getenv("DATABASE_URL"))
+    if err != nil {
+        log.Fatal(err)
+    }
+    config.RuntimeParams["application_name"] = "$ docs_simplecrud_gopgx"
+    conn, err := pgx.ConnectConfig(context.Background(), config)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer conn.Close(context.Background())
+
+    // Set up table
+    err = crdbpgx.ExecuteTx(context.Background(), conn, pgx.TxOptions{}, func(tx pgx.Tx) error {
+        return initTable(context.Background(), tx)
+    })
+
+    // Insert initial rows
+    var accounts [4]uuid.UUID
+    for i := 0; i < len(accounts); i++ {
+        accounts[i] = uuid.New()
+    }
+
+    err = crdbpgx.ExecuteTx(context.Background(), conn, pgx.TxOptions{}, func(tx pgx.Tx) error {
+        return insertRows(context.Background(), tx, accounts)
+    })
+    if err == nil {
+        log.Println("New rows created.")
+    } else {
+        log.Fatal("error: ", err)
+    }
+
+    // Print out the balances
+    log.Println("Initial balances:")
+    printBalances(conn)
+
+    // Run a transfer
+    err = crdbpgx.ExecuteTx(context.Background(), conn, pgx.TxOptions{}, func(tx pgx.Tx) error {
+        return transferFunds(context.Background(), tx, accounts[2], accounts[1], 100)
+    })
+    if err == nil {
+        log.Println("Transfer successful.")
+    } else {
+        log.Fatal("error: ", err)
+    }
+
+    // Print out the balances
+    log.Println("Balances after transfer:")
+    printBalances(conn)
+
+    // Delete rows
+    err = crdbpgx.ExecuteTx(context.Background(), conn, pgx.TxOptions{}, func(tx pgx.Tx) error {
+        return deleteRows(context.Background(), tx, accounts[0], accounts[1])
+    })
+    if err == nil {
+        log.Println("Rows deleted.")
+    } else {
+        log.Fatal("error: ", err)
+    }
+
+    // Print out the balances
+    log.Println("Balances after deletion:")
+    printBalances(conn)
+}
+```
+
+<Note>
+CockroachDB may require the [client to retry a transaction](/docs/v24.1/transactions#transaction-retries) in the case of read/write [contention](/docs/v24.1/performance-best-practices-overview#transaction-contention). The [CockroachDB Go client](https://github.com/cockroachdb/cockroach-go) includes a generic **retry function** (`ExecuteTx()`) that runs inside a transaction and retries it as needed. The code sample shows how you can use this function to wrap SQL statements.
+</Note>
+
+## Step 3. Initialize the database
+
+1. Navigate to the `example-app-go-pgx` directory:
+
+    ```shell
+    $ cd example-app-go-pgx
+    ```
+2. Set the `DATABASE_URL` environment variable to the connection string for your cluster:
+
+    ```shell
+    export DATABASE_URL="postgresql://root@localhost:26257/defaultdb?sslmode=disable"
+    ```
+
+</Tab>
+</Tabs>
+
+## Step 4. Run the code
+
+1. Initialize the module:
+
+    ```shell
+    $ go mod tidy
+    ```
+2. Run the code:
+
+    ```shell
+    $ go run main.go
+    ```
+
+    The output should look similar to the following:
+
+    ```text
+    2023/03/24 13:48:13 Drop existing accounts table if necessary.
+    2023/03/24 13:48:13 Creating accounts table.
+    2023/03/24 13:48:13 Creating new rows...
+    2023/03/24 13:48:13 New rows created.
+    2023/03/24 13:48:13 Initial balances:
+    2023/03/24 13:48:13 19a2b534-11f6-4bbd-ab50-b94c44479280: 500
+    2023/03/24 13:48:13 882bb8be-31cb-4481-8e28-69b0566a322b: 300
+    2023/03/24 13:48:13 b8cbefed-37ee-4bae-b5b0-3bcfb7a6d3bf: 250
+    2023/03/24 13:48:13 d0a238d5-96bd-42d7-89a3-3e2448b3137b: 100
+    2023/03/24 13:48:14 Transferring funds from account with ID 19a2b534-11f6-4bbd-ab50-b94c44479280 to account with ID d0a238d5-96bd-42d7-89a3-3e2448b3137b...
+    2023/03/24 13:48:14 Transfer successful.
+    2023/03/24 13:48:14 Balances after transfer:
+    2023/03/24 13:48:14 19a2b534-11f6-4bbd-ab50-b94c44479280: 400
+    2023/03/24 13:48:14 882bb8be-31cb-4481-8e28-69b0566a322b: 300
+    2023/03/24 13:48:14 b8cbefed-37ee-4bae-b5b0-3bcfb7a6d3bf: 250
+    2023/03/24 13:48:14 d0a238d5-96bd-42d7-89a3-3e2448b3137b: 200
+    2023/03/24 13:48:14 Deleting rows with IDs b8cbefed-37ee-4bae-b5b0-3bcfb7a6d3bf and d0a238d5-96bd-42d7-89a3-3e2448b3137b...
+    2023/03/24 13:48:14 Rows deleted.
+    2023/03/24 13:48:14 Balances after deletion:
+    2023/03/24 13:48:14 19a2b534-11f6-4bbd-ab50-b94c44479280: 400
+    2023/03/24 13:48:14 882bb8be-31cb-4481-8e28-69b0566a322b: 300
+    ```
+
+    As shown in the output, the code does the following:
+
+    - Drops any existing `accounts` table.
+    - Creates a new `accounts` table.
+    - Inserts some rows into the table.
+    - Reads values from the table.
+    - Updates values in the table.
+    - Deletes values from the table.
+
+## What's next?
+
+Read more about using the [Go pgx driver](https://pkg.go.dev/github.com/jackc/pgx?tab=doc).
+
+You might also be interested in the following pages:
+
+- [Client Connection Parameters](/docs/v24.1/connection-parameters)
+- [Connection Pooling](/docs/v24.1/connection-pooling)
+- [Data Replication](/docs/v24.1/demo-replication-and-rebalancing)
+- [Fault Tolerance &amp; Recovery](/docs/v24.1/demo-fault-tolerance-and-recovery)
+- [Replication &amp; Rebalancing](/docs/v24.1/demo-replication-and-rebalancing)
+- [Cross-Cloud Migration](/docs/v24.1/demo-automatic-cloud-migration)
+- [Automated Operations](/docs/v24.1/orchestrate-a-local-cluster-with-kubernetes-insecure)

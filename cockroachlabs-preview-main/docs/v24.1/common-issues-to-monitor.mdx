@@ -1,0 +1,294 @@
+---
+title: "Common Issues to Monitor"
+old_description: "How to configure and monitor your CockroachDB cluster to prevent commonly encountered issues."
+---
+
+This page summarizes how to configure and monitor your cluster to prevent issues commonly encountered with:
+
+- [CPU](#cpu)
+- [Memory](#memory)
+- [Storage and disk I/O](#storage-and-disk-i-o)
+
+## CPU
+
+<Note>
+In our sizing and production guidance, 1 vCPU is considered equivalent to 1 core in the underlying hardware platform.
+</Note>
+
+Issues with CPU most commonly arise when there is insufficient CPU to support the scale of the workload.
+
+### CPU planning
+
+Provision enough CPU to support your operational and workload concurrency requirements:
+
+<table><thead><tr><th>Category</th><th>Recommendations</th></tr></thead><tbody><tr><td>CPU</td><td>- For cluster stability, Cockroach Labs recommends a <em>minimum</em> of <strong>8 vCPUs</strong>, and strongly recommends no fewer than <strong>4 vCPUs</strong> per node. In a cluster with too few CPU resources, foreground client workloads will compete with the cluster's background maintenance tasks.<br/><br/>- Cockroach Labs does not extensively test clusters with more than <strong>32 vCPUs</strong> per node. This is the recommended <em>maximum</em> threshold.<br/><br/>- Use larger VMs to handle temporary workload spikes and processing hot spots.<br/><br/>- Use connection pooling to manage workload concurrency. The total number of workload connections across all connection pools <strong>should not exceed 4 times the number of vCPUs</strong> in the cluster by a large amount. For more details, refer to <a href="/docs/v24.1/connection-pooling#size-connection-pools">Size connection pools</a>.<br/><br/>- For additional CPU recommendations, refer to <a href="/docs/v24.1/recommended-production-settings#sizing">Recommended Production Settings</a>.</td></tr></tbody></table>
+
+### CPU monitoring
+
+Monitor possible signs of CPU starvation:
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><a href="#service-latency">Service latency</a></td><td>The time between when the cluster receives a query and finishes executing the query.</td></tr><tr><td><a href="#cpu-usage">CPU usage</a></td><td>The CPU consumption by the CockroachDB node process.</td></tr><tr><td><a href="#workload-concurrency">Workload concurrency</a></td><td>The number of SQL statements being executed on the cluster at the same time.</td></tr><tr><td><a href="#lsm-health">LSM health</a></td><td>The health of the persistent stores.</td></tr><tr><td><a href="#node-health">Node health</a></td><td>The operational status of the nodes.</td></tr></tbody></table>
+
+#### Service latency
+
+Degradation in SQL response time is the most common symptom of CPU starvation. It can also be a symptom of [insufficient disk I/O](#storage-and-disk-i-o).
+
+- The [**Service Latency: SQL Statements, 99th percentile**](/docs/v24.1/ui-sql-dashboard#service-latency-sql-99th-percentile) and [**Service Latency: SQL Statements, 90th percentile**](/docs/v24.1/ui-sql-dashboard#service-latency-sql-90th-percentile) graphs on the SQL dashboard show the time in nanoseconds between when the cluster [receives a query and finishes executing the query](/docs/v24.1/architecture/sql-layer). This time does not include returning results to the client.
+
+If latencies are consistently high, check for:
+
+- High [CPU usage](#cpu-usage).
+- An [I/O bottleneck](#disk-iops).
+
+#### CPU usage
+
+[Compaction on the storage layer](/docs/v24.1/architecture/storage-layer#compaction) uses CPU to run concurrent worker threads.
+
+- The [**CPU Utilization**](/docs/v24.1/ui-overload-dashboard#cpu-utilization) graph on the Hardware and Overload dashboards shows the CPU consumption by the CockroachDB process, and excludes other processes on the node.
+
+    **Expected values for a healthy cluster**: CPU utilized by CockroachDB should not persistently exceed 80%. Because this metric does not reflect system CPU usage, values above 80% suggest that actual CPU utilization is nearing 100%.
+
+If CPU usage is high, check whether [workload concurrency](#workload-concurrency) is exceeding CPU resources.
+
+<Tip>
+By default, the [storage engine](/docs/v24.1/architecture/storage-layer) uses a compaction concurrency of 3. If you have sufficient IOPS and CPU headroom, you can consider increasing this setting via the `COCKROACH_COMPACTION_CONCURRENCY` environment variable. This may help to reshape the LSM more quickly in [inverted LSM](/docs/v24.1/architecture/storage-layer#inverted-lsms) scenarios; and it can lead to increased overall performance for some workloads. Cockroach Labs **strongly recommends** testing your workload against non-default values of this setting.
+</Tip>
+
+#### Workload concurrency
+
+The number of concurrent active SQL statements should be proportionate to your provisioned CPU.
+
+- The [**SQL Statements**](/docs/v24.1/ui-sql-dashboard#sql-statements) graph on the Overview and SQL dashboards shows the 10-second average of `SELECT`, `UPDATE`, `INSERT`, and `DELETE` statements being executed per second on the cluster or node. The latest QPS value for the cluster is also displayed with the **Queries per second** counter on the Metrics page.
+
+    **Expected values for a healthy cluster**: At any time, the total number of connections actively executing SQL statements should not exceed 4 times the number of vCPUs in the cluster. You can find them in the Active Executions view in the [DB Console](/docs/v24.1/ui-statements-page) or [Cloud Console](/docs/cockroachcloud/statements-page). You can find the number of open connections in the [DB Console](/docs/v24.1/ui-sql-dashboard#open-sql-sessions) or [Cloud Console](/docs/cockroachcloud/metrics-sql#open-sql-sessions). For more details on configuring connection pools, see [Size connection pools](/docs/v24.1/connection-pooling#size-connection-pools).
+
+If workload concurrency exceeds CPU resources, you will observe:
+
+- High [CPU usage](#cpu-usage).
+- Degradation in [SQL response time](#service-latency).
+- Over time, an [unhealthy LSM](#lsm-health) and [cluster instability](#node-health).
+
+<Tip>
+To prevent issues with workload concurrency, [provision sufficient CPU](/docs/v24.1/recommended-production-settings#sizing) and use [connection pooling](/docs/v24.1/recommended-production-settings#connection-pooling) for the workload.
+</Tip>
+
+#### LSM health
+
+Issues at the storage layer, including an [inverted LSM](/docs/v24.1/architecture/storage-layer#inverted-lsms) and high [read amplification](/docs/v24.1/architecture/storage-layer#read-amplification), can be observed when [compaction](/docs/v24.1/architecture/storage-layer#compaction) falls behind due to insufficient CPU or excessively high [recovery and rebalance rates](/docs/v24.1/cluster-setup-troubleshooting#excessive-snapshot-rebalance-and-recovery-rates).
+
+- The [**IO Overload**](/docs/v24.1/ui-overload-dashboard#io-overload) graph on the Overload dashboard shows the health of the [persistent stores](/docs/v24.1/architecture/storage-layer), which are implemented as log-structured merge (LSM) trees. Level 0 is the highest level of the LSM tree and consists of files containing the latest data written to the [Pebble storage engine](/docs/v24.1/cockroach-start#storage-engine). For more information about LSM levels and how LSMs work, see [Log-structured Merge-trees](/docs/v24.1/architecture/storage-layer#log-structured-merge-trees).
+
+    **Expected values for a healthy cluster**: An IO Overload value greater than 1.0 generally indicates an overload in the Pebble LSM tree. High values indicate heavy write load that is causing accumulation of files in level 0. These files are not being compacted quickly enough to lower levels, resulting in a [misshapen LSM](/docs/v24.1/architecture/storage-layer#inverted-lsms).
+
+    <Note>
+    An unhealthy LSM can be caused by other factors, including [under-provisioned storage](#storage-and-disk-i-o). To correlate this symptom with CPU starvation, check for high [CPU usage](#cpu-usage) and excessive [workload concurrency](#workload-concurrency).
+    </Note>
+- The **Read Amplification** graph on the [Storage Dashboard](/docs/v24.1/ui-storage-dashboard) shows the average number of disk reads per logical SQL statement, also known as the [read amplification](/docs/v24.1/architecture/storage-layer#read-amplification) factor.
+
+    **Expected values for a healthy cluster**: Read amplification factor should be in the single digits. A value exceeding 50 for 1 hour strongly suggests that the LSM tree has an unhealthy shape.
+- The `STORAGE` [logging channel](/docs/v24.1/logging-overview#logging-channels) indicates an unhealthy LSM with the following:
+    - Frequent `compaction` status messages.
+    - High-read-amplification warnings, e.g., `sstables (read amplification = 54)`.
+
+<Tip>
+If compaction has fallen behind and caused an [inverted LSM](/docs/v24.1/architecture/storage-layer#inverted-lsms), throttle your workload concurrency to allow [compaction](/docs/v24.1/architecture/storage-layer#compaction) to catch up and restore a healthy LSM shape. The total number of workload connections across all connection pools **should not exceed 4 times the number of vCPUs** in the cluster by a large amount. If a node is severely impacted, you can [start a new node](/docs/v24.1/cockroach-start) and then [decommission the problematic node](/docs/v24.1/node-shutdown?filters=decommission#remove-nodes). By default, the [storage engine](/docs/v24.1/architecture/storage-layer) uses a compaction concurrency of 3. If you have sufficient IOPS and CPU headroom, you can consider increasing this setting via the `COCKROACH_COMPACTION_CONCURRENCY` environment variable. This may help to reshape the LSM more quickly in [inverted LSM](/docs/v24.1/architecture/storage-layer#inverted-lsms) scenarios; and it can lead to increased overall performance for some workloads. Cockroach Labs **strongly recommends** testing your workload against non-default values of this setting.
+</Tip>
+
+#### Node health
+
+If [issues at the storage layer](#lsm-health) remain unresolved, affected nodes will miss their liveness heartbeats, causing the cluster to lose nodes and eventually become unresponsive.
+
+- The [**Node status**](/docs/v24.1/ui-cluster-overview-page#node-status) on the Cluster Overview page indicates whether nodes are online (`LIVE`) or have crashed (`SUSPECT` or `DEAD`).
+- The `/health` endpoint of the [Cluster API](/docs/v24.1/cluster-api) returns a `500` error when a node is unhealthy.
+- A [Prometheus alert](/docs/v24.1/monitoring-and-alerting#node-is-down) can notify when a node has been down for 15 minutes or more.
+
+If nodes have shut down, this can also be caused by [insufficient storage capacity](#storage-capacity).
+
+<Note>
+If the cluster becomes unavailable, the DB Console and Cluster API will also become unavailable. You can continue to monitor the cluster via the [Prometheus endpoint](/docs/v24.1/monitoring-and-alerting#prometheus-endpoint) and [logs](/docs/v24.1/logging-overview).
+</Note>
+
+## Memory
+
+CockroachDB is [resilient](/docs/v24.1/demo-fault-tolerance-and-recovery) to node crashes. However, frequent node restarts caused by [out-of-memory (OOM) crashes](/docs/v24.1/cluster-setup-troubleshooting#out-of-memory-oom-crash) can impact cluster stability and performance.
+
+### Memory planning
+
+Provision enough memory and allocate an appropriate portion for data caching:
+
+- Provision at least **4 GiB of RAM per vCPU**.
+- Disable Linux memory swapping. Over-allocating memory on production machines can lead to unexpected performance issues when pages have to be read back into memory.
+- The default value for `--cache` is 128 MiB. For production deployments, set `--cache` to `25%` or higher. To determine appropriate settings for `--cache` and `--max-sql-memory`, use the following formula:
+
+    ```none
+    (2 * --max-sql-memory) + --cache <= 80% of system RAM
+    ```
+
+To help guard against [OOM events](/docs/v24.1/cluster-setup-troubleshooting#out-of-memory-oom-crash), CockroachDB sets a soft memory limit using mechanisms in Go. Depending on your hardware and workload, you may not need to manually tune `--max-sql-memory`.
+
+Test the configuration with a reasonable workload before deploying it to production.
+
+<Note>
+On startup, if CockroachDB detects that `--max-sql-memory` or `--cache` are set too aggressively, a warning is logged.
+</Note>
+
+For additional memory recommendations, refer to [Recommended Production Settings: Memory](/docs/v24.1/recommended-production-settings#memory) and [Recommended Production Setting: Cache and SQL memory size](/docs/v24.1/recommended-production-settings#cache-and-sql-memory-size).
+
+### Memory monitoring
+
+Monitor memory usage and node behavior for [OOM errors](/docs/v24.1/cluster-setup-troubleshooting#out-of-memory-oom-crash):
+
+<table><thead><tr><th>Metric or event</th><th>Description</th></tr></thead><tbody><tr><td><a href="#node-process-restarts">Node process restarts</a></td><td>Nodes restarting after crashes</td></tr><tr><td><a href="#sql-memory-usage">SQL memory usage</a></td><td>The memory allocated to the SQL layer</td></tr><tr><td><a href="#database-memory-usage">Database memory usage</a></td><td>The memory in use by CockroachDB processes</td></tr></tbody></table>
+
+#### Node process restarts
+
+CockroachDB attempts to restart nodes after they crash. Nodes that frequently restart following an abrupt process exit may point to an underlying memory issue.
+
+- The [**Node status**](/docs/v24.1/ui-cluster-overview-page#node-status) on the Cluster Overview page indicates whether nodes are online (`LIVE`) or have crashed (`SUSPECT` or `DEAD`).
+- When deploying on [Kubernetes](/docs/v24.1/kubernetes-overview), the `kubectl get pods` output contains a `RESTARTS` column that tracks the number of restarts for each CockroachDB pod.
+- The `OPS` [logging channel](/docs/v24.1/logging-overview#logging-channels) will record a [`node_restart` event](/docs/v24.1/eventlog#node_restart) whenever a node rejoins the cluster after being offline.
+- A [Prometheus alert](/docs/v24.1/monitoring-and-alerting#node-is-restarting-too-frequently) can notify when a node has restarted more than once in the last 10 minutes.
+
+##### Verify OOM errors
+
+If you observe nodes frequently restarting, confirm that the crashes are caused by [OOM errors](/docs/v24.1/cluster-setup-troubleshooting#out-of-memory-oom-crash):
+
+- Monitor `dmesg` to determine if a node crashed because it ran out of memory:
+
+    ```shell
+    $ sudo dmesg | grep -iC 3 "cockroach"
+    ```
+
+    The following output indicates the node crashed due to insufficient memory:
+
+    ```shell
+    $ host kernel: Out of Memory: Killed process <process_id> (cockroach).
+    ```
+- When deploying on [Kubernetes](/docs/v24.1/kubernetes-overview), run `kubectl logs {pod-name}` and look for OOM errors in the log messages.
+
+<Tip>
+To prevent OOM crashes, [provision sufficient memory](/docs/v24.1/recommended-production-settings#memory). If all CockroachDB machines are provisioned and configured correctly, either run the CockroachDB process on another node with sufficient memory, or [reduce the memory allocated to CockroachDB](/docs/v24.1/recommended-production-settings#cache-and-sql-memory-size).
+</Tip>
+
+If you confirm that nodes are crashing due to OOM errors, also check whether [SQL queries](#sql-memory-usage) may be responsible.
+
+#### SQL memory usage
+
+An untuned SQL query can consume significant resources and impact the performance of other workloads.
+
+- The [**SQL Memory**](/docs/v24.1/ui-sql-dashboard#sql-memory) graph on the SQL dashboard shows the current amount of memory in KiB allocated to the SQL layer.
+
+    **Expected values for a healthy cluster**: This value should not exceed the [`--max-sql-memory`](/docs/v24.1/recommended-production-settings#cache-and-sql-memory-size) size. A healthy threshold is 75% of allocated `--max-sql-memory`.
+- The "active query dump", enabled by default with the `diagnostics.active_query_dumps.enabled` [cluster setting](/docs/v24.1/cluster-settings), is a record of anonymized active queries that is written to disk when a node is detected to be under memory pressure.
+
+    You can use the active query dump to correlate specific queries to OOM crashes. Active query dumps have the filename `activequeryprof.{date-and-time}.csv` and are found in the `heap_profiler` directory in the configured [logging directory](/docs/v24.1/configure-logs#logging-directory). They are also included when running [`cockroach debug zip`](/docs/v24.1/cockroach-debug-zip).
+- A `SHOW STATEMENTS` statement can [identify long-running queries](/docs/v24.1/manage-long-running-queries#identify-long-running-queries) on the cluster that may be consuming excessive memory.
+- A [`memory budget exceeded`](/docs/v24.1/common-errors#memory-budget-exceeded) error in the logs indicates that `--max-sql-memory`, the memory allocated to the SQL layer, was exceeded by the operation referenced in the error. For guidance on resolving this issue, see [Common Errors](/docs/v24.1/common-errors#memory-budget-exceeded).
+
+<Tip>
+If you find queries that are consuming too much memory, [cancel the queries](/docs/v24.1/manage-long-running-queries#cancel-long-running-queries) to free up memory usage. For information on optimizing query performance, see [SQL Performance Best Practices](/docs/v24.1/performance-best-practices-overview).
+</Tip>
+
+<Warning>
+We **strongly recommend** adding size limits to all [indexed columns](/docs/v24.1/indexes), which includes columns in [primary keys](/docs/v24.1/primary-key).
+
+Values exceeding 1 MiB can lead to [storage layer write amplification](/docs/v24.1/architecture/storage-layer#write-amplification) and cause significant performance degradation or even [crashes due to OOMs (out of memory errors)](/docs/v24.1/cluster-setup-troubleshooting#out-of-memory-oom-crash).
+
+To add a size limit using [`CREATE TABLE`](/docs/v24.1/create-table):
+
+```sql
+CREATE TABLE name (first STRING(100), last STRING(100));
+```
+
+To add a size limit using [`ALTER TABLE... ALTER COLUMN`](/docs/v24.1/alter-table#alter-column):
+
+```sql
+SET enable_experimental_alter_column_type_general = true;
+```
+
+```sql
+ALTER TABLE name ALTER first TYPE STRING(99);
+```
+</Warning>
+
+#### Database memory usage
+
+CockroachDB memory usage includes both accounted memory, such as the amount allocated to `--cache` and `--max-sql-memory`; and unaccounted memory, such as uncollected Go garbage and process overhead.
+
+- The [**Memory Usage**](/docs/v24.1/ui-runtime-dashboard#memory-usage) graph on the Runtime dashboard shows the total memory in use by CockroachDB processes. The RSS (resident set size) metric represents actual CockroachDB memory usage from the OS/Linux/pod point of view. The Go and CGo metrics represent memory allocation and total usage from a CockroachDB point of view.
+
+    **Expected values for a healthy cluster**: Go Allocated will depend on workload but should not exceed [`--max-sql-memory`](/docs/v24.1/cockroach-start#flags) by more than 100%. CGo Allocated should not exceed the [`--cache`](/docs/v24.1/cockroach-start#flags) size and CGo Total should not exceed the [`--cache`](/docs/v24.1/cockroach-start#flags) size by more than 15%.
+
+For more context on acceptable memory usage, see [Suspected memory leak](/docs/v24.1/cluster-setup-troubleshooting#suspected-memory-leak).
+
+## Storage and disk I/O
+
+The cluster will underperform if storage is not provisioned or configured correctly. This can lead to further issues such as [disk stalls](/docs/v24.1/cluster-setup-troubleshooting#disk-stalls) and node shutdown.
+
+### Storage and disk planning
+
+Provision enough storage capacity for CockroachDB data, and configure your volumes to maximize disk I/O:
+
+<table><thead><tr><th>Category</th><th>Recommendations</th></tr></thead><tbody><tr><td>Storage</td><td>- Provision volumes with <b>320 GiB per vCPU</b>.<br/><br/>- Use dedicated volumes for the CockroachDB <a href="/docs/v24.1/cockroach-start#store">store</a>. Do not share the store volume with any other I/O activity.<br/><br/>- Store CockroachDB <a href="/docs/v24.1/configure-logs#logging-directory">log files</a> in a separate volume from the main data store so that logging is not impacted by I/O throttling.<br/><br/>- See additional storage recommendations in the <a href="/docs/v24.1/recommended-production-settings#storage">Recommended Production Settings</a>.</td></tr><tr><td>Disk I/O</td><td>- Disks must be able to achieve <b>500 IOPS and 30 MB/s per vCPU</b> .<br/><br/>- Do not use LVM in the I/O path. Dynamically resizing CockroachDB store volumes can result in significant performance degradation. Using LVM snapshots in lieu of CockroachDB <a href="/docs/v24.1/take-full-and-incremental-backups">backup and restore</a> is also not supported. Use <a href="/docs/v24.1/cockroach-start#store">multiple stores per node</a> instead.<br/><br/>- See additional disk I/O recommendations in the <a href="/docs/v24.1/recommended-production-settings#disk-i-o">Recommended Production Settings</a>.</td></tr></tbody></table>
+
+### Storage and disk monitoring
+
+Monitor storage capacity and disk performance:
+
+<table><thead><tr><th>Metric or event</th><th>Description</th></tr></thead><tbody><tr><td><a href="#storage-capacity">Storage capacity</a></td><td>The available and used disk capacity in the CockroachDB <a href="/docs/v24.1/cockroach-start#store">store</a>.</td></tr><tr><td><a href="#disk-iops">Disk IOPS</a></td><td>The I/O requests per second.</td></tr><tr><td><a href="#node-heartbeat-latency">Node heartbeat latency</a></td><td>The time between <a href="/docs/v24.1/cluster-setup-troubleshooting#node-liveness-issues">node liveness</a> heartbeats.</td></tr><tr><td><a href="#command-commit-latency">Command commit latency</a></td><td>The speed at which <a href="/docs/v24.1/architecture/replication-layer">Raft commands</a> are being committed by nodes in the cluster.</td></tr></tbody></table>
+
+#### Storage capacity
+
+CockroachDB requires disk space in order to accept writes and report node liveness. When a node runs out of disk space, it [shuts down](#node-health) and cannot be restarted until space is freed up.
+
+- The [**Capacity**](/docs/v24.1/ui-storage-dashboard#capacity) graph on the Overview and Storage dashboards shows the available and used disk capacity in the CockroachDB [store](/docs/v24.1/cockroach-start#store).
+
+    **Expected values for a healthy cluster**: Used capacity should not persistently exceed 80% of the total capacity.
+- A [Prometheus alert](/docs/v24.1/monitoring-and-alerting#node-is-running-low-on-disk-space) can notify when a node has less than 15% of free space remaining.
+
+<Tip>
+Ensure that you [provision sufficient storage](/docs/v24.1/recommended-production-settings#storage). If storage is correctly provisioned and is running low, CockroachDB automatically creates an emergency ballast file that can free up space. For details, see [Disks filling up](/docs/v24.1/cluster-setup-troubleshooting#disks-filling-up).
+</Tip>
+
+For instructions on how to free up disk space as quickly as possible after dropping a table, see [How can I free up disk space that was used by a dropped table?](/docs/v24.1/operational-faqs#how-can-i-free-up-disk-space-when-dropping-a-table)
+
+#### Disk IOPS
+
+Insufficient disk I/O can cause [poor SQL performance](#service-latency) and potentially [disk stalls](/docs/v24.1/cluster-setup-troubleshooting#disk-stalls).
+
+- The [**Disk Ops In Progress**](/docs/v24.1/ui-hardware-dashboard#disk-ops-in-progress) graph on the Hardware dashboard shows the number of disk reads and writes in queue.
+
+    **Expected values for a healthy cluster**: This value should be 0 or single-digit values for short periods of time. If the values persist in double digits, you may have an I/O bottleneck.
+- The Linux tool `iostat` (part of `sysstat`) can be used to monitor IOPS. In the device status output, `avgqu-sz` corresponds to the **Disk Ops In Progress** metric. If service times persist in double digits on any node, this means that your storage device is saturated and is likely under-provisioned or misconfigured.
+
+With insufficient disk I/O, you may also see:
+
+- Degradation in [SQL response time](#service-latency).
+- An [unhealthy LSM](#lsm-health).
+
+#### Node heartbeat latency
+
+Because each node needs to update a liveness record on disk, maxing out disk bandwidth can cause liveness heartbeats to be missed.
+
+- The [**Node Heartbeat Latency: 99th percentile**](/docs/v24.1/ui-distributed-dashboard#node-heartbeat-latency-99th-percentile) and [**Node Heartbeat Latency: 90th percentile**](/docs/v24.1/ui-distributed-dashboard#node-heartbeat-latency-90th-percentile) graphs on the [Distributed Dashboard](/docs/v24.1/ui-distributed-dashboard) show the time elapsed between [node liveness](/docs/v24.1/cluster-setup-troubleshooting#node-liveness-issues) heartbeats.
+
+    **Expected values for a healthy cluster**: Less than 100ms in addition to the [network latency](/docs/v24.1/ui-network-latency-page) between nodes in the cluster.
+
+#### Command commit latency
+
+- The **Command Commit Latency: 50th percentile** and **Command Commit Latency: 99th percentile** graphs on the [Storage dashboard](/docs/v24.1/ui-storage-dashboard) show how quickly [Raft commands](/docs/v24.1/architecture/replication-layer) are being committed by nodes in the cluster. This is a good signal of I/O load.
+
+    **Expected values for a healthy cluster**: On SSDs ([strongly recommended](/docs/v24.1/recommended-production-settings#storage)), this should be between 1 and 100 milliseconds. On HDDs, this should be no more than 1 second.
+
+## See also
+
+- [Recommended Production Settings](/docs/v24.1/recommended-production-settings)
+- [Monitoring and Alerting](/docs/v24.1/monitoring-and-alerting)
+- [Common Errors and Solutions](/docs/v24.1/common-errors)
+- [Operational FAQs](/docs/v24.1/operational-faqs)
+- [Performance Tuning Recipes](/docs/v24.1/performance-recipes)
+- [Troubleshoot Cluster Setup](/docs/v24.1/cluster-setup-troubleshooting)
+- [Troubleshoot SQL Behavior](/docs/v24.1/query-behavior-troubleshooting)
+- [Admission Control](/docs/v24.1/admission-control)
+- [Metrics](/docs/v24.1/metrics)
+- [Alerts Page](/docs/cockroachcloud/alerts-page) (CockroachDB Advanced)

@@ -1,0 +1,76 @@
+---
+title: "Physical Cluster Replication"
+old_description: "An overview of CockroachDB physical cluster replication (PCR)."
+---
+
+CockroachDB **physical cluster replication (PCR)** continuously sends all data at the cluster level from a *primary* cluster to an independent *standby* cluster. Existing data and ongoing changes on the active primary cluster, which is serving application data, replicate asynchronously to the passive standby cluster.
+
+You can [*fail over*](/docs/v25.2/failover-replication) from the primary cluster to the standby cluster. This will stop the replication stream, reset the standby cluster to a point in time (in the past or future) where all ingested data is consistent, and make the standby ready to accept application traffic.
+
+For a list of requirements for PCR, refer to the [Before you begin](/docs/v25.2/set-up-physical-cluster-replication#before-you-begin) section of the [setup tutorial](/docs/v25.2/set-up-physical-cluster-replication).
+
+<Tip>
+Cockroach Labs also has a [logical data replication](/docs/v25.2/logical-data-replication-overview) tool that continuously replicates tables between an active *source* CockroachDB cluster to an active *destination* CockroachDB cluster. Both source and destination can receive application reads and writes, and participate in [*bidirectional*](/docs/v25.2/logical-data-replication-overview#use-cases) LDR for eventual consistency in the replicating tables.
+</Tip>
+
+## Use cases
+
+You can use PCR to:
+
+- Meet your RTO (Recovery Time Objective) and RPO (Recovery Point Objective) requirements. PCR provides lower RTO and RPO than [backup and restore](/docs/v25.2/backup-and-restore-overview).
+- Automatically replicate everything in your primary cluster to recover quickly from a control plane or full cluster failure.
+- Protect against region failure when you cannot use individual [multi-region clusters](/docs/v25.2/multiregion-overview) —for example, if you have a two-datacenter architecture and do not have access to three regions; or, you need low-write latency in a single region. PCR allows for an active-passive (primary-standby) structure across two clusters with the passive cluster in a different region.
+- Quickly recover from user error (for example, dropping a database) by [failing over](/docs/v25.2/failover-replication) to a time in the near past.
+- Create a [blue-green deployment model](https://en.wikipedia.org/wiki/Blue%E2%80%93green_deployment) by using the standby cluster for testing upgrades and hardware changes.
+
+## Features
+
+- **Asynchronous cluster-level replication**: When you initiate a replication stream, it will replicate byte-for-byte all of the primary cluster's existing user data and associated metadata to the standby cluster asynchronously. From then on, it will continuously replicate the primary cluster's data and metadata to the standby cluster. PCR will automatically replicate changes related to operations such as [schema changes](/docs/v25.2/online-schema-changes), user and [privilege](/docs/v25.2/security-reference/authorization#managing-privileges) modifications, and [zone configuration](/docs/v25.2/show-zone-configurations) updates without any manual work.
+- **Transactional consistency**: Avoid conflicts in data after recovery; the replication completes to a transactionally consistent state.
+- **Improved RPO and RTO**: Depending on workload and deployment configuration, [replication lag](/docs/v25.2/physical-cluster-replication-technical-overview) between the primary and standby is generally in the tens-of-seconds range. The failover process from the primary cluster to the standby should typically happen within five minutes when completing a failover to the latest replicated time using [`LATEST`](/docs/v25.2/alter-virtual-cluster#synopsis).
+- **Failover to a timestamp in the past or the future**: In the case of logical disasters or mistakes, you can [fail over](/docs/v25.2/failover-replication) from the primary to the standby cluster to a timestamp in the past. This means that you can return the standby to a timestamp before the mistake was replicated to the standby. Furthermore, you can plan a failover by specifying a timestamp in the future.
+- **Fast failback**: Switch back from the promoted standby cluster to the original primary cluster after a failover event by replicating net-new changes rather than fully replacing existing data for an initial scan.
+- **Read from standby cluster**: You can configure PCR to allow `SELECT` queries on the standby cluster. For more details, refer to [Start a PCR stream with read from standby](/docs/v25.2/create-virtual-cluster#start-a-pcr-stream-with-read-from-standby).
+- **Monitoring**: To monitor the replication's initial progress, current status, and performance, you can use metrics available in the [DB Console](/docs/v25.2/ui-overview) and [Prometheus](/docs/v25.2/monitor-cockroachdb-with-prometheus). For more details, refer to [Physical Cluster Replication Monitoring](/docs/v25.2/physical-cluster-replication-monitoring).
+
+## Known limitations
+
+- Physical cluster replication is supported in:
+    - CockroachDB self-hosted clusters on v23.2 or later. The primary cluster can be a [new](/docs/v25.2/set-up-physical-cluster-replication#step-1-create-the-primary-cluster) or [existing](/docs/v25.2/set-up-physical-cluster-replication#set-up-pcr-from-an-existing-cluster) cluster. The standby cluster must be a [new cluster started with the `--virtualized-empty` flag](/docs/v25.2/set-up-physical-cluster-replication#step-2-create-the-standby-cluster).
+    - [CockroachDB Advanced clusters](/docs/cockroachcloud/physical-cluster-replication) on v24.3 or later.
+- In CockroachDB self-hosted, the primary and standby clusters must have the same [zone configurations](/docs/v25.2/configure-replication-zones) in order to respect data placement configurations.
+- After a failover, there is no mechanism to stop applications from connecting to the original primary cluster. It is necessary to redirect application traffic manually, such as by using a network load balancer or adjusting DNS records.
+
+<Note>
+Frequent large schema changes or imports may cause a significant spike in [replication lag](/docs/v25.2/physical-cluster-replication-technical-overview).
+</Note>
+
+## Get started
+
+This section is a quick overview of the initial requirements to start a replication stream. For more comprehensive guides, refer to:
+
+- [Cluster Virtualization Overview](/docs/v25.2/cluster-virtualization-overview): for information on enabling cluster virtualization, a requirement for setting up PCR.
+- [Set Up Physical Cluster Replication](/docs/v25.2/set-up-physical-cluster-replication): for a tutorial on how to start a replication stream.
+- [Physical Cluster Replication Monitoring](/docs/v25.2/physical-cluster-replication-monitoring): for detail on metrics and observability into a replication stream.
+- [Fail Over from a Primary Cluster to a Standby Cluster](/docs/v25.2/failover-replication): for a guide on how to complete a replication stream and fail over to the standby cluster.
+- [Technical Overview](/docs/v25.2/physical-cluster-replication-technical-overview): to understand PCR in more depth before setup.
+
+### Manage replication in the SQL shell
+
+To start, manage, and observe PCR, you can use the following SQL statements:
+
+<table><thead><tr><th>Statement</th><th>Action</th></tr></thead><tbody><tr><td><a href="/docs/v25.2/create-virtual-cluster"><code>CREATE VIRTUAL CLUSTER ... FROM REPLICATION OF ...</code></a></td><td>Start a replication stream.</td></tr><tr><td><a href="/docs/v25.2/alter-virtual-cluster"><code>ALTER VIRTUAL CLUSTER ... PAUSE REPLICATION</code></a></td><td>Pause a running replication stream.</td></tr><tr><td><a href="/docs/v25.2/alter-virtual-cluster"><code>ALTER VIRTUAL CLUSTER ... RESUME REPLICATION</code></a></td><td>Resume a paused replication stream.</td></tr><tr><td><a href="/docs/v25.2/alter-virtual-cluster"><code>ALTER VIRTUAL CLUSTER ... START SERVICE SHARED</code></a></td><td>Initiate a <a href="/docs/v25.2/failover-replication">failover</a>.</td></tr><tr><td><a href="/docs/v25.2/show-virtual-cluster"><code>SHOW VIRTUAL CLUSTER</code></a></td><td>Show all virtual clusters.</td></tr><tr><td><a href="/docs/v25.2/drop-virtual-cluster"><code>DROP VIRTUAL CLUSTER</code></a></td><td>Remove a virtual cluster.</td></tr></tbody></table>
+
+## Cluster versions and upgrades
+
+To safely perform a major version upgrade on a cluster with PCR, you must upgrade the standby cluster before the primary cluster to avoid version incompatibility. If you are using a reader virtual cluster (reader VC), you must upgrade it separately from the primary and standby clusters.
+
+Follow the process described in [Upgrade a Cluster Running PCR](/docs/v25.2/upgrade-with-pcr).
+
+## Demo video
+
+Learn how to use PCR to meet your RTO and RPO requirements with the following demo:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/5hpAqUErUic" title="YouTube video player" width="560"></iframe>
+</Frame>

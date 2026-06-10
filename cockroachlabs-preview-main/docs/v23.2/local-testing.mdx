@@ -1,0 +1,77 @@
+---
+title: "Test Your Application Locally"
+old_description: "Best practices for locally testing an application built on CockroachDB"
+---
+
+This page documents best practices for unit testing applications built on CockroachDB in a local environment.
+
+If you are deploying a self-hosted cluster, see the [Production Checklist](/docs/v23.2/recommended-production-settings) for information about preparing your cluster for production.
+
+<Warning>
+The settings described on this page are **not recommended** for use in production clusters. They are only recommended for use during unit testing and continuous integration testing (CI).
+</Warning>
+
+## Use a local, single-node cluster with in-memory storage
+
+The [`cockroach start-single-node`](/docs/v23.2/cockroach-start-single-node) command below starts a single-node, insecure cluster with [in-memory storage](/docs/v23.2/cockroach-start-single-node#store). Using in-memory storage improves the speed of the cluster for local testing purposes.
+
+```shell
+cockroach start-single-node --insecure --store=type=mem,size=0.25 --advertise-addr=localhost
+```
+
+We recommend the following additional [cluster settings](/docs/v23.2/cluster-settings) and [SQL statements](/docs/v23.2/sql-statements#data-definition-statements) for improved performance during functional unit testing and continuous integration testing. In particular, some of these settings will increase the performance of [schema changes](/docs/v23.2/online-schema-changes), since repeated [creation](/docs/v23.2/create-schema) and [dropping](/docs/v23.2/drop-schema) of schemas are common in automated testing.
+
+<table><thead><tr><th>Setting</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>kv.range&#95;merge.queue&#95;interval</code></td><td><code>50ms</code></td><td>Frequent <a href="/docs/v23.2/create-table"><code>CREATE TABLE</code></a> or <a href="/docs/v23.2/drop-table"><code>DROP TABLE</code></a> creates extra ranges, which we want to merge more quickly. In real usage, range merges are rate limited because they require rebalancing.</td></tr><tr><td><code>jobs.registry.interval.gc</code></td><td><code>30s</code></td><td>CockroachDB executes internal queries that scan the <a href="/docs/v23.2/show-jobs">jobs</a> table. More schema changes create more jobs, which we can delete faster to make internal job queries faster.</td></tr><tr><td><code>jobs.registry.interval.cancel</code></td><td><code>180s</code></td><td>Timing of an internal task that queries the <a href="/docs/v23.2/show-jobs">jobs</a> table. For testing, the default is too fast.</td></tr><tr><td><code>jobs.retention&#95;time</code></td><td><code>15s</code></td><td>More <a href="/docs/v23.2/online-schema-changes">schema changes</a> create more <a href="/docs/v23.2/show-jobs">jobs</a>, which affects job query performance. We don’t need to retain jobs during testing and can set a more aggressive delete policy.</td></tr><tr><td><code>sql.stats.automatic&#95;collection.enabled</code></td><td><code>false</code></td><td>Turn off <a href="/docs/v23.2/show-statistics">statistics</a> collection, since automatic statistics contribute to table contention alongside schema changes. Each schema change triggers an asynchronous auto statistics job.</td></tr><tr><td><code>ALTER RANGE default CONFIGURE ZONE USING "gc.ttlseconds"</code></td><td><code>600</code></td><td>Faster descriptor cleanup. For more information, see <a href="/docs/v23.2/alter-range#configure-zone"><code>ALTER RANGE ... CONFIGURE ZONE</code></a>.</td></tr><tr><td><code>ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds"</code></td><td><code>600</code></td><td>Faster jobs table cleanup. For more information, see <a href="/docs/v23.2/alter-database#configure-zone"><code>ALTER DATABASE ... CONFIGURE ZONE</code></a>.</td></tr></tbody></table>
+
+To change all of the settings described above at once, run the following SQL statements:
+
+```sql
+SET CLUSTER SETTING kv.range_merge.queue_interval = '50ms';
+SET CLUSTER SETTING jobs.registry.interval.gc = '30s';
+SET CLUSTER SETTING jobs.registry.interval.cancel = '180s';
+SET CLUSTER SETTING jobs.retention_time = '15s';
+SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+SET CLUSTER SETTING kv.range_split.by_load_merge_delay = '5s';
+ALTER RANGE default CONFIGURE ZONE USING "gc.ttlseconds" = 600;
+ALTER DATABASE system CONFIGURE ZONE USING "gc.ttlseconds" = 600;
+```
+
+<Warning>
+These settings **are not** recommended for [performance benchmarking of CockroachDB](/docs/v23.2/performance-benchmarking-with-tpcc-local) since they will lead to inaccurate results.
+</Warning>
+
+## Scope tests to a database when possible
+
+It is better to scope tests to a [database](/docs/v23.2/create-database) than to a [user-defined schema](/docs/v23.2/create-schema) due to inefficient user-defined schema validation. The performance of user-defined schema validation may be improved in a future release.
+
+## Log test output to a file
+
+By default, `cockroach start-single-node` logs cluster activity to a file with the [default logging configuration](/docs/v23.2/configure-logs#default-logging-configuration). When you specify the `--store=type=mem` flag, the command prints cluster activity directly to the console instead.
+
+To customize logging behavior for local clusters, use the [`--log` flag](/docs/v23.2/cockroach-start-single-node#logging):
+
+```shell
+cockroach start-single-node --insecure --store=type=mem,size=0.25 --advertise-addr=localhost --log="{file-defaults: {dir: /path/to/logs}, sinks: {stderr: {filter: NONE}}}"
+```
+
+The `log` flag has two suboptions:
+
+- `file-defaults`, which specifies the path of the file in which to log events ( `/path/to/logs` ).
+- `sinks`, which provides a secondary destination to which to log events ( `stderr` ).
+
+For more information about logging, see [Configure logs](/docs/v23.2/configure-logs).
+
+## Use a local file server for bulk operations
+
+To test bulk operations like [`IMPORT`](/docs/v23.2/import), [`BACKUP`](/docs/v23.2/backup), or [`RESTORE`](/docs/v23.2/restore), we recommend using a local file server.
+
+For more details, see [Use a Local File Server](/docs/v23.2/use-a-local-file-server).
+
+## Use Docker-specific testing and development tools
+
+When you use the `cockroach start-single-node` command to start a single-node cluster with Docker, some additional features are available to help with testing and development. Refer to [Start a local cluster in Docker (Linux)](/docs/v23.2/start-a-local-cluster-in-docker) and [Start a local cluster in Docker (macOS)](/docs/v23.2/start-a-local-cluster-in-docker).
+
+## See also
+
+- [Troubleshoot SQL Statements](/docs/v23.2/query-behavior-troubleshooting)
+- [Optimize Statement Performance](/docs/v23.2/make-queries-fast)

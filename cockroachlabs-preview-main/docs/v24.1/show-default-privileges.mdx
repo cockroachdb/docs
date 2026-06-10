@@ -1,0 +1,124 @@
+---
+title: "SHOW DEFAULT PRIVILEGES"
+old_description: "The SHOW DEFAULT PRIVILEGES statement lists the default privileges for users/roles in the current database."
+---
+
+import { ShowDefaultPrivileges3 } from "/snippets/syntax-diagrams/ShowDefaultPrivileges3.jsx";
+
+The `SHOW DEFAULT PRIVILEGES` [statement](/docs/v24.1/sql-statements) lists the [default privileges](/docs/v24.1/security-reference/authorization#default-privileges) for the objects created by [users/roles](/docs/v24.1/security-reference/authorization#roles) in the current database.
+
+## Synopsis
+
+<ShowDefaultPrivileges3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>FOR ROLE name</code>/<code>FOR USER name</code></td><td>List the default privileges on objects created by a specific user/role, or a list of users/roles.</td></tr><tr><td><code>FOR GRANTEE name</code></td><td>Show the default privileges that user <code>name</code> received as a grantee. For more information, see <a href="#show-default-privileges-for-a-grantee">Show default privileges for a grantee</a>.</td></tr><tr><td><code>FOR ALL ROLES</code></td><td>List the default privileges on objects created by any user/role.</td></tr></tbody></table>
+
+<Note>
+If you do not specify a `FOR...` clause, CockroachDB returns the default privileges on objects created by the current user.
+</Note>
+
+## Required privileges
+
+To show default privileges, the user/role must have any [privilege](/docs/v24.1/security-reference/authorization#managing-privileges) on the current database.
+
+## Examples
+
+### Show default privileges for objects created by the current user
+
+```sql
+> SHOW DEFAULT PRIVILEGES;
+```
+
+```text
+  role | for_all_roles | object_type | grantee | privilege_type
+-------+---------------+-------------+---------+-----------------
+  root |     false     | schemas     | root    | ALL
+  root |     false     | sequences   | root    | ALL
+  root |     false     | tables      | root    | ALL
+  root |     false     | types       | public  | USAGE
+  root |     false     | types       | root    | ALL
+(5 rows)
+```
+
+### Show default privileges for objects created by any user/role
+
+```sql
+> SHOW DEFAULT PRIVILEGES FOR ALL ROLES;
+```
+
+```text
+  role | for_all_roles | object_type | grantee | privilege_type
+-------+---------------+-------------+---------+-----------------
+  NULL |     true      | types       | public  | USAGE
+(1 row)
+```
+
+### Show default privileges for objects created by a specific user/role
+
+```sql
+> CREATE USER max;
+```
+
+```sql
+> SHOW DEFAULT PRIVILEGES FOR ROLE max;
+```
+
+```text
+  role | for_all_roles | object_type | grantee | privilege_type
+-------+---------------+-------------+---------+-----------------
+  max  |     false     | schemas     | max     | ALL
+  max  |     false     | sequences   | max     | ALL
+  max  |     false     | tables      | max     | ALL
+  max  |     false     | types       | max     | ALL
+  max  |     false     | types       | public  | USAGE
+(5 rows)
+```
+
+### Show default privileges for objects in a specific schema
+
+```sql
+> CREATE SCHEMA test;
+```
+
+```sql
+> ALTER DEFAULT PRIVILEGES IN SCHEMA test GRANT SELECT ON TABLES TO max;
+```
+
+```sql
+> SHOW DEFAULT PRIVILEGES IN SCHEMA test;
+```
+
+```text
+  role | for_all_roles | object_type | grantee | privilege_type
+-------+---------------+-------------+---------+-----------------
+  demo |     false     | tables      | max     | SELECT
+(1 row)
+```
+
+### Show default privileges for a grantee
+
+To show the default [privileges](/docs/v24.1/security-reference/authorization#privileges) that a user received as a grantee, issue the following statement:
+
+```sql
+SHOW DEFAULT PRIVILEGES FOR GRANTEE root;
+```
+
+```text
+  role | for_all_roles | object_type | grantee | privilege_type | is_grantable
+-------+---------------+-------------+---------+----------------+---------------
+  root |       f       | routines    | root    | ALL            |      t
+  root |       f       | schemas     | root    | ALL            |      t
+  root |       f       | sequences   | root    | ALL            |      t
+  root |       f       | tables      | root    | ALL            |      t
+  root |       f       | types       | root    | ALL            |      t
+(5 rows)
+```
+
+## See also
+
+- [`ALTER DEFAULT PRIVILEGES`](/docs/v24.1/alter-default-privileges)
+- [`SHOW ROLES`](/docs/v24.1/show-roles)
+- [SQL Statements](/docs/v24.1/sql-statements)
+- [Default Privileges](/docs/v24.1/security-reference/authorization#default-privileges)

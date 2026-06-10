@@ -1,0 +1,245 @@
+---
+title: "Manage AWS PrivateLink"
+old_description: "Instructions for establishing AWS PrivateLink network access for a cluster in CockroachDB Cloud."
+---
+
+Amazon Web Services (AWS) PrivateLink support allows customers to establish SQL access to their clusters entirely through private AWS infrastructure, without exposure to the public internet, affording enhanced security and performance. PrivateLink is supported for CockroachDB Advanced CockroachDB Standard clusters deployed on AWS.
+
+This page shows how to set up AWS PrivateLink for CockroachDB Advanced and CockroachDB Standard clusters, both in CockroachDB Cloudand in your AWS account. For broader context, refer to [Network Authorization for CockroachDB Cloud Clusters](/docs/cockroachcloud/network-authorization).
+
+AWS PrivateLink is not available on CockroachDB Basic. For Basic clusters that were migrated from CockroachDB Serverless, existing [PrivateLink connections](/docs/cockroachcloud/aws-privatelink) continue to work, but new PrivateLink connections cannot be added.
+
+<Tabs>
+<Tab title="CockroachDB Advanced">
+
+<Tip>
+You must configure the AWS PrivateLink connection for your cluster both in CockroachDB Cloud and in AWS. For CockroachDB Cloud, you can use the CockroachDB Cloud Console, [Cloud API](/docs/cockroachcloud/cloud-api) or [Terraform Provider](/docs/cockroachcloud/provision-a-cluster-with-terraform).
+
+For help, refer to [Establish private connectivity](/docs/cockroachcloud/connect-to-an-advanced-cluster#establish-private-connectivity).
+
+If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
+</Tip>
+
+## Set up a cluster
+
+1. Use the CockroachDB Cloud Console to [create your CockroachDB Advanced cluster](/docs/cockroachcloud/create-an-advanced-cluster) on AWS in the same regions as your application.
+2. Navigate to the **Networking** page.
+3. Select the **PrivateLink** tab.
+4. Click **Add Connection** to open the connection dialog.
+
+Continue to [Create an AWS endpoint](#create-an-aws-endpoint).
+
+## (Optional) Configure private endpoint trusted owners
+
+<Note>
+**This feature is in [limited access](/docs/stable/cockroachdb-feature-availability)** and is only available to enrolled organizations. To enroll your organization, contact your Cockroach Labs account team. This feature is subject to change.
+</Note>
+
+Optionally, you can restrict the AWS accounts that can connect to your cluster privately using private endpoints. To configure trusted owners, you must use the [CockroachDB Cloud API](/docs/cockroachcloud/cloud-api) or [Terraform Provider](https://github.com/cockroachdb/terraform-provider-cockroach).
+
+Your service account must have one of the following roles on the cluster, either directly or by inheritance:
+
+- [Cluster Admin](/docs/cockroachcloud/authorization#cluster-admin) to add or remove private endpoint trusted owners. The Cluster Admin role includes all of the capabilities of the Cluster Operator role.
+- [Cluster Operator](/docs/cockroachcloud/authorization#cluster-operator) to list or get details about private endpoint trusted owners.
+
+### Add a private endpoint trusted owner
+
+To [add a private endpoint trusted owner](/docs/api/cloud/private-endpoint-services/add-a-private-endpoint-trusted-owner-to-a-cluster), send a `POST` request to the `clusters/{cluster_id}/networking/private-endpoint-trusted-owners` endpoint as follows:
+
+```shell
+curl --request POST \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
+  --header "Authorization: Bearer {bearer_token}" \
+  --header "content-type: application/json" \
+  --data '{"external_owner_id":"{aws_account_id}","type":"AWS_ACCOUNT_ID"}'
+```
+
+Replace:
+
+- `{cluster_id}`: The ID of the cluster.
+- `{bearer_token}`: The service account's API key.
+- `{aws_account_id}`: The ID of the AWS account to trust.
+
+The response includes details about the trusted owner, including a unique trusted owner ID. This ID is required to get details about or remove a trusted owner.
+
+Next, you can [create an AWS endpoint](#create-an-aws-endpoint).
+
+### List private endpoint trusted owners
+
+To [list private endpoint trusted owners](/docs/api/cloud/private-endpoint-services/list-all-private-endpoint-trusted-owners-for-a-cluster), send a `GET` request to the `clusters/{cluster_id}/networking/private-endpoint-trusted-owners` endpoint as follows:
+
+```shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners \
+  --header "Authorization: Bearer {bearer_token}"
+```
+
+Replace:
+
+- `{cluster_id}`: The ID of the cluster.
+- `{bearer_token}`: The service account's API key.
+
+### Get details about a trusted owner
+
+To [get details about a private endpoint trusted owner](/docs/api/cloud/private-endpoint-services/get-a-private-endpoint-trusted-owner-entry-for-a-cluster), send a `GET` request to the `clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner-id}` endpoint as follows:
+
+```shell
+curl --request GET \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
+  --header "Authorization: Bearer {bearer_token}"
+```
+
+Replace:
+
+- `{cluster_id}`: The ID of the cluster.
+- `{owner_id}`: The UUID of a private endpoint trusted owner entry.
+- `{bearer_token}`: The service account's API key.
+
+### Remove a trusted owner
+
+To [remove a private endpoint trusted owner](/docs/api/cloud/private-endpoint-services/remove-a-private-endpoint-trusted-owner-from-a-cluster), send a `DELETE` request to the `clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner-id}` endpoint as follows:
+
+```shell
+curl --request DELETE \
+  --url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/networking/private-endpoint-trusted-owners/{owner_id} \
+  --header "Authorization: {bearer_token}"
+```
+
+Replace:
+
+- `{cluster_id}`: The ID of the cluster.
+- `{owner_id}`: The UUID of a private endpoint trusted owner entry.
+- `{bearer_token}`: The service account's API key
+
+</Tab>
+<Tab title="CockroachDB Standard">
+
+<Tip>
+You must configure the AWS PrivateLink connection for your cluster both in CockroachDB Cloud and in AWS. For CockroachDB Cloud, you can use the CockroachDB Cloud Console, [Cloud API](/docs/cockroachcloud/cloud-api) or [Terraform Provider](/docs/cockroachcloud/provision-a-cluster-with-terraform).
+
+For help, refer to [Establish private connectivity](/docs/cockroachcloud/connect-to-your-cluster#establish-private-connectivity).
+
+If you have multiple clusters, you will have to repeat these steps for each cluster that you want to connect to using AWS PrivateLink.
+</Tip>
+
+## Set up a cluster
+
+1. Use the CockroachDB Cloud Console to [create a CockroachDB Standard cluster](/docs/cockroachcloud/create-a-basic-cluster) on AWS in the same regions as your application.
+2. Navigate to the **Networking** page.
+3. Select the **PrivateLink** tab. PrivateLink connections that have already been configured are shown as a private endpoint allowlist.
+4. Click **Add Connection** to open the connection dialog.
+
+Continue to [Create an AWS endpoint](#create-an-aws-endpoint).
+
+</Tab>
+</Tabs>
+
+## Create an AWS endpoint
+
+<Tip>
+Complete these steps once for each private endpoint in your AWS account that will be used to privately connect to one or more of your clusters. If you connect additional clusters to the same private endpoint, you do not need to make additional changes in your AWS account.
+</Tip>
+
+1. In the **Add connection** dialog in the CockroachDB Cloud Console, select the region to create a connection in.
+2. Copy the **Service Name** shown in the connection dialog.
+
+    Make a note of the availability zones where your cluster is deployed in this region.
+3. On the [Amazon VPC Console](https://console.aws.amazon.com/vpc) in your AWS account, click **Your VPCs** in the sidebar.
+
+    Locate the VPC ID of the VPC you want to create your endpoint in, and make a note of its IPv4 CIDR.
+
+    Cockroach Labs recommends that you use a VPC that has subnets in the availability zones where your cluster is deployed, and that your application or service is also deployed in the same availability zones. You can choose a different VPC for the private endpoint as long as it is peered to the VPC your application is running in and the private endpoint is configured to be DNS-accessible across the peered VPCs.
+4. Click **Subnets** in the sidebar. Make a note of the subnet ID of each subnet that corresponds to your chosen VPC.
+5. Click **Security Groups** in the sidebar.
+6. Click **Create security group** to create a security group within your VPC. The security group allows inbound access from your application or source program on Port 26257:
+    - In the **Security group name** field, enter a name for the security group.
+    - In the **Description** field, enter a description for the security group.
+    - From the **VPC** dropdown, select the VPC you chose in Step 4.
+    - In the **Inbound rules** section, click **Add rule**.
+    - Enter *26257* in the **Port range** field.
+    - In the **Source** field, enter the CIDR range from Step 5.
+    - Click **Create security group**.
+
+Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](https://aws.amazon.com/cli) to continue:
+
+<Tabs>
+<Tab title="AWS Console">
+
+1. Click **Endpoints** in the sidebar.
+2. Click **Create Endpoint**.
+3. On the **Create Endpoint** page, for the **Service Category** field, select **Find service by name**.
+4. In the **Service Name** field, enter the **Service Name** you copied from the connection dialog in [Create an AWS endpoint](#create-an-aws-endpoint).
+5. Click **Verify**.
+6. In the **VPC** field, enter the ID of the VPC you want to create your endpoint in.
+7. Verify that the subnets are pre-populated.
+8. In the **Security group** section, select the security group you created in [Create an AWS endpoint](#create-an-aws-endpoint) and uncheck the box for **default** security group.
+9. Click **Create Endpoint**.
+
+    The VPC Endpoint ID displays.
+10. Copy the Endpoint ID to your clipboard and return to the **Add PrivateLink** dialog in CockroachDB Cloud.
+
+</Tab>
+<Tab title="AWS CLI">
+
+1. Substitute the values from the previous steps and run the following AWS CLI command:
+
+    ```shell
+    aws ec2 create-vpc-endpoint --region {REGION} \
+                                  --vpc-id {VPC_ID} \
+                                  --subnet-ids {SUBNET_ID1} {SUBNET_ID2} \
+                                  --vpc-endpoint-type Interface \
+                                  --security-group-ids {SECURITY_GROUP_ID1} {SECURITY_GROUP_ID2} \
+                                  --service-name {SERVICE_NAME_PROVIDED_BY_COCKROACH}
+    ```
+2. Locate the VPC Endpoint ID in the CLI output.
+3. Copy the Endpoint ID to your clipboard and return to the **Add PrivateLink** dialog in CockroachDB Cloud.
+
+</Tab>
+</Tabs>
+
+## Verify the endpoint ID
+
+1. Click **Next**.
+2. Enter the Endpoint ID, then click **Validate**. If validation fails, check the endpoint ID and try again. Otherwise, click **Next**.
+3. Follow the instructions in the dialog to enable **private DNS name** for the endpoint in AWS. When this option is enabled, CockroachDB Cloud maintains private DNS records in the VPC for the cluster.
+4. Click **Complete** to save the configuration and close the dialog.
+
+## Enable private DNS
+
+Allow CockroachDB Cloud to modify the **private DNS name** for the endpoint in AWS. When this option is enabled, CockroachDB Cloud maintains private DNS records in the VPC for your cluster.
+
+Use either the Amazon VPC Console or the [AWS Command Line Interface (CLI)](https://aws.amazon.com/cli) to continue:
+
+<Tabs>
+<Tab title="AWS Console">
+
+1. On the Amazon VPC Console **Endpoints** page, select the endpoint you created.
+2. Click **Actions**.
+3. Click **Modify Private DNS Names**.
+4. Check the **Enable Private DNS Name** checkbox.
+5. Click **Modify Private DNS Name**.
+6. In the CockroachDB Cloud Console, click **Complete** to save the configuration and close the dialog.
+
+</Tab>
+<Tab title="AWS CLI">
+
+After the endpoint status changes to **Available** on the Amazon VPC Console **Endpoints** page, run the following AWS CLI command:
+
+```shell
+aws ec2 modify-vpc-endpoint --region {REGION} \
+                              --vpc-endpoint-id {VPC_ENDPOINT_ID} \
+                              --private-dns-enabled
+```
+
+The endpoint status will change to Pending.
+
+After a short (less than 5 minute) delay, the status will change from **Pending Request** to **Pending** and then to **Available**. You can now [connect to your cluster](/docs/cockroachcloud/connect-to-your-cluster).
+
+</Tab>
+</Tabs>
+
+## What's next?
+
+- [Client Connection Parameters](/docs/v25.4/connection-parameters)
+- [Connect to a CockroachDB Advanced Cluster](/docs/cockroachcloud/connect-to-an-advanced-cluster)
+- [Connect to a CockroachDB Standard cluster](/docs/cockroachcloud/connect-to-your-cluster)

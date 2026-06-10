@@ -1,0 +1,69 @@
+---
+title: "cockroach debug job-trace"
+old_description: "Learn the commands for collecting debug information from all nodes in your cluster."
+---
+
+<Warning>
+We strongly recommend only using `cockroach debug job-trace` when working directly with the [Cockroach Labs support team](/docs/v26.1/support-resources).
+</Warning>
+
+The [`cockroach debug job-trace`](/docs/v26.1/cockroach-commands) command connects to your cluster and collects trace payloads for a running, traceable [job](/docs/v26.1/show-jobs#show-jobs) ([**imports**](/docs/v26.1/import-into) or [**backups**](/docs/v26.1/take-full-and-incremental-backups)). The trace payloads are helpful for debugging why a job is not running as expected or to add more context to logs gathered from the [`cockroach debug zip`](/docs/v26.1/cockroach-debug-zip) command.
+
+The node that `cockroach debug job-trace` is run against will communicate to all nodes in the cluster in order to retrieve the trace payloads. This will deliver a zip file that contains [trace files](#files) for all the nodes participating in the execution of the job. The files hold information on the executing job's [trace spans](/docs/v26.1/show-trace#trace-description), which describe the sub-operations being performed. Specifically, these files will contain the spans that have not yet completed and are associated with the execution of that particular job. Using this command for a job that is not currently running will result in an empty zip file.
+
+## Synopsis
+
+```shell
+$ cockroach debug job-trace <job_id> --url=<connection string> {flags}
+```
+
+See [`SHOW JOBS`](/docs/v26.1/show-jobs#show-jobs) for details on capturing a `job_id`.
+
+## Subcommands
+
+While the `cockroach debug` command has a few subcommands, users are expected to use only the [`zip`](/docs/v26.1/cockroach-debug-zip), [`encryption-active-key`](/docs/v26.1/cockroach-debug-encryption-active-key), [`merge-logs`](/docs/v26.1/cockroach-debug-merge-logs), [`list-files`](/docs/v26.1/cockroach-debug-list-files), [`tsdump`](/docs/v26.1/cockroach-debug-tsdump), and [`ballast`](/docs/v26.1/cockroach-debug-ballast) subcommands.
+
+We recommend using the [`encryption-decrypt`](/docs/v26.1/cockroach-debug-encryption-decrypt) and [`job-trace`](/docs/v26.1/cockroach-debug-job-trace) subcommands only when directed by the [Cockroach Labs support team](/docs/v26.1/support-resources).
+
+The other `debug` subcommands are useful only to Cockroach Labs. Output of `debug` commands may contain sensitive or secret information.
+
+## Flags
+
+The `debug job-trace` subcommand supports the following [general-use](#general) and [client connection](#client-connection) flags.
+
+### General
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--timeout</code></td><td>Return an error if the command does not conclude within a specified nonzero value. The timeout is suffixed with <code>s</code> (seconds), <code>m</code> (minutes), or <code>h</code> (hours). For example:<br/><br/><code>--timeout=2m</code></td></tr></tbody></table>
+
+### Client connection
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--user</code><br/><br/><code>-u</code></td><td>The <a href="/docs/v26.1/create-user">SQL user</a> that will own the client session.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;USER</code><br/><strong>Default:</strong><code>root</code></td></tr><tr><td><code>--insecure</code></td><td>Use an insecure connection.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;INSECURE</code><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--cert-principal-map</code></td><td>A comma-separated list of <code>&lt;cert-principal&gt;:&lt;db-principal&gt;</code> mappings. This allows mapping the principal in a cert to a DB principal such as <code>node</code> or <code>root</code> or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the <code>Subject.CommonName</code> or <code>SubjectAlternateName</code> fields in the certificate (e.g., disallowing a <code>CommonName</code> like <code>node</code> or <code>root</code>). If multiple mappings are provided for the same <code>&lt;cert-principal&gt;</code>, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A cert is allowed to authenticate a DB principal if the DB principal name is contained in the mapped <code>CommonName</code> or DNS-type <code>SubjectAlternateName</code> fields.</td></tr><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v26.1/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr><tr><td><a></a><code>--url</code></td><td>A <a href="/docs/v26.1/connection-parameters#connect-using-a-url">connection URL</a> to use instead of the other arguments.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;URL</code><br/><strong>Default:</strong> no URL</td></tr></tbody></table>
+
+## Files
+
+The `cockroach debug job-trace` command will output a zip file to where the command is run (`<job_id>-job-trace.zip`). The zip file will contain trace files for all the nodes participating in the job's execution. For example, `node1-trace.txt`.
+
+See the [`SHOW TRACE FOR SESSION`](/docs/v26.1/show-trace#response) page for more information on trace responses.
+
+## Example
+
+### Generate a job-trace zip file
+
+To generate the `job-trace` zip file, use your [connection string](/docs/v26.1/cockroach-start#standard-output) to pull the trace spans:
+
+```shell
+cockroach debug job-trace 698977774875279361 --url=postgresql://root@localhost:26257?sslmode=disable
+```
+
+You will find the zip file in the directory you ran the command from:
+
+```text
+698977774875279361-job-trace.zip
+```
+
+## See also
+
+- [File an Issue](/docs/v26.1/file-an-issue)
+- [`cockroach` Commands Overview](/docs/v26.1/cockroach-commands)
+- [Troubleshooting Overview](/docs/v26.1/troubleshooting-overview)
+- [Support Resources](/docs/v26.1/support-resources)

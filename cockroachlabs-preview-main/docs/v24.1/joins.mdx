@@ -1,0 +1,184 @@
+---
+title: "JOIN expressions"
+old_description: "JOIN expressions combine data from two or more table expressions."
+---
+
+import { Joins3 } from "/snippets/syntax-diagrams/Joins3.jsx";
+
+A `JOIN` expression, also called a *join*, combines the results of two or more [table expressions](/docs/v24.1/table-expressions) based on conditions on the values of particular columns (such as equality conditions). A join is a particular kind of table expression.
+
+A `JOIN` expression defines a data source in the `FROM` sub-clause of a [`SELECT` clause](/docs/v24.1/select-clause) or as parameter to a [`TABLE` clause](/docs/v24.1/selection-queries#table-clause).
+
+<Tip>
+The [cost-based optimizer](/docs/v24.1/cost-based-optimizer) supports hint syntax to force the use of a specific join algorithm. For more information, see [Join hints](/docs/v24.1/cost-based-optimizer#join-hints).
+</Tip>
+
+## Synopsis
+
+<Joins3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>joined&#95;table</code></td><td>A join expression.</td></tr><tr><td><code>table&#95;ref</code></td><td>A <a href="/docs/v24.1/table-expressions">table expression</a>.</td></tr><tr><td><code>opt&#95;join&#95;hint</code></td><td>A <a href="/docs/v24.1/cost-based-optimizer#join-hints">join hint</a>.</td></tr><tr><td><code>a&#95;expr</code></td><td>A <a href="/docs/v24.1/scalar-expressions">scalar expression</a> to use as an <a href="#supported-join-conditions"><code>ON</code> join condition</a>.</td></tr><tr><td><code>name</code></td><td>A column name to use as a <a href="#supported-join-conditions"><code>USING</code> join condition</a>.</td></tr></tbody></table>
+
+## Supported join types
+
+CockroachDB supports the following join types:
+
+- [Inner joins](#inner-joins)
+- [Left outer joins](#left-outer-joins)
+- [Right outer joins](#right-outer-joins)
+- [Full outer joins](#full-outer-joins)
+
+### Inner joins
+
+Only the rows from the left and right operand that match the condition are returned.
+
+```text
+<table expr> [ INNER ] JOIN <table expr> ON <val expr>
+<table expr> [ INNER ] JOIN <table expr> USING(<colname>, <colname>, ...)
+<table expr> NATURAL [ INNER ] JOIN <table expr>
+<table expr> CROSS JOIN <table expr>
+```
+
+### Left outer joins
+
+For every left row where there is no match on the right, `NULL` values are returned for the columns on the right.
+
+```text
+<table expr> LEFT [ OUTER ] JOIN <table expr> ON <val expr>
+<table expr> LEFT [ OUTER ] JOIN <table expr> USING(<colname>, <colname>, ...)
+<table expr> NATURAL LEFT [ OUTER ] JOIN <table expr>
+```
+
+### Right outer joins
+
+For every right row where there is no match on the left, `NULL` values are returned for the columns on the left.
+
+```text
+<table expr> RIGHT [ OUTER ] JOIN <table expr> ON <val expr>
+<table expr> RIGHT [ OUTER ] JOIN <table expr> USING(<colname>, <colname>, ...)
+<table expr> NATURAL RIGHT [ OUTER ] JOIN <table expr>
+```
+
+### Full outer joins
+
+For every row on one side of the join where there is no match on the other side, `NULL` values are returned for the columns on the non-matching side.
+
+```text
+<table expr> FULL [ OUTER ] JOIN <table expr> ON <val expr>
+<table expr> FULL [ OUTER ] JOIN <table expr> USING(<colname>, <colname>, ...)
+<table expr> NATURAL FULL [ OUTER ] JOIN <table expr>
+```
+
+## Supported join conditions
+
+CockroachDB supports the following conditions to match rows in a join:
+
+- No condition with `CROSS JOIN`: each row on the left is considered to match every row on the right.
+- `ON` predicates: a Boolean [scalar expression](/docs/v24.1/scalar-expressions) is evaluated to determine whether the operand rows match.
+- `USING`: the named columns are compared pairwise from the left and right rows; left and right rows are considered to match if the columns are equal pairwise.
+- `NATURAL`: generates an implicit `USING` condition using all the column names that are present in both the left and right table expressions. Note:`NATURAL` is supported for compatibility with PostgreSQL; Cockroach Labs discourages use in new applications because its results can silently change in unpredictable ways when new columns are added to one of the join operands.
+
+## Join algorithms
+
+CockroachDB supports the following algorithms for performing a join:
+
+- [Merge joins](#merge-joins)
+- [Hash joins](#hash-joins)
+- [Lookup joins](#lookup-joins)
+- [Inverted joins](#inverted-joins)
+
+### Merge joins
+
+To perform a [merge join](https://wikipedia.org/wiki/Sort-merge_join) of two tables, both tables must be indexed on the equality columns, and any indexes must have the same ordering. Merge joins offer better computational performance and more efficient memory usage than [hash joins](#hash-joins). When tables and indexes are ordered for a merge, CockroachDB chooses to use merge joins over hash joins, by default. When merge conditions are not met, CockroachDB resorts to the slower hash joins. Merge joins can be used only with [distributed query processing](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb).
+
+Merge joins are performed on the indexed columns of two tables as follows:
+
+1. CockroachDB checks for indexes on the equality columns and that they are ordered the same (i.e., `ASC` or `DESC` ).
+2. CockroachDB takes one row from each table and compares them.
+    - For inner joins:
+        - If the rows are equal, CockroachDB returns the rows.
+        - If there are multiple matches, the Cartesian product of the matches is returned.
+        - If the rows are not equal, CockroachDB discards the lower-value row and repeats the process with the next row until all rows are processed.
+    - For outer joins:
+        - If the rows are equal, CockroachDB returns the rows.
+        - If there are multiple matches, the Cartesian product of the matches is returned.
+        - If the rows are not equal, CockroachDB returns `NULL` for the non-matching column and repeats the process with the next row until all rows are processed.
+
+### Hash joins
+
+If a merge join cannot be used, CockroachDB uses a [hash join](https://wikipedia.org/wiki/Hash_join). Hash joins are computationally expensive and require additional memory.
+
+Hash joins are performed on two tables as follows:
+
+1. CockroachDB reads both tables and attempts to pick the smaller table.
+2. CockroachDB creates an in-memory [hash table](https://wikipedia.org/wiki/Hash_table) on the smaller table. If the hash table is too large, it will spill over to disk storage (which could affect performance).
+3. CockroachDB then scans the large table, looking up each row in the hash table.
+
+### Lookup joins
+
+The [cost-based optimizer](/docs/v24.1/cost-based-optimizer) decides when it would be beneficial to use a lookup join. Lookup joins are used when there is a large imbalance in size between the two tables, as it only reads the smaller table and then looks up matches in the larger table. A lookup join requires that the right-hand (i.e., larger) table be indexed on the columns involved in the join condition. A [partial index](/docs/v24.1/partial-indexes) can only be used if it contains the subset of rows being looked up.
+
+Lookup joins are performed on two tables as follows:
+
+1. CockroachDB reads each row in the small table.
+2. CockroachDB then scans (or "looks up") the larger table for matches to the smaller table and outputs the matching rows.
+
+The optimizer imposes some restrictions on the usage of inequalities in lookup join conditions:
+
+1. If the lookup condition contains no equalities (i.e., is composed only of an inequality), either the input of the join must return only one row or the join must have a `LOOKUP` [hint](/docs/v24.1/cost-based-optimizer#join-hints). This prevents poor performance of the current lookup join implementation.
+2. If the index column is `DESC` and the inequality is of the form `idxCol < inputCol` or equivalently `inputCol > idxCol`, the column type must be countable in order to support retrieving the immediate previous value. This allows types like [`BOOL`](/docs/v24.1/bool), [`FLOAT`](/docs/v24.1/float), and [`INT`](/docs/v24.1/int), but disallows types like [`STRING`](/docs/v24.1/string) or [`BYTES`](/docs/v24.1/bytes).
+
+You can override the use of lookup joins using [join hints](/docs/v24.1/cost-based-optimizer#join-hints).
+
+<Note>
+To make the optimizer prefer lookup joins to merge joins when performing foreign key checks, set the `prefer_lookup_joins_for_fks` [session variable](/docs/v24.1/set-vars) to `on`.
+</Note>
+
+The output of [`EXPLAIN (VERBOSE)`](/docs/v24.1/explain#verbose-option) shows whether `equality cols are key` for lookup joins, which means that the lookup columns form a key in the target table such that each lookup has at most one result.
+
+### Inverted joins
+
+Inverted joins force the optimizer to use a join using a [GIN index](/docs/v24.1/inverted-indexes) on the right side of the join. Inverted joins can only be used with `INNER` and `LEFT` joins.
+
+```text
+<table expr> INNER INVERTED JOIN <table expr> ON <val expr>
+<table expr> LEFT INVERTED JOIN <table expr> ON <val expr>
+```
+
+See the [cost-based optimizer examples](/docs/v24.1/cost-based-optimizer#inverted-join-examples) for statements that use inverted joins.
+
+## `LATERAL` joins
+
+CockroachDB supports `LATERAL` subquery joins for `INNER` and `LEFT` cross joins. For more information about `LATERAL` subqueries, see [Lateral subqueries](/docs/v24.1/subqueries#lateral-subqueries).
+
+## Apply joins
+
+Apply join is the operator that executes a lateral join if the optimizer is not able to de-correlate it (i.e., rewrite the query to use a regular join). Most of the time, the optimizer can de-correlate most queries. However, there are some cases where the optimizer cannot perform this rewrite, and `apply-join` would show up in the [`EXPLAIN`](/docs/v24.1/explain#join-queries) output for the query. The optimizer also replaces correlated subqueries with apply joins, and therefore `apply-join` may appear in the `EXPLAIN` output even if `LATERAL` was not used.
+
+Apply joins are inefficient because they must be executed one row at a time. The left side row must be used to construct the right side row, and only then can the execution engine determine if the two rows should be output by the join. This corresponds to an `O(n*m)` time complexity.
+
+Other types of joins supported by CockroachDB (e.g., [hash join](#hash-joins), [merge join](#merge-joins), and [lookup join](#lookup-joins)) are generally much more efficient. For example, with a hash join, a hash table is constructed using rows from the smaller side of the join, and then the larger side of the join is used to probe into the hash table using the `ON` conditions of the join. This corresponds to an `O(n+m)` time complexity.
+
+If you see an `apply-join`, it means the optimizer was not able to perform de-correlation, and you should probably try to rewrite your query in a different way in order to get better performance.
+
+## Performance best practices
+
+- When no indexes can be used to satisfy a join, CockroachDB may load all the rows in memory that satisfy the condition one of the join operands before starting to return result rows. This may cause joins to fail if the join condition or other `WHERE` clauses are insufficiently selective.
+- Outer joins (i.e., [left outer joins](#left-outer-joins), [right outer joins](#right-outer-joins), and [full outer joins](#full-outer-joins) ) are generally processed less efficiently than [inner joins](#inner-joins). Use inner joins whenever possible. Full outer joins are the least optimized.
+- Use [`EXPLAIN`](/docs/v24.1/explain) over queries containing joins to verify that indexes are used.
+- Use [indexes](/docs/v24.1/indexes) for faster joins.
+
+## See also
+
+- [Join hints](/docs/v24.1/cost-based-optimizer#join-hints)
+- [Scalar Expressions](/docs/v24.1/scalar-expressions)
+- [Table Expressions](/docs/v24.1/table-expressions)
+- [Simple `SELECT` Clause](/docs/v24.1/select-clause)
+- [Selection Queries](/docs/v24.1/selection-queries)
+- [`EXPLAIN`](/docs/v24.1/explain)
+- [SQL Performance Best Practices](/docs/v24.1/performance-best-practices-overview)
+- [SQL join operation (Wikipedia)](https://en.wikipedia.org/wiki/Join_(SQL))
+- [Modesty in Simplicity: CockroachDB's JOIN (CockroachDB Blog)](https://www.cockroachlabs.com/blog/cockroachdbs-first-join)
+- [On the Way to Better SQL Joins in CockroachDB (CockroachDB Blog)](https://www.cockroachlabs.com/blog/better-sql-joins-in-cockroachdb)

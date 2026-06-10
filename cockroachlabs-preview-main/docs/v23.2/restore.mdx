@@ -1,0 +1,614 @@
+---
+title: "RESTORE"
+old_description: "Restore your CockroachDB cluster to a cloud storage services such as AWS S3, Google Cloud Storage, or other NFS."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+import { Restore2 } from "/snippets/syntax-diagrams/Restore2.jsx";
+
+The `RESTORE` [statement](/docs/v23.2/sql-statements) restores your cluster's schemas and data from [a `BACKUP`](/docs/v23.2/backup) stored on services such as AWS S3, Google Cloud Storage, or NFS.
+
+Because CockroachDB is designed with high fault tolerance, restores are designed primarily for disaster recovery, i.e., restarting your cluster if it loses a majority of its nodes. Isolated issues (such as small-scale node outages) do not require any intervention.
+
+You can restore:
+
+- [A full cluster](#full-cluster)
+- [Databases](#databases)
+- [Tables](#tables)
+
+For details on restoring across versions of CockroachDB, see [Restoring Backups Across Versions](/docs/v23.2/restoring-backups-across-versions).
+
+<Warning>
+The `BACKUP... TO` and `RESTORE... FROM` syntax is **deprecated** as of v22.1 and will be removed in a future release.
+
+We recommend using the `BACKUP... INTO {collectionURI}` syntax, which creates or adds to a [backup collection](/docs/v23.2/take-full-and-incremental-backups#backup-collections) in your storage location. For restoring backups, we recommend using `RESTORE FROM {backup} IN {collectionURI}` with `{backup}` being [`LATEST`](/docs/v23.2/restore#restore-the-most-recent-full-or-incremental-backup) or a specific [subdirectory](/docs/v23.2/restore#subdir-param).
+
+For guidance on the syntax for backups and restores, see the [`BACKUP`](/docs/v23.2/backup#examples) and [`RESTORE`](/docs/v23.2/restore#examples) examples.
+</Warning>
+
+## Considerations
+
+- `RESTORE` cannot restore backups made by newer versions of CockroachDB.
+- `RESTORE` only supports backups taken on a cluster on a specific major version into a cluster that is on the same version or the next major version. Refer to the [Restoring Backups Across Versions](/docs/v23.2/restoring-backups-across-versions) page for more detail.
+- `RESTORE` is a blocking statement. To run a restore job asynchronously, use the [`DETACHED`](#detached) option.
+- `RESTORE` no longer requires an Enterprise license, regardless of the options passed to it or to the backup it is restoring.
+- You cannot restore a backup of a multi-region database into a single-region database.
+- When the [`exclude_data_from_backup`](/docs/v23.2/take-full-and-incremental-backups#exclude-a-tables-data-from-backups) parameter is set on a table, the table will not contain row data when restored.
+- During a [cluster restore](/docs/v23.2/restore#full-cluster), any [zone configurations](/docs/v23.2/configure-replication-zones) present on the destination cluster are **overwritten** with the zone configurations from the [backed-up cluster](/docs/v23.2/backup#back-up-a-cluster). If no customized zone configurations were on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](/docs/v23.2/configure-replication-zones#view-the-default-replication-zone).
+
+## Required privileges
+
+<Note>
+Starting in v22.2, CockroachDB introduces a new restore privilege model that provides finer control over a user's privilege to restore backups.
+
+There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all restores.
+</Note>
+
+You can grant the `RESTORE` privilege to a user or role depending on the type of restore required:
+
+<table><thead><tr><th>Restore</th><th>Privilege</th></tr></thead><tbody><tr><td>Cluster</td><td>Grant a user the system level <code>RESTORE</code> privilege. For example, <code>GRANT SYSTEM RESTORE TO user;</code>.</td></tr><tr><td>Database</td><td>Grant a user the system level <code>RESTORE</code> privilege to restore databases onto the cluster. For example, <code>GRANT SYSTEM RESTORE TO user;</code>.</td></tr><tr><td>Table</td><td>Grant a user the database level <code>RESTORE</code> privilege to restore schema objects into the database. For example, <code>GRANT RESTORE ON DATABASE nonadmin TO user;</code>.</td></tr></tbody></table>
+
+The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted system-level restore privileges, this does not give you the privilege to restore a table. If you need the `RESTORE` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](/docs/v23.2/security-reference/authorization#default-privileges). You can add `RESTORE` to the user or role's default privileges with [`ALTER DEFAULT PRIVILEGES`](/docs/v23.2/alter-default-privileges#grant-default-privileges-to-a-specific-role).
+
+Members of the [`admin` role](/docs/v23.2/security-reference/authorization#admin-role) can run all three types of restore (cluster, database, and table) without the need to grant a specific `RESTORE` privilege. However, we recommend using the `RESTORE` privilege model to create users or roles and grant them `RESTORE` privileges as necessary for stronger access control.
+
+### Privileges for managing a restore job
+
+To manage a restore job with [`PAUSE JOB`](/docs/v23.2/pause-job), [`RESUME JOB`](/docs/v23.2/resume-job), or [`CANCEL JOB`](/docs/v23.2/cancel-job), users must have at least one of the following:
+
+- Be a member of the [`admin` role](/docs/v23.2/security-reference/authorization#admin-role).
+- The [`CONTROLJOB` role option](/docs/v23.2/security-reference/authorization#role-options).
+
+To view a restore job with [`SHOW JOB`](/docs/v23.2/show-jobs), users must have at least one of the following:
+
+- The [`VIEWJOB` privilege](/docs/v23.2/security-reference/authorization#supported-privileges), which allows you to view all jobs (including `admin` -owned jobs).
+- Be a member of the [`admin` role](/docs/v23.2/security-reference/authorization#admin-role).
+- The [`CONTROLJOB` role option](/docs/v23.2/security-reference/authorization#role-options).
+
+See [`GRANT`](/docs/v23.2/grant) for detail on granting privileges to a role or user.
+
+## Required privileges using the legacy privilege model
+
+The following details the existing privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release of CockroachDB:
+
+- [Full cluster restores](#full-cluster) can only be run by members of the [`ADMIN` role](/docs/v23.2/security-reference/authorization#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other restores, the user must have [write access](/docs/v23.2/security-reference/authorization#managing-privileges) ( `CREATE` or `INSERT` ) on all objects affected.
+
+See the [Required privileges](#required-privileges) section for the updated privilege model.
+
+## Source privileges
+
+You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege](/docs/v23.2/security-reference/authorization#supported-privileges) to interact with external resources that require implicit access.
+
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](/docs/v23.2/security-reference/authorization#supported-privileges) or the [`admin`](/docs/v23.2/security-reference/authorization#admin-role) role is required for the following scenarios:
+
+- To interact with a cloud storage resource using [`IMPLICIT` authentication](/docs/v23.2/cloud-storage-authentication).
+- Use of a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints) on S3.
+- [Nodelocal](/docs/v23.2/cockroach-nodelocal-upload)
+
+No special privilege is required for:
+
+- Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
+- Using [Userfile](/docs/v23.2/use-userfile-storage) storage.
+
+We recommend using [cloud storage](/docs/v23.2/use-cloud-storage). You also need to ensure that the permissions at your storage destination are configured for the operation. See [Storage Permissions](/docs/v23.2/use-cloud-storage#storage-permissions) for a list of the necessary permissions that each bulk operation requires.
+
+<Warning>
+While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services](/docs/v23.2/cloud-storage-authentication) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3)).
+</Warning>
+
+## Synopsis
+
+<Restore2 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;pattern</code></td><td>The table, <a href="/docs/v23.2/views">view</a>, or <a href="/docs/v23.2/create-sequence">sequence</a> you want to restore. For details on how restore works with objects that are dependent on one another, refer to <a href="#object-dependencies">Object dependencies</a>.</td></tr><tr><td><code>database&#95;name</code></td><td>The name of the database you want to restore (i.e., restore all tables and views in the database). You can restore an entire database only if you had backed up the entire database.</td></tr><tr><td><code>collectionURI</code></td><td>The <a href="/docs/v23.2/take-full-and-incremental-backups#backup-collections">collection</a> URI where the <a href="/docs/v23.2/take-full-and-incremental-backups#full-backups">full backup</a> (and appended <a href="/docs/v23.2/take-full-and-incremental-backups#incremental-backups">incremental backups</a>, if applicable) is stored.<br/><br/>For information about this URL structure, see <a href="#backup-file-urls">Backup File URLs</a>.</td></tr><tr><td><code>LATEST</code></td><td>Restore the most recent backup in the given collection URI. See the <a href="#restore-the-most-recent-full-or-incremental-backup">Restore from the most recent backup</a> example.</td></tr><tr><td><a></a><code>subdirectory</code></td><td>Restore from a specific subdirectory in the given collection URI. See the <a href="#restore-a-specific-full-or-incremental-backup">Restore a specific backup</a> example.</td></tr><tr><td><code>localityURI</code></td><td>The URI where a <a href="/docs/v23.2/take-and-restore-locality-aware-backups">locality-aware backup</a> is stored. When restoring from an incremental locality-aware backup, you need to include <strong>every</strong> locality ever used, even if it was only used once.<br/><br/>For information about this URL structure, see <a href="#backup-file-urls">Backup File URLs</a>.</td></tr><tr><td><a></a><code>AS OF SYSTEM TIME timestamp</code></td><td>Restore data as it existed as of <a href="/docs/v23.2/as-of-system-time"><code>timestamp</code></a>. You can restore point-in-time data if you had taken full or incremental backup <a href="/docs/v23.2/take-backups-with-revision-history-and-restore-from-a-point-in-time">with revision history</a>. If the backup was not taken with <code>revision&#95;history</code>, you can use <code>SHOW BACKUP</code> to restore to a time that the backup covers (including in the full or incremental backup). See the <a href="#restore-with-as-of-system-time">example</a>.</td></tr><tr><td><code>restore&#95;options&#95;list</code></td><td>Control your backup's behavior with <a href="#options">these options</a>.</td></tr></tbody></table>
+
+### Options
+
+You can control `RESTORE` behavior using any of the following in the `restore_options_list`. To set multiple `RESTORE` options, use a comma-separated list:
+
+<table><thead><tr><th>Option</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><a></a><code>DETACHED</code></td><td>N/A</td><td>When <code>RESTORE</code> runs with <code>DETACHED</code>, the job will execute asynchronously. The job ID is returned after the restore job creation completes. Note that with <code>DETACHED</code> specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the <a href="/docs/v23.2/restore#restore-a-backup-asynchronously">example</a> below. To check on the job status, use the <a href="/docs/v23.2/show-jobs"><code>SHOW JOBS</code></a> statement.<br/><br/>To run a restore within a <a href="/docs/v23.2/transactions">transaction</a>, use the <code>DETACHED</code> option.</td></tr><tr><td><code>encryption&#95;passphrase</code></td><td>Passphrase used to create the <a href="/docs/v23.2/take-and-restore-encrypted-backups">encrypted backup</a></td><td>The passphrase used to decrypt the file(s) that were encrypted by the <a href="/docs/v23.2/take-and-restore-encrypted-backups"><code>BACKUP</code></a> statement.</td></tr><tr><td><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2:<a></a><code>EXECUTION LOCALITY</code></td><td>Key-value pairs</td><td>Restricts the execution of the restore to nodes that match the defined <a href="/docs/v23.2/take-locality-restricted-backups">locality filter</a> requirements.<br/><br/>Example: <code>WITH EXECUTION LOCALITY = 'region=us-west-1a,cloud=aws'</code></td></tr><tr><td><a></a><code>incremental&#95;location</code></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>Restore an incremental backup from the alternate collection URI the backup was originally taken with.<br/><br/>See <a href="#restore-a-specific-full-or-incremental-backup">Restore incremental backups</a> for more detail.</td></tr><tr><td><a></a><code>into&#95;db</code></td><td>Database name</td><td>Use to <a href="#restore-tables-into-a-different-database">change the destination database</a> for table restores. The destination database must exist before a restore with <code>into&#95;db</code>. (Does not apply to database or cluster restores.)<br/><br/>Example: <code>WITH into&#95;db = 'newdb'</code></td></tr><tr><td><a></a><code>kms</code></td><td><a href="/docs/v23.2/string"><code>STRING</code></a></td><td>The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to <a href="/docs/v23.2/take-and-restore-encrypted-backups#examples">take and restore encrypted backups</a>. Refer to <a href="/docs/v23.2/take-and-restore-encrypted-backups#uri-formats">URI Formats</a> on the Encrypted Backups page. The key or keys are used to encrypt the manifest and data files that the <code>BACKUP</code> statement generates, decrypt them during a <a href="/docs/v23.2/take-and-restore-encrypted-backups#examples">restore</a> operation, and list the contents of the backup when using <a href="/docs/v23.2/show-backup"><code>SHOW BACKUP</code></a>.<br/><br/>AWS KMS, Google Cloud KMS, and Azure Key Vault are supported.</td></tr><tr><td><a></a><code>new&#95;db&#95;name</code></td><td>Database name</td><td><a href="#rename-a-database-on-restore">Rename a database during a restore</a>. The existing backed-up database can remain active while the same database is restored with a different name.<br/><br/>Example: <code>RESTORE DATABASE movr ... WITH new&#95;db&#95;name = 'new&#95;movr'</code></td></tr><tr><td><code>schema&#95;only</code></td><td>N/A</td><td>Verify that a backup is valid by running <code>RESTORE ... schema&#95;only</code>, which will restore the backed-up schema without any user data. Refer to <a href="/docs/v23.2/backup-validation#validate-a-backup-is-restorable">Backup Validation</a> for detail and an example.</td></tr><tr><td><a></a><code>skip&#95;localities&#95;check</code></td><td>N/A</td><td>Use to skip checking localities of a cluster before a restore when there are mismatched <a href="/docs/v23.2/multiregion-overview#cluster-regions">cluster regions</a> between the backup's cluster and the destination cluster. For further details, refer to <a href="#restoring-to-multi-region-databases">Restoring to multi-region databases</a>.<br/><br/>Example: <code>WITH skip&#95;localities&#95;check</code></td></tr><tr><td><a></a><code>skip&#95;missing&#95;foreign&#95;keys</code></td><td>N/A</td><td>Use to remove the missing <a href="/docs/v23.2/foreign-key">foreign key</a> constraints before restoring.<br/><br/>Example: <code>WITH skip&#95;missing&#95;foreign&#95;keys</code></td></tr><tr><td><a></a><code>skip&#95;missing&#95;sequences</code></td><td>N/A</td><td>Use to ignore <a href="/docs/v23.2/show-sequences">sequence</a> dependencies (i.e., the <code>DEFAULT</code> expression that uses the sequence).<br/><br/>Example: <code>WITH skip&#95;missing&#95;sequences</code></td></tr><tr><td><code>skip&#95;missing&#95;sequence&#95;owners</code></td><td>N/A</td><td>Must be used when restoring either a table that was previously a <a href="/docs/v23.2/create-sequence#owned-by">sequence owner</a> or a sequence that was previously owned by a table.<br/><br/>Example: <code>WITH skip&#95;missing&#95;sequence&#95;owners</code></td></tr><tr><td><a></a><code>skip&#95;missing&#95;udfs</code></td><td>N/A</td><td>Must be used when restoring a table with referenced <a href="/docs/v23.2/user-defined-functions">UDF</a> dependencies. Any column's <code>DEFAULT</code> expression using UDFs is dropped.<br/><br/>Example: <code>WITH skip&#95;missing&#95;udfs</code></td></tr><tr><td><a></a><code>skip&#95;missing&#95;views</code></td><td>N/A</td><td>Use to skip restoring <a href="/docs/v23.2/views">views</a> that cannot be restored because their dependencies are not being restored at the same time.<br/><br/>Example: <code>WITH skip&#95;missing&#95;views</code></td></tr><tr><td><code>verify&#95;backup&#95;table&#95;data</code></td><td>N/A</td><td>Run a <code>schema&#95;only</code> restore <strong>and</strong> have the restore read all user data from external storage, verify checksums, and discard the user data before writing it to disk. You must also include the <code>schema&#95;only</code> option in the <code>RESTORE</code> statement with <code>verify&#95;backup&#95;table&#95;data</code>. For more detail, see <a href="/docs/v23.2/backup-validation#validate-backup-table-data-is-restorable">Backup Validation</a>.</td></tr></tbody></table>
+
+### Backup file URLs
+
+CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
+
+- [Use Cloud Storage](/docs/v23.2/use-cloud-storage)
+
+    <Note>
+    HTTP storage is not supported for `BACKUP` and `RESTORE`.
+    </Note>
+- [Use a Local File Server](/docs/v23.2/use-a-local-file-server)
+
+You can create an external connection to represent an external storage or sink URI. This allows you to specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](/docs/v23.2/create-external-connection) page.
+
+## Functional details
+
+CockroachDB uses checksums to ensure data integrity during both the [write and read](/docs/v23.2/architecture/reads-and-writes-overview) processes. When data is [written to disk](/docs/v23.2/architecture/storage-layer), CockroachDB calculates and stores checksums with the data. The checksums are then used to verify the integrity of the data when it is read back from disk. A restore job reads the data from the external backup storage and verifies the checksums to ensure that the data has not been corrupted during the storage or transfer of the backup.
+
+You can restore:
+
+- [A full cluster](#full-cluster)
+- [Databases](#databases)
+- [Tables](#tables)
+
+`RESTORE` will only restore the latest data in an object (table, database, cluster), or the latest data as per an [`AS OF SYSTEM TIME` restore](#as-of-system-time). That is, a restore will not include historical data even if you ran your backup with [`revision_history`](/docs/v23.2/backup#with-revision-history). This means that if you issue an `AS OF SYSTEM TIME` query on a restored object, the query will fail or the response will be incorrect because there is no historical data to query. For example, if you restore a table at `2022-07-13 10:38:00`, it is not then possible to read or [back up](/docs/v23.2/backup) that table at `2022-07-13 10:37:00` or earlier. This is also the case for backups with `revision_history` that might try to initiate a revision start time earlier than `2022-07-13 10:38:00`.
+
+<Note>
+You can exclude a table's row data from a backup using the [`exclude_data_from_backup`](/docs/v23.2/take-full-and-incremental-backups#exclude-a-tables-data-from-backups) parameter. With this parameter set, a table will be empty when restored.
+</Note>
+
+### Full cluster
+
+A full cluster restore can only be run on a destination cluster with no user-created databases or tables. Restoring a full cluster includes:
+
+- All user tables
+- Relevant system tables
+- All [databases](/docs/v23.2/create-database)
+- All [tables](/docs/v23.2/create-table) (which automatically includes their [indexes](/docs/v23.2/indexes) )
+- All [views](/docs/v23.2/views)
+
+Also, consider that:
+
+- [Temporary tables](/docs/v23.2/temporary-tables) will be restored to their original database during a full cluster restore.
+- The restore will drop the cluster's `defaultdb` and `postgres` [pre-loaded databases](/docs/v23.2/show-databases#preloaded-databases) before the restore begins. You can only restore `defaultdb` and `postgres` if they are present in the original [backup](/docs/v23.2/take-full-and-incremental-backups).
+- [Changefeed jobs](/docs/v23.2/change-data-capture-overview) will not resume automatically on the new cluster. It is necessary to manually [create changefeeds](/docs/v23.2/create-and-configure-changefeeds) after a full-cluster restore.
+- When the cluster is in a mixed-version state during an [upgrade](/docs/v23.2/upgrade-cockroach-version), a full cluster restore will fail. To perform a full cluster restore, it is necessary to first [finalize the upgrade](/docs/v23.2/upgrade-cockroach-version#step-3-decide-how-the-upgrade-will-be-finalized).
+
+<Note>
+When you restore a full cluster with an Enterprise license, it will restore the [Enterprise license](/docs/v23.2/licensing-faqs#types-of-licenses) of the cluster you are restoring from. If you want to use a different license in the new cluster, make sure to [update the license](/docs/v23.2/licensing-faqs#set-a-license) **after** the restore is complete.
+</Note>
+
+### Databases
+
+Restoring a database will create a new database and restore all of its tables and views. The created database will have the name of the database in the backup.
+
+```sql
+RESTORE DATABASE backup_database_name FROM LATEST in 'your_backup_collection_URI';
+```
+
+To restore a database that already exists in a cluster, use the `new_db_name` option with `RESTORE` to provide a new name for the database. See the [Rename a database on restore](#rename-a-database-on-restore) example.
+
+<Tip>
+If [dropping](/docs/v23.2/drop-database) or [renaming](/docs/v23.2/alter-database#rename-to) an existing database is not an option, you can use [*table* restore](#restore-a-table) to restore all tables into the existing database by using the [`WITH into_db` option](#options).
+</Tip>
+
+### Tables
+
+You can also restore individual tables (which automatically includes their indexes), [views](/docs/v23.2/views), or [sequences](/docs/v23.2/create-sequence) from a backup. This process uses the data stored in the backup to create entirely new tables, views, and sequences in the destination database.
+
+By default, tables, views, and sequences are restored into a destination database matching the name of the database from which they were backed up. If the destination database does not exist, you must [create it](/docs/v23.2/create-database). You can choose to change the destination database with the [`into_db` option](#into_db).
+
+The destination database must not have tables, views, or sequences with the same name as the the object you're restoring. If any of the restore destination's names are being used, you can:
+
+- [`DROP TABLE`](/docs/v23.2/drop-table), [`DROP VIEW`](/docs/v23.2/drop-view), or [`DROP SEQUENCE`](/docs/v23.2/drop-sequence) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function](/docs/v23.2/functions-and-operators#sequence-functions) can be used to set the value of the sequence to what it was previously.
+- [Restore the table, view, or sequence into a different database](#into_db).
+
+<Note>
+`RESTORE` only offers table-level granularity; it **does not** support restoring subsets of a table.
+</Note>
+
+When restoring an individual table that references a user-defined type (e.g., [`ENUM`](/docs/v23.2/enum)), CockroachDB will first check to see if the type already exists. The restore will attempt the following for each user-defined type within a table backup:
+
+- If there is *not* an existing type in the cluster with the same name, CockroachDB will create the user-defined type as it exists in the backup.
+- If there is an existing type in the cluster with the same name that is compatible with the type in the backup, CockroachDB will map the type in the backup to the type in the cluster.
+- If there is an existing type in the cluster with the same name but it is *not* compatible with the type in the backup, the restore will not succeed and you will be asked to resolve the naming conflict. You can do this by either [dropping](/docs/v23.2/drop-type) or [renaming](/docs/v23.2/alter-type) the existing user-defined type.
+
+In general, two types are compatible if they are the same kind (e.g., an enum is only compatible with other enums). Additionally, enums are only compatible if they have the same ordered set of elements that have also been [created in the same way](https://github.com/cockroachdb/cockroach/blob/master/docs/RFCS/20200331_enums.md#physical-layout). For example:
+
+- `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('yes', 'no')` are compatible.
+- `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('no', 'yes')` are not compatible.
+- `CREATE TYPE t1 AS ENUM ('yes', 'no')` and `CREATE TYPE t2 AS ENUM ('yes'); ALTER TYPE t2 ADD VALUE ('no')` are not compatible because they were not created in the same way.
+
+### Object dependencies
+
+Dependent objects must be restored at the same time as the objects they depend on. When you back up a table, it will not include any dependent tables, [views](/docs/v23.2/views), or [sequences](/docs/v23.2/create-sequence).
+
+For example, if you back up [view](/docs/v23.2/views) `v` that depends on table `t`, it will only back up `v`, not `t`. When you try to restore `v`, the restore will fail because the referenced table is not present in the backup.
+
+Alternatively, you can pass a `skip` option with `RESTORE` to skip the dependency instead:
+
+<table><thead><tr><th>Dependent object</th><th>Depends on</th><th>Skip option</th></tr></thead><tbody><tr><td>Table with <a href="/docs/v23.2/foreign-key">foreign key</a> constraints</td><td>The table it <code>REFERENCES</code>.</td><td><a href="/docs/v23.2/restore#skip_missing_foreign_keys"><code>skip&#95;missing&#95;foreign&#95;keys</code></a></td></tr><tr><td>Table with a <a href="/docs/v23.2/create-sequence">sequence</a></td><td>The sequence.</td><td><a href="/docs/v23.2/restore#skip-missing-sequences"><code>skip&#95;missing&#95;sequences</code></a></td></tr><tr><td><a href="/docs/v23.2/views">Views</a></td><td>The tables used in the view's <code>SELECT</code> statement.</td><td><a href="/docs/v23.2/restore#skip-missing-views"><code>skip&#95;missing&#95;views</code></a></td></tr></tbody></table>
+
+We recommend treating tables with [foreign keys](/docs/v23.2/foreign-key), which contribute to [views](/docs/v23.2/views), or that use sequences or user-defined types as a single unit with their dependencies. While you can restore individual tables, you may find that backing up and restoring at the database level is more convenient.
+
+<Note>
+Referenced UDFs are not restored and require the [`skip_missing_udfs`](#skip-missing-udfs) option.
+</Note>
+
+### Users and privileges
+
+The owner of restored objects will be the user running the restore job. To restore your users and privilege [grants](/docs/v23.2/grant), you can do a cluster backup and restore the cluster to a fresh cluster with no user data.
+
+If you are not doing a full cluster restore, the table-level privileges need to be granted to the users after the restore is complete. (By default, the user restoring will become the owner of the restored objects.) To grant table-level privileges after a restore, backup the `system.users` table, [restore users and their passwords](/docs/v23.2/restore#restoring-users-from-system-users-backup), and then [grant](/docs/v23.2/grant) the table-level privileges.
+
+### Restore types
+
+You can either restore from a full backup or from a full backup with incremental backups, based on the backup files you include:
+
+<table><thead><tr><th>Restore Type</th><th>Parameters</th></tr></thead><tbody><tr><td>Full backup</td><td>Include the path to the full backup destination and the <a href="#view-the-backup-subdirectories">subdirectory</a> of the backup. See the <a href="#examples">Examples</a> section for syntax of <a href="#restore-a-cluster">cluster</a>, <a href="#restore-a-database">database</a>, and <a href="#restore-a-table">table</a> restores.</td></tr><tr><td>Full backup +<br/>incremental backups</td><td>Include the path that contains the backup collection and the <a href="#view-the-backup-subdirectories">subdirectory</a> containing the incremental backup. See <a href="#restore-a-specific-full-or-incremental-backup">Restore from incremental backups</a> for an example.</td></tr></tbody></table>
+
+<Note>
+CockroachDB does **not** support incremental-only restores.
+</Note>
+
+## Performance
+
+- The `RESTORE` process minimizes its impact to the cluster's performance by distributing work to all nodes. Subsets of the restored data (known as ranges) are evenly distributed among randomly selected nodes, with each range initially restored to only one node. Once the range is restored, the node begins replicating it others.
+- When a `RESTORE` fails or is canceled, partially restored data is properly cleaned up. This can have a minor, temporary impact on cluster performance.
+- A restore job will pause if a node in the cluster runs out of disk space. See [Viewing and controlling restore jobs](#viewing-and-controlling-restore-jobs) for information on resuming and showing the progress of restore jobs. For instructions on how to free up disk space as quickly as possible after dropping a table, see [How can I free up disk space that was used by a dropped table?](/docs/v23.2/operational-faqs#how-can-i-free-up-disk-space-when-dropping-a-table)
+- A restore job will [pause](/docs/v23.2/pause-job) instead of entering a `failed` state if it continues to encounter transient errors once it has retried a maximum number of times. Once the restore has paused, you can either [resume](/docs/v23.2/resume-job) or [cancel](/docs/v23.2/cancel-job) it.
+
+## Restoring to multi-region databases
+
+Restoring to a [multi-region database](/docs/v23.2/multiregion-overview) is supported with some limitations. This section outlines details and settings that should be considered when restoring into multi-region databases:
+
+- A [cluster's regions](/docs/v23.2/multiregion-overview#cluster-regions) will be checked before a restore. Mismatched regions between backup and restore clusters will be flagged before the restore begins, which allows for a decision between updating the [cluster localities](/docs/v23.2/cockroach-start#locality) or restoring with the [`skip_localities_check`](#skip-localities-check) option to continue with the restore regardless.
+
+    <Note>
+    Restoring a multi-region cluster into a single-region CockroachDB Standard or CockroachDB Basic cluster is not supported. Standard and CockroachDB Basic clusters do **not** support the `skip_localities_check` option with `RESTORE`. To restore a multi-region cluster, you must [create a new multi-region Standard or CockroachDB Basic cluster](/docs/cockroachcloud/basic-cluster-management#move-cluster-to-a-new-region) with regions that match the backed-up multi-region cluster.
+    </Note>
+- A database that is restored with the `sql.defaults.primary_region` [cluster setting](/docs/v23.2/cluster-settings) will have the [`PRIMARY REGION`](/docs/v23.2/alter-database#set-primary-region) from this cluster setting assigned to the destination database.
+- `RESTORE` supports restoring **non**-multi-region tables into a multi-region database and sets the table locality as [`REGIONAL BY TABLE`](/docs/v23.2/table-localities#regional-tables) to the primary region of the destination database.
+- Restoring tables from multi-region databases with table localities set to [`REGIONAL BY ROW`](/docs/v23.2/table-localities#regional-by-row-tables), `REGIONAL BY TABLE`, [`REGIONAL BY TABLE IN PRIMARY REGION`](/docs/v23.2/alter-table#regional-by-table), and [`GLOBAL`](/docs/v23.2/alter-table#global) to another multi-region database is supported.
+- When restoring a `REGIONAL BY TABLE IN PRIMARY REGION` table, if the primary region is different in the source database to the destination database this will be implicitly changed on restore.
+- Restoring a [partition](/docs/v23.2/partitioning) of a `REGIONAL BY ROW` table is not supported.
+- [`REGIONAL BY TABLE`](/docs/v23.2/table-localities#regional-tables) and [`REGIONAL BY ROW`](/docs/v23.2/table-localities#regional-by-row-tables) tables can be restored **only** if the regions of the backed-up table match those of the destination database. All of the following must be true for `RESTORE` to be successful:
+    - The [regions](/docs/v23.2/multiregion-overview#database-regions) of the source database and the regions of the destination database have the same set of regions.
+    - The regions were added to each of the databases in the same order.
+    - The databases have the same [primary region](/docs/v23.2/alter-database#set-primary-region).
+
+        The following example would be considered as having **mismatched** regions because the database regions were not added in the same order and the primary regions do not match.
+
+        Running on the source database:
+
+        ```sql
+        ALTER DATABASE source_database SET PRIMARY REGION "us-east1";
+        ```
+
+        ```sql
+        ALTER DATABASE source_database ADD region "us-west1";  
+        ```
+
+        Running on the destination database:
+
+        ```sql
+        ALTER DATABASE destination_database SET PRIMARY REGION "us-west1";
+        ```
+
+        ```sql
+        ALTER DATABASE destination_database ADD region "us-east1";  
+        ```
+
+        In addition, the following scenario has mismatched regions between the databases since the regions were not added to the database in the same order.
+
+        Running on the source database:
+
+        ```sql
+        ALTER DATABASE source_database SET PRIMARY REGION "us-east1";
+        ```
+
+        ```sql
+        ALTER DATABASE source_database ADD region "us-west1";  
+        ```
+
+        Running on the destination database:
+
+        ```sql
+        ALTER DATABASE destination_database SET PRIMARY REGION "us-west1";
+        ```
+
+        ```sql
+        ALTER DATABASE destination_database ADD region "us-east1";
+        ```
+
+        ```sql
+        ALTER DATABASE destination_database SET PRIMARY REGION "us-east1";    
+        ```
+
+The ordering of regions and how region matching is determined is a known limitation. See the [Known Limitations](#known-limitations) section for the tracking issues on limitations around `RESTORE` and multi-region support.
+
+For more on multi-region databases, see the [Multi-Region Capabilities Overview](/docs/v23.2/multiregion-overview).
+
+<Note>
+Use [`ALTER ROLE ALL SET {sessionvar} = {val}`](/docs/v23.2/alter-role#set-default-session-variable-values-for-all-users) instead of the `sql.defaults.*` [cluster settings](/docs/v23.2/cluster-settings). This allows you to set a default value for all users for any [session variable](/docs/v23.2/set-vars) that applies during login, making the `sql.defaults.*` cluster settings redundant.
+</Note>
+
+## Viewing and controlling restore jobs
+
+After CockroachDB successfully initiates a restore, it registers the restore as a job, which you can view with [`SHOW JOBS`](/docs/v23.2/show-jobs).
+
+After the restore has been initiated, you can control it with [`PAUSE JOB`](/docs/v23.2/pause-job), [`RESUME JOB`](/docs/v23.2/resume-job), and [`CANCEL JOB`](/docs/v23.2/cancel-job).
+
+<Note>
+If initiated correctly, the statement returns when the restore is finished or if it encounters an error. In some cases, the restore can continue after an error has been returned (the error message will tell you that the restore has resumed in background).
+</Note>
+
+## Examples
+
+There are two ways to specify a full or incremental backup to restore:
+
+- [Restoring from the most recent backup](#restore-the-most-recent-full-or-incremental-backup)
+- [Restoring from a specific backup](#restore-a-specific-full-or-incremental-backup)
+
+<Tip>
+You can use external connections to represent an external storage or sink URI. This means that you can specify the external connection's name in statements rather than the provider-specific URI:
+
+For detail on using external connections, refer to the [`CREATE EXTERNAL CONNECTION`](/docs/v23.2/create-external-connection) page.
+</Tip>
+
+Some of the examples in this section use an [external connection](/docs/v23.2/create-external-connection) to represent the external storage URI. For guidance on connecting to cloud storage or using other authentication parameters, read [Use Cloud Storage](/docs/v23.2/use-cloud-storage#example-file-urls).
+
+If you need to limit the control specific users have over your storage buckets, refer to [Assume role authentication](/docs/v23.2/cloud-storage-authentication) for setup instructions.
+
+### View the backup subdirectories
+
+`BACKUP... INTO` adds a backup to a [backup collection](/docs/v23.2/take-full-and-incremental-backups#backup-collections) location. To view the backup paths in a given collection location, use [`SHOW BACKUPS`](/docs/v23.2/show-backup):
+
+```sql
+SHOW BACKUPS IN 's3://bucket/path?AUTH=implicit';
+```
+
+```text
+       path
+-------------------------
+/2023/12/14-190909.83
+/2023/12/20-155249.37
+/2023/12/21-142943.73
+(3 rows)
+```
+
+When you want to [restore a specific backup](#restore-a-specific-full-or-incremental-backup), add the backup's subdirectory path (e.g., `/2023/12/21-142943.73`) to the `RESTORE` statement. For details on viewing the most recent backup, see [`SHOW BACKUP FROM {subdirectory} in {collectionURI}`](/docs/v23.2/show-backup#show-the-most-recent-backup).
+
+### Restore the most recent full or incremental backup
+
+To restore from the most recent backup ([full or incremental](/docs/v23.2/take-full-and-incremental-backups)) in the collection's location, use the `LATEST` syntax:
+
+```sql
+RESTORE FROM LATEST IN 's3://bucket/path?AUTH=implicit';
+```
+
+If you are restoring an incremental backup, the storage location **must** contain a full backup.
+
+When you restore from an incremental backup, you're restoring the **entire** table, database, or cluster. CockroachDB uses both the latest (or a [specific](/docs/v23.2/restore#restore-a-specific-full-or-incremental-backup)) incremental backup and the full backup during this process. You cannot restore an incremental backup without a full backup. Furthermore, it is not possible to restore over a [table](/docs/v23.2/restore#tables), [database](/docs/v23.2/restore#databases), or [cluster](/docs/v23.2/restore#full-cluster) with existing data. Refer to [Restore types](/docs/v23.2/restore#restore-types) for detail on the types of backups you can restore.
+
+<Note>
+`RESTORE` will re-validate [indexes](/docs/v23.2/indexes) when [incremental backups](/docs/v23.2/take-full-and-incremental-backups) are created from an older version (v20.2.2 and earlier or v20.1.4 and earlier), but restored by a newer version (v21.1.0+). These earlier releases may have included incomplete data for indexes that were in the process of being created.
+</Note>
+
+### Restore a specific full or incremental backup
+
+To restore a specific full or incremental backup, specify that backup's subdirectory in the `RESTORE` statement. To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories). If you are restoring an incremental backup, the URI must point to the storage location that contains the full backup:
+
+```sql
+RESTORE FROM '2023/03/23-213101.37' IN 's3://bucket/path?AUTH=implicit';
+```
+
+### Restore a cluster
+
+To restore a full cluster:
+
+```sql
+RESTORE FROM LATEST IN 'external://backup_s3';
+```
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+
+### Restore a database
+
+To restore a database:
+
+```sql
+RESTORE DATABASE bank FROM LATEST IN 'external://backup_s3';
+```
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+
+<Note>
+`RESTORE DATABASE` can only be used if the entire database was backed up.
+</Note>
+
+### Restore a table
+
+To restore a single table:
+
+```sql
+RESTORE TABLE bank.customers FROM LATEST IN 'external://backup_s3';
+```
+
+To restore multiple tables:
+
+```sql
+RESTORE TABLE bank.customers, bank.accounts FROM LATEST IN 'external://backup_s3';
+```
+
+To view the available subdirectories, use [`SHOW BACKUPS`](#view-the-backup-subdirectories).
+
+### Restore with `AS OF SYSTEM TIME`
+
+<Warning>
+`RESTORE` will only restore the latest data as per an `AS OF SYSTEM TIME` restore. The restore will not include historical data even if you ran your backup with `revision_history`.
+</Warning>
+
+Running a backup with [revision history](/docs/v23.2/take-backups-with-revision-history-and-restore-from-a-point-in-time) captures every change made within the garbage collection period leading up to and including the given timestamp, which allows you to restore to an arbitrary point-in-time within the revision history.
+
+If you ran a backup **without** `revision_history`, it is still possible to use `AS OF SYSTEM TIME` with `RESTORE` to target a particular time for the restore. However, your restore will be limited to the times of the full backup and each incremental backup in the chain. In this case, use the following example to restore to a particular time.
+
+First, find the times that are available for a point-in-time-restore by listing the available backup directories in your storage location:
+
+```sql
+SHOW BACKUPS IN 'external://backup_s3';
+```
+
+```text
+          path
+------------------------
+  2023/01/18-141753.98
+  2023/01/23-184816.10
+  2023/01/23-185448.11
+(3 rows)
+```
+
+From the output use the required date directory and run the following to get the details of the backup:
+
+```sql
+SHOW BACKUP '2023/01/23-185448.11' IN 'external://backup_s3';
+```
+
+```text
+  database_name | parent_schema_name |        object_name         | object_type | backup_type |         start_time         |          end_time          | size_bytes | rows | is_full_cluster
+----------------+--------------------+----------------------------+-------------+-------------+----------------------------+----------------------------+------------+------+------------------
+  movr          | public             | vehicle_location_histories | table       | full        | NULL                       | 2023-01-23 18:54:48.116975 |      85430 | 1092 |        t
+  movr          | public             | promo_codes                | table       | full        | NULL                       | 2023-01-23 18:54:48.116975 |     225775 | 1003 |        t
+  movr          | public             | user_promo_codes           | table       | full        | NULL                       | 2023-01-23 18:54:48.116975 |       1009 |   11 |        t
+  NULL          | NULL               | system                     | database    | incremental | 2023-01-23 18:54:48.116975 | 2023-01-24 00:00:00        |       NULL | NULL |        t
+  system        | public             | users                      | table       | incremental | 2023-01-23 18:54:48.116975 | 2023-01-24 00:00:00        |          0 |    0 |        t
+  system        | public             | zones                      | table       | incremental | 2023-01-23 18:54:48.116975 | 2023-01-24 00:00:00        |          0 |    0 |
+```
+
+Finally, use the `start_time` and `end_time` detail to define the required time as part of the `AS OF SYSTEM TIME` clause. Run the restore, passing the directory and the timestamp:
+
+```sql
+RESTORE DATABASE movr FROM '2023/01/23-185448.11' IN 'external://backup_s3' AS OF SYSTEM TIME '2023-01-23 18:56:48';
+```
+
+### Restore a backup asynchronously
+
+Use the [`DETACHED`](#detached) option to execute the restore [job](/docs/v23.2/show-jobs) asynchronously:
+
+```sql
+> RESTORE FROM LATEST IN 'external://backup_s3'
+WITH DETACHED;
+```
+
+The job ID is returned after the restore job creation completes:
+
+```text
+        job_id
+----------------------
+  592786066399264769
+(1 row)
+```
+
+**Without** the `DETACHED` option, `RESTORE` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+```text
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
+(1 row)
+```
+
+### Other restore usages
+
+#### Restore tables into a different database
+
+By default, tables and views are restored to the database they originally belonged to. However, using the [`into_db` option](#into_db), you can control the destination database. Note that the destination database must exist prior to the restore.
+
+1. Create the new database that you'll restore the table or view into:
+
+    ```sql
+    > CREATE DATABASE newdb;
+    ```
+2. Restore the table into the newly created database with `into_db`:
+
+    ```sql
+    > RESTORE bank.customers FROM LATEST IN 'external://backup_s3'
+    WITH into_db = 'newdb';
+    ```
+
+#### Rename a database on restore
+
+To rename a database on restore, use the [`new_db_name`](#new-db-name) option:
+
+```sql
+RESTORE DATABASE bank FROM LATEST IN 'external://backup_s3'
+WITH new_db_name = 'new_bank';
+```
+
+When you run `RESTORE` with `new_db_name`, the existing database that was originally backed up can remain active:
+
+```text
+database_name
+--------------+
+defaultdb
+bank
+new_bank
+postgres
+system
+```
+
+#### Remove the foreign key before restore
+
+By default, tables with [foreign key](/docs/v23.2/foreign-key) constraints must be restored at the same time as the tables they reference. However, using the [`skip_missing_foreign_keys`](/docs/v23.2/restore#skip_missing_foreign_keys) option you can remove the foreign key constraint from the table and then restore it.
+
+```sql
+> RESTORE bank.accounts FROM LATEST IN 'external://backup_s3'
+WITH skip_missing_foreign_keys;
+```
+
+#### Restoring users from `system.users` backup
+
+The `system.users` table stores your cluster's usernames and their hashed passwords. To restore them, you must restore the `system.users` table into a new database because you cannot drop the existing `system.users` table.
+
+After it's restored into a new database, you can write the restored `users` table data to the cluster's existing `system.users` table.
+
+1. Create the new database that you'll restore the `system.users` table into:
+
+    ```sql
+    > CREATE DATABASE newdb;
+    ```
+2. Restore the `system.users` table into the new database:
+
+    ```sql
+    > RESTORE system.users  FROM LATEST IN 'external://backup_s3'
+    WITH into_db = 'newdb';
+    ```
+3. After the restore completes, add the `users` to the existing `system.users` table:
+
+    ```sql
+    > INSERT INTO system.users SELECT * FROM newdb.users;
+    ```
+4. Remove the temporary `users` table:
+
+    ```sql
+    > DROP TABLE newdb.users;
+    ```
+
+#### Restore from incremental backups in a different location
+
+<Warning>
+The `incremental_location` parameter is deprecated as of v25.4 and will be removed in a future release. Until the parameter is removed, you can continue to work with existing backups that use a custom `incremental_location`.
+</Warning>
+
+To restore an incremental backup that was taken using the [`incremental_location` option](/docs/v23.2/backup#incr-location), you must run the `RESTORE` statement with both:
+
+- the collection URI of the full backup
+- the `incremental_location` option referencing the incremental backup's collection URI, as passed in the original `BACKUP` statement
+
+```sql
+RESTORE TABLE movr.users FROM LATEST IN 'external://backup_s3' WITH incremental_location = '{incremental_backup_URI}';
+```
+
+For more detail on using this option with `BACKUP`, see [Incremental backups with explicitly specified destinations](/docs/v23.2/take-full-and-incremental-backups#incremental-backups-with-explicitly-specified-destinations).
+
+## Known limitations
+
+- To successfully [restore a table into a multi-region database](#restoring-to-multi-region-databases), it is necessary for the order and regions to match between the source and destination database. See the [Known Limitations](/docs/v23.2/known-limitations#using-restore-with-multi-region-table-localities) page for detail on ordering and matching regions. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71071)
+- Restoring [`GLOBAL`](/docs/v23.2/table-localities#global-tables) and [`REGIONAL BY TABLE`](/docs/v23.2/table-localities#regional-tables) tables into a **non**-multi-region database is not supported. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/71502)
+- `RESTORE` will not restore a table that references a [UDF](/docs/v23.2/user-defined-functions), unless you skip restoring the function with the [`skip_missing_udfs`](#skip-missing-udfs) option. Alternatively, take a [database-level backup](/docs/v23.2/backup#back-up-a-database) to include everything needed to restore the table. [Tracking GitHub Issue](https://github.com/cockroachdb/cockroach/issues/118195)
+
+## See also
+
+- [`BACKUP`](/docs/v23.2/backup)
+- [Take Full and Incremental Backups](/docs/v23.2/take-full-and-incremental-backups)
+- [Take and Restore Encrypted Backups](/docs/v23.2/take-and-restore-encrypted-backups)
+- [Take and Restore Locality-aware Backups](/docs/v23.2/take-and-restore-locality-aware-backups)
+- [Take Backups with Revision History and Restore from a Point-in-time](/docs/v23.2/take-backups-with-revision-history-and-restore-from-a-point-in-time)
+- [Manage a Backup Schedule](/docs/v23.2/manage-a-backup-schedule)
+- [Replication Controls](/docs/v23.2/configure-replication-zones)
+- [`ENUM`](/docs/v23.2/enum)
+- [`CREATE TYPE`](/docs/v23.2/create-type)
+- [`DROP TYPE`](/docs/v23.2/drop-type)

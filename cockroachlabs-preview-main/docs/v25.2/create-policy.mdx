@@ -1,0 +1,73 @@
+---
+title: "CREATE POLICY"
+old_description: "The CREATE POLICY statement defines a new row-level security policy on a table."
+---
+
+The `CREATE POLICY` statement defines a new [row-level security (RLS)](/docs/v25.2/row-level-security) policy on a [table](/docs/v25.2/schema-design-table).
+
+## Syntax
+
+```text
+CREATE POLICY [ IF NOT EXISTS ] policy_name ON table_name
+    [ AS ( PERMISSIVE | RESTRICTIVE ) ]
+    [ FOR ( ALL | SELECT | INSERT | UPDATE | DELETE ) ]
+    [ TO ( role_name | PUBLIC | CURRENT_USER | SESSION_USER ) [, ...] ]
+    [ USING ( using_expression ) ]
+    [ WITH CHECK ( check_expression ) ];
+```
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF NOT EXISTS</code></td><td>Used to specify that the policy will only be created if one with the same <code>policy&#95;name</code> does not already exist on <code>table&#95;name</code>. If a policy with that name does already exist, the statement will not return an error if this parameter is used.</td></tr><tr><td><code>policy&#95;name</code></td><td>Unique identifier for the policy on the table.</td></tr><tr><td><code>table&#95;name</code></td><td>The <a href="/docs/v25.2/schema-design-table">table</a> to which the policy applies.</td></tr><tr><td><code>AS ( PERMISSIVE, RESTRICTIVE )</code></td><td>(<strong>Default</strong>: <code>PERMISSIVE</code>.) For <code>PERMISSIVE</code>, combine policies using <code>OR</code>: a row is accessible if <strong>any</strong> permissive policy grants access. For <code>RESTRICTIVE</code>, combine policies using <code>AND</code>: a row is accessible if <strong>all</strong> restrictive policies grant access. The overall policy enforcement is determined logically as: <code>&#123;permissive policies&#125; AND &#123;restrictive policies&#125;</code>: restrictive policies are evaluated <strong>after</strong> permissive policies. This means that at least one <code>PERMISSIVE</code> policy must be in place before <code>RESTRICTIVE</code> policies are applied. If any restrictive policy denies access, the row is inaccessible, regardless of the permissive policies.</td></tr><tr><td><code>FOR ( ALL, SELECT, INSERT, UPDATE, DELETE )</code></td><td>(<strong>Default</strong>: <code>ALL</code>.) Specifies the SQL statement(s) the policy applies to: (<a href="/docs/v25.2/select-clause"><code>SELECT</code></a>, <a href="/docs/v25.2/insert"><code>INSERT</code></a>, <a href="/docs/v25.2/update"><code>UPDATE</code></a>, <a href="/docs/v25.2/delete"><code>DELETE</code></a>). For details, refer to <a href="#policies-by-statement-type">Policies by statement type</a>.</td></tr><tr><td><code>TO role&#95;name, ...</code></td><td>(<strong>Default</strong>: <code>PUBLIC</code>, which means the policy applies to all roles.) Specifies the database <a href="/docs/v25.2/security-reference/authorization#roles">role(s)</a> to which the policy applies.</td></tr><tr><td><code>USING ( using&#95;expression )</code></td><td>Defines the filter condition such that only rows for which the <code>using&#95;expression</code> evaluates to <code>TRUE</code> are visible or available for modification. Rows evaluating to <code>FALSE</code> or <code>NULL</code> are silently excluded. Note this the expression is evaluated <strong>before</strong> any data modifications are attempted. The filter condition applies to <a href="/docs/v25.2/select-clause"><code>SELECT</code></a>, <a href="/docs/v25.2/update"><code>UPDATE</code></a>, <a href="/docs/v25.2/delete"><code>DELETE</code></a>, and <a href="/docs/v25.2/insert"><code>INSERT</code></a> (for <code>INSERT ... ON CONFLICT DO UPDATE</code>).</td></tr><tr><td><code>WITH CHECK ( check&#95;expression )</code></td><td>Defines a constraint condition such that rows being inserted or updated must satisfy <code>check&#95;expression</code> (i.e., must evaluate to <code>TRUE</code>). This expression is evaluated <strong>after</strong> the row data is prepared but <strong>before</strong> it is written. If the expression evaluates to <code>FALSE</code> or <code>NULL</code>, the operation fails with an RLS policy violation error. Applies to <a href="/docs/v25.2/insert"><code>INSERT</code></a> and <a href="/docs/v25.2/update"><code>UPDATE</code></a>. If this expression is omitted, it will default to the <code>USING</code> expression for new rows in an <code>UPDATE</code> or <code>INSERT</code>.</td></tr></tbody></table>
+
+<Note>
+The `USING` and `WITH CHECK` expressions can reference table columns and use session-specific [functions](/docs/v25.2/functions-and-operators) (e.g., `current_user()`, `session_user()`) and [variables](/docs/v25.2/session-variables). However, these expressions cannot contain a subexpression.
+</Note>
+
+### Policies by statement type
+
+The following table shows which policies are applied to which statement types, with additional considerations listed after the table.
+
+<table><thead><tr><th>Command / clause pattern</th><th><code>SELECT</code> policy - <code>USING</code> (row that already exists)</th><th><code>SELECT</code> policy - <code>USING</code> (row being added)</th><th><code>INSERT</code> policy - <code>WITH CHECK</code> (row being added)</th><th><code>UPDATE</code> policy - <code>USING</code> (row before the change)</th><th><code>UPDATE</code> policy - <code>WITH CHECK</code> (row after the change)</th><th><code>DELETE</code> policy - <code>USING</code> (row to be removed)</th></tr></thead><tbody><tr><td><code>SELECT</code></td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td><code>SELECT ... FOR UPDATE / FOR SHARE</code></td><td>✓</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td></tr><tr><td><code>INSERT</code></td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr><tr><td><code>INSERT ... RETURNING</code></td><td>—</td><td>✓(b)</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr><tr><td><code>UPDATE</code></td><td>✓</td><td>✓(b)</td><td>—</td><td>✓</td><td>✓</td><td>—</td></tr><tr><td><code>DELETE</code></td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td></tr><tr><td><code>INSERT ... ON CONFLICT DO UPDATE</code></td><td>✓(a)</td><td>✓(a)</td><td>—</td><td>✓</td><td>✓</td><td>—</td></tr><tr><td><code>UPSERT</code></td><td>✓(a)</td><td>✓(a)</td><td>—</td><td>✓</td><td>✓</td><td>—</td></tr></tbody></table>
+
+- ✓: Always applied.
+- (a): A `USING` policy failure causes the statement to fail. Normally, `USING` filters out rows silently.
+- (b): Like ✓(a), but only applied when the statement references row columns ( `WHERE`, `SET`, or `RETURNING` ). If the `USING` policy is violated, the statement fails.
+
+Additional considerations include:
+
+- `ON CONFLICT... DO NOTHING`: CockroachDB does not run the constraint and row-level policy checks on the `VALUES` clause if the candidate row has a conflict. [#35370](https://github.com/cockroachdb/cockroach/issues/35370). This is a [known limitation](#known-limitations).
+
+## Examples
+
+In this example, you will allow users to see or modify only their own rows in an `orders` table.
+
+```sql
+CREATE TABLE orders (user_id TEXT PRIMARY KEY, order_details TEXT);
+```
+
+```sql
+-- Assume 'orders' table has a 'user_id' column matching logged-in user names.
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY user_orders_policy ON orders
+    FOR ALL
+    TO PUBLIC -- Applies to all roles
+    USING ( user_id = CURRENT_USER )
+    WITH CHECK ( user_id = CURRENT_USER );
+```
+
+## Known limitations
+
+- `ON CONFLICT... DO NOTHING`: CockroachDB does not run the constraint and row-level policy checks on the `VALUES` clause if the candidate row has a conflict. [#35370](https://github.com/cockroachdb/cockroach/issues/35370).
+
+## See also
+
+- [Row-level security (RLS) overview](/docs/v25.2/row-level-security)
+- [`ALTER POLICY`](/docs/v25.2/alter-policy)
+- [`DROP POLICY`](/docs/v25.2/drop-policy)
+- [`SHOW POLICIES`](/docs/v25.2/show-policies)
+- [`ALTER TABLE... ENABLE ROW LEVEL SECURITY`](/docs/v25.2/alter-table#enable-row-level-security)
+- [`ALTER TABLE {FORCE, NO FORCE} ROW LEVEL SECURITY`](/docs/v25.2/alter-table#force-row-level-security)
+- [`ALTER ROLE... WITH BYPASSRLS`](/docs/v25.2/alter-role#allow-a-role-to-bypass-row-level-security-rls)
+- [`CREATE ROLE... WITH BYPASSRLS`](/docs/v25.2/create-role#create-a-role-that-can-bypass-row-level-security-rls)

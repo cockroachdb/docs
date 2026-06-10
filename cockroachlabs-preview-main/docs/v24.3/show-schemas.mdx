@@ -1,0 +1,60 @@
+---
+title: "SHOW SCHEMAS"
+old_description: "The SHOW SCHEMAS statement lists the schemas in a database."
+---
+
+import { ShowSchemas4 } from "/snippets/syntax-diagrams/ShowSchemas4.jsx";
+
+The `SHOW SCHEMAS` [statement](/docs/v24.3/sql-statements) lists all [schemas](/docs/v24.3/sql-name-resolution#naming-hierarchy) in a database.
+
+## Required privileges
+
+The `CONNECT` [privilege](/docs/v24.3/security-reference/authorization#managing-privileges) on the database is required to list the schemas in a database.
+
+## Synopsis
+
+<ShowSchemas4 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td>The name of the database for which to show <a href="/docs/v24.3/sql-name-resolution#naming-hierarchy">schemas</a>. When omitted, the schemas in the <a href="/docs/v24.3/sql-name-resolution#current-database">current database</a> are listed.</td></tr></tbody></table>
+
+## Example
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v24.3/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v24.3/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Show schemas in the current database
+
+```sql
+> CREATE SCHEMA org_one;
+```
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
+```
+
+## See also
+
+- [Logical Schemas and Namespaces](/docs/v24.3/sql-name-resolution)
+- [`CREATE SCHEMA`](/docs/v24.3/create-schema)
+- [`SHOW DATABASES`](/docs/v24.3/show-databases)
+- [Information Schema](/docs/v24.3/information-schema)
+- [SQL Statements](/docs/v24.3/sql-statements)

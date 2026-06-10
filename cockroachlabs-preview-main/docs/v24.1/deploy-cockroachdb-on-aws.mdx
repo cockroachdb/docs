@@ -1,0 +1,657 @@
+---
+title: "Deploy CockroachDB on AWS EC2"
+old_description: "Learn how to deploy CockroachDB on Amazon's AWS EC2 platform."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v24.1/deploy-cockroachdb-on-aws"
+  items={[
+    {
+      title: "Secure",
+      href: "/docs/v24.1/deploy-cockroachdb-on-aws",
+    },
+    {
+      title: "Insecure",
+      href: "/docs/v24.1/deploy-cockroachdb-on-aws-insecure",
+    },
+  ]}
+/>
+
+This page shows you how to manually deploy a secure multi-node CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load balancing service to distribute client traffic.
+
+After setting up the AWS network, clock synchronization, and load balancing, it should take approximately 20 minutes to complete the deployment. This is based on initializing a three-node CockroachDB cluster in a single AWS region and running our sample workload.
+
+If you are only testing CockroachDB, or you are not concerned with protecting network communication with TLS encryption, you can use an insecure cluster instead. Select **Insecure** above for instructions.
+
+<Tip>
+To try CockroachDB Cloud instead of running CockroachDB yourself, refer to the [Cloud Quickstart](/docs/cockroachcloud/quickstart).
+</Tip>
+
+<Note>
+You need a license to use CockroachDB; obtain a private offer link on the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-ph5bx6fhm4nlq) or see [CockroachDB Pricing](https://www.cockroachlabs.com/pricing) to learn about custom pricing.
+</Note>
+
+## Before you begin
+
+### Requirements
+
+- You must have [CockroachDB installed](/docs/v24.1/install-cockroachdb) locally. This is necessary for generating and managing your deployment's certificates.
+- You must have [SSH access](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs) to each machine. This is necessary for distributing and starting CockroachDB binaries.
+- Your network configuration must allow TCP communication on the following ports:
+    - `26257` for intra-cluster and client-cluster communication
+    - `8080` to expose your DB Console
+- Carefully review the [Production Checklist](/docs/v24.1/recommended-production-settings), including supported hardware and software, and the recommended [Topology Patterns](/docs/v24.1/topology-patterns).
+- Do not run multiple node processes on the same VM or machine. This defeats CockroachDB's replication and causes the system to be a single point of failure. Instead, start each node on a separate VM or machine.
+- To start a node with multiple disks or SSDs, provide a separate `--store` flag for each disk when starting the `cockroach` process on the node. For more details about stores, see [Start a Node](/docs/v24.1/cockroach-start#store).
+
+    <Warning>
+    If you start a node with multiple `--store` flags, it is not possible to scale back down to only using a single store on the node. Instead, you must decommission the node and start a new node with the updated `--store`.
+    </Warning>
+- When starting each node, use the [`--locality`](/docs/v24.1/cockroach-start#locality) flag to describe the node's location, for example, `--locality=region=west,zone=us-west-1`. The key-value pairs should be ordered from most to least inclusive, and the keys and order of key-value pairs must be the same on all nodes.
+- When deploying in a single availability zone:
+    - To be able to tolerate the failure of any 1 node, use at least 3 nodes with the [`default` 3-way replication factor](/docs/v24.1/configure-replication-zones#view-the-default-replication-zone). In this case, if 1 node fails, each range retains 2 of its 3 replicas, a majority.
+    - To be able to tolerate 2 simultaneous node failures, use at least 5 nodes and [increase the `default` replication factor for user data](/docs/v24.1/configure-replication-zones#edit-the-default-replication-zone) to 5. The replication factor for [important internal data](/docs/v24.1/configure-replication-zones#create-a-replication-zone-for-a-system-range) is 5 by default, so no adjustments are needed for internal data. In this case, if 2 nodes fail at the same time, each range retains 3 of its 5 replicas, a majority.
+- When deploying across multiple availability zones:
+    - To be able to tolerate the failure of 1 entire AZ in a region, use at least 3 AZs per region and set `--locality` on each node to spread data evenly across regions and AZs. In this case, if 1 AZ goes offline, the 2 remaining AZs retain a majority of replicas.
+    - To ensure that ranges are split evenly across nodes, use the same number of nodes in each AZ. This is to avoid overloading any nodes with excessive resource consumption.
+- When deploying across multiple regions:
+    - To be able to tolerate the failure of 1 entire region, use at least 3 regions.
+
+<Note>
+CockroachDB is supported in all [AWS regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones).
+</Note>
+
+### Recommendations
+
+- Decide how you want to access your DB Console:
+
+    <table><thead><tr><th>Access Level</th><th>Description</th></tr></thead><tbody><tr><td>Partially open</td><td>Set a firewall rule to allow only specific IP addresses to communicate on port <code>8080</code>.</td></tr><tr><td>Completely open</td><td>Set a firewall rule to allow all IP addresses to communicate on port <code>8080</code>.</td></tr><tr><td>Completely closed</td><td>Set a firewall rule to disallow all communication on port <code>8080</code>. In this case, a machine with SSH access to a node could use an SSH tunnel to access the DB Console.</td></tr></tbody></table>
+- You should have familiarity with configuring the following AWS components:
+    - [Amazon VPC](https://docs.aws.amazon.com/vpc)
+    - [Subnets](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets)
+    - [Internet gateways](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway)
+    - [Route tables](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables)
+    - [AWS VPN](https://aws.amazon.com/vpn)
+    - [Virtual private gateways](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN)
+    - [Elastic Load Balancing](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types)
+- All Amazon EC2 instances running CockroachDB should be members of the same [security group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security). For an example, see [AWS architecture](#aws-architecture).
+- Follow the [AWS IAM best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices) to harden the AWS environment. Use [roles](/docs/v24.1/security-reference/authorization#roles) to grant access to the deployment, following a [policy of least privilege](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices#grant-least-privilege).
+- The [AWS root user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user) is *not* necessary.
+- Review the [AWS Config service limits](https://docs.aws.amazon.com/config/latest/developerguide/configlimits) and contact AWS support to request a quota increase, if necessary.
+
+### AWS architecture
+
+In this basic deployment, 3 CockroachDB nodes are each deployed on an Amazon EC2 instance across 3 availability zones. These are grouped within a single VPC and security group. Users are routed to the cluster via [Amazon Route 53](https://aws.amazon.com/route53) (which is not used in this tutorial) and a load balancer.
+
+<Frame>
+  ![Architecture diagram for a three-node CockroachDB cluster deployed on AWS](/images/v24.1/aws-architecture.png)
+</Frame>
+
+## Step 1. Create instances
+
+Open the [Amazon EC2 console](https://console.aws.amazon.com/ec2) and [launch an instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/launching-instance#launch-instance-console) for each node you plan to have in your cluster. If you plan to [run our sample workload](#step-9-run-a-sample-workload) against the cluster, create a separate instance for that workload.
+
+- Run at least 3 nodes to ensure survivability.
+- Your instances will rely on Amazon Time Sync Service for clock synchronization. When choosing an AMI, note that some machines are preconfigured to use Amazon Time Sync Service (e.g., Amazon Linux AMIs) and others are not.
+- Use general-purpose [`m6i` or `m6a`](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/general-purpose-instances) VMs with SSD-backed [EBS volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types). For example, Cockroach Labs has used `m6i.2xlarge` for performance benchmarking. If your workload requires high throughput, use network-optimized `m5n` instances. To simulate bare-metal deployments, use `m5d` with [SSD Instance Store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ssd-instance-store).
+    - `m5` and `m5a` instances, and [compute-optimized `c5`, `c5a`, and `c5n`](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/compute-optimized-instances) instances, are also acceptable.
+
+        <Warning>
+        **Do not** use [burstable performance instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-performance-instances), which limit the load on a single core.
+        </Warning>
+- Note the ID of the VPC you select. You will need to look up its IP range when setting inbound rules for your security group.
+- Make sure all your instances are in the same security group.
+    - If you are creating a new security group, add the [inbound rules](#step-2-configure-your-network) from the next step. Otherwise note the ID of the security group.
+- When creating the instance, you will be prompted to specify an EC2 key pair. For more information on key pairs, see the [AWS documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs). These are used to securely connect to your instances and should be encrypted (e.g., `ssh-keygen -p -f $keypairfile` in Linux).
+
+For more details, see [Hardware Recommendations](/docs/v24.1/recommended-production-settings#hardware) and [Cluster Topology](/docs/v24.1/recommended-production-settings#topology).
+
+## Step 2. Configure your network
+
+[Add Custom TCP inbound rules](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security#adding-security-group-rule) to your security group to allow TCP communication on two ports:
+
+- `26257` for inter-node and client-node communication. This enables the nodes to work as a cluster, the load balancer to route traffic to the nodes, and applications to connect to the load balancer.
+- `8080` for exposing the DB Console to the user, and for routing the load balancer to the health check endpoint.
+
+#### Inter-node and load balancer-node communication
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Port Range</td><td><strong>26257</strong></td></tr><tr><td>Source</td><td>The ID of your security group (e.g., <em>sg-07ab277a</em>)</td></tr></tbody></table>
+
+#### Application data
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Port Range</td><td><strong>26257</strong></td></tr><tr><td>Source</td><td>Your application's IP ranges</td></tr></tbody></table>
+
+#### DB Console
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Port Range</td><td><strong>8080</strong></td></tr><tr><td>Source</td><td>Your network's IP ranges</td></tr></tbody></table>
+
+You can set your network IP by selecting "My IP" in the Source field.
+
+#### Load balancer-health check communication
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Port Range</td><td><strong>8080</strong></td></tr><tr><td>Source</td><td>The IP range of your VPC in CIDR notation (e.g., 10.12.0.0/16)</td></tr></tbody></table>
+
+To get the IP range of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc) and find the VPC listed in the section called Your VPCs.
+
+#### Load balancer-health check communication
+
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Port Range</td><td><strong>8080</strong></td></tr><tr><td>Source</td><td>The IP range of your VPC in CIDR notation (e.g., 10.12.0.0/16)</td></tr></tbody></table>
+
+To get the IP range of a VPC, open the [Amazon VPC console](https://console.aws.amazon.com/vpc) and find the VPC listed in the section called Your VPCs.
+
+## Step 3. Synchronize clocks
+
+CockroachDB requires moderate levels of [clock synchronization](/docs/v24.1/recommended-production-settings#clock-synchronization) to preserve data consistency. For this reason, when a node detects that its clock is out of sync with at least half of the other nodes in the cluster by 80% of the maximum offset allowed (500ms by default), it spontaneously shuts down. This avoids the risk of consistency anomalies, but it's best to prevent clocks from drifting too far in the first place by running clock synchronization software on each node.
+
+Amazon provides the [Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time), which uses a fleet of satellite-connected and atomic reference clocks in each AWS Region to deliver accurate current time readings. The service also smears the leap second.
+
+- [Configure each AWS instance to use the internal Amazon Time Sync Service](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time#configure-amazon-time-service).
+    - Per the above instructions, ensure that `etc/chrony.conf` on the instance contains the line `server 169.254.169.123 prefer iburst minpoll 4 maxpoll 4` and that other `server` or `pool` lines are commented out.
+    - To verify that Amazon Time Sync Service is being used, run `chronyc sources -v` and check for a line containing `* 169.254.169.123`. The `*` denotes the preferred time server.
+- If you plan to run a hybrid cluster across GCE and other cloud providers or environments, note that all of the nodes must be synced to the same time source, or to different sources that implement leap second smearing in the same way. See the [Production Checklist](/docs/v24.1/recommended-production-settings#considerations) for details.
+
+## Step 4. Set up load balancing
+
+Each CockroachDB node is an equally suitable SQL gateway to your cluster, but to ensure client performance and reliability, it's important to use load balancing:
+
+- **Performance:** Load balancers spread client traffic across nodes. This prevents any one node from being overwhelmed by requests and improves overall cluster performance (queries per second).
+- **Reliability:** Load balancers decouple client health from the health of a single CockroachDB node. In cases where a node fails, the load balancer redirects client traffic to available nodes.
+
+AWS offers fully-managed load balancing to distribute traffic between instances.
+
+1. [Add AWS load balancing](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/network-load-balancer-getting-started). Be sure to:
+    - Select a **Network Load Balancer** and use the ports we specify below.
+    - Select the VPC and *all* availability zones of your instances. This is important, as you cannot change the availability zones once the load balancer is created. The availability zone of an instance is determined by its subnet, found by inspecting the instance in the Amazon EC2 Console.
+    - Set the load balancer port to **26257**.
+    - Create a new target group that uses TCP port **26257**. Traffic from your load balancer is routed to this target group, which contains your instances.
+    - Configure health checks to use HTTP port **8080** and path `/health?ready=1`. This [health endpoint](/docs/v24.1/monitoring-and-alerting#health-ready-1) ensures that load balancers do not direct traffic to nodes that are live but not ready to receive requests.
+    - Register your instances with the target group you created, specifying port **26257**. You can add and remove instances later.
+2. To test load balancing and connect your application to the cluster, you will need the provisioned internal (private) **IP address** for the load balancer. To find this, open the Network Interfaces section of the Amazon EC2 console and look up the load balancer by its name.
+
+<Note>
+If you would prefer to use HAProxy instead of AWS's managed load balancing, see the [On-Premises](/docs/v24.1/deploy-cockroachdb-on-premises) tutorial for guidance.
+</Note>
+
+## Step 5. Generate certificates
+
+You can use `cockroach cert` commands or [`openssl` commands](/docs/v24.1/create-security-certificates-openssl) to generate security certificates. This section features the `cockroach cert` commands.
+
+Locally, you'll need to [create the following certificates and keys](/docs/v24.1/cockroach-cert):
+
+- A certificate authority (CA) key pair ( `ca.crt` and `ca.key` ).
+- A node key pair for each node, issued to its IP addresses and any common names the machine uses, as well as to the IP addresses and common names for machines running load balancers.
+- A client key pair for the `root` user. You'll use this to run a sample workload against the cluster as well as some `cockroach` client commands from your local machine.
+
+<Tip>
+Before beginning, it's useful to collect each of your machine's internal and external IP addresses, as well as any server names you want to issue certificates for.
+</Tip>
+
+1. [Install CockroachDB](/docs/v24.1/install-cockroachdb) on your local machine, if you haven't already.
+2. Create two directories:
+
+    ```shell
+    $ mkdir certs
+    ```
+
+    ```shell
+    $ mkdir my-safe-directory
+    ```
+
+    - `certs`: You'll generate your CA certificate and all node and client certificates and keys in this directory and then upload some of the files to your nodes.
+    - `my-safe-directory`: You'll generate your CA key in this directory and then reference the key when generating node and client certificates. After that, you'll keep the key safe and secret; you will not upload it to your nodes.
+3. Create the CA certificate and key:
+
+    ```shell
+    $ cockroach cert create-ca \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ```
+4. Create the certificate and key for the first node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
+
+    ```shell
+    $ cockroach cert create-node \
+    <node1 internal IP address> \
+    <node1 external IP address> \
+    <node1 hostname>  \
+    <other common names for node1> \
+    localhost \
+    127.0.0.1 \
+    <load balancer IP address> \
+    <load balancer hostname>  \
+    <other common names for load balancer instances> \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ```
+5. Upload the CA certificate and node certificate and key to the first node:
+
+    ```shell
+    $ ssh-add /path/<key file>.pem
+    ```
+
+    ```shell
+    $ ssh <username>@<node1 DNS name> "mkdir certs"
+    ```
+
+    ```shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node1 DNS name>:~/certs
+    ```
+6. Delete the local copy of the node certificate and key:
+
+    ```shell
+    $ rm certs/node.crt certs/node.key
+    ```
+
+    <Note>
+    This is necessary because the certificates and keys for additional nodes will also be named `node.crt` and `node.key`. As an alternative to deleting these files, you can run the next `cockroach cert create-node` commands with the `--overwrite` flag.
+    </Note>
+7. Create the certificate and key for the second node, issued to all common names you might use to refer to the node as well as to the load balancer instances:
+
+    ```shell
+    $ cockroach cert create-node \
+    <node2 internal IP address> \
+    <node2 external IP address> \
+    <node2 hostname>  \
+    <other common names for node2> \
+    localhost \
+    127.0.0.1 \
+    <load balancer IP address> \
+    <load balancer hostname>  \
+    <other common names for load balancer instances> \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ```
+8. Upload the CA certificate and node certificate and key to the second node:
+
+    ```shell
+    $ ssh <username>@<node2 DNS name> "mkdir certs"
+    ```
+
+    ```shell
+    $ scp certs/ca.crt \
+    certs/node.crt \
+    certs/node.key \
+    <username>@<node2 DNS name>:~/certs
+    ```
+9. Repeat steps 6 - 8 for each additional node.
+10. Create a client certificate and key for the `root` user:
+
+    ```shell
+    $ cockroach cert create-client \
+    root \
+    --certs-dir=certs \
+    --ca-key=my-safe-directory/ca.key
+    ```
+11. Upload the CA certificate and client certificate and key to the machine where you will run a sample workload:
+
+    ```shell
+    $ ssh <username>@<workload address> "mkdir certs"
+    ```
+
+    ```shell
+    $ scp certs/ca.crt \
+    certs/client.root.crt \
+    certs/client.root.key \
+    <username>@<workload address>:~/certs
+    ```
+
+    In later steps, you'll also use the `root` user's certificate to run [`cockroach`](/docs/v24.1/cockroach-commands) client commands from your local machine. If you might also want to run `cockroach` client commands directly on a node (e.g., for local debugging), you'll need to copy the `root` user's certificate and key to that node as well.
+
+<Note>
+On accessing the DB Console in a later step, your browser will consider the CockroachDB-created certificate invalid and you’ll need to click through a warning message to get to the UI. You can avoid this issue by [using a certificate issued by a public CA](/docs/v24.1/create-security-certificates-custom-ca#accessing-the-db-console-for-a-secure-cluster).
+</Note>
+
+## Step 6. Start nodes
+
+You can start the nodes manually or automate the process using [systemd](https://www.freedesktop.org/wiki/Software/systemd).
+
+<Tabs>
+<Tab title="Manual">
+
+For each initial node of your cluster, complete the following steps:
+
+<Note>
+After completing these steps, nodes will not yet be live. They will complete the startup process and join together to form a cluster as soon as the cluster is initialized in the next step.
+</Note>
+
+1. Visit [Releases](/docs/releases) and download the full binary of CockroachDB to the node.
+2. On the node, follow the instructions to [install CockroachDB](/docs/v24.1/install-cockroachdb).
+3. Run the [`cockroach start`](/docs/v24.1/cockroach-start) command:
+
+    ```shell
+    $ cockroach start \
+    --certs-dir=certs \
+    --advertise-addr=<node1 address> \
+    --join=<node1 address>,<node2 address>,<node3 address> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
+    --background
+    ```
+
+    This command primes the node to start, using the following flags:
+
+    <table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--certs-dir</code></td><td>Specifies the directory where you placed the <code>ca.crt</code> file and the <code>node.crt</code> and <code>node.key</code> files for the node.</td></tr><tr><td><code>--advertise-addr</code></td><td>Specifies the IP address/hostname and port to tell other nodes to use. The port number can be omitted, in which case it defaults to <code>26257</code>.<br/><br/>This value must route to an IP address the node is listening on (with <code>--listen-addr</code> unspecified, the node listens on all IP addresses).<br/><br/>In some networking scenarios, you may need to use <code>--advertise-addr</code> and/or <code>--listen-addr</code> differently. For more details, see <a href="/docs/v24.1/recommended-production-settings#networking">Networking</a>.</td></tr><tr><td><code>--join</code></td><td>Identifies the address of 3-5 of the initial nodes of the cluster. These addresses should match the addresses that the target nodes are advertising.</td></tr><tr><td><code>--cache</code><br/><code>--max-sql-memory</code></td><td>Increases the node's cache size to 25% of available system memory to improve read performance. The capacity for in-memory SQL processing defaults to 25% of system memory but can be raised, if necessary, to increase the number of simultaneous client connections allowed by the node as well as the node's capacity for in-memory processing of rows when using <code>ORDER BY</code>, <code>GROUP BY</code>, <code>DISTINCT</code>, joins, and window functions. For more details, see <a href="/docs/v24.1/recommended-production-settings#cache-and-sql-memory-size">Cache and SQL Memory Size</a>.</td></tr><tr><td><code>--background</code></td><td>Starts the node in the background so you gain control of the terminal to issue more commands.</td></tr></tbody></table>
+
+    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. For more details, see [Locality](/docs/v24.1/cockroach-start#locality).
+
+    For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=<node1 address>:8080`. To set these options manually, see [Start a Node](/docs/v24.1/cockroach-start).
+
+Repeat these steps for each additional node that you want in your cluster.
+
+</Tab>
+<Tab title="systemd">
+
+For each initial node of your cluster, complete the following steps:
+
+<Note>
+After completing these steps, nodes will not yet be live. They will complete the startup process and join together to form a cluster as soon as the cluster is initialized in the next step.
+</Note>
+
+1. SSH to the machine where you want the node to run. Ensure you are logged in as the `root` user.
+2. [Install CockroachDB for Linux](/docs/v24.1/install-cockroachdb).
+3. Create the Cockroach directory:
+
+    ```shell
+    $ mkdir /var/lib/cockroach
+    ```
+4. Create a Unix user named `cockroach`:
+
+    ```shell
+    $ useradd cockroach
+    ```
+5. Move the `certs` directory to the `cockroach` directory.
+
+    ```shell
+    $ mv certs /var/lib/cockroach/
+    ```
+6. Change the ownership of the `cockroach` directory to the user `cockroach`:
+
+    ```shell
+    $ chown -R cockroach /var/lib/cockroach
+    ```
+7. Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/_includes/v24.1/prod-deployment/securecockroachdb.service) and save the file in the `/etc/systemd/system/` directory:
+
+    ```shell
+    curl -o securecockroachdb.service https://raw.githubusercontent.com/cockroachdb/docs/main/src/current/_includes/v23.2/prod-deployment/securecockroachdb.service
+    ```
+
+    Alternatively, you can create the file yourself and copy the script into it:
+
+    ```shell
+    [Unit]
+    Description=Cockroach Database cluster node
+    Requires=network.target
+    [Service]
+    Type=notify
+    WorkingDirectory=/var/lib/cockroach
+    ExecStart=/usr/local/bin/cockroach start --certs-dir=certs --advertise-addr=<node1 address> --join=<node1 address>,<node2 address>,<node3 address> --cache=.25 --max-sql-memory=.25
+    TimeoutStopSec=300
+    Restart=always
+    RestartSec=10
+    StandardOutput=syslog
+    StandardError=syslog
+    SyslogIdentifier=cockroach
+    User=cockroach
+    [Install]
+    WantedBy=default.target
+    ```
+8. In the sample configuration template, specify values for the following flags:
+
+    <table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--advertise-addr</code></td><td>Specifies the IP address/hostname and port to tell other nodes to use. The port number can be omitted, in which case it defaults to <code>26257</code>.<br/><br/>This value must route to an IP address the node is listening on (with <code>--listen-addr</code> unspecified, the node listens on all IP addresses).<br/><br/>In some networking scenarios, you may need to use <code>--advertise-addr</code> and/or <code>--listen-addr</code> differently. For more details, see <a href="/docs/v24.1/recommended-production-settings#networking">Networking</a>.</td></tr><tr><td><code>--join</code></td><td>Identifies the address of 3-5 of the initial nodes of the cluster. These addresses should match the addresses that the target nodes are advertising.</td></tr></tbody></table>
+
+    When deploying across multiple datacenters, or when there is otherwise high latency between nodes, it is recommended to set `--locality` as well. For more details, see [Locality](/docs/v24.1/cockroach-start#locality).
+
+    For other flags not explicitly set, the command uses default values. For example, the node stores data in `--store=cockroach-data` and binds DB Console HTTP requests to `--http-addr=localhost:8080`. To set these options manually, see [Start a Node](/docs/v24.1/cockroach-start).
+9. Start the CockroachDB cluster:
+
+    ```shell
+    systemctl start securecockroachdb
+    ```
+10. Configure `systemd` to start CockroachDB automatically after a reboot:
+
+    ```shell
+    systemctl enable securecockroachdb
+    ```
+11. Repeat these steps for each additional node that you want in your cluster.
+
+<Note>
+`systemd` handles node restarts in case of node failure. To stop a node without `systemd` restarting it, run `systemctl stop securecockroachdb`
+</Note>
+
+</Tab>
+</Tabs>
+
+## Step 7. Initialize the cluster
+
+On your local machine, run the [`cockroach init`](/docs/v24.1/cockroach-init) command to complete the node startup process and have them join together as a cluster:
+
+```shell
+$ cockroach init --certs-dir=certs --host=<address of any node on --join list>
+```
+
+After running this command, each node prints helpful details to the [standard output](/docs/v24.1/cockroach-start#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.
+
+## Step 8. Test your cluster
+
+CockroachDB replicates and distributes data behind-the-scenes and uses a [Gossip protocol](https://wikipedia.org/wiki/Gossip_protocol) to enable each node to locate data across the cluster. Once a cluster is live, any node can be used as a SQL gateway.
+
+When using a load balancer, you should issue commands directly to the load balancer, which then routes traffic to the nodes.
+
+Use the [built-in SQL client](/docs/v24.1/cockroach-sql) locally as follows:
+
+1. On your local machine, launch the built-in SQL client, with the `--host` flag set to the address of the load balancer:
+
+    ```shell
+    $ cockroach sql --certs-dir=certs --host=<address of load balancer>
+    ```
+2. Create a `securenodetest` database:
+
+    ```sql
+    > CREATE DATABASE securenodetest;
+    ```
+3. View the cluster's databases, which will include `securenodetest`:
+
+    ```sql
+    > SHOW DATABASES;
+    ```
+
+    ```text
+    +--------------------+
+    |      Database      |
+    +--------------------+
+    | crdb_internal      |
+    | information_schema |
+    | securenodetest     |
+    | pg_catalog         |
+    | system             |
+    +--------------------+
+    (5 rows)
+    ```
+4. Use `\q` to exit the SQL shell.
+
+## Step 9. Run a sample workload
+
+CockroachDB comes with a number of [built-in workloads](/docs/v24.1/cockroach-workload) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc) workload.
+
+<Note>
+Be sure that you have configured your network to allow traffic from the application to the load balancer. In this case, you will run the sample workload on one of your machines. The traffic source should therefore be the **internal (private)** IP address of that machine.
+</Note>
+
+For comprehensive guidance on benchmarking CockroachDB with TPC-C, refer to [Performance Benchmarking](/docs/v24.1/performance-benchmarking-with-tpcc-local).
+
+1. SSH to the machine where you want to run the sample TPC-C workload.
+
+    This should be a machine that is not running a CockroachDB node, and it should already have a `certs` directory containing `ca.crt`, `client.root.crt`, and `client.root.key` files.
+2. [Install CockroachDB for Linux](/docs/v24.1/install-cockroachdb).
+3. Use the [`cockroach workload`](/docs/v24.1/cockroach-workload) command to load the initial schema and data, pointing it at the IP address of the load balancer:
+
+    ```shell
+    $ cockroach workload init tpcc \
+    'postgresql://root@<IP ADDRESS OF LOAD BALANCER>:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key'
+    ```
+4. Use the `cockroach workload` command to run the workload for 10 minutes:
+
+    ```shell
+    $ cockroach workload run tpcc \
+    --duration=10m \
+    'postgresql://root@<IP ADDRESS OF LOAD BALANCER>:26257/tpcc?sslmode=verify-full&sslrootcert=certs/ca.crt&sslcert=certs/client.root.crt&sslkey=certs/client.root.key'
+    ```
+
+    You'll see per-operation statistics print to standard output every second:
+
+    ```text
+    _elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
+          1s        0         1443.4         1494.8      4.7      9.4     27.3     67.1 transfer
+          2s        0         1686.5         1590.9      4.7      8.1     15.2     28.3 transfer
+          3s        0         1735.7         1639.0      4.7      7.3     11.5     28.3 transfer
+          4s        0         1542.6         1614.9      5.0      8.9     12.1     21.0 transfer
+          5s        0         1695.9         1631.1      4.7      7.3     11.5     22.0 transfer
+          6s        0         1569.2         1620.8      5.0      8.4     11.5     15.7 transfer
+          7s        0         1614.6         1619.9      4.7      8.1     12.1     16.8 transfer
+          8s        0         1344.4         1585.6      5.8     10.0     15.2     31.5 transfer
+          9s        0         1351.9         1559.5      5.8     10.0     16.8     54.5 transfer
+         10s        0         1514.8         1555.0      5.2      8.1     12.1     16.8 transfer
+    ...
+    ```
+
+    After the specified duration (10 minutes in this case), the workload will stop and you'll see totals printed to standard output:
+
+    ```text
+    _elapsed___errors_____ops(total)___ops/sec(cum)__avg(ms)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)__result
+      600.0s        0         823902         1373.2      5.8      5.5     10.0     15.2    209.7
+    ```
+
+    <Tip>
+    For more `tpcc` options, use `cockroach workload run tpcc --help`. For details about other workloads built into the `cockroach` binary, use `cockroach workload --help`.
+    </Tip>
+5. To monitor the load generator's progress, open the [DB Console](/docs/v24.1/ui-overview) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+
+    Since the load generator is pointed at the load balancer, the connections will be evenly distributed across nodes. To verify this, click **Metrics** on the left, select the **SQL** dashboard, and then check the **SQL Connections** graph. You can use the **Graph** menu to filter the graph for specific nodes.
+
+## Step 10. Monitor the cluster
+
+In the Target Groups section of the Amazon EC2 console, [check the health](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/target-group-health-checks) of your instances by inspecting your target group and opening the Targets tab.
+
+Despite CockroachDB's various [built-in safeguards against failure](/docs/v24.1/frequently-asked-questions#how-does-cockroachdb-survive-failures), it is critical to actively monitor the overall health and performance of a cluster running in production and to create alerting rules that promptly send notifications when there are events that require investigation or intervention.
+
+For details about available monitoring options and the most important events and metrics to alert on, see [Monitoring and Alerting](/docs/v24.1/monitoring-and-alerting).
+
+## Step 11. Scale the cluster
+
+Before adding a new node, [create a new instance](#step-1-create-instances) as you did earlier. Then [generate and upload a certificate and key](#step-5-generate-certificates) for the new node.
+
+You can start the nodes manually or automate the process using [systemd](https://www.freedesktop.org/wiki/Software/systemd).
+
+<Tabs>
+<Tab title="Manual">
+
+For each additional node you want to add to the cluster, complete the following steps:
+
+1. SSH to the machine where you want the node to run.
+2. [Install CockroachDB for Linux](/docs/v24.1/install-cockroachdb).
+3. Run the [`cockroach start`](/docs/v24.1/cockroach-start) command, passing the new node's address as the `--advertise-addr` flag and pointing `--join` to the three existing nodes (also include `--locality` if you set it earlier).
+
+    ```shell
+    $ cockroach start \
+    --certs-dir=certs \
+    --advertise-addr=<node4 address> \
+    --join=<node1 address>,<node2 address>,<node3 address> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
+    --background
+    ```
+4. Update your load balancer to recognize the new node.
+
+</Tab>
+<Tab title="systemd">
+
+For each additional node you want to add to the cluster, complete the following steps:
+
+1. SSH to the machine where you want the node to run. Ensure you are logged in as the `root` user.
+2. [Install CockroachDB for Linux](/docs/v24.1/install-cockroachdb).
+3. Create the Cockroach directory:
+
+    ```shell
+    mkdir /var/lib/cockroach
+    ```
+4. Create a Unix user named `cockroach`:
+
+    ```shell
+    useradd cockroach
+    ```
+5. Move the `certs` directory to the `cockroach` directory.
+
+    ```shell
+    mv certs /var/lib/cockroach/
+    ```
+6. Change the ownership of the `cockroach` directory to the user `cockroach`:
+
+    ```shell
+    chown -R cockroach /var/lib/cockroach
+    ```
+7. Download the [sample configuration template](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v24.1/prod-deployment/securecockroachdb.service):
+
+    ```shell
+    curl -o securecockroachdb.service https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v24.1/prod-deployment/securecockroachdb.service
+    ```
+
+    Alternatively, you can create the file yourself and copy the script into it:
+
+    ```shell
+    [Unit]
+    Description=Cockroach Database cluster node
+    Requires=network.target
+    [Service]
+    Type=notify
+    WorkingDirectory=/var/lib/cockroach
+    ExecStart=/usr/local/bin/cockroach start --certs-dir=certs --advertise-addr=<node1 address> --join=<node1 address>,<node2 address>,<node3 address> --cache=.25 --max-sql-memory=.25
+    TimeoutStopSec=300
+    Restart=always
+    RestartSec=10
+    StandardOutput=syslog
+    StandardError=syslog
+    SyslogIdentifier=cockroach
+    User=cockroach
+    [Install]
+    WantedBy=default.target
+    ```
+
+    Save the file in the `/etc/systemd/system/` directory.
+8. Customize the sample configuration template for your deployment:
+
+    Specify values for the following flags in the sample configuration template:
+
+    <table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--advertise-addr</code></td><td>Specifies the IP address/hostname and port to tell other nodes to use. The port number can be omitted, in which case it defaults to <code>26257</code>.<br/><br/>This value must route to an IP address the node is listening on (with <code>--listen-addr</code> unspecified, the node listens on all IP addresses).<br/><br/>In some networking scenarios, you may need to use <code>--advertise-addr</code> and/or <code>--listen-addr</code> differently. For more details, see <a href="/docs/v24.1/recommended-production-settings#networking">Networking</a>.</td></tr><tr><td><code>--join</code></td><td>Identifies the address of 3-5 of the initial nodes of the cluster. These addresses should match the addresses that the target nodes are advertising.</td></tr></tbody></table>
+9. Repeat these steps for each additional node that you want in your cluster.
+
+</Tab>
+</Tabs>
+
+## Step 12. Use the database
+
+Now that your deployment is working, you can:
+
+1. [Implement your data model](/docs/v24.1/sql-statements).
+2. [Create users](/docs/v24.1/create-user) and [grant them privileges](/docs/v24.1/grant).
+3. [Connect your application](/docs/v24.1/install-client-drivers). Be sure to connect your application to the load balancer, not to a CockroachDB node.
+4. [Take backups](/docs/v24.1/take-full-and-incremental-backups) of your data.
+
+You may also want to adjust the way the cluster replicates data. For example, by default, a multi-node cluster replicates all data 3 times; you can change this replication factor or create additional rules for replicating individual databases and tables differently. For more information, see [Replication Controls](/docs/v24.1/configure-replication-zones).
+
+<Warning>
+When running a cluster of 5 nodes or more, it's safest to [increase the replication factor for important internal data](/docs/v24.1/configure-replication-zones#create-a-replication-zone-for-a-system-range) to 5, even if you do not do so for user data. For the cluster as a whole to remain available, the ranges for this internal data must always retain a majority of their replicas.
+</Warning>
+
+## See also
+
+- [Production Checklist](/docs/v24.1/recommended-production-settings)
+- [Manual Deployment](/docs/v24.1/manual-deployment)
+- [Orchestrated Deployment](/docs/v24.1/kubernetes-overview)
+- [Monitoring and Alerting](/docs/v24.1/monitoring-and-alerting)
+- [Performance Benchmarking](/docs/v24.1/performance-benchmarking-with-tpcc-small)
+- [Performance Tuning](/docs/v24.1/performance-best-practices-overview)
+- [Local Deployment](/docs/v24.1/start-a-local-cluster)

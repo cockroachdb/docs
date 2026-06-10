@@ -1,0 +1,155 @@
+---
+title: "CREATE EXTERNAL CONNECTION"
+old_description: "The CREATE EXTERNAL CONNECTION statement creates a new external connection for external storage."
+---
+
+You can use external connections to specify and interact with resources that are external from CockroachDB. With `CREATE EXTERNAL CONNECTION`, you define a name for an external connection while passing the provider URI and query parameters. [`BACKUP`](/docs/v24.3/backup), [`RESTORE`](/docs/v24.3/restore), [`IMPORT INTO`](/docs/v24.3/import-into), [`EXPORT`](/docs/v24.3/export), and [`CREATE CHANGEFEED`](/docs/v24.3/create-changefeed) queries can interact with the defined external connection instead of a required, provider-specific URI. As a result, you can decouple the management of the external resource from the operation in which you're using them.
+
+`CREATE EXTERNAL CONNECTION` will validate the URI by writing, reading, and listing a test file to the external storage URI. If you're using a [KMS URI](/docs/v24.3/take-and-restore-encrypted-backups), `CREATE EXTERNAL CONNECTION` will encrypt and decrypt a file. You'll find a `crdb_external_storage_location` file in your external storage as a result of this test. Each of the operations that access the external connection is aware of the raw URI that is parsed to configure, authenticate, and interact with the connection.
+
+The [privilege model](#required-privileges) for external connections means that you can delegate the creation and usage of external connections to the necessary users or roles.
+
+You can also use the following SQL statements to work with external connections:
+
+- [`SHOW EXTERNAL CONNECTION`](/docs/v24.3/show-external-connection)
+- [`SHOW CREATE EXTERNAL CONNECTION`](/docs/v24.3/show-create-external-connection)
+- [`DROP EXTERNAL CONNECTION`](/docs/v24.3/drop-external-connection)
+
+## Required privileges
+
+To create an external connection, a user must have the `EXTERNALCONNECTION` [system-level privilege](/docs/v24.3/security-reference/authorization#supported-privileges). `root` and [`admin`](/docs/v24.3/security-reference/authorization#admin-role) users have this system-level privilege by default and are capable of granting the `EXTERNALCONNECTION` system-level privilege to other users and roles with or without the [`GRANT OPTION`](/docs/v24.3/grant).
+
+For example:
+
+```sql
+GRANT SYSTEM EXTERNALCONNECTION TO user;
+```
+
+To use a specific external connection during an operation, the user must also have the `USAGE` privilege on that connection:
+
+For example:
+
+```sql
+GRANT USAGE ON EXTERNAL CONNECTION backup_bucket TO user;
+```
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v24.3/create-external-connection/syntax-diagram-8421b3381c2f.svg)
+</Frame>
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>connection&#95;name</code></td><td>The name that represents the external connection.</td></tr><tr><td><code>connection&#95;URI</code></td><td>The storage/sink URI that the external connection will reference.</td></tr></tbody></table>
+
+## Supported external storage and sinks
+
+<table><thead><tr><th>Storage or sink</th><th>Operation support</th></tr></thead><tbody><tr><td><a href="/docs/v24.3/changefeed-sinks#amazon-msk">Amazon MSK</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v24.3/use-cloud-storage">Amazon S3</a></td><td>Backups, restores, imports, exports, changefeeds</td></tr><tr><td><a href="/docs/v24.3/take-and-restore-encrypted-backups#aws-kms-uri-format">Amazon S3 KMS</a></td><td>Encrypted backups</td></tr><tr><td><a href="/docs/v24.3/use-cloud-storage">Azure Storage</a></td><td>Backups, restores, imports, exports, changefeeds</td></tr><tr><td><a href="/docs/v24.3/changefeed-sinks#confluent-cloud">Confluent Cloud</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v24.3/create-changefeed#confluent-schema-registry">Confluent Schema Registry</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v24.3/changefeed-sinks#google-cloud-pub-sub">Google Cloud Pub/Sub</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v24.3/use-cloud-storage">Google Cloud Storage</a></td><td>Backups, restores, imports, exports, changefeeds</td></tr><tr><td><a href="/docs/v24.3/take-and-restore-encrypted-backups#google-cloud-kms-uri-format">Google Cloud Storage KMS</a></td><td>Encrypted backups</td></tr><tr><td><a href="/docs/v24.3/changefeed-sinks">HTTP(S)</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v24.3/changefeed-sinks#kafka">Kafka</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v24.3/use-cloud-storage">Nodelocal</a></td><td>Backups, restores, imports, exports, changefeeds</td></tr><tr><td><a href="/docs/v24.3/set-up-physical-cluster-replication#connection-reference">PostgreSQL</a> connections</td><td>Physical cluster replication</td></tr><tr><td><a href="/docs/v24.3/use-userfile-storage">Userfile</a></td><td>Backups, restores, imports, exports, changefeeds</td></tr><tr><td><a href="/docs/v24.3/changefeed-sinks#webhook-sink">Webhook</a></td><td>Changefeeds</td></tr></tbody></table>
+
+For more information on authentication and forming the URI that an external connection will represent, refer to the storage or sink pages linked in the table.
+
+### Changefeed sinks as external connections
+
+Consider the following when you create an external connection for changefeeds:
+
+- You can only include the query parameters and options that Kafka sinks support. Refer to the [Options](/docs/v24.3/create-changefeed#options) table and the Kafka [query parameters](/docs/v24.3/changefeed-sinks#kafka) for more detail.
+- To restrict a user's access to changefeed data and sink credentials, enable the `changefeed.permissions.require_external_connection_sink.enabled` cluster setting. When you enable this setting, users with the [`CHANGEFEED` privilege](/docs/v24.3/create-changefeed#required-privileges) on a set of tables can only create changefeeds into [external connections](/docs/v24.3/create-external-connection).
+
+## External connection URI format
+
+To form the external connection URI in operation statements, use the `external://` scheme followed by the name of the external connection.
+
+For an external connection named `backup_storage`:
+
+```text
+'external://backup_storage'
+```
+
+See the [examples](#create-an-external-connection-for-cloud-storage) in the next section for details on external connection creation.
+
+## Examples
+
+The examples in this section demonstrate some of the storage and operation options that external connections support.
+
+### Create an external connection for cloud storage
+
+In this example, you create an external connection for an Amazon S3 bucket that will store your backups. Then, you use the external connection to restore the backup to your cluster.
+
+1. Define your external connection that references the S3 bucket's URI:
+
+    ```sql
+    CREATE EXTERNAL CONNECTION backup_bucket AS 's3://bucket name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY={secret access key}';
+    ```
+2. Verify that the new external connection was created successfully with [`SHOW CREATE EXTERNAL CONNECTION`](/docs/v24.3/show-create-external-connection):
+
+    ```sql
+    SHOW CREATE ALL EXTERNAL CONNECTIONS;
+    ```
+
+    ```text
+    connection_name |                                                                              create_statement
+    ----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    backup_bucket   | CREATE EXTERNAL CONNECTION 'backup_bucket' AS 's3://bucket name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY={secret access key}'
+    ```
+3. Run the backup to your S3 bucket using the external connection's name:
+
+    ```sql
+    BACKUP DATABASE movr INTO 'external://backup_bucket' AS OF SYSTEM TIME '-10s' WITH revision_history;
+    ```
+
+    <Note>
+    If you are creating an external connection with [`BACKUP` query parameters](/docs/v24.3/backup#query-parameters) or [authentication](/docs/v24.3/cloud-storage-authentication) parameters, you must pass them in uppercase otherwise you will receive an `unknown query parameters` error.
+    </Note>
+4. Use [`SHOW BACKUP`](/docs/v24.3/show-backup) to view your backups in the storage defined by the external connection:
+
+    ```sql
+    SHOW BACKUPS IN 'external://backup_bucket';
+    ```
+
+    ```text
+            path
+    ------------------------
+    2022/09/19-134559.68
+    2022/10/10-192044.40
+    (2 rows)
+    ```
+5. In the event that a restore is necessary, use `RESTORE` with the external connection:
+
+    ```sql
+    RESTORE DATABASE movr FROM LATEST IN 'external://backup_bucket';
+    ```
+6. When you no longer need the external connection, you can delete it with [`DROP EXTERNAL CONNECTION`](/docs/v24.3/drop-external-connection):
+
+    ```sql
+    DROP EXTERNAL CONNECTION backup_bucket;
+    ```
+
+### Create an external connection for a changefeed sink
+
+In this example, you create an external connection to a Kafka sink to which a changefeed will emit messages. When you create the external connection, you will include the necessary query parameters for your changefeed. As a result, you will only need to specify the external connection's name when creating a changefeed rather than the Kafka URI and parameters.
+
+1. Define your external connection that references the Kafka sink URI and any [connection parameters](/docs/v24.3/changefeed-sinks#kafka):
+
+    ```sql
+    CREATE EXTERNAL CONNECTION kafka_sink AS 'kafka://broker.address.com:9092?topic_prefix=bar_&tls_enabled=true&ca_cert={certificate}&sasl_enabled=true&sasl_user={sasl user}&sasl_password={url-encoded password}&sasl_mechanism=SCRAM-SHA-256';
+    ```
+
+    <Note>
+    If you are creating an external connection with [`CREATE CHANGEFEED` query parameters](/docs/v24.3/create-changefeed#query-parameters), you must pass them in lowercase otherwise you will receive an `unknown query parameters` error.
+    </Note>
+2. Create your changefeed using the external connection's name:
+
+    ```sql
+    CREATE CHANGEFEED FOR TABLE movr.users INTO 'external://kafka_sink' WITH resolved;
+    ```
+
+## See also
+
+- [`CREATE CHANGEFEED`](/docs/v24.3/create-changefeed)
+- [`BACKUP`](/docs/v24.3/backup)
+- [`RESTORE`](/docs/v24.3/restore)
+- [`EXPORT`](/docs/v24.3/export)
+- [`IMPORT INTO`](/docs/v24.3/import-into)
+- [`DROP EXTERNAL CONNECTION`](/docs/v24.3/drop-external-connection)
+- [`SHOW CREATE EXTERNAL CONNECTION`](/docs/v24.3/show-create-external-connection)

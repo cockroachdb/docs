@@ -1,0 +1,47 @@
+---
+title: "Disaster Recovery Overview"
+old_description: "Learn how to make your cluster resilient with high availability and disaster recovery features."
+---
+
+Resilient deployments aim for continuity in database operations to protect from data loss and downtime. To maintain resiliency, it is necessary to build deployments with *high availability* and *disaster recovery* coverage.
+
+- [High availability](#choose-a-high-availability-strategy): Continuously access data without interruption even in the presence of failures or disruptions to maximize uptime.
+- [Disaster recovery](#choose-a-disaster-recovery-strategy): Recover from a major incident or disaster to minimize downtime and data loss.
+
+To build resilient cluster deployments, CockroachDB provides both [built-in replication](/docs/v24.1/architecture/replication-layer) for high availability and disaster recovery features for coverage during unplanned incidents.
+
+<Tip>
+For a practical guide on how CockroachDB replicates, distributes, and rebalances data, refer to the [Replication and Rebalancing](/docs/v24.1/demo-replication-and-rebalancing) demo.
+</Tip>
+
+## Resilience strategy
+
+As you evaluate CockroachDB's disaster recovery features, consider your organization's requirements for the amount of tolerable data loss and the acceptable length of time to recover.
+
+- Recovery Point Objective (RPO): The maximum amount of data loss (measured by time) that an organization can tolerate.
+- Recovery Time Objective (RTO): The maximum length of time it should take to restore normal operations following an outage.
+
+For example, when you use backups:
+
+<Frame>
+  ![Simulating RPO and RTO. With RPO representing the tolerable data loss, and RTO representing the tolerable time to recovery.](/images/v24.1/rpo-rto.png)
+</Frame>
+
+For a comparison of CockroachDB resiliency features, refer to the following sections:
+
+- [Choose a high availability strategy](#choose-a-high-availability-strategy)
+- [Choose a disaster recovery strategy](#choose-a-disaster-recovery-strategy)
+
+### Choose a high availability strategy
+
+CockroachDB uses synchronous, built-in replication to create and distribute copies of data, ensuring consistency across the data copies. The database can tolerate nodes going offline without service interruption, whether in a single-region or [multi-region](/docs/v24.1/multiregion-overview) cluster.
+
+<table class="comparison-chart"><tbody><tr><th></th><th>Single-region replication (synchronous)</th><th>Multi-region replication (synchronous)</th></tr><tr><td class="comparison-chart__feature"><b>RPO</b></td><td>0 seconds</td><td>0 seconds</td></tr><tr><td class="comparison-chart__feature"><b>RTO</b></td><td>Zero RTO<br/>Potential increased latency for 1-9 seconds</td><td>Zero RTO<br/>Potential increased latency for 1-9 seconds</td></tr><tr><td class="comparison-chart__feature"><b>Write latency</b></td><td>Region-local write latency<br/>p50 latency &lt; 5ms (for multiple availability zones in us-east1)</td><td>Cross-region write latency<br/>p50 latency &gt; 50ms (for a multi-region cluster in us-east1, us-east-2, us-west-1)</td></tr><tr><td class="comparison-chart__feature"><b>Recovery</b></td><td>Automatic</td><td>Automatic</td></tr><tr><td class="comparison-chart__feature"><b>Hardware cost</b></td><td>1x<br/>Networking between availability zones</td><td>1x<br/>Networking between datacenters</td></tr><tr><td class="comparison-chart__feature"><b>Minimum regions</b></td><td>1</td><td>3</td></tr><tr><td class="comparison-chart__feature"><b>Fault tolerance</b></td><td>Zero RPO node, availability zone failures</td><td>Zero RPO node, availability zone failures, region failures</td></tr></tbody></table>
+
+For details on designing your cluster topology for high availability with replication, refer to the [Disaster Recovery Planning](/docs/v24.1/disaster-recovery-planning#hardware-failure) page.
+
+### Choose a disaster recovery strategy
+
+CockroachDB is designed to recover automatically; however, building [backups](/docs/v24.1/backup-and-restore-overview) or [physical cluster replication](/docs/v24.1/physical-cluster-replication-overview) into your disaster recovery planning is an important part of a resilient deployment.
+
+<table class="comparison-chart"><tbody><tr><th></th><th>Point in time backup &amp; restore</th><th>Physical cluster replication (asynchronous)</th></tr><tr><td class="comparison-chart__feature"><b>RPO</b></td><td>&gt;=5 minutes</td><td>10s of seconds</td></tr><tr><td class="comparison-chart__feature"><b>RTO</b></td><td>Minutes to hours, depending on data size and number of nodes</td><td>Seconds to minutes, depending on cluster size</td></tr><tr><td class="comparison-chart__feature"><b>Write latency</b></td><td>No impact</td><td>No impact</td></tr><tr><td class="comparison-chart__feature"><b>Recovery</b></td><td>Manual restore</td><td>Manual failover</td></tr><tr><td class="comparison-chart__feature"><b>Hardware cost</b></td><td>1x + S3-like storage &amp; networking</td><td>2x + networking between datacenters</td></tr><tr><td class="comparison-chart__feature"><b>Minimum regions</b></td><td>1</td><td>2</td></tr><tr><td class="comparison-chart__feature"><b>Fault tolerance</b></td><td>Not applicable</td><td>Zero RPO node, availability zone, region failure with loss up to RPO</td></tr></tbody></table>

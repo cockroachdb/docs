@@ -1,0 +1,92 @@
+<svg height="341" width="1001" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="76" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">IMPORT</text>
+<rect height="32" rx="10" width="62" x="65" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="63" y="99"></rect>
+<text class="terminal" x="73" y="119">TABLE</text><a xlink:href="/docs/v23.2/sql-grammar#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="147" y="101"></rect>
+<rect class="nonterminal" height="32" width="96" x="145" y="99"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="157" y="119">table_name</text></a><rect height="32" rx="10" width="60" x="263" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="261" y="99"></rect>
+<text class="terminal" x="271" y="119">FROM</text><a xlink:href="/docs/v23.2/sql-grammar#import_format" xlink:title="import_format">
+<rect height="32" width="110" x="363" y="69"></rect>
+<rect class="nonterminal" height="32" width="110" x="361" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="86" font-size="10" class="nonterminal" x="373" y="87">import_format</text></a>
+<rect height="32" width="96" x="493" y="69"></rect>
+<rect class="nonterminal" height="32" width="96" x="491" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="10" class="nonterminal" x="503" y="87">file_location</text><rect height="32" rx="10" width="56" x="45" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="43" y="187"></rect>
+<text class="terminal" x="53" y="207">INTO</text><a xlink:href="/docs/v23.2/sql-grammar#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="121" y="189"></rect>
+<rect class="nonterminal" height="32" width="96" x="119" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="131" y="207">table_name</text></a><rect height="32" rx="10" width="26" x="257" y="221"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="255" y="219"></rect>
+<text class="terminal" x="265" y="239">(</text><a xlink:href="/docs/v23.2/sql-grammar#insert_column_list" xlink:title="insert_column_list">
+<rect height="32" width="136" x="303" y="221"></rect>
+<rect class="nonterminal" height="32" width="136" x="301" y="219"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="112" font-size="10" class="nonterminal" x="313" y="239">insert_column_list</text></a><rect height="32" rx="10" width="26" x="459" y="221"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="457" y="219"></rect>
+<text class="terminal" x="467" y="239">)</text><a xlink:href="/docs/v23.2/sql-grammar#import_format" xlink:title="import_format">
+<rect height="32" width="110" x="525" y="189"></rect>
+<rect class="nonterminal" height="32" width="110" x="523" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="86" font-size="10" class="nonterminal" x="535" y="207">import_format</text></a><rect height="32" rx="10" width="56" x="655" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="653" y="187"></rect>
+<text class="terminal" x="663" y="207">DATA</text>
+<rect height="32" rx="10" width="26" x="731" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="729" y="187"></rect>
+<text class="terminal" x="739" y="207">(</text>
+<rect height="32" width="96" x="797" y="189"></rect>
+<rect class="nonterminal" height="32" width="96" x="795" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="10" class="nonterminal" x="807" y="207">file_location</text><rect height="32" rx="10" width="24" x="797" y="145"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="795" y="143"></rect>
+<text class="terminal" x="805" y="163">,</text>
+<rect height="32" rx="10" width="26" x="933" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="931" y="187"></rect>
+<text class="terminal" x="941" y="207">)</text>
+<rect height="32" rx="10" width="58" x="767" y="307"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="765" y="305"></rect>
+<text class="terminal" x="775" y="325">WITH</text><a xlink:href="/docs/v23.2/sql-grammar#kv_option_list" xlink:title="kv_option_list">
+<rect height="32" width="108" x="845" y="307"></rect>
+<rect class="nonterminal" height="32" width="108" x="843" y="305"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="855" y="325">kv_option_list</text></a><path class="line" d="m17 17 h2 m0 0 h10 m76 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-126 66 l2 0 m2 0 l2 0 m2 0 l2 0 m42 0 h10 m0 0 h268 m-298 0 h20 m278 0 h20 m-318 0 q10 0 10 10 m298 0 q0 -10 10 -10 m-308 10 v12 m298 0 v-12 m-298 12 q0 10 10 10 m278 0 q10 0 10 -10 m-288 10 h10 m62 0 h10 m0 0 h10 m96 0 h10 m0 0 h10 m60 0 h10 m20 -32 h10 m110 0 h10 m0 0 h10 m96 0 h10 m0 0 h370 m-954 0 h20 m934 0 h20 m-974 0 q10 0 10 10 m954 0 q0 -10 10 -10 m-964 10 v100 m954 0 v-100 m-954 100 q0 10 10 10 m934 0 q10 0 10 -10 m-944 10 h10 m56 0 h10 m0 0 h10 m96 0 h10 m20 0 h10 m0 0 h238 m-268 0 h20 m248 0 h20 m-288 0 q10 0 10 10 m268 0 q0 -10 10 -10 m-278 10 v12 m268 0 v-12 m-268 12 q0 10 10 10 m248 0 q10 0 10 -10 m-258 10 h10 m26 0 h10 m0 0 h10 m136 0 h10 m0 0 h10 m26 0 h10 m20 -32 h10 m110 0 h10 m0 0 h10 m56 0 h10 m0 0 h10 m26 0 h10 m20 0 h10 m96 0 h10 m-136 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m116 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-116 0 h10 m24 0 h10 m0 0 h72 m20 44 h10 m26 0 h10 m22 -120 l2 0 m2 0 l2 0 m2 0 l2 0 m-276 206 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h196 m-226 0 h20 m206 0 h20 m-246 0 q10 0 10 10 m226 0 q0 -10 10 -10 m-236 10 v12 m226 0 v-12 m-226 12 q0 10 10 10 m206 0 q10 0 10 -10 m-216 10 h10 m58 0 h10 m0 0 h10 m108 0 h10 m23 -32 h-3"></path>
+<polygon points="991 289 999 285 999 293"></polygon>
+<polygon points="991 289 983 285 983 293"></polygon></svg>

@@ -1,0 +1,20 @@
+---
+title: "Connect to the CockroachDB Cloud MCP Server"
+old_description: "Description of the MCP Server, what it does, and a step-by-step guide on how to set it up."
+---
+
+import ConnectToTheCockroachdbCloudMcpServer from "/snippets/cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ConnectToTheCockroachdbCloudMcpServer />

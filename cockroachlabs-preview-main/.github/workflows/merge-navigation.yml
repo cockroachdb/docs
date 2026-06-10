@@ -1,0 +1,31 @@
+name: Merge navigation into docs.json
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "navigation/**"
+      - "docs.base.json"
+      - "redirects.json"
+      - "scripts/merge_navigation.py"
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run merge_navigation.py
+        run: python3 scripts/merge_navigation.py
+
+      - name: Commit updated docs.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs.json
+          git diff --cached --quiet || git commit -m "chore: rebuild docs.json from navigation files"
+          git push

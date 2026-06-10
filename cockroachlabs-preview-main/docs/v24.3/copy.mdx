@@ -1,0 +1,307 @@
+---
+title: "COPY"
+old_description: "Copy data from a third-party client to a CockroachDB table, or export data in a PostgreSQL wire-compatible format."
+---
+
+import { Copy4 } from "/snippets/syntax-diagrams/Copy4.jsx";
+
+The `COPY... FROM` statement copies data from [`cockroach sql`](/docs/v24.3/cockroach-sql) or other [third party clients](/docs/v24.3/install-client-drivers) to tables in your cluster. The `COPY... TO` statement allows you to export a table or arbitrary query in a text or CSV format.
+
+## Syntax
+
+<Copy4 />
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table to which to copy data.</td></tr><tr><td><code>opt&#95;column&#95;list</code></td><td>The column name, or list of column names, to which to copy data.</td></tr><tr><td><code>WITH copy&#95;options</code></td><td>Optionally specify one or more <a href="#options">copy options</a>.</td></tr><tr><td><code>query</code></td><td>A <a href="/docs/v24.3/select-clause"><code>SELECT</code></a>, <a href="/docs/v24.3/insert"><code>INSERT</code></a>, <a href="/docs/v24.3/update"><code>UPDATE</code></a>, <a href="/docs/v24.3/upsert"><code>UPSERT</code></a>, or <a href="/docs/v24.3/delete"><code>DELETE</code></a> statement for which to copy results.</td></tr></tbody></table>
+
+### Options
+
+<table><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td><code>DELIMITER 'value'</code></td><td>The value that delimits the rows of input data, passed as a string.</td></tr><tr><td><code>NULL 'value'</code></td><td>The string that represents a <code>NULL</code> value in the input data.</td></tr><tr><td><code>BINARY</code></td><td>Copy data <code>FROM</code> binary format. If <code>BINARY</code> is specified, no other format can be specified.<br/>If no format is specified, CockroachDB copies in plaintext format.</td></tr><tr><td><code>CSV</code></td><td>Copy data <code>FROM</code> CSV format, or copy data <code>TO</code> CSV format. If <code>CSV</code> is specified, no other format can be specified.<br/>If no format is specified, CockroachDB copies in plaintext format.</td></tr><tr><td><code>ESCAPE</code></td><td>Specify an escape character for quoting the fields in CSV data.</td></tr><tr><td><code>HEADER</code></td><td>Specify that CockroachDB should skip the header in CSV data (first line of input).</td></tr></tbody></table>
+
+## Required privileges
+
+Only members of the `admin` role can run `COPY` statements. By default, the `root` user belongs to the `admin` role.
+
+## Unsupported syntax
+
+CockroachDB does not yet support the following `COPY` syntax:
+
+- `COPY... WITH FREEZE`. [#85573](https://github.com/cockroachdb/cockroach/issues/85573)
+- `COPY... WITH QUOTE`. [#85574](https://github.com/cockroachdb/cockroach/issues/85574)
+- `COPY... FROM... WHERE <expr>`. [#54580](https://github.com/cockroachdb/cockroach/issues/54580)
+
+## Examples
+
+To run the examples, use [`cockroach demo`](/docs/v24.3/cockroach-demo) to start a temporary, in-memory cluster with the [`movr` database](/docs/v24.3/movr) preloaded.
+
+```shell
+cockroach demo
+```
+
+### Copy tab-delimited data to CockroachDB
+
+1. Start copying data to the `users` table:
+
+    ```sql
+    COPY users FROM STDIN;
+    ```
+2. You will see the following prompt:
+
+    ```text
+    Enter data to be copied followed by a newline.
+    End with a backslash and a period on a line by itself, or an EOF signal.
+    ```
+3. Enter some tab-delimited data to copy to the table:
+
+    <Warning>
+    Before you input the following rows, ensure the delimiters are tab characters. They may have been converted to spaces by the browser.
+    </Warning>
+
+    ```text
+    8a3d70a3-d70a-4000-8000-00000000001d  seattle Hannah  '400 Broad St'  0987654321
+    ```
+
+    ```text
+    9eb851eb-851e-4800-8000-00000000001e  new york  Carl  '53 W 23rd St'  5678901234
+    ```
+4. Mark the end of data with `\.` on its own line:
+
+    ```text
+    \.
+    ```
+
+    ```text
+    COPY 2
+    ```
+5. Query the `users` table for the rows that you just inserted:
+
+    ```sql
+    SELECT * FROM users WHERE id IN ('8a3d70a3-d70a-4000-8000-00000000001d', '9eb851eb-851e-4800-8000-00000000001e');
+    ```
+
+    ```text
+                      id                  |   city   |  name  |    address     | credit_card
+    --------------------------------------+----------+--------+----------------+-------------
+     9eb851eb-851e-4800-8000-00000000001e | new york | Carl   | '53 W 23rd St' | 5678901234
+     8a3d70a3-d70a-4000-8000-00000000001d | seattle  | Hannah | '400 Broad St' | 0987654321
+    (2 rows)
+    ```
+
+### Copy CSV-delimited data to CockroachDB
+
+You can copy CSV data into CockroachDB using the following methods:
+
+- [Copy CSV-delimited data from `stdin`](#copy-csv-delimited-data-from-stdin)
+- [Copy CSV-delimited data from `stdin` with an escape character](#copy-csv-delimited-data-from-stdin-with-an-escape-character)
+- [Copy CSV-delimited data from `stdin` with a header](#copy-csv-delimited-data-from-stdin-with-a-header)
+- [Copy CSV-delimited data from `stdin` with hex-encoded byte array data](#copy-csv-delimited-data-from-stdin-with-hex-encoded-byte-array-data)
+
+#### Copy CSV-delimited data from `stdin`
+
+1. Create a new table that you will load with CSV-formatted data:
+
+    ```sql
+    CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
+    ```
+2. Start copying data to the `setecastronomy` table:
+
+    ```sql
+    COPY setecastronomy FROM STDIN WITH CSV;
+    ```
+
+    You will see the following prompt:
+
+    ```text
+    Enter data to be copied followed by a newline.
+    End with a backslash and a period on a line by itself, or an EOF signal.
+    ```
+3. Enter some CSV-delimited data to copy to the table:
+
+    ```text
+    "My name is Werner Brandes","My voice is my passport"
+    ```
+4. Mark the end of data with `\.` on its own line:
+
+    ```text
+    \.
+    ```
+
+    ```text
+    COPY 1
+    ```
+5. View the data in the `setecastronomy` table:
+
+    ```sql
+    SELECT * FROM setecastronomy;
+    ```
+
+    ```text
+                name            |              phrase
+    ----------------------------+------------------------------------
+      My name is Werner Brandes | My voice is my passport
+    (1 row)
+    ```
+
+#### Copy CSV-delimited data from `stdin` with an escape character
+
+1. Create a new table that you will load with CSV-formatted data:
+
+    ```sql
+    CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
+    ```
+2. Start copying data to the `setecastronomy` table, specifying an escape character for quoting the fields:
+
+    ```sql
+    COPY setecastronomy FROM STDIN WITH CSV DELIMITER ',' ESCAPE '\';
+    ```
+
+    You will see the following prompt:
+
+    ```text
+    Enter data to be copied followed by a newline.
+    End with a backslash and a period on a line by itself, or an EOF signal.
+    ```
+3. Enter some CSV-delimited data to copy to the table:
+
+    ```text
+    "My name is Werner Brandes","\"My\" \"voice\" \"is\" \"my\" \"passport\""
+    ```
+4. Mark the end of data with `\.` on its own line:
+
+    ```text
+    \.
+    ```
+
+    ```text
+    COPY 1
+    ```
+5. View the data in the `setecastronomy` table:
+
+    ```sql
+    SELECT * FROM setecastronomy;
+    ```
+
+    ```text
+                name            |              phrase
+    ----------------------------+------------------------------------
+      My name is Werner Brandes | My voice is my passport
+      My name is Werner Brandes | "My" "voice" "is" "my" "passport"
+    (2 rows)
+    ```
+
+#### Copy CSV-delimited data from `stdin` with a header
+
+1. Create a new table that you will load with CSV-formatted data:
+
+    ```sql
+    CREATE TABLE IF NOT EXISTS setecastronomy (name STRING, phrase STRING);
+    ```
+2. Start copying data to the `setecastronomy` table, specifying that CockroachDB should skip the header (first line of CSV input):
+
+    ```sql
+    COPY setecastronomy FROM STDIN WITH CSV HEADER;
+    ```
+3. Enter the data, including the header line:
+
+    ```text
+    "name","phrase"
+    "Hi, my name is Werner Brandes","My voice is my passport; verify me"
+    ```
+4. Mark the end of data with `\.` on its own line:
+
+    ```text
+    \.
+    ```
+
+    ```text
+    COPY 1
+    ```
+5. View the data in the `setecastronomy` table:
+
+    ```sql
+    SELECT * FROM setecastronomy;
+    ```
+
+    ```text
+                  name              |               phrase
+    --------------------------------+-------------------------------------
+      My name is Werner Brandes     | My voice is my passport
+      My name is Werner Brandes     | "My" "voice" "is" "my" "passport"
+      Hi, my name is Werner Brandes | My voice is my passport; verify me
+    (3 rows)
+    ```
+
+#### Copy CSV-delimited data from `stdin` with hex-encoded byte array data
+
+1. Create a new table that you will load with CSV-formatted data:
+
+    ```sql
+    CREATE TABLE IF NOT EXISTS mybytes(a INT PRIMARY KEY, b BYTEA);
+    ```
+2. Set the `bytea_output` [session variable](/docs/v24.3/set-vars#supported-variables) to specify that CockroachDB should ingest hex-encoded byte array data:
+
+    ```sql
+    SET bytea_output = 'escape';
+    ```
+3. Start copying data to the `mybytes` table:
+
+    ```sql
+    COPY mybytes FROM STDIN WITH CSV;
+    ```
+4. Enter some CSV-delimited data to copy to the table:
+
+    ```text
+    1,X'6869
+    2,x'6869
+    3,"\x6869"
+    4,\x6869
+    ```
+5. Mark the end of data with `\.` on its own line:
+
+    ```text
+    \.
+    ```
+
+    ```text
+    COPY 4
+    ```
+6. View the data in the `mybytes` table:
+
+    ```sql
+    SELECT * FROM mybytes;
+    ```
+
+    ```text
+      a |   b
+    ----+---------
+      1 | X'6869
+      2 | x'6869
+      3 | hi
+      4 | hi
+    (4 rows)
+    ```
+
+### Copy data to `stdout` in CSV format
+
+1. Start a temporary, in-memory cluster with the [`movr`](/docs/v24.3/movr) sample dataset preloaded:
+2. Copy five rows from the `users` table to `stdout`, specifying the `CSV` [option](#options):
+
+    ```sql
+    COPY (SELECT * FROM users LIMIT 5) TO STDOUT WITH CSV;
+    ```
+
+    ```text
+    ae147ae1-47ae-4800-8000-000000000022,amsterdam,Christine Crosby,10563 Mcfarland Burg Apt. 34,1007823073
+    b3333333-3333-4000-8000-000000000023,amsterdam,Natalie Barnes,58875 Monique Port,4777504042
+    b851eb85-1eb8-4000-8000-000000000024,amsterdam,Brenda Meyer,82208 Jamie Track Suite 57,3209048436
+    bd70a3d7-0a3d-4000-8000-000000000025,amsterdam,Jose Nelson,31068 Mark Mall,2715842506
+    c28f5c28-f5c2-4000-8000-000000000026,amsterdam,Anna Bennett,80284 Jeffery Courts,1695553015
+    ```
+
+## See also
+
+- [Migration Overview](/docs/molt/migration-overview)
+- [`IMPORT INTO`](/docs/v24.3/import-into)
+- [`EXPORT`](/docs/v24.3/export)
+- [Install a Driver or ORM Framework](/docs/v24.3/install-client-drivers)

@@ -1,0 +1,157 @@
+---
+title: "Storage Dashboard"
+old_description: "The Storage dashboard lets you monitor the storage utilization of your cluster."
+---
+
+The **Storage** dashboard lets you monitor the storage utilization of your cluster.
+
+To view this dashboard, [access the DB Console](/docs/v24.3/ui-overview#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** &gt; **Storage**.
+
+## Dashboard navigation
+
+Use the **Graph** menu to display metrics for your entire cluster or for a specific node.
+
+To the right of the Graph and Dashboard menus, a time interval selector allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected in the [SQL Activity](/docs/v24.3/ui-overview#sql-activity) pages. However, if you select 10 or 30 minutes, the interval defaults to 1 hour in SQL Activity pages.
+
+Hovering your mouse pointer over the graph title will display a tooltip with a description and the [metrics](/docs/v24.3/essential-metrics-self-hosted) used to create the graph.
+
+When hovering on graphs, crosshair lines will appear at your mouse pointer. The series' values corresponding to the given time in the cross hairs are displayed in the legend under the graph. Hovering the mouse pointer on a given series displays the corresponding value near the mouse pointer and highlights the series line (graying out other series lines). Click anywhere within the graph to freeze the values in place. Click anywhere within the graph again to cause the values to change with your mouse movements once more.
+
+In the legend, click on an individual series to isolate it on the graph. The other series will be hidden, while the hover will still work. Click the individual series again to make the other series visible. If there are many series, a scrollbar may appear on the right of the legend. This is to limit the size of the legend so that it does not get endlessly large, particularly on clusters with many nodes.
+
+### Per store metrics
+
+To display per [store](/docs/v24.3/cockroach-start#store) metrics, select a specific node in the **Graph** menu. An aggregate metric for that node as well as a metric for each store of that node will be displayed for [L0 SSTable Count](#l0-sstable-count), [L0 SSTable Size](#l0-sstable-size), and some [other graphs](#other-graphs).
+
+---
+
+The **Storage** dashboard displays the following time series graphs:
+
+## Capacity
+
+You can monitor the **Capacity** graph to determine when additional storage is needed (e.g., by [scaling your cluster](/docs/v24.3/cockroach-start)).
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Max</strong></td><td>The maximum store size. This value may be set per node using <a href="/docs/v24.3/cockroach-start#store"><code>--store</code></a>. If a store size has not been set, this metric displays the actual disk capacity. See <a href="#capacity-metrics">Capacity metrics</a>.</td></tr><tr><td><strong>Available</strong></td><td>The free disk space available to CockroachDB data.</td></tr><tr><td><strong>Used</strong></td><td>The disk space in use by CockroachDB data. This excludes the Cockroach binary, operating system, and other system files.</td></tr></tbody></table>
+
+**Expected values for a healthy cluster**: Used capacity should not persistently exceed 80% of the total capacity.
+
+For instructions on how to free up disk space as quickly as possible after dropping a table, see [How can I free up disk space that was used by a dropped table?](/docs/v24.3/operational-faqs#how-can-i-free-up-disk-space-when-dropping-a-table)
+
+### Capacity metrics
+
+The **Capacity** graph displays disk usage by CockroachDB data in relation to the maximum [store](/docs/v24.3/architecture/storage-layer) size, which is determined as follows:
+
+- If a store size was specified using the [`--store`](/docs/v24.3/cockroach-start#store) flag when starting nodes, this value is used as the limit for CockroachDB data.
+- If no store size has been explicitly set, the actual disk capacity is used as the limit for CockroachDB data.
+
+The **available** capacity thus equals the amount of empty disk space, up to the value of the maximum store size. The **used** capacity refers only to disk space occupied by CockroachDB data, which resides in the store directory on each node.
+
+The disk usage of the Cockroach binary, operating system, and other system files is not shown on the **Capacity** graph.
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v24.3/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v24.3/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+## Live Bytes
+
+The **Live Bytes** graph displays the amount of data that can be read by applications and CockroachDB.
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Live</strong></td><td>Number of logical bytes stored in live <a href="/docs/v24.3/architecture/distribution-layer#table-data">key-value pairs</a>. Live data excludes historical and deleted data.</td></tr><tr><td><strong>System</strong></td><td>Number of physical bytes stored in <a href="/docs/v24.3/architecture/distribution-layer#meta-ranges">system key-value pairs</a>. This includes historical and deleted data that has not been <a href="/docs/v24.3/architecture/storage-layer#garbage-collection">garbage collected</a>.</td></tr></tbody></table>
+
+<Note>
+Logical bytes reflect the approximate number of bytes stored in the database. This value may deviate from the number of physical bytes on disk, due to factors such as compression and [write amplification](https://wikipedia.org/wiki/Write_amplification).
+</Note>
+
+## L0 SSTable Count
+
+- In the node view, the graph shows the number of [L0 SSTables](/docs/v24.3/architecture/storage-layer#ssts) in use for each store of that node.
+- In the cluster view, the graph shows the total number of L0 SSTables in use for each node of the cluster.
+
+## L0 SSTable Size
+
+- In the node view, the graph shows the size of all [L0 SSTables](/docs/v24.3/architecture/storage-layer#ssts) in use for each store of that node.
+- In the cluster view, the graph shows the total size of all L0 SSTables in use for each node of the cluster.
+
+## File Descriptors
+
+- In the node view, the graph shows the number of open file descriptors for that node, compared with the file descriptor limit.
+- In the cluster view, the graph shows the number of open file descriptors across all nodes, compared with the file descriptor limit.
+
+If the Open count is almost equal to the Limit count, increase [File Descriptors](/docs/v24.3/recommended-production-settings#file-descriptors-limit).
+
+<Note>
+If you are running multiple nodes on a single machine (not recommended), the actual number of open file descriptors are considered open on each node. Thus the limit count value displayed on the DB Console is the actual value of open file descriptors multiplied by the number of nodes, compared with the file descriptor limit.
+</Note>
+
+For Windows systems, you can ignore the File Descriptors graph because the concept of file descriptors is not applicable to Windows.
+
+## Disk Write Breakdown
+
+- In the node view, the graph shows the number of bytes written to disk per second categorized according to the source for that node.
+- In the cluster view, the graph shows the number of bytes written to disk per second categorized according to the source for each node.
+
+Possible sources of writes with their series label are:
+
+- [WAL](/docs/v24.3/architecture/storage-layer#memtable-and-write-ahead-log) ( `pebble-wal` )
+- [Compactions](/docs/v24.3/architecture/storage-layer#compaction) ( `pebble-compaction` )
+- [SSTable ingestions](/docs/v24.3/architecture/storage-layer#ssts) ( `pebble-ingestion` )
+- [Memtable flushes](/docs/v24.3/architecture/storage-layer#memtable-and-write-ahead-log) ( `pebble-memtable-flush` )
+- [Raft snapshots](/docs/v24.3/architecture/replication-layer#snapshots) ( `raft-snapshot` )
+- [Encryption Registry](/docs/v24.3/security-reference/encryption#encryption-keys-used-by-cockroachdb-self-hosted-clusters) ( `encryption-registry` )
+- [Logs](/docs/v24.3/logging-overview) ( `crdb-log` )
+- SQL row spill ( `sql-row-spill` ), refer to [`cockroach start` command](/docs/v24.3/cockroach-start#flags) flag `--max-disk-temp-storage`
+- [SQL columnar spill](/docs/v24.3/vectorized-execution#disk-spilling-operations) ( `sql-col-spill` )
+
+To view an aggregate of all disk writes, refer to the **Hardware** dashboard [**Disk Write Bytes** graph](/docs/v24.3/ui-hardware-dashboard#disk-write-bytes).
+
+## Other graphs
+
+The **Storage** dashboard shows other time series graphs that are important for CockroachDB developers:
+
+<table><thead><tr><th>Graph</th><th>Description</th></tr></thead><tbody><tr><td>WAL Fsync Latency</td><td>The latency for fsyncs to the storage engine's write-ahead log.</td></tr><tr><td>Log Commit Latency: 99th Percentile</td><td>The 99th percentile latency for commits to the Raft log. This measures essentially an fdatasync to the storage engine's write-ahead log.</td></tr><tr><td>Log Commit Latency: 50th Percentile</td><td>The 50th percentile latency for commits to the Raft log. This measures essentially an fdatasync to the storage engine's write-ahead log.</td></tr><tr><td>Command Commit Latency: 99th Percentile</td><td>The 99th percentile latency for commits of Raft commands. This measures applying a batch to the storage engine (including writes to the write-ahead log), but no fsync.</td></tr><tr><td>Command Commit Latency: 50th Percentile</td><td>The 50th percentile latency for commits of Raft commands. This measures applying a batch to the storage engine (including writes to the write-ahead log), but no fsync.</td></tr><tr><td>Read Amplification</td><td>The average number of real read operations executed per logical read operation across all nodes. See <a href="/docs/v24.3/architecture/storage-layer#read-amplification">Read Amplification</a>.</td></tr><tr><td>SSTables</td><td>The number of SSTables in use across all nodes.</td></tr><tr><td>Flushes</td><td>Bytes written by <a href="/docs/v24.3/architecture/storage-layer#memtable-and-write-ahead-log">memtable flushes</a> across all nodes.</td></tr><tr><td>WAL Bytes Written</td><td>Bytes written to WAL files across all nodes.</td></tr><tr><td>Compactions</td><td>Bytes written by <a href="/docs/v24.3/architecture/storage-layer#compaction">compactions</a> across all nodes.</td></tr><tr><td>Ingestions</td><td>Bytes written by SSTable ingestions across all nodes.</td></tr><tr><td>Write Stalls</td><td>The number of intentional write stalls per second across all nodes, used to backpressure incoming writes during periods of heavy write traffic.</td></tr><tr><td>Time Series Writes</td><td>The number of successfully written time-series samples, and number of errors attempting to write time series samples, per second across all nodes.</td></tr><tr><td>Time Series Bytes Written</td><td>The number of bytes written by the time-series system per second across all nodes.<br/><br/>Note that this does not reflect the rate at which disk space is consumed by time series; the data is highly compressed on disk. This rate is instead intended to indicate the amount of network traffic and disk activity generated by time-series writes.</td></tr></tbody></table>
+
+For monitoring CockroachDB, it is sufficient to use the [**Capacity**](#capacity) and [**File Descriptors**](#file-descriptors) graphs.
+
+## Summary and events
+
+### Summary panel
+
+A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Total Nodes</td><td>The total number of nodes in the cluster. <a href="/docs/v24.3/node-shutdown?filters=decommission">Decommissioned nodes</a> are not included in this count.</td></tr><tr><td>Capacity Used</td><td>The storage capacity used as a percentage of <a href="/docs/v24.3/ui-cluster-overview-page#capacity-metrics">usable capacity</a> allocated across all nodes.</td></tr><tr><td>Unavailable Ranges</td><td>The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.</td></tr><tr><td>Queries per second</td><td>The total number of <code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, and <code>DELETE</code> queries executed per second across the cluster.</td></tr><tr><td>P99 Latency</td><td>The 99th percentile of service latency.</td></tr></tbody></table>
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v24.3/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v24.3/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+### Events panel
+
+Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
+
+<Frame>
+  ![DB Console Events](/images/v24.3/ui_events.png)
+</Frame>
+
+The following types of events are listed:
+
+- Database created
+- Database dropped
+- Table created
+- Table dropped
+- Table altered
+- Index created
+- Index dropped
+- View created
+- View dropped
+- Schema change reversed
+- Schema change finished
+- Node joined
+- Node decommissioned
+- Node restarted
+- Cluster setting changed
+
+## See also
+
+- [Troubleshooting Overview](/docs/v24.3/troubleshooting-overview)
+- [Support Resources](/docs/v24.3/support-resources)
+- [Raw Status Endpoints](/docs/v24.3/monitoring-and-alerting#raw-status-endpoints)

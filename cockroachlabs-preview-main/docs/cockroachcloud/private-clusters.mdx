@@ -1,0 +1,47 @@
+---
+title: "Create Private Clusters"
+old_description: "Learn how to create a private cluster on CockroachDB Advanced. A private cluster's nodes have no public IP addresses."
+---
+
+Limiting access to a CockroachDB cluster's nodes over the public internet is an important security practice and is also a compliance requirement for many organizations. Private clusters on CockroachDB Advanced help organizations to meet this objective.
+
+By default, CockroachDB Cloud has safeguards in place to protect cluster's data from the public internet.
+
+- Ingress traffic to a cluster is routed through a load balancer, and it is possible to restrict inbound connections using a combination of [IP allowlisting](/docs/cockroachcloud/network-authorization#ip-allowlisting) and [private connectivity](/docs/cockroachcloud/connect-to-your-cluster#establish-private-connectivity).
+- Egress traffic from a cluster, such as [exports](/docs/v25.4/export), [backups](/docs/v25.4/backup), and [Change Data Capture (CDC)](/docs/v25.4/change-data-capture-overview), use public subnets by default.
+
+A CockroachDB Advanced cluster with [advanced security features enabled](/docs/cockroachcloud/create-an-advanced-cluster) is a *private cluster*. Its nodes have no public IP addresses, and egress traffic moves over private subnets and through a highly-available NAT gateway that is unique to the cluster.
+
+A private cluster has one private network per cluster region, and each node is connected to the private network for its region. A NAT gateway is connected to each private network and provides a static egress public IP address.
+
+Egress traffic from the cluster nodes to S3 or Google Cloud Storage flows across the private subnet and through the cloud provider's private network. Egress traffic from the cluster nodes to all other external resources flows across the private subnet and through the NAT gateway.
+
+This page shows how to create a private cluster.
+
+<Note>
+Private clusters are not available for [CockroachDB Advanced on Azure](/docs/cockroachcloud/cockroachdb-advanced-on-azure).
+</Note>
+
+## Create a private cluster
+
+On GCP, new CockroachDB Advanced clusters are private by default. On AWS, newly CockroachDB Advanced with advanced security features clusters deployed on AWS are private by default.
+
+Creation of private clusters, as well as Cloud clusters in general, requires the [Cluster Admin](/docs/cockroachcloud/authorization#cluster-admin) or [Cluster Creator](/docs/cockroachcloud/authorization#cluster-creator) role.
+
+<Note>
+An existing cluster can't be migrated in-place to a private cluster.
+</Note>
+
+## Limit inbound connections from egress operations
+
+Egress traffic from a private cluster to non-cloud external resources will always appear to come from the static IP addresses that comprise the cluster's NAT gateway. To determine the NAT gateway's IP addresses, you can initiate an egress operation such as an [`EXPORT`](/docs/v25.4/export) or [`BACKUP`](/docs/v25.4/backup) operation on the cluster and observe the source addresses of the resulting connections to your non-cloud external resources. Cockroach Labs recommends that you allow connections to such resources only from those IP addresses.
+
+## What's next?
+
+- [Security Overview](/docs/cockroachcloud/security-overview)
+- [Network Authorization](/docs/cockroachcloud/network-authorization)
+- [Egress Perimeter Controls](/docs/cockroachcloud/egress-perimeter-controls)
+
+## Limitations
+
+- An existing cluster can't be migrated in-place to a private cluster. Instead, migrate the existing cluster's data to a new private cluster. Refer to [Migrate Your Database to CockroachDB](/docs/molt/migration-overview).

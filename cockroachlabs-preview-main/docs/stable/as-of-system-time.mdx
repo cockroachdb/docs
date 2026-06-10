@@ -1,0 +1,389 @@
+---
+title: "AS OF SYSTEM TIME"
+old_description: "The AS OF SYSTEM TIME clause executes a statement as of a specified time."
+---
+
+The `AS OF SYSTEM TIME timestamp` clause causes statements to execute using the database contents "as of" a specified time in the past.
+
+You can use this clause to read historical data (also known as "[time travel queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future)") and to improve performance by decreasing transaction conflicts. See [Use `AS OF SYSTEM TIME` to decrease conflicts with long-running queries](/docs/v26.1/performance-best-practices-overview#use-as-of-system-time-to-decrease-conflicts-with-long-running-queries).
+
+<Note>
+  Historical data is available only within the garbage collection window, which is determined by the `ttlseconds` field
+  in the [replication zone configuration](/docs/v26.1/configure-replication-zones).
+</Note>
+
+## Synopsis
+
+The `AS OF SYSTEM TIME` clause is supported in multiple SQL contexts, including but not limited to:
+
+- In [`SELECT` clauses](/docs/v26.1/select-clause), at the very end of the `FROM` sub-clause. The [`FOR`](/docs/v26.1/select-for-update) locking clause is **not** allowed with `AS OF SYSTEM TIME`.
+- In [`BACKUP`](/docs/v26.1/backup), after the parameters of the `TO` sub-clause.
+- In [`RESTORE`](/docs/v26.1/restore), after the parameters of the `FROM` sub-clause.
+- In [`BEGIN`](/docs/v26.1/begin-transaction), after the `BEGIN` keyword.
+- In [`SET`](/docs/v26.1/set-transaction), after the `SET TRANSACTION` keyword.
+- In [`CREATE MATERIALIZED VIEW`](/docs/v26.1/create-view), after the `AS select_stmt` clause.
+- In [`REFRESH MATERIALIZED VIEW`](/docs/v26.1/refresh), after the view name.
+
+`AS OF SYSTEM TIME` cannot be used with:
+
+- [Locking reads](/docs/v26.1/select-for-update) ( `SELECT... FOR UPDATE` and `SELECT... FOR SHARE` ).
+- [Mutation statements](/docs/v26.1/sql-statements#data-manipulation-statements) (such as [`UPDATE`](/docs/v26.1/update) or [`DELETE`](/docs/v26.1/delete) ).
+
+The preceding statements return an error: `cannot execute {SQL STATEMENT} in a read-only transaction`.
+
+## Parameters
+
+The `timestamp` argument supports the following formats:
+
+<table>
+  <thead>
+    <tr>
+      <th>Format</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="/docs/v26.1/int">
+          <code>INT</code>
+        </a>
+      </td>
+      <td>Nanoseconds since the Unix epoch.</td>
+    </tr>
+    <tr>
+      <td>
+        negative{" "}
+        <a href="/docs/v26.1/interval">
+          <code>INTERVAL</code>
+        </a>
+      </td>
+      <td>
+        Added to <code>statement&#95;timestamp()</code>, and thus must be negative.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="/docs/v26.1/string">
+          <code>STRING</code>
+        </a>
+      </td>
+      <td>
+        A{" "}
+        <a href="/docs/v26.1/timestamp">
+          <code>TIMESTAMP</code>
+        </a>
+        ,{" "}
+        <a href="/docs/v26.1/int">
+          <code>INT</code>
+        </a>{" "}
+        of nanoseconds, or negative{" "}
+        <a href="/docs/v26.1/interval">
+          <code>INTERVAL</code>
+        </a>
+        .
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>follower&#95;read&#95;timestamp()</code>
+      </td>
+      <td>
+        A <a href="/docs/v26.1/functions-and-operators">function</a> that returns the{" "}
+        <a href="/docs/v26.1/timestamp">
+          <code>TIMESTAMP</code>
+        </a>
+        <code>statement&#95;timestamp() - 4.2s</code>. Using this function will set the time as close as possible to the
+        present time while remaining safe for{" "}
+        <a href="/docs/v26.1/follower-reads#exact-staleness-reads">exact staleness follower reads</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>with&#95;min&#95;timestamp(TIMESTAMPTZ, &#91;nearest&#95;only&#93;)</code>
+      </td>
+      <td>
+        The minimum <a href="/docs/v26.1/timestamp">timestamp</a> at which to perform the{" "}
+        <a href="/docs/v26.1/follower-reads#bounded-staleness-reads">bounded staleness read</a>. The actual timestamp of
+        the read may be equal to or later than the provided timestamp, but cannot be before the provided timestamp. This
+        is useful to request a read from nearby followers, if possible, while enforcing causality between an operation
+        at some point in time and any dependent reads. This function accepts an optional <code>nearest&#95;only</code>{" "}
+        argument that will error if the reads cannot be serviced from a nearby replica.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>with&#95;max&#95;staleness(INTERVAL, &#91;nearest&#95;only&#93;)</code>
+      </td>
+      <td>
+        The maximum staleness interval with which to perform the{" "}
+        <a href="/docs/v26.1/follower-reads#bounded-staleness-reads">bounded staleness read</a>. The timestamp of the
+        read can be at most this stale with respect to the current time. This is useful to request a read from nearby
+        followers, if possible, while placing some limit on how stale results can be. Note that{" "}
+        <code>with&#95;max&#95;staleness(INTERVAL)</code> is equivalent to{" "}
+        <code>with&#95;min&#95;timestamp(now() - INTERVAL)</code>. This function accepts an optional{" "}
+        <code>nearest&#95;only</code> argument that will error if the reads cannot be serviced from a nearby replica.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+To set `AS OF SYSTEM TIME follower_read_timestamp()` on all implicit and explicit read-only transactions by default, set the `default_transaction_use_follower_reads` [session variable](/docs/v26.1/set-vars) to `on`. When `default_transaction_use_follower_reads=on` and follower reads are enabled, all read-only transactions use follower reads.
+
+<Note>
+  Although the following format is supported, it is not intended to be used by most users: HLC timestamps can be
+  specified using a [`DECIMAL`](/docs/v26.1/decimal). The integer part is the wall time in nanoseconds. The fractional
+  part is the logical counter, a 10-digit integer. This is the same format as produced by the
+  `cluster_logical_timestamp()` function.
+</Note>
+
+## Examples
+
+### Select historical data (time-travel)
+
+Imagine this example represents the database's current data:
+
+```sql
+> SELECT name, balance
+    FROM accounts
+   WHERE name = 'Edna Barath';
+```
+
+```text
++-------------+---------+
+|    name     | balance |
++-------------+---------+
+| Edna Barath |     750 |
+| Edna Barath |    2200 |
++-------------+---------+
+```
+
+We could instead retrieve the values as they were on October 3, 2016 at 12:45 UTC:
+
+```sql
+> SELECT name, balance
+    FROM accounts
+         AS OF SYSTEM TIME '2016-10-03 12:45:00'
+   WHERE name = 'Edna Barath';
+```
+
+```text
++-------------+---------+
+|    name     | balance |
++-------------+---------+
+| Edna Barath |     450 |
+| Edna Barath |    2000 |
++-------------+---------+
+```
+
+### Using different timestamp formats
+
+Assuming the following statements are run at `2016-01-01 12:00:00`, they would execute as of `2016-01-01 08:00:00`:
+
+```sql
+> SELECT * FROM t AS OF SYSTEM TIME '2016-01-01 08:00:00'
+```
+
+```sql
+> SELECT * FROM t AS OF SYSTEM TIME 1451635200000000000
+```
+
+```sql
+> SELECT * FROM t AS OF SYSTEM TIME '1451635200000000000'
+```
+
+```sql
+> SELECT * FROM t AS OF SYSTEM TIME '-4h'
+```
+
+```sql
+> SELECT * FROM t AS OF SYSTEM TIME INTERVAL '-4h'
+```
+
+### Selecting from multiple tables
+
+<Note>
+  It is not yet possible to select from multiple tables at different timestamps. The entire query runs at the specified
+  time in the past.
+</Note>
+
+When selecting over multiple tables in a single `FROM` clause, the `AS
+OF SYSTEM TIME` clause must appear at the very end and applies to the entire `SELECT` clause.
+
+For example:
+
+```sql
+> SELECT * FROM t, u, v AS OF SYSTEM TIME '-4h';
+```
+
+```sql
+> SELECT * FROM t JOIN u ON t.x = u.y AS OF SYSTEM TIME '-4h';
+```
+
+```sql
+> SELECT * FROM (SELECT * FROM t), (SELECT * FROM u) AS OF SYSTEM TIME '-4h';
+```
+
+### Using `AS OF SYSTEM TIME` in subqueries
+
+To enable time travel, the `AS OF SYSTEM TIME` clause must appear in at least the top-level statement. It is not valid to use it only in a [subquery](/docs/v26.1/subqueries).
+
+For example, the following is invalid:
+
+```text
+SELECT * FROM (SELECT * FROM t AS OF SYSTEM TIME '-4h'), u
+```
+
+To facilitate the composition of larger queries from simpler queries, CockroachDB allows `AS OF SYSTEM TIME` in sub-queries under the following conditions:
+
+- The top level query also specifies `AS OF SYSTEM TIME`.
+- All the `AS OF SYSTEM TIME` clauses specify the same timestamp.
+
+For example:
+
+```sql
+> SELECT * FROM (SELECT * FROM t AS OF SYSTEM TIME '-4h') tp
+           JOIN u ON tp.x = u.y
+           AS OF SYSTEM TIME '-4h'  -- same timestamp as above - OK.
+     WHERE x < 123;
+```
+
+### Use `AS OF SYSTEM TIME` in transactions
+
+You can use the [`BEGIN`](/docs/v26.1/begin-transaction) statement to execute the transaction using the database contents "as of" a specified time in the past.
+
+```sql
+> BEGIN AS OF SYSTEM TIME '2019-04-09 18:02:52.0+00:00';
+```
+
+```sql
+> SELECT * FROM orders;
+```
+
+```sql
+> SELECT * FROM products;
+```
+
+```sql
+> COMMIT;
+```
+
+Alternatively, you can use the [`SET`](/docs/v26.1/set-transaction) statement to execute the transaction using the database contents "as of" a specified time in the past.
+
+```sql
+> BEGIN;
+```
+
+```sql
+> SET TRANSACTION AS OF SYSTEM TIME '2019-04-09 18:02:52.0+00:00';
+```
+
+```sql
+> SELECT * FROM orders;
+```
+
+```sql
+> SELECT * FROM products;
+```
+
+```sql
+> COMMIT;
+```
+
+### Use `AS OF SYSTEM TIME` to recover recently lost data
+
+It is possible to recover lost data as a result of an online schema change prior to when [garbage collection](/docs/v26.1/architecture/storage-layer#garbage-collection) begins:
+
+```sql
+> CREATE DATABASE foo;
+```
+
+```text
+CREATE DATABASE
+
+Time: 3ms total (execution 3ms / network 0ms)
+```
+
+```sql
+> CREATE TABLE foo.bar (id INT PRIMARY KEY);
+```
+
+```text
+CREATE TABLE
+
+Time: 4ms total (execution 3ms / network 0ms)
+```
+
+```sql
+> INSERT INTO foo.bar VALUES (1), (2);
+```
+
+```text
+INSERT 2
+
+Time: 5ms total (execution 5ms / network 0ms)
+```
+
+```sql
+> SELECT now();
+```
+
+```text
+              now
+--------------------------------
+  2022-02-01 21:11:53.63771+00
+(1 row)
+
+Time: 1ms total (execution 0ms / network 0ms)
+```
+
+```sql
+> DROP TABLE foo.bar;
+```
+
+```text
+DROP TABLE
+
+Time: 45ms total (execution 45ms / network 0ms)
+```
+
+```sql
+> SELECT * FROM foo.bar AS OF SYSTEM TIME '2022-02-01 21:11:53.63771+00';
+```
+
+```text
+  id
+------
+   1
+   2
+(2 rows)
+
+Time: 2ms total (execution 2ms / network 0ms)
+```
+
+```sql
+> SELECT * FROM foo.bar;
+```
+
+```text
+ERROR: relation "foo.bar" does not exist
+SQLSTATE: 42P01
+```
+
+<Warning>
+  Once garbage collection has occurred, `AS OF SYSTEM TIME` will no longer be able to recover lost data. For more
+  long-term recovery solutions, consider taking either a [full or incremental
+  backup](/docs/v26.1/take-full-and-incremental-backups) of your cluster.
+</Warning>
+
+## Known limitations
+
+- CockroachDB does not support placeholders in `AS OF SYSTEM TIME`. The time value must be a constant value embedded in the SQL string. [#30955](https://github.com/cockroachdb/cockroach/issues/30955)
+- The `ANALYZE` alias of [`CREATE STATISTICS`](/docs/v26.1/create-statistics) does not support specifying an `AS OF SYSTEM TIME` timestamp. `ANALYZE` statements use `AS OF SYSTEM TIME '-0.001ms'` automatically. For more control over the statistics interval, use the `CREATE STATISTICS` syntax instead. [#96430](https://github.com/cockroachdb/cockroach/issues/96430)
+
+## See also
+
+- [Select Historical Data](/docs/v26.1/select-clause#select-historical-data-time-travel)
+- [Time-Travel Queries](https://www.cockroachlabs.com/blog/time-travel-queries-select-witty_subtitle-the_future)
+- [Follower Reads](/docs/v26.1/follower-reads)
+- [Follower Reads Topology Pattern](/docs/v26.1/topology-follower-reads)

@@ -1,0 +1,80 @@
+## Step 4. Select your driver or ORM
+
+<Tabs>
+  <Tab title="pg">
+    ## Step 5. Connect to the cluster
+    
+    Set a `DATABASE_URL` environment variable to your connection string.
+
+    ```shell
+    export DATABASE_URL="{connection string}"
+    ```
+
+    <Note>
+    To connect to a CockroachDB Basic or Standard cluster from a Ruby application, you must have a valid CA certificate located at `~/.postgresql/root.crt`.
+
+    For instructions on downloading a CA certificate from the CockroachDB Cloud Console, see [Connect to a CockroachDB Basic Cluster](/docs/v23.2/cockroachcloud/connect-to-a-basic-cluster) or [Connect to a CockroachDB Standard Cluster](/docs/v23.2/cockroachcloud/connect-to-your-cluster).
+    </Note>
+
+    To connect to CockroachDB with the [Ruby pg](https://rubygems.org/gems/pg) driver, use the `PG.connect` function.
+
+    For example:
+
+    ```ruby
+    #!/usr/bin/env ruby
+
+    require 'pg'
+
+    conn = PG.connect(ENV['DATABASE_URL'])
+    ```
+
+    Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+    pg accepts the following format for CockroachDB connection strings:
+
+    ```
+    postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
+    ```
+
+    For more information about connecting with pg, see the [official pg documentation](https://www.rubydoc.info/gems/pg).
+  </Tab>
+  <Tab title="Active Record">
+    ## Step 5. Connect to the cluster
+    
+    Set a `DATABASE_URL` environment variable to your connection string.
+
+    ```shell
+    export DATABASE_URL="{connection string}"
+    ```
+
+    <Note>
+    To connect to a CockroachDB Basic or Standard cluster from a Ruby application, you must have a valid CA certificate located at `~/.postgresql/root.crt`.
+
+    For instructions on downloading a CA certificate from the CockroachDB Cloud Console, see [Connect to a CockroachDB Basic Cluster](/docs/v23.2/cockroachcloud/connect-to-a-basic-cluster) or [Connect to a CockroachDB Standard Cluster](/docs/v23.2/cockroachcloud/connect-to-your-cluster).
+    </Note>
+
+    To connect to CockroachDB with [Active Record](https://github.com/rails/rails/tree/main/activerecord) from a Rails app, update the database configuration in `config/database.yml`:
+
+    ```yaml
+    default: &default
+      adapter: cockroachdb
+      url: <%= ENV['DATABASE_URL'] %>
+
+    ...
+    ```
+
+    Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+    Active Record accepts the following format for CockroachDB connection strings:
+
+    ```
+    cockroachdb://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full
+    ```
+
+    <Note>
+    To connect to CockroachDB with Active Record, you must install the [Active Record CockroachDB adapter](https://rubygems.org/gems/activerecord-cockroachdb-adapter).
+    </Note>
+
+    For more information about connecting with pg, see the [official pg documentation](https://www.rubydoc.info/gems/pg).
+  </Tab>
+</Tabs>

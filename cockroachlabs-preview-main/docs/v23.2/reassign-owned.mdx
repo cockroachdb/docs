@@ -1,0 +1,110 @@
+---
+title: "REASSIGN OWNED"
+old_description: "The REASSIGN OWNED statement changes the ownership of all objects in the current database that are owned by a specific role or user."
+---
+
+import { ReassignOwned2 } from "/snippets/syntax-diagrams/ReassignOwned2.jsx";
+
+The `REASSIGN OWNED` statement changes the [ownership](/docs/v23.2/security-reference/authorization#object-ownership) of all database objects (i.e., tables, types, or schemas) in the current database that are currently owned by a specific [role](/docs/v23.2/security-reference/authorization#roles) or [user](/docs/v23.2/security-reference/authorization#sql-users).
+
+<Note>
+The `REASSIGN OWNED` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v23.2/online-schema-changes).
+</Note>
+
+<Tip>
+To change the ownership of any single object (e.g., a table or a database), use the `OWNER TO` subcommand of the object's [`ALTER` statement](/docs/v23.2/sql-statements).
+</Tip>
+
+## Required privileges
+
+- To reassign ownership with `REASSIGN OWNED`, the user must be a member of the current owner's role and a member of the target owner's role.
+- Members of the [`admin` role](/docs/v23.2/security-reference/authorization#admin-role) can always use `REASSIGN OWNED BY`.
+
+## Syntax
+
+<ReassignOwned2 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>role&#95;spec&#95;list</code></td><td>The source role, or a comma-separated list of source roles.</td></tr><tr><td><code>role&#95;spec</code></td><td>The target role.</td></tr></tbody></table>
+
+## Example
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v23.2/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v23.2/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Change the owner of all tables in a database
+
+Suppose that the current owner of the `users`, `vehicles`, and `rides` tables in the `movr` database is a role named `cockroachlabs`.
+
+```sql
+> CREATE ROLE cockroachlabs;
+```
+
+```sql
+> GRANT CREATE ON DATABASE movr TO cockroachlabs;
+```
+
+```sql
+> ALTER TABLE users OWNER TO cockroachlabs;
+> ALTER TABLE vehicles OWNER TO cockroachlabs;
+> ALTER TABLE rides OWNER TO cockroachlabs;
+```
+
+```sql
+> SHOW TABLES;
+```
+
+```text
+  schema_name |         table_name         | type  |     owner     | estimated_row_count | locality
+--------------+----------------------------+-------+---------------+---------------------+-----------
+  public      | promo_codes                | table | demo          |                1000 | NULL
+  public      | rides                      | table | cockroachlabs |                 500 | NULL
+  public      | user_promo_codes           | table | demo          |                   0 | NULL
+  public      | users                      | table | cockroachlabs |                  50 | NULL
+  public      | vehicle_location_histories | table | demo          |                1000 | NULL
+  public      | vehicles                   | table | cockroachlabs |                  15 | NULL
+(6 rows)
+```
+
+Now suppose you want to change the owner for all of the tables owned by `cockroachlabs` to a new role named `movrlabs`.
+
+```sql
+> CREATE ROLE movrlabs;
+```
+
+```sql
+> GRANT CREATE ON DATABASE movr TO movrlabs;
+```
+
+```sql
+> REASSIGN OWNED BY cockroachlabs TO movrlabs;
+```
+
+```sql
+> SHOW TABLES;
+```
+
+```text
+  schema_name |         table_name         | type  |  owner   | estimated_row_count | locality
+--------------+----------------------------+-------+----------+---------------------+-----------
+  public      | promo_codes                | table | demo     |                1000 | NULL
+  public      | rides                      | table | movrlabs |                 500 | NULL
+  public      | user_promo_codes           | table | demo     |                   0 | NULL
+  public      | users                      | table | movrlabs |                  50 | NULL
+  public      | vehicle_location_histories | table | demo     |                1000 | NULL
+  public      | vehicles                   | table | movrlabs |                  15 | NULL
+(6 rows)
+```
+
+## See also
+
+- [Authorization](/docs/v23.2/authorization)
+- [`ALTER TABLE... OWNER TO`](/docs/v23.2/alter-table#owner-to)
+- [`SHOW TABLES`](/docs/v23.2/show-tables)
+- [SQL Statements](/docs/v23.2/sql-statements)

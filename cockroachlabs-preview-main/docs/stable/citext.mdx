@@ -1,0 +1,94 @@
+---
+title: "CITEXT"
+old_description: "The CITEXT data type stores case-insensitive text values."
+---
+
+The `CITEXT` [data type](/docs/v26.1/data-types) represents a case-insensitive string. Like `STRING` values, `CITEXT` values preserve their casing when stored and retrieved. Unlike `STRING` values, comparisons between `CITEXT` values are case-insensitive for all [Unicode characters](https://en.wikipedia.org/wiki/List_of_Unicode_characters) that have a defined uppercase/lowercase mapping (e.g., `'É' = 'é'`).
+
+Equality operators (`=`, `!=`, `<>`) and ordering operators (`<`, `>`, etc.) treat `CITEXT` values as case-insensitive by default. Refer to the [example](#example).
+
+<Tip>
+`CITEXT` compares values as a `STRING` column with the `und-u-ks-level2` [collation](/docs/v26.1/collate), meaning it is case-insensitive but accent-sensitive.
+</Tip>
+
+## Syntax
+
+To declare a `CITEXT` column, use the type name directly in your `CREATE TABLE` statement:
+
+```sql
+CREATE TABLE logins (
+    name CITEXT PRIMARY KEY,
+    email TEXT NOT NULL
+);
+```
+
+## Size
+
+As with `STRING`, `CITEXT` values should be kept below 64 KB for best performance. Because `CITEXT` values resort to a collation engine on every comparison, `CITEXT` columns and indexes consume marginally more CPU and memory than their `STRING` equivalents.
+
+## Example
+
+Create and populate a table:
+
+```sql
+CREATE TABLE logins (
+  username CITEXT,
+  email STRING
+);
+```
+
+```sql
+INSERT INTO logins VALUES
+('Roach', 'Roach@example.com'),
+('lincoln', 'lincoln@example.com');
+```
+
+Because `CITEXT` comparisons are case-insensitive, an equality predicate matches regardless of letter case:
+
+```sql
+SELECT * FROM logins WHERE username = 'roach';
+```
+
+```text
+  username |       email
+-----------+--------------------
+  Roach    | Roach@example.com
+(1 row)
+```
+
+An ordering comparison is also case-insensitive with `CITEXT`:
+
+```sql
+SELECT username FROM logins WHERE username < 'Xavi';
+```
+
+```text
+  username
+------------
+  Roach
+  lincoln
+(2 rows)
+```
+
+For case-sensitive comparisons on `CITEXT` values, cast to `STRING` explicitly. In the default Unicode ordering, an uppercase value is considered less than the lowercase value in the table:
+
+```sql
+SELECT username FROM logins WHERE username::STRING < 'Xavi';
+```
+
+```text
+  username
+------------
+  Roach
+(1 row)
+```
+
+## Known limitations
+
+- `CITEXT` types are not currently compatible with the `LIKE` and `ILIKE` operators. [#149791](https://github.com/cockroachdb/cockroach/issues/149791)
+
+## See also
+
+- [Data Types](/docs/v26.1/data-types)
+- [`STRING`](/docs/v26.1/string)
+- [`COLLATE`](/docs/v26.1/collate)

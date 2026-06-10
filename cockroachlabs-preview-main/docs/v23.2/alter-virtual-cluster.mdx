@@ -1,0 +1,77 @@
+---
+title: "ALTER VIRTUAL CLUSTER"
+old_description: "The ALTER VIRTUAL CLUSTER statement manages a virtual cluster, including any related physical replication stream."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+import { AlterVirtualCluster } from "/snippets/syntax-diagrams/AlterVirtualCluster.jsx";
+
+<Note>
+**This feature is in [preview](/docs/v23.2/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2: The `ALTER VIRTUAL CLUSTER` statement initiates a cutover in a [**physical cluster replication (PCR)** job](/docs/v23.2/set-up-physical-cluster-replication) and manages a virtual cluster.
+
+PCR happens between an *active* primary cluster and a *passive* standby cluster that accepts updates from the primary cluster. The unit of replication is a *virtual cluster*, which is part of the underlying infrastructure in the primary and standby clusters. The CockroachDB cluster has:
+
+- The system virtual cluster manages the cluster's control plane and the replication of the cluster's data. Admins connect to the system virtual cluster to configure and manage the underlying CockroachDB cluster, set up PCR, create and manage a virtual cluster, and observe metrics and logs for the CockroachDB cluster and each virtual cluster.
+- Each other virtual cluster manages its own data plane. Users connect to a virtual cluster by default, rather than the system virtual cluster. To connect to the system virtual cluster, the connection string must be modified. Virtual clusters contain user data and run application workloads. When PCR is enabled, the non-system virtual cluster on both primary and secondary clusters is named `application`.
+
+For more detail, refer to the [Physical Cluster Replication Overview](/docs/v23.2/physical-cluster-replication-overview).
+
+## Required privileges
+
+`ALTER VIRTUAL CLUSTER` requires one of the following privileges:
+
+- The `admin` role.
+- The `MANAGEVIRTUALCLUSTER` [system privilege](/docs/v23.2/security-reference/authorization#privileges) allows the user to run all the related `VIRTUAL CLUSTER` SQL statements for PCR.
+
+Use the [`GRANT SYSTEM`](/docs/v23.2/grant) statement:
+
+```sql
+GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
+```
+
+## Synopsis
+
+xml version="1.0" encoding="UTF-8"?
+
+<AlterVirtualCluster />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>virtual&#95;cluster&#95;spec</code></td><td>The virtual cluster's name.</td></tr><tr><td><code>PAUSE REPLICATION</code></td><td>Pause the replication stream.</td></tr><tr><td><code>RESUME REPLICATION</code></td><td>Resume the replication stream.</td></tr><tr><td><code>COMPLETE REPLICATION TO</code></td><td>Set the time to complete the replication. Use:<br/><br/>- <code>SYSTEM TIME</code> to specify a <a href="/docs/v23.2/as-of-system-time">timestamp</a>. Refer to <a href="/docs/v23.2/cutover-replication#cut-over-to-a-point-in-time">Cut over to a point in time</a> for an example.<br/><br/>- <code>LATEST</code> to specify the most recent replicated timestamp. Refer to <a href="/docs/v23.2/cutover-replication#cut-over-to-the-most-recent-replicated-time">Cut over to a point in time</a> for an example.</td></tr><tr><td><code>GRANT ALL CAPABILITIES</code></td><td>Grant a virtual cluster all <a href="/docs/v23.2/create-virtual-cluster#capabilities">capabilities</a>.</td></tr><tr><td><code>REVOKE ALL CAPABILITIES</code></td><td>Revoke all <a href="/docs/v23.2/create-virtual-cluster#capabilities">capabilities</a> from a virtual cluster.</td></tr><tr><td><code>GRANT CAPABILITY virtual&#95;cluster&#95;capability&#95;list</code></td><td>Specify a <a href="/docs/v23.2/create-virtual-cluster#capabilities">capability</a> to grant to a virtual cluster.</td></tr><tr><td><code>REVOKE CAPABILITY virtual&#95;cluster&#95;capability&#95;list</code></td><td>Revoke a <a href="/docs/v23.2/create-virtual-cluster#capabilities">capability</a> from a virtual cluster.</td></tr><tr><td><code>RENAME TO virtual&#95;cluster&#95;spec</code></td><td>Rename a virtual cluster.</td></tr><tr><td><code>START SERVICE SHARED</code></td><td>Start a virtual cluster. That is, start the standby's virtual cluster so it is ready to accept SQL connections after cutover.</td></tr><tr><td><code>STOP SERVICE</code></td><td>Stop the <code>shared</code> service for a virtual cluster. Note that the virtual cluster's <code>data&#95;state</code> will remain as <code>ready</code> for the service to be started once again.</td></tr></tbody></table>
+
+## Examples
+
+### Start the cutover process
+
+To start the [cutover](/docs/v23.2/cutover-replication) process, use `COMPLETE REPLICATION` and provide the timestamp to restore as of:
+
+```sql
+ALTER VIRTUAL CLUSTER application COMPLETE REPLICATION TO {cutover time specification};
+```
+
+You can use either:
+
+- `SYSTEM TIME` to specify a [timestamp](/docs/v23.2/as-of-system-time).
+- `LATEST` to specify the most recent replicated timestamp.
+
+When a virtual cluster is [`ready`](/docs/v23.2/show-virtual-cluster#responses) after initiating the cutover process, you must start the service so that the virtual cluster is ready to accept SQL connections:
+
+```sql
+ALTER VIRTUAL CLUSTER application START SERVICE SHARED;
+```
+
+To stop the `shared` service for a virtual cluster and prevent it from accepting SQL connections:
+
+```sql
+ALTER VIRTUAL CLUSTER application STOP SERVICE;
+```
+
+## See also
+
+- [Physical Cluster Replication Overview](/docs/v23.2/physical-cluster-replication-overview)
+- [`CREATE VIRTUAL CLUSTER`](/docs/v23.2/create-virtual-cluster)
+- [`DROP VIRTUAL CLUSTER`](/docs/v23.2/drop-virtual-cluster)
+- [`SHOW VIRTUAL CLUSTER`](/docs/v23.2/show-virtual-cluster)

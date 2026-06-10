@@ -1,0 +1,96 @@
+---
+title: "ALTER POLICY"
+old_description: "The ALTER POLICY statement changes an existing row-level security (RLS) policy on a table."
+---
+
+The `ALTER POLICY` statement changes an existing [row-level security (RLS)](/docs/v25.2/row-level-security) policy on a table.
+
+Allowed changes to a policy using `ALTER POLICY` include:
+
+- Rename the policy.
+- Change the applicable [roles](/docs/v25.2/security-reference/authorization#roles).
+- Modify the [`USING` expression](#parameters).
+- Modify the [`WITH CHECK` expression](#parameters).
+
+<Note>
+You cannot use `ALTER POLICY` to change the `PERMISSIVE`, `RESTRICTIVE`, or `FOR` clauses of a policy, as defined in `CREATE POLICY... ON... ( PERMISSIVE | RESTRICTIVE )... FOR ( ALL | SELECT |... )`. To make these changes, drop the policy with [`DROP POLICY`](/docs/v25.2/drop-policy) and issue a new [`CREATE POLICY`](/docs/v25.2/create-policy) statement.
+</Note>
+
+## Syntax
+
+```text
+ALTER POLICY policy_name ON table_name RENAME TO new_policy_name;
+
+ALTER POLICY policy_name ON table_name
+    [ TO ( role_name | PUBLIC | CURRENT_USER | SESSION_USER ) [, ...] ]
+    [ USING ( using_expression ) ]
+    [ WITH CHECK ( check_expression ) ];
+```
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>policy&#95;name</code></td><td>The identifier of the existing policy to be modified. Must be unique for the specified <code>table&#95;name</code>.</td></tr><tr><td><code>ON table&#95;name</code></td><td>The name of the table on which the policy <code>policy&#95;name</code> is defined.</td></tr><tr><td><code>new&#95;policy&#95;name</code></td><td>The new identifier for the policy. The <code>new&#95;policy&#95;name</code> must be a unique name on <code>table&#95;name</code>.</td></tr><tr><td>`TO (role&#95;name</td><td>PUBLIC</td></tr><tr><td><code>USING ( using&#95;expression )</code></td><td>Replaces the previous value of this expression. For details about this expression, refer to <a href="/docs/v25.2/create-policy#parameters"><code>CREATE POLICY</code></a>.</td></tr><tr><td><code>WITH CHECK ( check&#95;expression )</code></td><td>Replaces the previous value of this expression. For details about this expression, refer to <a href="/docs/v25.2/create-policy#parameters"><code>CREATE POLICY</code></a>.</td></tr></tbody></table>
+
+## Example
+
+In this example, you will start by only allowing users to see or modify their own rows in an `orders` table. Then, as the schema is updated due to business requirements, you will refine the policy to take into account the new requirements.
+
+```sql
+CREATE TABLE orders (user_id TEXT PRIMARY KEY, order_details TEXT);
+```
+
+The original policy on the table was as follows:
+
+```sql
+CREATE POLICY user_orders_policy ON orders
+    FOR ALL
+    TO PUBLIC
+    USING ( user_id = CURRENT_USER )
+    WITH CHECK ( user_id = CURRENT_USER );
+```
+
+However, the `orders` table schema will be updated to include an `is_archived` flag, and the initial policy will need refinement.
+
+```sql
+-- Assume this change was made after the initial policy was created
+ALTER TABLE orders ADD COLUMN is_archived BOOLEAN DEFAULT FALSE NOT NULL;
+CREATE INDEX idx_orders_user_id_is_archived ON orders(user_id, is_archived); -- For performance
+```
+
+The policy requirements have changed as follows:
+
+1. The policy should now only apply to users belonging to the `customer_service` role, not `PUBLIC`.
+2. Users in `customer_service` should only be able to view and modify orders that are **not** archived ( `is_archived = FALSE` ). Archived orders should be invisible/immutable via this policy.
+
+This assumes the `customer_service` role has been created:
+
+```sql
+CREATE ROLE customer_service;
+```
+
+This leads to the following `ALTER POLICY` statement:
+
+```sql
+ALTER POLICY user_orders_policy ON orders
+    TO customer_service
+    USING ( user_id = CURRENT_USER AND is_archived = FALSE )
+    WITH CHECK ( user_id = CURRENT_USER AND is_archived = FALSE );
+```
+
+The changes to the `ALTER POLICY` statement can be explained as follows:
+
+- `TO customer_service`: Restricts the policy's application from all users ( `PUBLIC` ) to only those who are members of the `customer_service` role. Other users will no longer be affected by this specific policy (they would need other applicable policies or RLS would deny access by default).
+- `USING ( user_id = CURRENT_USER AND is_archived = FALSE )`: Modifies the visibility rule. Now, `customer_service` users can only see rows that match their `user_id` *and* are not archived.
+- `WITH CHECK ( user_id = CURRENT_USER AND is_archived = FALSE )`: Modifies the constraint for `INSERT` / `UPDATE`. Users attempting modifications must match the `user_id`, and the resulting row must not be archived. This prevents the user from inserting archived orders or updating an order to set `is_archived = TRUE` via operations governed by this policy.
+
+The preceding `ALTER POLICY` statement represents a typical use case: it refines role targeting and adapts the policy logic to accommodate schema changes and evolving access control requirements.
+
+## See also
+
+- [Row-level security (RLS) overview](/docs/v25.2/row-level-security)
+- [`CREATE POLICY`](/docs/v25.2/create-policy)
+- [`DROP POLICY`](/docs/v25.2/drop-policy)
+- [`SHOW POLICIES`](/docs/v25.2/show-policies)
+- [`ALTER TABLE... ENABLE ROW LEVEL SECURITY`](/docs/v25.2/alter-table#enable-row-level-security)
+- [`ALTER ROLE... WITH BYPASSRLS`](/docs/v25.2/alter-role#allow-a-role-to-bypass-row-level-security-rls)
+- [`CREATE ROLE... WITH BYPASSRLS`](/docs/v25.2/create-role#create-a-role-that-can-bypass-row-level-security-rls)

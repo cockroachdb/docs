@@ -1,0 +1,79 @@
+export const CreateSchemaStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="179" width="493" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="72" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">CREATE</text>
+<rect height="32" rx="10" width="76" x="125" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="123" y="1"></rect>
+<text class="terminal" x="133" y="21">SCHEMA</text>
+<rect height="32" rx="10" width="34" x="241" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="34" x="239" y="33"></rect>
+<text class="terminal" x="249" y="53">IF</text>
+<rect height="32" rx="10" width="48" x="295" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="293" y="33"></rect>
+<text class="terminal" x="303" y="53">NOT</text>
+<rect height="32" rx="10" width="70" x="363" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="361" y="33"></rect>
+<text class="terminal" x="371" y="53">EXISTS</text><a xlink:href="#qualifiable_schema_name" xlink:title="qualifiable_schema_name">
+<rect height="32" width="186" x="45" y="101"></rect>
+<rect class="nonterminal" height="32" width="186" x="43" y="99"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="162" font-size="11" class="nonterminal" x="55" y="119">qualifiable_schema_name</text></a><a xlink:href="#opt_schema_name" xlink:title="opt_schema_name">
+<rect height="32" width="140" x="45" y="145"></rect>
+<rect class="nonterminal" height="32" width="140" x="43" y="143"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="116" font-size="12" class="nonterminal" x="55" y="163">opt_schema_name</text></a><rect height="32" rx="10" width="138" x="205" y="145"></rect>
+<rect class="terminal" height="32" rx="10" width="138" x="203" y="143"></rect>
+<text class="terminal" x="213" y="163">AUTHORIZATION</text><a xlink:href="#role_spec" xlink:title="role_spec">
+<rect height="32" width="82" x="363" y="145"></rect>
+<rect class="nonterminal" height="32" width="82" x="361" y="143"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="373" y="163">role_spec</text></a><path class="line" d="m19 17 h2 m0 0 h10 m72 0 h10 m0 0 h10 m76 0 h10 m20 0 h10 m0 0 h202 m-232 0 h20 m212 0 h20 m-252 0 q10 0 10 10 m232 0 q0 -10 10 -10 m-242 10 v12 m232 0 v-12 m-232 12 q0 10 10 10 m212 0 q10 0 10 -10 m-222 10 h10 m34 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m70 0 h10 m22 -32 l2 0 m2 0 l2 0 m2 0 l2 0 m-472 98 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m186 0 h10 m0 0 h214 m-440 0 h20 m420 0 h20 m-460 0 q10 0 10 10 m440 0 q0 -10 10 -10 m-450 10 v24 m440 0 v-24 m-440 24 q0 10 10 10 m420 0 q10 0 10 -10 m-430 10 h10 m140 0 h10 m0 0 h10 m138 0 h10 m0 0 h10 m82 0 h10 m23 -44 h-3"></path>
+<polygon points="483 115 491 111 491 119"></polygon>
+<polygon points="483 115 475 111 475 119"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,20 @@
+---
+title: "Databases Page"
+old_description: "The Databases page provides details about databases configured, the tables and indexes in each database, and the grants assigned to each role and user."
+---
+
+import DatabasesPage from "/snippets/cockroachcloud/databases-page.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<DatabasesPage />

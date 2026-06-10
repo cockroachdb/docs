@@ -1,0 +1,20 @@
+---
+title: "Prepare a CockroachDB Cloud BYOC Deployment"
+old_description: "Prepare a cloud service account to self-host a CockroachDB Cloud deployment with the BYOC model"
+---
+
+import ByocDeployment from "/snippets/cockroachcloud/byoc-deployment.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ByocDeployment />

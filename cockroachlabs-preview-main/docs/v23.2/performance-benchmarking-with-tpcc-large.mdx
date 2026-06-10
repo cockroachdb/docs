@@ -1,0 +1,424 @@
+---
+title: "Performance Benchmarking with TPC-C"
+old_description: "Learn how to benchmark CockroachDB against TPC-C with 81 nodes on `c5d.9xlarge` machines"
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](/docs/v23.2/performance#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+
+<LinkedPageTabs
+  currentPath="/docs/v23.2/performance-benchmarking-with-tpcc-large"
+  items={[
+    {
+      title: "Local",
+      href: "/docs/v23.2/performance-benchmarking-with-tpcc-local",
+    },
+    {
+      title: "Local (Multi-Region)",
+      href: "/docs/v23.2/performance-benchmarking-with-tpcc-local-multiregion",
+    },
+    {
+      title: "Small",
+      href: "/docs/v23.2/performance-benchmarking-with-tpcc-small",
+    },
+    {
+      title: "Medium",
+      href: "/docs/v23.2/performance-benchmarking-with-tpcc-medium",
+    },
+    {
+      title: "Large",
+      href: "/docs/v23.2/performance-benchmarking-with-tpcc-large",
+    },
+  ]}
+/>
+
+<table><thead><tr><th>Workload</th><th>Cluster size</th><th>Warehouses</th><th>Data size</th></tr></thead><tbody><tr><td>Local</td><td>3 nodes on your laptop</td><td>10</td><td>2 GB</td></tr><tr><td>Local (multi-region)</td><td>9 in-memory nodes on your laptop using <code>cockroach demo</code></td><td>10</td><td>2 GB</td></tr><tr><td>Small</td><td>3 nodes on <code>c5d.4xlarge</code> machines</td><td>2500</td><td>200 GB</td></tr><tr><td>Medium</td><td>15 nodes on <code>c5d.4xlarge</code> machines</td><td>13,000</td><td>1.04 TB</td></tr><tr><td>Large</td><td>81 nodes on <code>c5d.9xlarge</code> machines</td><td>140,000</td><td>11.2 TB</td></tr></tbody></table>
+
+## Before you begin
+
+- [Review TPC-C concepts](#review-tpc-c-concepts)
+- [Request a trial license](#request-a-trial-license)
+
+### Review TPC-C concepts
+
+TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured](/docs/v23.2/performance#tpc-c).
+
+### Request a trial license
+
+Reproducing these TPC-C results involves using CockroachDB's [partitioning](/docs/v23.2/partitioning) feature to ensure replicas for any given section of data are located on the same nodes that will be queried by the load generator for that section of data. Partitioning helps distribute the workload evenly across the cluster.
+
+The partitioning feature requires an Enterprise license, so [request a 30-day trial license](https://www.cockroachlabs.com/get-cockroachdb/enterprise) before you get started.
+
+You should receive your trial license via email within a few minutes. You'll enable your license once your cluster is up-and-running.
+
+## Step 1. Set up the environment
+
+- [Provision VMs](#provision-vms)
+- [Configure your network](#configure-your-network)
+
+### Provision VMs
+
+1. [Create 86 VM instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/LaunchingAndUsingInstances), 81 for CockroachDB nodes and 5 for the TPC-C workload.
+    - Create all instances in the same region and the same security group.
+    - Use the `c5d.9xlarge` machine type.
+    - Use [local SSD instance store volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage#instance-store-volumes). Local SSDs are low latency disks attached to each VM, which maximizes performance. This configuration best resembles what a bare metal deployment would look like, with machines directly connected to one physical disk each. We do not recommend using network-attached block storage.
+2. Note the internal IP address of each instance. You'll need these addresses when starting the CockroachDB nodes.
+
+<Warning>
+This configuration is intended for performance benchmarking only. For production deployments, there are other important considerations, such as security, load balancing, and data location techniques to minimize network latency. For more details, see the [Production Checklist](/docs/v23.2/recommended-production-settings).
+</Warning>
+
+### Configure your network
+
+CockroachDB requires TCP communication on two ports:
+
+- `26257` for inter-node communication (i.e., working as a cluster) and for the TPC-C workload to connect to nodes
+- `8080` for exposing your DB Console
+
+[Create inbound rules](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-network-security#adding-security-group-rule) for your security group:
+
+#### Inter-node and TPCC-to-node communication
+
+<table><thead><tr><th>Field</th><th>Recommended Value</th></tr></thead><tbody><tr><td>Type</td><td>Custom TCP Rule</td></tr><tr><td>Protocol</td><td>TCP</td></tr><tr><td>Port Range</td><td><strong>26257</strong></td></tr><tr><td>Source</td><td>The name of your security group (e.g., <em>sg-07ab277a</em>)</td></tr></tbody></table>
+
+#### DB Console
+
+<table><thead><tr><th>Field</th><th>Recommended Value</th></tr></thead><tbody><tr><td>Type</td><td>Custom TCP Rule</td></tr><tr><td>Protocol</td><td>TCP</td></tr><tr><td>Port Range</td><td><strong>8080</strong></td></tr><tr><td>Source</td><td>Your network's IP ranges</td></tr></tbody></table>
+
+## Step 2. Start CockroachDB
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+1. SSH to the first VM where you want to run a CockroachDB node.
+2. Visit [Releases](/docs/releases?filters=windows) to download and CockroachDB for Linux. Select the architecture of the VM, either Intel or ARM. Releases are rolled out gradually, so the latest version may not yet be available.
+3. Extract the binary you downloaded, then optionally copy it into a location in your `PATH`. If you choose to copy it into a system directory, you may need to use `sudo`.
+4. Start CockroachDB using the [`cockroach start`](/docs/v23.2/cockroach-start) command:
+
+    ```shell
+    cockroach start \
+    --insecure \
+    --advertise-addr=<node1 internal address> \
+    --join=<node1 internal address>,<node2 internal address>,<node3 internal address> \
+    --cache=.25 \
+    --locality=rack=0
+    ```
+
+    Each node will start with a [locality](/docs/v23.2/cockroach-start#locality) that includes an artificial "rack number" (e.g., `--locality=rack=0`). Use 81 racks for 81 nodes so that 1 node will be assigned to each rack.
+5. Repeat these steps for the other 80 VMs for CockroachDB nodes. Each time, be sure to:
+    - Adjust the `--advertise-addr` flag.
+    - Set the [`--locality`](/docs/v23.2/cockroach-start#locality) flag to the appropriate "rack number".
+6. On any of the VMs with the `cockroach` binary, run the one-time [`cockroach init`](/docs/v23.2/cockroach-init) command to join the first nodes into a cluster:
+
+    ```shell
+    cockroach init --insecure --host=<address of any node on --join list>
+    ```
+
+## Step 3. Configure the cluster
+
+You'll be importing a large TPC-C data set. To speed that up, you can temporarily disable replication and tweak some cluster settings. You'll also need to enable the Enterprise license you requested earlier.
+
+1. SSH to any VM with the `cockroach` binary.
+2. Launch the [built-in SQL shell](/docs/v23.2/cockroach-sql):
+
+    ```shell
+    $ cockroach sql --insecure --host=<address of any node>
+    ```
+3. Adjust some [cluster settings](/docs/v23.2/cluster-settings):
+
+    ```sql
+    SET CLUSTER SETTING kv.dist_sender.concurrency_limit = 2016;
+    SET CLUSTER SETTING kv.snapshot_rebalance.max_rate = '256 MiB';
+    SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+    SET CLUSTER SETTING schemachanger.backfiller.max_buffer_size = '5 GiB';
+    SET CLUSTER SETTING rocksdb.min_wal_sync_interval = '500us';
+    SET CLUSTER SETTING kv.range_merge.queue_enabled = false
+    ```
+4. Change the default [GC TTL](/docs/v23.2/configure-replication-zones#gc-ttlseconds) to the following value:
+
+    ```sql
+    ALTER RANGE default CONFIGURE ZONE USING gc.ttlseconds = 600;
+    ```
+5. Enable the trial license you requested earlier:
+
+    ```sql
+    > SET CLUSTER SETTING cluster.organization = '<your organization>';
+    ```
+
+    ```sql
+    > SET CLUSTER SETTING enterprise.license = '<your license key>';
+    ```
+6. Exit the SQL shell:
+
+    ```sql
+    > \q
+    ```
+
+## Step 4. Import the TPC-C dataset
+
+CockroachDB comes with a number of [built-in workloads](/docs/v23.2/cockroach-workload) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc) workload.
+
+1. SSH to the VM where you want to run TPC-C.
+2. Download the [CockroachDB archive](https://binaries.cockroachdb.com/cockroach-v23.2.29.linux-amd64.tgz) for Linux, extract the binary, and copy it into the `PATH`:
+
+    ```shell
+    $ curl https://binaries.cockroachdb.com/cockroach-v23.2.29.linux-amd64.tgz \
+    | tar -xz
+    ```
+
+    ```shell
+    $ cp -i cockroach-v23.2.29.linux-amd64/cockroach /usr/local/bin/
+    ```
+
+    If you get a permissions error, prefix the command with `sudo`.
+3. Import the TPC-C dataset:
+
+    ```shell
+    $ cockroach workload fixtures import tpcc \
+    --partitions=81 \
+    --warehouses=140000 \
+    --replicate-static-columns \
+    --partition-strategy=leases \
+    'postgres://root@<address of any CockroachDB node>:26257?sslmode=disable'
+    ```
+
+    This will load 11.2 TB of data for 140,000 "warehouses". This can take up to 8 hours to complete.
+
+    You can monitor progress on the **Jobs** screen of the DB Console. Open the [DB Console](/docs/v23.2/ui-overview) by pointing a browser to the address in the `admin` field in the standard output of any node on startup.
+
+## Step 5. Partition the database
+
+1. [Partition your database](/docs/v23.2/partitioning) to divide all of the TPC-C tables and indexes into 81 partitions, one per rack, and then use [zone configurations](/docs/v23.2/configure-replication-zones) to pin those partitions to a particular rack.
+2. Wait for up-replication and partitioning to finish. You will know when they have finished because both the number of *lease transfers* and *snapshots* will go down to `0` and stay there. This will likely take 10s of minutes.
+    - To monitor the number of lease transfers, open the [DB Console](/docs/v23.2/ui-overview), select the **Replication** dashboard, hover over the **Range Operations** graph, and check the **Lease Transfers** data point.
+    - To check the number of snapshots, open the [DB Console](/docs/v23.2/ui-overview), select the **Replication** dashboard, and hover over the **Snapshots** graph.
+
+        <Frame>
+          ![TPC-C 140k replication and partitioning dashboards](/images/v23.2/tpcc-large-replication-dashboard.png)
+        </Frame>
+
+## Step 7. Allocate partitions
+
+Before running the benchmark, it's important to allocate partitions to workload binaries properly to ensure that the cluster is balanced.
+
+1. Create an `addrs` file containing connection strings to all 81 CockroachDB nodes:
+
+    ```text
+    postgres://root@<node 1 internal address>:26257?sslmode=disable postgres://root@<node 2 internal address>:26257?sslmode=disable postgres://root@<node 3 internal address>:26257?sslmode=disable postgres://root@<node 4 internal address>:26257?sslmode=disable ...
+    ```
+2. Upload the `addrs` file to the 5 VMs with the `workload` binary:
+
+    ```shell
+    $ scp addrs <username>@<workload instance 1 address>:.
+    ```
+
+    ```shell
+    $ scp addrs <username>@<workload instance 2 address>:.
+    ```
+
+    ```shell
+    $ scp addrs <username>@<workload instance 3 address>:.
+    ```
+
+    ```shell
+    $ scp addrs <username>@<workload instance 4 address>:.
+    ```
+
+    ```shell
+    $ scp addrs <username>@<workload instance 5 address>:.
+    ```
+3. SSH to each VM with `workload` and allocate partitions:
+
+    ```shell
+    ulimit -n 500000 && cockroach workload run tpcc --partitions=81 \
+    --warehouses=140000 \
+    --partition-affinity=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 \
+    --ramp=30m \
+    --duration=1ms \
+    --histograms=workload1.histogram.ndjson \
+    $(cat addrs)
+    ```
+
+    ```shell
+    ulimit -n 500000 && cockroach workload run tpcc \
+    --partitions 81 \
+    --warehouses 140000 \
+    --partition-affinity=17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32 \
+    --ramp=30m \
+    --duration=1ms \
+    --histograms=workload2.histogram.ndjson \
+    $(cat addrs)
+    ```
+
+    ```shell
+    ulimit -n 500000 && cockroach workload run tpcc \
+    --partitions=81 \
+    --warehouses=140000 \
+    --partition-affinity=33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48 \
+    --ramp=30m \
+    --duration=1ms \
+    --histograms=workload3.histogram.ndjson \
+    $(cat addrs)
+    ```
+
+    ```shell
+    ulimit -n 500000 && cockroach workload run tpcc \
+    --partitions=81 \
+    --warehouses=140000 \
+    --partition-affinity=49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64 \
+    --ramp=30m \
+    --duration=1ms \
+    --histograms=workload4.histogram.ndjson \
+    $(cat addrs)
+    ```
+
+    ```shell
+    ulimit -n 500000 && cockroach workload run tpcc \
+    --partitions=81 \
+    --warehouses=140000 \
+    --partition-affinity=65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80 \
+    --ramp=30m \
+    --duration=1ms \
+    --histograms=workload5.histogram.ndjson \
+    $(cat addrs)
+    ```
+
+## Step 8. Run the benchmark
+
+Once the allocations finish, run TPC-C for 30 minutes on each VM with `workload`:
+
+<Note>
+It is critical to run the benchmark from the workload nodes in parallel, so start them as simultaneously as possible.
+</Note>
+
+```shell
+ulimit -n 500000 && cockroach workload run tpcc \
+--partitions=81 \
+--warehouses=140000 \
+--partition-affinity=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 \
+--ramp=4m \
+--duration=30m \
+--histograms=workload1.histogram.ndjson \
+$(cat addrs)
+```
+
+```shell
+ulimit -n 500000 && cockroach workload run tpcc \
+--partitions=81 \
+--warehouses=140000 \
+--partition-affinity=17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32 \
+--ramp=4m \
+--duration=30m \
+--histograms=workload2.histogram.ndjson \
+$(cat addrs)
+```
+
+```shell
+ulimit -n 500000 && cockroach workload run tpcc \
+--partitions=81 \
+--warehouses=140000 \
+--partition-affinity=33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48 \
+--ramp=4m \
+--duration=30m \
+--histograms=workload3.histogram.ndjson \
+$(cat addrs)
+```
+
+```shell
+ulimit -n 500000 && cockroach workload run tpcc \
+--partitions=81 \
+--warehouses=140000 \
+--partition-affinity=49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64 \
+--ramp=4m \
+--duration=30m \
+--histograms=workload4.histogram.ndjson \
+$(cat addrs)
+```
+
+```shell
+ulimit -n 500000 && cockroach workload run tpcc \
+--partition=81 \
+--warehouses=140000 \
+--partition-affinity=65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80 \
+--ramp=4m \
+--duration=30m \
+--histograms=workload5.histogram.ndjson \
+$(cat addrs)
+```
+
+## Step 9. Interpret the results
+
+1. Collect the result files from each VM with `workload`:
+
+    ```shell
+    $ scp <username>@<workload instance 1 address>:workload1.histogram.ndjson .
+    ```
+
+    ```shell
+    $ scp <username>@<workload instance 2 address>:workload2.histogram.ndjson .
+    ```
+
+    ```shell
+    $ scp <username>@<workload instance 3 address>:workload3.histogram.ndjson .
+    ```
+
+    ```shell
+    $ scp <username>@<workload instance 4 address>:workload4.histogram.ndjson .
+    ```
+
+    ```shell
+    $ scp <username>@<workload instance 5 address>:workload5.histogram.ndjson .
+    ```
+2. Upload the result files to one of the VMs with the `workload` binary:
+
+    <Note>
+    The following commands assume you're uploading to the VM with the `workload1.histogram.ndjson` file.
+    </Note>
+
+    ```shell
+    $ scp workload2.histogram.ndjson <username>@<workload instance 2 address>:.
+    ```
+
+    ```shell
+    $ scp workload3.histogram.ndjson <username>@<workload instance 3 address>:.
+    ```
+
+    ```shell
+    $ scp workload4.histogram.ndjson <username>@<workload instance 4 address>:.
+    ```
+
+    ```shell
+    $ scp workload5.histogram.ndjson <username>@<workload instance 5 address>:.
+    ```
+3. SSH to the VM where you uploaded the results files.
+4. Run the `workload debug tpcc-merge-results` command to synthesize the results:
+
+    ```shell
+    cockroach workload debug tpcc-merge-results \
+    --warehouses=140000 \
+    workload*.histogram.ndjson
+    ```
+
+    You'll should see results similar to the following, with **1.68M tpmC with 140,000 warehouses, resulting in an efficiency score of 95%**:
+
+    ```text
+    Duration: 30m1., Warehouses: 140000, Efficiency: 95.45, tpmC: 1684437.21
+    _elapsed___ops/sec(cum)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
+    1801.1s      2824.0     302.0   1140.9   2415.9   9126.8  55834.6 delivery
+    1801.1s     28074.0     402.7   1409.3   2684.4   9126.8  45097.2 newOrder
+    1801.1s      2826.0       6.8     62.9    125.8   4160.7  33286.0 orderStatus
+    1801.1s     28237.4     251.7   1006.6   2415.9  15032.4 103079.2 payment
+    1801.1s      2823.5      39.8    469.8    906.0   5905.6  38654.7 stockLevel
+    ```
+
+## See also
+
+- [Performance Overview](/docs/v23.2/performance)
+- Hardware
+
+    CockroachDB works well on commodity hardware in public cloud, private cloud, on-prem, and hybrid environments. For hardware recommendations, see our [Production Checklist](/docs/v23.2/recommended-production-settings#hardware).
+- Performance tuning
+
+    For guidance on tuning a real workload's performance, see [SQL Best Practices](/docs/v23.2/performance-best-practices-overview), and for guidance on techniques to minimize network latency in multi-region or global clusters, see [Multi-Region Capabilities Overview](/docs/v23.2/multiregion-overview).

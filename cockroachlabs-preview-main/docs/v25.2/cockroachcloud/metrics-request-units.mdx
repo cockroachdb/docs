@@ -1,0 +1,20 @@
+---
+title: "Request Unit metrics"
+old_description: "The Request Unit metrics let you monitor resource consumption."
+---
+
+import MetricsRequestUnits from "/snippets/cockroachcloud/metrics-request-units.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MetricsRequestUnits />

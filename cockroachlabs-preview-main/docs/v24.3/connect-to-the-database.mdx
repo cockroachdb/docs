@@ -1,0 +1,41 @@
+---
+title: "Connect to a CockroachDB Cluster"
+old_description: "How to connect to a CockroachDB cluster from your application"
+---
+
+import BasicStandard from "/snippets/v24.3/connect-to-database/basic-standard/index.mdx";
+import Advanced from "/snippets/v24.3/connect-to-database/advanced/index.mdx";
+import SelfHosted from "/snippets/v24.3/connect-to-database/self-hosted/index.mdx";
+
+This page documents the required connection configuration for [fully-supported third-party tools](/docs/v24.3/third-party-database-tools).
+
+For a list of all supported cluster connection parameters, see the [`cockroach` Connection Parameters](/docs/v24.3/connection-parameters).
+
+For a list of community-supported third-party tools, see [Third-Party Tools Supported by the Community](/docs/v24.3/community-tooling). CockroachDB supports both native drivers and the PostgreSQL wire protocol. Most client drivers and ORM frameworks connect to CockroachDB like they connect to PostgreSQL.
+
+## Step 1. Select your deployment
+
+<Tabs>
+<Tab title="CockroachDB Basic/Standard">
+
+<BasicStandard/>
+
+</Tab>
+<Tab title="CockroachDB Advanced">
+
+<Advanced/>
+
+</Tab>
+<Tab title="CockroachDB self-hosted">
+
+<SelfHosted/>
+
+</Tab>
+</Tabs>
+
+## See also
+
+- [Install a Driver or ORM Framework](/docs/v24.3/install-client-drivers)
+- [Connection Pooling](/docs/v24.3/connection-pooling)
+- [`cockroach` Connection Parameters](/docs/v24.3/connection-parameters)
+- [Example Apps](/docs/v24.3/example-apps)

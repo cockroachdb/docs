@@ -1,0 +1,114 @@
+---
+title: "ALTER PARTITION"
+old_description: "Use the ALTER PARTITION statement to configure the replication zone for a partition."
+---
+
+import { AlterPartition2 } from "/snippets/syntax-diagrams/AlterPartition2.jsx";
+
+`ALTER PARTITION` is used to add, modify, reset, or remove replication zones for [partitioning](/docs/v23.2/partitioning). It is combined with the `CONFIGURE ZONE` subcommand.
+
+To view details about existing replication zones, use [`SHOW ZONE CONFIGURATIONS`](/docs/v23.2/show-zone-configurations). For more information about replication zones, see [Replication Controls](/docs/v23.2/configure-replication-zones).
+
+For instructions showing how to troubleshoot replication zones that may be misconfigured, see [Troubleshoot Replication Zone Configurations](/docs/v23.2/troubleshoot-replication-zones).
+
+You can use *replication zones* to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
+
+## Synopsis
+
+<AlterPartition2 />
+
+## Required privileges
+
+The user must have the [`CREATE`](/docs/v23.2/grant#supported-privileges) privilege on the table.
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the <a href="/docs/v23.2/create-table">table</a> with the <a href="/docs/v23.2/configure-replication-zones">replication zone configurations</a> to modify.</td></tr><tr><td><code>partition&#95;name</code></td><td>The name of the <a href="/docs/v23.2/partitioning">partition</a> with the <a href="/docs/v23.2/configure-replication-zones">replication zone configurations</a> to modify.</td></tr><tr><td><code>index&#95;name</code></td><td>The name of the <a href="/docs/v23.2/indexes">index</a> with the <a href="/docs/v23.2/configure-replication-zones">replication zone configurations</a> to modify.</td></tr><tr><td><code>variable</code></td><td>The name of the <a href="#variables">variable</a> to change.</td></tr><tr><td><code>value</code></td><td>The value of the <a href="#variables">variable</a> to change.</td></tr></tbody></table>
+
+### Variables
+
+<table><thead><tr><th>Variable</th><th>Description</th></tr></thead><tbody><tr><td><code>range&#95;min&#95;bytes</code></td><td><a></a> The minimum size, in bytes, for a range of data in the zone. When a range is less than this size, CockroachDB will merge it with an adjacent range.<br/><br/><strong>Default:</strong><code>134217728</code> (128 MiB)</td></tr><tr><td><code>range&#95;max&#95;bytes</code></td><td><a></a> The maximum size, in bytes, for a <a href="/docs/v23.2/architecture/glossary#architecture-range">range</a> of data in the zone. When a range reaches this size, CockroachDB will <a href="/docs/v23.2/architecture/distribution-layer#range-splits">split it</a> into two ranges.<br/><br/><strong>Default:</strong><code>536870912</code> (512 MiB)</td></tr><tr><td><code>gc.ttlseconds</code></td><td><a></a> The number of seconds overwritten <a href="/docs/v23.2/architecture/storage-layer#mvcc">MVCC values</a> will be retained before <a href="/docs/v23.2/architecture/storage-layer#garbage-collection">garbage collection</a>.<br/><br/><strong>Default:</strong><code>14400</code> (4 hours)<br/><br/>Smaller values can save disk space and improve performance if values are frequently overwritten or for queue-like workloads. The smallest value we regularly test is <code>600</code> (10 minutes); smaller values are unlikely to be beneficial because of the frequency with which GC runs. If you use <a href="/docs/v23.2/take-full-and-incremental-backups#garbage-collection-and-backups">non-scheduled incremental backups</a>, the GC TTL must be greater than the interval between incremental backups. Otherwise, your incremental backups will fail with <a href="/docs/v23.2/common-errors#protected-ts-verification-error">the error message <code>protected ts verification error</code></a>. To avoid this problem, we recommend using <a href="/docs/v23.2/create-schedule-for-backup">scheduled backups</a> instead, which automatically <a href="/docs/v23.2/create-schedule-for-backup#protected-timestamps-and-scheduled-backups">use protected timestamps</a> to ensure they succeed.<br/><br/>Larger values increase the interval allowed for <a href="/docs/v23.2/as-of-system-time"><code>AS OF SYSTEM TIME</code></a> queries and allow for less frequent incremental backups. The largest value we regularly test is <code>90000</code> (25 hours). Increasing the GC TTL is not meant to be a solution for long-term retention of history; for that you should handle versioning in the <a href="/docs/v23.2/schema-design-overview">schema design at the application layer</a>. Setting the GC TTL too high can cause problems if the retained versions of a single row approach the <a href="#range-max-bytes">maximum range size</a>. This is important because all versions of a row are stored in a single range that never <a href="/docs/v23.2/architecture/distribution-layer#range-splits">splits</a>.</td></tr><tr><td><code>num&#95;replicas</code></td><td><a></a> The number of replicas in the zone, also called the "replication factor".<br/><br/><strong>Default:</strong><code>3</code><br/><br/>For the <code>system</code> database and <code>.meta</code>, <code>.liveness</code>, and <code>.system</code> ranges, the default value is <code>5</code>.<br/><br/>For <a href="/docs/v23.2/multiregion-survival-goals#survive-region-failures">multi-region databases configured to survive region failures</a>, the default value is <code>5</code>; this will include both <a href="#num_voters">voting</a> and <a href="/docs/v23.2/architecture/replication-layer#non-voting-replicas">non-voting replicas</a>.</td></tr><tr><td><code>constraints</code></td><td><a></a> An array of required (<code>+</code>) and/or prohibited (<code>-</code>) constraints influencing the location of replicas. See <a href="/docs/v23.2/configure-replication-zones#types-of-constraints">Types of Constraints</a> and <a href="/docs/v23.2/configure-replication-zones#scope-of-constraints">Scope of Constraints</a> for more details.<br/><br/>To prevent hard-to-detect typos, constraints placed on <a href="/docs/v23.2/configure-replication-zones#descriptive-attributes-assigned-to-nodes">store attributes and node localities</a> must match the values passed to at least one node in the cluster. If not, an error is signalled. To prevent this error, make sure at least one active node is configured to match the constraint. For example, apply <code>constraints = '&#91;+region=west&#93;'</code> only if you had set <code>--locality=region=west</code> for at least one node while starting the cluster.<br/><br/><strong>Default:</strong> No constraints, with CockroachDB locating each replica on a unique node and attempting to spread replicas evenly across localities.</td></tr><tr><td><code>lease&#95;preferences</code><a></a></td><td>An ordered list of required and/or prohibited constraints influencing the location of <a href="/docs/v23.2/architecture/glossary#architecture-leaseholder">leaseholders</a>. Whether each constraint is required or prohibited is expressed with a leading <code>+</code> or <code>-</code>, respectively. Note that lease preference constraints do not have to be shared with the <code>constraints</code> field. For example, it's valid for your configuration to define a <code>lease&#95;preferences</code> field that does not reference any values from the <code>constraints</code> field. It's also valid to define a <code>lease&#95;preferences</code> field with no <code>constraints</code> field at all.<br/><br/>If the first preference cannot be satisfied, CockroachDB will attempt to satisfy the second preference, and so on. If none of the preferences can be met, the lease will be placed using the default lease placement algorithm, which is to base lease placement decisions on how many leases each node already has, trying to make all the nodes have around the same amount.<br/><br/>Each value in the list can include multiple constraints. For example, the list <code>&#91;&#91;+zone=us-east-1b, +ssd&#93;, &#91;+zone=us-east-1a&#93;, &#91;+zone=us-east-1c, +ssd&#93;&#93;</code> means "prefer nodes with an SSD in <code>us-east-1b</code>, then any nodes in <code>us-east-1a</code>, then nodes in <code>us-east-1c</code> with an SSD."<br/><br/>For a usage example, see <a href="/docs/v23.2/configure-replication-zones#constrain-leaseholders-to-specific-availability-zones">Constrain leaseholders to specific availability zones</a>.<br/><br/><strong>Default</strong>: No lease location preferences are applied if this field is not specified.</td></tr><tr><td><code>global&#95;reads</code></td><td><a></a> If <code>true</code>, transactions operating on the range(s) affected by this zone config should be <a href="/docs/v23.2/architecture/transaction-layer#non-blocking-transactions">non-blocking</a>, which slows down writes but allows reads from any replica in the range. Most users will not need to modify this setting; it is applied automatically when you <a href="/docs/v23.2/global-tables">use the <code>GLOBAL</code> table locality in a multi-region cluster</a>.</td></tr><tr><td><code>num&#95;voters</code></td><td><a></a> Specifies the number of <a href="/docs/v23.2/architecture/life-of-a-distributed-transaction#consensus">voting replicas</a>. When set, <code>num&#95;replicas</code> will be the sum of voting and <a href="/docs/v23.2/architecture/replication-layer#non-voting-replicas">non-voting replicas</a>. Most users will not need to modify this setting; it is part of the underlying machinery that enables <a href="/docs/v23.2/multiregion-overview">improved multi-region capabilities in v21.1 and above</a>.</td></tr><tr><td><code>voter&#95;constraints</code></td><td><a></a> Specifies the constraints that govern the placement of voting replicas. This differs from the <code>constraints</code> field, which will govern the placement of all voting and non-voting replicas. Most users will not need to modify this setting; it is part of the underlying machinery that enables <a href="/docs/v23.2/multiregion-overview">improved multi-region capabilities in v21.1 and above</a>.</td></tr></tbody></table>
+
+<Note>
+If a value is not set, new zone configurations will inherit their values from their parent zone (e.g., a partition zone inherits from the table zone), which is not necessarily `default`.
+
+If a variable is set to `COPY FROM PARENT` (e.g., `range_max_bytes = COPY FROM PARENT`), the variable will copy its value from its parent [replication zone](/docs/v23.2/configure-replication-zones). The `COPY FROM PARENT` value is a convenient shortcut to use so you do not have to look up the parent's current value. For example, the `range_max_bytes` and `range_min_bytes` variables must be set together, so when editing one value, you can use `COPY FROM PARENT` for the other. Note that if the variable in the parent replication zone is changed after the child replication zone is copied, the change will not be reflected in the child zone.
+</Note>
+
+## Examples
+
+#### Setup
+
+The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](/docs/v23.2/movr).
+
+To follow along, run [`cockroach demo`](/docs/v23.2/cockroach-demo) with the `--geo-partitioned-replicas` flag. This command opens an interactive SQL shell to a temporary, 9-node in-memory cluster with the `movr` database.
+
+```shell
+$ cockroach demo --geo-partitioned-replicas
+```
+
+### Create a replication zone for a partition
+
+Once [partitions have been defined for a table or a secondary index](/docs/v23.2/partitioning), to control replication for a partition, use `ALTER PARTITION <partition> OF INDEX <table@index> CONFIGURE ZONE`:
+
+```sql
+> ALTER PARTITION us_west OF INDEX vehicles@primary
+    CONFIGURE ZONE USING
+      num_replicas = 5,
+      constraints = '[+region=us-west1]';
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> ALTER PARTITION us_west OF INDEX vehicles@vehicles_auto_index_fk_city_ref_users
+    CONFIGURE ZONE USING
+      num_replicas = 5,
+      constraints = '[+region=us-west1]';
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+To define replication zones for identically named partitions of a table and its secondary indexes, you can use the `<table>@*` syntax to save several steps:
+
+```sql
+> ALTER PARTITION us_west OF INDEX vehicles@*
+    CONFIGURE ZONE USING
+      num_replicas = 5,
+      constraints = '[+region=us-west1]';
+```
+
+To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FROM PARTITION <partition> OF INDEX <table@index>`:
+
+```sql
+> SHOW ZONE CONFIGURATION FROM PARTITION us_west OF INDEX vehicles@primary;
+```
+
+```text
+                    target                    |                             raw_config_sql
+----------------------------------------------+-------------------------------------------------------------------------
+  PARTITION us_west OF INDEX vehicles@primary | ALTER PARTITION us_west OF INDEX vehicles@primary CONFIGURE ZONE USING
+                                              |     range_min_bytes = 134217728,
+                                              |     range_max_bytes = 536870912,
+                                              |     gc.ttlseconds = 90000,
+                                              |     num_replicas = 5,
+                                              |     constraints = '[+region=us-west1]',
+                                              |     lease_preferences = '[]'
+(1 row)
+```
+
+<Tip>
+You can also use the [`SHOW CREATE TABLE`](/docs/v23.2/show-create) statement or [`SHOW PARTITIONS`](/docs/v23.2/show-partitions) statements to view details about all of the replication zones defined for the partitions of a table and its secondary indexes.
+</Tip>
+
+For instructions showing how to troubleshoot replication zones that may be misconfigured, see [Troubleshoot Replication Zone Configurations](/docs/v23.2/troubleshoot-replication-zones).
+
+## See also
+
+- [Table partitioning](/docs/v23.2/partitioning)
+- [`SHOW PARTITIONS`](/docs/v23.2/show-partitions)
+- [Troubleshoot Replication Zones](/docs/v23.2/troubleshoot-replication-zones)

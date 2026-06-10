@@ -1,0 +1,80 @@
+---
+title: "Spatial Data Overview"
+old_description: "A summary of CockroachDB's support for storing and querying spatial data."
+---
+
+CockroachDB supports efficiently storing and querying spatial data.
+
+See the links below for more information about how to use CockroachDB for spatial use cases.
+
+## Getting Started
+
+- [Install CockroachDB](/docs/v26.1/install-cockroachdb)
+- [Spatial tutorial](/docs/v26.1/spatial-tutorial)
+
+## Migrating spatial data into and out of CockroachDB
+
+- [Migrate from Shapefiles](/docs/v26.1/migrate-from-shapefiles)
+- [Migrate from GeoJSON](/docs/v26.1/migrate-from-geojson)
+- [Migrate from GeoPackage](/docs/v26.1/migrate-from-geopackage)
+- [Migrate from OpenStreetMap](/docs/v26.1/migrate-from-openstreetmap)
+- [Export Spatial Data](/docs/v26.1/export-spatial-data)
+
+## Reference
+
+- [Spatial indexes](/docs/v26.1/spatial-indexes)
+- [Spatial and GIS Glossary of Terms](/docs/v26.1/architecture/glossary)
+- Refer to [Known Limitations](/docs/v26.1/spatial-data-overview#known-limitations)
+- [Spatial functions](/docs/v26.1/functions-and-operators#spatial-functions)
+- [Client library compatibility](/docs/v26.1/query-spatial-data#compatibility)
+
+### Spatial objects
+
+- [POINT](/docs/v26.1/point)
+- [LINESTRING](/docs/v26.1/linestring)
+- [POLYGON](/docs/v26.1/polygon)
+- [MULTIPOINT](/docs/v26.1/multipoint)
+- [MULTILINESTRING](/docs/v26.1/multilinestring)
+- [MULTIPOLYGON](/docs/v26.1/multipolygon)
+- [GEOMETRYCOLLECTION](/docs/v26.1/geometrycollection)
+
+### Data representations
+
+- [Well known text](/docs/v26.1/well-known-text)
+- [Well known binary](/docs/v26.1/well-known-binary)
+- [GeoJSON](/docs/v26.1/geojson)
+- [SRID 4326 - longitude and latitude](/docs/v26.1/srid-4326)
+
+### Spatial functions
+
+In addition to the [generated reference documentation for spatial functions](/docs/v26.1/functions-and-operators#spatial-functions), we have written additional documentation for the following functions, including examples:
+
+- [`ST_Contains`](/docs/v26.1/st_contains)
+- [`ST_ConvexHull`](/docs/v26.1/st_convexhull)
+- [`ST_CoveredBy`](/docs/v26.1/st_coveredby)
+- [`ST_Covers`](/docs/v26.1/st_covers)
+- [`ST_Disjoint`](/docs/v26.1/st_disjoint)
+- [`ST_Equals`](/docs/v26.1/st_equals)
+- [`ST_Intersects`](/docs/v26.1/st_intersects)
+- [`ST_Overlaps`](/docs/v26.1/st_overlaps)
+- [`ST_Touches`](/docs/v26.1/st_touches)
+- [`ST_Union`](/docs/v26.1/st_union)
+- [`ST_Within`](/docs/v26.1/st_within)
+
+## Known limitations
+
+- Not all [PostGIS spatial functions](https://postgis.net/docs/reference) are supported. [#49203](https://github.com/cockroachdb/cockroach/issues/49203)
+- The `AddGeometryColumn` [spatial function](/docs/v26.1/functions-and-operators#spatial-functions) only allows constant arguments. [#49402](https://github.com/cockroachdb/cockroach/issues/49402)
+- The `AddGeometryColumn` spatial function only allows the `true` value for its `use_typmod` parameter. [#49448](https://github.com/cockroachdb/cockroach/issues/49448)
+- CockroachDB does not support the `@` operator. Instead of using `@` in spatial expressions, we recommend using the inverse, with `~`. For example, instead of `a @ b`, use `b ~ a`. [#56124](https://github.com/cockroachdb/cockroach/issues/56124)
+- CockroachDB does not yet support [`INSERT`](/docs/v26.1/insert) s into the [`spatial_ref_sys` table](/docs/v26.1/architecture/glossary#spatial-system-tables). This limitation also blocks the [`ogr2ogr -f PostgreSQL` file conversion command](https://gdal.org/programs/ogr2ogr#cmdoption-ogr2ogr-f). [#55903](https://github.com/cockroachdb/cockroach/issues/55903)
+- CockroachDB does not yet support [k-nearest neighbors](https://wikipedia.org/wiki/K-nearest_neighbors_algorithm). [#55227](https://github.com/cockroachdb/cockroach/issues/55227)
+- CockroachDB does not support using [schema name prefixes](/docs/v26.1/sql-name-resolution#how-name-resolution-works) to refer to [data types](/docs/v26.1/data-types) with type modifiers (e.g., `public.geometry(linestring, 4326)` ). Instead, use fully-unqualified names to refer to data types with type modifiers (e.g., `geometry(linestring,4326)` ). [#56492](https://github.com/cockroachdb/cockroach/issues/56492)
+- Defining a custom SRID by inserting rows into [`spatial_ref_sys`](/docs/v26.1/architecture/glossary#spatial_ref_sys) is not currently supported. [#55903](https://github.com/cockroachdb/cockroach/issues/55903)
+- Clusters that mix `s390x` with other CPU architectures are unsupported for geospatial workloads. Due to differences in how trigonometric functions are computed on `s390x` systems, geospatial queries in heterogeneous clusters with `s390x` are likely to get incorrect results. This can include taking a backup on one architecture and restoring it on another. [#148783](https://github.com/cockroachdb/cockroach/issues/148783)
+- [Spatial features](/docs/v26.1/spatial-data-overview) are disabled on ARM Macs due to an issue with macOS code signing for the [GEOS](https://libgeos.org/) libraries. Users needing spatial features on an ARM Mac may instead [use Rosetta](https://developer.apple.com/documentation/virtualization/running_intel_binaries_in_linux_vms_with_rosetta) to [run the Intel binary](/docs/v26.1/install-cockroachdb#install-binary) or use the [Docker image](/docs/v26.1/install-cockroachdb#use-docker) distribution. [#93161](https://github.com/cockroachdb/cockroach/issues/93161)
+
+## See also
+
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data) (blog post)
+- [Using GeoServer with CockroachDB](/docs/v26.1/geoserver)

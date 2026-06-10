@@ -1,0 +1,89 @@
+export const VarSetList = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="223" width="603" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon><a xlink:href="#var_name" xlink:title="var_name">
+<rect height="32" width="84" x="33" y="3"></rect>
+<rect class="nonterminal" height="32" width="84" x="31" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="60" font-size="12" class="nonterminal" x="43" y="21">var_name</text></a><rect height="32" rx="10" width="30" x="137" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="135" y="1"></rect>
+<text class="terminal" x="145" y="21">=</text>
+<rect height="32" rx="10" width="58" x="207" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="205" y="1"></rect>
+<text class="terminal" x="215" y="21">COPY</text>
+<rect height="32" rx="10" width="60" x="285" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="283" y="1"></rect>
+<text class="terminal" x="293" y="21">FROM</text>
+<rect height="32" rx="10" width="74" x="365" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="363" y="1"></rect>
+<text class="terminal" x="373" y="21">PARENT</text><a xlink:href="#var_value" xlink:title="var_value">
+<rect height="32" width="82" x="207" y="47"></rect>
+<rect class="nonterminal" height="32" width="82" x="205" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="217" y="65">var_value</text></a><rect height="32" rx="10" width="24" x="65" y="129"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="63" y="127"></rect>
+<text class="terminal" x="73" y="147">,</text><a xlink:href="#var_name" xlink:title="var_name">
+<rect height="32" width="84" x="109" y="129"></rect>
+<rect class="nonterminal" height="32" width="84" x="107" y="127"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="60" font-size="12" class="nonterminal" x="119" y="147">var_name</text></a><rect height="32" rx="10" width="30" x="213" y="129"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="211" y="127"></rect>
+<text class="terminal" x="221" y="147">=</text><a xlink:href="#var_value" xlink:title="var_value">
+<rect height="32" width="82" x="283" y="129"></rect>
+<rect class="nonterminal" height="32" width="82" x="281" y="127"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="293" y="147">var_value</text></a><rect height="32" rx="10" width="58" x="283" y="173"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="281" y="171"></rect>
+<text class="terminal" x="291" y="191">COPY</text>
+<rect height="32" rx="10" width="60" x="361" y="173"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="359" y="171"></rect>
+<text class="terminal" x="369" y="191">FROM</text>
+<rect height="32" rx="10" width="74" x="441" y="173"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="439" y="171"></rect>
+<text class="terminal" x="449" y="191">PARENT</text>
+<path class="line" d="m19 17 h2 m0 0 h10 m84 0 h10 m0 0 h10 m30 0 h10 m20 0 h10 m58 0 h10 m0 0 h10 m60 0 h10 m0 0 h10 m74 0 h10 m-272 0 h20 m252 0 h20 m-292 0 q10 0 10 10 m272 0 q0 -10 10 -10 m-282 10 v24 m272 0 v-24 m-272 24 q0 10 10 10 m252 0 q10 0 10 -10 m-262 10 h10 m82 0 h10 m0 0 h150 m22 -44 l2 0 m2 0 l2 0 m2 0 l2 0 m-478 126 l2 0 m2 0 l2 0 m2 0 l2 0 m42 0 h10 m24 0 h10 m0 0 h10 m84 0 h10 m0 0 h10 m30 0 h10 m20 0 h10 m82 0 h10 m0 0 h150 m-272 0 h20 m252 0 h20 m-292 0 q10 0 10 10 m272 0 q0 -10 10 -10 m-282 10 v24 m272 0 v-24 m-272 24 q0 10 10 10 m252 0 q10 0 10 -10 m-262 10 h10 m58 0 h10 m0 0 h10 m60 0 h10 m0 0 h10 m74 0 h10 m-490 -44 l20 0 m-1 0 q-9 0 -9 -10 l0 -12 q0 -10 10 -10 m490 32 l20 0 m-20 0 q10 0 10 -10 l0 -12 q0 -10 -10 -10 m-490 0 h10 m0 0 h480 m-530 32 h20 m530 0 h20 m-570 0 q10 0 10 10 m550 0 q0 -10 10 -10 m-560 10 v58 m550 0 v-58 m-550 58 q0 10 10 10 m530 0 q10 0 10 -10 m-540 10 h10 m0 0 h520 m23 -78 h-3"></path>
+<polygon points="593 143 601 139 601 147"></polygon>
+<polygon points="593 143 585 139 585 147"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

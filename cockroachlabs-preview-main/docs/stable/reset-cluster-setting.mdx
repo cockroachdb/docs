@@ -1,0 +1,62 @@
+---
+title: "RESET CLUSTER SETTING"
+old_description: "The RESET CLUSTER SETTING statement resets a cluster setting to its default value for the client session."
+---
+
+import { ResetClusterSetting } from "/snippets/syntax-diagrams/ResetClusterSetting.jsx";
+
+The `RESET` [statement](/docs/v26.1/sql-statements) resets a [cluster setting](/docs/v26.1/set-cluster-setting) to its default value for the client session.
+
+## Required privileges
+
+Only members of the `admin` role can modify cluster settings. By default, the `root` user belongs to the `admin` role.
+
+## Synopsis
+
+<ResetClusterSetting />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>var&#95;name</code></td><td>The name of the <a href="/docs/v26.1/cluster-settings">cluster setting</a> (case-insensitive).</td></tr></tbody></table>
+
+## Example
+
+<Tip>
+You can use [`SET CLUSTER SETTING.. TO DEFAULT`](/docs/v26.1/set-cluster-setting) to reset a cluster setting as well.
+</Tip>
+
+```sql
+> SET CLUSTER SETTING sql.metrics.statement_details.enabled = false;
+```
+
+```sql
+> SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
+```
+
+```text
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  false
+(1 row)
+```
+
+```sql
+> RESET CLUSTER SETTING sql.metrics.statement_details.enabled;
+```
+
+```sql
+> SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
+```
+
+```text
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  true
+(1 row)
+```
+
+## See also
+
+- [`SET CLUSTER SETTING`](/docs/v26.1/set-cluster-setting)
+- [`SHOW CLUSTER SETTING`](/docs/v26.1/show-cluster-setting)
+- [Cluster settings](/docs/v26.1/cluster-settings)

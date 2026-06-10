@@ -1,0 +1,96 @@
+---
+title: "MULTILINESTRING"
+old_description: "The spatial MULTILINESTRING object is a collection of LINESTRINGs."
+---
+
+A `MULTILINESTRING` is a collection of [LineStrings](/docs/v25.2/linestring). MultiLineStrings are useful for gathering a group of LineStrings into one geometry. For example, you may want to gather the LineStrings denoting all of the roads in a particular municipality.
+
+You can also store a `MULTILINESTRING` with the following additional dimensions:
+
+- A third dimension coordinate `Z` ( `MULTILINESTRINGZ` ).
+- A measure coordinate `M` ( `MULTILINESTRINGM` ).
+- Both a third dimension and a measure coordinate ( `MULTILINESTRINGZM` ).
+
+The `Z` and `M` dimensions can be accessed or modified using a number of [built-in functions](/docs/v25.2/functions-and-operators#spatial-functions), including:
+
+- `ST_Z`
+- `ST_M`
+- `ST_Affine`
+- `ST_Zmflag`
+- `ST_MakePoint`
+- `ST_MakePointM`
+- `ST_Force3D`
+- `ST_Force3DZ`
+- `ST_Force3DM`
+- `ST_Force4D`
+- `ST_Snap`
+- `ST_SnapToGrid`
+- `ST_RotateZ`
+- `ST_AddMeasure`
+
+Note that CockroachDB's [spatial indexing](/docs/v25.2/spatial-indexes) is still based on the 2D coordinate system. This means that:
+
+- The Z/M dimension is not index accelerated when using spatial predicates.
+- Some spatial functions ignore the Z/M dimension, with transformations discarding the Z/M value.
+
+## Examples
+
+### Well known text
+
+A MultiLineString can be created from SQL by calling the `st_geomfromtext` function on a MultiLineString definition expressed in the [Well Known Text (WKT)](/docs/v25.2/architecture/glossary#wkt) format.
+
+```sql
+SELECT ST_GeomFromText('MULTILINESTRING((0 0, 1440 900), (800 600, 200 400))');
+```
+
+```text
+                                                                                     st_geomfromtext
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  0105000000020000000102000000020000000000000000000000000000000000000000000000008096400000000000208C4001020000000200000000000000000089400000000000C0824000000000000069400000000000007940
+(1 row)
+```
+
+### SQL
+
+A MultiLineString can be created from SQL by calling an aggregate function such as `ST_Collect` or [`ST_Union`](/docs/v25.2/st_union) on a column that contains [LineString](/docs/v25.2/linestring) geometries. In the example below, we will build a MultiLineString from several LineStrings.
+
+1. Insert the LineStrings:
+
+    ```sql
+    CREATE TABLE tmp_linestrings (id INT8 default unique_rowid(), geom GEOMETRY);
+
+    INSERT INTO tmp_linestrings (geom)
+    VALUES
+    (st_geomfromtext('SRID=4326;LINESTRING(-88.243385 40.116421, -87.906471 43.038902, -95.992775 36.153980)')),
+    (st_geomfromtext('SRID=4326;LINESTRING(-75.704722 36.076944, -95.992775 36.153980, -87.906471 43.038902)')),
+    (st_geomfromtext('SRID=4326;LINESTRING(-76.8261 42.1727,  -75.6608 41.4102,-73.5422 41.052, -73.929 41.707,  -76.8261 42.1727)'));
+    ```
+2. Build a MultiLineString from the individual [LineStrings](/docs/v25.2/linestring) using `ST_Collect`, and check the output with `ST_GeometryType` to verify that it is indeed a MultiLineString:
+
+    ```sql
+    SELECT ST_GeometryType(st_collect(geom)) AS output FROM tmp_linestrings;
+    ```
+
+    ```text
+            output
+    ----------------------
+      ST_MultiLineString
+    (1 row)
+    ```
+3. Drop the temporary table:
+
+    ```sql
+    DROP TABLE tmp_linestrings;
+    ```
+
+## See also
+
+- [Spatial tutorial](/docs/v25.2/spatial-tutorial)
+- [Spatial objects](/docs/v25.2/spatial-data-overview#spatial-objects)
+- [POINT](/docs/v25.2/point)
+- [LINESTRING](/docs/v25.2/linestring)
+- [POLYGON](/docs/v25.2/polygon)
+- [MULTIPOINT](/docs/v25.2/multipoint)
+- [MULTIPOLYGON](/docs/v25.2/multipolygon)
+- [GEOMETRYCOLLECTION](/docs/v25.2/geometrycollection)
+- [Using GeoServer with CockroachDB](/docs/v25.2/geoserver)

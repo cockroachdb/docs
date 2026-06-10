@@ -1,0 +1,79 @@
+export const AlterViewOwnerStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="135" width="683" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="62" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">ALTER</text>
+<rect height="32" rx="10" width="122" x="133" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="122" x="131" y="33"></rect>
+<text class="terminal" x="141" y="53">MATERIALIZED</text>
+<rect height="32" rx="10" width="58" x="295" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="293" y="1"></rect>
+<text class="terminal" x="303" y="21">VIEW</text>
+<rect height="32" rx="10" width="34" x="393" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="34" x="391" y="33"></rect>
+<text class="terminal" x="401" y="53">IF</text>
+<rect height="32" rx="10" width="70" x="447" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="445" y="33"></rect>
+<text class="terminal" x="455" y="53">EXISTS</text><a xlink:href="#relation_expr" xlink:title="relation_expr">
+<rect height="32" width="104" x="557" y="3"></rect>
+<rect class="nonterminal" height="32" width="104" x="555" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="80" font-size="10" class="nonterminal" x="567" y="21">relation_expr</text></a><rect height="32" rx="10" width="72" x="423" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="421" y="99"></rect>
+<text class="terminal" x="431" y="119">OWNER</text>
+<rect height="32" rx="10" width="38" x="515" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="513" y="99"></rect>
+<text class="terminal" x="523" y="119">TO</text><a xlink:href="#role_spec" xlink:title="role_spec">
+<rect height="32" width="82" x="573" y="101"></rect>
+<rect class="nonterminal" height="32" width="82" x="571" y="99"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="583" y="119">role_spec</text></a><path class="line" d="m17 17 h2 m0 0 h10 m62 0 h10 m20 0 h10 m0 0 h132 m-162 0 h20 m142 0 h20 m-182 0 q10 0 10 10 m162 0 q0 -10 10 -10 m-172 10 v12 m162 0 v-12 m-162 12 q0 10 10 10 m142 0 q10 0 10 -10 m-152 10 h10 m122 0 h10 m20 -32 h10 m58 0 h10 m20 0 h10 m0 0 h134 m-164 0 h20 m144 0 h20 m-184 0 q10 0 10 10 m164 0 q0 -10 10 -10 m-174 10 v12 m164 0 v-12 m-164 12 q0 10 10 10 m144 0 q10 0 10 -10 m-154 10 h10 m34 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m104 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-282 98 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m72 0 h10 m0 0 h10 m38 0 h10 m0 0 h10 m82 0 h10 m3 0 h-3"></path>
+<polygon points="673 115 681 111 681 119"></polygon>
+<polygon points="673 115 665 111 665 119"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,20 @@
+---
+title: "Replicator Flags"
+old_description: "Flag reference for MOLT Replicator"
+---
+
+import ReplicatorFlags from "/snippets/molt/replicator-flags.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ReplicatorFlags />

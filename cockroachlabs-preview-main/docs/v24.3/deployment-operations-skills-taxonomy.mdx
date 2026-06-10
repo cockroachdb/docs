@@ -1,0 +1,92 @@
+---
+title: "Deployment & Operations Skills Taxonomy"
+old_description: "Learn the foundational skills required to deploy and operate CockroachDB"
+---
+
+This document outlines the foundational skills required to deploy and operate CockroachDB in production environments.
+
+The skills are organized into sections based on the following operational domains:
+
+- [Infrastructure configuration](#infrastructure-configuration)
+- [Security](#security)
+- [Cluster maintenance](#cluster-maintenance)
+- [Troubleshooting](#troubleshooting)
+- [Disaster recovery](#disaster-recovery)
+
+Each section includes links to relevant documentation for the listed skills.
+
+<Tip>
+Cockroach Labs offers [Professional Services](https://www.cockroachlabs.com/company/professional-services) that can assist you with getting applications into production faster and more efficiently.
+</Tip>
+
+## Infrastructure configuration
+
+This section covers how to ensure that your hardware and network are properly configured to meet the performance and connectivity requirements of CockroachDB.
+
+- [Verify vCPU, RAM, storage, and disk IOPS performance](/docs/v24.3/recommended-production-settings#hardware)
+- [Configure time synchronization with NTP server](/docs/v24.3/deploy-cockroachdb-on-premises#step-1-synchronize-clocks)
+- [Validate network connectivity](/docs/v24.3/known-limitations#cockroachdb-does-not-test-for-all-connection-failure-scenarios)
+
+## Security
+
+This section covers how to secure a CockroachDB deployment, including certificate management, load balancing setup, role-based access control, and data encryption.
+
+- [Create and distribute certificates; initialize cluster](/docs/v24.3/deploy-cockroachdb-on-premises#step-2-generate-certificates)
+- [Configure load balancer and direct a workload](/docs/v24.3/deploy-cockroachdb-on-premises#step-6-set-up-load-balancing)
+- [Configure RBAC](/docs/v24.3/security-reference/authorization)
+- [Encryption at rest](/docs/v24.3/encryption)
+
+## Cluster maintenance
+
+This section covers how to manage the lifecycle of CockroachDB nodes, including adding and removing nodes, handling outages, performing upgrades or downgrades, and modifying cluster settings.
+
+- [Shut down a node gracefully](/docs/v24.3/node-shutdown)
+- [Handle unplanned node outages](/docs/v24.3/recommended-production-settings#load-balancing)
+- [Add nodes](/docs/v24.3/cockroach-start#add-a-node-to-a-cluster)
+- [Remove nodes](/docs/v24.3/node-shutdown?filters=decommission#remove-nodes)
+- [Add a region](/docs/v24.3/alter-database#add-regions-to-a-database)
+- [Remove a region](/docs/v24.3/alter-database#drop-region)
+- [Rolling upgrades](/docs/v24.3/upgrade-cockroach-version#perform-a-patch-upgrade)
+- Downgrade a cluster from a [patch version](/docs/v24.3/upgrade-cockroach-version#roll-back-a-patch-upgrade)
+- Downgrade a cluster from a [major version](/docs/v24.3/upgrade-cockroach-version#roll-back-a-major-version-upgrade)
+- [Change a cluster setting](/docs/v24.3/cluster-settings#change-a-cluster-setting)
+- Repave a cluster: cluster repaving involves the following individual skills, which are also used during [rolling upgrades](/docs/v24.3/upgrade-cockroach-version#perform-a-patch-upgrade):
+    1. [Shut down a node gracefully](/docs/v24.3/node-shutdown)
+    2. Detach the [persistent volume](/docs/v24.3/kubernetes-overview#kubernetes-terminology) (a.k.a. persistent disk) from the removed node's virtual machine (VM) (this step is optional but recommended)
+    3. Delete the removed node's VM
+    4. Start a new VM
+    5. Reattach the persistent disk to the new VM (necessary if you did step #2)
+    6. [Add a node to the cluster](/docs/v24.3/cockroach-start#add-a-node-to-a-cluster) from the new VM
+
+## Troubleshooting
+
+This section contains a list of common issues related to SQL performance, cluster stability, memory usage, load balancing, and changefeed lag.
+
+- [SQL response time for specific queries](/docs/v24.3/query-behavior-troubleshooting#query-issues)
+- [SQL throughput degradation across the board](/docs/v24.3/query-behavior-troubleshooting#low-throughput)
+- [Cluster instability: Dead/suspect nodes](/docs/v24.3/cluster-setup-troubleshooting#node-liveness-issues)
+- [Out of memory (OOM) problems](/docs/v24.3/cluster-setup-troubleshooting#out-of-memory-oom-crash)
+- [Imbalanced cluster load](/docs/v24.3/architecture/replication-layer#load-based-replica-rebalancing)
+- [End of file (EOF) errors](/docs/v24.3/cluster-setup-troubleshooting#client-connection-issues)
+- [Changefeed is falling behind](/docs/v24.3/advanced-changefeed-configuration#lagging-ranges)
+- [Gather diagnostic data from a "debug zip" file](/docs/v24.3/cockroach-debug-zip)
+- [Collect timeseries diagnostic data from a "tsdump" file](/docs/v24.3/cockroach-debug-tsdump)
+
+## Disaster recovery
+
+This section covers how to set up and manage backup and restore of your cluster to ensure data recovery in case of failures.
+
+- [Create AWS IAM access key](/docs/v24.3/cloud-storage-authentication)
+- [Create S3 bucket for backup data](/docs/v24.3/use-cloud-storage#amazon-s3-storage-classes)
+- [Full cluster backup to S3](/docs/v24.3/take-full-and-incremental-backups#full-backups)
+- [Incremental backup to S3](/docs/v24.3/take-full-and-incremental-backups#incremental-backups)
+- [Cluster restore from AWS S3](/docs/v24.3/restore#restore-a-cluster)
+
+## See also
+
+- [Production Checklist](/docs/v24.3/recommended-production-settings)
+- [Manual Deployment](/docs/v24.3/manual-deployment)
+- [Deploy a Local Cluster from Binary (Secure)](/docs/v24.3/secure-a-cluster)
+- [SQL Performance Best Practices](/docs/v24.3/performance-best-practices-overview)
+- [Performance Tuning Recipes](/docs/v24.3/performance-recipes)
+- [Troubleshoot Self-Hosted Setup](/docs/v24.3/cluster-setup-troubleshooting)

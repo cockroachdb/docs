@@ -1,0 +1,95 @@
+export const Explain = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="449" width="635" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 61 1 57 1 65"></polygon>
+<polygon points="17 61 9 57 9 65"></polygon>
+<rect height="32" rx="10" width="80" x="31" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="29" y="45"></rect>
+<text class="terminal" x="39" y="65">EXPLAIN</text>
+<rect height="32" rx="10" width="26" x="151" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="149" y="45"></rect>
+<text class="terminal" x="159" y="65">(</text>
+<rect height="32" rx="10" width="84" x="237" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="235" y="45"></rect>
+<text class="terminal" x="245" y="65">VERBOSE</text>
+<rect height="32" rx="10" width="62" x="237" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="235" y="89"></rect>
+<text class="terminal" x="245" y="109">TYPES</text>
+<rect height="32" rx="10" width="48" x="237" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="235" y="133"></rect>
+<text class="terminal" x="245" y="153">OPT</text>
+<rect height="32" rx="10" width="46" x="237" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="46" x="235" y="177"></rect>
+<text class="terminal" x="245" y="197">ENV</text>
+<rect height="32" rx="10" width="62" x="237" y="223"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="235" y="221"></rect>
+<text class="terminal" x="245" y="241">MEMO</text>
+<rect height="32" rx="10" width="74" x="237" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="235" y="265"></rect>
+<text class="terminal" x="245" y="285">REDACT</text>
+<rect height="32" rx="10" width="82" x="237" y="311"></rect>
+<rect class="terminal" height="32" rx="10" width="82" x="235" y="309"></rect>
+<text class="terminal" x="245" y="329">DISTSQL</text>
+<rect height="32" rx="10" width="46" x="237" y="355"></rect>
+<rect class="terminal" height="32" rx="10" width="46" x="235" y="353"></rect>
+<text class="terminal" x="245" y="373">VEC</text>
+<rect height="32" rx="10" width="114" x="237" y="399"></rect>
+<rect class="terminal" height="32" rx="10" width="114" x="235" y="397"></rect>
+<text class="terminal" x="245" y="417">FINGERPRINT</text>
+<rect height="32" rx="10" width="24" x="217" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="215" y="1"></rect>
+<text class="terminal" x="225" y="21">,</text>
+<rect height="32" rx="10" width="26" x="411" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="409" y="45"></rect>
+<text class="terminal" x="419" y="65">)</text><a xlink:href="/docs/stable/sql-grammar#explainable_stmt" xlink:title="explainable_stmt">
+<rect height="32" width="130" x="477" y="47"></rect>
+<rect class="nonterminal" height="32" width="130" x="475" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="106" font-size="10" class="nonterminal" x="487" y="65">explainable_stmt</text></a><path class="line" d="m17 61 h2 m0 0 h10 m80 0 h10 m20 0 h10 m26 0 h10 m40 0 h10 m84 0 h10 m0 0 h30 m-154 0 h20 m134 0 h20 m-174 0 q10 0 10 10 m154 0 q0 -10 10 -10 m-164 10 v24 m154 0 v-24 m-154 24 q0 10 10 10 m134 0 q10 0 10 -10 m-144 10 h10 m62 0 h10 m0 0 h52 m-144 -10 v20 m154 0 v-20 m-154 20 v24 m154 0 v-24 m-154 24 q0 10 10 10 m134 0 q10 0 10 -10 m-144 10 h10 m48 0 h10 m0 0 h66 m-144 -10 v20 m154 0 v-20 m-154 20 v24 m154 0 v-24 m-154 24 q0 10 10 10 m134 0 q10 0 10 -10 m-144 10 h10 m46 0 h10 m0 0 h68 m-144 -10 v20 m154 0 v-20 m-154 20 v24 m154 0 v-24 m-154 24 q0 10 10 10 m134 0 q10 0 10 -10 m-144 10 h10 m62 0 h10 m0 0 h52 m-144 -10 v20 m154 0 v-20 m-154 20 v24 m154 0 v-24 m-154 24 q0 10 10 10 m134 0 q10 0 10 -10 m-144 10 h10 m74 0 h10 m0 0 h40 m-144 -10 v20 m154 0 v-20 m-154 20 v24 m154 0 v-24 m-154 24 q0 10 10 10 m134 0 q10 0 10 -10 m-144 10 h10 m82 0 h10 m0 0 h32 m-144 -10 v20 m154 0 v-20 m-154 20 v24 m154 0 v-24 m-154 24 q0 10 10 10 m134 0 q10 0 10 -10 m-144 10 h10 m46 0 h10 m0 0 h68 m-144 -10 v20 m154 0 v-20 m-154 20 v24 m154 0 v-24 m-154 24 q0 10 10 10 m134 0 q10 0 10 -10 m-144 10 h10 m114 0 h10 m-174 -352 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m174 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-174 0 h10 m24 0 h10 m0 0 h130 m20 44 h10 m26 0 h10 m-326 0 h20 m306 0 h20 m-346 0 q10 0 10 10 m326 0 q0 -10 10 -10 m-336 10 v366 m326 0 v-366 m-326 366 q0 10 10 10 m306 0 q10 0 10 -10 m-316 10 h10 m0 0 h296 m20 -386 h10 m130 0 h10 m3 0 h-3"></path>
+<polygon points="625 61 633 57 633 65"></polygon>
+<polygon points="625 61 617 57 617 65"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

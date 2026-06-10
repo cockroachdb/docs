@@ -1,0 +1,800 @@
+---
+title: "Build a Simple CRUD Python App with CockroachDB and SQLAlchemy"
+old_description: "Learn how to use CockroachDB from a simple Python application with SQLAlchemy."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v25.2/build-a-python-app-with-cockroachdb-sqlalchemy"
+  items={[
+    {
+      title: "Use psycopg3",
+      href: "/docs/v25.2/build-a-python-app-with-cockroachdb-psycopg3",
+    },
+    {
+      title: "Use psycopg2",
+      href: "/docs/v25.2/build-a-python-app-with-cockroachdb",
+    },
+    {
+      title: "Use SQLAlchemy",
+      href: "/docs/v25.2/build-a-python-app-with-cockroachdb-sqlalchemy",
+    },
+    {
+      title: "Use Django",
+      href: "/docs/v25.2/build-a-python-app-with-cockroachdb-django",
+    },
+    {
+      title: "Use asyncpg",
+      href: "/docs/v25.2/build-a-python-app-with-cockroachdb-asyncpg",
+    },
+  ]}
+/>
+
+<Tip>
+Check out our developer courses at [Cockroach University](https://university.cockroachlabs.com/).
+</Tip>
+
+This tutorial shows you how build a simple CRUD Python application with CockroachDB and the [SQLAlchemy](https://docs.sqlalchemy.org/) ORM.
+
+## Step 1. Start CockroachDB
+
+<Tabs>
+<Tab title="Use CockroachDB Basic">
+
+### Choose your installation method
+
+You can create a CockroachDB Basic cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or `ccloud`, a command-line interface (CLI) tool.
+
+<Tabs>
+<Tab title="Use the Cloud Console (GUI)">
+
+### Create a free cluster
+
+<Note>
+Organizations without billing information on file can only create one CockroachDB Basic cluster.
+</Note>
+
+1. If you haven't already, [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?referralId=docs_python_sqlalchemy).
+2. [Log in](https://cockroachlabs.cloud/) to your CockroachDB Cloud account.
+3. On the **Clusters** page, click **Create cluster**.
+4. On the **Select a plan** page, select **Basic**.
+5. On the **Cloud &amp; Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section.
+6. In the **Regions** section, select a region for the cluster. Refer to [CockroachDB Cloud Regions](/docs/cockroachcloud/regions) for the regions where CockroachDB Basic clusters can be deployed. To create a multi-region cluster, click **Add region** and select additional regions.
+7. Click **Next: Capacity**.
+8. On the **Capacity** page, select **Start for free**. Click **Next: Finalize**.
+9. On the **Finalize** page, click **Create cluster**.
+
+    Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.
+
+### Create a SQL user
+
+The **Create SQL user** dialog allows you to create a new SQL user and password.
+
+1. Enter a username in the **SQL user** field or use the one provided by default.
+2. Click **Generate &amp; save password**.
+3. Copy the generated password and save it in a secure location.
+4. Click **Next**.
+
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Manage SQL users on a cluster](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster).
+
+### Get the root certificate
+
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **General connection string** from the **Select option** dropdown.
+2. Open a new terminal on your local machine, and run the **CA Cert download command** provided in the **Download CA Cert** section. The client driver used in this tutorial requires this certificate to connect to CockroachDB Cloud.
+
+### Get the connection string
+
+Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
+
+<Note>
+The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
+</Note>
+
+</Tab>
+<Tab title="Use ccloud (CLI)">
+
+Follow these steps to create a CockroachDB Basic cluster using the `ccloud` CLI tool.
+
+<Note>
+The `ccloud` CLI tool is in Preview.
+</Note>
+
+### Install `ccloud`
+
+Choose your OS:
+
+<Tabs>
+<Tab title="Mac">
+
+You can install `ccloud` using either Homebrew or by downloading the binary.
+
+### Use Homebrew
+
+1. [Install Homebrew](http://brew.sh/).
+2. Install using the `ccloud` tap:
+
+    ```shell
+    brew install cockroachdb/tap/ccloud
+    ```
+
+### Download the binary
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-amd64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+Use the ARM 64 binary if you have an M-series Mac:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-arm64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Linux">
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.6.12.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Windows">
+
+In a PowerShell window, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud/ccloud_windows-amd64_0.6.12.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force ccloud/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
+```
+
+</Tab>
+</Tabs>
+
+### Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrieve the connection string.
+
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB Basic cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+
+```shell
+ccloud quickstart
+```
+
+The `ccloud quickstart` command will open a browser window to log you in to CockroachDB Cloud. If you are new to CockroachDB Cloud, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
+
+The `ccloud quickstart` command will prompt you for the cluster name, cloud provider, and cloud provider region, then ask if you want to connect to the cluster. Each prompt has default values that you can select, or change if you want a different option.
+
+Select **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting `postgresql://`.
+
+```text
+? How would you like to connect? General connection string
+Retrieving cluster info: succeeded
+ Downloading cluster cert to /Users/maxroach/.postgresql/root.crt: succeeded
+postgresql://maxroach:ThisIsNotAGoodPassword@blue-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
+```
+
+</Tab>
+</Tabs>
+
+## Step 2. Get the code
+
+Clone the code's GitHub repo:
+
+```shell
+$ git clone https://github.com/cockroachlabs/example-app-python-sqlalchemy/
+```
+
+The project has the following directory structure:
+
+```text
+├── README.md
+├── dbinit.sql
+├── main.py
+├── models.py
+└── requirements.txt
+```
+
+The `requirements.txt` file includes the required libraries to connect to CockroachDB with SQLAlchemy, including the [`sqlalchemy-cockroachdb` Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb), which accounts for some differences between CockroachDB and PostgreSQL:
+
+```python
+psycopg2-binary
+sqlalchemy
+sqlalchemy-cockroachdb
+```
+
+The `dbinit.sql` file initializes the database schema that the application uses:
+
+```python
+CREATE TABLE accounts (
+    id UUID PRIMARY KEY,
+    balance INT8
+);
+```
+
+The `models.py` uses SQLAlchemy to map the `Accounts` table to a Python object:
+
+```python
+from sqlalchemy import Column, Integer
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
+
+class Account(Base):
+    """The Account class corresponds to the "accounts" database table.
+    """
+    __tablename__ = 'accounts'
+    id = Column(UUID(as_uuid=True), primary_key=True)
+    balance = Column(Integer)
+```
+
+The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
+
+```python
+"""This simple CRUD application performs the following operations sequentially:
+    1. Creates 100 new accounts with randomly generated IDs and randomly-computed balance amounts.
+    2. Chooses two accounts at random and takes half of the money from the first and deposits it
+     into the second.
+    3. Chooses five accounts at random and deletes them.
+"""
+
+from math import floor
+import os
+import random
+import uuid
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy_cockroachdb import run_transaction
+from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
+
+from models import Account
+
+# The code below inserts new accounts.
+
+def create_accounts(session, num):
+    """Create N new accounts with random account IDs and account balances.
+    """
+    print("Creating new accounts...")
+    new_accounts = []
+    while num > 0:
+        account_id = uuid.uuid4()
+        account_balance = floor(random.random()*1_000_000)
+        new_accounts.append(Account(id=account_id, balance=account_balance))
+        seen_account_ids.append(account_id)
+        print(f"Created new account with id {account_id} and balance {account_balance}.")
+        num = num - 1
+    session.add_all(new_accounts)
+
+def transfer_funds_randomly(session, one, two):
+    """Transfer money between two accounts.
+    """
+    try:
+        source = session.query(Account).filter(Account.id == one).one()
+    except NoResultFound:
+        print("No result was found")
+    except MultipleResultsFound:
+        print("Multiple results were found")
+    dest = session.query(Account).filter(Account.id == two).first()
+    print(f"Random account balances:\nAccount {one}: {source.balance}\nAccount {two}: {dest.balance}")
+
+    amount = floor(source.balance/2)
+    print(f"Transferring {amount} from account {one} to account {two}...")
+
+    # Check balance of the first account.
+    if source.balance < amount:
+        raise ValueError(f"Insufficient funds in account {one}")
+    source.balance -= amount
+    dest.balance += amount
+
+    print(f"Transfer complete.\nNew balances:\nAccount {one}: {source.balance}\nAccount {two}: {dest.balance}")
+
+def delete_accounts(session, num):
+    """Delete N existing accounts, at random.
+    """
+    print("Deleting existing accounts...")
+    delete_ids = []
+    while num > 0:
+        delete_id = random.choice(seen_account_ids)
+        delete_ids.append(delete_id)
+        seen_account_ids.remove(delete_id)
+        num = num - 1
+
+    accounts = session.query(Account).filter(Account.id.in_(delete_ids)).all()
+
+    for account in accounts:
+        print(f"Deleted account {account.id}.")
+        session.delete(account)
+
+if __name__ == '__main__':
+    # For cockroach demo:
+    # DATABASE_URL=postgresql://demo:<demo_password>@127.0.0.1:26257?sslmode=require
+    # For CockroachCloud:
+    # DATABASE_URL=postgresql://<username>:<password>@<globalhost>:26257/<cluster_name>.defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>
+    db_uri = os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://")
+    try:
+        engine = create_engine(db_uri, connect_args={"application_name":"docs_simplecrud_sqlalchemy"})
+    except Exception as e:
+        print("Failed to connect to database.")
+        print(f"{e}")
+
+    seen_account_ids = []
+
+    run_transaction(sessionmaker(bind=engine),
+                    lambda s: create_accounts(s, 100))
+
+    from_id = random.choice(seen_account_ids)
+    to_id = random.choice([id for id in seen_account_ids if id != from_id])
+
+    run_transaction(sessionmaker(bind=engine),
+                    lambda s: transfer_funds_randomly(s, from_id, to_id))
+
+    run_transaction(sessionmaker(bind=engine), lambda s: delete_accounts(s, 5))
+```
+
+`main.py` also executes the `main` method of the program.
+
+## Step 3. Install the application requirements
+
+This tutorial uses [`virtualenv`](https://virtualenv.pypa.io/) for dependency management.
+
+1. Install `virtualenv`:
+
+    ```shell
+    $ pip install virtualenv
+    ```
+2. At the top level of the app's project directory, create and then activate a virtual environment:
+
+    ```shell
+    $ virtualenv env
+    ```
+
+    ```shell
+    $ source env/bin/activate
+    ```
+3. Install the required modules to the virtual environment:
+
+    ```shell
+    $ pip install -r requirements.txt
+    ```
+
+## Step 4. Initialize the database
+
+1. Set the `DATABASE_URL` environment variable to the connection string for your cluster:
+
+    ```shell
+    export DATABASE_URL="{connection-string}"
+    ```
+
+    Where `{connection-string}` is the connection string you copied earlier.
+2. To initialize the example database, use the [`cockroach sql`](/docs/v25.2/cockroach-sql) command to execute the SQL statements in the `dbinit.sql` file:
+
+    ```shell
+    cat dbinit.sql | cockroach sql --url $DATABASE_URL
+    ```
+
+    The SQL statement in the initialization file should execute:
+
+    ```text
+    CREATE TABLE
+
+    Time: 102ms
+    ```
+
+</Tab>
+<Tab title="Use a Local Cluster">
+
+1. If you haven't already, [download the CockroachDB binary](/docs/v25.2/install-cockroachdb).
+2. Run the [`cockroach start-single-node`](/docs/v25.2/cockroach-start-single-node) command:
+
+    ```shell
+    $ cockroach start-single-node --advertise-addr 'localhost' --insecure
+    ```
+
+    This starts an insecure, single-node cluster.
+3. Take note of the following connection information in the SQL shell welcome text:
+
+    ```text
+    CockroachDB node starting at 2021-08-30 17:25:30.06524 +0000 UTC (took 4.3s)
+    build:               CCL v21.1.6 @ 2021/07/20 15:33:43 (go1.15.11)
+    webui:               http://localhost:8080
+    sql:                 postgresql://root@localhost:26257?sslmode=disable
+    ```
+
+    You'll use the `sql` connection string to connect to the cluster later in this tutorial.
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+## Step 2. Get the code
+
+Clone the code's GitHub repo:
+
+```shell
+$ git clone https://github.com/cockroachlabs/example-app-python-sqlalchemy/
+```
+
+The project has the following directory structure:
+
+```text
+├── README.md
+├── dbinit.sql
+├── main.py
+├── models.py
+└── requirements.txt
+```
+
+The `requirements.txt` file includes the required libraries to connect to CockroachDB with SQLAlchemy, including the [`sqlalchemy-cockroachdb` Python package](https://github.com/cockroachdb/sqlalchemy-cockroachdb), which accounts for some differences between CockroachDB and PostgreSQL:
+
+```python
+psycopg2-binary
+sqlalchemy
+sqlalchemy-cockroachdb
+```
+
+The `dbinit.sql` file initializes the database schema that the application uses:
+
+```python
+CREATE TABLE accounts (
+    id UUID PRIMARY KEY,
+    balance INT8
+);
+```
+
+The `models.py` uses SQLAlchemy to map the `Accounts` table to a Python object:
+
+```python
+from sqlalchemy import Column, Integer
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
+
+class Account(Base):
+    """The Account class corresponds to the "accounts" database table.
+    """
+    __tablename__ = 'accounts'
+    id = Column(UUID(as_uuid=True), primary_key=True)
+    balance = Column(Integer)
+```
+
+The `main.py` uses SQLAlchemy to map Python methods to SQL operations:
+
+```python
+"""This simple CRUD application performs the following operations sequentially:
+    1. Creates 100 new accounts with randomly generated IDs and randomly-computed balance amounts.
+    2. Chooses two accounts at random and takes half of the money from the first and deposits it
+     into the second.
+    3. Chooses five accounts at random and deletes them.
+"""
+
+from math import floor
+import os
+import random
+import uuid
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy_cockroachdb import run_transaction
+from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
+
+from models import Account
+
+# The code below inserts new accounts.
+
+def create_accounts(session, num):
+    """Create N new accounts with random account IDs and account balances.
+    """
+    print("Creating new accounts...")
+    new_accounts = []
+    while num > 0:
+        account_id = uuid.uuid4()
+        account_balance = floor(random.random()*1_000_000)
+        new_accounts.append(Account(id=account_id, balance=account_balance))
+        seen_account_ids.append(account_id)
+        print(f"Created new account with id {account_id} and balance {account_balance}.")
+        num = num - 1
+    session.add_all(new_accounts)
+
+def transfer_funds_randomly(session, one, two):
+    """Transfer money between two accounts.
+    """
+    try:
+        source = session.query(Account).filter(Account.id == one).one()
+    except NoResultFound:
+        print("No result was found")
+    except MultipleResultsFound:
+        print("Multiple results were found")
+    dest = session.query(Account).filter(Account.id == two).first()
+    print(f"Random account balances:\nAccount {one}: {source.balance}\nAccount {two}: {dest.balance}")
+
+    amount = floor(source.balance/2)
+    print(f"Transferring {amount} from account {one} to account {two}...")
+
+    # Check balance of the first account.
+    if source.balance < amount:
+        raise ValueError(f"Insufficient funds in account {one}")
+    source.balance -= amount
+    dest.balance += amount
+
+    print(f"Transfer complete.\nNew balances:\nAccount {one}: {source.balance}\nAccount {two}: {dest.balance}")
+
+def delete_accounts(session, num):
+    """Delete N existing accounts, at random.
+    """
+    print("Deleting existing accounts...")
+    delete_ids = []
+    while num > 0:
+        delete_id = random.choice(seen_account_ids)
+        delete_ids.append(delete_id)
+        seen_account_ids.remove(delete_id)
+        num = num - 1
+
+    accounts = session.query(Account).filter(Account.id.in_(delete_ids)).all()
+
+    for account in accounts:
+        print(f"Deleted account {account.id}.")
+        session.delete(account)
+
+if __name__ == '__main__':
+    # For cockroach demo:
+    # DATABASE_URL=postgresql://demo:<demo_password>@127.0.0.1:26257?sslmode=require
+    # For CockroachCloud:
+    # DATABASE_URL=postgresql://<username>:<password>@<globalhost>:26257/<cluster_name>.defaultdb?sslmode=verify-full&sslrootcert=<certs_dir>/<ca.crt>
+    db_uri = os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://")
+    try:
+        engine = create_engine(db_uri, connect_args={"application_name":"docs_simplecrud_sqlalchemy"})
+    except Exception as e:
+        print("Failed to connect to database.")
+        print(f"{e}")
+
+    seen_account_ids = []
+
+    run_transaction(sessionmaker(bind=engine),
+                    lambda s: create_accounts(s, 100))
+
+    from_id = random.choice(seen_account_ids)
+    to_id = random.choice([id for id in seen_account_ids if id != from_id])
+
+    run_transaction(sessionmaker(bind=engine),
+                    lambda s: transfer_funds_randomly(s, from_id, to_id))
+
+    run_transaction(sessionmaker(bind=engine), lambda s: delete_accounts(s, 5))
+```
+
+`main.py` also executes the `main` method of the program.
+
+## Step 3. Install the application requirements
+
+This tutorial uses [`virtualenv`](https://virtualenv.pypa.io/) for dependency management.
+
+1. Install `virtualenv`:
+
+    ```shell
+    $ pip install virtualenv
+    ```
+2. At the top level of the app's project directory, create and then activate a virtual environment:
+
+    ```shell
+    $ virtualenv env
+    ```
+
+    ```shell
+    $ source env/bin/activate
+    ```
+3. Install the required modules to the virtual environment:
+
+    ```shell
+    $ pip install -r requirements.txt
+    ```
+
+## Step 4. Initialize the database
+
+1. Set the `DATABASE_URL` environment variable to the connection string for your cluster:
+
+    ```shell
+    export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ```
+2. To initialize the example database, use the [`cockroach sql`](/docs/v25.2/cockroach-sql) command to execute the SQL statements in the `dbinit.sql` file:
+
+    ```shell
+    cat dbinit.sql | cockroach sql --url $DATABASE_URL
+    ```
+
+    The SQL statement in the initialization file should execute:
+
+    ```text
+    CREATE TABLE
+
+    Time: 102ms
+    ```
+
+</Tab>
+</Tabs>
+
+## Step 5. Run the code
+
+`main.py` uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
+
+<Note>
+The example application uses the general connection string, which begins with `postgresql://` but modifies it so it uses the `cockroachdb://` prefix. It does this so SQLAlchemy will use the CockroachDB SQLAlchemy adapter.
+
+```python
+db_uri = os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://")
+```
+</Note>
+
+Run the app:
+
+```shell
+$ python main.py
+```
+
+The application will connect to CockroachDB, and then perform some simple row inserts, updates, and deletes.
+
+The output should look something like the following:
+
+```text
+Creating new accounts...
+Created new account with id 3a8b74c8-6a05-4247-9c60-24b46e3a88fd and balance 248835.
+Created new account with id c3985926-5b77-4c6d-a73d-7c0d4b2a51e7 and balance 781972.
+...
+Created new account with id 7b41386c-11d3-465e-a2a0-56e0dcd2e7db and balance 984387.
+Random account balances:
+Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 800795
+Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 149861
+Transferring 400397 from account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9 to account 4040aeba-7194-4f29-b8e5-a27ed4c7a297...
+Transfer complete.
+New balances:
+Account 7ad14d02-217f-48ca-a53c-2c3a2528a0d9: 400398
+Account 4040aeba-7194-4f29-b8e5-a27ed4c7a297: 550258
+Deleting existing accounts...
+Deleted account 41247e24-6210-4032-b622-c10b3c7222de.
+Deleted account 502450e4-6daa-4ced-869c-4dff62dc52de.
+Deleted account 6ff06ef0-423a-4b08-8b87-48af2221bc18.
+Deleted account a1acb134-950c-4882-9ac7-6d6fbdaaaee1.
+Deleted account e4f33c55-7230-4080-b5ac-5dde8a7ae41d.
+```
+
+In a SQL shell connected to the cluster, you can verify that the rows were inserted, updated, and deleted successfully:
+
+```sql
+> SELECT COUNT(*) FROM accounts;
+```
+
+```text
+  count
+---------
+     95
+(1 row)
+```
+
+## Best practices
+
+### Use the `run_transaction` function
+
+We strongly recommend using the [`sqlalchemy_cockroachdb.run_transaction()`](https://github.com/cockroachdb/sqlalchemy-cockroachdb/blob/master/sqlalchemy_cockroachdb/transaction.py) function as shown in the code samples on this page. This abstracts the details of [transaction retries](/docs/v25.2/transactions#transaction-retries) away from your application code. Transaction retries are more frequent in CockroachDB than in some other databases because we use [optimistic concurrency control](https://wikipedia.org/wiki/Optimistic_concurrency_control) rather than locking. Because of this, a CockroachDB transaction may have to be tried more than once before it can commit. This is part of how we ensure that our transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level.
+
+In addition to the above, using `run_transaction` has the following benefits:
+
+- Because it must be passed a [sqlalchemy.orm.session.sessionmaker](https://docs.sqlalchemy.org/orm/session_api#session-and-sessionmaker) object ( *not* a [session](https://docs.sqlalchemy.org/orm/session) ), it ensures that a new session is created exclusively for use by the callback, which protects you from accidentally reusing objects via any sessions created outside the transaction.
+- It abstracts away the [client-side transaction retry logic](/docs/v25.2/transaction-retry-error-reference#client-side-retry-handling) from your application, which keeps your application code portable across different databases. For example, the sample code given on this page works identically when run against PostgreSQL (modulo changes to the prefix and port number in the connection string).
+
+For more information about how transactions (and retries) work, see [Transactions](/docs/v25.2/transactions).
+
+### Avoid mutations of session and/or transaction state inside `run_transaction()`
+
+In general, this is in line with the recommendations of the [SQLAlchemy FAQs](https://docs.sqlalchemy.org/orm/session_basics#session-frequently-asked-questions), which state (with emphasis added by the original author) that
+
+> As a general rule, the application should manage the lifecycle of the session *externally* to functions that deal with specific data. This is a fundamental separation of concerns which keeps data-specific operations agnostic of the context in which they access and manipulate that data.
+
+and
+
+> Keep the lifecycle of the session (and usually the transaction) **separate and external**.
+
+In keeping with the above recommendations from the official docs, we **strongly recommend** avoiding any explicit mutations of the transaction state inside the callback passed to `run_transaction`, since that will lead to breakage. Specifically, do not make calls to the following functions from inside `run_transaction`:
+
+- [`sqlalchemy.orm.Session.commit()`](https://docs.sqlalchemy.org/orm/session_api?highlight=commit#sqlalchemy.orm.session.Session.commit) (or other variants of `commit()` ): This is not necessary because `cockroachdb.sqlalchemy.run_transaction` handles the savepoint/commit logic for you.
+- [`sqlalchemy.orm.Session.rollback()`](https://docs.sqlalchemy.org/orm/session_api?highlight=rollback#sqlalchemy.orm.session.Session.rollback) (or other variants of `rollback()` ): This is not necessary because `cockroachdb.sqlalchemy.run_transaction` handles the commit/rollback logic for you.
+- [`Session.flush()`](https://docs.sqlalchemy.org/orm/session_api#sqlalchemy.orm.session.Session.flush): This will not work as expected with CockroachDB because CockroachDB does not support nested transactions, which are necessary for `Session.flush()` to work properly. If the call to `Session.flush()` encounters an error and aborts, it will try to rollback. This will not be allowed by the currently-executing CockroachDB transaction created by `run_transaction()`, and will result in an error message like the following: `sqlalchemy.orm.exc.DetachedInstanceError: Instance <FooModel at 0x12345678> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: http://sqlalche.me/e/bhk3)`.
+
+### Break up large transactions into smaller units of work
+
+If you see an error message like `transaction is too large to complete; try splitting into pieces`, you are trying to commit too much data in a single transaction. As described in our [Cluster Settings](/docs/v25.2/cluster-settings) docs, the size limit for transactions is defined by the `kv.transaction.max_intents_bytes` setting, which defaults to 256 KiB. Although this setting can be changed by an admin, we strongly recommend against it in most cases.
+
+Instead, we recommend breaking your transaction into smaller units of work (or "chunks"). A pattern that works for inserting large numbers of objects using `run_transaction` to handle retries automatically for you is shown below.
+
+```python
+from sqlalchemy import create_engine, Column, Float, Integer
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from cockroachdb.sqlalchemy import run_transaction
+from random import random
+
+Base = declarative_base()
+
+# The code below assumes you have run the following SQL statements.
+
+# CREATE DATABASE pointstore;
+
+# USE pointstore;
+
+# CREATE TABLE points (
+#     id INT PRIMARY KEY DEFAULT unique_rowid(),
+#     x FLOAT NOT NULL,
+#     y FLOAT NOT NULL,
+#     z FLOAT NOT NULL
+# );
+
+engine = create_engine(
+    # For cockroach demo:
+    'cockroachdb://<username>:<password>@<hostname>:<port>/bank?sslmode=require',
+    echo=True                   # Log SQL queries to stdout
+)
+
+class Point(Base):
+    __tablename__ = 'points'
+    id = Column(Integer, primary_key=True)
+    x = Column(Float)
+    y = Column(Float)
+    z = Column(Float)
+
+def add_points(num_points):
+    chunk_size = 1000        # Tune this based on object sizes.
+
+    def add_points_helper(sess, chunk, num_points):
+        points = []
+        for i in range(chunk, min(chunk + chunk_size, num_points)):
+            points.append(
+                Point(x=random()*1024, y=random()*1024, z=random()*1024)
+            )
+        sess.bulk_save_objects(points)
+
+    for chunk in range(0, num_points, chunk_size):
+        run_transaction(
+            sessionmaker(bind=engine),
+            lambda s: add_points_helper(
+                s, chunk, min(chunk + chunk_size, num_points)
+            )
+        )
+
+add_points(10000)
+```
+
+### Use `IMPORT INTO` to read in large data sets
+
+If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code that uses an ORM and use the [`IMPORT INTO`](/docs/v25.2/import-into) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](/docs/v25.2/insert) and [`UPDATE`s](/docs/v25.2/update) such as are generated by calls to [`session.bulk_save_objects()`](https://docs.sqlalchemy.org/orm/session_api?highlight=bulk_save_object#sqlalchemy.orm.session.Session.bulk_save_objects).
+
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL](/docs/molt/migrate-to-cockroachdb).
+
+For more information about importing data from MySQL, see [Migrate from MySQL](/docs/molt/migrate-to-cockroachdb?filters=mysql).
+
+### Prefer the query builder
+
+In general, we recommend using the query-builder APIs of SQLAlchemy (e.g., [`Engine.execute()`](https://docs.sqlalchemy.org/core/connections?highlight=execute#sqlalchemy.engine.Engine.execute)) in your application over the [Session](https://docs.sqlalchemy.org/orm/session)/ORM APIs if at all possible. That way, you know exactly what SQL is being generated and sent to CockroachDB, which has the following benefits:
+
+- It's easier to debug your SQL queries and make sure they are working as expected.
+- You can more easily tune SQL query performance by issuing different statements, creating and/or using different indexes, etc. For more information, see [SQL Performance Best Practices](/docs/v25.2/performance-best-practices-overview).
+
+### Joins without foreign keys
+
+SQLAlchemy relies on the existence of [foreign keys](/docs/v25.2/foreign-key) to generate [`JOIN` expressions](/docs/v25.2/joins) from your application code. If you remove foreign keys from your schema, SQLAlchemy will not generate joins for you. As a workaround, you can [create a "custom foreign condition" by adding a `relationship` field to your table objects](https://stackoverflow.com/questions/37806625/sqlalchemy-create-relations-but-without-foreign-key-constraint-in-db), or do the equivalent work in your application.
+
+## See also
+
+- The [SQLAlchemy](https://docs.sqlalchemy.org/) docs
+- [Transactions](/docs/v25.2/transactions)
+
+You might also be interested in the following pages:
+
+- [Client Connection Parameters](/docs/v25.2/connection-parameters)
+- [Connection Pooling](/docs/v25.2/connection-pooling)
+- [Data Replication](/docs/v25.2/demo-replication-and-rebalancing)
+- [CockroachDB Resilience](/docs/v25.2/demo-cockroachdb-resilience)
+- [Replication &amp; Rebalancing](/docs/v25.2/demo-replication-and-rebalancing)
+- [Cross-Cloud Migration](/docs/v25.2/demo-automatic-cloud-migration)
+- [Automated Operations](/docs/v25.2/orchestrate-a-local-cluster-with-kubernetes-insecure)

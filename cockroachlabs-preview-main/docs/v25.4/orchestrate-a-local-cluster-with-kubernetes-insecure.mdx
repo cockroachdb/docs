@@ -1,0 +1,720 @@
+---
+title: "Orchestration with Kubernetes (Insecure)"
+old_description: "Orchestrate the deployment and management of a local cluster using Kubernetes."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v25.4/orchestrate-a-local-cluster-with-kubernetes-insecure"
+  items={[
+    {
+      title: "Secure",
+      href: "/docs/v25.4/orchestrate-a-local-cluster-with-kubernetes",
+    },
+    {
+      title: "Insecure",
+      href: "/docs/v25.4/orchestrate-a-local-cluster-with-kubernetes-insecure",
+    },
+  ]}
+/>
+
+On top of CockroachDB's built-in automation, you can use a third-party [orchestration](/docs/v25.4/kubernetes-overview) system to simplify and automate even more of your operations, from deployment to scaling to overall cluster management.
+
+This page demonstrates a basic integration with the open-source [Kubernetes](http://kubernetes.io/) orchestration system. Using either the CockroachDB [Helm](https://helm.sh/) chart or a few configuration files, you'll quickly create a 3-node local cluster. You'll run some SQL commands against the cluster and then simulate node failure, watching how Kubernetes auto-restarts without the need for any manual intervention. You'll then scale the cluster with a single command before shutting the cluster down, again with a single command.
+
+<Note>
+To orchestrate a physically distributed cluster in production, see [Orchestrated Deployments](/docs/v25.4/kubernetes-overview). To deploy a 30-day free CockroachDB Advanced cluster instead of running CockroachDB yourself, see the [Quickstart](/docs/cockroachcloud/quickstart).
+</Note>
+
+## Best practices
+
+#### Kubernetes version
+
+To deploy CockroachDB v25.4, Kubernetes 1.18 or higher is required. Cockroach Labs strongly recommends that you use a Kubernetes version that is [eligible for patch support by the Kubernetes project](https://kubernetes.io/releases).
+
+#### Public operator
+
+- The Public operator deploys clusters in a single region. For multi-region deployments using manual configs, Cockroach Labs recommends using the [CockroachDB operator](/docs/v25.4/cockroachdb-operator-overview) which is designed to support multi-region deployments. For guidance on how to force multi-region support with the Public operator, see [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](/docs/v25.4/orchestrate-cockroachdb-with-kubernetes-multi-cluster).
+- Using the Public operator, you can give a new cluster an arbitrary number of [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels). However, a cluster's labels cannot be modified after it is deployed. To track the status of this limitation, refer to [#993](https://github.com/cockroachdb/cockroach-operator/issues/993) in the Public operator project's issue tracker.
+
+#### Helm version
+
+The CockroachDB Helm chart requires Helm 3.0 or higher. If you attempt to use an incompatible Helm version, an error like the following occurs:
+
+```shell
+Error: UPGRADE FAILED: template: cockroachdb/templates/tests/client.yaml:6:14: executing "cockroachdb/templates/tests/client.yaml" at <.Values.networkPolicy.enabled>: nil pointer evaluating interface {}.enabled
+```
+
+The public Helm chart is currently not under active development, and no new features are planned. However, Cockroach Labs remains committed to fully supporting the Helm chart by addressing defects, providing security patches, and addressing breaking changes due to deprecations in Kubernetes APIs.
+
+A deprecation notice for the public Helm chart will be provided to customers a minimum of 6 months in advance of actual deprecation.
+
+#### Network
+
+Service Name Indication (SNI) is an extension to the TLS protocol which allows a client to indicate which hostname it is attempting to connect to at the start of the TCP handshake process. The server can present multiple certificates on the same IP address and TCP port number, and one server can serve multiple secure websites or API services even if they use different certificates.
+
+Due to its order of operations, the PostgreSQL wire protocol's implementation of TLS is not compatible with SNI-based routing in the Kubernetes ingress controller. Instead, use a TCP load balancer for CockroachDB that is not shared with other services.
+
+#### Resources
+
+When starting Kubernetes, select machines with at least **4 vCPUs** and **16 GiB** of memory, and provision at least **2 vCPUs** and **8 Gi** of memory to CockroachDB per pod. These minimum settings are used by default in this deployment guide, and are appropriate for testing purposes only. On a production deployment, you should adjust the resource settings for your workload. For details, see [Resource management](/docs/v25.4/configure-cockroachdb-kubernetes#memory-and-cpu).
+
+#### Storage
+
+Kubernetes deployments use external persistent volumes that are often replicated by the provider. CockroachDB replicates data automatically, and this redundant layer of replication can impact performance. Using [local volumes](https://kubernetes.io/docs/concepts/storage/volumes#local) may improve performance.
+
+## Before you begin
+
+Before getting started, it's helpful to review some Kubernetes-specific terminology:
+
+<table><thead><tr><th>Feature</th><th>Description</th></tr></thead><tbody><tr><td><a href="http://kubernetes.io/docs/getting-started-guides/minikube">minikube</a></td><td>A tool commonly used to run a Kubernetes cluster on a local workstation.</td></tr><tr><td><a href="http://kubernetes.io/docs/user-guide/pods">pod</a></td><td>A pod is a group of one of more containers managed by Kubernetes. In this tutorial, all pods run on your local workstation. Each pod contains a single container that runs a single-node CockroachDB cluster. You'll start with 3 pods and grow to 4.</td></tr><tr><td><a href="http://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets">StatefulSet</a></td><td>A StatefulSet is a group of pods treated as stateful units, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.</td></tr><tr><td><a href="http://kubernetes.io/docs/user-guide/persistent-volumes">persistent volume</a></td><td>A persistent volume is storage mounted in a pod and available to its containers. The lifetime of a persistent volume is decoupled from the lifetime of the pod that's using it, ensuring that each CockroachDB node binds back to the same storage on restart.<br/><br/>When using <code>minikube</code>, persistent volumes are external temporary directories that endure until they are manually deleted or until the entire Kubernetes cluster is deleted.</td></tr><tr><td><a href="http://kubernetes.io/docs/user-guide/persistent-volumes#persistentvolumeclaims">persistent volume claim</a></td><td>When e pod is created, it requests a persistent volume claim to claim durable storage for its node.</td></tr></tbody></table>
+
+## Step 1. Start Kubernetes
+
+1. Follow the [Minikube documentation](https://kubernetes.io/docs/tasks/tools/install-minikube) to install the latest version of `minikube`, a hypervisor, and the `kubectl` command-line tool.
+2. Start a local Kubernetes cluster:
+
+    ```shell
+    minikube start
+    ```
+
+## Step 2. Start CockroachDB
+
+To start your CockroachDB cluster, you can either use our StatefulSet configuration and related files directly, or you can use the [Helm](https://helm.sh/) package manager for Kubernetes to simplify the process.
+
+<Tabs>
+<Tab title="Use Helm">
+
+1. [Install the Helm client](https://helm.sh/docs/intro/install) (version 3.0 or higher) and add the `cockroachdb` chart repository:
+
+    ```shell
+    $ helm repo add cockroachdb https://charts.cockroachdb.com/
+    ```
+
+    ```text
+    "cockroachdb" has been added to your repositories
+    ```
+2. Update your Helm chart repositories to ensure that you're using the [latest CockroachDB chart](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/Chart.yaml):
+
+    ```shell
+    $ helm repo update
+    ```
+3. The cluster configuration is set in the Helm chart's [values file](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml).
+
+    <Note>
+    By default, the Helm chart specifies CPU and memory resources that are appropriate for the virtual machines used in this deployment example. On a production cluster, you should substitute values that are appropriate for your machines and workload. For details on configuring your deployment, see [Configure the Cluster](/docs/v25.4/configure-cockroachdb-kubernetes?filters=helm).
+    </Note>
+
+    Before deploying, modify some parameters in our Helm chart's [values file](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml):
+
+    1. Create a local YAML file (e.g., `my-values.yaml` ) to specify your custom values. These will be used to override the defaults in `values.yaml`.
+    2. To avoid running out of memory when CockroachDB is not the only pod on a Kubernetes node, you *must* set memory limits explicitly. This is because CockroachDB does not detect the amount of memory allocated to its pod when run in Kubernetes. We recommend setting `conf.cache` and `conf.max-sql-memory` each to 1/4 of the `memory` allocation specified in `statefulset.resources.requests` and `statefulset.resources.limits`.
+
+        <Tip>
+        For example, if you are allocating 8Gi of `memory` to each CockroachDB node, allocate 2Gi to `cache` and 2Gi to `max-sql-memory`.
+        </Tip>
+
+        ```yaml
+        conf:
+          cache: "2Gi"
+          max-sql-memory: "2Gi"
+        ```
+
+        The Helm chart defaults to a secure deployment by automatically setting `tls.enabled` to `true`. For an insecure deployment, set `tls.enabled` to `false`:
+
+        ```yaml
+        tls:
+          enabled: false
+        ```
+
+        Your values file should look similar to:
+
+        ```yaml
+        conf:
+              cache: "2Gi"
+              max-sql-memory: "2Gi"
+        tls:
+            enabled: false
+        ```
+
+        Refer to the [CockroachDB Helm chart's `values.yaml` template](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml).
+4. Install the CockroachDB Helm chart, specifying your custom values file.
+
+    Provide a "release" name to identify and track this particular deployment of the chart, and override the default values with those in `my-values.yaml`.
+
+    <Note>
+    This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
+    </Note>
+
+    <Warning>
+    To allow the CockroachDB pods to successfully deploy, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm#helpful-options-for-installupgraderollback) when using Helm commands.
+    </Warning>
+
+    ```shell
+    $ helm install my-release --values {custom-values}.yaml cockroachdb/cockroachdb
+    ```
+5. Install the CockroachDB Helm chart.
+
+    Provide a "release" name to identify and track this particular deployment of the chart.
+
+    <Note>
+    This tutorial uses `my-release` as the release name. If you use a different value, be sure to adjust the release name in subsequent commands.
+    </Note>
+
+    ```shell
+    $ helm install my-release cockroachdb/cockroachdb
+    ```
+
+    Behind the scenes, this command uses our `cockroachdb-statefulset.yaml` file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it, where each pod has distinguishable network identity and always binds back to the same persistent storage on restart.
+6. Confirm that CockroachDB cluster initialization has completed successfully, with the pods for CockroachDB showing `1/1` under `READY` and the pod for initialization showing `COMPLETED` under `STATUS`:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME                                READY     STATUS      RESTARTS   AGE
+    my-release-cockroachdb-0            1/1       Running     0          8m
+    my-release-cockroachdb-1            1/1       Running     0          8m
+    my-release-cockroachdb-2            1/1       Running     0          8m
+    my-release-cockroachdb-init-hxzsc   0/1       Completed   0          1h
+    ```
+7. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
+
+    ```shell
+    $ kubectl get pv
+    ```
+
+    ```text
+    NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                                      STORAGECLASS   REASON    AGE
+    pvc-71019b3a-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-0   standard                 11m
+    pvc-7108e172-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-1   standard                 11m
+    pvc-710dcb66-fc67-11e8-a606-080027ba45e5   100Gi      RWO            Delete           Bound     default/datadir-my-release-cockroachdb-2   standard                 11m
+    ```
+
+<Tip>
+The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
+</Tip>
+
+## Step 3. Use the built-in SQL client
+
+1. Launch a temporary interactive pod and start the [built-in SQL client](/docs/v25.4/cockroach-sql) inside it:
+
+    ```shell
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:v25.4.6 \
+    --rm \
+    --restart=Never \
+    -- sql \
+    --insecure \
+    --host=my-release-cockroachdb-public
+    ```
+2. Run some basic [CockroachDB SQL statements](/docs/v25.4/learn-cockroachdb-sql):
+
+    ```sql
+    > CREATE DATABASE bank;
+    ```
+
+    ```sql
+    > CREATE TABLE bank.accounts (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          balance DECIMAL
+      );
+    ```
+
+    ```sql
+    > INSERT INTO bank.accounts (balance)
+      VALUES
+          (1000.50), (20000), (380), (500), (55000);
+    ```
+
+    ```sql
+    > SELECT * FROM bank.accounts;
+    ```
+
+    ```text
+                       id                  | balance
+    +--------------------------------------+---------+
+      6f123370-c48c-41ff-b384-2c185590af2b |     380
+      990c9148-1ea0-4861-9da7-fd0e65b0a7da | 1000.50
+      ac31c671-40bf-4a7b-8bee-452cff8a4026 |     500
+      d58afd93-5be9-42ba-b2e2-dc00dcedf409 |   20000
+      e6d8f696-87f5-4d3c-a377-8e152fdc27f7 |   55000
+    (5 rows)
+    ```
+3. Exit the SQL shell and delete the temporary pod:
+
+    ```sql
+    > \q
+    ```
+
+## Step 4. Access the DB Console
+
+To access the cluster's [DB Console](/docs/v25.4/ui-overview):
+
+1. In a new terminal window, port-forward from your local machine to the `cockroachdb-public` service: `$ kubectl port-forward service/cockroachdb-public 8080 `
+
+    ```shell
+    $ kubectl port-forward service/my-release-cockroachdb-public 8080
+    ```
+
+    ```text
+    Forwarding from 127.0.0.1:8080 -> 8080
+    ```
+
+    <Note>
+    The `port-forward` command must be run on the same machine as the web browser in which you want to view the DB Console. If you have been running these commands from a cloud instance or other non-local shell, you will not be able to view the UI without configuring `kubectl` locally and running the above `port-forward` command on your local machine.
+    </Note>
+2. Go to [http://localhost:8080](http://localhost:8080/).
+3. In the UI, verify that the cluster is running as expected:
+    - View the [Node List](/docs/v25.4/ui-cluster-overview-page#node-list) to ensure that all nodes successfully joined the cluster.
+    - Click the **Databases** tab on the left to verify that `bank` is listed.
+
+## Step 5. Simulate node failure
+
+Based on the `replicas: 3` line in the StatefulSet configuration, Kubernetes ensures that three pods/nodes are running at all times. When a pod/node fails, Kubernetes automatically creates another pod/node with the same network identity and persistent storage.
+
+To see this in action:
+
+1. Terminate one of the CockroachDB nodes: `$ kubectl delete pod cockroachdb-2 ``pod "cockroachdb-2" deleted `
+
+    ```shell
+    $ kubectl delete pod my-release-cockroachdb-2
+    ```
+
+    ```text
+    pod "my-release-cockroachdb-2" deleted
+    ```
+2. In the DB Console, the **Cluster Overview** will soon show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
+3. Back in the terminal, verify that the pod was automatically restarted: `$ kubectl get pod cockroachdb-2 ``NAME READY STATUS RESTARTS AGE cockroachdb-2 1/1 Running 0 12s `
+
+    ```shell
+    $ kubectl get pod my-release-cockroachdb-2
+    ```
+
+    ```text
+    NAME                       READY     STATUS    RESTARTS   AGE
+    my-release-cockroachdb-2   1/1       Running   0          44s
+    ```
+
+## Step 6. Add nodes
+
+1. Use the `kubectl scale` command to add a pod for another CockroachDB node:
+
+    ```shell
+    $ kubectl scale statefulset my-release-cockroachdb --replicas=4
+    ```
+
+    ```text
+    statefulset "my-release-cockroachdb" scaled
+    ```
+2. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME                                 READY     STATUS    RESTARTS   AGE
+    my-release-cockroachdb-0             1/1       Running   0          28m
+    my-release-cockroachdb-1             1/1       Running   0          27m
+    my-release-cockroachdb-2             1/1       Running   0          10m
+    my-release-cockroachdb-3             1/1       Running   0          5s
+    example-545f866f5-2gsrs              1/1       Running   0          25m
+    ```
+
+## Step 7. Remove nodes
+
+To safely remove a node from your cluster, you must first decommission the node and only then adjust the `spec.replicas` value of your StatefulSet configuration to permanently remove it. This sequence is important because the decommissioning process lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+
+<Warning>
+If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Prepare for graceful shutdown](/docs/v25.4/node-shutdown?filters=decommission#prepare-for-graceful-shutdown).
+</Warning>
+
+1. Launch a temporary interactive pod and use the `cockroach node status` command to get the internal IDs of nodes:
+
+    ```shell
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:v25.4.6 \
+    --rm \
+    --restart=Never \
+    -- node status \
+    --insecure \
+    --host=my-release-cockroachdb-public
+    ```
+
+    ```text
+      id |                                     address                                     | build  |            started_at            |            updated_at            | is_available | is_live
+    +----+---------------------------------------------------------------------------------+--------+----------------------------------+----------------------------------+--------------+---------+
+       1 | my-release-cockroachdb-0.my-release-cockroachdb.default.svc.cluster.local:26257 | v25.4.6 | 2018-11-29 16:04:36.486082+00:00 | 2018-11-29 18:24:24.587454+00:00 | true         | true
+       2 | my-release-cockroachdb-2.my-release-cockroachdb.default.svc.cluster.local:26257 | v25.4.6 | 2018-11-29 16:55:03.880406+00:00 | 2018-11-29 18:24:23.469302+00:00 | true         | true
+       3 | my-release-cockroachdb-1.my-release-cockroachdb.default.svc.cluster.local:26257 | v25.4.6 | 2018-11-29 16:04:41.383588+00:00 | 2018-11-29 18:24:25.030175+00:00 | true         | true
+       4 | my-release-cockroachdb-3.my-release-cockroachdb.default.svc.cluster.local:26257 | v25.4.6 | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
+    (4 rows)
+    ```
+2. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](/docs/v25.4/cockroach-node) command to decommission it:
+
+    <Note>
+    It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
+    </Note>
+
+    ```shell
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:v25.4.6 \
+    --rm \
+    --restart=Never \
+    -- node decommission <node ID> \
+    --insecure \
+    --host=my-release-cockroachdb-public
+    ```
+
+    You'll then see the decommissioning status print to `stderr` as it changes:
+
+    ```text
+      id | is_live | replicas | is_decommissioning |   membership    | is_draining
+    -----+---------+----------+--------------------+-----------------+--------------
+       4 |  true   |       73 |        true        | decommissioning |    false    
+    ```
+
+    Once the node has been fully decommissioned, you'll see a confirmation:
+
+    ```text
+      id | is_live | replicas | is_decommissioning |   membership    | is_draining
+    -----+---------+----------+--------------------+-----------------+--------------
+       4 |  true   |        0 |        true        | decommissioning |    false    
+    (1 row)
+
+    No more data reported on target nodes. Please verify cluster health before removing the nodes.
+    ```
+3. Once the node has been decommissioned, remove a pod from your StatefulSet:
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set statefulset.replicas=3 \
+    --reuse-values
+    ```
+
+</Tab>
+<Tab title="Use Configs">
+
+1. From your local workstation, use our [`cockroachdb-statefulset.yaml`](https://github.com/cockroachdb/cockroach/blob/master/cloud/kubernetes/cockroachdb-statefulset.yaml) file to create the StatefulSet that automatically creates 3 pods, each with a CockroachDB node running inside it:
+
+    ```shell
+    $ kubectl create -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml
+    ```
+
+    ```text
+    service/cockroachdb-public created
+    service/cockroachdb created
+    poddisruptionbudget.policy/cockroachdb-budget created
+    statefulset.apps/cockroachdb created
+    ```
+2. Confirm that three pods are `Running` successfully. Note that they will not be considered `Ready` until after the cluster has been initialized:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME            READY     STATUS    RESTARTS   AGE
+    cockroachdb-0   0/1       Running   0          2m
+    cockroachdb-1   0/1       Running   0          2m
+    cockroachdb-2   0/1       Running   0          2m
+    ```
+3. Confirm that the persistent volumes and corresponding claims were created successfully for all three pods:
+
+    ```shell
+    $ kubectl get pv
+    ```
+
+    ```text
+    NAME                                       CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                           REASON    AGE
+    pvc-52f51ecf-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-0             26s
+    pvc-52fd3a39-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-1             27s
+    pvc-5315efda-8bd5-11e6-a4f4-42010a800002   1Gi        RWO           Delete          Bound     default/datadir-cockroachdb-2             27s
+    ```
+4. Use our [`cluster-init.yaml`](https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml) file to perform a one-time initialization that joins the CockroachDB nodes into a single cluster:
+
+    ```shell
+    $ kubectl create \
+    -f https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cluster-init.yaml
+    ```
+
+    ```text
+    job.batch/cluster-init created
+    ```
+5. Confirm that cluster initialization has completed successfully. The job should be considered successful and the Kubernetes pods should soon be considered `Ready`:
+
+    ```shell
+    $ kubectl get job cluster-init
+    ```
+
+    ```text
+    NAME           COMPLETIONS   DURATION   AGE
+    cluster-init   1/1           7s         27s
+    ```
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME                 READY   STATUS      RESTARTS   AGE
+    cluster-init-cqf8l   0/1     Completed   0          56s
+    cockroachdb-0        1/1     Running     0          7m51s
+    cockroachdb-1        1/1     Running     0          7m51s
+    cockroachdb-2        1/1     Running     0          7m51s
+    ```
+
+<Tip>
+The StatefulSet configuration sets all CockroachDB nodes to log to `stderr`, so if you ever need access to a pod/node's logs to troubleshoot, use `kubectl logs <podname>` rather than checking the log on the persistent volume.
+</Tip>
+
+## Step 3. Use the built-in SQL client
+
+1. Launch a temporary interactive pod and start the [built-in SQL client](/docs/v25.4/cockroach-sql) inside it:
+
+    ```shell
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:v25.4.6 \
+    --rm \
+    --restart=Never \
+    -- sql \
+    --insecure \
+    --host=cockroachdb-public
+    ```
+2. Run some basic [CockroachDB SQL statements](/docs/v25.4/learn-cockroachdb-sql):
+
+    ```sql
+    > CREATE DATABASE bank;
+    ```
+
+    ```sql
+    > CREATE TABLE bank.accounts (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          balance DECIMAL
+      );
+    ```
+
+    ```sql
+    > INSERT INTO bank.accounts (balance)
+      VALUES
+          (1000.50), (20000), (380), (500), (55000);
+    ```
+
+    ```sql
+    > SELECT * FROM bank.accounts;
+    ```
+
+    ```text
+                       id                  | balance
+    +--------------------------------------+---------+
+      6f123370-c48c-41ff-b384-2c185590af2b |     380
+      990c9148-1ea0-4861-9da7-fd0e65b0a7da | 1000.50
+      ac31c671-40bf-4a7b-8bee-452cff8a4026 |     500
+      d58afd93-5be9-42ba-b2e2-dc00dcedf409 |   20000
+      e6d8f696-87f5-4d3c-a377-8e152fdc27f7 |   55000
+    (5 rows)
+    ```
+3. Exit the SQL shell and delete the temporary pod:
+
+    ```sql
+    > \q
+    ```
+
+## Step 4. Access the DB Console
+
+To access the cluster's [DB Console](/docs/v25.4/ui-overview):
+
+1. In a new terminal window, port-forward from your local machine to the `cockroachdb-public` service: `$ kubectl port-forward service/cockroachdb-public 8080 `
+
+    ```shell
+    $ kubectl port-forward service/cockroachdb-public 8080
+    ```
+
+    ```text
+    Forwarding from 127.0.0.1:8080 -> 8080
+    ```
+
+    <Note>
+    The `port-forward` command must be run on the same machine as the web browser in which you want to view the DB Console. If you have been running these commands from a cloud instance or other non-local shell, you will not be able to view the UI without configuring `kubectl` locally and running the above `port-forward` command on your local machine.
+    </Note>
+2. Go to [http://localhost:8080](http://localhost:8080/).
+3. In the UI, verify that the cluster is running as expected:
+    - View the [Node List](/docs/v25.4/ui-cluster-overview-page#node-list) to ensure that all nodes successfully joined the cluster.
+    - Click the **Databases** tab on the left to verify that `bank` is listed.
+
+## Step 5. Simulate node failure
+
+Based on the `replicas: 3` line in the StatefulSet configuration, Kubernetes ensures that three pods/nodes are running at all times. When a pod/node fails, Kubernetes automatically creates another pod/node with the same network identity and persistent storage.
+
+To see this in action:
+
+1. Terminate one of the CockroachDB nodes: `$ kubectl delete pod cockroachdb-2 ``pod "cockroachdb-2" deleted `
+
+    ```shell
+    $ kubectl delete pod cockroachdb-2
+    ```
+
+    ```text
+    pod "cockroachdb-2" deleted
+    ```
+2. In the DB Console, the **Cluster Overview** will soon show one node as **Suspect**. As Kubernetes auto-restarts the node, watch how the node once again becomes healthy.
+3. Back in the terminal, verify that the pod was automatically restarted: `$ kubectl get pod cockroachdb-2 ``NAME READY STATUS RESTARTS AGE cockroachdb-2 1/1 Running 0 12s `
+
+    ```shell
+    $ kubectl get pod cockroachdb-2
+    ```
+
+    ```text
+    NAME            READY     STATUS    RESTARTS   AGE
+    cockroachdb-2   1/1       Running   0          12s
+    ```
+
+## Step 6. Add nodes
+
+1. Use the `kubectl scale` command to add a pod for another CockroachDB node:
+
+    ```shell
+    $ kubectl scale statefulset cockroachdb --replicas=4
+    ```
+
+    ```text
+    statefulset "cockroachdb" scaled
+    ```
+2. Verify that the pod for a fourth node, `cockroachdb-3`, was added successfully:
+
+    ```shell
+    $ kubectl get pods
+    ```
+
+    ```text
+    NAME                      READY     STATUS    RESTARTS   AGE
+    cockroachdb-0             1/1       Running   0          28m
+    cockroachdb-1             1/1       Running   0          27m
+    cockroachdb-2             1/1       Running   0          10m
+    cockroachdb-3             1/1       Running   0          5s
+    example-545f866f5-2gsrs   1/1       Running   0          25m
+    ```
+
+## Step 7. Remove nodes
+
+To safely remove a node from your cluster, you must first decommission the node and only then adjust the `spec.replicas` value of your StatefulSet configuration to permanently remove it. This sequence is important because the decommissioning process lets a node finish in-flight requests, rejects any new requests, and transfers all range replicas and range leases off the node.
+
+<Warning>
+If you remove nodes without first telling CockroachDB to decommission them, you may cause data or even cluster unavailability. For more details about how this works and what to consider before removing nodes, see [Prepare for graceful shutdown](/docs/v25.4/node-shutdown?filters=decommission#prepare-for-graceful-shutdown).
+</Warning>
+
+1. Launch a temporary interactive pod and use the `cockroach node status` command to get the internal IDs of nodes:
+
+    ```shell
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:v25.4.6 \
+    --rm \
+    --restart=Never \
+    -- node status \
+    --insecure \
+    --host=cockroachdb-public
+    ```
+
+    ```text
+      id |               address                                     | build  |            started_at            |            updated_at            | is_available | is_live
+    +----+---------------------------------------------------------------------------------+--------+----------------------------------+----------------------------------+--------------+---------+
+       1 | cockroachdb-0.cockroachdb.default.svc.cluster.local:26257 | v25.4.6 | 2018-11-29 16:04:36.486082+00:00 | 2018-11-29 18:24:24.587454+00:00 | true         | true
+       2 | cockroachdb-2.cockroachdb.default.svc.cluster.local:26257 | v25.4.6 | 2018-11-29 16:55:03.880406+00:00 | 2018-11-29 18:24:23.469302+00:00 | true         | true
+       3 | cockroachdb-1.cockroachdb.default.svc.cluster.local:26257 | v25.4.6 | 2018-11-29 16:04:41.383588+00:00 | 2018-11-29 18:24:25.030175+00:00 | true         | true
+       4 | cockroachdb-3.cockroachdb.default.svc.cluster.local:26257 | v25.4.6 | 2018-11-29 17:31:19.990784+00:00 | 2018-11-29 18:24:26.041686+00:00 | true         | true
+    (4 rows)
+    ```
+2. Note the ID of the node with the highest number in its address (in this case, the address including `cockroachdb-3`) and use the [`cockroach node decommission`](/docs/v25.4/cockroach-node) command to decommission it:
+
+    <Note>
+    It's important to decommission the node with the highest number in its address because, when you reduce the replica count, Kubernetes will remove the pod for that node.
+    </Note>
+
+    ```shell
+    $ kubectl run cockroachdb -it \
+    --image=cockroachdb/cockroach:v25.4.6 \
+    --rm \
+    --restart=Never \
+    -- node decommission <node ID> \
+    --insecure \
+    --host=cockroachdb-public
+    ```
+
+    You'll then see the decommissioning status print to `stderr` as it changes:
+
+    ```text
+      id | is_live | replicas | is_decommissioning |   membership    | is_draining
+    -----+---------+----------+--------------------+-----------------+--------------
+       4 |  true   |       73 |        true        | decommissioning |    false    
+    ```
+
+    Once the node has been fully decommissioned, you'll see a confirmation:
+
+    ```text
+      id | is_live | replicas | is_decommissioning |   membership    | is_draining
+    -----+---------+----------+--------------------+-----------------+--------------
+       4 |  true   |        0 |        true        | decommissioning |    false    
+    (1 row)
+
+    No more data reported on target nodes. Please verify cluster health before removing the nodes.
+    ```
+3. Once the node has been decommissioned, remove a pod from your StatefulSet:
+
+    ```shell
+    $ kubectl scale statefulset cockroachdb --replicas=3
+    ```
+
+    ```text
+    statefulset "cockroachdb" scaled
+    ```
+
+</Tab>
+</Tabs>
+
+## Step 8. Stop the cluster
+
+- **If you plan to restart the cluster**, use the `minikube stop` command. This shuts down the minikube virtual machine but preserves all the resources you created:
+
+    ```shell
+    $ minikube stop
+    ```
+
+    ```text
+    Stopping local Kubernetes cluster...
+    Machine stopped.
+    ```
+
+    You can restore the cluster to its previous state with `minikube start`.
+- **If you do not plan to restart the cluster**, use the `minikube delete` command. This shuts down and deletes the minikube virtual machine and all the resources you created, including persistent volumes:
+
+    ```shell
+    $ minikube delete
+    ```
+
+    ```text
+    Deleting local Kubernetes cluster...
+    Machine deleted.
+    ```
+
+    <Tip>
+    To retain logs, copy them from each pod's `stderr` before deleting the cluster and all its resources. To access a pod's standard error stream, run `kubectl logs <podname>`.
+    </Tip>
+
+## See also
+
+Explore other CockroachDB benefits and features:
+
+- [Replication &amp; Rebalancing](/docs/v25.4/demo-replication-and-rebalancing)
+- [CockroachDB Resilience](/docs/v25.4/demo-cockroachdb-resilience)
+- [Low Latency Multi-Region Deployment](/docs/v25.4/demo-low-latency-multi-region-deployment)
+- [Serializable Transactions](/docs/v25.4/demo-serializable)
+- [Cross-Cloud Migration](/docs/v25.4/demo-automatic-cloud-migration)
+- [Orchestration](/docs/v25.4/orchestrate-a-local-cluster-with-kubernetes-insecure)
+- [JSON Support](/docs/v25.4/demo-json-support)
+
+You might also want to learn how to [orchestrate a production deployment of CockroachDB with Kubernetes](/docs/v25.4/deploy-cockroachdb-with-kubernetes).

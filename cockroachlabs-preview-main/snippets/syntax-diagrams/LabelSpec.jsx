@@ -1,0 +1,65 @@
+export const LabelSpec = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="69" width="469" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="34" x="51" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="34" x="49" y="33"></rect>
+<text class="terminal" x="59" y="53">IF</text>
+<rect height="32" rx="10" width="48" x="105" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="103" y="33"></rect>
+<text class="terminal" x="113" y="53">NOT</text>
+<rect height="32" rx="10" width="70" x="173" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="171" y="33"></rect>
+<text class="terminal" x="181" y="53">EXISTS</text><a xlink:href="#string_or_placeholder" xlink:title="string_or_placeholder">
+<rect height="32" width="158" x="283" y="3"></rect>
+<rect class="nonterminal" height="32" width="158" x="281" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="134" font-size="10" class="nonterminal" x="293" y="21">string_or_placeholder</text></a><path class="line" d="m17 17 h2 m20 0 h10 m0 0 h202 m-232 0 h20 m212 0 h20 m-252 0 q10 0 10 10 m232 0 q0 -10 10 -10 m-242 10 v12 m232 0 v-12 m-232 12 q0 10 10 10 m212 0 q10 0 10 -10 m-222 10 h10 m34 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m158 0 h10 m3 0 h-3"></path>
+<polygon points="459 17 467 13 467 21"></polygon>
+<polygon points="459 17 451 13 451 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

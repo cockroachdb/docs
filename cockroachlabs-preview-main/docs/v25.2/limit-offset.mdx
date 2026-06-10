@@ -1,0 +1,43 @@
+---
+title: "Limit Query Results"
+old_description: "LIMIT and OFFSET restrict an operation to a few row."
+---
+
+The `LIMIT` and `OFFSET` clauses restrict the operation of:
+
+- A [selection query](/docs/v25.2/selection-queries), including when it occurs as part of [`INSERT`](/docs/v25.2/insert) or [`UPSERT`](/docs/v25.2/upsert).
+- [`UPDATE`](/docs/v25.2/update) and [`DELETE`](/docs/v25.2/delete) statements.
+
+`OFFSET` instructs the operation to skip a specified number of rows. It is often used in conjunction with `LIMIT` to "paginate" through retrieved rows.
+
+<Warning>
+Using `LIMIT`/`OFFSET` to implement pagination can be very slow for large tables. We recommend using [keyset pagination](/docs/v25.2/pagination) instead.
+</Warning>
+
+## Syntax
+
+### LIMIT
+
+```text
+LIMIT { <limit_value> | ALL }
+```
+
+For PostgreSQL compatibility, CockroachDB also supports `FETCH FIRST limit_value ROWS ONLY` and `FETCH NEXT limit_value ROWS ONLY` as aliases for `LIMIT`. If `limit_value` is omitted, then one row is fetched.
+
+### OFFSET
+
+```text
+OFFSET <offset_value> [ ROW | ROWS ]
+```
+
+## Examples
+
+For example uses with `SELECT`, see [Limit Row Count](/docs/v25.2/selection-queries#limit-row-count).
+
+## See also
+
+- [`DELETE`](/docs/v25.2/delete)
+- [`UPDATE`](/docs/v25.2/delete)
+- [`INSERT`](/docs/v25.2/insert)
+- [`UPSERT`](/docs/v25.2/upsert)
+- [Selection Queries](/docs/v25.2/selection-queries)

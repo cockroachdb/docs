@@ -1,0 +1,76 @@
+export const WindowFunctions2 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="191" width="633" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="66" x="51" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="49" y="1"></rect>
+<text class="terminal" x="59" y="21">RANGE</text>
+<rect height="32" rx="10" width="62" x="51" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="49" y="45"></rect>
+<text class="terminal" x="59" y="65">ROWS</text>
+<rect height="32" rx="10" width="78" x="51" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="49" y="89"></rect>
+<text class="terminal" x="59" y="109">GROUPS</text>
+<rect height="32" rx="10" width="86" x="189" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="86" x="187" y="33"></rect>
+<text class="terminal" x="197" y="53">BETWEEN</text><a xlink:href="/docs/stable/sql-grammar#frame_bound" xlink:title="frame_bound">
+<rect height="32" width="104" x="295" y="35"></rect>
+<rect class="nonterminal" height="32" width="104" x="293" y="33"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="80" font-size="11" class="nonterminal" x="305" y="53">frame_bound</text></a><rect height="32" rx="10" width="48" x="419" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="417" y="33"></rect>
+<text class="terminal" x="427" y="53">AND</text><a xlink:href="/docs/stable/sql-grammar#frame_bound" xlink:title="frame_bound">
+<rect height="32" width="104" x="507" y="3"></rect>
+<rect class="nonterminal" height="32" width="104" x="505" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="80" font-size="11" class="nonterminal" x="517" y="21">frame_bound</text></a><a xlink:href="/docs/stable/sql-grammar#opt_frame_exclusion" xlink:title="opt_frame_exclusion">
+<rect height="32" width="152" x="453" y="157"></rect>
+<rect class="nonterminal" height="32" width="152" x="451" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="128" font-size="10" class="nonterminal" x="463" y="175">opt_frame_exclusion</text></a><path class="line" d="m17 17 h2 m20 0 h10 m66 0 h10 m0 0 h12 m-118 0 h20 m98 0 h20 m-138 0 q10 0 10 10 m118 0 q0 -10 10 -10 m-128 10 v24 m118 0 v-24 m-118 24 q0 10 10 10 m98 0 q10 0 10 -10 m-108 10 h10 m62 0 h10 m0 0 h16 m-108 -10 v20 m118 0 v-20 m-118 20 v24 m118 0 v-24 m-118 24 q0 10 10 10 m98 0 q10 0 10 -10 m-108 10 h10 m78 0 h10 m40 -88 h10 m0 0 h288 m-318 0 h20 m298 0 h20 m-338 0 q10 0 10 10 m318 0 q0 -10 10 -10 m-328 10 v12 m318 0 v-12 m-318 12 q0 10 10 10 m298 0 q10 0 10 -10 m-308 10 h10 m86 0 h10 m0 0 h10 m104 0 h10 m0 0 h10 m48 0 h10 m20 -32 h10 m104 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-202 154 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m152 0 h10 m3 0 h-3"></path>
+<polygon points="623 171 631 167 631 175"></polygon>
+<polygon points="623 171 615 167 615 175"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

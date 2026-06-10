@@ -1,0 +1,188 @@
+---
+title: "ALTER BACKUP SCHEDULE"
+old_description: "Use the ALTER BACKUP SCHEDULE statement to change an existing backup schedule."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+
+The `ALTER BACKUP SCHEDULE` statement modifies an existing [backup schedule](/docs/v24.1/manage-a-backup-schedule). You can use `ALTER BACKUP SCHEDULE` to do the following:
+
+- Set a different name for a backup schedule.
+- Change a scheduled backup's storage location.
+- Apply additional backup options or schedule options to backups and schedules.
+- Adjust the cadence and type of scheduled backups.
+
+## Required privileges
+
+To alter a backup schedule, you must be the owner of the backup schedule, i.e., the user that [created the backup schedule](/docs/v24.1/create-schedule-for-backup).
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v24.1/alter-backup-schedule/syntax-diagram-c679ccaaa83c.svg)
+</Frame>
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>schedule&#95;id</code></td><td>The schedule's ID that <a href="/docs/v24.1/create-schedule-for-backup"><code>CREATE SCHEDULE FOR BACKUP</code></a> and <a href="/docs/v24.1/show-schedules"><code>SHOW SCHEDULES</code></a> display.</td></tr><tr><td><code>schedule&#95;label</code></td><td>The name or label given to the backup schedule.</td></tr><tr><td><code>collectionURI</code></td><td>The URI where you want to store the backup. See <a href="/docs/v24.1/backup#backup-file-urls">Backup file URLs</a> for detail on forming the URI.</td></tr><tr><td><code>option</code></td><td>Control the backup behavior with a comma-separated list of these <a href="#backup-options">options</a>.</td></tr><tr><td><code>RECURRING crontab</code></td><td>Specify when the backup should be taken. By default, these are incremental backups. A separate schedule may be created automatically to write full backups at a regular cadence, depending on the frequency of the incremental backups. You can likewise modify this separate schedule with <code>ALTER BACKUP SCHEDULE</code>. Define the schedule as a <code>STRING</code> in <a href="https://wikipedia.org/wiki/Cron">crontab format</a>. All times in UTC.<br/><br/>Example: <code>'@daily'</code> (run daily at midnight)</td></tr><tr><td><code>FULL BACKUP crontab / ALWAYS</code></td><td>Specify when to take a new full backup. Define the schedule as a <code>STRING</code> in <a href="https://wikipedia.org/wiki/Cron">crontab format</a> or as <code>ALWAYS</code>.<br/><br/><code>FULL BACKUP ALWAYS</code> will trigger <code>RECURRING</code> to always take full backups.<br/><strong>Note:</strong> If you do not have an Enterprise license then you can only take full backups. <code>ALWAYS</code> is the only accepted value of <code>FULL BACKUP</code>.<br/><br/>If you omit the <code>FULL BACKUP</code> clause, the default backup schedule will be as follows:<br/><br/>- If <code>RECURRING</code> &lt;= 1 hour: Default to <code>FULL BACKUP '@daily'</code><br/><br/>- If <code>RECURRING</code> &gt; 1 hour and &lt;= 1 day: Default to <code>FULL BACKUP '@weekly'</code><br/><br/>- Otherwise: Default to <code>FULL BACKUP ALWAYS</code></td></tr><tr><td><code>schedule&#95;option</code></td><td>Control the schedule behavior with a comma-separated list of these <a href="#schedule-options">schedule options</a>.</td></tr><tr><td><code>EXECUTE &#91;FULL&#93; IMMEDIATELY</code></td><td><InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v24.1: Update the schedule to run immediately (at the current time). With <code>ALTER BACKUP SCHEDULE ... EXECUTE IMMEDIATELY</code> if the schedule includes full and incremental backups, regardless of which ID is specified, the incremental schedule will run. To run the full backup schedule instead, use <code>ALTER BACKUP SCHEDULE ... EXECUTE FULL IMMEDIATELY</code>. You can only use <code>EXECUTE &#91;FULL&#93; IMMEDIATELY</code> with active schedules. You need to <a href="/docs/v24.1/resume-schedules">resume</a> a paused schedule before it will execute. Use <a href="/docs/v24.1/pause-schedules"><code>PAUSE SCHEDULE</code></a> following the schedule run to pause the schedule once again.</td></tr></tbody></table>
+
+### Backup options
+
+You can use the backup options in this table to control the behavior of your backups. See [Apply different options to scheduled backups](#apply-different-options-to-scheduled-backups) for an example.
+
+<table><thead><tr><th>Option</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>revision&#95;history</code><a></a></td><td><a href="/docs/v24.1/bool"><code>BOOL</code></a> / None</td><td>Create a backup with full <a href="/docs/v24.1/take-backups-with-revision-history-and-restore-from-a-point-in-time">revision history</a>, which records every change made to the cluster within the garbage collection period leading up to and including the given timestamp.<br/><br/>You can specify a backup with revision history without any value e.g., <code>WITH revision&#95;history</code>. Or, you can explicitly define <code>WITH revision&#95;history = 'true' / 'false'</code>. The <code>revision&#95;history</code> option defaults to <code>true</code> when used with <a href="/docs/v24.1/backup"><code>BACKUP</code></a> or <code>CREATE SCHEDULE FOR BACKUP</code>. A value is <strong>required</strong> when using <code>ALTER BACKUP SCHEDULE</code> to <a href="#apply-different-options-to-scheduled-backups">apply different options to scheduled backups</a>.</td></tr><tr><td><code>encryption&#95;passphrase</code><a></a></td><td><a href="/docs/v24.1/string"><code>STRING</code></a></td><td>The passphrase used to <a href="/docs/v24.1/take-and-restore-encrypted-backups">encrypt the files</a> (<code>BACKUP</code> manifest and data files) that the <code>BACKUP</code> statement generates. This same passphrase is needed to decrypt the file when it is used to <a href="/docs/v24.1/take-and-restore-encrypted-backups">restore</a> and to list the contents of the backup when using <a href="/docs/v24.1/show-backup"><code>SHOW BACKUP</code></a>. There is no practical limit on the length of the passphrase.</td></tr><tr><td><code>detached</code><a></a></td><td><a href="/docs/v24.1/bool"><code>BOOL</code></a> / None</td><td><strong>Note:</strong> Backups running on a schedule have the <code>detached</code> option applied implicitly. Therefore, you cannot modify this option for scheduled backups.<br/><br/>When a backup runs in <code>detached</code> mode, it will execute asynchronously. The job ID will be returned after the backup <a href="/docs/v24.1/backup-architecture#job-creation-phase">job creation</a> completes. Note that with <code>detached</code> specified, further job information and the job completion status will not be returned. For more on the differences between the returned job data, see the <a href="/docs/v24.1/backup#run-a-backup-asynchronously">example</a>. To check on the job status, use the <a href="/docs/v24.1/show-jobs"><code>SHOW JOBS</code></a> statement.</td></tr><tr><td><code>EXECUTION LOCALITY</code></td><td>Key-value pairs</td><td>Restricts the execution of the backup to nodes that match the defined locality filter requirements. For example, <code>WITH EXECUTION LOCALITY = 'region=us-west-1a,cloud=aws'</code>.<br/><br/>Refer to <a href="/docs/v24.1/take-locality-restricted-backups">Take Locality-restricted backups</a> for usage and reference detail.</td></tr><tr><td><code>kms</code></td><td><a href="/docs/v24.1/string"><code>STRING</code></a></td><td>The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key URIs, used to <a href="/docs/v24.1/take-and-restore-encrypted-backups#examples">take and restore encrypted backups</a>. Refer to <a href="/docs/v24.1/take-and-restore-encrypted-backups#uri-formats">URI Formats</a>. The key or keys are used to encrypt the manifest and data files that the <code>BACKUP</code> statement generates and to decrypt them during a <a href="/docs/v24.1/take-and-restore-encrypted-backups#examples">restore</a> operation, and to list the contents of the backup when using <a href="/docs/v24.1/show-backup"><code>SHOW BACKUP</code></a>.<br/><br/>AWS KMS, Google Cloud KMS, and Azure Key Vault are supported.</td></tr><tr><td><code>incremental&#95;location</code><a></a></td><td><a href="/docs/v24.1/string"><code>STRING</code></a></td><td>Create an incremental backup in a different location than the default incremental backup location.<br/><br/><code>WITH incremental&#95;location = 'explicit&#95;incrementals&#95;URI'</code><br/><br/>See <a href="/docs/v24.1/take-full-and-incremental-backups#incremental-backups-with-explicitly-specified-destinations">Incremental backups with explicitly specified destinations</a> for usage.<br/><br/><strong>Warning:</strong> The <code>incremental&#95;location</code> parameter is deprecated as of v25.4 and will be removed in a future release. Until the parameter is removed, you can continue to work with existing backups that use a custom <code>incremental&#95;location</code>.</td></tr></tbody></table>
+
+### Schedule options
+
+You can use the schedule options in this table to control the behavior of your backup schedule. See [Apply different options to scheduled backups](#apply-different-options-to-scheduled-backups) for an example.
+
+<table><thead><tr><th>Option</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>on&#95;execution&#95;failure</code></td><td><code>retry</code> / <code>reschedule</code> / <code>pause</code></td><td>If an error occurs during the backup execution, do the following:<br/><br/>- <code>retry</code>: Retry the backup right away.<br/><br/>- <code>reschedule</code>: Retry the backup by rescheduling it based on the <code>RECURRING</code> expression.<br/><br/>- <code>pause</code>: Pause the schedule. This requires manual intervention to <a href="/docs/v24.1/resume-schedules">resume the schedule</a>.<br/><br/><strong>Default</strong>: <code>reschedule</code></td></tr><tr><td><a></a><code>on&#95;previous&#95;running</code></td><td><code>start</code> / <code>skip</code> / <code>wait</code></td><td>If the previous backup started by the schedule is still running, do the following:<br/><br/>- <code>start</code>: Start the new backup anyway, even if the previous one is still running.<br/><br/>- <code>skip</code>: Skip the new backup and run the next backup based on the <code>RECURRING</code> expression.<br/><br/>- <code>wait</code>: Wait for the previous backup to complete.<br/><br/><strong>Default</strong>: <code>wait</code>. The option affects backups started by the full backup schedule only. Incremental backups are always set to <code>wait</code>.</td></tr><tr><td><code>updates&#95;cluster&#95;last&#95;backup&#95;time&#95;metric</code></td><td>N/A</td><td>(<a href="/docs/v24.1/security-reference/authorization#admin-role"><code>admin</code> privileges</a> required) When set during backup schedule creation, this option updates the <a href="/docs/v24.1/backup-and-restore-monitoring#available-metrics"><code>schedules&#95;backup&#95;last&#95;completed&#95;time</code></a> metric for the scheduled backup.</td></tr></tbody></table>
+
+## Examples
+
+The examples in this section start with the following created backup schedule. Each section follows on from the previous example's schedule state.
+
+First, create a schedule that will take daily full backups of the cluster:
+
+```sql
+CREATE SCHEDULE aws_backups
+  FOR BACKUP INTO 'external://s3_storage'
+    RECURRING '@daily'
+    FULL BACKUP ALWAYS
+    WITH SCHEDULE OPTIONS first_run = 'now', ignore_existing_backups;
+```
+
+This statement specifies:
+
+- `'external://s3_storage'`: Use the storage location represented by this [external connection](/docs/v24.1/create-external-connection) URI.
+- `first_run = 'now'`: Take the first full backup immediately rather than wait for its next `RECURRING` time.
+- `ignore_existing_backups`: Ignore any existing backups already present in the storage location.
+
+The command returns the following output. Note that the [`detached` option](#detached) is implicitly added, because this backup has been configured to run on a schedule:
+
+```text
+     schedule_id     |   label     | status |           first_run           | schedule |                    backup_stmt
+---------------------+-------------+--------+-------------------------------+----------+----------------------------------------------------
+  814155335856521217 | aws_backups | ACTIVE | 2022-11-15 16:48:10.667767+00 | @daily   | BACKUP INTO 'external://s3_storage' WITH detached
+(1 row)
+```
+
+### Change the storage location for scheduled backups
+
+You can change the storage location to which your backup schedule is taking backups with the `SET INTO` command. Use the schedule ID to specify the schedule to modify and the new storage location URI. This statement also changes the schedule's label to match the change in backup location:
+
+```sql
+ALTER BACKUP SCHEDULE 814155335856521217 SET INTO 'external://gcs_storage', SET LABEL gcs_backups;
+```
+
+```text
+     schedule_id     |    label    | status |       first_run        | schedule |                    backup_stmt
+---------------------+-------------+--------+------------------------+----------+-----------------------------------------------------
+  814155335856521217 | gcs_backups | ACTIVE | 2022-11-16 00:00:00+00 | @daily   | BACKUP INTO 'external://gcs_storage' WITH detached
+(1 row)
+```
+
+<Note>
+[Incremental backups](/docs/v24.1/take-full-and-incremental-backups#incremental-backups) require a full backup in the storage location. Therefore, when you change the storage location for a backup schedule, CockroachDB will pause any scheduled incremental backups until the next full backup runs on its regular schedule cadence. Consider that if you change the storage location and then adjust the frequency of your scheduled backups before the next full backup, any newly added incremental backups will not be part of the pause after a storage location change. This could result in a reported error state for the incremental backups, which will not resolve until the next scheduled full backup.
+</Note>
+
+### Adjust frequency of scheduled backups
+
+To adjust the frequency of your scheduled backups, use `SET` with `FULL BACKUP` and `RECURRING` for full and incremental backups. You can either define the frequency as a `STRING` or in [crontab](https://wikipedia.org/wiki/Cron) format. See the [Parameters](#parameters) table for more detail.
+
+The following command adds incremental backups to the schedule occurring hourly:
+
+```sql
+ALTER BACKUP SCHEDULE 814155335856521217 SET FULL BACKUP '@daily', SET RECURRING '@hourly';
+```
+
+The output shows the two scheduled jobs:
+
+```text
+     schedule_id     |    label    | status |       first_run        | schedule |                         backup_stmt
+---------------------+-------------+--------+------------------------+----------+---------------------------------------------------------------
+  814168045421199361 | gcs_backups | ACTIVE | 2022-11-15 18:00:00+00 | @hourly  | BACKUP INTO LATEST IN 'external://gcs_storage' WITH detached
+  814155335856521217 | gcs_backups | ACTIVE | 2022-11-16 00:00:00+00 | @daily   | BACKUP INTO 'external://gcs_storage' WITH detached
+(2 rows)
+```
+
+You can use the `SHOW SCHEDULE` statement with one of the schedule IDs to show details for each of the jobs. For the full backup job:
+
+```sql
+SHOW SCHEDULE 814155335856521217;
+```
+
+This shows that the full backup has a dependent schedule, which lists the incremental backup's schedule ID:
+
+```text
+          id         |    label    | schedule_status |        next_run        | state | recurrence | jobsrunning | owner |            created            |                                                                                       command
+---------------------+-------------+-----------------+------------------------+-------+------------+-------------+-------+-------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  814155335856521217 | gcs_backups | ACTIVE          | 2022-11-18 00:00:00+00 | NULL  | @daily     |           0 | root  | 2022-11-15 16:48:10.667783+00 | {"backup_statement": "BACKUP INTO 'external://gcs_storage' WITH detached, "dependent_schedule_id": 814168045421199361}
+(1 row)
+```
+
+For the incremental backup:
+
+```sql
+SHOW SCHEDULE 814168045421199361;
+```
+
+The following includes the `backup_type` as `1`. This signifies that this schedule is for an incremental backup:
+
+```text
+          id         |    label    | schedule_status |        next_run        | state | recurrence | jobsrunning | owner |            created            |                                                                       command
+---------------------+-------------+-----------------+------------------------+-------+------------+-------------+-------+-------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------
+  814168045421199361 | gcs_backups | ACTIVE          | 2022-11-15 19:00:00+00 | NULL  | @hourly    |           0 | root  | 2022-11-15 17:52:49.327263+00 | {"backup_statement": "BACKUP INTO LATEST IN 'external://gcs_storage' WITH detached", "backup_type": 1, "dependent_schedule_id": 814155335856521217}
+(1 row)
+```
+
+Full backups are implicitly of `backup_type` `0`, and so does not display in the schedule details.
+
+### Apply different options to scheduled backups
+
+<Warning>
+The `incremental_location` parameter is deprecated as of v25.4 and will be removed in a future release. Until the parameter is removed, you can continue to work with existing backups that use a custom `incremental_location`.
+</Warning>
+
+You can modify the behavior of your backup schedule and the backup jobs with `SET SCHEDULE OPTION` and `SET WITH`. See the [Schedule options](#schedule-options) table and the [Backup options](#backup-options) table for a list of the available options.
+
+This statement changes the default `wait` value for the `on_previous_running` schedule option to `start`. If a previous backup started by the schedule is still running, the scheduled job will now start the new backup anyway, rather than waiting. The backup option [`incremental_location`](/docs/v24.1/take-full-and-incremental-backups#incremental-backups-with-explicitly-specified-destinations) modifies the storage location for incremental backups:
+
+```sql
+ALTER BACKUP SCHEDULE 814168045421199361 SET SCHEDULE OPTION on_previous_running = 'start', SET WITH incremental_location = 'external://gcs_incremental_storage';
+```
+
+The incremental backup schedule's `BACKUP` statement shows that it will read files in the full backup location `'external://gcs_storage'` and ultimately store the incremental backup in `'external://gcs_incremental_storage'` on an hourly basis:
+
+```text
+     schedule_id     |    label    | status |       first_run        | schedule |                                                        backup_stmt
+---------------------+-------------+--------+------------------------+----------+----------------------------------------------------------------------------------------------------------------------------
+  814168045421199361 | gcs_backups | ACTIVE | 2022-11-15 21:00:00+00 | @hourly  | BACKUP INTO LATEST IN 'external://gcs_storage' WITH detached, incremental_location = 'external://gcs_incremental_storage'
+  814155335856521217 | gcs_backups | ACTIVE | 2022-11-16 00:00:00+00 | @daily   | BACKUP INTO 'external://gcs_storage' WITH detached, incremental_location = 'external://gcs_incremental_storage'
+(2 rows)
+```
+
+### Execute a schedule immediately
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v24.1: You can alter an active schedule to run an incremental schedule immediately with `EXECUTE IMMEDIATELY`:
+
+```sql
+ALTER BACKUP SCHEDULE 814168045421199361 EXECUTE IMMEDIATELY;
+```
+
+To run the full backup schedule instead, specify `FULL`:
+
+```sql
+ALTER BACKUP SCHEDULE 814168045421199361 EXECUTE FULL IMMEDIATELY;
+```
+
+The schedule must be active to use `EXECUTE [FULL] IMMEDIATELY`. You need to [resume](/docs/v24.1/resume-schedules) a paused schedule before it will execute. Use [`PAUSE SCHEDULE`](/docs/v24.1/pause-schedules) following the schedule run to pause the schedule once again.
+
+## See also
+
+- [`CREATE SCHEDULE FOR BACKUP`](/docs/v24.1/create-schedule-for-backup)
+- [Take Full and Incremental Backups](/docs/v24.1/take-full-and-incremental-backups)
+- [Manage a Backup Schedule](/docs/v24.1/manage-a-backup-schedule)
+- [`BACKUP`](/docs/v24.1/backup)
+- [Use Cloud Storage](/docs/v24.1/use-cloud-storage)
+- [`CREATE EXTERNAL CONNECTION`](/docs/v24.1/create-external-connection)

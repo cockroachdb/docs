@@ -1,0 +1,57 @@
+<svg height="125" width="337" xmlns="http://www.w3.org/2000/svg"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="48" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">FOR</text>
+<rect height="32" rx="10" width="74" x="119" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="117" y="1"></rect>
+<text class="terminal" x="127" y="21">BACKUP</text>
+<rect height="32" rx="10" width="48" x="119" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="117" y="45"></rect>
+<text class="terminal" x="127" y="65">SQL</text>
+<rect height="32" rx="10" width="102" x="187" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="102" x="185" y="45"></rect>
+<text class="terminal" x="195" y="65">STATISTICS</text>
+<rect height="32" rx="10" width="110" x="119" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="110" x="117" y="89"></rect>
+<text class="terminal" x="127" y="109">CHANGEFEED</text>
+<path class="line" d="m17 17 h2 m0 0 h10 m48 0 h10 m20 0 h10 m74 0 h10 m0 0 h96 m-210 0 h20 m190 0 h20 m-230 0 q10 0 10 10 m210 0 q0 -10 10 -10 m-220 10 v24 m210 0 v-24 m-210 24 q0 10 10 10 m190 0 q10 0 10 -10 m-200 10 h10 m48 0 h10 m0 0 h10 m102 0 h10 m-200 -10 v20 m210 0 v-20 m-210 20 v24 m210 0 v-24 m-210 24 q0 10 10 10 m190 0 q10 0 10 -10 m-200 10 h10 m110 0 h10 m0 0 h60 m23 -88 h-3"></path>
+<polygon points="327 17 335 13 335 21"></polygon>
+<polygon points="327 17 319 13 319 21"></polygon></svg>

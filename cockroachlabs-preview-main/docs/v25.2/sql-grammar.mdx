@@ -1,0 +1,6761 @@
+---
+title: "SQL Grammar"
+old_description: "The full SQL grammar for CockroachDB, generated automatically from the CockroachDB code."
+---
+
+import { AExpr3 } from "/snippets/syntax-diagrams/AExpr3.jsx";
+import { AbbreviatedGrantStmt } from "/snippets/syntax-diagrams/AbbreviatedGrantStmt.jsx";
+import { AbbreviatedRevokeStmt } from "/snippets/syntax-diagrams/AbbreviatedRevokeStmt.jsx";
+import { AbortStmt } from "/snippets/syntax-diagrams/AbortStmt.jsx";
+import { AliasClause } from "/snippets/syntax-diagrams/AliasClause.jsx";
+import { AllOp2 } from "/snippets/syntax-diagrams/AllOp2.jsx";
+import { AllOrDistinct } from "/snippets/syntax-diagrams/AllOrDistinct.jsx";
+import { AlterBackupCmd } from "/snippets/syntax-diagrams/AlterBackupCmd.jsx";
+import { AlterBackupCmds } from "/snippets/syntax-diagrams/AlterBackupCmds.jsx";
+import { AlterBackupSchedule } from "/snippets/syntax-diagrams/AlterBackupSchedule.jsx";
+import { AlterBackupScheduleCmds } from "/snippets/syntax-diagrams/AlterBackupScheduleCmds.jsx";
+import { AlterBackupStmt } from "/snippets/syntax-diagrams/AlterBackupStmt.jsx";
+import { AlterChangefeedCmds } from "/snippets/syntax-diagrams/AlterChangefeedCmds.jsx";
+import { AlterChangefeedStmt } from "/snippets/syntax-diagrams/AlterChangefeedStmt.jsx";
+import { AlterColumnDefault } from "/snippets/syntax-diagrams/AlterColumnDefault.jsx";
+import { AlterColumnOnUpdate } from "/snippets/syntax-diagrams/AlterColumnOnUpdate.jsx";
+import { AlterColumnVisible } from "/snippets/syntax-diagrams/AlterColumnVisible.jsx";
+import { AlterDatabaseAddRegionStmt } from "/snippets/syntax-diagrams/AlterDatabaseAddRegionStmt.jsx";
+import { AlterDatabaseAddSuperRegion } from "/snippets/syntax-diagrams/AlterDatabaseAddSuperRegion.jsx";
+import { AlterDatabaseAlterSuperRegion } from "/snippets/syntax-diagrams/AlterDatabaseAlterSuperRegion.jsx";
+import { AlterDatabaseDropRegionStmt } from "/snippets/syntax-diagrams/AlterDatabaseDropRegionStmt.jsx";
+import { AlterDatabaseDropSecondaryRegion } from "/snippets/syntax-diagrams/AlterDatabaseDropSecondaryRegion.jsx";
+import { AlterDatabaseDropSuperRegion } from "/snippets/syntax-diagrams/AlterDatabaseDropSuperRegion.jsx";
+import { AlterDatabaseOwner } from "/snippets/syntax-diagrams/AlterDatabaseOwner.jsx";
+import { AlterDatabasePlacementStmt } from "/snippets/syntax-diagrams/AlterDatabasePlacementStmt.jsx";
+import { AlterDatabasePrimaryRegionStmt } from "/snippets/syntax-diagrams/AlterDatabasePrimaryRegionStmt.jsx";
+import { AlterDatabaseSetSecondaryRegionStmt } from "/snippets/syntax-diagrams/AlterDatabaseSetSecondaryRegionStmt.jsx";
+import { AlterDatabaseSetStmt } from "/snippets/syntax-diagrams/AlterDatabaseSetStmt.jsx";
+import { AlterDatabaseSetZoneConfigExtensionStmt } from "/snippets/syntax-diagrams/AlterDatabaseSetZoneConfigExtensionStmt.jsx";
+import { AlterDatabaseStmt } from "/snippets/syntax-diagrams/AlterDatabaseStmt.jsx";
+import { AlterDatabaseSurvivalGoalStmt } from "/snippets/syntax-diagrams/AlterDatabaseSurvivalGoalStmt.jsx";
+import { AlterDatabaseToSchemaStmt } from "/snippets/syntax-diagrams/AlterDatabaseToSchemaStmt.jsx";
+import { AlterDdlStmt } from "/snippets/syntax-diagrams/AlterDdlStmt.jsx";
+import { AlterDefaultPrivilegesStmt } from "/snippets/syntax-diagrams/AlterDefaultPrivilegesStmt.jsx";
+import { AlterFuncDepExtensionStmt } from "/snippets/syntax-diagrams/AlterFuncDepExtensionStmt.jsx";
+import { AlterFuncOptList } from "/snippets/syntax-diagrams/AlterFuncOptList.jsx";
+import { AlterFuncOptionsStmt } from "/snippets/syntax-diagrams/AlterFuncOptionsStmt.jsx";
+import { AlterFuncOwnerStmt } from "/snippets/syntax-diagrams/AlterFuncOwnerStmt.jsx";
+import { AlterFuncRenameStmt } from "/snippets/syntax-diagrams/AlterFuncRenameStmt.jsx";
+import { AlterFuncSetSchemaStmt } from "/snippets/syntax-diagrams/AlterFuncSetSchemaStmt.jsx";
+import { AlterFuncStmt } from "/snippets/syntax-diagrams/AlterFuncStmt.jsx";
+import { AlterIndexCmd } from "/snippets/syntax-diagrams/AlterIndexCmd.jsx";
+import { AlterIndexCmds } from "/snippets/syntax-diagrams/AlterIndexCmds.jsx";
+import { AlterIndexStmt } from "/snippets/syntax-diagrams/AlterIndexStmt.jsx";
+import { AlterIndexVisible } from "/snippets/syntax-diagrams/AlterIndexVisible.jsx";
+import { AlterIndexVisibleStmt } from "/snippets/syntax-diagrams/AlterIndexVisibleStmt.jsx";
+import { AlterJobStmt } from "/snippets/syntax-diagrams/AlterJobStmt.jsx";
+import { AlterOneindexStmt } from "/snippets/syntax-diagrams/AlterOneindexStmt.jsx";
+import { AlterOnetableStmt } from "/snippets/syntax-diagrams/AlterOnetableStmt.jsx";
+import { AlterPartitionStmt } from "/snippets/syntax-diagrams/AlterPartitionStmt.jsx";
+import { AlterPolicyStmt } from "/snippets/syntax-diagrams/AlterPolicyStmt.jsx";
+import { AlterProcOwnerStmt } from "/snippets/syntax-diagrams/AlterProcOwnerStmt.jsx";
+import { AlterProcRenameStmt } from "/snippets/syntax-diagrams/AlterProcRenameStmt.jsx";
+import { AlterProcSetSchemaStmt } from "/snippets/syntax-diagrams/AlterProcSetSchemaStmt.jsx";
+import { AlterProcStmt } from "/snippets/syntax-diagrams/AlterProcStmt.jsx";
+import { AlterRangeRelocateStmt } from "/snippets/syntax-diagrams/AlterRangeRelocateStmt.jsx";
+import { AlterRangeStmt } from "/snippets/syntax-diagrams/AlterRangeStmt.jsx";
+import { AlterRenameDatabaseStmt } from "/snippets/syntax-diagrams/AlterRenameDatabaseStmt.jsx";
+import { AlterRenameIndexStmt } from "/snippets/syntax-diagrams/AlterRenameIndexStmt.jsx";
+import { AlterRenameSequenceStmt } from "/snippets/syntax-diagrams/AlterRenameSequenceStmt.jsx";
+import { AlterRenameTableStmt } from "/snippets/syntax-diagrams/AlterRenameTableStmt.jsx";
+import { AlterRenameViewStmt } from "/snippets/syntax-diagrams/AlterRenameViewStmt.jsx";
+import { AlterRoleStmt } from "/snippets/syntax-diagrams/AlterRoleStmt.jsx";
+import { AlterScatterIndexStmt } from "/snippets/syntax-diagrams/AlterScatterIndexStmt.jsx";
+import { AlterScatterStmt } from "/snippets/syntax-diagrams/AlterScatterStmt.jsx";
+import { AlterSchemaStmt } from "/snippets/syntax-diagrams/AlterSchemaStmt.jsx";
+import { AlterSequenceOptionsStmt } from "/snippets/syntax-diagrams/AlterSequenceOptionsStmt.jsx";
+import { AlterSequenceOwnerStmt } from "/snippets/syntax-diagrams/AlterSequenceOwnerStmt.jsx";
+import { AlterSequenceSetSchemaStmt } from "/snippets/syntax-diagrams/AlterSequenceSetSchemaStmt.jsx";
+import { AlterSequenceStmt } from "/snippets/syntax-diagrams/AlterSequenceStmt.jsx";
+import { AlterSplitIndexStmt } from "/snippets/syntax-diagrams/AlterSplitIndexStmt.jsx";
+import { AlterSplitStmt } from "/snippets/syntax-diagrams/AlterSplitStmt.jsx";
+import { AlterStmt3 } from "/snippets/syntax-diagrams/AlterStmt3.jsx";
+import { AlterTableLocalityStmt } from "/snippets/syntax-diagrams/AlterTableLocalityStmt.jsx";
+import { AlterTableOwnerStmt } from "/snippets/syntax-diagrams/AlterTableOwnerStmt.jsx";
+import { AlterTableSetSchemaStmt } from "/snippets/syntax-diagrams/AlterTableSetSchemaStmt.jsx";
+import { AlterTableStmt2 } from "/snippets/syntax-diagrams/AlterTableStmt2.jsx";
+import { AlterTypeStmt } from "/snippets/syntax-diagrams/AlterTypeStmt.jsx";
+import { AlterUnsplitIndexStmt } from "/snippets/syntax-diagrams/AlterUnsplitIndexStmt.jsx";
+import { AlterUnsplitStmt } from "/snippets/syntax-diagrams/AlterUnsplitStmt.jsx";
+import { AlterViewOwnerStmt } from "/snippets/syntax-diagrams/AlterViewOwnerStmt.jsx";
+import { AlterViewSetSchemaStmt } from "/snippets/syntax-diagrams/AlterViewSetSchemaStmt.jsx";
+import { AlterViewStmt } from "/snippets/syntax-diagrams/AlterViewStmt.jsx";
+import { AlterVirtualClusterCapabilityStmt } from "/snippets/syntax-diagrams/AlterVirtualClusterCapabilityStmt.jsx";
+import { AlterVirtualClusterRenameStmt } from "/snippets/syntax-diagrams/AlterVirtualClusterRenameStmt.jsx";
+import { AlterVirtualClusterReplicationStmt } from "/snippets/syntax-diagrams/AlterVirtualClusterReplicationStmt.jsx";
+import { AlterVirtualClusterServiceStmt } from "/snippets/syntax-diagrams/AlterVirtualClusterServiceStmt.jsx";
+import { AlterVirtualClusterStmt } from "/snippets/syntax-diagrams/AlterVirtualClusterStmt.jsx";
+import { AlterZoneDatabaseStmt } from "/snippets/syntax-diagrams/AlterZoneDatabaseStmt.jsx";
+import { AlterZoneIndexStmt } from "/snippets/syntax-diagrams/AlterZoneIndexStmt.jsx";
+import { AlterZonePartitionStmt } from "/snippets/syntax-diagrams/AlterZonePartitionStmt.jsx";
+import { AlterZoneRangeStmt } from "/snippets/syntax-diagrams/AlterZoneRangeStmt.jsx";
+import { AlterZoneTableStmt } from "/snippets/syntax-diagrams/AlterZoneTableStmt.jsx";
+import { AnalyzeStmt } from "/snippets/syntax-diagrams/AnalyzeStmt.jsx";
+import { AnalyzeTarget } from "/snippets/syntax-diagrams/AnalyzeTarget.jsx";
+import { ArrayExpr } from "/snippets/syntax-diagrams/ArrayExpr.jsx";
+import { ArrayExprList } from "/snippets/syntax-diagrams/ArrayExprList.jsx";
+import { ArraySubscript } from "/snippets/syntax-diagrams/ArraySubscript.jsx";
+import { ArraySubscripts } from "/snippets/syntax-diagrams/ArraySubscripts.jsx";
+import { AsOfClause } from "/snippets/syntax-diagrams/AsOfClause.jsx";
+import { AuditMode } from "/snippets/syntax-diagrams/AuditMode.jsx";
+import { BackupKms } from "/snippets/syntax-diagrams/BackupKms.jsx";
+import { BackupOptions2 } from "/snippets/syntax-diagrams/BackupOptions2.jsx";
+import { BackupOptionsList } from "/snippets/syntax-diagrams/BackupOptionsList.jsx";
+import { BackupStmt } from "/snippets/syntax-diagrams/BackupStmt.jsx";
+import { BackupTargets } from "/snippets/syntax-diagrams/BackupTargets.jsx";
+import { BareColLabel } from "/snippets/syntax-diagrams/BareColLabel.jsx";
+import { BareLabelKeywords } from "/snippets/syntax-diagrams/BareLabelKeywords.jsx";
+import { BatchParam } from "/snippets/syntax-diagrams/BatchParam.jsx";
+import { BatchParamList } from "/snippets/syntax-diagrams/BatchParamList.jsx";
+import { BeginStmt } from "/snippets/syntax-diagrams/BeginStmt.jsx";
+import { BitWithoutLength } from "/snippets/syntax-diagrams/BitWithoutLength.jsx";
+import { CExpr } from "/snippets/syntax-diagrams/CExpr.jsx";
+import { CallStmt } from "/snippets/syntax-diagrams/CallStmt.jsx";
+import { CancelAllJobsStmt } from "/snippets/syntax-diagrams/CancelAllJobsStmt.jsx";
+import { CancelJobsStmt } from "/snippets/syntax-diagrams/CancelJobsStmt.jsx";
+import { CancelQueriesStmt } from "/snippets/syntax-diagrams/CancelQueriesStmt.jsx";
+import { CancelSessionsStmt } from "/snippets/syntax-diagrams/CancelSessionsStmt.jsx";
+import { CancelStmt } from "/snippets/syntax-diagrams/CancelStmt.jsx";
+import { CaseArg } from "/snippets/syntax-diagrams/CaseArg.jsx";
+import { CaseDefault } from "/snippets/syntax-diagrams/CaseDefault.jsx";
+import { CaseExpr } from "/snippets/syntax-diagrams/CaseExpr.jsx";
+import { CastTarget } from "/snippets/syntax-diagrams/CastTarget.jsx";
+import { ChangefeedSink } from "/snippets/syntax-diagrams/ChangefeedSink.jsx";
+import { ChangefeedTarget } from "/snippets/syntax-diagrams/ChangefeedTarget.jsx";
+import { ChangefeedTargetExpr } from "/snippets/syntax-diagrams/ChangefeedTargetExpr.jsx";
+import { ChangefeedTargets } from "/snippets/syntax-diagrams/ChangefeedTargets.jsx";
+import { CharAliases } from "/snippets/syntax-diagrams/CharAliases.jsx";
+import { CharacterWithLength } from "/snippets/syntax-diagrams/CharacterWithLength.jsx";
+import { CharacterWithoutLength } from "/snippets/syntax-diagrams/CharacterWithoutLength.jsx";
+import { CheckExternalConnectionOptionsList } from "/snippets/syntax-diagrams/CheckExternalConnectionOptionsList.jsx";
+import { CheckExternalConnectionStmt } from "/snippets/syntax-diagrams/CheckExternalConnectionStmt.jsx";
+import { CheckStmt } from "/snippets/syntax-diagrams/CheckStmt.jsx";
+import { CloseCursorStmt } from "/snippets/syntax-diagrams/CloseCursorStmt.jsx";
+import { CockroachdbExtraReservedKeyword } from "/snippets/syntax-diagrams/CockroachdbExtraReservedKeyword.jsx";
+import { ColDef2 } from "/snippets/syntax-diagrams/ColDef2.jsx";
+import { ColDefList } from "/snippets/syntax-diagrams/ColDefList.jsx";
+import { ColQualificationElem } from "/snippets/syntax-diagrams/ColQualificationElem.jsx";
+import { ColumnPath } from "/snippets/syntax-diagrams/ColumnPath.jsx";
+import { ColumnPathWithStar } from "/snippets/syntax-diagrams/ColumnPathWithStar.jsx";
+import { CommentStmt } from "/snippets/syntax-diagrams/CommentStmt.jsx";
+import { CommentText } from "/snippets/syntax-diagrams/CommentText.jsx";
+import { CommitStmt } from "/snippets/syntax-diagrams/CommitStmt.jsx";
+import { CommonRoutineOptItem } from "/snippets/syntax-diagrams/CommonRoutineOptItem.jsx";
+import { CommonTableExpr } from "/snippets/syntax-diagrams/CommonTableExpr.jsx";
+import { ComplexDbObjectName } from "/snippets/syntax-diagrams/ComplexDbObjectName.jsx";
+import { ComplexTypeName } from "/snippets/syntax-diagrams/ComplexTypeName.jsx";
+import { ConstDatetime } from "/snippets/syntax-diagrams/ConstDatetime.jsx";
+import { ConstGeo } from "/snippets/syntax-diagrams/ConstGeo.jsx";
+import { ConstTypename } from "/snippets/syntax-diagrams/ConstTypename.jsx";
+import { ConstVector } from "/snippets/syntax-diagrams/ConstVector.jsx";
+import { CopyGenericOptions } from "/snippets/syntax-diagrams/CopyGenericOptions.jsx";
+import { CopyGenericOptionsList } from "/snippets/syntax-diagrams/CopyGenericOptionsList.jsx";
+import { CopyOptions } from "/snippets/syntax-diagrams/CopyOptions.jsx";
+import { CopyStmt } from "/snippets/syntax-diagrams/CopyStmt.jsx";
+import { CopyToStmt } from "/snippets/syntax-diagrams/CopyToStmt.jsx";
+import { CreateAsColQualList } from "/snippets/syntax-diagrams/CreateAsColQualList.jsx";
+import { CreateAsColQualification } from "/snippets/syntax-diagrams/CreateAsColQualification.jsx";
+import { CreateAsConstraintDef } from "/snippets/syntax-diagrams/CreateAsConstraintDef.jsx";
+import { CreateAsConstraintElem } from "/snippets/syntax-diagrams/CreateAsConstraintElem.jsx";
+import { CreateAsOptColList } from "/snippets/syntax-diagrams/CreateAsOptColList.jsx";
+import { CreateAsParam } from "/snippets/syntax-diagrams/CreateAsParam.jsx";
+import { CreateAsParams } from "/snippets/syntax-diagrams/CreateAsParams.jsx";
+import { CreateAsTableDefs } from "/snippets/syntax-diagrams/CreateAsTableDefs.jsx";
+import { CreateChangefeedStmt2 } from "/snippets/syntax-diagrams/CreateChangefeedStmt2.jsx";
+import { CreateDatabaseStmt } from "/snippets/syntax-diagrams/CreateDatabaseStmt.jsx";
+import { CreateDdlStmt } from "/snippets/syntax-diagrams/CreateDdlStmt.jsx";
+import { CreateExtensionStmt } from "/snippets/syntax-diagrams/CreateExtensionStmt.jsx";
+import { CreateExternalConnectionStmt } from "/snippets/syntax-diagrams/CreateExternalConnectionStmt.jsx";
+import { CreateFuncStmt } from "/snippets/syntax-diagrams/CreateFuncStmt.jsx";
+import { CreateIndexStmt } from "/snippets/syntax-diagrams/CreateIndexStmt.jsx";
+import { CreateLogicalReplicationStreamStmt } from "/snippets/syntax-diagrams/CreateLogicalReplicationStreamStmt.jsx";
+import { CreatePolicyStmt } from "/snippets/syntax-diagrams/CreatePolicyStmt.jsx";
+import { CreateProcStmt } from "/snippets/syntax-diagrams/CreateProcStmt.jsx";
+import { CreateRoleStmt } from "/snippets/syntax-diagrams/CreateRoleStmt.jsx";
+import { CreateRoutineOptItem } from "/snippets/syntax-diagrams/CreateRoutineOptItem.jsx";
+import { CreateRoutineOptList } from "/snippets/syntax-diagrams/CreateRoutineOptList.jsx";
+import { CreateScheduleForBackupStmt } from "/snippets/syntax-diagrams/CreateScheduleForBackupStmt.jsx";
+import { CreateScheduleForChangefeedStmt2 } from "/snippets/syntax-diagrams/CreateScheduleForChangefeedStmt2.jsx";
+import { CreateScheduleStmt } from "/snippets/syntax-diagrams/CreateScheduleStmt.jsx";
+import { CreateSchemaStmt } from "/snippets/syntax-diagrams/CreateSchemaStmt.jsx";
+import { CreateSequenceStmt } from "/snippets/syntax-diagrams/CreateSequenceStmt.jsx";
+import { CreateStatsOption } from "/snippets/syntax-diagrams/CreateStatsOption.jsx";
+import { CreateStatsStmt } from "/snippets/syntax-diagrams/CreateStatsStmt.jsx";
+import { CreateStmt } from "/snippets/syntax-diagrams/CreateStmt.jsx";
+import { CreateTableAsStmt } from "/snippets/syntax-diagrams/CreateTableAsStmt.jsx";
+import { CreateTableStmt } from "/snippets/syntax-diagrams/CreateTableStmt.jsx";
+import { CreateTriggerStmt } from "/snippets/syntax-diagrams/CreateTriggerStmt.jsx";
+import { CreateTypeStmt } from "/snippets/syntax-diagrams/CreateTypeStmt.jsx";
+import { CreateViewStmt } from "/snippets/syntax-diagrams/CreateViewStmt.jsx";
+import { CronExpr } from "/snippets/syntax-diagrams/CronExpr.jsx";
+import { CteList } from "/snippets/syntax-diagrams/CteList.jsx";
+import { CursorName } from "/snippets/syntax-diagrams/CursorName.jsx";
+import { DExpr } from "/snippets/syntax-diagrams/DExpr.jsx";
+import { DbName } from "/snippets/syntax-diagrams/DbName.jsx";
+import { DbObjectName } from "/snippets/syntax-diagrams/DbObjectName.jsx";
+import { DbObjectNameComponent } from "/snippets/syntax-diagrams/DbObjectNameComponent.jsx";
+import { DeallocateStmt } from "/snippets/syntax-diagrams/DeallocateStmt.jsx";
+import { DeclareCursorStmt2 } from "/snippets/syntax-diagrams/DeclareCursorStmt2.jsx";
+import { DeleteStmt } from "/snippets/syntax-diagrams/DeleteStmt.jsx";
+import { DiscardStmt } from "/snippets/syntax-diagrams/DiscardStmt.jsx";
+import { DistinctOnClause } from "/snippets/syntax-diagrams/DistinctOnClause.jsx";
+import { DoStmtOptList } from "/snippets/syntax-diagrams/DoStmtOptList.jsx";
+import { DropDatabaseStmt } from "/snippets/syntax-diagrams/DropDatabaseStmt.jsx";
+import { DropDdlStmt } from "/snippets/syntax-diagrams/DropDdlStmt.jsx";
+import { DropExternalConnectionStmt } from "/snippets/syntax-diagrams/DropExternalConnectionStmt.jsx";
+import { DropFuncStmt } from "/snippets/syntax-diagrams/DropFuncStmt.jsx";
+import { DropIndexStmt } from "/snippets/syntax-diagrams/DropIndexStmt.jsx";
+import { DropOwnedByStmt } from "/snippets/syntax-diagrams/DropOwnedByStmt.jsx";
+import { DropPolicyStmt } from "/snippets/syntax-diagrams/DropPolicyStmt.jsx";
+import { DropProcStmt } from "/snippets/syntax-diagrams/DropProcStmt.jsx";
+import { DropRoleStmt } from "/snippets/syntax-diagrams/DropRoleStmt.jsx";
+import { DropScheduleStmt } from "/snippets/syntax-diagrams/DropScheduleStmt.jsx";
+import { DropSchemaStmt } from "/snippets/syntax-diagrams/DropSchemaStmt.jsx";
+import { DropSequenceStmt } from "/snippets/syntax-diagrams/DropSequenceStmt.jsx";
+import { DropStmt } from "/snippets/syntax-diagrams/DropStmt.jsx";
+import { DropTableStmt } from "/snippets/syntax-diagrams/DropTableStmt.jsx";
+import { DropTriggerStmt } from "/snippets/syntax-diagrams/DropTriggerStmt.jsx";
+import { DropTypeStmt } from "/snippets/syntax-diagrams/DropTypeStmt.jsx";
+import { DropViewStmt } from "/snippets/syntax-diagrams/DropViewStmt.jsx";
+import { EnumValList2 } from "/snippets/syntax-diagrams/EnumValList2.jsx";
+import { ExecuteParamClause } from "/snippets/syntax-diagrams/ExecuteParamClause.jsx";
+import { ExecuteStmt } from "/snippets/syntax-diagrams/ExecuteStmt.jsx";
+import { ExplainOptionList } from "/snippets/syntax-diagrams/ExplainOptionList.jsx";
+import { ExplainOptionName } from "/snippets/syntax-diagrams/ExplainOptionName.jsx";
+import { ExplainStmt } from "/snippets/syntax-diagrams/ExplainStmt.jsx";
+import { ExplainableStmt } from "/snippets/syntax-diagrams/ExplainableStmt.jsx";
+import { ExportStmt } from "/snippets/syntax-diagrams/ExportStmt.jsx";
+import { ExprList } from "/snippets/syntax-diagrams/ExprList.jsx";
+import { ExprTupleUnambiguous } from "/snippets/syntax-diagrams/ExprTupleUnambiguous.jsx";
+import { ExtraVarValue } from "/snippets/syntax-diagrams/ExtraVarValue.jsx";
+import { ExtractList } from "/snippets/syntax-diagrams/ExtractList.jsx";
+import { FamilyDef } from "/snippets/syntax-diagrams/FamilyDef.jsx";
+import { FetchCursorStmt } from "/snippets/syntax-diagrams/FetchCursorStmt.jsx";
+import { FilterClause } from "/snippets/syntax-diagrams/FilterClause.jsx";
+import { FirstOrNext } from "/snippets/syntax-diagrams/FirstOrNext.jsx";
+import { ForGranteeClause } from "/snippets/syntax-diagrams/ForGranteeClause.jsx";
+import { ForLockingClause } from "/snippets/syntax-diagrams/ForLockingClause.jsx";
+import { ForLockingItems } from "/snippets/syntax-diagrams/ForLockingItems.jsx";
+import { ForLockingStrength } from "/snippets/syntax-diagrams/ForLockingStrength.jsx";
+import { ForSchedulesClause } from "/snippets/syntax-diagrams/ForSchedulesClause.jsx";
+import { ForwardBackward } from "/snippets/syntax-diagrams/ForwardBackward.jsx";
+import { FrameBound } from "/snippets/syntax-diagrams/FrameBound.jsx";
+import { FrameExtent } from "/snippets/syntax-diagrams/FrameExtent.jsx";
+import { FromClause } from "/snippets/syntax-diagrams/FromClause.jsx";
+import { FromList } from "/snippets/syntax-diagrams/FromList.jsx";
+import { FuncAliasClause2 } from "/snippets/syntax-diagrams/FuncAliasClause2.jsx";
+import { FuncApplication } from "/snippets/syntax-diagrams/FuncApplication.jsx";
+import { FuncApplicationName } from "/snippets/syntax-diagrams/FuncApplicationName.jsx";
+import { FuncExpr } from "/snippets/syntax-diagrams/FuncExpr.jsx";
+import { FuncExprCommonSubexpr } from "/snippets/syntax-diagrams/FuncExprCommonSubexpr.jsx";
+import { FuncExprWindowless } from "/snippets/syntax-diagrams/FuncExprWindowless.jsx";
+import { FuncName } from "/snippets/syntax-diagrams/FuncName.jsx";
+import { FuncNameNoCrdbExtra } from "/snippets/syntax-diagrams/FuncNameNoCrdbExtra.jsx";
+import { FuncParams } from "/snippets/syntax-diagrams/FuncParams.jsx";
+import { FuncTable } from "/snippets/syntax-diagrams/FuncTable.jsx";
+import { FunctionOrProcedure } from "/snippets/syntax-diagrams/FunctionOrProcedure.jsx";
+import { FunctionWithParamtypes } from "/snippets/syntax-diagrams/FunctionWithParamtypes.jsx";
+import { FunctionWithParamtypesList } from "/snippets/syntax-diagrams/FunctionWithParamtypesList.jsx";
+import { GeneralTypeName } from "/snippets/syntax-diagrams/GeneralTypeName.jsx";
+import { GeneratedAs } from "/snippets/syntax-diagrams/GeneratedAs.jsx";
+import { GenericSet } from "/snippets/syntax-diagrams/GenericSet.jsx";
+import { GrantStmt2 } from "/snippets/syntax-diagrams/GrantStmt2.jsx";
+import { GrantTargets } from "/snippets/syntax-diagrams/GrantTargets.jsx";
+import { GroupClause } from "/snippets/syntax-diagrams/GroupClause.jsx";
+import { HavingClause } from "/snippets/syntax-diagrams/HavingClause.jsx";
+import { IdentityOptionElem2 } from "/snippets/syntax-diagrams/IdentityOptionElem2.jsx";
+import { ImportStmt2 } from "/snippets/syntax-diagrams/ImportStmt2.jsx";
+import { InExpr } from "/snippets/syntax-diagrams/InExpr.jsx";
+import { IndexDef } from "/snippets/syntax-diagrams/IndexDef.jsx";
+import { IndexElem } from "/snippets/syntax-diagrams/IndexElem.jsx";
+import { IndexElemOptions } from "/snippets/syntax-diagrams/IndexElemOptions.jsx";
+import { IndexFlagsParamList } from "/snippets/syntax-diagrams/IndexFlagsParamList.jsx";
+import { IndexName } from "/snippets/syntax-diagrams/IndexName.jsx";
+import { IndexParams } from "/snippets/syntax-diagrams/IndexParams.jsx";
+import { InsertColumnList } from "/snippets/syntax-diagrams/InsertColumnList.jsx";
+import { InsertRest } from "/snippets/syntax-diagrams/InsertRest.jsx";
+import { InsertStmt } from "/snippets/syntax-diagrams/InsertStmt.jsx";
+import { InsertTarget } from "/snippets/syntax-diagrams/InsertTarget.jsx";
+import { IntervalType } from "/snippets/syntax-diagrams/IntervalType.jsx";
+import { IntervalValue } from "/snippets/syntax-diagrams/IntervalValue.jsx";
+import { IsoLevel } from "/snippets/syntax-diagrams/IsoLevel.jsx";
+import { JoinOuter } from "/snippets/syntax-diagrams/JoinOuter.jsx";
+import { JoinQual } from "/snippets/syntax-diagrams/JoinQual.jsx";
+import { JoinedTable } from "/snippets/syntax-diagrams/JoinedTable.jsx";
+import { KeyMatch } from "/snippets/syntax-diagrams/KeyMatch.jsx";
+import { KvOption } from "/snippets/syntax-diagrams/KvOption.jsx";
+import { KvOptionList } from "/snippets/syntax-diagrams/KvOptionList.jsx";
+import { LabelSpec } from "/snippets/syntax-diagrams/LabelSpec.jsx";
+import { LabeledRow } from "/snippets/syntax-diagrams/LabeledRow.jsx";
+import { LegacyEndStmt } from "/snippets/syntax-diagrams/LegacyEndStmt.jsx";
+import { LegacyTransactionStmt } from "/snippets/syntax-diagrams/LegacyTransactionStmt.jsx";
+import { LikeTableOption } from "/snippets/syntax-diagrams/LikeTableOption.jsx";
+import { LikeTableOptionList } from "/snippets/syntax-diagrams/LikeTableOptionList.jsx";
+import { LimitClause } from "/snippets/syntax-diagrams/LimitClause.jsx";
+import { ListPartition } from "/snippets/syntax-diagrams/ListPartition.jsx";
+import { ListPartitions } from "/snippets/syntax-diagrams/ListPartitions.jsx";
+import { Locality } from "/snippets/syntax-diagrams/Locality.jsx";
+import { LogicalReplicationCreateTableOptions } from "/snippets/syntax-diagrams/LogicalReplicationCreateTableOptions.jsx";
+import { LogicalReplicationCreateTableOptionsList } from "/snippets/syntax-diagrams/LogicalReplicationCreateTableOptionsList.jsx";
+import { LogicalReplicationResources } from "/snippets/syntax-diagrams/LogicalReplicationResources.jsx";
+import { MaterializeClause } from "/snippets/syntax-diagrams/MaterializeClause.jsx";
+import { MoveCursorStmt } from "/snippets/syntax-diagrams/MoveCursorStmt.jsx";
+import { MultipleSetClause } from "/snippets/syntax-diagrams/MultipleSetClause.jsx";
+import { Name } from "/snippets/syntax-diagrams/Name.jsx";
+import { NameList } from "/snippets/syntax-diagrams/NameList.jsx";
+import { NonReservedWord } from "/snippets/syntax-diagrams/NonReservedWord.jsx";
+import { NonReservedWordOrSconst } from "/snippets/syntax-diagrams/NonReservedWordOrSconst.jsx";
+import { NonpreparableSetStmt } from "/snippets/syntax-diagrams/NonpreparableSetStmt.jsx";
+import { Numeric } from "/snippets/syntax-diagrams/Numeric.jsx";
+import { OffsetClause } from "/snippets/syntax-diagrams/OffsetClause.jsx";
+import { OnConflict } from "/snippets/syntax-diagrams/OnConflict.jsx";
+import { OnlySignedFconst } from "/snippets/syntax-diagrams/OnlySignedFconst.jsx";
+import { OperatorOp } from "/snippets/syntax-diagrams/OperatorOp.jsx";
+import { OptAbortMod } from "/snippets/syntax-diagrams/OptAbortMod.jsx";
+import { OptAddValPlacement } from "/snippets/syntax-diagrams/OptAddValPlacement.jsx";
+import { OptAllClause } from "/snippets/syntax-diagrams/OptAllClause.jsx";
+import { OptAlterColumnUsing } from "/snippets/syntax-diagrams/OptAlterColumnUsing.jsx";
+import { OptArrayBounds } from "/snippets/syntax-diagrams/OptArrayBounds.jsx";
+import { OptArrayBounds2 } from "/snippets/syntax-diagrams/OptArrayBounds2.jsx";
+import { OptAsOfClause } from "/snippets/syntax-diagrams/OptAsOfClause.jsx";
+import { OptAscDesc } from "/snippets/syntax-diagrams/OptAscDesc.jsx";
+import { OptAsymmetric } from "/snippets/syntax-diagrams/OptAsymmetric.jsx";
+import { OptBackupTargets } from "/snippets/syntax-diagrams/OptBackupTargets.jsx";
+import { OptBatchClause } from "/snippets/syntax-diagrams/OptBatchClause.jsx";
+import { OptBinary } from "/snippets/syntax-diagrams/OptBinary.jsx";
+import { OptClearData } from "/snippets/syntax-diagrams/OptClearData.jsx";
+import { OptColDefList } from "/snippets/syntax-diagrams/OptColDefList.jsx";
+import { OptColumn } from "/snippets/syntax-diagrams/OptColumn.jsx";
+import { OptColumnList } from "/snippets/syntax-diagrams/OptColumnList.jsx";
+import { OptComma } from "/snippets/syntax-diagrams/OptComma.jsx";
+import { OptCompositeTypeList } from "/snippets/syntax-diagrams/OptCompositeTypeList.jsx";
+import { OptConnectionLimit } from "/snippets/syntax-diagrams/OptConnectionLimit.jsx";
+import { OptCreateRoutineOptList } from "/snippets/syntax-diagrams/OptCreateRoutineOptList.jsx";
+import { OptCreateStatsOptions } from "/snippets/syntax-diagrams/OptCreateStatsOptions.jsx";
+import { OptCreateTableOnCommit } from "/snippets/syntax-diagrams/OptCreateTableOnCommit.jsx";
+import { OptDescendant } from "/snippets/syntax-diagrams/OptDescendant.jsx";
+import { OptDropBehavior } from "/snippets/syntax-diagrams/OptDropBehavior.jsx";
+import { OptEncodingClause } from "/snippets/syntax-diagrams/OptEncodingClause.jsx";
+import { OptEnumValList } from "/snippets/syntax-diagrams/OptEnumValList.jsx";
+import { OptExprList } from "/snippets/syntax-diagrams/OptExprList.jsx";
+import { OptFloat } from "/snippets/syntax-diagrams/OptFloat.jsx";
+import { OptForLockingClause } from "/snippets/syntax-diagrams/OptForLockingClause.jsx";
+import { OptForRoles } from "/snippets/syntax-diagrams/OptForRoles.jsx";
+import { OptFrameClause } from "/snippets/syntax-diagrams/OptFrameClause.jsx";
+import { OptFrameExclusion } from "/snippets/syntax-diagrams/OptFrameExclusion.jsx";
+import { OptFromList } from "/snippets/syntax-diagrams/OptFromList.jsx";
+import { OptFullBackupClause } from "/snippets/syntax-diagrams/OptFullBackupClause.jsx";
+import { OptFuncAliasClause } from "/snippets/syntax-diagrams/OptFuncAliasClause.jsx";
+import { OptHashSharded } from "/snippets/syntax-diagrams/OptHashSharded.jsx";
+import { OptHashShardedBucketCount } from "/snippets/syntax-diagrams/OptHashShardedBucketCount.jsx";
+import { OptInDatabase } from "/snippets/syntax-diagrams/OptInDatabase.jsx";
+import { OptInSchema } from "/snippets/syntax-diagrams/OptInSchema.jsx";
+import { OptIndexAccessMethod } from "/snippets/syntax-diagrams/OptIndexAccessMethod.jsx";
+import { OptIndexVisible } from "/snippets/syntax-diagrams/OptIndexVisible.jsx";
+import { OptIntervalQualifier } from "/snippets/syntax-diagrams/OptIntervalQualifier.jsx";
+import { OptJoinHint } from "/snippets/syntax-diagrams/OptJoinHint.jsx";
+import { OptLcCollateClause } from "/snippets/syntax-diagrams/OptLcCollateClause.jsx";
+import { OptLcCtypeClause } from "/snippets/syntax-diagrams/OptLcCtypeClause.jsx";
+import { OptLimitClause } from "/snippets/syntax-diagrams/OptLimitClause.jsx";
+import { OptLogicalReplicationCreateTableOptions } from "/snippets/syntax-diagrams/OptLogicalReplicationCreateTableOptions.jsx";
+import { OptName } from "/snippets/syntax-diagrams/OptName.jsx";
+import { OptNameParens } from "/snippets/syntax-diagrams/OptNameParens.jsx";
+import { OptNowaitOrSkip } from "/snippets/syntax-diagrams/OptNowaitOrSkip.jsx";
+import { OptOnly } from "/snippets/syntax-diagrams/OptOnly.jsx";
+import { OptOrdinality } from "/snippets/syntax-diagrams/OptOrdinality.jsx";
+import { OptOwnerClause } from "/snippets/syntax-diagrams/OptOwnerClause.jsx";
+import { OptPartition } from "/snippets/syntax-diagrams/OptPartition.jsx";
+import { OptPartitionBy } from "/snippets/syntax-diagrams/OptPartitionBy.jsx";
+import { OptPartitionByTable } from "/snippets/syntax-diagrams/OptPartitionByTable.jsx";
+import { OptPartitionClause } from "/snippets/syntax-diagrams/OptPartitionClause.jsx";
+import { OptPersistenceTempTable } from "/snippets/syntax-diagrams/OptPersistenceTempTable.jsx";
+import { OptPlacementClause } from "/snippets/syntax-diagrams/OptPlacementClause.jsx";
+import { OptPolicyExprs } from "/snippets/syntax-diagrams/OptPolicyExprs.jsx";
+import { OptPolicyRoles } from "/snippets/syntax-diagrams/OptPolicyRoles.jsx";
+import { OptPolicyType } from "/snippets/syntax-diagrams/OptPolicyType.jsx";
+import { OptPrimaryRegionClause } from "/snippets/syntax-diagrams/OptPrimaryRegionClause.jsx";
+import { OptRegionsList } from "/snippets/syntax-diagrams/OptRegionsList.jsx";
+import { OptRestrict } from "/snippets/syntax-diagrams/OptRestrict.jsx";
+import { OptReturnSet } from "/snippets/syntax-diagrams/OptReturnSet.jsx";
+import { OptRoutineBody } from "/snippets/syntax-diagrams/OptRoutineBody.jsx";
+import { OptRoutineParamWithDefaultList } from "/snippets/syntax-diagrams/OptRoutineParamWithDefaultList.jsx";
+import { OptScheduleExecutorType } from "/snippets/syntax-diagrams/OptScheduleExecutorType.jsx";
+import { OptScrubOptionsClause } from "/snippets/syntax-diagrams/OptScrubOptionsClause.jsx";
+import { OptSecondaryRegionClause } from "/snippets/syntax-diagrams/OptSecondaryRegionClause.jsx";
+import { OptSelectLimit } from "/snippets/syntax-diagrams/OptSelectLimit.jsx";
+import { OptSequenceOptionList } from "/snippets/syntax-diagrams/OptSequenceOptionList.jsx";
+import { OptSetData } from "/snippets/syntax-diagrams/OptSetData.jsx";
+import { OptSortClause } from "/snippets/syntax-diagrams/OptSortClause.jsx";
+import { OptSortClauseNoIndex } from "/snippets/syntax-diagrams/OptSortClauseNoIndex.jsx";
+import { OptStatsColumns } from "/snippets/syntax-diagrams/OptStatsColumns.jsx";
+import { OptStoring } from "/snippets/syntax-diagrams/OptStoring.jsx";
+import { OptSuperRegionClause } from "/snippets/syntax-diagrams/OptSuperRegionClause.jsx";
+import { OptSurvivalGoalClause } from "/snippets/syntax-diagrams/OptSurvivalGoalClause.jsx";
+import { OptTable } from "/snippets/syntax-diagrams/OptTable.jsx";
+import { OptTableElemList } from "/snippets/syntax-diagrams/OptTableElemList.jsx";
+import { OptTablePrefix } from "/snippets/syntax-diagrams/OptTablePrefix.jsx";
+import { OptTableWith } from "/snippets/syntax-diagrams/OptTableWith.jsx";
+import { OptTimezone } from "/snippets/syntax-diagrams/OptTimezone.jsx";
+import { OptTimezone2 } from "/snippets/syntax-diagrams/OptTimezone2.jsx";
+import { OptTransaction } from "/snippets/syntax-diagrams/OptTransaction.jsx";
+import { OptTriggerTransitionList } from "/snippets/syntax-diagrams/OptTriggerTransitionList.jsx";
+import { OptUnique } from "/snippets/syntax-diagrams/OptUnique.jsx";
+import { OptUsingClause } from "/snippets/syntax-diagrams/OptUsingClause.jsx";
+import { OptValidateBehavior } from "/snippets/syntax-diagrams/OptValidateBehavior.jsx";
+import { OptWhereClause } from "/snippets/syntax-diagrams/OptWhereClause.jsx";
+import { OptWith } from "/snippets/syntax-diagrams/OptWith.jsx";
+import { OptWithBackupOptions } from "/snippets/syntax-diagrams/OptWithBackupOptions.jsx";
+import { OptWithCheckExternalConnectionOptionsList } from "/snippets/syntax-diagrams/OptWithCheckExternalConnectionOptionsList.jsx";
+import { OptWithClause } from "/snippets/syntax-diagrams/OptWithClause.jsx";
+import { OptWithCopyOptions } from "/snippets/syntax-diagrams/OptWithCopyOptions.jsx";
+import { OptWithGrantOption } from "/snippets/syntax-diagrams/OptWithGrantOption.jsx";
+import { OptWithOptions } from "/snippets/syntax-diagrams/OptWithOptions.jsx";
+import { OptWithReplicationOptions } from "/snippets/syntax-diagrams/OptWithReplicationOptions.jsx";
+import { OptWithRestoreOptions } from "/snippets/syntax-diagrams/OptWithRestoreOptions.jsx";
+import { OptWithScheduleOptions } from "/snippets/syntax-diagrams/OptWithScheduleOptions.jsx";
+import { OptWithStorageParameterList } from "/snippets/syntax-diagrams/OptWithStorageParameterList.jsx";
+import { OverClause } from "/snippets/syntax-diagrams/OverClause.jsx";
+import { OverlayList } from "/snippets/syntax-diagrams/OverlayList.jsx";
+import { ParamName } from "/snippets/syntax-diagrams/ParamName.jsx";
+import { PartitionByInner } from "/snippets/syntax-diagrams/PartitionByInner.jsx";
+import { PartitionByTable } from "/snippets/syntax-diagrams/PartitionByTable.jsx";
+import { PauseAllJobsStmt } from "/snippets/syntax-diagrams/PauseAllJobsStmt.jsx";
+import { PauseJobsStmt } from "/snippets/syntax-diagrams/PauseJobsStmt.jsx";
+import { PauseSchedulesStmt } from "/snippets/syntax-diagrams/PauseSchedulesStmt.jsx";
+import { PauseStmt } from "/snippets/syntax-diagrams/PauseStmt.jsx";
+import { PlacementClause } from "/snippets/syntax-diagrams/PlacementClause.jsx";
+import { PositionList } from "/snippets/syntax-diagrams/PositionList.jsx";
+import { PrefixedColumnPath } from "/snippets/syntax-diagrams/PrefixedColumnPath.jsx";
+import { PrepTypeClause } from "/snippets/syntax-diagrams/PrepTypeClause.jsx";
+import { PreparableSetStmt } from "/snippets/syntax-diagrams/PreparableSetStmt.jsx";
+import { PreparableStmt3 } from "/snippets/syntax-diagrams/PreparableStmt3.jsx";
+import { PrepareStmt } from "/snippets/syntax-diagrams/PrepareStmt.jsx";
+import { PrimaryRegionClause } from "/snippets/syntax-diagrams/PrimaryRegionClause.jsx";
+import { Privilege } from "/snippets/syntax-diagrams/Privilege.jsx";
+import { Privileges } from "/snippets/syntax-diagrams/Privileges.jsx";
+import { QualOp } from "/snippets/syntax-diagrams/QualOp.jsx";
+import { RangePartition } from "/snippets/syntax-diagrams/RangePartition.jsx";
+import { RangePartitions } from "/snippets/syntax-diagrams/RangePartitions.jsx";
+import { ReassignOwnedByStmt } from "/snippets/syntax-diagrams/ReassignOwnedByStmt.jsx";
+import { ReferenceOnDelete } from "/snippets/syntax-diagrams/ReferenceOnDelete.jsx";
+import { ReferenceOnUpdate } from "/snippets/syntax-diagrams/ReferenceOnUpdate.jsx";
+import { RefreshStmt } from "/snippets/syntax-diagrams/RefreshStmt.jsx";
+import { RegionName } from "/snippets/syntax-diagrams/RegionName.jsx";
+import { RelationExpr } from "/snippets/syntax-diagrams/RelationExpr.jsx";
+import { ReleaseStmt } from "/snippets/syntax-diagrams/ReleaseStmt.jsx";
+import { RelocateKw2 } from "/snippets/syntax-diagrams/RelocateKw2.jsx";
+import { ReplicationOptions } from "/snippets/syntax-diagrams/ReplicationOptions.jsx";
+import { ReplicationOptionsList } from "/snippets/syntax-diagrams/ReplicationOptionsList.jsx";
+import { ReservedKeyword } from "/snippets/syntax-diagrams/ReservedKeyword.jsx";
+import { ResetCsettingStmt } from "/snippets/syntax-diagrams/ResetCsettingStmt.jsx";
+import { ResetSessionStmt } from "/snippets/syntax-diagrams/ResetSessionStmt.jsx";
+import { ResetStmt } from "/snippets/syntax-diagrams/ResetStmt.jsx";
+import { RestoreOptions } from "/snippets/syntax-diagrams/RestoreOptions.jsx";
+import { RestoreOptionsList } from "/snippets/syntax-diagrams/RestoreOptionsList.jsx";
+import { RestoreStmt } from "/snippets/syntax-diagrams/RestoreStmt.jsx";
+import { ResumeAllJobsStmt } from "/snippets/syntax-diagrams/ResumeAllJobsStmt.jsx";
+import { ResumeJobsStmt } from "/snippets/syntax-diagrams/ResumeJobsStmt.jsx";
+import { ResumeSchedulesStmt } from "/snippets/syntax-diagrams/ResumeSchedulesStmt.jsx";
+import { ResumeStmt } from "/snippets/syntax-diagrams/ResumeStmt.jsx";
+import { ReturningClause } from "/snippets/syntax-diagrams/ReturningClause.jsx";
+import { RevokeStmt2 } from "/snippets/syntax-diagrams/RevokeStmt2.jsx";
+import { RoleOption4 } from "/snippets/syntax-diagrams/RoleOption4.jsx";
+import { RoleOptions } from "/snippets/syntax-diagrams/RoleOptions.jsx";
+import { RoleOrGroupOrUser } from "/snippets/syntax-diagrams/RoleOrGroupOrUser.jsx";
+import { RoleSpec } from "/snippets/syntax-diagrams/RoleSpec.jsx";
+import { RoleSpecList } from "/snippets/syntax-diagrams/RoleSpecList.jsx";
+import { RollbackStmt } from "/snippets/syntax-diagrams/RollbackStmt.jsx";
+import { RoutineBodyStmt } from "/snippets/syntax-diagrams/RoutineBodyStmt.jsx";
+import { RoutineBodyStmtList } from "/snippets/syntax-diagrams/RoutineBodyStmtList.jsx";
+import { RoutineParam } from "/snippets/syntax-diagrams/RoutineParam.jsx";
+import { RoutineParamWithDefault } from "/snippets/syntax-diagrams/RoutineParamWithDefault.jsx";
+import { RoutineParamWithDefaultList } from "/snippets/syntax-diagrams/RoutineParamWithDefaultList.jsx";
+import { RoutineReturnStmt } from "/snippets/syntax-diagrams/RoutineReturnStmt.jsx";
+import { Row } from "/snippets/syntax-diagrams/Row.jsx";
+import { RowOrRows } from "/snippets/syntax-diagrams/RowOrRows.jsx";
+import { RowSourceExtensionStmt } from "/snippets/syntax-diagrams/RowSourceExtensionStmt.jsx";
+import { RowsfromList } from "/snippets/syntax-diagrams/RowsfromList.jsx";
+import { SavepointStmt } from "/snippets/syntax-diagrams/SavepointStmt.jsx";
+import { ScheduleLabelSpec } from "/snippets/syntax-diagrams/ScheduleLabelSpec.jsx";
+import { SchemaNameList } from "/snippets/syntax-diagrams/SchemaNameList.jsx";
+import { SchemaWildcard } from "/snippets/syntax-diagrams/SchemaWildcard.jsx";
+import { SconstOrPlaceholder } from "/snippets/syntax-diagrams/SconstOrPlaceholder.jsx";
+import { ScrubDatabaseStmt } from "/snippets/syntax-diagrams/ScrubDatabaseStmt.jsx";
+import { ScrubOption } from "/snippets/syntax-diagrams/ScrubOption.jsx";
+import { ScrubOptionList } from "/snippets/syntax-diagrams/ScrubOptionList.jsx";
+import { ScrubStmt } from "/snippets/syntax-diagrams/ScrubStmt.jsx";
+import { ScrubTableStmt } from "/snippets/syntax-diagrams/ScrubTableStmt.jsx";
+import { SecondaryRegionClause } from "/snippets/syntax-diagrams/SecondaryRegionClause.jsx";
+import { SelectClause2 } from "/snippets/syntax-diagrams/SelectClause2.jsx";
+import { SelectLimit } from "/snippets/syntax-diagrams/SelectLimit.jsx";
+import { SelectNoParens } from "/snippets/syntax-diagrams/SelectNoParens.jsx";
+import { SelectStmt } from "/snippets/syntax-diagrams/SelectStmt.jsx";
+import { SelectWithParens } from "/snippets/syntax-diagrams/SelectWithParens.jsx";
+import { SequenceOptionElem3 } from "/snippets/syntax-diagrams/SequenceOptionElem3.jsx";
+import { SessionVar } from "/snippets/syntax-diagrams/SessionVar.jsx";
+import { SessionVarParts } from "/snippets/syntax-diagrams/SessionVarParts.jsx";
+import { SetClause } from "/snippets/syntax-diagrams/SetClause.jsx";
+import { SetClauseList } from "/snippets/syntax-diagrams/SetClauseList.jsx";
+import { SetCsettingStmt } from "/snippets/syntax-diagrams/SetCsettingStmt.jsx";
+import { SetLocalStmt } from "/snippets/syntax-diagrams/SetLocalStmt.jsx";
+import { SetOperation } from "/snippets/syntax-diagrams/SetOperation.jsx";
+import { SetOrResetClause } from "/snippets/syntax-diagrams/SetOrResetClause.jsx";
+import { SetRest } from "/snippets/syntax-diagrams/SetRest.jsx";
+import { SetRestMore } from "/snippets/syntax-diagrams/SetRestMore.jsx";
+import { SetSessionStmt } from "/snippets/syntax-diagrams/SetSessionStmt.jsx";
+import { SetZoneConfig } from "/snippets/syntax-diagrams/SetZoneConfig.jsx";
+import { ShowBackupConnectionOptions } from "/snippets/syntax-diagrams/ShowBackupConnectionOptions.jsx";
+import { ShowBackupDetails } from "/snippets/syntax-diagrams/ShowBackupDetails.jsx";
+import { ShowBackupOptions } from "/snippets/syntax-diagrams/ShowBackupOptions.jsx";
+import { ShowBackupOptionsList } from "/snippets/syntax-diagrams/ShowBackupOptionsList.jsx";
+import { ShowBackupStmt4 } from "/snippets/syntax-diagrams/ShowBackupStmt4.jsx";
+import { ShowColumnsStmt } from "/snippets/syntax-diagrams/ShowColumnsStmt.jsx";
+import { ShowCommitTimestampStmt } from "/snippets/syntax-diagrams/ShowCommitTimestampStmt.jsx";
+import { ShowConstraintsStmt } from "/snippets/syntax-diagrams/ShowConstraintsStmt.jsx";
+import { ShowCreateExternalConnectionsStmt } from "/snippets/syntax-diagrams/ShowCreateExternalConnectionsStmt.jsx";
+import { ShowCreateSchedulesStmt } from "/snippets/syntax-diagrams/ShowCreateSchedulesStmt.jsx";
+import { ShowCreateStmt2 } from "/snippets/syntax-diagrams/ShowCreateStmt2.jsx";
+import { ShowDatabasesStmt } from "/snippets/syntax-diagrams/ShowDatabasesStmt.jsx";
+import { ShowEnumsStmt } from "/snippets/syntax-diagrams/ShowEnumsStmt.jsx";
+import { ShowExternalConnectionsStmt } from "/snippets/syntax-diagrams/ShowExternalConnectionsStmt.jsx";
+import { ShowFullScansStmt2 } from "/snippets/syntax-diagrams/ShowFullScansStmt2.jsx";
+import { ShowGrantsStmt } from "/snippets/syntax-diagrams/ShowGrantsStmt.jsx";
+import { ShowIndexesStmt } from "/snippets/syntax-diagrams/ShowIndexesStmt.jsx";
+import { ShowJobOptions } from "/snippets/syntax-diagrams/ShowJobOptions.jsx";
+import { ShowJobOptionsList } from "/snippets/syntax-diagrams/ShowJobOptionsList.jsx";
+import { ShowJobsStmt2 } from "/snippets/syntax-diagrams/ShowJobsStmt2.jsx";
+import { ShowLocalityStmt } from "/snippets/syntax-diagrams/ShowLocalityStmt.jsx";
+import { ShowPartitionsStmt } from "/snippets/syntax-diagrams/ShowPartitionsStmt.jsx";
+import { ShowProceduresStmt } from "/snippets/syntax-diagrams/ShowProceduresStmt.jsx";
+import { ShowRangeForRowStmt } from "/snippets/syntax-diagrams/ShowRangeForRowStmt.jsx";
+import { ShowRangesStmt } from "/snippets/syntax-diagrams/ShowRangesStmt.jsx";
+import { ShowRegionsStmt } from "/snippets/syntax-diagrams/ShowRegionsStmt.jsx";
+import { ShowRolesStmt } from "/snippets/syntax-diagrams/ShowRolesStmt.jsx";
+import { ShowSequencesStmt } from "/snippets/syntax-diagrams/ShowSequencesStmt.jsx";
+import { ShowSessionStmt } from "/snippets/syntax-diagrams/ShowSessionStmt.jsx";
+import { ShowSessionsStmt } from "/snippets/syntax-diagrams/ShowSessionsStmt.jsx";
+import { ShowStatementsStmt } from "/snippets/syntax-diagrams/ShowStatementsStmt.jsx";
+import { ShowStatsStmt2 } from "/snippets/syntax-diagrams/ShowStatsStmt2.jsx";
+import { ShowStmt4 } from "/snippets/syntax-diagrams/ShowStmt4.jsx";
+import { ShowSurvivalGoalStmt } from "/snippets/syntax-diagrams/ShowSurvivalGoalStmt.jsx";
+import { ShowTablesStmt } from "/snippets/syntax-diagrams/ShowTablesStmt.jsx";
+import { ShowTraceStmt } from "/snippets/syntax-diagrams/ShowTraceStmt.jsx";
+import { ShowTransactionsStmt } from "/snippets/syntax-diagrams/ShowTransactionsStmt.jsx";
+import { ShowTransferStmt } from "/snippets/syntax-diagrams/ShowTransferStmt.jsx";
+import { ShowTriggersStmt } from "/snippets/syntax-diagrams/ShowTriggersStmt.jsx";
+import { ShowTypesStmt } from "/snippets/syntax-diagrams/ShowTypesStmt.jsx";
+import { ShowTypesStmt2 } from "/snippets/syntax-diagrams/ShowTypesStmt2.jsx";
+import { ShowZoneStmt } from "/snippets/syntax-diagrams/ShowZoneStmt.jsx";
+import { SignedIconst64 } from "/snippets/syntax-diagrams/SignedIconst64.jsx";
+import { SimpleDbObjectName } from "/snippets/syntax-diagrams/SimpleDbObjectName.jsx";
+import { SimpleSelect } from "/snippets/syntax-diagrams/SimpleSelect.jsx";
+import { SimpleSelectClause } from "/snippets/syntax-diagrams/SimpleSelectClause.jsx";
+import { SimpleTypename } from "/snippets/syntax-diagrams/SimpleTypename.jsx";
+import { SingleSetClause } from "/snippets/syntax-diagrams/SingleSetClause.jsx";
+import { SingleSortClause } from "/snippets/syntax-diagrams/SingleSortClause.jsx";
+import { SortClause } from "/snippets/syntax-diagrams/SortClause.jsx";
+import { SortClauseNoIndex } from "/snippets/syntax-diagrams/SortClauseNoIndex.jsx";
+import { Sortby } from "/snippets/syntax-diagrams/Sortby.jsx";
+import { SortbyIndex } from "/snippets/syntax-diagrams/SortbyIndex.jsx";
+import { SortbyList } from "/snippets/syntax-diagrams/SortbyList.jsx";
+import { SortbyNoIndexList } from "/snippets/syntax-diagrams/SortbyNoIndexList.jsx";
+import { SourceReplicationOptions } from "/snippets/syntax-diagrams/SourceReplicationOptions.jsx";
+import { SourceReplicationOptionsList } from "/snippets/syntax-diagrams/SourceReplicationOptionsList.jsx";
+import { SpecialFunction } from "/snippets/syntax-diagrams/SpecialFunction.jsx";
+import { Stmt } from "/snippets/syntax-diagrams/Stmt.jsx";
+import { StmtBlock } from "/snippets/syntax-diagrams/StmtBlock.jsx";
+import { StmtWithoutLegacyTransaction } from "/snippets/syntax-diagrams/StmtWithoutLegacyTransaction.jsx";
+import { StorageParameter } from "/snippets/syntax-diagrams/StorageParameter.jsx";
+import { StorageParameterList } from "/snippets/syntax-diagrams/StorageParameterList.jsx";
+import { Storing } from "/snippets/syntax-diagrams/Storing.jsx";
+import { StringOrPlaceholder } from "/snippets/syntax-diagrams/StringOrPlaceholder.jsx";
+import { StringOrPlaceholderList } from "/snippets/syntax-diagrams/StringOrPlaceholderList.jsx";
+import { SubType2 } from "/snippets/syntax-diagrams/SubType2.jsx";
+import { SubjectClause } from "/snippets/syntax-diagrams/SubjectClause.jsx";
+import { SubqueryOp } from "/snippets/syntax-diagrams/SubqueryOp.jsx";
+import { SubstrFor } from "/snippets/syntax-diagrams/SubstrFor.jsx";
+import { SubstrFrom } from "/snippets/syntax-diagrams/SubstrFrom.jsx";
+import { SubstrList } from "/snippets/syntax-diagrams/SubstrList.jsx";
+import { SurvivalGoalClause } from "/snippets/syntax-diagrams/SurvivalGoalClause.jsx";
+import { TableClause } from "/snippets/syntax-diagrams/TableClause.jsx";
+import { TableConstraint } from "/snippets/syntax-diagrams/TableConstraint.jsx";
+import { TableElem } from "/snippets/syntax-diagrams/TableElem.jsx";
+import { TableElemList } from "/snippets/syntax-diagrams/TableElemList.jsx";
+import { TableExprOptAliasIdx } from "/snippets/syntax-diagrams/TableExprOptAliasIdx.jsx";
+import { TableFuncColumn } from "/snippets/syntax-diagrams/TableFuncColumn.jsx";
+import { TableFuncColumnList } from "/snippets/syntax-diagrams/TableFuncColumnList.jsx";
+import { TableIndexName } from "/snippets/syntax-diagrams/TableIndexName.jsx";
+import { TableNameOptIdx } from "/snippets/syntax-diagrams/TableNameOptIdx.jsx";
+import { TablePattern } from "/snippets/syntax-diagrams/TablePattern.jsx";
+import { TablePatternList } from "/snippets/syntax-diagrams/TablePatternList.jsx";
+import { TableRlsMode } from "/snippets/syntax-diagrams/TableRlsMode.jsx";
+import { TargetElem } from "/snippets/syntax-diagrams/TargetElem.jsx";
+import { TargetList } from "/snippets/syntax-diagrams/TargetList.jsx";
+import { TargetTypes } from "/snippets/syntax-diagrams/TargetTypes.jsx";
+import { TargetsRoles } from "/snippets/syntax-diagrams/TargetsRoles.jsx";
+import { ToOrEq } from "/snippets/syntax-diagrams/ToOrEq.jsx";
+import { TransactionMode } from "/snippets/syntax-diagrams/TransactionMode.jsx";
+import { TransactionModeList } from "/snippets/syntax-diagrams/TransactionModeList.jsx";
+import { TransactionReadMode } from "/snippets/syntax-diagrams/TransactionReadMode.jsx";
+import { TransactionStmt } from "/snippets/syntax-diagrams/TransactionStmt.jsx";
+import { TransactionUserPriority } from "/snippets/syntax-diagrams/TransactionUserPriority.jsx";
+import { TriggerActionTime } from "/snippets/syntax-diagrams/TriggerActionTime.jsx";
+import { TriggerEvent } from "/snippets/syntax-diagrams/TriggerEvent.jsx";
+import { TriggerForEach } from "/snippets/syntax-diagrams/TriggerForEach.jsx";
+import { TriggerForOptEach } from "/snippets/syntax-diagrams/TriggerForOptEach.jsx";
+import { TriggerTransition } from "/snippets/syntax-diagrams/TriggerTransition.jsx";
+import { TriggerTransitionList } from "/snippets/syntax-diagrams/TriggerTransitionList.jsx";
+import { TriggerWhen } from "/snippets/syntax-diagrams/TriggerWhen.jsx";
+import { TrimList } from "/snippets/syntax-diagrams/TrimList.jsx";
+import { TruncateStmt } from "/snippets/syntax-diagrams/TruncateStmt.jsx";
+import { Tuple1AmbiguousValues } from "/snippets/syntax-diagrams/Tuple1AmbiguousValues.jsx";
+import { Tuple1UnambiguousValues } from "/snippets/syntax-diagrams/Tuple1UnambiguousValues.jsx";
+import { TypeFuncNameNoCrdbExtraKeyword } from "/snippets/syntax-diagrams/TypeFuncNameNoCrdbExtraKeyword.jsx";
+import { TypeFunctionName } from "/snippets/syntax-diagrams/TypeFunctionName.jsx";
+import { TypeFunctionNameNoCrdbExtra } from "/snippets/syntax-diagrams/TypeFunctionNameNoCrdbExtra.jsx";
+import { TypeList } from "/snippets/syntax-diagrams/TypeList.jsx";
+import { TypeNameList } from "/snippets/syntax-diagrams/TypeNameList.jsx";
+import { TypedLiteral } from "/snippets/syntax-diagrams/TypedLiteral.jsx";
+import { Typename } from "/snippets/syntax-diagrams/Typename.jsx";
+import { UnlistenStmt } from "/snippets/syntax-diagrams/UnlistenStmt.jsx";
+import { UnreservedKeyword } from "/snippets/syntax-diagrams/UnreservedKeyword.jsx";
+import { UnreservedKeyword2 } from "/snippets/syntax-diagrams/UnreservedKeyword2.jsx";
+import { UnrestrictedName } from "/snippets/syntax-diagrams/UnrestrictedName.jsx";
+import { UpdateStmt } from "/snippets/syntax-diagrams/UpdateStmt.jsx";
+import { UpsertStmt } from "/snippets/syntax-diagrams/UpsertStmt.jsx";
+import { UseStmt } from "/snippets/syntax-diagrams/UseStmt.jsx";
+import { ValidUntilClause } from "/snippets/syntax-diagrams/ValidUntilClause.jsx";
+import { ValuesClause } from "/snippets/syntax-diagrams/ValuesClause.jsx";
+import { VarList } from "/snippets/syntax-diagrams/VarList.jsx";
+import { VarName } from "/snippets/syntax-diagrams/VarName.jsx";
+import { VarSetList } from "/snippets/syntax-diagrams/VarSetList.jsx";
+import { ViewNameList } from "/snippets/syntax-diagrams/ViewNameList.jsx";
+import { VirtualCluster } from "/snippets/syntax-diagrams/VirtualCluster.jsx";
+import { WhenClause } from "/snippets/syntax-diagrams/WhenClause.jsx";
+import { WhenClauseList } from "/snippets/syntax-diagrams/WhenClauseList.jsx";
+import { WhereClause } from "/snippets/syntax-diagrams/WhereClause.jsx";
+import { WindowClause } from "/snippets/syntax-diagrams/WindowClause.jsx";
+import { WindowDefinition } from "/snippets/syntax-diagrams/WindowDefinition.jsx";
+import { WindowDefinitionList } from "/snippets/syntax-diagrams/WindowDefinitionList.jsx";
+import { WindowSpecification } from "/snippets/syntax-diagrams/WindowSpecification.jsx";
+import { WithClause } from "/snippets/syntax-diagrams/WithClause.jsx";
+import { WithComment } from "/snippets/syntax-diagrams/WithComment.jsx";
+import { WithinGroupClause } from "/snippets/syntax-diagrams/WithinGroupClause.jsx";
+
+<Tip>
+This page describes the full CockroachDB SQL grammar. However, as a starting point, it's best to reference our [SQL statements pages](/docs/v25.2/sql-statements) first, which provide detailed explanations and examples.
+</Tip>
+
+[stmt_block:](#stmt_block) <a id="stmt_block"/>
+
+<StmtBlock />
+
+no references
+
+[stmt:](#stmt) <a id="stmt"/>
+
+<Stmt />
+
+referenced by:
+
+- [stmt_block](#stmt_block)
+
+[stmt_without_legacy_transaction:](#stmt_without_legacy_transaction) <a id="stmt_without_legacy_transaction"/>
+
+<StmtWithoutLegacyTransaction />
+
+referenced by:
+
+- [routine_body_stmt](#routine_body_stmt)
+- [stmt](#stmt)
+
+[legacy_transaction_stmt:](#legacy_transaction_stmt) <a id="legacy_transaction_stmt"/>
+
+<LegacyTransactionStmt />
+
+referenced by:
+
+- [stmt](#stmt)
+
+[preparable_stmt:](#preparable_stmt) <a id="preparable_stmt"/>
+
+<PreparableStmt3 />
+
+referenced by:
+
+- [common_table_expr](#common_table_expr)
+- [explainable_stmt](#explainable_stmt)
+- [prepare_stmt](#prepare_stmt)
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[analyze_stmt:](#analyze_stmt) <a id="analyze_stmt"/>
+
+<AnalyzeStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[call_stmt:](#call_stmt) <a id="call_stmt"/>
+
+<CallStmt />
+
+referenced by:
+
+- [explainable_stmt](#explainable_stmt)
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[copy_stmt:](#copy_stmt) <a id="copy_stmt"/>
+
+<CopyStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[comment_stmt:](#comment_stmt) <a id="comment_stmt"/>
+
+<CommentStmt />
+
+referenced by:
+
+- [explainable_stmt](#explainable_stmt)
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[execute_stmt:](#execute_stmt) <a id="execute_stmt"/>
+
+<ExecuteStmt />
+
+referenced by:
+
+- [explainable_stmt](#explainable_stmt)
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[deallocate_stmt:](#deallocate_stmt) <a id="deallocate_stmt"/>
+
+<DeallocateStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[discard_stmt:](#discard_stmt) <a id="discard_stmt"/>
+
+<DiscardStmt />
+
+referenced by:
+
+- [explainable_stmt](#explainable_stmt)
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[grant_stmt:](#grant_stmt) <a id="grant_stmt"/>
+
+<GrantStmt2 />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[prepare_stmt:](#prepare_stmt) <a id="prepare_stmt"/>
+
+<PrepareStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[revoke_stmt:](#revoke_stmt) <a id="revoke_stmt"/>
+
+<RevokeStmt2 />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[savepoint_stmt:](#savepoint_stmt) <a id="savepoint_stmt"/>
+
+<SavepointStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[reassign_owned_by_stmt:](#reassign_owned_by_stmt) <a id="reassign_owned_by_stmt"/>
+
+<ReassignOwnedByStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[drop_owned_by_stmt:](#drop_owned_by_stmt) <a id="drop_owned_by_stmt"/>
+
+<DropOwnedByStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[release_stmt:](#release_stmt) <a id="release_stmt"/>
+
+<ReleaseStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[refresh_stmt:](#refresh_stmt) <a id="refresh_stmt"/>
+
+<RefreshStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[nonpreparable_set_stmt:](#nonpreparable_set_stmt) <a id="nonpreparable_set_stmt"/>
+
+<NonpreparableSetStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[transaction_stmt:](#transaction_stmt) <a id="transaction_stmt"/>
+
+<TransactionStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[close_cursor_stmt:](#close_cursor_stmt) <a id="close_cursor_stmt"/>
+
+<CloseCursorStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[declare_cursor_stmt:](#declare_cursor_stmt) <a id="declare_cursor_stmt"/>
+
+<DeclareCursorStmt2 />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[fetch_cursor_stmt:](#fetch_cursor_stmt) <a id="fetch_cursor_stmt"/>
+
+<FetchCursorStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[move_cursor_stmt:](#move_cursor_stmt) <a id="move_cursor_stmt"/>
+
+<MoveCursorStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[unlisten_stmt:](#unlisten_stmt) <a id="unlisten_stmt"/>
+
+<UnlistenStmt />
+
+referenced by:
+
+- [stmt_without_legacy_transaction](#stmt_without_legacy_transaction)
+
+[show_commit_timestamp_stmt:](#show_commit_timestamp_stmt) <a id="show_commit_timestamp_stmt"/>
+
+<ShowCommitTimestampStmt />
+
+referenced by:
+
+- [legacy_transaction_stmt](#legacy_transaction_stmt)
+
+[legacy_end_stmt:](#legacy_end_stmt) <a id="legacy_end_stmt"/>
+
+<LegacyEndStmt />
+
+referenced by:
+
+- [legacy_transaction_stmt](#legacy_transaction_stmt)
+
+[alter_stmt:](#alter_stmt) <a id="alter_stmt"/>
+
+<AlterStmt3 />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[backup_stmt:](#backup_stmt) <a id="backup_stmt"/>
+
+<BackupStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[cancel_stmt:](#cancel_stmt) <a id="cancel_stmt"/>
+
+<CancelStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[create_stmt:](#create_stmt) <a id="create_stmt"/>
+
+<CreateStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[check_stmt:](#check_stmt) <a id="check_stmt"/>
+
+<CheckStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[delete_stmt:](#delete_stmt) <a id="delete_stmt"/>
+
+<DeleteStmt />
+
+referenced by:
+
+- [copy_to_stmt](#copy_to_stmt)
+- [preparable_stmt](#preparable_stmt)
+- [row_source_extension_stmt](#row_source_extension_stmt)
+
+[drop_stmt:](#drop_stmt) <a id="drop_stmt"/>
+
+<DropStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[explain_stmt:](#explain_stmt) <a id="explain_stmt"/>
+
+<ExplainStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+- [row_source_extension_stmt](#row_source_extension_stmt)
+
+[import_stmt:](#import_stmt) <a id="import_stmt"/>
+
+<ImportStmt2 />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[insert_stmt:](#insert_stmt) <a id="insert_stmt"/>
+
+<InsertStmt />
+
+referenced by:
+
+- [copy_to_stmt](#copy_to_stmt)
+- [preparable_stmt](#preparable_stmt)
+- [row_source_extension_stmt](#row_source_extension_stmt)
+
+[pause_stmt:](#pause_stmt) <a id="pause_stmt"/>
+
+<PauseStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[reset_stmt:](#reset_stmt) <a id="reset_stmt"/>
+
+<ResetStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[restore_stmt:](#restore_stmt) <a id="restore_stmt"/>
+
+<RestoreStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[resume_stmt:](#resume_stmt) <a id="resume_stmt"/>
+
+<ResumeStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[export_stmt:](#export_stmt) <a id="export_stmt"/>
+
+<ExportStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[scrub_stmt:](#scrub_stmt) <a id="scrub_stmt"/>
+
+<ScrubStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[select_stmt:](#select_stmt) <a id="select_stmt"/>
+
+<SelectStmt />
+
+referenced by:
+
+- [alter_range_relocate_stmt](#alter_range_relocate_stmt)
+- [alter_split_index_stmt](#alter_split_index_stmt)
+- [alter_split_stmt](#alter_split_stmt)
+- [alter_unsplit_index_stmt](#alter_unsplit_index_stmt)
+- [alter_unsplit_stmt](#alter_unsplit_stmt)
+- [cancel_jobs_stmt](#cancel_jobs_stmt)
+- [cancel_queries_stmt](#cancel_queries_stmt)
+- [cancel_sessions_stmt](#cancel_sessions_stmt)
+- [copy_to_stmt](#copy_to_stmt)
+- [create_table_as_stmt](#create_table_as_stmt)
+- [create_view_stmt](#create_view_stmt)
+- [declare_cursor_stmt](#declare_cursor_stmt)
+- [drop_schedule_stmt](#drop_schedule_stmt)
+- [export_stmt](#export_stmt)
+- [for_schedules_clause](#for_schedules_clause)
+- [insert_rest](#insert_rest)
+- [pause_jobs_stmt](#pause_jobs_stmt)
+- [pause_schedules_stmt](#pause_schedules_stmt)
+- [preparable_stmt](#preparable_stmt)
+- [resume_jobs_stmt](#resume_jobs_stmt)
+- [resume_schedules_stmt](#resume_schedules_stmt)
+- [row_source_extension_stmt](#row_source_extension_stmt)
+- [show_jobs_stmt](#show_jobs_stmt)
+
+[preparable_set_stmt:](#preparable_set_stmt) <a id="preparable_set_stmt"/>
+
+<PreparableSetStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[show_stmt:](#show_stmt) <a id="show_stmt"/>
+
+<ShowStmt4 />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+- [row_source_extension_stmt](#row_source_extension_stmt)
+
+[truncate_stmt:](#truncate_stmt) <a id="truncate_stmt"/>
+
+<TruncateStmt />
+
+referenced by:
+
+- [preparable_stmt](#preparable_stmt)
+
+[update_stmt:](#update_stmt) <a id="update_stmt"/>
+
+<UpdateStmt />
+
+referenced by:
+
+- [copy_to_stmt](#copy_to_stmt)
+- [preparable_stmt](#preparable_stmt)
+- [row_source_extension_stmt](#row_source_extension_stmt)
+
+[upsert_stmt:](#upsert_stmt) <a id="upsert_stmt"/>
+
+<UpsertStmt />
+
+referenced by:
+
+- [copy_to_stmt](#copy_to_stmt)
+- [preparable_stmt](#preparable_stmt)
+- [row_source_extension_stmt](#row_source_extension_stmt)
+
+[analyze_target:](#analyze_target) <a id="analyze_target"/>
+
+<AnalyzeTarget />
+
+referenced by:
+
+- [analyze_stmt](#analyze_stmt)
+
+[func_application:](#func_application) <a id="func_application"/>
+
+<FuncApplication />
+
+referenced by:
+
+- [call_stmt](#call_stmt)
+- [func_expr](#func_expr)
+- [func_expr_windowless](#func_expr_windowless)
+
+[table_name:](#table_name) <a id="table_name"/>
+
+<DbName />
+
+referenced by:
+
+- [alter_policy_stmt](#alter_policy_stmt)
+- [alter_rename_table_stmt](#alter_rename_table_stmt)
+- [alter_scatter_stmt](#alter_scatter_stmt)
+- [alter_split_stmt](#alter_split_stmt)
+- [alter_unsplit_stmt](#alter_unsplit_stmt)
+- [alter_zone_partition_stmt](#alter_zone_partition_stmt)
+- [alter_zone_table_stmt](#alter_zone_table_stmt)
+- [analyze_target](#analyze_target)
+- [changefeed_target](#changefeed_target)
+- [col_qualification_elem](#col_qualification_elem)
+- [comment_stmt](#comment_stmt)
+- [constraint_elem](#constraint_elem)
+- [copy_stmt](#copy_stmt)
+- [create_index_stmt](#create_index_stmt)
+- [create_policy_stmt](#create_policy_stmt)
+- [create_stats_target](#create_stats_target)
+- [create_table_as_stmt](#create_table_as_stmt)
+- [create_table_stmt](#create_table_stmt)
+- [create_trigger_stmt](#create_trigger_stmt)
+- [drop_policy_stmt](#drop_policy_stmt)
+- [drop_trigger_stmt](#drop_trigger_stmt)
+- [import_stmt](#import_stmt)
+- [relation_expr](#relation_expr)
+- [scrub_table_stmt](#scrub_table_stmt)
+- [show_columns_stmt](#show_columns_stmt)
+- [show_constraints_stmt](#show_constraints_stmt)
+- [show_create_stmt](#show_create_stmt)
+- [show_indexes_stmt](#show_indexes_stmt)
+- [show_partitions_stmt](#show_partitions_stmt)
+- [show_range_for_row_stmt](#show_range_for_row_stmt)
+- [show_ranges_stmt](#show_ranges_stmt)
+- [show_stats_stmt](#show_stats_stmt)
+- [show_triggers_stmt](#show_triggers_stmt)
+- [show_zone_stmt](#show_zone_stmt)
+- [sortby_index](#sortby_index)
+- [table_elem](#table_elem)
+- [table_index_name](#table_index_name)
+- [table_name_opt_idx](#table_name_opt_idx)
+- [view_name](#view_name)
+
+[opt_column_list:](#opt_column_list) <a id="opt_column_list"/>
+
+<OptColumnList />
+
+referenced by:
+
+- [constraint_elem](#constraint_elem)
+- [copy_stmt](#copy_stmt)
+- [create_view_stmt](#create_view_stmt)
+
+[opt_with_copy_options:](#opt_with_copy_options) <a id="opt_with_copy_options"/>
+
+<OptWithCopyOptions />
+
+referenced by:
+
+- [copy_stmt](#copy_stmt)
+
+[opt_where_clause:](#opt_where_clause) <a id="opt_where_clause"/>
+
+<OptWhereClause />
+
+referenced by:
+
+- [constraint_elem](#constraint_elem)
+- [copy_stmt](#copy_stmt)
+- [create_changefeed_stmt](#create_changefeed_stmt)
+- [create_index_stmt](#create_index_stmt)
+- [create_schedule_for_changefeed_stmt](#create_schedule_for_changefeed_stmt)
+- [delete_stmt](#delete_stmt)
+- [index_def](#index_def)
+- [on_conflict](#on_conflict)
+- [simple_select_clause](#simple_select_clause)
+- [update_stmt](#update_stmt)
+
+[copy_to_stmt:](#copy_to_stmt) <a id="copy_to_stmt"/>
+
+<CopyToStmt />
+
+referenced by:
+
+- [copy_stmt](#copy_stmt)
+
+[database_name:](#database_name) <a id="database_name"/>
+
+<CursorName />
+
+referenced by:
+
+- [alter_database_add_region_stmt](#alter_database_add_region_stmt)
+- [alter_database_add_super_region](#alter_database_add_super_region)
+- [alter_database_alter_super_region](#alter_database_alter_super_region)
+- [alter_database_drop_region_stmt](#alter_database_drop_region_stmt)
+- [alter_database_drop_secondary_region](#alter_database_drop_secondary_region)
+- [alter_database_drop_super_region](#alter_database_drop_super_region)
+- [alter_database_owner](#alter_database_owner)
+- [alter_database_placement_stmt](#alter_database_placement_stmt)
+- [alter_database_primary_region_stmt](#alter_database_primary_region_stmt)
+- [alter_database_set_secondary_region_stmt](#alter_database_set_secondary_region_stmt)
+- [alter_database_set_stmt](#alter_database_set_stmt)
+- [alter_database_set_zone_config_extension_stmt](#alter_database_set_zone_config_extension_stmt)
+- [alter_database_survival_goal_stmt](#alter_database_survival_goal_stmt)
+- [alter_database_to_schema_stmt](#alter_database_to_schema_stmt)
+- [alter_rename_database_stmt](#alter_rename_database_stmt)
+- [alter_zone_database_stmt](#alter_zone_database_stmt)
+- [comment_stmt](#comment_stmt)
+- [create_database_stmt](#create_database_stmt)
+- [drop_database_stmt](#drop_database_stmt)
+- [logical_replication_resources](#logical_replication_resources)
+- [opt_in_database](#opt_in_database)
+- [scrub_database_stmt](#scrub_database_stmt)
+- [show_indexes_stmt](#show_indexes_stmt)
+- [show_partitions_stmt](#show_partitions_stmt)
+- [show_ranges_stmt](#show_ranges_stmt)
+- [show_regions_stmt](#show_regions_stmt)
+- [show_survival_goal_stmt](#show_survival_goal_stmt)
+- [show_zone_stmt](#show_zone_stmt)
+
+[comment_text:](#comment_text) <a id="comment_text"/>
+
+<CommentText />
+
+referenced by:
+
+- [alter_schema_stmt](#alter_schema_stmt)
+- [comment_stmt](#comment_stmt)
+- [create_schema_stmt](#create_schema_stmt)
+- [opt_schema_name](#opt_schema_name)
+- [schema_name_list](#schema_name_list)
+
+[type_name:](#type_name) <a id="type_name"/>
+
+<DbName />
+
+referenced by:
+
+- [alter_type_stmt](#alter_type_stmt)
+- [comment_stmt](#comment_stmt)
+- [create_type_stmt](#create_type_stmt)
+- [type_name_list](#type_name_list)
+- [unlisten_stmt](#unlisten_stmt)
+
+[column_path:](#column_path) <a id="column_path"/>
+
+<ColumnPath />
+
+referenced by:
+
+- [column_path_with_star](#column_path_with_star)
+- [comment_stmt](#comment_stmt)
+- [sequence_option_elem](#sequence_option_elem)
+
+[table_index_name:](#table_index_name) <a id="table_index_name"/>
+
+<TableIndexName />
+
+referenced by:
+
+- [alter_index_visible_stmt](#alter_index_visible_stmt)
+- [alter_oneindex_stmt](#alter_oneindex_stmt)
+- [alter_rename_index_stmt](#alter_rename_index_stmt)
+- [alter_scatter_index_stmt](#alter_scatter_index_stmt)
+- [alter_split_index_stmt](#alter_split_index_stmt)
+- [alter_unsplit_index_stmt](#alter_unsplit_index_stmt)
+- [alter_zone_index_stmt](#alter_zone_index_stmt)
+- [alter_zone_partition_stmt](#alter_zone_partition_stmt)
+- [comment_stmt](#comment_stmt)
+- [show_partitions_stmt](#show_partitions_stmt)
+- [show_range_for_row_stmt](#show_range_for_row_stmt)
+- [show_ranges_stmt](#show_ranges_stmt)
+- [show_zone_stmt](#show_zone_stmt)
+- [table_index_name_list](#table_index_name_list)
+
+[constraint_name:](#constraint_name) <a id="constraint_name"/>
+
+<CursorName />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [col_qualification](#col_qualification)
+- [comment_stmt](#comment_stmt)
+- [on_conflict](#on_conflict)
+- [table_constraint](#table_constraint)
+
+[table_alias_name:](#table_alias_name) <a id="table_alias_name"/>
+
+<CursorName />
+
+referenced by:
+
+- [alias_clause](#alias_clause)
+- [common_table_expr](#common_table_expr)
+- [execute_stmt](#execute_stmt)
+- [func_alias_clause](#func_alias_clause)
+- [insert_target](#insert_target)
+- [prepare_stmt](#prepare_stmt)
+- [table_expr_opt_alias_idx](#table_expr_opt_alias_idx)
+- [trigger_transition](#trigger_transition)
+
+[execute_param_clause:](#execute_param_clause) <a id="execute_param_clause"/>
+
+<ExecuteParamClause />
+
+referenced by:
+
+- [execute_stmt](#execute_stmt)
+
+[name:](#name) <a id="name"/>
+
+<Name />
+
+referenced by:
+
+- [alter_func_dep_extension_stmt](#alter_func_dep_extension_stmt)
+- [alter_func_rename_stmt](#alter_func_rename_stmt)
+- [alter_policy_stmt](#alter_policy_stmt)
+- [alter_proc_rename_stmt](#alter_proc_rename_stmt)
+- [alter_type_stmt](#alter_type_stmt)
+- [cancel_all_jobs_stmt](#cancel_all_jobs_stmt)
+- [col_def](#col_def)
+- [col_def_list_no_types](#col_def_list_no_types)
+- [column_name](#column_name)
+- [column_path](#column_path)
+- [composite_type_list](#composite_type_list)
+- [constraint_name](#constraint_name)
+- [create_extension_stmt](#create_extension_stmt)
+- [create_policy_stmt](#create_policy_stmt)
+- [create_trigger_stmt](#create_trigger_stmt)
+- [cursor_name](#cursor_name)
+- [database_name](#database_name)
+- [db_object_name_component](#db_object_name_component)
+- [deallocate_stmt](#deallocate_stmt)
+- [drop_policy_stmt](#drop_policy_stmt)
+- [drop_trigger_stmt](#drop_trigger_stmt)
+- [family_name](#family_name)
+- [import_format](#import_format)
+- [index_def](#index_def)
+- [index_elem](#index_elem)
+- [kv_option](#kv_option)
+- [locality](#locality)
+- [name_list](#name_list)
+- [opt_class](#opt_class)
+- [opt_existing_window_name](#opt_existing_window_name)
+- [opt_index_access_method](#opt_index_access_method)
+- [opt_name](#opt_name)
+- [opt_name_parens](#opt_name_parens)
+- [pause_all_jobs_stmt](#pause_all_jobs_stmt)
+- [privilege](#privilege)
+- [qualifiable_schema_name](#qualifiable_schema_name)
+- [region_name](#region_name)
+- [resume_all_jobs_stmt](#resume_all_jobs_stmt)
+- [savepoint_name](#savepoint_name)
+- [savepoint_stmt](#savepoint_stmt)
+- [schema_name](#schema_name)
+- [show_enums_stmt](#show_enums_stmt)
+- [show_functions_stmt](#show_functions_stmt)
+- [show_procedures_stmt](#show_procedures_stmt)
+- [show_schemas_stmt](#show_schemas_stmt)
+- [show_sequences_stmt](#show_sequences_stmt)
+- [show_tables_stmt](#show_tables_stmt)
+- [statistics_name](#statistics_name)
+- [storage_parameter_key](#storage_parameter_key)
+- [table_alias_name](#table_alias_name)
+- [var_name](#var_name)
+- [wildcard_pattern](#wildcard_pattern)
+- [window_name](#window_name)
+
+[do_stmt_opt_list:](#do_stmt_opt_list) <a id="do_stmt_opt_list"/>
+
+<DoStmtOptList />
+
+referenced by:
+
+- [do_stmt](#do_stmt)
+
+[privileges:](#privileges) <a id="privileges"/>
+
+<Privileges />
+
+referenced by:
+
+- [abbreviated_grant_stmt](#abbreviated_grant_stmt)
+- [abbreviated_revoke_stmt](#abbreviated_revoke_stmt)
+- [grant_stmt](#grant_stmt)
+- [revoke_stmt](#revoke_stmt)
+
+[grant_targets:](#grant_targets) <a id="grant_targets"/>
+
+<GrantTargets />
+
+referenced by:
+
+- [grant_stmt](#grant_stmt)
+- [revoke_stmt](#revoke_stmt)
+- [targets_roles](#targets_roles)
+
+[role_spec_list:](#role_spec_list) <a id="role_spec_list"/>
+
+<RoleSpecList />
+
+referenced by:
+
+- [abbreviated_grant_stmt](#abbreviated_grant_stmt)
+- [abbreviated_revoke_stmt](#abbreviated_revoke_stmt)
+- [drop_owned_by_stmt](#drop_owned_by_stmt)
+- [drop_role_stmt](#drop_role_stmt)
+- [for_grantee_clause](#for_grantee_clause)
+- [grant_stmt](#grant_stmt)
+- [opt_for_roles](#opt_for_roles)
+- [opt_policy_roles](#opt_policy_roles)
+- [reassign_owned_by_stmt](#reassign_owned_by_stmt)
+- [revoke_stmt](#revoke_stmt)
+- [show_default_privileges_stmt](#show_default_privileges_stmt)
+- [targets_roles](#targets_roles)
+
+[opt_with_grant_option:](#opt_with_grant_option) <a id="opt_with_grant_option"/>
+
+<OptWithGrantOption />
+
+referenced by:
+
+- [grant_stmt](#grant_stmt)
+- [privileges](#privileges)
+- [revoke_stmt](#revoke_stmt)
+
+[target_types:](#target_types) <a id="target_types"/>
+
+<TargetTypes />
+
+referenced by:
+
+- [grant_stmt](#grant_stmt)
+- [revoke_stmt](#revoke_stmt)
+
+[schema_name_list:](#schema_name_list) <a id="schema_name_list"/>
+
+<SchemaNameList />
+
+referenced by:
+
+- [drop_schema_stmt](#drop_schema_stmt)
+- [grant_stmt](#grant_stmt)
+- [opt_in_schemas](#opt_in_schemas)
+- [revoke_stmt](#revoke_stmt)
+- [targets_roles](#targets_roles)
+
+[prep_type_clause:](#prep_type_clause) <a id="prep_type_clause"/>
+
+<PrepTypeClause />
+
+referenced by:
+
+- [prepare_stmt](#prepare_stmt)
+
+[role_spec:](#role_spec) <a id="role_spec"/>
+
+<RoleSpec />
+
+referenced by:
+
+- [alter_database_owner](#alter_database_owner)
+- [alter_func_owner_stmt](#alter_func_owner_stmt)
+- [alter_job_stmt](#alter_job_stmt)
+- [alter_proc_owner_stmt](#alter_proc_owner_stmt)
+- [alter_role_stmt](#alter_role_stmt)
+- [alter_schema_stmt](#alter_schema_stmt)
+- [alter_sequence_owner_stmt](#alter_sequence_owner_stmt)
+- [alter_table_owner_stmt](#alter_table_owner_stmt)
+- [alter_type_stmt](#alter_type_stmt)
+- [alter_view_owner_stmt](#alter_view_owner_stmt)
+- [create_role_stmt](#create_role_stmt)
+- [create_schema_stmt](#create_schema_stmt)
+- [opt_owner_clause](#opt_owner_clause)
+- [reassign_owned_by_stmt](#reassign_owned_by_stmt)
+- [role_spec_list](#role_spec_list)
+- [show_default_session_variables_for_role_stmt](#show_default_session_variables_for_role_stmt)
+
+[opt_drop_behavior:](#opt_drop_behavior) <a id="opt_drop_behavior"/>
+
+<OptDropBehavior />
+
+referenced by:
+
+- [release_stmt](#release_stmt)
+- [rollback_stmt](#rollback_stmt)
+
+[opt_concurrently:](#opt_concurrently) <a id="opt_concurrently"/>
+
+<AnalyzeTarget />
+
+referenced by:
+
+- [alter_rename_view_stmt](#alter_rename_view_stmt)
+- [create_view_stmt](#create_view_stmt)
+- [refresh_stmt](#refresh_stmt)
+
+[opt_as_of_clause:](#opt_as_of_clause) <a id="opt_as_of_clause"/>
+
+<OptAsOfClause />
+
+referenced by:
+
+- [backup_stmt](#backup_stmt)
+- [from_clause](#from_clause)
+- [refresh_stmt](#refresh_stmt)
+- [restore_stmt](#restore_stmt)
+- [scrub_database_stmt](#scrub_database_stmt)
+- [scrub_table_stmt](#scrub_table_stmt)
+
+[opt_clear_data:](#opt_clear_data) <a id="opt_clear_data"/>
+
+<OptClearData />
+
+referenced by:
+
+- [nonpreparable_set_stmt](#nonpreparable_set_stmt)
+
+[begin_stmt:](#begin_stmt) <a id="begin_stmt"/>
+
+<BeginStmt />
+
+referenced by:
+
+- [transaction_stmt](#transaction_stmt)
+
+[commit_stmt:](#commit_stmt) <a id="commit_stmt"/>
+
+<CommitStmt />
+
+referenced by:
+
+- [transaction_stmt](#transaction_stmt)
+
+[rollback_stmt:](#rollback_stmt) <a id="rollback_stmt"/>
+
+<RollbackStmt />
+
+referenced by:
+
+- [transaction_stmt](#transaction_stmt)
+
+[abort_stmt:](#abort_stmt) <a id="abort_stmt"/>
+
+<AbortStmt />
+
+referenced by:
+
+- [transaction_stmt](#transaction_stmt)
+
+[prepare_transaction_stmt:](#prepare_transaction_stmt) <a id="prepare_transaction_stmt"/>
+
+<CursorName />
+
+referenced by:
+
+- [close_cursor_stmt](#close_cursor_stmt)
+- [cursor_movement_specifier](#cursor_movement_specifier)
+- [declare_cursor_stmt](#declare_cursor_stmt)
+
+[opt_binary:](#opt_binary) <a id="opt_binary"/>
+
+<OptBinary />
+
+referenced by:
+
+- [fetch_cursor_stmt](#fetch_cursor_stmt)
+- [move_cursor_stmt](#move_cursor_stmt)
+
+[opt_transaction:](#opt_transaction) <a id="opt_transaction"/>
+
+<OptTransaction />
+
+referenced by:
+
+- [begin_stmt](#begin_stmt)
+- [legacy_begin_stmt](#legacy_begin_stmt)
+
+[alter_ddl_stmt:](#alter_ddl_stmt) <a id="alter_ddl_stmt"/>
+
+<AlterDdlStmt />
+
+referenced by:
+
+- [alter_stmt](#alter_stmt)
+
+[alter_role_stmt:](#alter_role_stmt) <a id="alter_role_stmt"/>
+
+<AlterRoleStmt />
+
+referenced by:
+
+- [alter_stmt](#alter_stmt)
+
+[alter_virtual_cluster_stmt:](#alter_virtual_cluster_stmt) <a id="alter_virtual_cluster_stmt"/>
+
+<AlterVirtualClusterStmt />
+
+referenced by:
+
+- [alter_stmt](#alter_stmt)
+
+[opt_backup_targets:](#opt_backup_targets) <a id="opt_backup_targets"/>
+
+<OptBackupTargets />
+
+referenced by:
+
+- [backup_stmt](#backup_stmt)
+- [create_schedule_for_backup_stmt](#create_schedule_for_backup_stmt)
+
+[sconst_or_placeholder:](#sconst_or_placeholder) <a id="sconst_or_placeholder"/>
+
+<SconstOrPlaceholder />
+
+referenced by:
+
+- [alter_backup_schedule_cmd](#alter_backup_schedule_cmd)
+- [backup_kms](#backup_kms)
+- [backup_options](#backup_options)
+- [backup_stmt](#backup_stmt)
+- [create_schedule_for_backup_stmt](#create_schedule_for_backup_stmt)
+- [restore_options](#restore_options)
+- [restore_stmt](#restore_stmt)
+- [show_backup_options](#show_backup_options)
+- [show_backup_stmt](#show_backup_stmt)
+
+[opt_with_backup_options:](#opt_with_backup_options) <a id="opt_with_backup_options"/>
+
+<OptWithBackupOptions />
+
+referenced by:
+
+- [backup_stmt](#backup_stmt)
+- [create_schedule_for_backup_stmt](#create_schedule_for_backup_stmt)
+
+[cancel_jobs_stmt:](#cancel_jobs_stmt) <a id="cancel_jobs_stmt"/>
+
+<CancelJobsStmt />
+
+referenced by:
+
+- [cancel_stmt](#cancel_stmt)
+
+[cancel_queries_stmt:](#cancel_queries_stmt) <a id="cancel_queries_stmt"/>
+
+<CancelQueriesStmt />
+
+referenced by:
+
+- [cancel_stmt](#cancel_stmt)
+
+[cancel_sessions_stmt:](#cancel_sessions_stmt) <a id="cancel_sessions_stmt"/>
+
+<CancelSessionsStmt />
+
+referenced by:
+
+- [cancel_stmt](#cancel_stmt)
+
+[cancel_all_jobs_stmt:](#cancel_all_jobs_stmt) <a id="cancel_all_jobs_stmt"/>
+
+<CancelAllJobsStmt />
+
+referenced by:
+
+- [cancel_stmt](#cancel_stmt)
+
+[create_role_stmt:](#create_role_stmt) <a id="create_role_stmt"/>
+
+<CreateRoleStmt />
+
+referenced by:
+
+- [create_stmt](#create_stmt)
+
+[create_ddl_stmt:](#create_ddl_stmt) <a id="create_ddl_stmt"/>
+
+<CreateDdlStmt />
+
+referenced by:
+
+- [create_stmt](#create_stmt)
+
+[create_stats_stmt:](#create_stats_stmt) <a id="create_stats_stmt"/>
+
+<CreateStatsStmt />
+
+referenced by:
+
+- [create_stmt](#create_stmt)
+
+[create_changefeed_stmt:](#create_changefeed_stmt) <a id="create_changefeed_stmt"/>
+
+<CreateChangefeedStmt2 />
+
+referenced by:
+
+- [create_stmt](#create_stmt)
+
+[create_extension_stmt:](#create_extension_stmt) <a id="create_extension_stmt"/>
+
+<CreateExtensionStmt />
+
+referenced by:
+
+- [create_stmt](#create_stmt)
+
+[create_external_connection_stmt:](#create_external_connection_stmt) <a id="create_external_connection_stmt"/>
+
+<CreateExternalConnectionStmt />
+
+referenced by:
+
+- [create_stmt](#create_stmt)
+
+[create_logical_replication_stream_stmt:](#create_logical_replication_stream_stmt) <a id="create_logical_replication_stream_stmt"/>
+
+<CreateLogicalReplicationStreamStmt />
+
+referenced by:
+
+- [create_stmt](#create_stmt)
+
+[create_schedule_stmt:](#create_schedule_stmt) <a id="create_schedule_stmt"/>
+
+<CreateScheduleStmt />
+
+referenced by:
+
+- [create_stmt](#create_stmt)
+
+[check_external_connection_stmt:](#check_external_connection_stmt) <a id="check_external_connection_stmt"/>
+
+<CheckExternalConnectionStmt />
+
+referenced by:
+
+- [check_stmt](#check_stmt)
+
+[opt_with_clause:](#opt_with_clause) <a id="opt_with_clause"/>
+
+<OptWithClause />
+
+referenced by:
+
+- [delete_stmt](#delete_stmt)
+- [insert_stmt](#insert_stmt)
+- [update_stmt](#update_stmt)
+- [upsert_stmt](#upsert_stmt)
+
+[opt_batch_clause:](#opt_batch_clause) <a id="opt_batch_clause"/>
+
+<OptBatchClause />
+
+referenced by:
+
+- [delete_stmt](#delete_stmt)
+
+[table_expr_opt_alias_idx:](#table_expr_opt_alias_idx) <a id="table_expr_opt_alias_idx"/>
+
+<TableExprOptAliasIdx />
+
+referenced by:
+
+- [delete_stmt](#delete_stmt)
+- [update_stmt](#update_stmt)
+
+[opt_using_clause:](#opt_using_clause) <a id="opt_using_clause"/>
+
+<OptUsingClause />
+
+referenced by:
+
+- [delete_stmt](#delete_stmt)
+
+[opt_sort_clause:](#opt_sort_clause) <a id="opt_sort_clause"/>
+
+<OptSortClause />
+
+referenced by:
+
+- [delete_stmt](#delete_stmt)
+- [select_no_parens](#select_no_parens)
+- [update_stmt](#update_stmt)
+
+[opt_limit_clause:](#opt_limit_clause) <a id="opt_limit_clause"/>
+
+<OptLimitClause />
+
+referenced by:
+
+- [delete_stmt](#delete_stmt)
+- [update_stmt](#update_stmt)
+
+[returning_clause:](#returning_clause) <a id="returning_clause"/>
+
+<ReturningClause />
+
+referenced by:
+
+- [delete_stmt](#delete_stmt)
+- [insert_stmt](#insert_stmt)
+- [update_stmt](#update_stmt)
+- [upsert_stmt](#upsert_stmt)
+
+[drop_ddl_stmt:](#drop_ddl_stmt) <a id="drop_ddl_stmt"/>
+
+<DropDdlStmt />
+
+referenced by:
+
+- [drop_stmt](#drop_stmt)
+
+[drop_role_stmt:](#drop_role_stmt) <a id="drop_role_stmt"/>
+
+<DropRoleStmt />
+
+referenced by:
+
+- [drop_stmt](#drop_stmt)
+
+[drop_schedule_stmt:](#drop_schedule_stmt) <a id="drop_schedule_stmt"/>
+
+<DropScheduleStmt />
+
+referenced by:
+
+- [drop_stmt](#drop_stmt)
+
+[drop_external_connection_stmt:](#drop_external_connection_stmt) <a id="drop_external_connection_stmt"/>
+
+<DropExternalConnectionStmt />
+
+referenced by:
+
+- [drop_stmt](#drop_stmt)
+
+[explainable_stmt:](#explainable_stmt) <a id="explainable_stmt"/>
+
+<ExplainableStmt />
+
+referenced by:
+
+- [explain_stmt](#explain_stmt)
+
+[explain_option_list:](#explain_option_list) <a id="explain_option_list"/>
+
+<ExplainOptionList />
+
+referenced by:
+
+- [explain_stmt](#explain_stmt)
+
+[import_format:](#import_format) <a id="import_format"/>
+
+<CursorName />
+
+referenced by:
+
+- [export_stmt](#export_stmt)
+- [import_stmt](#import_stmt)
+
+[string_or_placeholder:](#string_or_placeholder) <a id="string_or_placeholder"/>
+
+<StringOrPlaceholder />
+
+referenced by:
+
+- [alter_backup_schedule_cmd](#alter_backup_schedule_cmd)
+- [alter_backup_stmt](#alter_backup_stmt)
+- [backup_options](#backup_options)
+- [changefeed_sink](#changefeed_sink)
+- [check_external_connection_options](#check_external_connection_options)
+- [check_external_connection_stmt](#check_external_connection_stmt)
+- [copy_generic_options](#copy_generic_options)
+- [copy_options](#copy_options)
+- [create_external_connection_stmt](#create_external_connection_stmt)
+- [create_logical_replication_stream_stmt](#create_logical_replication_stream_stmt)
+- [drop_external_connection_stmt](#drop_external_connection_stmt)
+- [export_stmt](#export_stmt)
+- [import_stmt](#import_stmt)
+- [kv_option](#kv_option)
+- [label_spec](#label_spec)
+- [logical_replication_create_table_options](#logical_replication_create_table_options)
+- [opt_changefeed_sink](#opt_changefeed_sink)
+- [pause_jobs_stmt](#pause_jobs_stmt)
+- [restore_options](#restore_options)
+- [restore_stmt](#restore_stmt)
+- [show_backup_options](#show_backup_options)
+- [show_backup_stmt](#show_backup_stmt)
+- [show_create_external_connections_stmt](#show_create_external_connections_stmt)
+- [show_external_connections_stmt](#show_external_connections_stmt)
+- [string_or_placeholder_list](#string_or_placeholder_list)
+- [string_or_placeholder_opt_list](#string_or_placeholder_opt_list)
+- [subject_clause](#subject_clause)
+- [valid_until_clause](#valid_until_clause)
+
+[opt_with_options:](#opt_with_options) <a id="opt_with_options"/>
+
+<OptWithOptions />
+
+referenced by:
+
+- [alter_changefeed_cmd](#alter_changefeed_cmd)
+- [create_changefeed_stmt](#create_changefeed_stmt)
+- [create_schedule_for_changefeed_stmt](#create_schedule_for_changefeed_stmt)
+- [export_stmt](#export_stmt)
+- [import_stmt](#import_stmt)
+- [show_stats_stmt](#show_stats_stmt)
+
+[insert_column_list:](#insert_column_list) <a id="insert_column_list"/>
+
+<InsertColumnList />
+
+referenced by:
+
+- [import_stmt](#import_stmt)
+- [insert_rest](#insert_rest)
+- [multiple_set_clause](#multiple_set_clause)
+
+[string_or_placeholder_list:](#string_or_placeholder_list) <a id="string_or_placeholder_list"/>
+
+<StringOrPlaceholderList />
+
+referenced by:
+
+- [import_stmt](#import_stmt)
+- [string_or_placeholder_opt_list](#string_or_placeholder_opt_list)
+
+[insert_target:](#insert_target) <a id="insert_target"/>
+
+<InsertTarget />
+
+referenced by:
+
+- [changefeed_target_expr](#changefeed_target_expr)
+- [insert_stmt](#insert_stmt)
+- [upsert_stmt](#upsert_stmt)
+
+[insert_rest:](#insert_rest) <a id="insert_rest"/>
+
+<InsertRest />
+
+referenced by:
+
+- [insert_stmt](#insert_stmt)
+- [upsert_stmt](#upsert_stmt)
+
+[on_conflict:](#on_conflict) <a id="on_conflict"/>
+
+<OnConflict />
+
+referenced by:
+
+- [insert_stmt](#insert_stmt)
+
+[pause_jobs_stmt:](#pause_jobs_stmt) <a id="pause_jobs_stmt"/>
+
+<PauseJobsStmt />
+
+referenced by:
+
+- [pause_stmt](#pause_stmt)
+
+[pause_schedules_stmt:](#pause_schedules_stmt) <a id="pause_schedules_stmt"/>
+
+<PauseSchedulesStmt />
+
+referenced by:
+
+- [pause_stmt](#pause_stmt)
+
+[pause_all_jobs_stmt:](#pause_all_jobs_stmt) <a id="pause_all_jobs_stmt"/>
+
+<PauseAllJobsStmt />
+
+referenced by:
+
+- [pause_stmt](#pause_stmt)
+
+[reset_session_stmt:](#reset_session_stmt) <a id="reset_session_stmt"/>
+
+<ResetSessionStmt />
+
+referenced by:
+
+- [reset_stmt](#reset_stmt)
+
+[reset_csetting_stmt:](#reset_csetting_stmt) <a id="reset_csetting_stmt"/>
+
+<ResetCsettingStmt />
+
+referenced by:
+
+- [reset_stmt](#reset_stmt)
+
+[opt_with_restore_options:](#opt_with_restore_options) <a id="opt_with_restore_options"/>
+
+<OptWithRestoreOptions />
+
+referenced by:
+
+- [restore_stmt](#restore_stmt)
+
+[backup_targets:](#backup_targets) <a id="backup_targets"/>
+
+<BackupTargets />
+
+referenced by:
+
+- [opt_backup_targets](#opt_backup_targets)
+- [restore_stmt](#restore_stmt)
+
+[resume_jobs_stmt:](#resume_jobs_stmt) <a id="resume_jobs_stmt"/>
+
+<ResumeJobsStmt />
+
+referenced by:
+
+- [resume_stmt](#resume_stmt)
+
+[resume_schedules_stmt:](#resume_schedules_stmt) <a id="resume_schedules_stmt"/>
+
+<ResumeSchedulesStmt />
+
+referenced by:
+
+- [resume_stmt](#resume_stmt)
+
+[resume_all_jobs_stmt:](#resume_all_jobs_stmt) <a id="resume_all_jobs_stmt"/>
+
+<ResumeAllJobsStmt />
+
+referenced by:
+
+- [resume_stmt](#resume_stmt)
+
+[scrub_table_stmt:](#scrub_table_stmt) <a id="scrub_table_stmt"/>
+
+<ScrubTableStmt />
+
+referenced by:
+
+- [scrub_stmt](#scrub_stmt)
+
+[scrub_database_stmt:](#scrub_database_stmt) <a id="scrub_database_stmt"/>
+
+<ScrubDatabaseStmt />
+
+referenced by:
+
+- [scrub_stmt](#scrub_stmt)
+
+[select_no_parens:](#select_no_parens) <a id="select_no_parens"/>
+
+<SelectNoParens />
+
+referenced by:
+
+- [select_stmt](#select_stmt)
+- [select_with_parens](#select_with_parens)
+
+[select_with_parens:](#select_with_parens) <a id="select_with_parens"/>
+
+<SelectWithParens />
+
+referenced by:
+
+- [c_expr](#c_expr)
+- [d_expr](#d_expr)
+- [in_expr](#in_expr)
+- [select_clause](#select_clause)
+- [select_stmt](#select_stmt)
+- [select_with_parens](#select_with_parens)
+- [table_ref](#table_ref)
+
+[set_session_stmt:](#set_session_stmt) <a id="set_session_stmt"/>
+
+<SetSessionStmt />
+
+referenced by:
+
+- [preparable_set_stmt](#preparable_set_stmt)
+
+[set_local_stmt:](#set_local_stmt) <a id="set_local_stmt"/>
+
+<SetLocalStmt />
+
+referenced by:
+
+- [preparable_set_stmt](#preparable_set_stmt)
+
+[set_csetting_stmt:](#set_csetting_stmt) <a id="set_csetting_stmt"/>
+
+<SetCsettingStmt />
+
+referenced by:
+
+- [preparable_set_stmt](#preparable_set_stmt)
+
+[use_stmt:](#use_stmt) <a id="use_stmt"/>
+
+<UseStmt />
+
+referenced by:
+
+- [preparable_set_stmt](#preparable_set_stmt)
+
+[show_backup_stmt:](#show_backup_stmt) <a id="show_backup_stmt"/>
+
+<ShowBackupStmt4 />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_columns_stmt:](#show_columns_stmt) <a id="show_columns_stmt"/>
+
+<ShowColumnsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_constraints_stmt:](#show_constraints_stmt) <a id="show_constraints_stmt"/>
+
+<ShowConstraintsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_triggers_stmt:](#show_triggers_stmt) <a id="show_triggers_stmt"/>
+
+<ShowTriggersStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_create_stmt:](#show_create_stmt) <a id="show_create_stmt"/>
+
+<ShowCreateStmt2 />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_create_schedules_stmt:](#show_create_schedules_stmt) <a id="show_create_schedules_stmt"/>
+
+<ShowCreateSchedulesStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_create_external_connections_stmt:](#show_create_external_connections_stmt) <a id="show_create_external_connections_stmt"/>
+
+<ShowCreateExternalConnectionsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_databases_stmt:](#show_databases_stmt) <a id="show_databases_stmt"/>
+
+<ShowDatabasesStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_enums_stmt:](#show_enums_stmt) <a id="show_enums_stmt"/>
+
+<ShowEnumsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_external_connections_stmt:](#show_external_connections_stmt) <a id="show_external_connections_stmt"/>
+
+<ShowExternalConnectionsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_types_stmt:](#show_types_stmt) <a id="show_types_stmt"/>
+
+<ShowTypesStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_functions_stmt:](#show_functions_stmt) <a id="show_functions_stmt"/>
+
+<ShowTypesStmt2 />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_procedures_stmt:](#show_procedures_stmt) <a id="show_procedures_stmt"/>
+
+<ShowProceduresStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_grants_stmt:](#show_grants_stmt) <a id="show_grants_stmt"/>
+
+<ShowGrantsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_indexes_stmt:](#show_indexes_stmt) <a id="show_indexes_stmt"/>
+
+<ShowIndexesStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_partitions_stmt:](#show_partitions_stmt) <a id="show_partitions_stmt"/>
+
+<ShowPartitionsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_jobs_stmt:](#show_jobs_stmt) <a id="show_jobs_stmt"/>
+
+<ShowJobsStmt2 />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_locality_stmt:](#show_locality_stmt) <a id="show_locality_stmt"/>
+
+<ShowLocalityStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_statements_stmt:](#show_statements_stmt) <a id="show_statements_stmt"/>
+
+<ShowStatementsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_ranges_stmt:](#show_ranges_stmt) <a id="show_ranges_stmt"/>
+
+<ShowRangesStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_range_for_row_stmt:](#show_range_for_row_stmt) <a id="show_range_for_row_stmt"/>
+
+<ShowRangeForRowStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_regions_stmt:](#show_regions_stmt) <a id="show_regions_stmt"/>
+
+<ShowRegionsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_survival_goal_stmt:](#show_survival_goal_stmt) <a id="show_survival_goal_stmt"/>
+
+<ShowSurvivalGoalStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_roles_stmt:](#show_roles_stmt) <a id="show_roles_stmt"/>
+
+<ShowRolesStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_sequences_stmt:](#show_sequences_stmt) <a id="show_sequences_stmt"/>
+
+<ShowSequencesStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_session_stmt:](#show_session_stmt) <a id="show_session_stmt"/>
+
+<ShowSessionStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_sessions_stmt:](#show_sessions_stmt) <a id="show_sessions_stmt"/>
+
+<ShowSessionsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_stats_stmt:](#show_stats_stmt) <a id="show_stats_stmt"/>
+
+<ShowStatsStmt2 />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_tables_stmt:](#show_tables_stmt) <a id="show_tables_stmt"/>
+
+<ShowTablesStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_trace_stmt:](#show_trace_stmt) <a id="show_trace_stmt"/>
+
+<ShowTraceStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_transactions_stmt:](#show_transactions_stmt) <a id="show_transactions_stmt"/>
+
+<ShowTransactionsStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_transfer_stmt:](#show_transfer_stmt) <a id="show_transfer_stmt"/>
+
+<ShowTransferStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_zone_stmt:](#show_zone_stmt) <a id="show_zone_stmt"/>
+
+<ShowZoneStmt />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[show_full_scans_stmt:](#show_full_scans_stmt) <a id="show_full_scans_stmt"/>
+
+<ShowFullScansStmt2 />
+
+referenced by:
+
+- [show_stmt](#show_stmt)
+
+[opt_table:](#opt_table) <a id="opt_table"/>
+
+<OptTable />
+
+referenced by:
+
+- [truncate_stmt](#truncate_stmt)
+
+[set_clause_list:](#set_clause_list) <a id="set_clause_list"/>
+
+<SetClauseList />
+
+referenced by:
+
+- [on_conflict](#on_conflict)
+- [update_stmt](#update_stmt)
+
+[opt_from_list:](#opt_from_list) <a id="opt_from_list"/>
+
+<OptFromList />
+
+referenced by:
+
+- [update_stmt](#update_stmt)
+
+[func_application_name:](#func_application_name) <a id="func_application_name"/>
+
+<FuncApplicationName />
+
+referenced by:
+
+- [func_application](#func_application)
+
+[expr_list:](#expr_list) <a id="expr_list"/>
+
+<ExprList />
+
+referenced by:
+
+- [alter_scatter_index_stmt](#alter_scatter_index_stmt)
+- [alter_scatter_stmt](#alter_scatter_stmt)
+- [distinct_on_clause](#distinct_on_clause)
+- [execute_param_clause](#execute_param_clause)
+- [extract_list](#extract_list)
+- [func_application](#func_application)
+- [func_expr_common_subexpr](#func_expr_common_subexpr)
+- [list_partition](#list_partition)
+- [opt_expr_list](#opt_expr_list)
+- [opt_partition_clause](#opt_partition_clause)
+- [overlay_list](#overlay_list)
+- [range_partition](#range_partition)
+- [show_range_for_row_stmt](#show_range_for_row_stmt)
+- [special_function](#special_function)
+- [trim_list](#trim_list)
+- [tuple1_ambiguous_values](#tuple1_ambiguous_values)
+- [tuple1_unambiguous_values](#tuple1_unambiguous_values)
+- [values_clause](#values_clause)
+
+[opt_sort_clause_no_index:](#opt_sort_clause_no_index) <a id="opt_sort_clause_no_index"/>
+
+<OptSortClauseNoIndex />
+
+referenced by:
+
+- [func_application](#func_application)
+- [window_specification](#window_specification)
+
+[db_object_name:](#db_object_name) <a id="db_object_name"/>
+
+<DbObjectName />
+
+referenced by:
+
+- [db_object_name_list](#db_object_name_list)
+- [function_with_paramtypes](#function_with_paramtypes)
+- [logical_replication_resources](#logical_replication_resources)
+- [logical_replication_resources_list](#logical_replication_resources_list)
+- [routine_create_name](#routine_create_name)
+- [sequence_name](#sequence_name)
+- [standalone_index_name](#standalone_index_name)
+- [table_name](#table_name)
+- [type_name](#type_name)
+
+[name_list:](#name_list) <a id="name_list"/>
+
+<NameList />
+
+referenced by:
+
+- [alter_changefeed_cmd](#alter_changefeed_cmd)
+- [backup_targets](#backup_targets)
+- [constraint_elem](#constraint_elem)
+- [family_def](#family_def)
+- [grant_targets](#grant_targets)
+- [join_qual](#join_qual)
+- [labeled_row](#labeled_row)
+- [on_conflict](#on_conflict)
+- [opt_column_list](#opt_column_list)
+- [opt_stats_columns](#opt_stats_columns)
+- [opt_storing](#opt_storing)
+- [partition_by_inner](#partition_by_inner)
+- [scrub_option](#scrub_option)
+- [trigger_event](#trigger_event)
+
+[opt_with:](#opt_with) <a id="opt_with"/>
+
+<OptWith />
+
+referenced by:
+
+- [opt_with_copy_options](#opt_with_copy_options)
+
+[copy_generic_options_list:](#copy_generic_options_list) <a id="copy_generic_options_list"/>
+
+<CopyGenericOptionsList />
+
+referenced by:
+
+- [opt_with_copy_options](#opt_with_copy_options)
+
+[where_clause:](#where_clause) <a id="where_clause"/>
+
+<WhereClause />
+
+referenced by:
+
+- [create_stats_option](#create_stats_option)
+- [opt_where_clause](#opt_where_clause)
+
+[prefixed_column_path:](#prefixed_column_path) <a id="prefixed_column_path"/>
+
+<PrefixedColumnPath />
+
+referenced by:
+
+- [column_path](#column_path)
+- [func_name](#func_name)
+- [func_name_no_crdb_extra](#func_name_no_crdb_extra)
+
+[index_name:](#index_name) <a id="index_name"/>
+
+<IndexName />
+
+referenced by:
+
+- [alter_rename_index_stmt](#alter_rename_index_stmt)
+- [create_index_stmt](#create_index_stmt)
+- [index_flags_param](#index_flags_param)
+- [opt_index_flags](#opt_index_flags)
+- [sortby_index](#sortby_index)
+- [table_index_name](#table_index_name)
+
+[standalone_index_name:](#standalone_index_name) <a id="standalone_index_name"/>
+
+<DbName />
+
+referenced by:
+
+- [table_index_name](#table_index_name)
+
+[unreserved_keyword:](#unreserved_keyword) <a id="unreserved_keyword"/>
+
+<UnreservedKeyword />
+
+referenced by:
+
+- [do_stmt_opt_list](#do_stmt_opt_list)
+
+[opt_privileges_clause:](#opt_privileges_clause) <a id="opt_privileges_clause"/>
+
+<UnreservedKeyword2 />
+
+referenced by:
+
+- [backup_targets](#backup_targets)
+- [grant_targets](#grant_targets)
+- [table_pattern](#table_pattern)
+
+[table_pattern_list:](#table_pattern_list) <a id="table_pattern_list"/>
+
+<TablePatternList />
+
+referenced by:
+
+- [backup_targets](#backup_targets)
+- [grant_targets](#grant_targets)
+
+[table_pattern:](#table_pattern) <a id="table_pattern"/>
+
+<TablePattern />
+
+referenced by:
+
+- [backup_targets](#backup_targets)
+- [grant_targets](#grant_targets)
+- [table_pattern_list](#table_pattern_list)
+
+[function_with_paramtypes_list:](#function_with_paramtypes_list) <a id="function_with_paramtypes_list"/>
+
+<FunctionWithParamtypesList />
+
+referenced by:
+
+- [drop_func_stmt](#drop_func_stmt)
+- [drop_proc_stmt](#drop_proc_stmt)
+- [grant_targets](#grant_targets)
+
+[privilege:](#privilege) <a id="privilege"/>
+
+<Privilege />
+
+referenced by:
+
+- [privilege_list](#privilege_list)
+
+[type_name_list:](#type_name_list) <a id="type_name_list"/>
+
+<TypeNameList />
+
+referenced by:
+
+- [drop_type_stmt](#drop_type_stmt)
+- [target_types](#target_types)
+- [targets_roles](#targets_roles)
+
+[type_list:](#type_list) <a id="type_list"/>
+
+<TypeList />
+
+referenced by:
+
+- [a_expr](#a_expr)
+- [b_expr](#b_expr)
+- [prep_type_clause](#prep_type_clause)
+
+[as_of_clause:](#as_of_clause) <a id="as_of_clause"/>
+
+<AsOfClause />
+
+referenced by:
+
+- [create_stats_option](#create_stats_option)
+- [opt_as_of_clause](#opt_as_of_clause)
+- [transaction_mode](#transaction_mode)
+
+[transaction_mode_list:](#transaction_mode_list) <a id="transaction_mode_list"/>
+
+<TransactionModeList />
+
+referenced by:
+
+- [begin_transaction](#begin_transaction)
+- [set_session_stmt](#set_session_stmt)
+- [set_transaction_stmt](#set_transaction_stmt)
+
+[opt_abort_mod:](#opt_abort_mod) <a id="opt_abort_mod"/>
+
+<OptAbortMod />
+
+referenced by:
+
+- [cursor_movement_specifier](#cursor_movement_specifier)
+
+[forward_backward:](#forward_backward) <a id="forward_backward"/>
+
+<ForwardBackward />
+
+referenced by:
+
+- [cursor_movement_specifier](#cursor_movement_specifier)
+
+[signed_iconst64:](#signed_iconst64) <a id="signed_iconst64"/>
+
+<SignedIconst64 />
+
+referenced by:
+
+- [cursor_movement_specifier](#cursor_movement_specifier)
+- [identity_option_elem](#identity_option_elem)
+- [sequence_option_elem](#sequence_option_elem)
+
+[alter_table_stmt:](#alter_table_stmt) <a id="alter_table_stmt"/>
+
+<AlterTableStmt2 />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_index_stmt:](#alter_index_stmt) <a id="alter_index_stmt"/>
+
+<AlterIndexStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_view_stmt:](#alter_view_stmt) <a id="alter_view_stmt"/>
+
+<AlterViewStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_sequence_stmt:](#alter_sequence_stmt) <a id="alter_sequence_stmt"/>
+
+<AlterSequenceStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_database_stmt:](#alter_database_stmt) <a id="alter_database_stmt"/>
+
+<AlterDatabaseStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_range_stmt:](#alter_range_stmt) <a id="alter_range_stmt"/>
+
+<AlterRangeStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_partition_stmt:](#alter_partition_stmt) <a id="alter_partition_stmt"/>
+
+<AlterPartitionStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_schema_stmt:](#alter_schema_stmt) <a id="alter_schema_stmt"/>
+
+<AlterSchemaStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_type_stmt:](#alter_type_stmt) <a id="alter_type_stmt"/>
+
+<AlterTypeStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_default_privileges_stmt:](#alter_default_privileges_stmt) <a id="alter_default_privileges_stmt"/>
+
+<AlterDefaultPrivilegesStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_changefeed_stmt:](#alter_changefeed_stmt) <a id="alter_changefeed_stmt"/>
+
+<AlterChangefeedStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_backup_stmt:](#alter_backup_stmt) <a id="alter_backup_stmt"/>
+
+<AlterBackupStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_func_stmt:](#alter_func_stmt) <a id="alter_func_stmt"/>
+
+<AlterFuncStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_proc_stmt:](#alter_proc_stmt) <a id="alter_proc_stmt"/>
+
+<AlterProcStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_backup_schedule:](#alter_backup_schedule) <a id="alter_backup_schedule"/>
+
+<AlterBackupSchedule />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_policy_stmt:](#alter_policy_stmt) <a id="alter_policy_stmt"/>
+
+<AlterPolicyStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[alter_job_stmt:](#alter_job_stmt) <a id="alter_job_stmt"/>
+
+<AlterJobStmt />
+
+referenced by:
+
+- [alter_ddl_stmt](#alter_ddl_stmt)
+
+[role_or_group_or_user:](#role_or_group_or_user) <a id="role_or_group_or_user"/>
+
+<RoleOrGroupOrUser />
+
+referenced by:
+
+- [alter_role_stmt](#alter_role_stmt)
+- [create_role_stmt](#create_role_stmt)
+
+[opt_in_database:](#opt_in_database) <a id="opt_in_database"/>
+
+<OptInDatabase />
+
+referenced by:
+
+- [alter_role_stmt](#alter_role_stmt)
+
+[set_or_reset_clause:](#set_or_reset_clause) <a id="set_or_reset_clause"/>
+
+<SetOrResetClause />
+
+referenced by:
+
+- [alter_database_set_stmt](#alter_database_set_stmt)
+- [alter_role_stmt](#alter_role_stmt)
+
+[alter_virtual_cluster_replication_stmt:](#alter_virtual_cluster_replication_stmt) <a id="alter_virtual_cluster_replication_stmt"/>
+
+<AlterVirtualClusterReplicationStmt />
+
+referenced by:
+
+- [alter_virtual_cluster_stmt](#alter_virtual_cluster_stmt)
+
+[alter_virtual_cluster_capability_stmt:](#alter_virtual_cluster_capability_stmt) <a id="alter_virtual_cluster_capability_stmt"/>
+
+<AlterVirtualClusterCapabilityStmt />
+
+referenced by:
+
+- [alter_virtual_cluster_stmt](#alter_virtual_cluster_stmt)
+
+[alter_virtual_cluster_rename_stmt:](#alter_virtual_cluster_rename_stmt) <a id="alter_virtual_cluster_rename_stmt"/>
+
+<AlterVirtualClusterRenameStmt />
+
+referenced by:
+
+- [alter_virtual_cluster_stmt](#alter_virtual_cluster_stmt)
+
+[alter_virtual_cluster_service_stmt:](#alter_virtual_cluster_service_stmt) <a id="alter_virtual_cluster_service_stmt"/>
+
+<AlterVirtualClusterServiceStmt />
+
+referenced by:
+
+- [alter_virtual_cluster_stmt](#alter_virtual_cluster_stmt)
+
+[backup_options_list:](#backup_options_list) <a id="backup_options_list"/>
+
+<BackupOptionsList />
+
+referenced by:
+
+- [opt_with_backup_options](#opt_with_backup_options)
+
+[a_expr:](#a_expr) <a id="a_expr"/>
+
+<AExpr3 />
+
+referenced by:
+
+- [a_expr](#a_expr)
+- [alter_changefeed_stmt](#alter_changefeed_stmt)
+- [alter_column_default](#alter_column_default)
+- [alter_column_on_update](#alter_column_on_update)
+- [alter_job_stmt](#alter_job_stmt)
+- [alter_range_relocate_stmt](#alter_range_relocate_stmt)
+- [alter_split_index_stmt](#alter_split_index_stmt)
+- [alter_split_stmt](#alter_split_stmt)
+- [alter_virtual_cluster_replication_stmt](#alter_virtual_cluster_replication_stmt)
+- [alter_zone_range_stmt](#alter_zone_range_stmt)
+- [array_subscript](#array_subscript)
+- [as_of_clause](#as_of_clause)
+- [backup_options](#backup_options)
+- [batch_param](#batch_param)
+- [cancel_jobs_stmt](#cancel_jobs_stmt)
+- [cancel_queries_stmt](#cancel_queries_stmt)
+- [cancel_sessions_stmt](#cancel_sessions_stmt)
+- [case_arg](#case_arg)
+- [case_default](#case_default)
+- [check_external_connection_options](#check_external_connection_options)
+- [col_qualification_elem](#col_qualification_elem)
+- [constraint_elem](#constraint_elem)
+- [d_expr](#d_expr)
+- [drop_schedule_stmt](#drop_schedule_stmt)
+- [expr_list](#expr_list)
+- [extract_list](#extract_list)
+- [filter_clause](#filter_clause)
+- [for_schedules_clause](#for_schedules_clause)
+- [frame_bound](#frame_bound)
+- [func_expr_common_subexpr](#func_expr_common_subexpr)
+- [group_by_item](#group_by_item)
+- [having_clause](#having_clause)
+- [index_elem](#index_elem)
+- [join_qual](#join_qual)
+- [limit_clause](#limit_clause)
+- [offset_clause](#offset_clause)
+- [opt_alter_column_using](#opt_alter_column_using)
+- [opt_hash_sharded_bucket_count](#opt_hash_sharded_bucket_count)
+- [opt_policy_exprs](#opt_policy_exprs)
+- [opt_slice_bound](#opt_slice_bound)
+- [overlay_list](#overlay_list)
+- [overlay_placing](#overlay_placing)
+- [pause_jobs_stmt](#pause_jobs_stmt)
+- [pause_schedules_stmt](#pause_schedules_stmt)
+- [resume_jobs_stmt](#resume_jobs_stmt)
+- [resume_schedules_stmt](#resume_schedules_stmt)
+- [routine_param_with_default](#routine_param_with_default)
+- [routine_return_stmt](#routine_return_stmt)
+- [show_create_schedules_stmt](#show_create_schedules_stmt)
+- [show_jobs_stmt](#show_jobs_stmt)
+- [show_schedules_stmt](#show_schedules_stmt)
+- [single_set_clause](#single_set_clause)
+- [sortby](#sortby)
+- [special_function](#special_function)
+- [substr_for](#substr_for)
+- [substr_from](#substr_from)
+- [substr_list](#substr_list)
+- [target_elem](#target_elem)
+- [trigger_when](#trigger_when)
+- [trim_list](#trim_list)
+- [tuple1_ambiguous_values](#tuple1_ambiguous_values)
+- [tuple1_unambiguous_values](#tuple1_unambiguous_values)
+- [var_value](#var_value)
+- [virtual_cluster_spec](#virtual_cluster_spec)
+- [when_clause](#when_clause)
+- [where_clause](#where_clause)
+
+[for_schedules_clause:](#for_schedules_clause) <a id="for_schedules_clause"/>
+
+<ForSchedulesClause />
+
+referenced by:
+
+- [cancel_jobs_stmt](#cancel_jobs_stmt)
+- [pause_jobs_stmt](#pause_jobs_stmt)
+- [resume_jobs_stmt](#resume_jobs_stmt)
+- [show_jobs_stmt](#show_jobs_stmt)
+
+[create_database_stmt:](#create_database_stmt) <a id="create_database_stmt"/>
+
+<CreateDatabaseStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_index_stmt:](#create_index_stmt) <a id="create_index_stmt"/>
+
+<CreateIndexStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_schema_stmt:](#create_schema_stmt) <a id="create_schema_stmt"/>
+
+<CreateSchemaStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_table_stmt:](#create_table_stmt) <a id="create_table_stmt"/>
+
+<CreateTableStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_table_as_stmt:](#create_table_as_stmt) <a id="create_table_as_stmt"/>
+
+<CreateTableAsStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_type_stmt:](#create_type_stmt) <a id="create_type_stmt"/>
+
+<CreateTypeStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_view_stmt:](#create_view_stmt) <a id="create_view_stmt"/>
+
+<CreateViewStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_sequence_stmt:](#create_sequence_stmt) <a id="create_sequence_stmt"/>
+
+<CreateSequenceStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_func_stmt:](#create_func_stmt) <a id="create_func_stmt"/>
+
+<CreateFuncStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_proc_stmt:](#create_proc_stmt) <a id="create_proc_stmt"/>
+
+<CreateProcStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_trigger_stmt:](#create_trigger_stmt) <a id="create_trigger_stmt"/>
+
+<CreateTriggerStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[create_policy_stmt:](#create_policy_stmt) <a id="create_policy_stmt"/>
+
+<CreatePolicyStmt />
+
+referenced by:
+
+- [create_ddl_stmt](#create_ddl_stmt)
+
+[statistics_name:](#statistics_name) <a id="statistics_name"/>
+
+<CursorName />
+
+referenced by:
+
+- [create_stats_stmt](#create_stats_stmt)
+
+[opt_stats_columns:](#opt_stats_columns) <a id="opt_stats_columns"/>
+
+<OptStatsColumns />
+
+referenced by:
+
+- [create_stats_stmt](#create_stats_stmt)
+
+[create_stats_target:](#create_stats_target) <a id="create_stats_target"/>
+
+<AnalyzeTarget />
+
+referenced by:
+
+- [create_stats_stmt](#create_stats_stmt)
+
+[opt_create_stats_options:](#opt_create_stats_options) <a id="opt_create_stats_options"/>
+
+<OptCreateStatsOptions />
+
+referenced by:
+
+- [create_stats_stmt](#create_stats_stmt)
+
+[changefeed_targets:](#changefeed_targets) <a id="changefeed_targets"/>
+
+<ChangefeedTargets />
+
+referenced by:
+
+- [alter_changefeed_cmd](#alter_changefeed_cmd)
+- [create_changefeed_stmt](#create_changefeed_stmt)
+- [create_schedule_for_changefeed_stmt](#create_schedule_for_changefeed_stmt)
+
+[opt_changefeed_sink:](#opt_changefeed_sink) <a id="opt_changefeed_sink"/>
+
+<ChangefeedSink />
+
+referenced by:
+
+- [create_changefeed_stmt](#create_changefeed_stmt)
+
+[target_list:](#target_list) <a id="target_list"/>
+
+<TargetList />
+
+referenced by:
+
+- [create_changefeed_stmt](#create_changefeed_stmt)
+- [create_schedule_for_changefeed_stmt](#create_schedule_for_changefeed_stmt)
+- [opt_target_list](#opt_target_list)
+- [returning_clause](#returning_clause)
+- [simple_select_clause](#simple_select_clause)
+
+[changefeed_target_expr:](#changefeed_target_expr) <a id="changefeed_target_expr"/>
+
+<ChangefeedTargetExpr />
+
+referenced by:
+
+- [create_changefeed_stmt](#create_changefeed_stmt)
+- [create_schedule_for_changefeed_stmt](#create_schedule_for_changefeed_stmt)
+
+[label_spec:](#label_spec) <a id="label_spec"/>
+
+<LabelSpec />
+
+referenced by:
+
+- [create_external_connection_stmt](#create_external_connection_stmt)
+- [schedule_label_spec](#schedule_label_spec)
+
+[logical_replication_resources:](#logical_replication_resources) <a id="logical_replication_resources"/>
+
+<LogicalReplicationResources />
+
+referenced by:
+
+- [create_logical_replication_stream_stmt](#create_logical_replication_stream_stmt)
+
+[opt_logical_replication_create_table_options:](#opt_logical_replication_create_table_options) <a id="opt_logical_replication_create_table_options"/>
+
+<OptLogicalReplicationCreateTableOptions />
+
+referenced by:
+
+- [create_logical_replication_stream_stmt](#create_logical_replication_stream_stmt)
+
+[create_schedule_for_changefeed_stmt:](#create_schedule_for_changefeed_stmt) <a id="create_schedule_for_changefeed_stmt"/>
+
+<CreateScheduleForChangefeedStmt2 />
+
+referenced by:
+
+- [create_schedule_stmt](#create_schedule_stmt)
+
+[create_schedule_for_backup_stmt:](#create_schedule_for_backup_stmt) <a id="create_schedule_for_backup_stmt"/>
+
+<CreateScheduleForBackupStmt />
+
+referenced by:
+
+- [create_schedule_stmt](#create_schedule_stmt)
+
+[opt_with_check_external_connection_options_list:](#opt_with_check_external_connection_options_list) <a id="opt_with_check_external_connection_options_list"/>
+
+<OptWithCheckExternalConnectionOptionsList />
+
+referenced by:
+
+- [check_external_connection_stmt](#check_external_connection_stmt)
+
+[with_clause:](#with_clause) <a id="with_clause"/>
+
+<WithClause />
+
+referenced by:
+
+- [opt_with_clause](#opt_with_clause)
+- [select_no_parens](#select_no_parens)
+
+[batch_param_list:](#batch_param_list) <a id="batch_param_list"/>
+
+<BatchParamList />
+
+referenced by:
+
+- [opt_batch_clause](#opt_batch_clause)
+
+[table_name_opt_idx:](#table_name_opt_idx) <a id="table_name_opt_idx"/>
+
+<TableNameOptIdx />
+
+referenced by:
+
+- [insert_target](#insert_target)
+- [table_expr_opt_alias_idx](#table_expr_opt_alias_idx)
+
+[from_list:](#from_list) <a id="from_list"/>
+
+<FromList />
+
+referenced by:
+
+- [from_clause](#from_clause)
+- [opt_from_list](#opt_from_list)
+- [opt_using_clause](#opt_using_clause)
+
+[sort_clause:](#sort_clause) <a id="sort_clause"/>
+
+<SortClause />
+
+referenced by:
+
+- [opt_sort_clause](#opt_sort_clause)
+- [select_no_parens](#select_no_parens)
+
+[limit_clause:](#limit_clause) <a id="limit_clause"/>
+
+<LimitClause />
+
+referenced by:
+
+- [opt_limit_clause](#opt_limit_clause)
+- [select_limit](#select_limit)
+
+[drop_database_stmt:](#drop_database_stmt) <a id="drop_database_stmt"/>
+
+<DropDatabaseStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[drop_index_stmt:](#drop_index_stmt) <a id="drop_index_stmt"/>
+
+<DropIndexStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[drop_table_stmt:](#drop_table_stmt) <a id="drop_table_stmt"/>
+
+<DropTableStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[drop_view_stmt:](#drop_view_stmt) <a id="drop_view_stmt"/>
+
+<DropViewStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[drop_sequence_stmt:](#drop_sequence_stmt) <a id="drop_sequence_stmt"/>
+
+<DropSequenceStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[drop_schema_stmt:](#drop_schema_stmt) <a id="drop_schema_stmt"/>
+
+<DropSchemaStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[drop_type_stmt:](#drop_type_stmt) <a id="drop_type_stmt"/>
+
+<DropTypeStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[drop_func_stmt:](#drop_func_stmt) <a id="drop_func_stmt"/>
+
+<DropFuncStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[drop_proc_stmt:](#drop_proc_stmt) <a id="drop_proc_stmt"/>
+
+<DropProcStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[drop_trigger_stmt:](#drop_trigger_stmt) <a id="drop_trigger_stmt"/>
+
+<DropTriggerStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[drop_policy_stmt:](#drop_policy_stmt) <a id="drop_policy_stmt"/>
+
+<DropPolicyStmt />
+
+referenced by:
+
+- [drop_ddl_stmt](#drop_ddl_stmt)
+
+[explain_option_name:](#explain_option_name) <a id="explain_option_name"/>
+
+<ExplainOptionName />
+
+referenced by:
+
+- [explain_option_list](#explain_option_list)
+
+[non_reserved_word_or_sconst:](#non_reserved_word_or_sconst) <a id="non_reserved_word_or_sconst"/>
+
+<NonReservedWordOrSconst />
+
+referenced by:
+
+- [create_routine_opt_item](#create_routine_opt_item)
+- [do_stmt_opt_item](#do_stmt_opt_item)
+- [opt_encoding_clause](#opt_encoding_clause)
+- [opt_lc_collate_clause](#opt_lc_collate_clause)
+- [opt_lc_ctype_clause](#opt_lc_ctype_clause)
+- [opt_template_clause](#opt_template_clause)
+- [string_or_placeholder](#string_or_placeholder)
+
+[kv_option_list:](#kv_option_list) <a id="kv_option_list"/>
+
+<KvOptionList />
+
+referenced by:
+
+- [alter_changefeed_cmd](#alter_changefeed_cmd)
+- [opt_with_options](#opt_with_options)
+- [opt_with_schedule_options](#opt_with_schedule_options)
+
+[insert_column_item:](#insert_column_item) <a id="insert_column_item"/>
+
+<CreateAsParam />
+
+referenced by:
+
+- [insert_column_list](#insert_column_list)
+
+[session_var:](#session_var) <a id="session_var"/>
+
+<SessionVar />
+
+referenced by:
+
+- [reset_session_stmt](#reset_session_stmt)
+- [set_or_reset_clause](#set_or_reset_clause)
+- [show_session_stmt](#show_session_stmt)
+
+[var_name:](#var_name) <a id="var_name"/>
+
+<VarName />
+
+referenced by:
+
+- [generic_set](#generic_set)
+- [reset_csetting_stmt](#reset_csetting_stmt)
+- [set_csetting_stmt](#set_csetting_stmt)
+- [var_set_list](#var_set_list)
+
+[restore_options_list:](#restore_options_list) <a id="restore_options_list"/>
+
+<RestoreOptionsList />
+
+referenced by:
+
+- [opt_with_restore_options](#opt_with_restore_options)
+
+[opt_scrub_options_clause:](#opt_scrub_options_clause) <a id="opt_scrub_options_clause"/>
+
+<OptScrubOptionsClause />
+
+referenced by:
+
+- [scrub_table_stmt](#scrub_table_stmt)
+
+[simple_select:](#simple_select) <a id="simple_select"/>
+
+<SimpleSelect />
+
+referenced by:
+
+- [select_clause](#select_clause)
+- [select_no_parens](#select_no_parens)
+
+[select_clause:](#select_clause) <a id="select_clause"/>
+
+<SelectClause2 />
+
+referenced by:
+
+- [select_no_parens](#select_no_parens)
+- [set_operation](#set_operation)
+
+[for_locking_clause:](#for_locking_clause) <a id="for_locking_clause"/>
+
+<ForLockingClause />
+
+referenced by:
+
+- [opt_for_locking_clause](#opt_for_locking_clause)
+- [select_no_parens](#select_no_parens)
+
+[opt_select_limit:](#opt_select_limit) <a id="opt_select_limit"/>
+
+<OptSelectLimit />
+
+referenced by:
+
+- [select_no_parens](#select_no_parens)
+
+[select_limit:](#select_limit) <a id="select_limit"/>
+
+<SelectLimit />
+
+referenced by:
+
+- [opt_select_limit](#opt_select_limit)
+- [select_no_parens](#select_no_parens)
+
+[opt_for_locking_clause:](#opt_for_locking_clause) <a id="opt_for_locking_clause"/>
+
+<OptForLockingClause />
+
+referenced by:
+
+- [select_no_parens](#select_no_parens)
+
+[set_rest_more:](#set_rest_more) <a id="set_rest_more"/>
+
+<SetRestMore />
+
+referenced by:
+
+- [set_session_stmt](#set_session_stmt)
+
+[set_rest:](#set_rest) <a id="set_rest"/>
+
+<SetRest />
+
+referenced by:
+
+- [set_local_stmt](#set_local_stmt)
+- [set_or_reset_clause](#set_or_reset_clause)
+- [set_rest_more](#set_rest_more)
+
+[to_or_eq:](#to_or_eq) <a id="to_or_eq"/>
+
+<ToOrEq />
+
+referenced by:
+
+- [set_csetting_stmt](#set_csetting_stmt)
+- [storage_parameter](#storage_parameter)
+- [use_stmt](#use_stmt)
+- [var_list](#var_list)
+- [var_set_list](#var_set_list)
+
+[opt_with_show_backup_options:](#opt_with_show_backup_options) <a id="opt_with_show_backup_options"/>
+
+<ShowBackupDetails />
+
+referenced by:
+
+- [show_backup_stmt](#show_backup_stmt)
+
+[with_comment:](#with_comment) <a id="with_comment"/>
+
+<WithComment />
+
+referenced by:
+
+- [show_grants_stmt](#show_grants_stmt)
+
+[for_grantee_clause:](#for_grantee_clause) <a id="for_grantee_clause"/>
+
+<ForGranteeClause />
+
+referenced by:
+
+- [show_grants_stmt](#show_grants_stmt)
+
+[show_job_options_list:](#show_job_options_list) <a id="show_job_options_list"/>
+
+<ShowJobOptionsList />
+
+referenced by:
+
+- [show_jobs_stmt](#show_jobs_stmt)
+
+[opt_schedule_executor_type:](#opt_schedule_executor_type) <a id="opt_schedule_executor_type"/>
+
+<OptScheduleExecutorType />
+
+referenced by:
+
+- [show_ranges_stmt](#show_ranges_stmt)
+
+[opt_compact:](#opt_compact) <a id="opt_compact"/>
+
+<IndexName />
+
+referenced by:
+
+- [show_zone_stmt](#show_zone_stmt)
+
+[opt_partition:](#opt_partition) <a id="opt_partition"/>
+
+<OptPartition />
+
+referenced by:
+
+- [show_zone_stmt](#show_zone_stmt)
+
+[partition_name:](#partition_name) <a id="partition_name"/>
+
+<IndexName />
+
+referenced by:
+
+- [alter_zone_partition_stmt](#alter_zone_partition_stmt)
+- [partition](#partition)
+- [show_zone_stmt](#show_zone_stmt)
+
+[opt_for_roles:](#opt_for_roles) <a id="opt_for_roles"/>
+
+<OptForRoles />
+
+referenced by:
+
+- [alter_default_privileges_stmt](#alter_default_privileges_stmt)
+- [show_default_privileges_stmt](#show_default_privileges_stmt)
+
+[opt_in_schema:](#opt_in_schema) <a id="opt_in_schema"/>
+
+<OptInSchema />
+
+referenced by:
+
+- [show_default_privileges_stmt](#show_default_privileges_stmt)
+
+[relation_expr:](#relation_expr) <a id="relation_expr"/>
+
+<RelationExpr />
+
+referenced by:
+
+- [alter_onetable_stmt](#alter_onetable_stmt)
+- [alter_rename_sequence_stmt](#alter_rename_sequence_stmt)
+- [alter_rename_table_stmt](#alter_rename_table_stmt)
+- [alter_rename_view_stmt](#alter_rename_view_stmt)
+- [alter_sequence_owner_stmt](#alter_sequence_owner_stmt)
+- [alter_sequence_set_schema_stmt](#alter_sequence_set_schema_stmt)
+- [alter_table_locality_stmt](#alter_table_locality_stmt)
+- [alter_table_owner_stmt](#alter_table_owner_stmt)
+- [alter_table_set_schema_stmt](#alter_table_set_schema_stmt)
+- [alter_view_owner_stmt](#alter_view_owner_stmt)
+- [alter_view_set_schema_stmt](#alter_view_set_schema_stmt)
+- [relation_expr_list](#relation_expr_list)
+- [table_ref](#table_ref)
+
+[set_clause:](#set_clause) <a id="set_clause"/>
+
+<SetClause />
+
+referenced by:
+
+- [set_clause_list](#set_clause_list)
+
+[func_name:](#func_name) <a id="func_name"/>
+
+<FuncName />
+
+referenced by:
+
+- [create_trigger_stmt](#create_trigger_stmt)
+- [func_application_name](#func_application_name)
+
+[sort_clause_no_index:](#sort_clause_no_index) <a id="sort_clause_no_index"/>
+
+<SortClauseNoIndex />
+
+referenced by:
+
+- [opt_sort_clause_no_index](#opt_sort_clause_no_index)
+
+[simple_db_object_name:](#simple_db_object_name) <a id="simple_db_object_name"/>
+
+<SimpleDbObjectName />
+
+referenced by:
+
+- [db_object_name](#db_object_name)
+- [table_pattern](#table_pattern)
+
+[complex_db_object_name:](#complex_db_object_name) <a id="complex_db_object_name"/>
+
+<ComplexDbObjectName />
+
+referenced by:
+
+- [complex_table_pattern](#complex_table_pattern)
+- [db_object_name](#db_object_name)
+
+[copy_options:](#copy_options) <a id="copy_options"/>
+
+<CopyOptions />
+
+referenced by:
+
+- [copy_options_list](#copy_options_list)
+
+[copy_generic_options:](#copy_generic_options) <a id="copy_generic_options"/>
+
+<CopyGenericOptions />
+
+referenced by:
+
+- [copy_generic_options_list](#copy_generic_options_list)
+
+[db_object_name_component:](#db_object_name_component) <a id="db_object_name_component"/>
+
+<DbObjectNameComponent />
+
+referenced by:
+
+- [column_path_with_star](#column_path_with_star)
+- [complex_db_object_name](#complex_db_object_name)
+- [complex_table_pattern](#complex_table_pattern)
+- [prefixed_column_path](#prefixed_column_path)
+- [simple_db_object_name](#simple_db_object_name)
+
+[unrestricted_name:](#unrestricted_name) <a id="unrestricted_name"/>
+
+<UnrestrictedName />
+
+referenced by:
+
+- [attrs](#attrs)
+- [collation_name](#collation_name)
+- [column_path_with_star](#column_path_with_star)
+- [complex_db_object_name](#complex_db_object_name)
+- [complex_table_pattern](#complex_table_pattern)
+- [complex_type_name](#complex_type_name)
+- [d_expr](#d_expr)
+- [index_name](#index_name)
+- [partition_name](#partition_name)
+- [prefixed_column_path](#prefixed_column_path)
+- [target_name](#target_name)
+- [trigger_func_arg](#trigger_func_arg)
+- [zone_name](#zone_name)
+
+[function_with_paramtypes:](#function_with_paramtypes) <a id="function_with_paramtypes"/>
+
+<FunctionWithParamtypes />
+
+referenced by:
+
+- [alter_func_dep_extension_stmt](#alter_func_dep_extension_stmt)
+- [alter_func_options_stmt](#alter_func_options_stmt)
+- [alter_func_owner_stmt](#alter_func_owner_stmt)
+- [alter_func_rename_stmt](#alter_func_rename_stmt)
+- [alter_func_set_schema_stmt](#alter_func_set_schema_stmt)
+- [alter_proc_owner_stmt](#alter_proc_owner_stmt)
+- [alter_proc_rename_stmt](#alter_proc_rename_stmt)
+- [alter_proc_set_schema_stmt](#alter_proc_set_schema_stmt)
+- [function_with_paramtypes_list](#function_with_paramtypes_list)
+
+[typename:](#typename) <a id="typename"/>
+
+<Typename />
+
+referenced by:
+
+- [a_expr](#a_expr)
+- [alter_table_cmd](#alter_table_cmd)
+- [b_expr](#b_expr)
+- [cast_target](#cast_target)
+- [col_def](#col_def)
+- [column_table_def](#column_table_def)
+- [func_expr_common_subexpr](#func_expr_common_subexpr)
+- [routine_param_type](#routine_param_type)
+- [sequence_option_elem](#sequence_option_elem)
+- [type_list](#type_list)
+
+[transaction_mode:](#transaction_mode) <a id="transaction_mode"/>
+
+<TransactionMode />
+
+referenced by:
+
+- [transaction_mode_list](#transaction_mode_list)
+
+[opt_comma:](#opt_comma) <a id="opt_comma"/>
+
+<OptComma />
+
+referenced by:
+
+- [const_geo](#const_geo)
+- [opt_connection_limit](#opt_connection_limit)
+- [signed_iconst64](#signed_iconst64)
+
+[alter_onetable_stmt:](#alter_onetable_stmt) <a id="alter_onetable_stmt"/>
+
+<AlterOnetableStmt />
+
+referenced by:
+
+- [alter_table_stmt](#alter_table_stmt)
+
+[alter_split_stmt:](#alter_split_stmt) <a id="alter_split_stmt"/>
+
+<AlterSplitStmt />
+
+referenced by:
+
+- [alter_table_stmt](#alter_table_stmt)
+
+[alter_unsplit_stmt:](#alter_unsplit_stmt) <a id="alter_unsplit_stmt"/>
+
+<AlterUnsplitStmt />
+
+referenced by:
+
+- [alter_table_stmt](#alter_table_stmt)
+
+[alter_scatter_stmt:](#alter_scatter_stmt) <a id="alter_scatter_stmt"/>
+
+<AlterScatterStmt />
+
+referenced by:
+
+- [alter_table_stmt](#alter_table_stmt)
+
+[alter_zone_table_stmt:](#alter_zone_table_stmt) <a id="alter_zone_table_stmt"/>
+
+<AlterZoneTableStmt />
+
+referenced by:
+
+- [alter_table_stmt](#alter_table_stmt)
+
+[alter_rename_table_stmt:](#alter_rename_table_stmt) <a id="alter_rename_table_stmt"/>
+
+<AlterRenameTableStmt />
+
+referenced by:
+
+- [alter_table_stmt](#alter_table_stmt)
+
+[alter_table_set_schema_stmt:](#alter_table_set_schema_stmt) <a id="alter_table_set_schema_stmt"/>
+
+<AlterTableSetSchemaStmt />
+
+referenced by:
+
+- [alter_table_stmt](#alter_table_stmt)
+
+[alter_table_locality_stmt:](#alter_table_locality_stmt) <a id="alter_table_locality_stmt"/>
+
+<AlterTableLocalityStmt />
+
+referenced by:
+
+- [alter_table_stmt](#alter_table_stmt)
+
+[alter_table_owner_stmt:](#alter_table_owner_stmt) <a id="alter_table_owner_stmt"/>
+
+<AlterTableOwnerStmt />
+
+referenced by:
+
+- [alter_table_stmt](#alter_table_stmt)
+
+[alter_oneindex_stmt:](#alter_oneindex_stmt) <a id="alter_oneindex_stmt"/>
+
+<AlterOneindexStmt />
+
+referenced by:
+
+- [alter_index_stmt](#alter_index_stmt)
+
+[alter_split_index_stmt:](#alter_split_index_stmt) <a id="alter_split_index_stmt"/>
+
+<AlterSplitIndexStmt />
+
+referenced by:
+
+- [alter_index_stmt](#alter_index_stmt)
+
+[alter_unsplit_index_stmt:](#alter_unsplit_index_stmt) <a id="alter_unsplit_index_stmt"/>
+
+<AlterUnsplitIndexStmt />
+
+referenced by:
+
+- [alter_index_stmt](#alter_index_stmt)
+
+[alter_scatter_index_stmt:](#alter_scatter_index_stmt) <a id="alter_scatter_index_stmt"/>
+
+<AlterScatterIndexStmt />
+
+referenced by:
+
+- [alter_index_stmt](#alter_index_stmt)
+
+[alter_rename_index_stmt:](#alter_rename_index_stmt) <a id="alter_rename_index_stmt"/>
+
+<AlterRenameIndexStmt />
+
+referenced by:
+
+- [alter_index_stmt](#alter_index_stmt)
+
+[alter_zone_index_stmt:](#alter_zone_index_stmt) <a id="alter_zone_index_stmt"/>
+
+<AlterZoneIndexStmt />
+
+referenced by:
+
+- [alter_index_stmt](#alter_index_stmt)
+
+[alter_index_visible_stmt:](#alter_index_visible_stmt) <a id="alter_index_visible_stmt"/>
+
+<AlterIndexVisibleStmt />
+
+referenced by:
+
+- [alter_index_stmt](#alter_index_stmt)
+
+[alter_rename_view_stmt:](#alter_rename_view_stmt) <a id="alter_rename_view_stmt"/>
+
+<AlterRenameViewStmt />
+
+referenced by:
+
+- [alter_view_stmt](#alter_view_stmt)
+
+[alter_view_set_schema_stmt:](#alter_view_set_schema_stmt) <a id="alter_view_set_schema_stmt"/>
+
+<AlterViewSetSchemaStmt />
+
+referenced by:
+
+- [alter_view_stmt](#alter_view_stmt)
+
+[alter_view_owner_stmt:](#alter_view_owner_stmt) <a id="alter_view_owner_stmt"/>
+
+<AlterViewOwnerStmt />
+
+referenced by:
+
+- [alter_view_stmt](#alter_view_stmt)
+
+[alter_rename_sequence_stmt:](#alter_rename_sequence_stmt) <a id="alter_rename_sequence_stmt"/>
+
+<AlterRenameSequenceStmt />
+
+referenced by:
+
+- [alter_sequence_stmt](#alter_sequence_stmt)
+
+[alter_sequence_options_stmt:](#alter_sequence_options_stmt) <a id="alter_sequence_options_stmt"/>
+
+<AlterSequenceOptionsStmt />
+
+referenced by:
+
+- [alter_sequence_stmt](#alter_sequence_stmt)
+
+[alter_sequence_set_schema_stmt:](#alter_sequence_set_schema_stmt) <a id="alter_sequence_set_schema_stmt"/>
+
+<AlterSequenceSetSchemaStmt />
+
+referenced by:
+
+- [alter_sequence_stmt](#alter_sequence_stmt)
+
+[alter_sequence_owner_stmt:](#alter_sequence_owner_stmt) <a id="alter_sequence_owner_stmt"/>
+
+<AlterSequenceOwnerStmt />
+
+referenced by:
+
+- [alter_sequence_stmt](#alter_sequence_stmt)
+
+[alter_rename_database_stmt:](#alter_rename_database_stmt) <a id="alter_rename_database_stmt"/>
+
+<AlterRenameDatabaseStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_zone_database_stmt:](#alter_zone_database_stmt) <a id="alter_zone_database_stmt"/>
+
+<AlterZoneDatabaseStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_owner:](#alter_database_owner) <a id="alter_database_owner"/>
+
+<AlterDatabaseOwner />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_to_schema_stmt:](#alter_database_to_schema_stmt) <a id="alter_database_to_schema_stmt"/>
+
+<AlterDatabaseToSchemaStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_add_region_stmt:](#alter_database_add_region_stmt) <a id="alter_database_add_region_stmt"/>
+
+<AlterDatabaseAddRegionStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_drop_region_stmt:](#alter_database_drop_region_stmt) <a id="alter_database_drop_region_stmt"/>
+
+<AlterDatabaseDropRegionStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_survival_goal_stmt:](#alter_database_survival_goal_stmt) <a id="alter_database_survival_goal_stmt"/>
+
+<AlterDatabaseSurvivalGoalStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_primary_region_stmt:](#alter_database_primary_region_stmt) <a id="alter_database_primary_region_stmt"/>
+
+<AlterDatabasePrimaryRegionStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_placement_stmt:](#alter_database_placement_stmt) <a id="alter_database_placement_stmt"/>
+
+<AlterDatabasePlacementStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_set_stmt:](#alter_database_set_stmt) <a id="alter_database_set_stmt"/>
+
+<AlterDatabaseSetStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_add_super_region:](#alter_database_add_super_region) <a id="alter_database_add_super_region"/>
+
+<AlterDatabaseAddSuperRegion />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_alter_super_region:](#alter_database_alter_super_region) <a id="alter_database_alter_super_region"/>
+
+<AlterDatabaseAlterSuperRegion />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_drop_super_region:](#alter_database_drop_super_region) <a id="alter_database_drop_super_region"/>
+
+<AlterDatabaseDropSuperRegion />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_set_secondary_region_stmt:](#alter_database_set_secondary_region_stmt) <a id="alter_database_set_secondary_region_stmt"/>
+
+<AlterDatabaseSetSecondaryRegionStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_drop_secondary_region:](#alter_database_drop_secondary_region) <a id="alter_database_drop_secondary_region"/>
+
+<AlterDatabaseDropSecondaryRegion />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_database_set_zone_config_extension_stmt:](#alter_database_set_zone_config_extension_stmt) <a id="alter_database_set_zone_config_extension_stmt"/>
+
+<AlterDatabaseSetZoneConfigExtensionStmt />
+
+referenced by:
+
+- [alter_database_stmt](#alter_database_stmt)
+
+[alter_zone_range_stmt:](#alter_zone_range_stmt) <a id="alter_zone_range_stmt"/>
+
+<AlterZoneRangeStmt />
+
+referenced by:
+
+- [alter_range_stmt](#alter_range_stmt)
+
+[alter_range_relocate_stmt:](#alter_range_relocate_stmt) <a id="alter_range_relocate_stmt"/>
+
+<AlterRangeRelocateStmt />
+
+referenced by:
+
+- [alter_range_stmt](#alter_range_stmt)
+
+[alter_zone_partition_stmt:](#alter_zone_partition_stmt) <a id="alter_zone_partition_stmt"/>
+
+<AlterZonePartitionStmt />
+
+referenced by:
+
+- [alter_partition_stmt](#alter_partition_stmt)
+
+[schema_name:](#schema_name) <a id="schema_name"/>
+
+<CursorName />
+
+referenced by:
+
+- [alter_func_set_schema_stmt](#alter_func_set_schema_stmt)
+- [alter_proc_set_schema_stmt](#alter_proc_set_schema_stmt)
+- [alter_schema_stmt](#alter_schema_stmt)
+- [alter_sequence_set_schema_stmt](#alter_sequence_set_schema_stmt)
+- [alter_table_set_schema_stmt](#alter_table_set_schema_stmt)
+- [alter_type_stmt](#alter_type_stmt)
+- [alter_view_set_schema_stmt](#alter_view_set_schema_stmt)
+- [opt_in_schema](#opt_in_schema)
+
+[opt_add_val_placement:](#opt_add_val_placement) <a id="opt_add_val_placement"/>
+
+<OptAddValPlacement />
+
+referenced by:
+
+- [alter_default_privileges_stmt](#alter_default_privileges_stmt)
+
+[abbreviated_grant_stmt:](#abbreviated_grant_stmt) <a id="abbreviated_grant_stmt"/>
+
+<AbbreviatedGrantStmt />
+
+referenced by:
+
+- [alter_default_privileges_stmt](#alter_default_privileges_stmt)
+
+[abbreviated_revoke_stmt:](#abbreviated_revoke_stmt) <a id="abbreviated_revoke_stmt"/>
+
+<AbbreviatedRevokeStmt />
+
+referenced by:
+
+- [alter_default_privileges_stmt](#alter_default_privileges_stmt)
+
+[alter_changefeed_cmds:](#alter_changefeed_cmds) <a id="alter_changefeed_cmds"/>
+
+<AlterChangefeedCmds />
+
+referenced by:
+
+- [alter_changefeed_stmt](#alter_changefeed_stmt)
+
+[alter_backup_cmds:](#alter_backup_cmds) <a id="alter_backup_cmds"/>
+
+<AlterBackupCmds />
+
+referenced by:
+
+- [alter_backup_stmt](#alter_backup_stmt)
+
+[alter_func_options_stmt:](#alter_func_options_stmt) <a id="alter_func_options_stmt"/>
+
+<AlterFuncOptionsStmt />
+
+referenced by:
+
+- [alter_func_stmt](#alter_func_stmt)
+
+[alter_func_rename_stmt:](#alter_func_rename_stmt) <a id="alter_func_rename_stmt"/>
+
+<AlterFuncRenameStmt />
+
+referenced by:
+
+- [alter_func_stmt](#alter_func_stmt)
+
+[alter_func_owner_stmt:](#alter_func_owner_stmt) <a id="alter_func_owner_stmt"/>
+
+<AlterFuncOwnerStmt />
+
+referenced by:
+
+- [alter_func_stmt](#alter_func_stmt)
+
+[alter_func_set_schema_stmt:](#alter_func_set_schema_stmt) <a id="alter_func_set_schema_stmt"/>
+
+<AlterFuncSetSchemaStmt />
+
+referenced by:
+
+- [alter_func_stmt](#alter_func_stmt)
+
+[alter_func_dep_extension_stmt:](#alter_func_dep_extension_stmt) <a id="alter_func_dep_extension_stmt"/>
+
+<AlterFuncDepExtensionStmt />
+
+referenced by:
+
+- [alter_func_stmt](#alter_func_stmt)
+
+[alter_proc_rename_stmt:](#alter_proc_rename_stmt) <a id="alter_proc_rename_stmt"/>
+
+<AlterProcRenameStmt />
+
+referenced by:
+
+- [alter_proc_stmt](#alter_proc_stmt)
+
+[alter_proc_owner_stmt:](#alter_proc_owner_stmt) <a id="alter_proc_owner_stmt"/>
+
+<AlterProcOwnerStmt />
+
+referenced by:
+
+- [alter_proc_stmt](#alter_proc_stmt)
+
+[alter_proc_set_schema_stmt:](#alter_proc_set_schema_stmt) <a id="alter_proc_set_schema_stmt"/>
+
+<AlterProcSetSchemaStmt />
+
+referenced by:
+
+- [alter_proc_stmt](#alter_proc_stmt)
+
+[alter_backup_schedule_cmds:](#alter_backup_schedule_cmds) <a id="alter_backup_schedule_cmds"/>
+
+<AlterBackupScheduleCmds />
+
+referenced by:
+
+- [alter_backup_schedule](#alter_backup_schedule)
+
+[opt_policy_roles:](#opt_policy_roles) <a id="opt_policy_roles"/>
+
+<OptPolicyRoles />
+
+referenced by:
+
+- [alter_policy_stmt](#alter_policy_stmt)
+- [create_policy_stmt](#create_policy_stmt)
+
+[opt_policy_exprs:](#opt_policy_exprs) <a id="opt_policy_exprs"/>
+
+<OptPolicyExprs />
+
+referenced by:
+
+- [alter_policy_stmt](#alter_policy_stmt)
+- [create_policy_stmt](#create_policy_stmt)
+
+[role_options:](#role_options) <a id="role_options"/>
+
+<RoleOptions />
+
+referenced by:
+
+- [opt_role_options](#opt_role_options)
+
+[virtual_cluster:](#virtual_cluster) <a id="virtual_cluster"/>
+
+<VirtualCluster />
+
+referenced by:
+
+- [alter_virtual_cluster_capability_stmt](#alter_virtual_cluster_capability_stmt)
+- [alter_virtual_cluster_rename_stmt](#alter_virtual_cluster_rename_stmt)
+- [alter_virtual_cluster_replication_stmt](#alter_virtual_cluster_replication_stmt)
+- [alter_virtual_cluster_service_stmt](#alter_virtual_cluster_service_stmt)
+
+[replication_options_list:](#replication_options_list) <a id="replication_options_list"/>
+
+<ReplicationOptionsList />
+
+referenced by:
+
+- [alter_virtual_cluster_replication_stmt](#alter_virtual_cluster_replication_stmt)
+- [opt_with_replication_options](#opt_with_replication_options)
+
+[source_replication_options_list:](#source_replication_options_list) <a id="source_replication_options_list"/>
+
+<SourceReplicationOptionsList />
+
+referenced by:
+
+- [alter_virtual_cluster_replication_stmt](#alter_virtual_cluster_replication_stmt)
+
+[d_expr:](#d_expr) <a id="d_expr"/>
+
+<DExpr />
+
+referenced by:
+
+- [alter_virtual_cluster_rename_stmt](#alter_virtual_cluster_rename_stmt)
+- [alter_virtual_cluster_replication_stmt](#alter_virtual_cluster_replication_stmt)
+- [c_expr](#c_expr)
+- [replication_options](#replication_options)
+- [source_replication_options](#source_replication_options)
+- [virtual_cluster_spec](#virtual_cluster_spec)
+
+[opt_with_replication_options:](#opt_with_replication_options) <a id="opt_with_replication_options"/>
+
+<OptWithReplicationOptions />
+
+referenced by:
+
+- [alter_virtual_cluster_replication_stmt](#alter_virtual_cluster_replication_stmt)
+
+[backup_options:](#backup_options) <a id="backup_options"/>
+
+<BackupOptions2 />
+
+referenced by:
+
+- [alter_backup_schedule_cmd](#alter_backup_schedule_cmd)
+- [backup_options_list](#backup_options_list)
+
+[c_expr:](#c_expr) <a id="c_expr"/>
+
+<CExpr />
+
+referenced by:
+
+- [a_expr](#a_expr)
+- [b_expr](#b_expr)
+- [select_fetch_first_value](#select_fetch_first_value)
+
+[qual_op:](#qual_op) <a id="qual_op"/>
+
+<QualOp />
+
+referenced by:
+
+- [a_expr](#a_expr)
+- [b_expr](#b_expr)
+- [subquery_op](#subquery_op)
+
+[row:](#row) <a id="row"/>
+
+<Row />
+
+referenced by:
+
+- [a_expr](#a_expr)
+- [d_expr](#d_expr)
+- [labeled_row](#labeled_row)
+
+[cast_target:](#cast_target) <a id="cast_target"/>
+
+<CastTarget />
+
+referenced by:
+
+- [a_expr](#a_expr)
+- [b_expr](#b_expr)
+- [func_expr_common_subexpr](#func_expr_common_subexpr)
+
+[collation_name:](#collation_name) <a id="collation_name"/>
+
+<IndexName />
+
+referenced by:
+
+- [a_expr](#a_expr)
+- [col_qualification](#col_qualification)
+- [opt_collate](#opt_collate)
+
+[opt_asymmetric:](#opt_asymmetric) <a id="opt_asymmetric"/>
+
+<OptAsymmetric />
+
+referenced by:
+
+- [a_expr](#a_expr)
+- [b_expr](#b_expr)
+- [col_qualification_elem](#col_qualification_elem)
+- [position_list](#position_list)
+
+[in_expr:](#in_expr) <a id="in_expr"/>
+
+<InExpr />
+
+referenced by:
+
+- [a_expr](#a_expr)
+- [multiple_set_clause](#multiple_set_clause)
+
+[subquery_op:](#subquery_op) <a id="subquery_op"/>
+
+<SubqueryOp />
+
+referenced by:
+
+- [a_expr](#a_expr)
+
+[sub_type:](#sub_type) <a id="sub_type"/>
+
+<SubType2 />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_encoding_clause:](#opt_encoding_clause) <a id="opt_encoding_clause"/>
+
+<OptEncodingClause />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_lc_collate_clause:](#opt_lc_collate_clause) <a id="opt_lc_collate_clause"/>
+
+<OptLcCollateClause />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_lc_ctype_clause:](#opt_lc_ctype_clause) <a id="opt_lc_ctype_clause"/>
+
+<OptLcCtypeClause />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_connection_limit:](#opt_connection_limit) <a id="opt_connection_limit"/>
+
+<OptConnectionLimit />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_primary_region_clause:](#opt_primary_region_clause) <a id="opt_primary_region_clause"/>
+
+<OptPrimaryRegionClause />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_regions_list:](#opt_regions_list) <a id="opt_regions_list"/>
+
+<OptRegionsList />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_survival_goal_clause:](#opt_survival_goal_clause) <a id="opt_survival_goal_clause"/>
+
+<OptSurvivalGoalClause />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_placement_clause:](#opt_placement_clause) <a id="opt_placement_clause"/>
+
+<OptPlacementClause />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_owner_clause:](#opt_owner_clause) <a id="opt_owner_clause"/>
+
+<OptOwnerClause />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_super_region_clause:](#opt_super_region_clause) <a id="opt_super_region_clause"/>
+
+<OptSuperRegionClause />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_secondary_region_clause:](#opt_secondary_region_clause) <a id="opt_secondary_region_clause"/>
+
+<OptSecondaryRegionClause />
+
+referenced by:
+
+- [create_database_stmt](#create_database_stmt)
+
+[opt_unique:](#opt_unique) <a id="opt_unique"/>
+
+<OptUnique />
+
+referenced by:
+
+- [create_index_stmt](#create_index_stmt)
+- [index_def](#index_def)
+
+[opt_index_access_method:](#opt_index_access_method) <a id="opt_index_access_method"/>
+
+<OptIndexAccessMethod />
+
+referenced by:
+
+- [create_index_stmt](#create_index_stmt)
+
+[index_params:](#index_params) <a id="index_params"/>
+
+<IndexParams />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [constraint_elem](#constraint_elem)
+- [create_index_stmt](#create_index_stmt)
+- [index_def](#index_def)
+
+[opt_hash_sharded:](#opt_hash_sharded) <a id="opt_hash_sharded"/>
+
+<OptHashSharded />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [constraint_elem](#constraint_elem)
+- [create_index_stmt](#create_index_stmt)
+- [index_def](#index_def)
+
+[opt_storing:](#opt_storing) <a id="opt_storing"/>
+
+<OptStoring />
+
+referenced by:
+
+- [constraint_elem](#constraint_elem)
+- [create_index_stmt](#create_index_stmt)
+- [index_def](#index_def)
+
+[opt_partition_by_index:](#opt_partition_by_index) <a id="opt_partition_by_index"/>
+
+<OptPartitionBy />
+
+referenced by:
+
+- [constraint_elem](#constraint_elem)
+- [create_index_stmt](#create_index_stmt)
+- [index_def](#index_def)
+
+[opt_with_storage_parameter_list:](#opt_with_storage_parameter_list) <a id="opt_with_storage_parameter_list"/>
+
+<OptWithStorageParameterList />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [col_qualification_elem](#col_qualification_elem)
+- [constraint_elem](#constraint_elem)
+- [create_as_col_qualification_elem](#create_as_col_qualification_elem)
+- [create_as_constraint_elem](#create_as_constraint_elem)
+- [create_index_stmt](#create_index_stmt)
+- [index_def](#index_def)
+- [opt_table_with](#opt_table_with)
+
+[opt_index_visible:](#opt_index_visible) <a id="opt_index_visible"/>
+
+<OptIndexVisible />
+
+referenced by:
+
+- [create_schema_stmt](#create_schema_stmt)
+
+[opt_persistence_temp_table:](#opt_persistence_temp_table) <a id="opt_persistence_temp_table"/>
+
+<OptPersistenceTempTable />
+
+referenced by:
+
+- [create_table_as_stmt](#create_table_as_stmt)
+- [create_table_stmt](#create_table_stmt)
+
+[opt_table_elem_list:](#opt_table_elem_list) <a id="opt_table_elem_list"/>
+
+<OptTableElemList />
+
+referenced by:
+
+- [create_table_stmt](#create_table_stmt)
+
+[opt_partition_by_table:](#opt_partition_by_table) <a id="opt_partition_by_table"/>
+
+<OptPartitionByTable />
+
+referenced by:
+
+- [create_table_stmt](#create_table_stmt)
+
+[opt_table_with:](#opt_table_with) <a id="opt_table_with"/>
+
+<OptTableWith />
+
+referenced by:
+
+- [create_table_as_stmt](#create_table_as_stmt)
+- [create_table_stmt](#create_table_stmt)
+
+[opt_create_table_on_commit:](#opt_create_table_on_commit) <a id="opt_create_table_on_commit"/>
+
+<OptCreateTableOnCommit />
+
+referenced by:
+
+- [create_table_stmt](#create_table_stmt)
+
+[create_as_opt_col_list:](#create_as_opt_col_list) <a id="create_as_opt_col_list"/>
+
+<CreateAsOptColList />
+
+referenced by:
+
+- [create_table_as_stmt](#create_table_as_stmt)
+
+[opt_enum_val_list:](#opt_enum_val_list) <a id="opt_enum_val_list"/>
+
+<OptEnumValList />
+
+referenced by:
+
+- [create_type_stmt](#create_type_stmt)
+
+[opt_composite_type_list:](#opt_composite_type_list) <a id="opt_composite_type_list"/>
+
+<OptCompositeTypeList />
+
+referenced by:
+
+- [create_type_stmt](#create_type_stmt)
+
+[opt_temp:](#opt_temp) <a id="opt_temp"/>
+
+<DbName />
+
+referenced by:
+
+- [alter_rename_sequence_stmt](#alter_rename_sequence_stmt)
+- [alter_sequence_options_stmt](#alter_sequence_options_stmt)
+- [create_sequence_stmt](#create_sequence_stmt)
+
+[opt_sequence_option_list:](#opt_sequence_option_list) <a id="opt_sequence_option_list"/>
+
+<OptSequenceOptionList />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [col_qualification_elem](#col_qualification_elem)
+- [create_sequence_stmt](#create_sequence_stmt)
+
+[opt_or_replace:](#opt_or_replace) <a id="opt_or_replace"/>
+
+<DbName />
+
+referenced by:
+
+- [create_func_stmt](#create_func_stmt)
+- [create_proc_stmt](#create_proc_stmt)
+
+[opt_routine_param_with_default_list:](#opt_routine_param_with_default_list) <a id="opt_routine_param_with_default_list"/>
+
+<OptRoutineParamWithDefaultList />
+
+referenced by:
+
+- [create_func_stmt](#create_func_stmt)
+- [create_proc_stmt](#create_proc_stmt)
+
+[opt_return_set:](#opt_return_set) <a id="opt_return_set"/>
+
+<OptReturnSet />
+
+referenced by:
+
+- [create_func_stmt](#create_func_stmt)
+
+[opt_create_routine_opt_list:](#opt_create_routine_opt_list) <a id="opt_create_routine_opt_list"/>
+
+<OptCreateRoutineOptList />
+
+referenced by:
+
+- [create_func_stmt](#create_func_stmt)
+- [create_proc_stmt](#create_proc_stmt)
+
+[opt_routine_body:](#opt_routine_body) <a id="opt_routine_body"/>
+
+<OptRoutineBody />
+
+referenced by:
+
+- [create_func_stmt](#create_func_stmt)
+- [create_proc_stmt](#create_proc_stmt)
+
+[table_func_column_list:](#table_func_column_list) <a id="table_func_column_list"/>
+
+<TableFuncColumnList />
+
+referenced by:
+
+- [create_func_stmt](#create_func_stmt)
+
+[trigger_action_time:](#trigger_action_time) <a id="trigger_action_time"/>
+
+<TriggerActionTime />
+
+referenced by:
+
+- [create_trigger_stmt](#create_trigger_stmt)
+
+[opt_trigger_transition_list:](#opt_trigger_transition_list) <a id="opt_trigger_transition_list"/>
+
+<OptTriggerTransitionList />
+
+referenced by:
+
+- [create_trigger_stmt](#create_trigger_stmt)
+
+[trigger_for_each:](#trigger_for_each) <a id="trigger_for_each"/>
+
+<TriggerForEach />
+
+referenced by:
+
+- [create_trigger_stmt](#create_trigger_stmt)
+
+[trigger_when:](#trigger_when) <a id="trigger_when"/>
+
+<TriggerWhen />
+
+referenced by:
+
+- [create_trigger_stmt](#create_trigger_stmt)
+
+[function_or_procedure:](#function_or_procedure) <a id="function_or_procedure"/>
+
+<FunctionOrProcedure />
+
+referenced by:
+
+- [create_trigger_stmt](#create_trigger_stmt)
+
+[opt_policy_type:](#opt_policy_type) <a id="opt_policy_type"/>
+
+<OptPolicyType />
+
+referenced by:
+
+- [opt_create_stats_options](#opt_create_stats_options)
+
+[changefeed_target:](#changefeed_target) <a id="changefeed_target"/>
+
+<ChangefeedTarget />
+
+referenced by:
+
+- [changefeed_targets](#changefeed_targets)
+
+[target_elem:](#target_elem) <a id="target_elem"/>
+
+<TargetElem />
+
+referenced by:
+
+- [target_list](#target_list)
+
+[logical_replication_resources_list:](#logical_replication_resources_list) <a id="logical_replication_resources_list"/>
+
+<OnlySignedFconst />
+
+referenced by:
+
+- [logical_replication_resources](#logical_replication_resources)
+
+[logical_replication_create_table_options_list:](#logical_replication_create_table_options_list) <a id="logical_replication_create_table_options_list"/>
+
+<LogicalReplicationCreateTableOptionsList />
+
+referenced by:
+
+- [opt_logical_replication_create_table_options](#opt_logical_replication_create_table_options)
+
+[schedule_label_spec:](#schedule_label_spec) <a id="schedule_label_spec"/>
+
+<ScheduleLabelSpec />
+
+referenced by:
+
+- [create_schedule_for_backup_stmt](#create_schedule_for_backup_stmt)
+- [create_schedule_for_changefeed_stmt](#create_schedule_for_changefeed_stmt)
+
+[changefeed_sink:](#changefeed_sink) <a id="changefeed_sink"/>
+
+<ChangefeedSink />
+
+referenced by:
+
+- [create_schedule_for_changefeed_stmt](#create_schedule_for_changefeed_stmt)
+
+[cron_expr:](#cron_expr) <a id="cron_expr"/>
+
+<CronExpr />
+
+referenced by:
+
+- [alter_backup_schedule_cmd](#alter_backup_schedule_cmd)
+- [create_schedule_for_backup_stmt](#create_schedule_for_backup_stmt)
+- [create_schedule_for_changefeed_stmt](#create_schedule_for_changefeed_stmt)
+
+[opt_with_schedule_options:](#opt_with_schedule_options) <a id="opt_with_schedule_options"/>
+
+<OptWithScheduleOptions />
+
+referenced by:
+
+- [create_schedule_for_backup_stmt](#create_schedule_for_backup_stmt)
+- [create_schedule_for_changefeed_stmt](#create_schedule_for_changefeed_stmt)
+
+[opt_full_backup_clause:](#opt_full_backup_clause) <a id="opt_full_backup_clause"/>
+
+<OptFullBackupClause />
+
+referenced by:
+
+- [create_schedule_for_backup_stmt](#create_schedule_for_backup_stmt)
+
+[check_external_connection_options_list:](#check_external_connection_options_list) <a id="check_external_connection_options_list"/>
+
+<CheckExternalConnectionOptionsList />
+
+referenced by:
+
+- [opt_with_check_external_connection_options_list](#opt_with_check_external_connection_options_list)
+
+[cte_list:](#cte_list) <a id="cte_list"/>
+
+<CteList />
+
+referenced by:
+
+- [with_clause](#with_clause)
+
+[batch_param:](#batch_param) <a id="batch_param"/>
+
+<BatchParam />
+
+referenced by:
+
+- [batch_param_list](#batch_param_list)
+
+[opt_only:](#opt_only) <a id="opt_only"/>
+
+<OptOnly />
+
+referenced by:
+
+- [table_name_opt_idx](#table_name_opt_idx)
+- [table_ref](#table_ref)
+
+[opt_descendant:](#opt_descendant) <a id="opt_descendant"/>
+
+<OptDescendant />
+
+referenced by:
+
+- [from_list](#from_list)
+- [joined_table](#joined_table)
+- [table_clause](#table_clause)
+
+[sortby_list:](#sortby_list) <a id="sortby_list"/>
+
+<SortbyList />
+
+referenced by:
+
+- [single_sort_clause](#single_sort_clause)
+- [sort_clause](#sort_clause)
+
+[first_or_next:](#first_or_next) <a id="first_or_next"/>
+
+<FirstOrNext />
+
+referenced by:
+
+- [limit_clause](#limit_clause)
+- [offset_clause](#offset_clause)
+
+[row_or_rows:](#row_or_rows) <a id="row_or_rows"/>
+
+<RowOrRows />
+
+referenced by:
+
+- [drop_index_stmt](#drop_index_stmt)
+
+[table_name_list:](#table_name_list) <a id="table_name_list"/>
+
+<ViewNameList />
+
+referenced by:
+
+- [drop_table_stmt](#drop_table_stmt)
+- [opt_locked_rels](#opt_locked_rels)
+
+[view_name_list:](#view_name_list) <a id="view_name_list"/>
+
+<ViewNameList />
+
+referenced by:
+
+- [drop_view_stmt](#drop_view_stmt)
+
+[sequence_name_list:](#sequence_name_list) <a id="sequence_name_list"/>
+
+<ViewNameList />
+
+referenced by:
+
+- [drop_sequence_stmt](#drop_sequence_stmt)
+
+[non_reserved_word:](#non_reserved_word) <a id="non_reserved_word"/>
+
+<NonReservedWord />
+
+referenced by:
+
+- [explain_option_name](#explain_option_name)
+- [non_reserved_word_or_sconst](#non_reserved_word_or_sconst)
+
+[kv_option:](#kv_option) <a id="kv_option"/>
+
+<KvOption />
+
+referenced by:
+
+- [alter_backup_schedule_cmd](#alter_backup_schedule_cmd)
+- [kv_option_list](#kv_option_list)
+
+[column_name:](#column_name) <a id="column_name"/>
+
+<CursorName />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [column_table_def](#column_table_def)
+- [create_as_param](#create_as_param)
+- [create_as_table_defs](#create_as_table_defs)
+- [insert_column_item](#insert_column_item)
+- [single_set_clause](#single_set_clause)
+
+[session_var_parts:](#session_var_parts) <a id="session_var_parts"/>
+
+<SessionVarParts />
+
+referenced by:
+
+- [var_name](#var_name)
+
+[restore_options:](#restore_options) <a id="restore_options"/>
+
+<RestoreOptions />
+
+referenced by:
+
+- [restore_options_list](#restore_options_list)
+
+[scrub_option_list:](#scrub_option_list) <a id="scrub_option_list"/>
+
+<ScrubOptionList />
+
+referenced by:
+
+- [opt_scrub_options_clause](#opt_scrub_options_clause)
+
+[simple_select_clause:](#simple_select_clause) <a id="simple_select_clause"/>
+
+<SimpleSelectClause />
+
+referenced by:
+
+- [simple_select](#simple_select)
+
+[values_clause:](#values_clause) <a id="values_clause"/>
+
+<ValuesClause />
+
+referenced by:
+
+- [simple_select](#simple_select)
+
+[table_clause:](#table_clause) <a id="table_clause"/>
+
+<TableClause />
+
+referenced by:
+
+- [simple_select](#simple_select)
+
+[set_operation:](#set_operation) <a id="set_operation"/>
+
+<SetOperation />
+
+referenced by:
+
+- [simple_select](#simple_select)
+
+[for_locking_items:](#for_locking_items) <a id="for_locking_items"/>
+
+<ForLockingItems />
+
+referenced by:
+
+- [for_locking_clause](#for_locking_clause)
+
+[offset_clause:](#offset_clause) <a id="offset_clause"/>
+
+<OffsetClause />
+
+referenced by:
+
+- [select_limit](#select_limit)
+
+[generic_set:](#generic_set) <a id="generic_set"/>
+
+<GenericSet />
+
+referenced by:
+
+- [set_rest](#set_rest)
+
+[extra_var_value:](#extra_var_value) <a id="extra_var_value"/>
+
+<ExtraVarValue />
+
+referenced by:
+
+- [var_value](#var_value)
+
+[show_backup_options_list:](#show_backup_options_list) <a id="show_backup_options_list"/>
+
+<ShowBackupOptionsList />
+
+referenced by:
+
+- [opt_with_show_backup_options](#opt_with_show_backup_options)
+
+[targets_roles:](#targets_roles) <a id="targets_roles"/>
+
+<TargetsRoles />
+
+referenced by:
+
+- [opt_on_targets_roles](#opt_on_targets_roles)
+
+[show_job_options:](#show_job_options) <a id="show_job_options"/>
+
+<ShowJobOptions />
+
+referenced by:
+
+- [list_partition](#list_partition)
+- [opt_partition](#opt_partition)
+- [range_partition](#range_partition)
+
+[single_set_clause:](#single_set_clause) <a id="single_set_clause"/>
+
+<SingleSetClause />
+
+referenced by:
+
+- [set_clause](#set_clause)
+
+[multiple_set_clause:](#multiple_set_clause) <a id="multiple_set_clause"/>
+
+<MultipleSetClause />
+
+referenced by:
+
+- [set_clause](#set_clause)
+
+[type_function_name:](#type_function_name) <a id="type_function_name"/>
+
+<TypeFunctionName />
+
+referenced by:
+
+- [func_name](#func_name)
+- [param_name](#param_name)
+
+[sortby_no_index_list:](#sortby_no_index_list) <a id="sortby_no_index_list"/>
+
+<SortbyNoIndexList />
+
+referenced by:
+
+- [sort_clause_no_index](#sort_clause_no_index)
+
+[cockroachdb_extra_reserved_keyword:](#cockroachdb_extra_reserved_keyword) <a id="cockroachdb_extra_reserved_keyword"/>
+
+<CockroachdbExtraReservedKeyword />
+
+referenced by:
+
+- [non_reserved_word](#non_reserved_word)
+- [type_function_name](#type_function_name)
+- [unrestricted_name](#unrestricted_name)
+
+[reserved_keyword:](#reserved_keyword) <a id="reserved_keyword"/>
+
+<ReservedKeyword />
+
+referenced by:
+
+- [unrestricted_name](#unrestricted_name)
+
+[func_params:](#func_params) <a id="func_params"/>
+
+<FuncParams />
+
+referenced by:
+
+- [function_with_paramtypes](#function_with_paramtypes)
+
+[simple_typename:](#simple_typename) <a id="simple_typename"/>
+
+<SimpleTypename />
+
+referenced by:
+
+- [composite_type_list](#composite_type_list)
+- [typename](#typename)
+
+[opt_array_bounds:](#opt_array_bounds) <a id="opt_array_bounds"/>
+
+<OptArrayBounds2 />
+
+referenced by:
+
+- [transaction_mode](#transaction_mode)
+
+[transaction_user_priority:](#transaction_user_priority) <a id="transaction_user_priority"/>
+
+<TransactionUserPriority />
+
+referenced by:
+
+- [transaction_mode](#transaction_mode)
+
+[transaction_read_mode:](#transaction_read_mode) <a id="transaction_read_mode"/>
+
+<TransactionReadMode />
+
+referenced by:
+
+- [alter_onetable_stmt](#alter_onetable_stmt)
+
+[set_zone_config:](#set_zone_config) <a id="set_zone_config"/>
+
+<SetZoneConfig />
+
+referenced by:
+
+- [alter_database_set_zone_config_extension_stmt](#alter_database_set_zone_config_extension_stmt)
+- [alter_zone_database_stmt](#alter_zone_database_stmt)
+- [alter_zone_index_stmt](#alter_zone_index_stmt)
+- [alter_zone_partition_stmt](#alter_zone_partition_stmt)
+- [alter_zone_range_stmt](#alter_zone_range_stmt)
+- [alter_zone_table_stmt](#alter_zone_table_stmt)
+
+[locality:](#locality) <a id="locality"/>
+
+<Locality />
+
+referenced by:
+
+- [alter_table_locality_stmt](#alter_table_locality_stmt)
+- [opt_locality](#opt_locality)
+
+[alter_index_cmds:](#alter_index_cmds) <a id="alter_index_cmds"/>
+
+<AlterIndexCmds />
+
+referenced by:
+
+- [alter_oneindex_stmt](#alter_oneindex_stmt)
+
+[alter_index_visible:](#alter_index_visible) <a id="alter_index_visible"/>
+
+<AlterIndexVisible />
+
+referenced by:
+
+- [alter_sequence_options_stmt](#alter_sequence_options_stmt)
+- [opt_sequence_option_list](#opt_sequence_option_list)
+
+[region_name:](#region_name) <a id="region_name"/>
+
+<RegionName />
+
+referenced by:
+
+- [alter_database_add_region_stmt](#alter_database_add_region_stmt)
+- [alter_database_add_super_region](#alter_database_add_super_region)
+- [alter_database_alter_super_region](#alter_database_alter_super_region)
+- [alter_database_drop_region_stmt](#alter_database_drop_region_stmt)
+- [alter_database_drop_super_region](#alter_database_drop_super_region)
+- [alter_database_set_zone_config_extension_stmt](#alter_database_set_zone_config_extension_stmt)
+- [locality](#locality)
+- [primary_region_clause](#primary_region_clause)
+- [region_name_list](#region_name_list)
+- [secondary_region_clause](#secondary_region_clause)
+- [super_region_clause](#super_region_clause)
+
+[survival_goal_clause:](#survival_goal_clause) <a id="survival_goal_clause"/>
+
+<SurvivalGoalClause />
+
+referenced by:
+
+- [alter_database_survival_goal_stmt](#alter_database_survival_goal_stmt)
+- [opt_survival_goal_clause](#opt_survival_goal_clause)
+
+[primary_region_clause:](#primary_region_clause) <a id="primary_region_clause"/>
+
+<PrimaryRegionClause />
+
+referenced by:
+
+- [alter_database_primary_region_stmt](#alter_database_primary_region_stmt)
+- [opt_primary_region_clause](#opt_primary_region_clause)
+
+[placement_clause:](#placement_clause) <a id="placement_clause"/>
+
+<PlacementClause />
+
+referenced by:
+
+- [alter_database_add_super_region](#alter_database_add_super_region)
+- [alter_database_alter_super_region](#alter_database_alter_super_region)
+- [opt_regions_list](#opt_regions_list)
+- [super_region_clause](#super_region_clause)
+
+[secondary_region_clause:](#secondary_region_clause) <a id="secondary_region_clause"/>
+
+<SecondaryRegionClause />
+
+referenced by:
+
+- [alter_database_set_secondary_region_stmt](#alter_database_set_secondary_region_stmt)
+- [opt_secondary_region_clause](#opt_secondary_region_clause)
+
+[relocate_kw:](#relocate_kw) <a id="relocate_kw"/>
+
+<RelocateKw2 />
+
+referenced by:
+
+- [alter_changefeed_cmds](#alter_changefeed_cmds)
+
+[alter_backup_cmd:](#alter_backup_cmd) <a id="alter_backup_cmd"/>
+
+<AlterBackupCmd />
+
+referenced by:
+
+- [alter_backup_cmds](#alter_backup_cmds)
+
+[alter_func_opt_list:](#alter_func_opt_list) <a id="alter_func_opt_list"/>
+
+<AlterFuncOptList />
+
+referenced by:
+
+- [alter_func_options_stmt](#alter_func_options_stmt)
+
+[opt_restrict:](#opt_restrict) <a id="opt_restrict"/>
+
+<OptRestrict />
+
+referenced by:
+
+- [alter_backup_schedule_cmds](#alter_backup_schedule_cmds)
+
+[role_option:](#role_option) <a id="role_option"/>
+
+<RoleOption4 />
+
+referenced by:
+
+- [role_options](#role_options)
+
+[replication_options:](#replication_options) <a id="replication_options"/>
+
+<ReplicationOptions />
+
+referenced by:
+
+- [replication_options_list](#replication_options_list)
+
+[source_replication_options:](#source_replication_options) <a id="source_replication_options"/>
+
+<SourceReplicationOptions />
+
+referenced by:
+
+- [source_replication_options_list](#source_replication_options_list)
+
+[typed_literal:](#typed_literal) <a id="typed_literal"/>
+
+<TypedLiteral />
+
+referenced by:
+
+- [d_expr](#d_expr)
+
+[interval_value:](#interval_value) <a id="interval_value"/>
+
+<IntervalValue />
+
+referenced by:
+
+- [d_expr](#d_expr)
+
+[column_path_with_star:](#column_path_with_star) <a id="column_path_with_star"/>
+
+<ColumnPathWithStar />
+
+referenced by:
+
+- [d_expr](#d_expr)
+
+[func_expr:](#func_expr) <a id="func_expr"/>
+
+<FuncExpr />
+
+referenced by:
+
+- [d_expr](#d_expr)
+
+[labeled_row:](#labeled_row) <a id="labeled_row"/>
+
+<LabeledRow />
+
+referenced by:
+
+- [d_expr](#d_expr)
+
+[array_expr:](#array_expr) <a id="array_expr"/>
+
+<ArrayExpr />
+
+referenced by:
+
+- [array_expr_list](#array_expr_list)
+- [d_expr](#d_expr)
+
+[array_subscripts:](#array_subscripts) <a id="array_subscripts"/>
+
+<ArraySubscripts />
+
+referenced by:
+
+- [c_expr](#c_expr)
+
+[case_expr:](#case_expr) <a id="case_expr"/>
+
+<CaseExpr />
+
+referenced by:
+
+- [c_expr](#c_expr)
+
+[operator_op:](#operator_op) <a id="operator_op"/>
+
+<OperatorOp />
+
+referenced by:
+
+- [qual_op](#qual_op)
+
+[opt_expr_list:](#opt_expr_list) <a id="opt_expr_list"/>
+
+<OptExprList />
+
+referenced by:
+
+- [array_expr](#array_expr)
+- [row](#row)
+- [substr_list](#substr_list)
+
+[expr_tuple_unambiguous:](#expr_tuple_unambiguous) <a id="expr_tuple_unambiguous"/>
+
+<ExprTupleUnambiguous />
+
+referenced by:
+
+- [row](#row)
+
+[expr_tuple1_ambiguous:](#expr_tuple1_ambiguous) <a id="expr_tuple1_ambiguous"/>
+
+<OptArrayBounds />
+
+referenced by:
+
+- [in_expr](#in_expr)
+
+[all_op:](#all_op) <a id="all_op"/>
+
+<AllOp2 />
+
+referenced by:
+
+- [opt_super_region_clause](#opt_super_region_clause)
+
+[opt_name:](#opt_name) <a id="opt_name"/>
+
+<OptName />
+
+referenced by:
+
+- [opt_family_name](#opt_family_name)
+- [opt_index_name](#opt_index_name)
+
+[index_elem:](#index_elem) <a id="index_elem"/>
+
+<IndexElem />
+
+referenced by:
+
+- [index_params](#index_params)
+
+[opt_hash_sharded_bucket_count:](#opt_hash_sharded_bucket_count) <a id="opt_hash_sharded_bucket_count"/>
+
+<OptHashShardedBucketCount />
+
+referenced by:
+
+- [col_qualification_elem](#col_qualification_elem)
+- [opt_hash_sharded](#opt_hash_sharded)
+
+[storing:](#storing) <a id="storing"/>
+
+<Storing />
+
+referenced by:
+
+- [opt_partition_by](#opt_partition_by)
+- [opt_partition_by_index](#opt_partition_by_index)
+- [partition_by_index](#partition_by_index)
+- [partition_by_table](#partition_by_table)
+
+[storage_parameter_list:](#storage_parameter_list) <a id="storage_parameter_list"/>
+
+<StorageParameterList />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [opt_with_storage_parameter_list](#opt_with_storage_parameter_list)
+
+[table_elem_list:](#table_elem_list) <a id="table_elem_list"/>
+
+<TableElemList />
+
+referenced by:
+
+- [opt_table_elem_list](#opt_table_elem_list)
+
+[partition_by_table:](#partition_by_table) <a id="partition_by_table"/>
+
+<PartitionByTable />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [opt_partition_by_table](#opt_partition_by_table)
+
+[create_as_table_defs:](#create_as_table_defs) <a id="create_as_table_defs"/>
+
+<CreateAsTableDefs />
+
+referenced by:
+
+- [create_as_opt_col_list](#create_as_opt_col_list)
+
+[enum_val_list:](#enum_val_list) <a id="enum_val_list"/>
+
+<EnumValList2 />
+
+referenced by:
+
+- [opt_composite_type_list](#opt_composite_type_list)
+
+[routine_param_with_default_list:](#routine_param_with_default_list) <a id="routine_param_with_default_list"/>
+
+<RoutineParamWithDefaultList />
+
+referenced by:
+
+- [opt_routine_param_with_default_list](#opt_routine_param_with_default_list)
+
+[routine_param_type:](#routine_param_type) <a id="routine_param_type"/>
+
+<CastTarget />
+
+referenced by:
+
+- [routine_param](#routine_param)
+- [routine_return_type](#routine_return_type)
+- [table_func_column](#table_func_column)
+
+[create_routine_opt_list:](#create_routine_opt_list) <a id="create_routine_opt_list"/>
+
+<CreateRoutineOptList />
+
+referenced by:
+
+- [opt_create_routine_opt_list](#opt_create_routine_opt_list)
+
+[routine_return_stmt:](#routine_return_stmt) <a id="routine_return_stmt"/>
+
+<RoutineReturnStmt />
+
+referenced by:
+
+- [opt_routine_body](#opt_routine_body)
+- [routine_body_stmt](#routine_body_stmt)
+
+[routine_body_stmt_list:](#routine_body_stmt_list) <a id="routine_body_stmt_list"/>
+
+<RoutineBodyStmtList />
+
+referenced by:
+
+- [opt_routine_body](#opt_routine_body)
+
+[table_func_column:](#table_func_column) <a id="table_func_column"/>
+
+<TableFuncColumn />
+
+referenced by:
+
+- [table_func_column_list](#table_func_column_list)
+
+[trigger_event:](#trigger_event) <a id="trigger_event"/>
+
+<TriggerEvent />
+
+referenced by:
+
+- [trigger_event_list](#trigger_event_list)
+
+[trigger_transition_list:](#trigger_transition_list) <a id="trigger_transition_list"/>
+
+<TriggerTransitionList />
+
+referenced by:
+
+- [opt_trigger_transition_list](#opt_trigger_transition_list)
+
+[trigger_for_opt_each:](#trigger_for_opt_each) <a id="trigger_for_opt_each"/>
+
+<TriggerForOptEach />
+
+referenced by:
+
+- [trigger_func_args](#trigger_func_args)
+
+[create_stats_option:](#create_stats_option) <a id="create_stats_option"/>
+
+<CreateStatsOption />
+
+referenced by:
+
+- [create_stats_option_list](#create_stats_option_list)
+
+[opt_table_prefix:](#opt_table_prefix) <a id="opt_table_prefix"/>
+
+<OptTablePrefix />
+
+referenced by:
+
+- [changefeed_target](#changefeed_target)
+
+[target_name:](#target_name) <a id="target_name"/>
+
+<IndexName />
+
+referenced by:
+
+- [target_elem](#target_elem)
+
+[bare_col_label:](#bare_col_label) <a id="bare_col_label"/>
+
+<BareColLabel />
+
+referenced by:
+
+- [target_elem](#target_elem)
+
+[logical_replication_create_table_options:](#logical_replication_create_table_options) <a id="logical_replication_create_table_options"/>
+
+<LogicalReplicationCreateTableOptions />
+
+referenced by:
+
+- [logical_replication_create_table_options_list](#logical_replication_create_table_options_list)
+
+[check_external_connection_options:](#check_external_connection_options) <a id="check_external_connection_options"/>
+
+<ShowBackupConnectionOptions />
+
+referenced by:
+
+- [check_external_connection_options_list](#check_external_connection_options_list)
+
+[common_table_expr:](#common_table_expr) <a id="common_table_expr"/>
+
+<CommonTableExpr />
+
+referenced by:
+
+- [cte_list](#cte_list)
+
+[index_flags_param_list:](#index_flags_param_list) <a id="index_flags_param_list"/>
+
+<IndexFlagsParamList />
+
+referenced by:
+
+- [opt_index_flags](#opt_index_flags)
+
+[opt_ordinality:](#opt_ordinality) <a id="opt_ordinality"/>
+
+<OptOrdinality />
+
+referenced by:
+
+- [table_ref](#table_ref)
+
+[joined_table:](#joined_table) <a id="joined_table"/>
+
+<JoinedTable />
+
+referenced by:
+
+- [joined_table](#joined_table)
+- [table_ref](#table_ref)
+
+[alias_clause:](#alias_clause) <a id="alias_clause"/>
+
+<AliasClause />
+
+referenced by:
+
+- [opt_alias_clause](#opt_alias_clause)
+- [table_ref](#table_ref)
+
+[func_table:](#func_table) <a id="func_table"/>
+
+<FuncTable />
+
+referenced by:
+
+- [table_ref](#table_ref)
+
+[opt_func_alias_clause:](#opt_func_alias_clause) <a id="opt_func_alias_clause"/>
+
+<OptFuncAliasClause />
+
+referenced by:
+
+- [rowsfrom_item](#rowsfrom_item)
+- [table_ref](#table_ref)
+
+[row_source_extension_stmt:](#row_source_extension_stmt) <a id="row_source_extension_stmt"/>
+
+<RowSourceExtensionStmt />
+
+referenced by:
+
+- [table_ref](#table_ref)
+
+[sortby:](#sortby) <a id="sortby"/>
+
+<Sortby />
+
+referenced by:
+
+- [single_sort_clause](#single_sort_clause)
+- [sortby_list](#sortby_list)
+- [sortby_no_index_list](#sortby_no_index_list)
+
+[sortby_index:](#sortby_index) <a id="sortby_index"/>
+
+<SortbyIndex />
+
+referenced by:
+
+- [single_sort_clause](#single_sort_clause)
+- [sortby_list](#sortby_list)
+- [sortby_no_index_list](#sortby_no_index_list)
+
+[only_signed_fconst:](#only_signed_fconst) <a id="only_signed_fconst"/>
+
+<OnlySignedFconst />
+
+referenced by:
+
+- [sequence_name_list](#sequence_name_list)
+- [table_name_list](#table_name_list)
+- [view_name_list](#view_name_list)
+
+[scrub_option:](#scrub_option) <a id="scrub_option"/>
+
+<ScrubOption />
+
+referenced by:
+
+- [scrub_option_list](#scrub_option_list)
+
+[opt_all_clause:](#opt_all_clause) <a id="opt_all_clause"/>
+
+<OptAllClause />
+
+referenced by:
+
+- [simple_select_clause](#simple_select_clause)
+
+[from_clause:](#from_clause) <a id="from_clause"/>
+
+<FromClause />
+
+referenced by:
+
+- [simple_select_clause](#simple_select_clause)
+
+[group_clause:](#group_clause) <a id="group_clause"/>
+
+<GroupClause />
+
+referenced by:
+
+- [simple_select_clause](#simple_select_clause)
+
+[having_clause:](#having_clause) <a id="having_clause"/>
+
+<HavingClause />
+
+referenced by:
+
+- [simple_select_clause](#simple_select_clause)
+
+[window_clause:](#window_clause) <a id="window_clause"/>
+
+<WindowClause />
+
+referenced by:
+
+- [simple_select_clause](#simple_select_clause)
+
+[distinct_on_clause:](#distinct_on_clause) <a id="distinct_on_clause"/>
+
+<DistinctOnClause />
+
+referenced by:
+
+- [simple_select_clause](#simple_select_clause)
+
+[all_or_distinct:](#all_or_distinct) <a id="all_or_distinct"/>
+
+<AllOrDistinct />
+
+referenced by:
+
+- [for_locking_items](#for_locking_items)
+
+[var_list:](#var_list) <a id="var_list"/>
+
+<VarList />
+
+referenced by:
+
+- [generic_set](#generic_set)
+
+[show_backup_options:](#show_backup_options) <a id="show_backup_options"/>
+
+<ShowBackupOptions />
+
+referenced by:
+
+- [show_backup_options_list](#show_backup_options_list)
+
+[schema_wildcard:](#schema_wildcard) <a id="schema_wildcard"/>
+
+<SchemaWildcard />
+
+referenced by:
+
+- [targets_roles](#targets_roles)
+
+[type_func_name_no_crdb_extra_keyword:](#type_func_name_no_crdb_extra_keyword) <a id="type_func_name_no_crdb_extra_keyword"/>
+
+<TypeFuncNameNoCrdbExtraKeyword />
+
+referenced by:
+
+- [func_params](#func_params)
+
+[general_type_name:](#general_type_name) <a id="general_type_name"/>
+
+<GeneralTypeName />
+
+referenced by:
+
+- [complex_type_name](#complex_type_name)
+- [simple_typename](#simple_typename)
+
+[complex_type_name:](#complex_type_name) <a id="complex_type_name"/>
+
+<ComplexTypeName />
+
+referenced by:
+
+- [simple_typename](#simple_typename)
+
+[const_typename:](#const_typename) <a id="const_typename"/>
+
+<ConstTypename />
+
+referenced by:
+
+- [simple_typename](#simple_typename)
+- [typed_literal](#typed_literal)
+
+[interval_type:](#interval_type) <a id="interval_type"/>
+
+<IntervalType />
+
+referenced by:
+
+- [simple_typename](#simple_typename)
+
+[iso_level:](#iso_level) <a id="iso_level"/>
+
+<IsoLevel />
+
+referenced by:
+
+- [alter_table_cmds](#alter_table_cmds)
+
+[var_set_list:](#var_set_list) <a id="var_set_list"/>
+
+<VarSetList />
+
+referenced by:
+
+- [set_zone_config](#set_zone_config)
+
+[alter_index_cmd:](#alter_index_cmd) <a id="alter_index_cmd"/>
+
+<AlterIndexCmd />
+
+referenced by:
+
+- [alter_index_cmds](#alter_index_cmds)
+
+[sequence_option_elem:](#sequence_option_elem) <a id="sequence_option_elem"/>
+
+<SequenceOptionElem3 />
+
+referenced by:
+
+- [sequence_option_list](#sequence_option_list)
+
+[backup_kms:](#backup_kms) <a id="backup_kms"/>
+
+<BackupKms />
+
+referenced by:
+
+- [alter_backup_cmd](#alter_backup_cmd)
+
+[common_routine_opt_item:](#common_routine_opt_item) <a id="common_routine_opt_item"/>
+
+<CommonRoutineOptItem />
+
+referenced by:
+
+- [role_option](#role_option)
+
+[valid_until_clause:](#valid_until_clause) <a id="valid_until_clause"/>
+
+<ValidUntilClause />
+
+referenced by:
+
+- [role_option](#role_option)
+
+[subject_clause:](#subject_clause) <a id="subject_clause"/>
+
+<SubjectClause />
+
+referenced by:
+
+- [role_option](#role_option)
+
+[func_name_no_crdb_extra:](#func_name_no_crdb_extra) <a id="func_name_no_crdb_extra"/>
+
+<FuncNameNoCrdbExtra />
+
+referenced by:
+
+- [typed_literal](#typed_literal)
+
+[opt_interval_qualifier:](#opt_interval_qualifier) <a id="opt_interval_qualifier"/>
+
+<OptIntervalQualifier />
+
+referenced by:
+
+- [interval_value](#interval_value)
+
+[within_group_clause:](#within_group_clause) <a id="within_group_clause"/>
+
+<WithinGroupClause />
+
+referenced by:
+
+- [func_expr](#func_expr)
+
+[filter_clause:](#filter_clause) <a id="filter_clause"/>
+
+<FilterClause />
+
+referenced by:
+
+- [func_expr](#func_expr)
+
+[over_clause:](#over_clause) <a id="over_clause"/>
+
+<OverClause />
+
+referenced by:
+
+- [func_expr](#func_expr)
+
+[func_expr_common_subexpr:](#func_expr_common_subexpr) <a id="func_expr_common_subexpr"/>
+
+<FuncExprCommonSubexpr />
+
+referenced by:
+
+- [func_expr](#func_expr)
+- [func_expr_windowless](#func_expr_windowless)
+
+[array_expr_list:](#array_expr_list) <a id="array_expr_list"/>
+
+<ArrayExprList />
+
+referenced by:
+
+- [array_expr](#array_expr)
+
+[array_subscript:](#array_subscript) <a id="array_subscript"/>
+
+<ArraySubscript />
+
+referenced by:
+
+- [array_subscripts](#array_subscripts)
+
+[case_arg:](#case_arg) <a id="case_arg"/>
+
+<CaseArg />
+
+referenced by:
+
+- [case_expr](#case_expr)
+
+[when_clause_list:](#when_clause_list) <a id="when_clause_list"/>
+
+<WhenClauseList />
+
+referenced by:
+
+- [case_expr](#case_expr)
+
+[case_default:](#case_default) <a id="case_default"/>
+
+<CaseDefault />
+
+referenced by:
+
+- [case_expr](#case_expr)
+
+[tuple1_unambiguous_values:](#tuple1_unambiguous_values) <a id="tuple1_unambiguous_values"/>
+
+<Tuple1UnambiguousValues />
+
+referenced by:
+
+- [expr_tuple_unambiguous](#expr_tuple_unambiguous)
+
+[tuple1_ambiguous_values:](#tuple1_ambiguous_values) <a id="tuple1_ambiguous_values"/>
+
+<Tuple1AmbiguousValues />
+
+referenced by:
+
+- [expr_tuple1_ambiguous](#expr_tuple1_ambiguous)
+
+[func_expr_windowless:](#func_expr_windowless) <a id="func_expr_windowless"/>
+
+<FuncExprWindowless />
+
+referenced by:
+
+- [func_table](#func_table)
+- [index_elem](#index_elem)
+- [rowsfrom_item](#rowsfrom_item)
+
+[index_elem_options:](#index_elem_options) <a id="index_elem_options"/>
+
+<IndexElemOptions />
+
+referenced by:
+
+- [index_elem](#index_elem)
+
+[partition_by_inner:](#partition_by_inner) <a id="partition_by_inner"/>
+
+<PartitionByInner />
+
+referenced by:
+
+- [partition_by](#partition_by)
+- [partition_by_table](#partition_by_table)
+
+[storage_parameter:](#storage_parameter) <a id="storage_parameter"/>
+
+<StorageParameter />
+
+referenced by:
+
+- [storage_parameter_list](#storage_parameter_list)
+
+[table_elem:](#table_elem) <a id="table_elem"/>
+
+<TableElem />
+
+referenced by:
+
+- [table_elem_list](#table_elem_list)
+
+[create_as_col_qual_list:](#create_as_col_qual_list) <a id="create_as_col_qual_list"/>
+
+<CreateAsColQualList />
+
+referenced by:
+
+- [create_as_table_defs](#create_as_table_defs)
+
+[family_def:](#family_def) <a id="family_def"/>
+
+<FamilyDef />
+
+referenced by:
+
+- [create_as_table_defs](#create_as_table_defs)
+- [table_elem](#table_elem)
+
+[create_as_constraint_def:](#create_as_constraint_def) <a id="create_as_constraint_def"/>
+
+<CreateAsConstraintDef />
+
+referenced by:
+
+- [create_as_table_defs](#create_as_table_defs)
+
+[routine_param_with_default:](#routine_param_with_default) <a id="routine_param_with_default"/>
+
+<RoutineParamWithDefault />
+
+referenced by:
+
+- [routine_param_with_default_list](#routine_param_with_default_list)
+
+[create_routine_opt_item:](#create_routine_opt_item) <a id="create_routine_opt_item"/>
+
+<CreateRoutineOptItem />
+
+referenced by:
+
+- [create_routine_opt_list](#create_routine_opt_list)
+
+[routine_body_stmt:](#routine_body_stmt) <a id="routine_body_stmt"/>
+
+<RoutineBodyStmt />
+
+referenced by:
+
+- [routine_body_stmt_list](#routine_body_stmt_list)
+
+[param_name:](#param_name) <a id="param_name"/>
+
+<ParamName />
+
+referenced by:
+
+- [routine_param](#routine_param)
+- [table_func_column](#table_func_column)
+
+[trigger_transition:](#trigger_transition) <a id="trigger_transition"/>
+
+<TriggerTransition />
+
+referenced by:
+
+- [trigger_transition_list](#trigger_transition_list)
+
+[family_name:](#family_name) <a id="family_name"/>
+
+<CursorName />
+
+referenced by:
+
+- [col_qualification](#col_qualification)
+- [create_as_col_qualification](#create_as_col_qualification)
+- [opt_changefeed_family](#opt_changefeed_family)
+
+[bare_label_keywords:](#bare_label_keywords) <a id="bare_label_keywords"/>
+
+<BareLabelKeywords />
+
+referenced by:
+
+- [alias_clause](#alias_clause)
+- [common_table_expr](#common_table_expr)
+
+[materialize_clause:](#materialize_clause) <a id="materialize_clause"/>
+
+<MaterializeClause />
+
+referenced by:
+
+- [index_flags_param_list](#index_flags_param_list)
+
+[opt_join_hint:](#opt_join_hint) <a id="opt_join_hint"/>
+
+<OptJoinHint />
+
+referenced by:
+
+- [joined_table](#joined_table)
+
+[join_qual:](#join_qual) <a id="join_qual"/>
+
+<JoinQual />
+
+referenced by:
+
+- [joined_table](#joined_table)
+
+[rowsfrom_list:](#rowsfrom_list) <a id="rowsfrom_list"/>
+
+<RowsfromList />
+
+referenced by:
+
+- [func_table](#func_table)
+
+[func_alias_clause:](#func_alias_clause) <a id="func_alias_clause"/>
+
+<FuncAliasClause2 />
+
+referenced by:
+
+- [opt_func_alias_clause](#opt_func_alias_clause)
+
+[opt_asc_desc:](#opt_asc_desc) <a id="opt_asc_desc"/>
+
+<OptAscDesc />
+
+referenced by:
+
+- [group_clause](#group_clause)
+
+[window_definition_list:](#window_definition_list) <a id="window_definition_list"/>
+
+<WindowDefinitionList />
+
+referenced by:
+
+- [window_clause](#window_clause)
+
+[for_locking_strength:](#for_locking_strength) <a id="for_locking_strength"/>
+
+<ForLockingStrength />
+
+referenced by:
+
+- [for_locking_item](#for_locking_item)
+
+[opt_nowait_or_skip:](#opt_nowait_or_skip) <a id="opt_nowait_or_skip"/>
+
+<OptNowaitOrSkip />
+
+referenced by:
+
+- [schema_wildcard](#schema_wildcard)
+
+[routine_param:](#routine_param) <a id="routine_param"/>
+
+<RoutineParam />
+
+referenced by:
+
+- [func_params_list](#func_params_list)
+- [routine_param_with_default](#routine_param_with_default)
+
+[type_function_name_no_crdb_extra:](#type_function_name_no_crdb_extra) <a id="type_function_name_no_crdb_extra"/>
+
+<TypeFunctionNameNoCrdbExtra />
+
+referenced by:
+
+- [func_name_no_crdb_extra](#func_name_no_crdb_extra)
+- [general_type_name](#general_type_name)
+
+[numeric:](#numeric) <a id="numeric"/>
+
+<Numeric />
+
+referenced by:
+
+- [const_typename](#const_typename)
+
+[bit_without_length:](#bit_without_length) <a id="bit_without_length"/>
+
+<BitWithoutLength />
+
+referenced by:
+
+- [const_typename](#const_typename)
+
+[character_without_length:](#character_without_length) <a id="character_without_length"/>
+
+<CharacterWithoutLength />
+
+referenced by:
+
+- [const_typename](#const_typename)
+
+[character_with_length:](#character_with_length) <a id="character_with_length"/>
+
+<CharacterWithLength />
+
+referenced by:
+
+- [const_typename](#const_typename)
+
+[const_datetime:](#const_datetime) <a id="const_datetime"/>
+
+<ConstDatetime />
+
+referenced by:
+
+- [const_typename](#const_typename)
+
+[const_geo:](#const_geo) <a id="const_geo"/>
+
+<ConstGeo />
+
+referenced by:
+
+- [const_typename](#const_typename)
+
+[const_vector:](#const_vector) <a id="const_vector"/>
+
+<ConstVector />
+
+referenced by:
+
+- [interval_type](#interval_type)
+- [opt_interval_qualifier](#opt_interval_qualifier)
+
+[opt_column:](#opt_column) <a id="opt_column"/>
+
+<OptColumn />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [table_elem](#table_elem)
+
+[alter_column_default:](#alter_column_default) <a id="alter_column_default"/>
+
+<AlterColumnDefault />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+
+[alter_column_on_update:](#alter_column_on_update) <a id="alter_column_on_update"/>
+
+<AlterColumnOnUpdate />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+
+[alter_column_visible:](#alter_column_visible) <a id="alter_column_visible"/>
+
+<AlterColumnVisible />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+
+[opt_set_data:](#opt_set_data) <a id="opt_set_data"/>
+
+<OptSetData />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+
+[opt_alter_column_using:](#opt_alter_column_using) <a id="opt_alter_column_using"/>
+
+<OptAlterColumnUsing />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+
+[table_constraint:](#table_constraint) <a id="table_constraint"/>
+
+<TableConstraint />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [table_elem](#table_elem)
+
+[opt_validate_behavior:](#opt_validate_behavior) <a id="opt_validate_behavior"/>
+
+<OptValidateBehavior />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+- [table_constraint](#table_constraint)
+
+[audit_mode:](#audit_mode) <a id="audit_mode"/>
+
+<AuditMode />
+
+referenced by:
+
+- [alter_table_cmd](#alter_table_cmd)
+
+[table_rls_mode:](#table_rls_mode) <a id="table_rls_mode"/>
+
+<TableRlsMode />
+
+referenced by:
+
+- [alter_index_cmd](#alter_index_cmd)
+
+[single_sort_clause:](#single_sort_clause) <a id="single_sort_clause"/>
+
+<SingleSortClause />
+
+referenced by:
+
+- [within_group_clause](#within_group_clause)
+
+[window_specification:](#window_specification) <a id="window_specification"/>
+
+<WindowSpecification />
+
+referenced by:
+
+- [over_clause](#over_clause)
+- [window_definition](#window_definition)
+
+[window_name:](#window_name) <a id="window_name"/>
+
+<CursorName />
+
+referenced by:
+
+- [over_clause](#over_clause)
+- [window_definition](#window_definition)
+
+[special_function:](#special_function) <a id="special_function"/>
+
+<SpecialFunction />
+
+referenced by:
+
+- [func_expr_common_subexpr](#func_expr_common_subexpr)
+
+[opt_slice_bound:](#opt_slice_bound) <a id="opt_slice_bound"/>
+
+<CaseArg />
+
+referenced by:
+
+- [array_subscript](#array_subscript)
+
+[when_clause:](#when_clause) <a id="when_clause"/>
+
+<WhenClause />
+
+referenced by:
+
+- [when_clause_list](#when_clause_list)
+
+[opt_class:](#opt_class) <a id="opt_class"/>
+
+<OptName />
+
+referenced by:
+
+- [index_elem_options](#index_elem_options)
+
+[list_partitions:](#list_partitions) <a id="list_partitions"/>
+
+<ListPartitions />
+
+referenced by:
+
+- [partition_by_inner](#partition_by_inner)
+
+[range_partitions:](#range_partitions) <a id="range_partitions"/>
+
+<RangePartitions />
+
+referenced by:
+
+- [partition_by_inner](#partition_by_inner)
+
+[storage_parameter_key:](#storage_parameter_key) <a id="storage_parameter_key"/>
+
+<RegionName />
+
+referenced by:
+
+- [storage_parameter](#storage_parameter)
+- [storage_parameter_key_list](#storage_parameter_key_list)
+
+[index_def:](#index_def) <a id="index_def"/>
+
+<IndexDef />
+
+referenced by:
+
+- [table_elem](#table_elem)
+
+[like_table_option_list:](#like_table_option_list) <a id="like_table_option_list"/>
+
+<LikeTableOptionList />
+
+referenced by:
+
+- [table_elem](#table_elem)
+
+[create_as_col_qualification:](#create_as_col_qualification) <a id="create_as_col_qualification"/>
+
+<CreateAsColQualification />
+
+referenced by:
+
+- [create_as_col_qual_list](#create_as_col_qual_list)
+
+[opt_family_name:](#opt_family_name) <a id="opt_family_name"/>
+
+<OptUnique />
+
+referenced by:
+
+- [family_def](#family_def)
+
+[create_as_constraint_elem:](#create_as_constraint_elem) <a id="create_as_constraint_elem"/>
+
+<CreateAsConstraintElem />
+
+referenced by:
+
+- [create_as_constraint_def](#create_as_constraint_def)
+
+[opt_link_sym:](#opt_link_sym) <a id="opt_link_sym"/>
+
+<NameList />
+
+referenced by:
+
+- [opt_col_def_list_no_types](#opt_col_def_list_no_types)
+
+[join_outer:](#join_outer) <a id="join_outer"/>
+
+<JoinOuter />
+
+referenced by:
+
+- [rowsfrom_list](#rowsfrom_list)
+
+[opt_col_def_list:](#opt_col_def_list) <a id="opt_col_def_list"/>
+
+<OptColDefList />
+
+referenced by:
+
+- [func_alias_clause](#func_alias_clause)
+
+[group_by_item:](#group_by_item) <a id="group_by_item"/>
+
+<OptTimezone />
+
+referenced by:
+
+- [group_by_list](#group_by_list)
+
+[window_definition:](#window_definition) <a id="window_definition"/>
+
+<WindowDefinition />
+
+referenced by:
+
+- [window_definition_list](#window_definition_list)
+
+[routine_param_class:](#routine_param_class) <a id="routine_param_class"/>
+
+<OptFloat />
+
+referenced by:
+
+- [character_with_length](#character_with_length)
+- [character_without_length](#character_without_length)
+
+[opt_timezone:](#opt_timezone) <a id="opt_timezone"/>
+
+<OptTimezone2 />
+
+referenced by:
+
+- [column_table_def](#column_table_def)
+
+[identity_option_elem:](#identity_option_elem) <a id="identity_option_elem"/>
+
+<IdentityOptionElem2 />
+
+referenced by:
+
+- [identity_option_list](#identity_option_list)
+
+[key_match:](#key_match) <a id="key_match"/>
+
+<KeyMatch />
+
+referenced by:
+
+- [col_qualification_elem](#col_qualification_elem)
+- [constraint_elem](#constraint_elem)
+
+[opt_existing_window_name:](#opt_existing_window_name) <a id="opt_existing_window_name"/>
+
+<OptName />
+
+referenced by:
+
+- [window_specification](#window_specification)
+
+[opt_partition_clause:](#opt_partition_clause) <a id="opt_partition_clause"/>
+
+<OptPartitionClause />
+
+referenced by:
+
+- [window_specification](#window_specification)
+
+[opt_frame_clause:](#opt_frame_clause) <a id="opt_frame_clause"/>
+
+<OptFrameClause />
+
+referenced by:
+
+- [window_specification](#window_specification)
+
+[extract_list:](#extract_list) <a id="extract_list"/>
+
+<ExtractList />
+
+referenced by:
+
+- [special_function](#special_function)
+
+[overlay_list:](#overlay_list) <a id="overlay_list"/>
+
+<OverlayList />
+
+referenced by:
+
+- [special_function](#special_function)
+
+[position_list:](#position_list) <a id="position_list"/>
+
+<PositionList />
+
+referenced by:
+
+- [special_function](#special_function)
+
+[substr_list:](#substr_list) <a id="substr_list"/>
+
+<SubstrList />
+
+referenced by:
+
+- [special_function](#special_function)
+
+[trim_list:](#trim_list) <a id="trim_list"/>
+
+<TrimList />
+
+referenced by:
+
+- [special_function](#special_function)
+
+[list_partition:](#list_partition) <a id="list_partition"/>
+
+<ListPartition />
+
+referenced by:
+
+- [list_partitions](#list_partitions)
+
+[range_partition:](#range_partition) <a id="range_partition"/>
+
+<RangePartition />
+
+referenced by:
+
+- [range_partitions](#range_partitions)
+
+[like_table_option:](#like_table_option) <a id="like_table_option"/>
+
+<LikeTableOption />
+
+referenced by:
+
+- [create_as_col_qualification](#create_as_col_qualification)
+
+[create_as_params:](#create_as_params) <a id="create_as_params"/>
+
+<CreateAsParams />
+
+referenced by:
+
+- [create_as_constraint_elem](#create_as_constraint_elem)
+
+[col_def_list:](#col_def_list) <a id="col_def_list"/>
+
+<ColDefList />
+
+referenced by:
+
+- [opt_col_def_list](#opt_col_def_list)
+
+[char_aliases:](#char_aliases) <a id="char_aliases"/>
+
+<CharAliases />
+
+referenced by:
+
+- [col_qual_list](#col_qual_list)
+
+[reference_on_update:](#reference_on_update) <a id="reference_on_update"/>
+
+<ReferenceOnUpdate />
+
+referenced by:
+
+- [reference_actions](#reference_actions)
+
+[reference_on_delete:](#reference_on_delete) <a id="reference_on_delete"/>
+
+<ReferenceOnDelete />
+
+referenced by:
+
+- [reference_actions](#reference_actions)
+
+[frame_extent:](#frame_extent) <a id="frame_extent"/>
+
+<FrameExtent />
+
+referenced by:
+
+- [opt_frame_clause](#opt_frame_clause)
+
+[opt_frame_exclusion:](#opt_frame_exclusion) <a id="opt_frame_exclusion"/>
+
+<OptFrameExclusion />
+
+referenced by:
+
+- [overlay_list](#overlay_list)
+
+[substr_from:](#substr_from) <a id="substr_from"/>
+
+<SubstrFrom />
+
+referenced by:
+
+- [overlay_list](#overlay_list)
+- [substr_list](#substr_list)
+
+[substr_for:](#substr_for) <a id="substr_for"/>
+
+<SubstrFor />
+
+referenced by:
+
+- [overlay_list](#overlay_list)
+- [substr_list](#substr_list)
+
+[opt_partition_by:](#opt_partition_by) <a id="opt_partition_by"/>
+
+<OptPartitionBy />
+
+referenced by:
+
+- [list_partition](#list_partition)
+- [range_partition](#range_partition)
+
+[create_as_param:](#create_as_param) <a id="create_as_param"/>
+
+<CreateAsParam />
+
+referenced by:
+
+- [create_as_params](#create_as_params)
+
+[col_def:](#col_def) <a id="col_def"/>
+
+<ColDef2 />
+
+referenced by:
+
+- [col_def_list](#col_def_list)
+
+[col_qualification_elem:](#col_qualification_elem) <a id="col_qualification_elem"/>
+
+<ColQualificationElem />
+
+referenced by:
+
+- [col_qualification](#col_qualification)
+
+[reference_action:](#reference_action) <a id="reference_action"/>
+
+<FrameBound />
+
+referenced by:
+
+- [frame_extent](#frame_extent)
+
+[opt_name_parens:](#opt_name_parens) <a id="opt_name_parens"/>
+
+<OptNameParens />
+
+referenced by:
+
+- [col_qualification_elem](#col_qualification_elem)
+
+[generated_as:](#generated_as) <a id="generated_as"/>
+
+<GeneratedAs />
+
+referenced by:
+
+- [col_qualification_elem](#col_qualification_elem)
+
+generated by [Railroad Diagram Generator](http://www.bottlecaps.de/rr/ui)

@@ -1,0 +1,392 @@
+---
+title: "Troubleshoot Lock Contention"
+old_description: "This tutorial presents how to understand lock contention, how to identify waiting and blocking transactions, and possible ways to remediate lock contention."
+---
+
+Lock contention is a type of [transaction contention](/docs/v26.1/performance-best-practices-overview#transaction-contention) that occurs when a [transaction](/docs/v26.1/transactions) is unable to complete due to another concurrent or recent transaction attempting to write to the same data. Lock contention may be the cause of [slow SQL query performance](/docs/v26.1/eventlog#sql-slow-query-log).
+
+This tutorial presents:
+
+- How to [understand lock contention](#step-1-understand-lock-contention) by reproducing a basic example.
+- How to [identify waiting and blocking transactions](#step-2-identify-waiting-and-blocking-transactions) by using the Insights page of the DB Console.
+- Possible ways to [remediate lock contention](#step-3-remediate-lock-contention).
+
+## Before you begin
+
+[Download](/docs/releases) and [Install CockroachDB](/docs/v26.1/install-cockroachdb).
+
+The examples in this tutorial will use three terminals, one for each transaction.
+
+### Terminal 1
+
+In the first terminal, use the [`cockroach demo`](/docs/v26.1/cockroach-demo) command to start a temporary, in-memory CockroachDB cluster of one node.
+
+```shell
+cockroach demo --no-example-database
+```
+
+It will open an interactive SQL shell to the cluster set to an empty database called `defaultdb`. This database is used for testing and some internal databases.
+
+To distinguish each terminal that you'll use in this tutorial, set the `application_name`:
+
+```sql
+SET application_name = 'Transaction 1';  -- to distinguish between transactions
+```
+
+To [connect additional SQL clients to the demo cluster](/docs/v26.1/cockroach-demo#connect-an-additional-sql-client-to-the-demo-cluster), run:
+
+```sql
+\demo ls
+```
+
+The output will list the connection parameters in the demo cluster:
+
+```text
+demo@127.0.0.1:26257/defaultdb> \demo ls
+node 1:
+   (webui)    http://127.0.0.1:8080/demologin?password=demo28806&username=demo
+   (cli)      cockroach sql --certs-dir=/Users/myuser/.cockroach-demo -u demo -d defaultdb
+```
+
+### Terminal 2
+
+In a second terminal, open another SQL shell to the demo cluster using the `cli` command from the `\demo ls` output:
+
+```shell
+cockroach sql --certs-dir=/Users/myuser/.cockroach-demo -u demo -d defaultdb
+```
+
+In the second SQL shell, set `application_name`:
+
+```sql
+SET application_name = 'Transaction 2';  -- to distinguish between transactions
+```
+
+### Terminal 3
+
+In a third terminal, open another SQL shell to the demo cluster using the `cli` command from the `\demo ls` output:
+
+```shell
+cockroach sql --certs-dir=/Users/myuser/.cockroach-demo -u demo -d defaultdb
+```
+
+In the third SQL shell, set `application_name`:
+
+```sql
+SET application_name = 'Transaction 3';  -- to distinguish between transactions
+```
+
+### DB Console
+
+In a web browser, open the DB Console to the demo cluster using the `webui` address from the `\demo ls` output:
+
+```text
+http://127.0.0.1:8080/demologin?password=demo28806&username=demo
+```
+
+## Step 1. Understand lock contention
+
+In this step, you'll load some initial data to prepare the table for a set of transactions that will cause lock contention.
+
+### Initial Data
+
+In any of the SQL shells, create a table and insert some data:
+
+```sql
+DROP TABLE IF EXISTS t;
+CREATE TABLE t (k INT PRIMARY KEY, v INT);
+INSERT INTO t VALUES (1,1), (2,2), (3,3);
+```
+
+### Example 1
+
+In this example, *Transaction 1* is a write that blocks both *Transaction 2* and *Transaction 3*. *Transaction 2* is a read, and *Transaction 3* is a write. *Transaction 1* locks key `k=2`. When *Transaction 2* tries to read key `k=2`, it experiences lock contention and waits for the lock on the key to be released. Similarly, when *Transaction 3* tries to write to key `k=2`, it experiences lock contention and waits for the lock on the key to be released.
+
+<table><thead><tr><th>Transaction 1 (blocking write)</th><th>Transaction 2 (waiting read)</th><th>Transaction 3 (waiting write)</th></tr></thead><tbody><tr><td><code>BEGIN;</code></td><td></td><td></td></tr><tr><td><code>UPDATE t SET v=2012 WHERE k=2;</code></td><td><code>BEGIN;</code></td><td></td></tr><tr><td>lock k=2</td><td><code>SELECT &#42; FROM t WHERE k=2;</code></td><td><code>BEGIN;</code></td></tr><tr><td></td><td>waiting</td><td><code>UPDATE t SET v=2032 WHERE k=2;</code></td></tr><tr><td></td><td></td><td>waiting</td></tr><tr><td><code>COMMIT;</code></td><td>unblocked to proceed</td><td>unblocked to proceed</td></tr><tr><td>success, k=2,v=2012</td><td>k=2, v=2012</td><td></td></tr><tr><td></td><td><code>COMMIT;</code></td><td><code>COMMIT;</code></td></tr><tr><td></td><td>success</td><td>success</td></tr><tr><td></td><td></td><td><code>SELECT &#42; FROM t WHERE k=2;</code></td></tr><tr><td></td><td></td><td>k=2, v=2032</td></tr></tbody></table>
+
+### SQL statements
+
+To reproduce Example 1 in CockroachDB in preparation for the next section on how to [identify waiting and blocking transactions](#step-2-identify-waiting-and-blocking-transactions), execute the following SQL statements in the given order in the specified terminal.
+
+**Terminal 1**
+
+```sql
+BEGIN;
+UPDATE t SET v=2012 WHERE k=2; -- lock k=2
+```
+
+**Terminal 2**
+
+```sql
+BEGIN;
+SELECT * FROM t WHERE k=2; -- waiting read
+```
+
+**Terminal 3**
+
+```sql
+BEGIN;
+UPDATE t SET v=2032 WHERE k=2; -- waiting write
+```
+
+**Terminal 1**
+
+```sql
+COMMIT;
+```
+
+**Terminal 2**
+
+When *Transaction 1* releases key `k=2`, *Transaction 2* should output the following:
+
+```text
+  k |  v
+----+-------
+  2 | 2012
+(1 row)
+```
+
+`COMMIT` Transaction 2:
+
+```sql
+COMMIT;
+```
+
+**Terminal 3**
+
+`COMMIT` Transaction 3 and verify that the `UPDATE` has succeeded:
+
+```sql
+COMMIT;
+SELECT * FROM t where k=2;
+```
+
+The `SELECT` statement should output the following:
+
+```text
+  k |  v
+----+-------
+  2 | 2032
+(1 row)
+```
+
+## Step 2. Identify waiting and blocking transactions
+
+This section of the tutorial uses the [**Insights** page](/docs/v26.1/ui-insights-page#transaction-executions-view) of the DB Console to identify waiting and blocked transactions in the demo cluster. With a CockroachDB Cloud cluster, the Cloud Console has a similar [**Insights** page](/docs/stable/cockroachcloud/insights-page#transaction-executions-view). You can also use the [`crdb_internal`](/docs/v26.1/performance-recipes#identify-transactions-and-objects-that-experienced-lock-contention) system catalog to view tables and indexes that experienced contention.
+
+This step assumes you have already run the SQL statements from [Example 1](#example-1). When troubleshooting lock contention in your own workload, you can adapt the following steps using the DB Console or the Cloud Console.
+
+### High Contention Insights
+
+After executing the transactions in the [previous section](#step-1-understand-lock-contention), open the [DB Console](#db-console) for the demo cluster. Navigate to the **Insights** page and select **Workload Insights** &gt; **Transactions Executions**.
+
+<Frame>
+  ![Transaction Executions view](/images/v26.1/troubleshoot-lock-contention-transaction-executions-view.png)
+</Frame>
+
+Depending on when you [executed the transactions](#example-1), to display the transactions flagged with insights, you may have to select a longer time interval, such as **Past 6 Hours**.
+
+<Frame>
+  ![Time interval](/images/v26.1/troubleshoot-lock-contention-time-interval.png)
+</Frame>
+
+With an adequate time interval, two [**High Contention**](/docs/v26.1/ui-insights-page#high-contention) insights will be listed for [Example 1](#example-1):
+
+- **Transaction 2**
+- **Transaction 3**
+
+<Frame>
+  ![High Contention](/images/v26.1/troubleshoot-lock-contention-high-contention.png)
+</Frame>
+
+### Waiting statement
+
+To identify the exact statement in the transaction that experienced high contention, click the value in the **Latest Transaction Execution ID** column that corresponds to the ID of the latest execution with the given [transaction fingerprint](/docs/v26.1/ui-transactions-page).
+
+On the **Transaction Execution** page, navigate to the **Statement Executions** tab. In the list of statement executions, in the **Insights** column for `SELECT * FROM t where k = _`, there should be the **High Contention** insight. In [Example 1](#example-1), *Transaction 2* had one statement (other than `SHOW database`). In a transaction with multiple statements, use this page to pinpoint the exact statement that experienced high contention.
+
+<Frame>
+  ![Waiting statement](/images/v26.1/troubleshoot-lock-contention-waiting-statement.png)
+</Frame>
+
+### Blocking transaction
+
+To identify the transaction that blocked **Transaction 2** and caused it to experience high contention, navigate back to the **Overview** tab.
+
+<Frame>
+  ![Overview tab](/images/v26.1/troubleshoot-lock-contention-overview-tab.png)
+</Frame>
+
+Scroll to the bottom of the Overview tab to the **Transaction with ID... waited on** section that gives information about the blocking transaction.
+
+<Frame>
+  ![Blocking transaction](/images/v26.1/troubleshoot-lock-contention-blocking-transaction.png)
+</Frame>
+
+For more information about the blocking transaction, click the **Transaction Fingerprint ID** to open the [**Transaction Details** page](/docs/v26.1/ui-transactions-page#transaction-details-page).
+
+<Frame>
+  ![Blocking transaction details](/images/v26.1/troubleshoot-lock-contention-blocking-transaction-details.png)
+</Frame>
+
+### Additional practice
+
+For [*Transaction 3*](#example-1), take steps similar to *Transaction 2* in order to identify the waiting statement that experienced high contention and the corresponding blocking transaction.
+
+## Step 3. Remediate lock contention
+
+### Background context
+
+Locking conflicts are a natural artifact when business requirements call for concurrent data changes. Realistically, locking conflicts are unavoidable.
+
+Remediation is required when locking conflicts are too numerous, resulting in either a significant increase in response time or decrease in throughput or both. Remediation of locking conflicts is typically about giving up some functionality in exchange for a reduction in locking contention. [Example 2](#example-2) uses two ways of doing this: [historical queries](/docs/v26.1/as-of-system-time) and a ["fail fast" method](/docs/v26.1/select-for-update#wait-policies). Use these remediations if they fit your application design.
+
+### Historical queries
+
+One way to reduce lock contention is to replace reads with historical reads using [`AS OF SYSTEM TIME`](/docs/v26.1/as-of-system-time) wherever possible. Using this, your query returns data as it appeared at a distinct point in the past and will not cause conflicts with other concurrent transactions, which can increase your application's performance. An example of this method is *Transaction 5* in [Example 2](#example-2):
+
+```sql
+BEGIN AS OF SYSTEM TIME '-30s';
+SELECT * FROM t2 WHERE k=4; -- historical read
+COMMIT;
+```
+
+Consider the following when using [historical queries](/docs/v26.1/as-of-system-time):
+
+- Use historical queries only if the application can use data that is [`follower_read_timestamp()`](/docs/v26.1/as-of-system-time#parameters) old.
+- Historical queries primarily benefit read-only transactions.
+- Historical queries operate below [closed timestamps](/docs/v26.1/architecture/transaction-layer#closed-timestamps) and therefore have perfect concurrency characteristics - they never wait on anything and never block anything.
+- Historical queries have the best possible performance, since they are served by the nearest [replica](/docs/v26.1/architecture/glossary#replica).
+
+### Randomize transaction anchor keys for large batched updates or inserts
+
+In some workloads with large batched [`UPDATE`](/docs/v26.1/update) or [`INSERT`](/docs/v26.1/insert) transactions, many concurrent transactions can end up with their [transaction records](/docs/v26.1/architecture/transaction-layer#transaction-records) colocated on the same [range](/docs/v26.1/architecture/glossary#range). The [leaseholder](/docs/v26.1/architecture/overview#architecture-leaseholder) for that range must coordinate [intent resolution](/docs/v26.1/architecture/transaction-layer#write-intents) for all of those transactions, and can become a [hotspot](/docs/v26.1/understand-hotspots) even if the actual user data being modified is well-distributed.
+
+When troubleshooting contention or hotspots that you have confirmed are due to transaction record placement (for example, using the guidance in [Monitor and analyze transaction contention](/docs/v26.1/monitor-and-analyze-transaction-contention)), you can experiment with enabling the cluster setting [`kv.transaction.randomized_anchor_key.enabled`](/docs/v26.1/cluster-settings#setting-kv-transaction-randomized-anchor-key-enabled).
+
+When set to `true`, this setting randomizes a transaction's *anchor key* (the key where its transaction record is stored). This can spread transaction records across ranges and reduce hotspots for large batched update or insert workloads.
+
+Consider the following when using this setting:
+
+- It is primarily useful for workloads that issue large batched updates or inserts and show clear evidence of transaction-record hotspotting.
+- It does **not** change which user data rows are read or written; it only affects where the transaction record (metadata) is stored.
+- Treat this as a tuning and troubleshooting knob: enable it only after identifying transaction-record hotspots, and compare contention and latency metrics before and after the change.
+- If enabling the setting does not improve the hotspot symptoms, or if it has unintended side effects, you can disable it again with:
+
+```sql
+  SET CLUSTER SETTING kv.transaction.randomized_anchor_key.enabled = false;
+```
+
+### "Fail fast" method
+
+One way to reduce lock contention with writes is to use a "fail fast" method by using [SELECT FOR UPDATE... NOWAIT](/docs/v26.1/select-for-update#wait-policies) before the write. It can reduce or prevent failures late in a transaction's life (e.g. at the `COMMIT` time), by returning an error early in a contention situation if a row cannot be locked immediately. An example of this method is *Transaction 6* in [Example 2](#example-2):
+
+```sql
+BEGIN;
+SELECT * FROM t2 WHERE k=4 FOR UPDATE NOWAIT; -- fail fast write
+UPDATE t2 SET v=4034 WHERE k=4;
+COMMIT;
+```
+
+"Fail fast" could be a reasonable protective measure in the application to handle "hot update key" situations, for example, when an application needs to be able to handle an arbitrarily large surge of updates on the same key.
+
+### Initial Data for Example 2
+
+In any of the SQL shells, create a second table and insert some data:
+
+```sql
+DROP TABLE IF EXISTS t2;
+CREATE TABLE t2 (k INT PRIMARY KEY, v INT);
+INSERT INTO t2 VALUES (4,4), (5,5), (6,6);
+```
+
+### Example 2
+
+This example will show how to prevent lock contention by using a historical read and a "fail fast" write. *Transaction 4* is a write that does not block either *Transaction 5*, a read, or *Transaction 6*, a write. *Transaction 4* locks key `k=4`. When *Transaction 5* tries to read key `k=4`, it does not experience lock contention because it does not have to wait for the lock on the key to be released. *Transaction 5* uses [`AS OF SYSTEM TIME`](/docs/v26.1/as-of-system-time) to do a historical read. When *Transaction 6* executes the [`SELECT... FOR UPDATE NOWAIT`](/docs/v26.1/select-for-update#wait-policies) on key `k=4`, an error is returned since the key `k=4` cannot be locked immediately. In other words, *Transaction 6* "fails fast". It does not even attempt to do an `UPDATE` write to key `k=4`, so it does not experience lock contention.
+
+<table><thead><tr><th>Transaction 4 (blocking write)</th><th>Transaction 5 (historical read)</th><th>Transaction 6 (fail fast write)</th></tr></thead><tbody><tr><td><code>BEGIN;</code></td><td></td><td></td></tr><tr><td><code>UPDATE t2 SET v=4014 WHERE k=4;</code></td><td><code>BEGIN AS OF SYSTEM TIME '-30s';</code></td><td></td></tr><tr><td>lock k=4</td><td><code>SELECT &#42; FROM t2 WHERE k=4;</code></td><td><code>BEGIN;</code></td></tr><tr><td></td><td>not waiting</td><td><code>SELECT &#42; FROM t2 WHERE k=4 FOR UPDATE NOWAIT;</code></td></tr><tr><td></td><td>k=4,v=4</td><td>error: could not obtain lock</td></tr><tr><td><code>COMMIT;</code></td><td></td><td><code>UPDATE t2 SET v=4034 WHERE k=4;</code></td></tr><tr><td>success, k=4,v=4014</td><td></td><td>not waiting</td></tr><tr><td></td><td><code>COMMIT;</code></td><td><code>COMMIT;</code></td></tr><tr><td></td><td>success</td><td>failure</td></tr><tr><td></td><td></td><td><code>SELECT &#42; FROM t2 WHERE k=4;</code></td></tr><tr><td></td><td></td><td>k=4, v=4014</td></tr></tbody></table>
+
+### SQL statements for Example 2
+
+To reproduce Example 2, execute the following SQL statements in the given order in the specified terminal.
+
+**Terminal 1**
+
+```sql
+SET application_name = 'Transaction 4';  -- to distinguish between transactions
+BEGIN;
+UPDATE t2 SET v=4014 WHERE k=4; -- lock k=4
+```
+
+**Terminal 2**
+
+```sql
+SET application_name = 'Transaction 5';  -- to distinguish between transactions
+BEGIN AS OF SYSTEM TIME '-30s';
+SELECT * FROM t2 WHERE k=4; -- historical read
+```
+
+*Transaction 5* does a historical read and should output the following:
+
+```text
+  k | v
+----+----
+  4 | 4
+(1 row)
+```
+
+**Terminal 3**
+
+```sql
+SET application_name = 'Transaction 6';  -- to distinguish between transactions
+BEGIN;
+SELECT * FROM t2 WHERE k=4 FOR UPDATE NOWAIT; -- fail fast write
+UPDATE t2 SET v=4034 WHERE k=4;
+```
+
+The `SELECT... FOR UPDATE NOWAIT` returns:
+
+```text
+ERROR: could not obtain lock on row (k)=(4) in t2@t2_pkey
+SQLSTATE: 55P03
+ERROR: current transaction is aborted, commands ignored until end of transaction block
+SQLSTATE: 25P02
+```
+
+**Terminal 1**
+
+```sql
+COMMIT;
+```
+
+**Terminal 2**
+
+```sql
+COMMIT;
+```
+
+**Terminal 3**
+
+`COMMIT` *Transaction 6*. Since the `SELECT` statement in Transaction 6 generated an error, `COMMIT` is equivalent to `ROLLBACK`, which aborts the transaction and discards the `UPDATE`. Afterward, verify that the `UPDATE` was discarded.
+
+```sql
+COMMIT;
+SELECT * FROM t2 WHERE k=4;
+```
+
+The `SELECT` statement should output the following:
+
+```text
+  k |  v
+----+-------
+  4 | 4014
+(1 row)
+```
+
+## See also
+
+- [Transaction contention](/docs/v26.1/performance-best-practices-overview#transaction-contention)
+- [Identify transactions and objects that experienced lock contention using `crdb_internal`](/docs/v26.1/performance-recipes#identify-transactions-and-objects-that-experienced-lock-contention)
+- [**Insights** page](/docs/v26.1/ui-insights-page)
+- [`AS OF SYSTEM TIME`](/docs/v26.1/as-of-system-time)
+- [`SELECT FOR UPDATE... NOWAIT`](/docs/v26.1/select-for-update#wait-policies)

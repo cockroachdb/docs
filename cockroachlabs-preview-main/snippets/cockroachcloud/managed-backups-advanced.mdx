@@ -1,0 +1,710 @@
+---
+title: "Managed Backups in CockroachDB Advanced Clusters"
+old_description: "Learn about CockroachDB Cloud managed backups."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/backup-and-restore-overview" data-versioned="true">*Managed backups*</a> are automated backups of CockroachDB Cloud clusters that are stored by Cockroach Labs in cloud storage. By default, Cockroach Labs takes and retains managed backups in all Cloud clusters. In Standard and Advanced clusters, you can adjust the default managed backup settings to meet your organization's disaster recovery requirements.
+
+<LinkedPageTabs
+  currentPath="/docs/cockroachcloud/managed-backups-advanced"
+  items={[
+    {
+      title: "CockroachDB Basic",
+      href: "/docs/cockroachcloud/managed-backups-basic",
+    },
+    {
+      title: "CockroachDB Standard",
+      href: "/docs/cockroachcloud/managed-backups",
+    },
+    {
+      title: "CockroachDB Advanced",
+      href: "/docs/cockroachcloud/managed-backups-advanced",
+    },
+  ]}
+/>
+
+This page describes managed backups in Advanced clusters. You can configure the following:
+
+- The [frequency](#frequency) of the backups to meet <a href="/docs/VERSION_PLACEHOLDER/disaster-recovery-overview" data-versioned="true">recovery point objective (RPO)</a> requirements.
+- The [retention](#retention) of the backups to set how long Cockroach Labs retains the backups.
+
+<Note>
+In addition to managed backups, you can take manual backups to your own storage bucket with self-managed backups. Refer to the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/take-and-restore-self-managed-backups" data-versioned="true">Take and Restore Self-Managed Backups</a> page.
+</Note>
+
+## Managed backup settings
+
+<Note>
+Configurable managed backup settings are available in all <a href="/docs/VERSION_PLACEHOLDER/releases/release-support-policy#supported-versions" data-versioned="true">supported versions</a> of CockroachDB on Advanced clusters.
+</Note>
+
+Advanced clusters take a combination of full and incremental backups in order to meet the set frequency. The type of managed backup the cluster takes is **not** configurable. Each incremental backup is dependent on the last full backup, which has an effect on the managed backups that you can restore in the set retention period.
+
+Full backups in the cluster will be deleted when they reach the set retention period. At this point, any incremental backups dependent on the deleted full backup will also be deleted. The Cloud Console will not list any backups that are beyond the set retention period, or incremental backups that cannot be restored.
+
+For instructions on how to view and configure managed backup settings, use one of the following:
+
+- [Cloud Console](#cloud-console).
+- [Cloud API](#cloud-api).
+- [CockroachDB Cloud Terraform provider](#cockroachdb-cloud-terraform-provider).
+
+Following a change to the backup frequency or retention setting, the cluster will take a full backup immediately, which may impact CPU usage on the cluster. If you are disabling managed backups, the cluster will not take a backup following the change.
+
+### Frequency
+
+You can configure how frequently Cockroach Labs takes backups, which will determine the cluster's <a href="/docs/VERSION_PLACEHOLDER/disaster-recovery-overview" data-versioned="true">RPO</a>.
+
+You can set backup frequency to one of the following options:
+
+- 5 minutes
+- 10 minutes
+- 15 minutes
+- 30 minutes
+- 1 hour (default)
+- 4 hours
+- 24 hours
+
+### Retention
+
+You can set your retention duration **once**. After you have adjusted the retention, the duration will only apply to new backups. The available retention options are:
+
+- 2 days
+- 7 days
+- 30 days (default)
+- 90 days
+- 365 days
+
+You'll be able to modify the retention setting once for a cluster. To modify the setting again, contact the <a href="/docs/VERSION_PLACEHOLDER/support-resources" data-versioned="true">Cockroach Labs Support team</a>.
+
+For details on the storage costs of managed backups, refer to the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/costs#backups" data-versioned="true">Understand CockroachDB Cloud Costs</a> page.
+
+When a cluster is deleted, Cockroach Labs will retain the managed backups for for the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/managed-backups#managed-backup-settings" data-versioned="true">configured retention time</a>, after which the backups will be deleted.
+
+If a customer’s agreement with Cockroach Labs has terminated, all managed backups will be retained for a maximum of 30 days and then deleted. If a backup's retention time was set to **less** than 30 days, Cockroach Labs will retain the managed backups for the configured retention time, after which the backups will be deleted.
+
+To restore a backup from a deleted cluster, you must contact the <a href="/docs/VERSION_PLACEHOLDER/support-resources" data-versioned="true">Cockroach Labs Support team</a>.
+
+## Considerations
+
+- Every backup will be stored entirely in a single region, which is chosen at random from the list of cluster regions at the time of cluster creation. This region will be used indefinitely to store backups.
+- You can perform a cross-cluster restore across Advanced clusters that belong to the same organization. However, this cross-cluster restore is not supported for Standard and Basic clusters.
+- You cannot restore a backup of a multi-region database into a single-region database.
+- For details on managed backups and enabling CMEK in Advanced clusters, refer to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cmek#backup-and-restore-operations-on-a-cluster-with-cmek" data-versioned="true">Backup and restore operations on a cluster with CMEK</a>.
+
+### Required permissions to restore managed backups
+
+To restore a managed backup successfully in CockroachDB Cloud, you must have the appropriate <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization" data-versioned="true">permissions</a> on both the source and destination clusters:
+
+- You must have either the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-admin" data-versioned="true">Cluster Admin</a> or <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-operator" data-versioned="true">Cluster Operator</a> role on the **destination cluster**, or at the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-authorization-model" data-versioned="true">organization level</a>. Without one of these roles, the restore job will fail.
+- You must also have either the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-admin" data-versioned="true">Cluster Admin</a> or <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-operator" data-versioned="true">Cluster Operator</a> role on the **source cluster** (the cluster from which the backup was taken), or at the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-authorization-model" data-versioned="true">organization level</a>. If you do not have the required permissions on the source cluster, the restore will fail.
+
+<Note>
+Organization-level permissions take precedence over cluster-specific permissions. If you have the appropriate role at the organization level, you are authorized to perform restore operations on all clusters within that organization.
+</Note>
+
+## Cloud Console
+
+### View backups
+
+Click on **Backup and Restore** in the **Data section** of the left-side navigation to access the **Backup Recovery** page.
+
+The **Backups** tab displays a list of your full and incremental cluster backups. Use the calendar drop-down to view all backups taken on a certain date.
+
+For each backup, the following details display:
+
+- **Data From**: The date and time the backup was taken.
+- **Status**: The backup's status, `In Progress` or `Complete`.
+- **Type**: Whether the backup is a full or incremental backup.
+- **Expires In**: The remaining number of days Cockroach Labs will retain the backup.
+- [**Databases**](#databases): The number of databases included in the backup.
+- **Restore**: [Restore a particular cluster backup](#restore-an-advanced-cluster), click **Restore** in the corresponding row.
+
+#### Databases
+
+To view the databases included in the backup, click the number in the **Databases** column on the **Backups** tab.
+
+For each database in the backup, the following details display:
+
+- The **Name** of the database.
+- The number of [**Tables**](#tables) in the database. If a database does not contain tables, it will not display in the **Databases** view.
+- **Restore**: To [restore a database](#restore-a-database), click **Restore** in the corresponding row.
+
+    To view the tables in the database, click the number in the [**Tables**](#tables) column.
+
+#### Tables
+
+To view the tables in a database, click the number in the **Tables** column on the [**Databases**](#databases) page for a particular backup.
+
+For each table in the database, the **Name** of the table displays.
+
+To [restore a table](#restore-a-table), click **Restore** in the corresponding row.
+
+### Modify backup settings
+
+<Note>
+Following a change to the backup frequency or retention setting, the cluster will take a full backup immediately, which may impact CPU usage on the cluster. If you are disabling managed backups, the cluster will not take a backup following the change.
+</Note>
+
+Before modifying cluster backup settings, review details on backup settings for [Standard and Advanced clusters](#managed-backup-settings).
+
+On the **Backup and Restore** page, click on **Settings** and the **Backup Settings** module will open.
+
+The **Enable backups** switch allows you to enable or disable backups.
+
+To modify the [frequency](#frequency) of backups, click on the dropdown under **Schedule backups every**. This will display the option to select one of the following:
+
+- 5 minutes
+- 10 minutes
+- 15 minutes
+- 30 minutes
+- 1 hour (default)
+- 4 hours
+- 24 hours
+
+To modify the [retention](#retention) of backups, click on **Retain backups for**. This will display the following options to select:
+
+- 2 days
+- 7 days
+- 30 days (default)
+- 90 days
+- 365 days
+
+You'll be able to modify the retention setting once for a cluster. To modify the setting again, contact the <a href="/docs/VERSION_PLACEHOLDER/support-resources" data-versioned="true">Cockroach Labs Support team</a>.
+
+### Incomplete Backups
+
+To view any failed or pending backups, click the **Incomplete Backups** tab on the **Backup and Restore** page.
+
+For each incomplete backup, the following details display:
+
+- **Started**: The date and time the backup job began.
+- **Duration**: The amount of time the backup job ran for.
+- **Status**: The error code and message for failed backup jobs.
+- **Description**: The SQL command corresponding to the failed or pending backup job.
+
+### Restore data
+
+Users with the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#organization-admin" data-versioned="true">Organization Admin</a>, <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-operator" data-versioned="true">Cluster Operator</a>, or <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-admin" data-versioned="true">Cluster Admin</a> roles can perform the following from the Console:
+
+- [Restore a cluster](#restore-an-advanced-cluster)
+- [Restore a database](#restore-a-database)
+- [Restore a table](#restore-a-table)
+
+#### Restore an Advanced cluster
+
+<Note>
+Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore job fails if the destination cluster contains any databases/schemas/tables.
+</Note>
+
+To restore a cluster:
+
+1. Find the cluster backup on the **Backups** tab.
+2. Click **Restore** for the cluster you want to restore.
+
+    The **Restore cluster** module displays with backup details.
+3. Select the cluster to restore to. You can restore to either the same cluster or a different Advanced cluster in the same organization. Incompatible versions cannot be selected. By default, the option shows the current cluster. The dropdown displays options to restore to a different cluster.
+
+    Select the **Skip localities check** box if you want to skip checking localities of a cluster before a restore when there are mismatched cluster regions between the backup's cluster and the destination cluster.
+4. Click **Continue**.
+5. Enter the name of the destination cluster.
+6. Once you have reviewed the restore details, click **Restore**.
+
+    The [**Restore Jobs** tab](#restore-jobs) will show you the status of your restore and update when the restore job has been created successfully.
+
+#### Restore a database
+
+To restore a database:
+
+1. On the **Backups** tab, find the cluster backup containing the database you want to restore, and click the number in the corresponding **Databases** column.
+2. In the **Databases** view, click **Restore** for the database you want to restore.
+
+    The **Restore database** module displays with backup details.
+3. In the **Restore to** fields:
+    - Select the name of the destination cluster.
+    - Type the name of the destination database.
+
+        <Note>
+        Resolve any naming conflicts by using <a href="/docs/VERSION_PLACEHOLDER/drop-database" data-versioned="true">`DROP`</a> or <a href="/docs/VERSION_PLACEHOLDER/alter-database#rename-to" data-versioned="true">`RENAME`</a> on the existing database. If you enter a unique name in the **Restore to** field, a new database will be created.
+        </Note>
+4. Select any of the **Dependency options** to skip. You can:
+    - **Skip missing foreign keys**, which will remove missing <a href="/docs/VERSION_PLACEHOLDER/foreign-key" data-versioned="true">foreign key</a> constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
+    - **Skip missing sequences**, which will ignore <a href="/docs/VERSION_PLACEHOLDER/show-sequences" data-versioned="true">sequence</a> dependencies (i.e., the `DEFAULT` expression that uses the sequence).
+    - **Skip missing views**, which will skip restoring <a href="/docs/VERSION_PLACEHOLDER/views" data-versioned="true">views</a> that cannot be restored because their dependencies are not being restored at the same time.
+    - **Skip localities check**, which will skip checking localities of a cluster before a restore when there are mismatched cluster regions between the backup's cluster and the destination cluster.
+5. Click **Continue**.
+6. Once you have reviewed the restore details, click **Restore**.
+
+    When the restore job has been created successfully, you will be taken to the [**Restore Jobs** tab](#restore-jobs), which will show you the status of your restore.
+
+When the restore is complete, be sure to set any database-specific <a href="/docs/VERSION_PLACEHOLDER/configure-replication-zones" data-versioned="true">zone configurations</a> and, if applicable, <a href="/docs/VERSION_PLACEHOLDER/grant" data-versioned="true">grant privileges</a>.
+
+#### Restore a table
+
+To restore a table:
+
+1. Find the cluster backup containing the table you want to restore, and click the number in the corresponding **Databases** column.
+2. In the **Databases** view, find the database containing the table you want to restore, and click the number in the corresponding **Tables** column.
+
+    The **Tables** view displays.
+3. Click **Restore** for the table you want to restore.
+
+    The **Restore table** module displays with backup details.
+4. In the **Restore to** fields:
+    - Select the name of the destination cluster.
+    - Type the name of the destination database. (Before restoring, ensure that you do not have an existing table with the same name.)
+
+        <Note>
+        If you enter the name of an existing database, the table will be restored into that existing database. To use the name of an existing database, first resolve any naming conflicts with existing tables by using <a href="/docs/VERSION_PLACEHOLDER/drop-table" data-versioned="true">`DROP`</a> or <a href="/docs/VERSION_PLACEHOLDER/alter-table#rename-to" data-versioned="true">`RENAME`</a> on the table. If you enter a unique name in the **Restore to** field, a new database will be created.
+        </Note>
+5. Select any of the **Dependency options** to skip. You can:
+    - **Skip missing foreign keys**, which will remove missing <a href="/docs/VERSION_PLACEHOLDER/foreign-key" data-versioned="true">foreign key</a> constraints (i.e., when the referenced table is not in the backup or is not being restored) before restoring.
+    - **Skip missing sequences**, which will ignore <a href="/docs/VERSION_PLACEHOLDER/show-sequences" data-versioned="true">sequence</a> dependencies (i.e., the `DEFAULT` expression that uses the sequence).
+    - **Skip missing views**, which will skip restoring <a href="/docs/VERSION_PLACEHOLDER/views" data-versioned="true">views</a> that cannot be restored because their dependencies are not being restored at the same time.
+6. Click **Continue**.
+7. Once you have reviewed the restore details, click **Restore**.
+
+When the restore job has been created successfully, you will be taken to the [**Restore Jobs** tab](#restore-jobs), which will show you the status of your restore.
+
+#### Restore Jobs
+
+To view the status of your restore, click on the **Restore Jobs** tab from the cluster **Backup and Restore** page.
+
+For each restore job, the tab will display:
+
+- **Source &gt; Destination**: The source cluster, database, or table to the destination cluster, database, or table.
+- **Restore type**: Whether the job is a cluster, database, table restore.
+- **Backup taken on**: The date the backup was originally taken.
+- **Status**: The status of the restore job `Preparing`, `Running`, `Succeeded`, `Failed`.
+- **Restore start**: The date the restore job was initiated.
+- **Restore end**: The date the restore job ended (whether successful or unsuccessful).
+- **Job ID**: The job ID of the restore job.
+
+## Cloud API
+
+You can use the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api" data-versioned="true">CockroachDB Cloud API</a> to [view](#get-information-on-backup-settings) and [modify managed backup settings](#modify-backup-settings-on-a-cluster), [view managed backups](#view-managed-backups), or [restore clusters](#restore-from-a-managed-backup) from a managed backup.
+
+<Note>
+The <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#service-accounts" data-versioned="true">service account</a> associated with the secret key must have the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-admin" data-versioned="true">Cluster Admin</a> role.
+</Note>
+
+### Get information on backup settings
+
+To retrieve information about a specific cluster, make a `GET` request to the `/v1/clusters/{cluster_id}/backups-config` endpoint.
+
+```shell
+curl --request GET \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups-config \
+--header "Authorization: Bearer {secret_key}"
+```
+
+Set the following:
+
+- `{cluster_id}` is the unique ID of the cluster. This ID is written in a UUID format similar to `f78b7feb-b6cf-4396-9d7f-494982d7d81e` and is returned by a <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api#list-all-clusters-in-an-organization" data-versioned="true">GET request against the `/v1/clusters` endpoint</a>. You can also find the cluster ID in the Cloud Console, in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`.
+- `{secret_key}` is your API key. Refer to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/managing-access#api-access" data-versioned="true">API Access</a> for more details.
+
+If the request is successful, the API will return details about the managed backup settings:
+
+```json
+{
+  "enabled": true,
+  "retention_days": 30,
+  "frequency_minutes": 240
+}
+```
+
+- `{enabled}` shows whether managed backups are enabled or disabled.
+- `{frequency_minutes}` is [how often](#frequency) the managed backup will run in minutes.
+- `{retention_days}` is the number of days Cockroach Labs will [retain](#retention) the managed backup in storage.
+
+### Modify backup settings on a cluster
+
+<Note>
+Following a change to the backup frequency or retention setting, the cluster will take a full backup immediately, which may impact CPU usage on the cluster. If you are disabling managed backups, the cluster will not take a backup following the change.
+</Note>
+
+Before modifying cluster backup settings, review details on backup settings for [Standard and Advanced clusters](#managed-backup-settings).
+
+To configure the frequency and retention of managed backups, send a `PUT` request to the `/v1/clusters/{cluster_id}/backups-config` endpoint.
+
+```shell
+curl --request PUT \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups-config \
+--header "Authorization: Bearer {secret_key}" \
+--data '{"enabled": true, "frequency_minutes": 30, "retention_days": 2}'
+```
+
+Set the following:
+
+- `{cluster_id}` is the unique ID of the cluster. This ID is written in a UUID format similar to `f78b7feb-b6cf-4396-9d7f-494982d7d81e` and is returned by a <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api#list-all-clusters-in-an-organization" data-versioned="true">GET request against the `/v1/clusters` endpoint</a>. You can also find the cluster ID in the Cloud Console, in the URL of the single cluster overview page: `https://cockroachlabs.cloud/cluster/{your_cluster_id}/overview`.
+- `{enabled}` controls whether managed backups are enabled or disabled. If you are disabling managed backups, you cannot set backup frequency or retention. Possible values are: `true`, `false`.
+- `{frequency_minutes}` determines [how often](#frequency) the managed backup will run in minutes. Possible values are: `5`, `10`, `15`, `30`, `60`, `240` (4 hours), `1440` (24 hours).
+- `{retention_days}` sets the number of days Cockroach Labs will [retain](#retention) the managed backup in storage. You can change `retention_days` for the cluster **once** (whether in the Cloud API or [Cloud Console](#cloud-console)). Possible values are: `2`, `7`, `30`, `90`, `365`.
+
+    If `{retention_days}` has previously been modified (in the Cloud API or Cloud Console), you receive the message "cluster already has a retention policy set, open a support ticket to change it". To modify the setting again, contact the <a href="/docs/VERSION_PLACEHOLDER/support-resources" data-versioned="true">Cockroach Labs Support team</a>.
+- `{secret_key}` is your API key. Refer to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/managing-access#api-access" data-versioned="true">API Access</a> for more details.
+
+If the request is successful, the client recieves an empty HTTP 200 OK status response.
+
+### View managed backups
+
+To view a list of managed backups on a cluster with timestamps and their respective IDs, send a `GET` request to the `/v1/clusters/{cluster_id}/backups` endpoint:
+
+```shell
+curl --request GET \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/backups \
+--header "Authorization: Bearer {secret_key}" \
+```
+
+If the request is successful, the client recieves a JSON response listing backups with their unique `{id}`. The `{as_of_time}` timestamp describes the system time of the cluster when the backup was created:
+
+```json
+{
+  "backups": [
+    {
+      "id": "example-157a-4b04-8f72-3179369a50d9",
+      "as_of_time": "2025-07-25T15:45:00Z"
+    },
+    {
+      "id": "example-c090-429c-9f84-2b1297f5de89",
+      "as_of_time": "2025-07-25T15:35:32Z"
+    },
+    {
+      "id": "example-4e41-44ec-926a-0cc368efdea2",
+      "as_of_time": "2025-07-25T15:00:00Z"
+    },
+    {
+      "id": "example-3c67-4822-b7b9-90c2d8cc06a3",
+      "as_of_time": "2025-07-25T14:56:15Z"
+    },
+    {
+      "id": "example-abef-4191-aa98-36a019da97c2",
+      "as_of_time": "2025-07-25T14:52:05.637170Z"
+    }
+  ],
+  "pagination": null
+```
+
+### Restore from a managed backup
+
+You can use the `/v1/clusters/{destination_cluster_id}/restores` endpoint to restore the contents of a managed backup to a specified destination cluster.
+
+On Advanced clusters, restore operations can be performed at the cluster, database, or table level into the same cluster or a different Advanced cluster in the same organization.
+
+#### Restore a cluster
+
+<Note>
+Before a cluster can be restored from a managed backup, the destination cluster must be completely wiped of data. A cluster restore operation fails if the destination cluster contains any databases/schemas/tables.
+</Note>
+
+To restore a cluster to a recent managed backup, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "CLUSTER"`:
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{cluster_id}",
+    "type": "CLUSTER"
+}'
+```
+
+By default, the restore job uses the most recent backup stored within the last 7 days on the cluster specified in `source_cluster_id`. To restore a specific backup, include the `backup_id` field and specify a backup ID from the [managed backups list](#view-managed-backups):
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
+    "type": "CLUSTER"
+}'
+```
+
+To restore a cluster backup into a different cluster, ensure that the destination cluster is created and contains no databases/schemas/tables. Send the restore request to the destination cluster ID, specifying the ID of the source cluster as `source_cluster_id`. Both the source cluster and the destination cluster must use the Advanced plan.
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{source_cluster_id}",
+    "type": "CLUSTER"
+}'
+```
+
+You can specify additional options for the restore job in the `restore_opts` object. For more information, see the <a href="/docs/api/cloud/backuprestore/create-a-restore" data-versioned="true">API endpoint documentation</a>.
+
+If the request is successful, the client recieves a JSON response that describes the request operation:
+
+```json
+{
+  "id": "example-aeb7-4daa-9e2c-eda541765f8a",
+  "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
+  "status": "PENDING",
+  "created_at": "2025-07-25T16:45:14.064208710Z",
+  "type": "CLUSTER",
+  "completion_percent": 1
+}
+```
+
+#### Restore a database
+
+To restore one or more databases from a cluster's managed backup, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "DATABASE"`. Specify the name of the databases in `objects`:
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{cluster_id}",
+    "type": "DATABASE",
+    "objects": [
+        {
+            "database": "tpcc"
+        },
+        {
+            "database": "movr"
+        }
+    ]
+}'
+```
+
+By default, the database is restored into the original database name from the managed backup. To restore the database contents into a new database, include the field `restore_opts.new_db_name` with the new database name. You can only restore one database at a time when using this option.
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{cluster_id}",
+    "type": "DATABASE",
+    "objects": [
+        {
+            "database": "tpcc"
+        }
+    ],
+    "restore_opts": {
+        "new_db_name": "tpcc2"
+    }
+}'
+```
+
+To restore from a specific backup rather than the most recently created managed backup, include the `backup_id` field specifying a backup ID:
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
+    "type": "DATABASE",
+    "objects": [
+        {
+            "database": "tpcc"
+        }
+    ]
+}'
+```
+
+To restore a database from a source cluster's managed backup into a different cluster, send the restore request to the destination cluster ID. Specify the ID of the backup's cluster as `source_cluster_id`. Both the source cluster and the destination cluster must use the Advanced plan.
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{source_cluster_id}",
+    "type": "DATABASE",
+    "objects": [
+        {
+            "database": "tpcc"
+        }
+    ]
+}'
+```
+
+You can specify additional options for the restore jobs in the `restore_opts` object. For more information, see the <a href="/docs/api/cloud/backuprestore/create-a-restore" data-versioned="true">API endpoint documentation</a>.
+
+If the request is successful, the client recieves a response containing JSON describing the request operation:
+
+```json
+{
+  "id": "example-aeb7-4daa-9e2c-eda541765f8a",
+  "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
+  "status": "PENDING",
+  "created_at": "2025-07-25T16:45:14.064208710Z",
+  "type": "DATABASE",
+  "completion_percent": 1
+}
+```
+
+#### Restore a table
+
+To restore a one or more tables from a cluster's managed backup, send a `POST` request to the `/v1/clusters/{cluster_id}/restores` endpoint of `"type": "TABLE"`. Specify the fully qualified name of the source tables in `objects`:
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{cluster_id}",
+    "type": "TABLE",
+    "objects": [
+        {
+            "database": "tpcc",
+            "schema": "public",
+            "table": "warehouse"
+        },
+        {
+            "database": "tpcc",
+            "schema": "public",
+            "table": "customer"
+        }
+    ]
+}'
+```
+
+By default, the table is restored into the original database name from the managed backup. To restore the table into a different database, include the field `restore_opts.into_db` with the desired database name. The following example restores the `tpcc.public.warehouse` table from the most recent managed backup into `tpcc2.public.warehouse` on the cluster:
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{cluster_id}",
+    "type": "TABLE",
+    "objects": [
+        {
+            "database": "tpcc",
+            "schema": "public",
+            "table": "warehouse"
+        },
+        {
+            "database": "tpcc",
+            "schema": "public",
+            "table": "customer"
+        }
+    ],
+    "restore_opts": {
+        "into_db": "tpcc2"
+    }
+}'
+```
+
+To restore from a specific backup rather than the most recently created managed backup, include the `backup_id` field specifying a backup ID:
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
+    "type": "TABLE",
+    "objects": [
+        {
+            "database": "tpcc",
+            "schema": "public",
+            "table": "warehouse"
+        }
+    ]
+}'
+```
+
+To restore a table from a source cluster's managed backup into a different cluster, send the restore request to the destination cluster ID. Specify the ID of the backup's cluster as `source_cluster_id`. Both the source cluster and the destination cluster must use the Advanced plan.
+
+```shell
+curl --request POST \
+--url https://cockroachlabs.cloud/api/v1/clusters/{destination_cluster_id}/restores \
+--header "Authorization: Bearer {secret_key}" \
+--json '{
+    "source_cluster_id": "{source_cluster_id}",
+    "type": "TABLE",
+    "objects": [
+        {
+            "database": "tpcc",
+            "schema": "public",
+            "table": "warehouse"
+        }
+    ]
+}'
+```
+
+You can specify additional options for the restore jobs in the `restore_opts` object. For more information, see the <a href="/docs/api/cloud/backuprestore/create-a-restore" data-versioned="true">API endpoint documentation</a>.
+
+If the request is successful, the client recieves a response containing JSON describing the request operation:
+
+```json
+{
+  "id": "example-aeb7-4daa-9e2c-eda541765f8a",
+  "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
+  "status": "PENDING",
+  "created_at": "2025-07-25T16:45:14.064208710Z",
+  "type": "TABLE",
+  "completion_percent": 1
+}
+```
+
+### Get status of a restore job
+
+To view the status of a restore job using the cloud API, send a `GET` request to the `/v1/clusters/{cluster_id}/restores/{restore_id}` endpoint where `restore_id` is the `id` from the JSON response:
+
+```shell
+curl --request GET \
+--url https://cockroachlabs.cloud/api/v1/clusters/{cluster_id}/restores/{restore_id} \
+--header "Authorization: Bearer {secret_key}"
+```
+
+If the request is successful, the client recieves a response containing JSON describing the status of the specified request operation:
+
+```json
+{
+  "id": "example-aeb7-4daa-9e2c-eda541765f8a",
+  "backup_id": "example-2d25-4a64-8172-28af7a0d41cc",
+  "status": "SUCCESS",
+  "created_at": "2025-07-25T16:45:14.064208710Z",
+  "type": "CLUSTER",
+  "completion_percent": 1
+}
+```
+
+## CockroachDB Cloud Terraform provider
+
+You can use the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/provision-a-cluster-with-terraform" data-versioned="true">CockroachDB Cloud Terraform provider</a> to specify managed backup settings in Advanced clusters.
+
+In your `main.tf` Terraform configuration file, use the `backup_config` attribute on the `cockroach_cluster` resource to modify the settings of managed backups. For example:
+
+```hcl
+resource "cockroach_cluster" "advanced" {
+  name           = "cockroach-advanced"
+  cloud_provider = "GCP"
+  plan           = "ADVANCED"
+  dedicated = {
+    storage_gib  = 15
+    num_virtual_cpus = 4
+  }
+  regions = [
+    {
+      name       = "us-central1"
+      node_count = 1
+    }
+  ]
+  delete_protection = true
+  backup_config = {
+    enabled           = true
+    frequency_minutes = 60
+    retention_days    = 30
+  }
+}
+```
+
+Set the following for the `backup_config` attribute:
+
+- `enabled` controls whether managed backups are enabled or disabled. If you modify the `retention_days` setting even when managed backups are disabled, this will use the [one possible change](#retention) for `retention_days`. Possible values for the `enabled` setting are: `true` or `false`.
+- `frequency_minutes` determines [how often](#frequency) the managed backup will run in minutes. Possible values are: `5`, `10`, `15`, `30`, `60`, `240` (4 hours), `1440` (24 hours).
+- `retention_days` sets the number of days Cockroach Labs will [retain](#retention) the managed backup in storage. You can change `retention_days` for the cluster **once** (whether in Terraform, the [Cloud API](#cloud-api), or the [Cloud Console](#cloud-console)). Possible values are: `2`, `7`, `30`, `90`, `365`. Note that:
+    - If the initial value of the `retention_days` attribute is the default value `30`, you'll be able to modify the backup retention setting once more.
+    - If the initial value is not the default, you will not be able to modify `retention_days` again. You can refrain from including `retention_days` in the Terraform configuration and instead manage the retention in the Cloud Console.
+
+        To modify the setting again, contact the <a href="/docs/VERSION_PLACEHOLDER/support-resources" data-versioned="true">Cockroach Labs Support team</a>. For more details on modifying `retention_days`, refer to the [Updating Backup Retention](https://github.com/cockroachdb/terraform-provider-cockroach/blob/main/docs/guides/updating-backup-retention.md) documentation in the Terraform provider for CockroachDB Cloud Repository.

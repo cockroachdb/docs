@@ -1,0 +1,100 @@
+---
+title: "Network Page"
+old_description: "The Network Latency page displays round-trip latencies between all nodes in your cluster."
+---
+
+The **Network** page displays round-trip latencies between all nodes in your cluster. This represents the time required to transmit a packet across a network, and is highly dependent on your network topology. Use this page to determine whether your latency is appropriate for your [topology pattern](/docs/v24.3/topology-patterns), and to identify nodes with unexpected latencies or connectivity issues.
+
+To view this page, [access the DB Console](/docs/v24.3/ui-overview#db-console-access) and click **Network** in the left-hand navigation.
+
+## Sort and filter network latencies
+
+Use the **Sort By** menu to arrange the network matrix by [locality](/docs/v24.3/cockroach-start#locality) (e.g., cloud, region, availability zone, datacenter).
+
+Use the **Filter** menu to select specific nodes or localities to view.
+
+Select **Collapse Nodes** to display the mean latencies of each locality, depending on how the matrix is sorted. This is a way to quickly assess cross-regional or cross-cloud latency.
+
+## Interpret the network matrix
+
+Each cell in the matrix displays the round-trip latency in milliseconds between two nodes in your cluster. Round-trip latency includes the return time of a packet. Latencies are color-coded by their standard deviation from the mean latency on the network: green for lower values, and blue for higher. Nodes with the lowest latency are displayed in darker green, and nodes with the highest latency are displayed in darker blue.
+
+<Frame>
+  ![DB Console Network Latency matrix](/images/v24.3/ui_network_latency_matrix.png)
+</Frame>
+
+Rows represent origin nodes, and columns represent destination nodes. Hover over a cell to display more details:
+
+- The direction of the connection marked by `From` and `To`.
+- Locality metadata for origin and destination.q
+- Round-trip latency.
+
+The page automatically refreshes every 30 seconds to show the most recent information.
+
+On a [typical multi-region cluster](/docs/v24.3/demo-low-latency-multi-region-deployment), you can expect much lower latencies between nodes in the same region/availability zone. Nodes in different regions/availability zones, meanwhile, will experience higher latencies that reflect their geographical distribution.
+
+For instance, the cluster shown above has nodes in `us-west1`, `us-east1`, and `europe-west2`. Latencies are highest between nodes in `us-west1` and `europe-west2`, which span the greatest distance. This is especially clear when sorting by region or availability zone and collapsing nodes:
+
+<Frame>
+  ![DB Console Network Latency collapsed nodes](/images/v24.3/ui_network_latency_collapsed_nodes.png)
+</Frame>
+
+### No connections
+
+Nodes that have completely lost connectivity are color-coded depending on connection status:
+
+- Orange with an exclamation mark indicates `unknown connection state`.
+- Red with a [no symbol](https://www.wikipedia.org/wiki/No_symbol) indicates `Failed connection`.
+
+This information can help you diagnose a network partition in your cluster.
+
+<Frame>
+  ![DB Console Network Latency suspect node](/images/v24.3/ui_network_latency_matrix_suspect_node.png)
+</Frame>
+
+Hover over a cell to display more details:
+
+- The direction of the connection marked by `From` and `To`.
+- Locality metadata for origin and destination.
+- Connection status.
+- The error message that resulted from the most recent connection attempt.
+
+This specific information can help you understand the root cause of the connectivity issue.
+
+<Note>
+A network partition occurs when two or more nodes are prevented from communicating with each other in one or both directions. A network partition can be caused by a network outage or a configuration problem with the network, such as when allowlisted IP addresses or hostnames change after a node is [drained and restarted](/docs/v24.3/node-shutdown).
+
+In a **symmetric** partition, node communication is disrupted in both directions. In an **asymmetric** partition, nodes can communicate in one direction but not the other.
+
+CockroachDB protects against asymmetric partitions by converting all asymmetric (uni-directional) network partitions into symmetric (bi-directional) network partitions. This increases cluster resiliency by reducing the number of partition-related failures that can occur. Many temporary symmetric partitions can be recovered from automatically without operator intervention.
+
+The effect of a network partition depends on which nodes are partitioned, where the ranges are located, and to a large extent, whether [localities](/docs/v24.3/cockroach-start#locality) or [zone configurations](/docs/v24.3/configure-replication-zones) are defined. A partition that cuts off at least `(n-1)/2` replicas from a [range](/docs/v24.3/architecture/overview#architecture-range) will cause range unavailability which will cause some data unavailability. If there are no localities or other constraints on where replicas are placed, then a partition of any ([`num_replicas`](/docs/v24.3/configure-replication-zones#num_replicas) / 2) nodes will likely cause unavailability.
+</Note>
+
+### Node liveness status
+
+Hover over a node's ID in the row and column headers to show the node's liveness status, such as `healthy` or `suspect`. Node liveness status is also indicated by the colored circle next to the Node ID: green for `healthy` or red for `suspect`.
+
+If a `suspect` node stays offline for the duration set by [`server.time_until_store_dead`](/docs/v24.3/cluster-settings#setting-server-time-until-store-dead) (5 minutes by default), the [cluster considers the node "dead"](/docs/v24.3/node-shutdown#process-termination) and the node is removed from the matrix.
+
+The number of `LIVE` (healthy), `SUSPECT`, `DRAINING` and `DEAD` nodes is displayed under Node Status on the [Cluster Overview page](/docs/v24.3/ui-cluster-overview-page).
+
+## Topology fundamentals
+
+- Multi-region topology patterns are almost always table-specific. If you haven't already, [review the full range of patterns](/docs/v24.3/topology-patterns#multi-region) to ensure you choose the right one for each of your tables.
+- Review how data is replicated and distributed across a cluster, and how this affects performance. It is especially important to understand the concept of the "leaseholder". For a summary, see [Reads and Writes in CockroachDB](/docs/v24.3/architecture/reads-and-writes-overview). For a deeper dive, see the CockroachDB [Architecture Overview](/docs/v24.3/architecture/overview).
+- Review the concept of [locality](/docs/v24.3/cockroach-start#locality), which CockroachDB uses to place and balance data based on how you define [replication controls](/docs/v24.3/configure-replication-zones).
+- Review the recommendations and requirements in our [Production Checklist](/docs/v24.3/recommended-production-settings).
+- This topology doesn't account for hardware specifications, so be sure to follow our [hardware recommendations](/docs/v24.3/recommended-production-settings#hardware) and perform a POC to size hardware for your use case. For optimal cluster performance, Cockroach Labs recommends that all nodes use the same hardware and operating system.
+- Adopt relevant [SQL Best Practices](/docs/v24.3/performance-best-practices-overview) to ensure optimal performance.
+
+<Note>
+Network latency limits the performance of individual operations. You can use the [Statements](/docs/v24.3/ui-statements-page) page to see the latencies of SQL statements on gateway nodes.
+</Note>
+
+## See also
+
+- [Topology Patterns](/docs/v24.3/topology-patterns)
+- [CockroachDB Performance](/docs/v24.3/performance#latency)
+- [Performance Tuning](/docs/v24.3/performance-best-practices-overview)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.3/demo-low-latency-multi-region-deployment)

@@ -1,0 +1,137 @@
+---
+title: "Primary Key Constraint"
+old_description: "A primary key constraint specifies columns that can be used to uniquely identify rows in a table."
+---
+
+import { PrimaryKey3 } from "/snippets/syntax-diagrams/PrimaryKey3.jsx";
+import { PrimaryKey4 } from "/snippets/syntax-diagrams/PrimaryKey4.jsx";
+
+The `PRIMARY KEY` [constraint](/docs/v23.2/constraints) specifies that the constrained columns' values must uniquely identify each row. A table can only have one primary key, but it can have multiple [unique constraints](/docs/v23.2/unique).
+
+You should explicitly define a table's primary key in the [`CREATE TABLE`](/docs/v23.2/create-table) statement. If you don't define a primary key at table creation time, CockroachDB will create a `rowid` column that is `NOT VISIBLE`, use the [`unique_rowid()` function](/docs/v23.2/functions-and-operators#id-generation-functions) as its default value, and use that as the table's primary key.
+
+You can [change the primary key](#changing-primary-key-columns) of an existing table with an [`ALTER TABLE... ALTER PRIMARY KEY`](/docs/v23.2/alter-table#alter-primary-key) statement, or by using [`DROP CONSTRAINT`](/docs/v23.2/alter-table#drop-constraint) and then [`ADD CONSTRAINT`](/docs/v23.2/alter-table#add-constraint) in the same transaction. You cannot fully drop the `PRIMARY KEY` constraint on a table without replacing it as it provides an intrinsic structure to the table's data.
+
+## Syntax
+
+`PRIMARY KEY` constraints can be defined at the [table level](#table-level). However, if you only want the constraint to apply to a single column, it can be applied at the [column level](#column-level).
+
+### Column level
+
+<PrimaryKey3 />
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table you're creating.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the Primary Key column. For <a href="/docs/v23.2/multiregion-overview#table-locality">multi-region tables</a>, you can use the <code>crdb&#95;region</code> column within a composite primary key in the event the original primary key may contain non-unique entries across multiple, unique regions.</td></tr><tr><td><code>column&#95;type</code></td><td>The Primary Key column's <a href="/docs/v23.2/data-types">data type</a>.</td></tr><tr><td><code>column&#95;constraints</code></td><td>Any other column-level <a href="/docs/v23.2/constraints">constraints</a> you want to apply to this column.</td></tr><tr><td><code>column&#95;def</code></td><td>Definitions for any other columns in the table.</td></tr><tr><td><code>table&#95;constraints</code></td><td>Any table-level <a href="/docs/v23.2/constraints">constraints</a> you want to apply.</td></tr></tbody></table>
+
+**Example**
+
+```sql
+> CREATE TABLE orders (
+    order_id        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    order_date      TIMESTAMP NOT NULL,
+    order_mode      STRING(8),
+    customer_id     INT,
+    order_status    INT
+  );
+```
+
+### Table level
+
+<PrimaryKey4 />
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table you're creating.</td></tr><tr><td><code>column&#95;def</code></td><td>Definitions for any other columns in the table.</td></tr><tr><td><code>name</code></td><td>The name you want to use for the constraint, which must be unique to its table and follow these <a href="/docs/v23.2/keywords-and-identifiers#identifiers">identifier rules</a>.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the column you want to use as the <code>PRIMARY KEY</code>.<br/><br/>The order in which you list columns here affects the structure of the primary index.</td></tr><tr><td><code>table&#95;constraints</code></td><td>Any other table-level <a href="/docs/v23.2/constraints">constraints</a> you want to apply.</td></tr></tbody></table>
+
+**Example**
+
+```sql
+> CREATE TABLE IF NOT EXISTS inventories (
+    product_id        INT,
+    warehouse_id      INT,
+    quantity_on_hand  INT NOT NULL,
+    PRIMARY KEY (product_id, warehouse_id)
+  );
+```
+
+## Details
+
+The columns in the `PRIMARY KEY` constraint are used to create its primary [index](/docs/v23.2/indexes#creation), which CockroachDB uses by default to access the table's data. This index does not take up additional disk space (unlike secondary indexes, which do) because CockroachDB uses the primary index to structure the table's data in the key-value layer. For more information, see our blog post [SQL in CockroachDB: Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage).
+
+To ensure each row has a unique identifier, the `PRIMARY KEY` constraint combines the properties of both the [`UNIQUE`](/docs/v23.2/unique) and [`NOT NULL`](/docs/v23.2/not-null) constraints. The properties of both constraints are necessary to make sure each row's primary key columns contain distinct sets of values. The properties of the `UNIQUE` constraint ensure that each value is distinct from all other values. However, because `NULL` values never equal other `NULL` values, the `UNIQUE` constraint is not enough (two rows can appear the same if one of the values is `NULL`). To prevent the appearance of duplicated values, the `PRIMARY KEY` constraint also enforces the properties of the `NOT NULL` constraint.
+
+For best practices, see [Select primary key columns](/docs/v23.2/schema-design-table#select-primary-key-columns).
+
+<Warning>
+We **strongly recommend** adding size limits to all [indexed columns](/docs/v23.2/indexes), which includes columns in [primary keys](/docs/v23.2/primary-key).
+
+Values exceeding 1 MiB can lead to [storage layer write amplification](/docs/v23.2/architecture/storage-layer#write-amplification) and cause significant performance degradation or even [crashes due to OOMs (out of memory errors)](/docs/v23.2/cluster-setup-troubleshooting#out-of-memory-oom-crash).
+
+To add a size limit using [`CREATE TABLE`](/docs/v23.2/create-table):
+
+```sql
+CREATE TABLE name (first STRING(100), last STRING(100));
+```
+
+To add a size limit using [`ALTER TABLE... ALTER COLUMN`](/docs/v23.2/alter-table#alter-column):
+
+```sql
+SET enable_experimental_alter_column_type_general = true;
+```
+
+```sql
+ALTER TABLE name ALTER first TYPE STRING(99);
+```
+</Warning>
+
+## Example
+
+```sql
+> CREATE TABLE IF NOT EXISTS inventories (
+    product_id        INT,
+    warehouse_id      INT,
+    quantity_on_hand  INT NOT NULL,
+    PRIMARY KEY (product_id, warehouse_id)
+  );
+```
+
+```sql
+> INSERT INTO inventories VALUES (1, 1, 100);
+```
+
+```sql
+> INSERT INTO inventories VALUES (1, 1, 200);
+```
+
+```text
+pq: duplicate key value (product_id,warehouse_id)=(1,1) violates unique constraint "primary"
+```
+
+```sql
+> INSERT INTO inventories VALUES (1, NULL, 100);
+```
+
+```text
+pq: null value in column "warehouse_id" violates not-null constraint
+```
+
+## Changing primary key columns
+
+You can change the primary key of an existing table by doing one of the following:
+
+- Issuing an [`ALTER TABLE... ALTER PRIMARY KEY`](/docs/v23.2/alter-table#alter-primary-key) statement. When you change a primary key with `ALTER PRIMARY KEY`, the old primary key index becomes a secondary index. This helps optimize the performance of queries that still filter on the old primary key column.
+- Issuing an [`ALTER TABLE... DROP CONSTRAINT... PRIMARY KEY`](/docs/v23.2/alter-table#drop-constraint) statement to drop the primary key, followed by an [`ALTER TABLE... ADD CONSTRAINT... PRIMARY KEY`](/docs/v23.2/alter-table#add-constraint) statement, in the same transaction, to add a new primary key. This replaces the existing primary key without creating a secondary index from the old primary key. For examples, see [Add constraints](/docs/v23.2/alter-table#add-constraints) and [Drop constraints](/docs/v23.2/alter-table#drop-constraints).
+
+<Note>
+You can use an [`ADD CONSTRAINT... PRIMARY KEY`](/docs/v23.2/alter-table#add-constraint) statement without a [`DROP CONSTRAINT... PRIMARY KEY`](/docs/v23.2/alter-table#drop-constraint) if the primary key was not explicitly defined at [table creation](/docs/v23.2/create-table), and the current [primary key is on `rowid`](/docs/v23.2/indexes#creation).
+</Note>
+
+## See also
+
+- [Constraints](/docs/v23.2/constraints)
+- [`CHECK` constraint](/docs/v23.2/check)
+- [`DEFAULT` constraint](/docs/v23.2/default-value)
+- [`REFERENCES` constraint (Foreign Key)](/docs/v23.2/foreign-key)
+- [`PRIMARY KEY` constraint](/docs/v23.2/primary-key)
+- [`NOT NULL` constraint](/docs/v23.2/not-null)
+- [`UNIQUE` constraint](/docs/v23.2/unique)
+- [`SHOW CONSTRAINTS`](/docs/v23.2/show-constraints)
+- [`ALTER PRIMARY KEY`](/docs/v23.2/alter-table#alter-primary-key)
+- [`ALTER TABLE`](/docs/v23.2/alter-table)

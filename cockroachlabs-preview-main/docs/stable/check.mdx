@@ -1,0 +1,101 @@
+---
+title: "CHECK Constraint"
+old_description: "The CHECK constraint specifies that values for the column in INSERT or UPDATE statements must satisfy a Boolean expression."
+---
+
+import { Check } from "/snippets/syntax-diagrams/Check.jsx";
+import { Check2 } from "/snippets/syntax-diagrams/Check2.jsx";
+
+The `CHECK` [constraint](/docs/v26.1/constraints) specifies that values for the column in [`INSERT`](/docs/v26.1/insert) or [`UPDATE`](/docs/v26.1/update) statements must return `TRUE` or `NULL` for a Boolean expression. If any values return `FALSE`, the entire statement is rejected.
+
+## Details
+
+- You can specify `CHECK` constraints at the column or table level and can reference other columns within the table. Internally, all column-level `CHECK` constraints are converted to table-level constraints so they can be handled consistently.
+- You can add `CHECK` constraints to columns that were created earlier in the same transaction. For an example, see [Add the `CHECK` constraint](/docs/v26.1/alter-table#add-constraints-to-columns-created-during-a-transaction).
+- You can have multiple `CHECK` constraints on a single column but for performance optimization you should combine them using logical operators. For example, you should specify:
+
+    ```sql
+    warranty_period INT CHECK (warranty_period >= 0) CHECK (warranty_period <= 24)
+    ```
+
+    as:
+
+    ```sql
+    warranty_period INT CHECK (warranty_period BETWEEN 0 AND 24)
+    ```
+- When you drop a column with a `CHECK` constraint, the `CHECK` constraint is also dropped.
+
+## Syntax
+
+You can define `CHECK` constraints at the [column level](#column-level), where the constraint applies only to a single column, and at the [table level](#table-level).
+
+You can also add `CHECK` constraints to a table using [`ADD CONSTRAINT`](/docs/v26.1/alter-table#add-the-check-constraint).
+
+### Column level
+
+<Check />
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table you're creating.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the constrained column.</td></tr><tr><td><code>column&#95;type</code></td><td>The constrained column's <a href="/docs/v26.1/data-types">data type</a>.</td></tr><tr><td><code>check&#95;expr</code></td><td>An expression that returns a Boolean value; if the expression evaluates to <code>FALSE</code>, the value cannot be inserted.</td></tr><tr><td><code>column&#95;constraints</code></td><td>Any other column-level <a href="/docs/v26.1/constraints">constraints</a> you want to apply to this column.</td></tr><tr><td><code>column&#95;def</code></td><td>Definitions for any other columns in the table.</td></tr><tr><td><code>table&#95;constraints</code></td><td>Any table-level <a href="/docs/v26.1/constraints">constraints</a> you want to apply.</td></tr></tbody></table>
+
+#### Example
+
+The following example specifies the column-level `CHECK` constraint that a `quantity_on_hand` value must be greater than `0`.
+
+```sql
+> CREATE TABLE inventories (
+    product_id        INT NOT NULL,
+    warehouse_id      INT NOT NULL,
+    quantity_on_hand  INT NOT NULL CHECK (quantity_on_hand > 0),
+    PRIMARY KEY (product_id, warehouse_id)
+  );
+```
+
+### Table level
+
+<Check2 />
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table you're creating.</td></tr><tr><td><code>column&#95;def</code></td><td>Definitions for any other columns in the table.</td></tr><tr><td><code>constraint&#95;name</code></td><td>The name to use for the constraint, which must be unique to its table and follow these <a href="/docs/v26.1/keywords-and-identifiers#identifiers">identifier rules</a>.</td></tr><tr><td><code>check&#95;expr</code></td><td>An expression that returns a Boolean value. If the expression evaluates to <code>FALSE</code>, the value cannot be inserted.</td></tr><tr><td><code>table&#95;constraints</code></td><td>Any other table-level <a href="/docs/v26.1/constraints">constraints</a> to apply.</td></tr></tbody></table>
+
+#### Example
+
+The following example specifies the table-level `CHECK` constraint named `ok_to_supply` that a `quantity_on_hand` value must be greater than `0` and a `warehouse_id` must be between `100` and `200`.
+
+```sql
+> CREATE TABLE inventories (
+    product_id        INT NOT NULL,
+    warehouse_id      INT NOT NULL,
+    quantity_on_hand  INT NOT NULL,
+    PRIMARY KEY (product_id, warehouse_id),
+    CONSTRAINT ok_to_supply CHECK (quantity_on_hand > 0 AND warehouse_id BETWEEN 100 AND 200)
+  );
+```
+
+## Usage example
+
+The following example demonstrates that when you specify the `CHECK` constraint that a `quantity_on_hand` value must be greater than `0`, and you attempt to insert the value `0`, CockroachDB returns an error.
+
+```sql
+> CREATE TABLE inventories (
+    product_id        INT NOT NULL,
+    warehouse_id      INT NOT NULL,
+    quantity_on_hand  INT NOT NULL CHECK (quantity_on_hand > 0),
+    PRIMARY KEY (product_id, warehouse_id)
+  );
+
+> INSERT INTO inventories (product_id, warehouse_id, quantity_on_hand) VALUES (1, 2, 0);
+```
+
+```text
+pq: failed to satisfy CHECK constraint (quantity_on_hand > 0)
+```
+
+## See also
+
+- [Constraints](/docs/v26.1/constraints)
+- [`DROP CONSTRAINT`](/docs/v26.1/alter-table#drop-constraint)
+- [`DEFAULT` constraint](/docs/v26.1/default-value)
+- [`REFERENCES` constraint (Foreign Key)](/docs/v26.1/foreign-key)
+- [`NOT NULL` constraint](/docs/v26.1/not-null)
+- [`PRIMARY KEY` constraint](/docs/v26.1/primary-key)
+- [`UNIQUE` constraint](/docs/v26.1/unique)
+- [`SHOW CONSTRAINTS`](/docs/v26.1/show-constraints)

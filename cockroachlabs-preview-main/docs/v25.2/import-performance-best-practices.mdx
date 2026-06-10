@@ -1,0 +1,161 @@
+---
+title: "Import Performance Best Practices"
+old_description: "Best practices for optimizing import performance in CockroachDB."
+---
+
+This page provides best practices for optimizing [import](/docs/v25.2/import-into) performance in CockroachDB.
+
+`IMPORT INTO` is the fastest method to ingest data into CockroachDB but it requires taking the target table offline for the duration of the import. `IMPORT INTO` is a good choice for initial data migrations and data migrations that can tolerate table downtime. If you cannot tolerate table unavailability, we recommend using [`COPY FROM`](/docs/v25.2/copy) instead.
+
+Import performance primarily depends on the amount of data that you want to import. However, there are three actions you should take before importing that have a significant impact on the amount of time it takes to run an import:
+
+- [Choose a performant import format](#choose-a-performant-import-format)
+- [Split your data into multiple files](#split-your-data-into-multiple-files)
+- [Sort your data](#sort-your-data)
+
+<Note>
+If the import size is less than 100 GiB, then you do not need to do anything to optimize performance. For such small datasets, the import should run quickly, regardless of the settings.
+</Note>
+
+## Choose a performant import format
+
+Different import file formats do not have the same performance due to the way they are processed by CockroachDB. The fastest import file formats are:
+
+1. [`CSV`](/docs/v25.2/migrate-from-csv) or [`DELIMITED DATA`](/docs/v25.2/import-into) (both have about the same import performance).
+2. [`AVRO`](/docs/v25.2/migrate-from-avro).
+
+We recommend formatting your import files as `CSV` or `AVRO`. These formats can be processed in parallel by all the nodes in the cluster, which increases performance. To import in these formats, use [`IMPORT INTO`](/docs/v25.2/import-into).
+
+### Import the schema separately from the data
+
+When importing into a new table, split your dump data into two files:
+
+1. A SQL file containing the table schema.
+2. A CSV, delimited, or AVRO file containing the table data.
+
+Convert the schema-only file using the [Schema Conversion Tool](/docs/cockroachcloud/migrations-page). The Schema Conversion Tool automatically creates a new CockroachDB Cloud database with the converted schema. If you are migrating to a CockroachDB self-hosted database, you can [export the converted schema](/docs/cockroachcloud/migrations-page#export-the-schema) from the Schema Conversion Tool and execute the statements in [`cockroach sql`](/docs/v25.2/cockroach-sql), or use a third-party schema migration tool such as [Alembic](/docs/v25.2/alembic), [Flyway](/docs/v25.2/flyway), or [Liquibase](/docs/v25.2/liquibase).
+
+Then use the [`IMPORT INTO`](/docs/v25.2/import-into) statement to import the CSV data into the newly created table:
+
+```sql
+> IMPORT INTO customers (id, name)
+CSV DATA (
+    'https://s3-us-west-1.amazonaws.com/cockroachdb-movr/datasets/employees-db/pg_dump/customers.csv'
+);
+```
+
+This method has the added benefit of alerting on potential issues with the import sooner; that is, you will not have to wait for the file to load both the schema and data just to find an error in the schema.
+
+### Import into a schema with secondary indexes
+
+When importing data into a table with [secondary indexes](/docs/v25.2/schema-design-indexes), the import job will ingest the table data and required secondary index data concurrently. This may result in a longer import time compared to a table without secondary indexes. However, this typically adds less time to the initial import than following it with a separate pass to add the indexes. As a result, importing tables with their secondary indexes is the default workflow, an effective strategy for most migrations.
+
+However, in **large** imports (that is, datasets larger than 100 GiB in total size), it may be preferable to temporarily [remove the secondary indexes](/docs/v25.2/drop-index) from the schema, [perform the import](/docs/v25.2/import-into), and then [re-create the indexes separately](/docs/v25.2/schema-design-indexes#create-a-secondary-index). Write operations on tables with many secondary indexes take longer to complete, and importing large datasets have a greater risk of timeouts. Removing the table's secondary indexes allows you to separate the initial data import from the secondary index creation operation, and the total import time is lower. Separating these operations also provides increased visibility into each operation's progress, and the ability to retry each operation independently if you encounter errors or timeouts.
+
+When recreating the secondary indexes, execute the [`CREATE INDEX`](/docs/v25.2/create-index) statements one at a time for best performance. For example:
+
+```sql
+CREATE INDEX idx1 ON table1;
+CREATE INDEX idx2 ON table1;
+CREATE INDEX idx3 ON table1;
+```
+
+### Temporarily remove foreign keys
+
+When importing data into a table with [foreign keys](/docs/v25.2/foreign-key), temporarily remove the foreign keys, and add them after the initial migration with an [`ALTER TABLE` statement](/docs/v25.2/alter-table#add-the-foreign-key-constraint-with-cascade).
+
+### Data type sizes
+
+Above a certain size, many data types such as [`STRING`](/docs/v25.2/string)s, [`DECIMAL`](/docs/v25.2/decimal)s, [`ARRAY`](/docs/v25.2/array), [`BYTES`](/docs/v25.2/bytes), and [`JSONB`](/docs/v25.2/jsonb) may run into performance issues due to [write amplification](/docs/v25.2/architecture/storage-layer#write-amplification). See each data type's documentation for its recommended size limits.
+
+## Split your data into multiple files
+
+Splitting the import data into multiple files can have a significant impact on the import performance. The following formats support multi-file import using `IMPORT INTO`:
+
+- `CSV`
+- `DELIMITED DATA`
+- `AVRO`
+
+For these formats, we recommend splitting your data into at least as many files as there are nodes.
+
+For example, if you have a 3-node cluster, split your data into at least 3 files, create your table schema, and [import into that table](/docs/v25.2/import-into):
+
+```sql
+CREATE TABLE customers (id UUID PRIMARY KEY, name TEXT, INDEX name_idx(name));
+```
+
+```sql
+IMPORT INTO customers (id, name)
+    CSV DATA (
+      's3://{BUCKET NAME}/{customers.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
+      's3://{BUCKET NAME}/{customers2.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
+      's3://{BUCKET NAME}/{customers3.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
+      's3://{BUCKET NAME}/{customers4.csv}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}',
+    );
+```
+
+CockroachDB ingests the files as provided and does not automatically split them further. For example, if you import one large file containing all of your data, CockroachDB will process that file on one node, even if you have more nodes available. However, if you import three files (and your cluster has at least three nodes), each node will process a file in parallel. This is why splitting your data into at least as many files as you have nodes will dramatically decrease the time it takes to import data.
+
+<Note>
+You can split the data into **more** files than you have nodes. CockroachDB will process the files in parallel across the cluster. When splitting the data Cockroach Labs recommends splitting it into a multiple of the number of nodes in your cluster, if possible. For example, if you have a 3 node cluster, split the dataset into 9, 27, or 300 files.
+
+Cockroach Labs recommends keeping the files to a maximum file size of 4 GB unless the files are streamed (for example, [cloud storage locations](/docs/v25.2/use-cloud-storage) will stream the data to CockroachDB), and to keep each file size similar across the dataset. For example, if you are importing a 9 GB dataset that was split into 3 files into a 3 node cluster, keep each file around 3 GB in size if possible. Don't split the data into two 4 GB files, and one 1 GB file.
+</Note>
+
+For maximum performance each split file should be sorted within and across all files, meaning that if you were to sort the rows in each file there would be no overlapping data in any other file. For example, suppose your table has an alphabetic string primary key and you were importing the data into a 3 node cluster.
+
+```sql
+CREATE TABLE contacts (email STRING PRIMARY KEY, first_name TEXT, last_name TEXT);
+```
+
+You should split the files so that the first file contains rows where the [primary key](/docs/v25.2/primary-key) begins with the letters "a" to "i," the second file "j" to "r," and the third file "s" to "z". No file should contain duplicate rows, and within each file the data is sorted alphabetically by the primary key.
+
+```sql
+SELECT * FROM contacts ORDER BY email;
+```
+
+```text
+                 email                |  first_name  |     last_name
+--------------------------------------+--------------+--------------------
+  aallabartonb6@google.co.uk          | Artemas      | Allabarton
+  aantonijevicae@simplemachines.org   | Anselma      | Antonijevic
+  abaakeo2@washington.edu             | Adolphus     | Baake
+  abamellg0@edublogs.org              | Abey         | Bamell
+  abasson3w@yelp.com                  | Anastasie    | Basson
+  abilverstone1v@omniture.com         | Ajay         | Bilverstone
+  ablackleyfe@craigslist.org          | Alberik      | Blackley
+  aboutwelln4@msn.com                 | Anabella     | Boutwell
+  abremner7j@narod.ru                 | Aveline      | Bremner
+  abumpusby@opensource.org            | Ansel        | Bumpus
+  acaesaref@fda.gov                   | Allyn        | Caesar
+  acottamav@nymag.com                 | Alair        | Cottam
+  adackei2@symantec.com               | Andrea       | Dacke
+  adaenen@answers.com                 | Alessandra   | Daen
+  adalgety1x@shinystat.com            | Aura         | Dalgety
+  adenyukhinh2@examiner.com           | Arvy         | Denyukhin
+...
+```
+
+### File storage during import
+
+During migration, all of the features of [`IMPORT INTO`](/docs/v25.2/import-into) that interact with external file storage assume that every node has the exact same view of that storage. In other words, in order to import from a file, every node needs to have the same access to that file.
+
+If a node runs out of disk space while processing an import job, CockroachDB will pause the import job. Make sure each node has enough free disk space to process the file and store the data.
+
+## Sort your data
+
+Within each split file with your import data, sort the data based on how it will be stored in CockroachDB. For example, in the previous example where a dataset was partitioned by an alphabetic string primary key, within each split file the data should be sorted by the alphabetic primary key.
+
+In tests performed by Cockroach Labs, the best import performance, measured in both throughput and overall time, was observed when data was split into multiple files and sorted within each file. Imports using an unsplit and unsorted dataset were about 16 times slower than imports using the same dataset with split and sorted files.
+
+If you cannot both split and sort your dataset, the performance of either split or sorted data was similar, around 2 times slower than both split and sorted data, but still much faster than both unsplit and unsorted data.
+
+## See also
+
+- [`IMPORT INTO`](/docs/v25.2/import-into)
+- [Migration Overview](/docs/molt/migration-overview)
+- [Migrate from Oracle](/docs/v25.2/migrate-from-oracle)
+- [Migrate from PostgreSQL](/docs/molt/migrate-to-cockroachdb)
+- [Migrate from MySQL](/docs/molt/migrate-to-cockroachdb?filters=mysql)
+- [Migrate from CSV](/docs/v25.2/migrate-from-csv)
+- [Migrate from Avro](/docs/v25.2/migrate-from-avro)

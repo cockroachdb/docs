@@ -1,0 +1,62 @@
+export const OptIncremental = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="57" width="503" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 5 1 1 1 9"></polygon>
+<polygon points="17 5 9 1 9 9"></polygon>
+<rect height="32" rx="10" width="118" x="51" y="23"></rect>
+<rect class="terminal" height="32" rx="10" width="118" x="49" y="21"></rect>
+<text class="terminal" x="59" y="41">INCREMENTAL</text>
+<rect height="32" rx="10" width="60" x="189" y="23"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="187" y="21"></rect>
+<text class="terminal" x="197" y="41">FROM</text><a xlink:href="#string_or_placeholder_list" xlink:title="string_or_placeholder_list">
+<rect height="32" width="186" x="269" y="23"></rect>
+<rect class="nonterminal" height="32" width="186" x="267" y="21"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="162" font-size="10" class="nonterminal" x="279" y="41">string_or_placeholder_list</text></a><path class="line" d="m17 5 h2 m20 0 h10 m0 0 h414 m-444 0 h20 m424 0 h20 m-464 0 q10 0 10 10 m444 0 q0 -10 10 -10 m-454 10 v12 m444 0 v-12 m-444 12 q0 10 10 10 m424 0 q10 0 10 -10 m-434 10 h10 m118 0 h10 m0 0 h10 m60 0 h10 m0 0 h10 m186 0 h10 m23 -32 h-3"></path>
+<polygon points="493 5 501 1 501 9"></polygon>
+<polygon points="493 5 485 1 485 9"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

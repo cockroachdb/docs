@@ -1,0 +1,44 @@
+---
+title: "cockroach debug encryption-active-key"
+old_description: "Learn the command for viewing the algorithm and store key for an encrypted store."
+---
+
+The `cockroach debug encryption-active-key` [command](/docs/v26.1/cockroach-commands) displays the encryption algorithm and store key for an encrypted store.
+
+## Synopsis
+
+```shell
+$ cockroach debug encryption-active-key [path specified by the store flag]
+```
+
+## Subcommands
+
+While the `cockroach debug` command has a few subcommands, users are expected to use only the [`zip`](/docs/v26.1/cockroach-debug-zip), [`encryption-active-key`](/docs/v26.1/cockroach-debug-encryption-active-key), [`merge-logs`](/docs/v26.1/cockroach-debug-merge-logs), [`list-files`](/docs/v26.1/cockroach-debug-list-files), [`tsdump`](/docs/v26.1/cockroach-debug-tsdump), and [`ballast`](/docs/v26.1/cockroach-debug-ballast) subcommands.
+
+We recommend using the [`encryption-decrypt`](/docs/v26.1/cockroach-debug-encryption-decrypt) and [`job-trace`](/docs/v26.1/cockroach-debug-job-trace) subcommands only when directed by the [Cockroach Labs support team](/docs/v26.1/support-resources).
+
+The other `debug` subcommands are useful only to Cockroach Labs. Output of `debug` commands may contain sensitive or secret information.
+
+## Example
+
+Start a node with Enterprise Encryption At Rest enabled:
+
+```shell
+$ cockroach start --store=cockroach-data --enterprise-encryption=path=cockroach-data,key=aes-128.key,old-key=plain --insecure --certs-dir=certs
+```
+
+View the encryption algorithm and store key:
+
+```shell
+$ cockroach debug encryption-active-key cockroach-data
+```
+
+```text
+AES128_CTR:be235c29239aa84a48e5e1874d76aebf7fb3c1bdc438cec2eb98de82f06a57a0
+```
+
+## See also
+
+- [File an Issue](/docs/v26.1/file-an-issue)
+- [`cockroach` Commands Overview](/docs/v26.1/cockroach-commands)
+- [Troubleshooting Overview](/docs/v26.1/troubleshooting-overview)

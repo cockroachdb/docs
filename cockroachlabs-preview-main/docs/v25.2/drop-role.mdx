@@ -1,0 +1,70 @@
+---
+title: "DROP ROLE"
+old_description: "The DROP ROLE statement removes one or more SQL roles."
+---
+
+import { DropRole5 } from "/snippets/syntax-diagrams/DropRole5.jsx";
+
+The `DROP ROLE` [statement](/docs/v25.2/sql-statements) removes one or more SQL roles. You can use the keywords `ROLE` and `USER` interchangeably. [`DROP USER`](/docs/v25.2/drop-user) is an alias for `DROP ROLE`.
+
+<Note>
+The `DROP ROLE` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.2/online-schema-changes).
+</Note>
+
+## Considerations
+
+- The `admin` user/role cannot be dropped, and `root` must always be a member of `admin`.
+- A user/role cannot be dropped if it has privileges. Use [`REVOKE`](/docs/v25.2/revoke) to remove privileges.
+- Users/roles that [own objects](/docs/v25.2/security-reference/authorization#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another user/role](/docs/v25.2/alter-database#change-a-databases-owner).
+- If a user/role is logged in while a [different session](/docs/v25.2/show-sessions) drops that user, CockroachDB checks that the user exists before allowing it to inherit privileges from [the `public` role](/docs/v25.2/security-reference/authorization). In addition, any active [web](/docs/v25.2/ui-overview#authentication) [sessions](/docs/v25.2/cockroach-auth-session) are revoked when a user is dropped.
+
+## Required privileges
+
+Non-admin roles cannot drop admin roles. To drop non-admin roles, the role must be a member of the `admin` role or have the [`CREATEROLE`](/docs/v25.2/create-role#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) parameter set.
+
+## Synopsis
+
+<DropRole5 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td>The name of the role to remove. To remove multiple roles, use a comma-separate list of roles.<br/><br/>You can use <a href="/docs/v25.2/show-roles"><code>SHOW ROLES</code></a> to find the names of roles.</td></tr></tbody></table>
+
+## Example
+
+In this example, first check a role's privileges. Then, revoke the role's privileges and remove the role.
+
+```sql
+> SHOW GRANTS ON documents FOR dev_ops;
+```
+
+```text
++------------+--------+-----------+---------+------------+
+|  Database  | Schema |   Table   |  User   | Privileges |
++------------+--------+-----------+---------+------------+
+| jsonb_test | public | documents | dev_ops | INSERT     |
++------------+--------+-----------+---------+------------+
+```
+
+```sql
+> REVOKE INSERT ON documents FROM dev_ops;
+```
+
+<Note>
+All of a role's privileges must be revoked before the role can be dropped.
+</Note>
+
+```sql
+> DROP ROLE dev_ops;
+```
+
+## See also
+
+- [Authorization](/docs/v25.2/authorization)
+- [Authorization Best Practices](/docs/v25.2/security-reference/authorization#authorization-best-practices)
+- [`CREATE ROLE`](/docs/v25.2/create-role)
+- [`SHOW ROLES`](/docs/v25.2/show-roles)
+- [`GRANT`](/docs/v25.2/grant)
+- [`SHOW GRANTS`](/docs/v25.2/show-grants)
+- [SQL Statements](/docs/v25.2/sql-statements)
+- [Online Schema Changes](/docs/v25.2/online-schema-changes)

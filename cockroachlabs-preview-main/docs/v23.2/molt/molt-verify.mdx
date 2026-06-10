@@ -1,0 +1,20 @@
+---
+title: "MOLT Verify"
+old_description: "Learn how to use the MOLT Verify tool to check for data discrepancies during and after a migration."
+---
+
+import MoltVerify from "/snippets/molt/molt-verify.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MoltVerify />

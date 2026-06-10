@@ -1,0 +1,27 @@
+---
+title: "CockroachDB Advanced on Azure"
+old_description: "Learn about limitations and FAQs about CockroachDB Advanced on Microsoft Azure."
+---
+
+This page provides information about CockroachDB Advanced clusters on Microsoft Azure, including frequently asked questions and limitations. To create a cluster, refer to [Create a CockroachDB Advanced Cluster](/docs/cockroachcloud/create-an-advanced-cluster).
+
+To express interest or request more information about a given limitation, contact your Cockroach Labs account team.
+
+CockroachDB Advanced clusters on Azure have the following temporary limitations. To express interest or request more information about a given limitation, contact your Cockroach Labs account team.
+
+- A cluster must have at minimum three nodes. A multi-region cluster must have at minimum three nodes per region. Single-node clusters are not supported on Azure.
+- CockroachDB Advanced on Azure meets or exceeds the requirements of SOC 2 Type 2, and now supports [PCI DSS](/docs/cockroachcloud/pci-dss) and HIPAA compliance. (Refer to [Regulatory Compliance in CockroachDB Advanced](/docs/cockroachcloud/compliance).) Note that the following features required for PCI DSS and HIPAA compliance are in Preview for Azure:
+  - [Customer Managed Encryption Keys (CMEK)](/docs/cockroachcloud/cmek)
+  - [Egress Perimeter Controls](/docs/cockroachcloud/egress-perimeter-controls)
+
+You can configure IP allowlisting to limit the IP addresses or CIDR ranges that can access a CockroachDB Advanced cluster on Azure, and you can use [Azure Private Link](https://learn.microsoft.com/azure/private-link/private-link-overview) to connect your applications in Azure to your cluster and avoid exposing your cluster or applications to the public internet. Refer to [Connect to your cluster](/docs/cockroachcloud/connect-to-your-cluster#azure-private-link).
+
+## Change data capture
+
+CockroachDB Advanced supports [changefeeds](/docs/v25.4/changefeed-messages), which allow your cluster to send data events in real-time to a [downstream sink](/docs/v25.4/changefeed-sinks). [Azure Event Hubs](https://learn.microsoft.com/azure/event-hubs/azure-event-hubs-kafka-overview) provides an Azure-native service that can be used with a Kafka endpoint as a sink.
+
+## Disaster recovery
+
+[Managed backups](/docs/cockroachcloud/managed-backups?filters=advanced) automatically back up clusters in CockroachDB Cloud.
+
+You can [take and restore from manual backups](/docs/cockroachcloud/take-and-restore-self-managed-backups) to Azure ([Blob Storage](https://azure.microsoft.com/products/storage/blobs) or [ADLS Gen 2](https://learn.microsoft.com/azure/storage/blobs/data-lake-storage-introduction)). Refer to the blog post [CockroachDB locality-aware Backups for Azure Blob](https://www.cockroachlabs.com/blog/locality-aware-backups-azure-blob) for an example. To encrypt manual backups using an RSA key, refer to the [Azure Key Vault](https://learn.microsoft.com/azure/key-vault/keys/about-keys) documentation.

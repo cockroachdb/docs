@@ -1,0 +1,20 @@
+---
+title: "CockroachDB Cloud Documentation"
+old_description: "Learn more about CockroachDB Cloud, a fully-managed service created and owned by Cockroach Labs that makes deploying, scaling, and managing CockroachDB effor..."
+---
+
+import Index from "/snippets/cockroachcloud/index.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<Index />

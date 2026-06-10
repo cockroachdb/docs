@@ -1,0 +1,59 @@
+export const AlterRangeStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="81" width="289" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="#alter_zone_range_stmt" xlink:title="alter_zone_range_stmt">
+<rect height="32" width="170" x="51" y="3"></rect>
+<rect class="nonterminal" height="32" width="170" x="49" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="146" font-size="11" class="nonterminal" x="61" y="21">alter_zone_range_stmt</text></a><a xlink:href="#alter_range_relocate_stmt" xlink:title="alter_range_relocate_stmt">
+<rect height="32" width="190" x="51" y="47"></rect>
+<rect class="nonterminal" height="32" width="190" x="49" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="166" font-size="10" class="nonterminal" x="61" y="65">alter_range_relocate_stmt</text></a><path class="line" d="m17 17 h2 m20 0 h10 m170 0 h10 m0 0 h20 m-230 0 h20 m210 0 h20 m-250 0 q10 0 10 10 m230 0 q0 -10 10 -10 m-240 10 v24 m230 0 v-24 m-230 24 q0 10 10 10 m210 0 q10 0 10 -10 m-220 10 h10 m190 0 h10 m23 -44 h-3"></path>
+<polygon points="279 17 287 13 287 21"></polygon>
+<polygon points="279 17 271 13 271 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

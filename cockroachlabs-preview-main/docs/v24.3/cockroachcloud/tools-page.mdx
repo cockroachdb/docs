@@ -1,0 +1,20 @@
+---
+title: "Tools Page"
+old_description: "How to use the Tools page to enable monitoring with Datadog and access the DB Console."
+---
+
+import ToolsPage from "/snippets/cockroachcloud/tools-page.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ToolsPage />

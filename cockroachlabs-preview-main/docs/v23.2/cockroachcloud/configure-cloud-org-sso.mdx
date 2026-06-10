@@ -1,0 +1,20 @@
+---
+title: "Configure Cloud Organization SSO"
+old_description: "Learn how to configure single Cloud Organization Single Sign-On (SSO) for your CockroachDB Cloud organization."
+---
+
+import ConfigureCloudOrgSso from "/snippets/cockroachcloud/configure-cloud-org-sso.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ConfigureCloudOrgSso />

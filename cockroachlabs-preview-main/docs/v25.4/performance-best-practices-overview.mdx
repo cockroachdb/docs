@@ -1,0 +1,564 @@
+---
+title: "SQL Performance Best Practices"
+old_description: "Best practices for optimizing SQL performance in CockroachDB."
+---
+
+This page provides best practices for optimizing query performance in CockroachDB.
+
+## DML best practices
+
+### Use multi-row statements instead of multiple single-row statements
+
+For `INSERT`, `UPSERT`, and `DELETE` statements, a single multi-row statement is faster than multiple single-row statements. Whenever possible, use multi-row statements for DML queries instead of multiple single-row statements.
+
+For more information, see:
+
+- [Insert Data](/docs/v25.4/insert-data)
+- [Update Data](/docs/v25.4/update-data)
+- [Delete Data](/docs/v25.4/delete-data)
+- [How to improve IoT application performance with multi-row DML](https://www.cockroachlabs.com/blog/multi-row-dml)
+
+### Use `UPSERT` instead of `INSERT ON CONFLICT` on tables with no secondary indexes
+
+When inserting or updating columns on a table that does not have [secondary indexes](/docs/v25.4/indexes), Cockroach Labs recommends using an `UPSERT` statement instead of `INSERT ON CONFLICT DO UPDATE`. Whereas `INSERT ON CONFLICT` always performs a read, the `UPSERT` statement writes without reading, making it faster. This may be useful if you are using a simple SQL table of two columns to [simulate direct KV access](/docs/v25.4/sql-faqs#can-i-use-cockroachdb-as-a-key-value-store).
+
+If the table has a secondary index, there is no performance difference between `UPSERT` and `INSERT ON CONFLICT`. However, `INSERT` without an `ON CONFLICT` clause may not scan the table for existing values. This can provide a performance improvement over `UPSERT`.
+
+## Bulk-insert best practices
+
+### Use multi-row `INSERT` statements for bulk-inserts into existing tables
+
+To bulk-insert data into an existing table, batch multiple rows in one multi-row `INSERT` statement. Experimentally determine the optimal batch size for your application by monitoring the performance for different batch sizes (10 rows, 100 rows, 1000 rows). Do not include bulk `INSERT` statements within an explicit transaction.
+
+<Tip>
+  You can also use the [`IMPORT INTO`](/docs/v25.4/import-into) statement to bulk-insert CSV data into an existing
+  table.
+</Tip>
+
+For more information, see [Insert Multiple Rows](/docs/v25.4/insert#insert-multiple-rows-into-an-existing-table).
+
+<Note>
+  Large multi-row `INSERT` queries can lead to long-running transactions that result in [transaction retry
+  errors](/docs/v25.4/transaction-retry-error-reference). If a multi-row `INSERT` query results in an error code
+  [`40001` with the message `transaction deadline
+  exceeded`](/docs/v25.4/transaction-retry-error-reference#retry_commit_deadline_exceeded), we recommend breaking up the
+  query up into smaller batches of rows.
+</Note>
+
+## Bulk-delete best practices
+
+### Use `TRUNCATE` instead of `DELETE` to delete all rows in a table
+
+The [`TRUNCATE`](/docs/v25.4/truncate) statement removes all rows from a table by dropping the table and recreating a new table with the same name. This performs better than using `DELETE`, which performs multiple transactions to delete all rows.
+
+### Use batch deletes to delete a large number of rows
+
+To delete a large number of rows, we recommend iteratively deleting batches of rows until all of the unwanted rows are deleted. For an example, see [Bulk-delete Data](/docs/v25.4/bulk-delete-data).
+
+### Batch delete "expired" data
+
+CockroachDB has support for Time to Live ("TTL") expiration on table rows, also known as _Row-Level TTL_. Row-Level TTL is a mechanism whereby rows from a table are considered "expired" and can be automatically deleted once those rows have been stored longer than a specified expiration time.
+
+For more information, see [Batch delete expired data with Row-Level TTL](/docs/v25.4/row-level-ttl).
+
+## Assign column families
+
+A column family is a group of columns in a table that is stored as a single key-value pair in the underlying key-value store.
+
+When a table is created, all columns are stored as a single column family. This default approach ensures efficient key-value storage and performance in most cases. However, when frequently updated columns are grouped with seldom updated columns, the seldom updated columns are nonetheless rewritten on every update. Especially when the seldom updated columns are large, it's therefore more performant to [assign them to a distinct column family](/docs/v25.4/column-families).
+
+## Unique ID best practices
+
+The best practices for generating unique IDs in a distributed database like CockroachDB are very different than for a single-node database.
+
+To create unique and non-sequential IDs, we recommend the following approaches (listed in order from best to worst performance):
+
+<table>
+  <thead>
+    <tr>
+      <th>Approach</th>
+      <th>Pros</th>
+      <th>Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        1. <a href="#use-multi-column-primary-keys">Use multi-column primary keys</a>
+      </td>
+      <td>Potentially fastest, if done right</td>
+      <td>Complex, requires up-front design and testing to ensure performance</td>
+    </tr>
+    <tr>
+      <td>
+        2. <a href="#use-functions-to-generate-unique-ids">Use functions to generate unique IDs</a>
+      </td>
+      <td>Good performance; spreads load well; easy choice</td>
+      <td>May leave some performance on the table; requires other columns to be useful in queries</td>
+    </tr>
+    <tr>
+      <td>
+        3.{" "}
+        <a href="#use-insert-with-the-returning-clause-to-generate-unique-ids">
+          Use <code>INSERT</code> with the <code>RETURNING</code> clause
+        </a>
+      </td>
+      <td>Easy to query against; familiar design</td>
+      <td>
+        Slower performance than the other options; higher chance of{" "}
+        <a href="#transaction-contention">transaction contention</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+Traditional approaches using monotonically increasing [`INT`](/docs/v25.4/int) or [`SERIAL`](/docs/v25.4/serial) data types will create [hotspots](#hotspots) for both reads and writes in a distributed database like CockroachDB. We [discourage indexing on sequential keys](/docs/v25.4/schema-design-indexes#best-practices). If a table **must** be indexed on sequential keys, use [hash-sharded indexes](/docs/v25.4/hash-sharded-indexes). Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range [hotspots](/docs/v25.4/understand-hotspots) and improving write performance on sequentially-keyed indexes at a small cost to read performance.
+
+### Use multi-column primary keys
+
+A well-designed multi-column primary key can yield even better performance than a [UUID primary key](#use-functions-to-generate-unique-ids), but it requires more up-front schema design work. To get the best performance, ensure that any monotonically increasing field is located **after** the first column of the primary key. When done right, such a composite primary key should result in:
+
+- Enough randomness in your primary key to spread the table data / query load relatively evenly across the cluster, which will avoid hotspots. By "enough randomness" we mean that the prefix of the primary key should be relatively uniformly distributed over its domain. Its domain should have at least as many elements as you have nodes.
+- A monotonically increasing column that is part of the primary key (and thus indexed) which is also useful in your queries.
+
+For example, consider a social media website. Social media posts are written by users, and on login the user's last 10 posts are displayed. A good choice for a primary key might be `(username, post_timestamp)`. For example:
+
+```sql
+> CREATE TABLE posts (
+    username STRING,
+    post_timestamp TIMESTAMP,
+    post_id INT,
+    post_content STRING,
+    CONSTRAINT posts_pk PRIMARY KEY(username, post_timestamp)
+);
+```
+
+This would make the following query efficient.
+
+```sql
+> SELECT * FROM posts
+          WHERE username = 'alyssa'
+       ORDER BY post_timestamp DESC
+          LIMIT 10;
+```
+
+```text
+  username |      post_timestamp       | post_id | post_content
++----------+---------------------------+---------+--------------+
+  alyssa   | 2019-07-31 18:01:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-30 10:22:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-30 09:12:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-29 13:48:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-29 13:47:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-29 13:46:00+00:00 |    ...  | ...
+  alyssa   | 2019-07-29 13:43:00+00:00 |    ...  | ...
+  ...
+
+Time: 924µs
+```
+
+To see why, let's look at the [`EXPLAIN`](/docs/v25.4/explain) output. It shows that the query is fast because it does a point lookup on the indexed column `username` (as shown by the line `spans | /"alyssa"-...`). Furthermore, the column `post_timestamp` is already in an index, and sorted (since it's a monotonically increasing part of the primary key).
+
+```sql
+> EXPLAIN (VERBOSE)
+    SELECT * FROM posts
+            WHERE username = 'alyssa'
+         ORDER BY post_timestamp DESC
+            LIMIT 10;
+```
+
+```text
+                              info
+----------------------------------------------------------------
+  distribution: local
+  vectorized: true
+
+  • revscan
+    columns: (username, post_timestamp, post_id, post_content)
+    ordering: -post_timestamp
+    estimated row count: 10 (missing stats)
+    table: posts@posts_pk
+    spans: /"alyssa"-/"alyssa"/PrefixEnd
+    limit: 10
+(10 rows)
+
+Time: 1ms total (execution 1ms / network 0ms)
+```
+
+Note that the above query also follows the [indexing best practice](/docs/v25.4/indexes#best-practices) of indexing all columns in the `WHERE` clause.
+
+### Use functions to generate unique IDs
+
+To auto-generate unique row identifiers, you can use the following [functions](/docs/v25.4/functions-and-operators#id-generation-functions):
+
+- [Use `gen_random_uuid()`](#use-gen_random_uuid): Generates a UUIDv4 with `UUID` data type.
+- [Use `uuid_v4()`](#use-uuid_v4): Generates a UUIDv4 with `BYTES` data type.
+- [Use `unique_rowid()`](#use-unique_rowid): Generates a globally unique `INT` data type
+
+<Tip>
+  For performance reasons, if you are going to use UUIDs, Cockroach Labs strongly recommends using **UUIDv4** as defined
+  by [RFC 4122](https://www.ietf.org/rfc/rfc4122.txt). This is the format generated by the [`gen_random_uuid()` and
+  `uuid_v4()` built-in functions](/docs/v25.4/functions-and-operators#id-generation-functions). Other types of UUID are
+  largely untested with CockroachDB and will require performance testing to avoid hotspots.
+</Tip>
+
+#### Use `gen_random_uuid()`
+
+To use the [`UUID`](/docs/v25.4/uuid) column with the `gen_random_uuid()` [function](/docs/v25.4/functions-and-operators#id-generation-functions) as the [default value](/docs/v25.4/default-value):
+
+```sql
+CREATE TABLE users (
+    id UUID NOT NULL DEFAULT gen_random_uuid(),
+    city STRING NOT NULL,
+    name STRING NULL,
+    address STRING NULL,
+    credit_card STRING NULL,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+    FAMILY "primary" (id, city, name, address, credit_card)
+);
+```
+
+```sql
+INSERT INTO users (name, city) VALUES ('Petee', 'new york'), ('Eric', 'seattle'), ('Dan', 'seattle');
+```
+
+```sql
+SELECT * FROM users;
+```
+
+```text
+                   id                  |   city   | name  | address | credit_card
++--------------------------------------+----------+-------+---------+-------------+
+  cf8ee4e2-cd74-449a-b6e6-a0fb2017baa4 | new york | Petee | NULL    | NULL
+  2382564e-702f-42d9-a139-b6df535ae00a | seattle  | Eric  | NULL    | NULL
+  7d27e40b-263a-4891-b29b-d59135e55650 | seattle  | Dan   | NULL    | NULL
+(3 rows)
+```
+
+#### Use `uuid_v4()`
+
+Alternatively, you can use the [`BYTES`](/docs/v25.4/bytes) column with the `uuid_v4()` function as the default value:
+
+```sql
+CREATE TABLE users2 (
+    id BYTES DEFAULT uuid_v4(),
+    city STRING NOT NULL,
+    name STRING NULL,
+    address STRING NULL,
+    credit_card STRING NULL,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+    FAMILY "primary" (id, city, name, address, credit_card)
+);
+```
+
+```sql
+INSERT INTO users2 (name, city) VALUES ('Anna', 'new york'), ('Jonah', 'seattle'), ('Terry', 'chicago');
+```
+
+```sql
+SELECT * FROM users;
+```
+
+```text
+                        id                       |   city   | name  | address | credit_card
++------------------------------------------------+----------+-------+---------+-------------+
+  4\244\277\323/\261M\007\213\275*\0060\346\025z | chicago  | Terry | NULL    | NULL
+  \273*t=u.F\010\274f/}\313\332\373a             | new york | Anna  | NULL    | NULL
+  \004\\\364nP\024L)\252\364\222r$\274O0         | seattle  | Jonah | NULL    | NULL
+(3 rows)
+```
+
+In either case, generated IDs will be 128-bit, sufficiently large to generate unique values. Once the table grows beyond a single key-value range's [default size](/docs/v25.4/configure-replication-zones#range-max-bytes), new IDs will be scattered across all of the table's ranges and, therefore, likely across different nodes. This means that multiple nodes will share in the load.
+
+This approach has the disadvantage of creating a primary key that may not be useful in a query directly, which can require a join with another table or a secondary index.
+
+#### Use `unique_rowid()`
+
+If it is important for generated IDs to be stored in the same key-value range, you can use an [integer type](/docs/v25.4/int) with the `unique_rowid()` [function](/docs/v25.4/functions-and-operators#id-generation-functions) as the default value, either explicitly or via the [`SERIAL` pseudo-type](/docs/v25.4/serial):
+
+```sql
+CREATE TABLE users3 (
+    id INT DEFAULT unique_rowid(),
+    city STRING NOT NULL,
+    name STRING NULL,
+    address STRING NULL,
+    credit_card STRING NULL,
+    CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+    FAMILY "primary" (id, city, name, address, credit_card)
+);
+```
+
+```sql
+INSERT INTO users3 (name, city) VALUES ('Blake', 'chicago'), ('Hannah', 'seattle'), ('Bobby', 'seattle');
+```
+
+```sql
+SELECT * FROM users3;
+```
+
+```text
+          id         |  city   |  name  | address | credit_card
++--------------------+---------+--------+---------+-------------+
+  469048192112197633 | chicago | Blake  | NULL    | NULL
+  469048192112263169 | seattle | Hannah | NULL    | NULL
+  469048192112295937 | seattle | Bobby  | NULL    | NULL
+(3 rows)
+```
+
+Upon insert or upsert, the `unique_rowid()` function generates a default value from the timestamp and ID of the node executing the insert. Such time-ordered values are likely to be globally unique except in cases where a very large number of IDs (100,000+) are generated per node per second. Also, there can be gaps and the order is not completely guaranteed.
+
+To understand the differences between the `UUID` and `unique_rowid()` options, see the [SQL FAQs](/docs/v25.4/sql-faqs#what-are-the-differences-between-uuid-sequences-and-unique_rowid). For further background on UUIDs, see [What is a UUID, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-a-uuid).
+
+### Use `INSERT` with the `RETURNING` clause to generate unique IDs
+
+If something prevents you from using [multi-column primary keys](#use-multi-column-primary-keys) or [`UUID`s](#use-functions-to-generate-unique-ids) to generate unique IDs, you might resort to using `INSERT`s with `SELECT`s to return IDs. Instead, [use the `RETURNING` clause with the `INSERT` statement](/docs/v25.4/insert#insert-and-return-values) as shown below for improved performance.
+
+#### Generate monotonically-increasing unique IDs
+
+Suppose the table schema is as follows:
+
+```sql
+> CREATE TABLE X (
+    ID1 INT,
+    ID2 INT,
+    ID3 INT DEFAULT 1,
+    PRIMARY KEY (ID1,ID2)
+  );
+```
+
+The common approach would be to use a transaction with an `INSERT` followed by a `SELECT`:
+
+```sql
+> BEGIN;
+
+> INSERT INTO X VALUES (1,1,1)
+    ON CONFLICT (ID1,ID2)
+    DO UPDATE SET ID3=X.ID3+1;
+
+> SELECT * FROM X WHERE ID1=1 AND ID2=1;
+
+> COMMIT;
+```
+
+However, the performance best practice is to use a `RETURNING` clause with `INSERT` instead of the transaction:
+
+```sql
+> INSERT INTO X VALUES (1,1,1),(2,2,2),(3,3,3)
+    ON CONFLICT (ID1,ID2)
+    DO UPDATE SET ID3=X.ID3 + 1
+    RETURNING ID1,ID2,ID3;
+```
+
+#### Generate random unique IDs
+
+Suppose the table schema is as follows:
+
+```sql
+> CREATE TABLE X (
+    ID1 INT,
+    ID2 INT,
+    ID3 INT DEFAULT unique_rowid(),
+    PRIMARY KEY (ID1,ID2)
+  );
+```
+
+The common approach to generate random Unique IDs is a transaction using a `SELECT` statement:
+
+```sql
+> BEGIN;
+
+> INSERT INTO X VALUES (1,1);
+
+> SELECT * FROM X WHERE ID1=1 AND ID2=1;
+
+> COMMIT;
+```
+
+However, the performance best practice is to use a `RETURNING` clause with `INSERT` instead of the transaction:
+
+```sql
+> INSERT INTO X VALUES (1,1),(2,2),(3,3)
+    RETURNING ID1,ID2,ID3;
+```
+
+## Secondary index best practices
+
+See [Secondary Index Best Practices](/docs/v25.4/schema-design-indexes#best-practices).
+
+## Join best practices
+
+See [Join Performance Best Practices](/docs/v25.4/joins#performance-best-practices).
+
+## Subquery best practices
+
+See [Subquery Performance Best Practices](/docs/v25.4/subqueries#performance-best-practices).
+
+## Authorization best practices
+
+See [Authorization Best Practices](/docs/v25.4/security-reference/authorization#authorization-best-practices).
+
+## Table scan best practices
+
+### Avoid `SELECT *` for large tables
+
+For large tables, avoid table scans (that is, reading the entire table data) whenever possible. Instead, define the required fields in a `SELECT` statement.
+
+For example, suppose the table schema is as follows:
+
+```sql
+> CREATE TABLE accounts (
+    id INT,
+    customer STRING,
+    address STRING,
+    balance INT
+    nominee STRING
+    );
+```
+
+Now if we want to find the account balances of all customers, an inefficient table scan would be:
+
+```sql
+> SELECT * FROM ACCOUNTS;
+```
+
+This query retrieves all data stored in the table. A more efficient query would be:
+
+```sql
+ > SELECT CUSTOMER, BALANCE FROM ACCOUNTS;
+```
+
+This query returns the account balances of the customers.
+
+### Avoid `SELECT DISTINCT` for large tables
+
+`SELECT DISTINCT` allows you to obtain unique entries from a query by removing duplicate entries. However, `SELECT DISTINCT` is computationally expensive. As a performance best practice, use [`SELECT` with the `WHERE` clause](/docs/v25.4/select-clause#filter-rows) instead.
+
+### Use secondary indexes to optimize queries
+
+See [Statement Tuning with `EXPLAIN`](/docs/v25.4/sql-tuning-with-explain#issue-full-table-scans).
+
+### Use `AS OF SYSTEM TIME` to decrease conflicts with long-running queries
+
+If you have long-running queries (such as analytics queries that perform full table scans) that can tolerate slightly out-of-date reads, consider using the [`... AS OF SYSTEM TIME` clause](/docs/v25.4/select-clause#select-historical-data-time-travel). Using this, your query returns data as it appeared at a distinct point in the past and will not cause [conflicts](/docs/v25.4/architecture/transaction-layer#transaction-conflicts) with other concurrent transactions, which can increase your application's performance.
+
+However, because `AS OF SYSTEM TIME` returns historical data, your reads might be stale.
+
+### Prevent the optimizer from planning full scans
+
+To avoid overloading production clusters, there are several ways to prevent the [cost-based-optimizer](/docs/v25.4/cost-based-optimizer) from generating query plans with [full table and index scans](/docs/v25.4/ui-sql-dashboard#full-table-index-scans).
+
+#### Use index hints to prevent full scans on tables
+
+- To prevent the optimizer from planning a full scan for a specific table, specify the `NO_FULL_SCAN` index hint. For example:
+
+  ```sql
+  SELECT * FROM table_name@{NO_FULL_SCAN};
+  ```
+
+- To prevent a full scan of a [partial index](/docs/v25.4/partial-indexes) for a specific table, you must specify `NO_FULL_SCAN` in combination with the index name using [`FORCE_INDEX`](/docs/v25.4/table-expressions#force-index-selection). For example:
+
+  ```sql
+  SELECT * FROM table_name@{FORCE_INDEX=index_name,NO_FULL_SCAN} WHERE b > 0;
+  ```
+
+  This forces a constrained scan of the partial index. If a constrained scan of the partial index is not possible, an error is returned.
+
+#### Disallow query plans that use full scans
+
+When the `disallow_full_table_scans` [session setting](/docs/v25.4/set-vars#disallow-full-table-scans) is enabled, the optimizer will not plan full table or index scans on "large" tables (i.e., those with more rows than [`large_full_scan_rows`](/docs/v25.4/set-vars#large-full-scan-rows)).
+
+- At the cluster level, set `disallow_full_table_scans` for some or [all users and roles](/docs/v25.4/alter-role#set-default-session-variable-values-for-all-users). For example:
+
+  ```sql
+  ALTER ROLE ALL SET disallow_full_table_scans = true;
+  ```
+
+- At the application level, add `disallow_full_table_scans` to the connection string using the [`options` parameter](/docs/v25.4/connection-parameters#additional-connection-parameters).
+
+If you disable full scans, you can set the [`large_full_scan_rows` session variable](/docs/v25.4/set-vars#large-full-scan-rows) to specify the maximum table size allowed for a full scan. If no alternative plan is possible, the optimizer will return an error.
+
+If you disable full scans, and you provide an [index hint](/docs/v25.4/indexes#selection), the optimizer will try to avoid a full scan while also respecting the index hint. If this is not possible, the optimizer will return an error. If you do not provide an index hint and it is not possible to avoid a full scan, the optimizer will return an error, the full scan will be logged, and the `sql.guardrails.full_scan_rejected.count` [metric](/docs/v25.4/ui-overview-dashboard) will be updated.
+
+#### Disallow query plans that scan more than a number of rows
+
+When the `transaction_rows_read_err` [session setting](/docs/v25.4/set-vars#transaction-rows-read-err) is enabled, the [optimizer](/docs/v25.4/cost-based-optimizer) will not create query plans with scans that exceed the specified row limit. See [Disallow transactions from reading or writing many rows](#disallow-transactions-from-reading-or-writing-many-rows).
+
+### Disallow transactions from reading or writing many rows
+
+- When the `transaction_rows_read_err` [session setting](/docs/v25.4/set-vars#transaction-rows-read-err) is enabled, transactions that read more than the specified number of rows will fail. In addition, the [optimizer](/docs/v25.4/cost-based-optimizer) will not create query plans with scans that exceed the specified row limit. For example, to set a default value for [all users](/docs/v25.4/alter-role#set-default-session-variable-values-for-all-users) at the cluster level:
+
+  ```sql
+  ALTER ROLE ALL SET transaction_rows_read_err = 1000;
+  ```
+
+- When the `transaction_rows_written_err` [session setting](/docs/v25.4/set-vars#transaction-rows-written-err) is enabled, transactions that write more than the specified number of rows will fail. For example, to set a default value for all users at the cluster level:
+
+  ```sql
+  ALTER ROLE ALL SET transaction_rows_written_err = 1000;
+  ```
+
+To assess the impact of configuring these session settings, use the corresponding session settings [`transaction_rows_read_log`](/docs/v25.4/set-vars#transaction-rows-read-log) and [`transaction_rows_written_log`](/docs/v25.4/set-vars#transaction-rows-written-log) to log transactions that read or write the specified number of rows. Transactions are logged to the [`SQL_PERF`](/docs/v25.4/logging#sql_perf) channel.
+
+## Transaction contention
+
+_Transaction contention_ occurs when the following three conditions are met:
+
+- There are multiple concurrent transactions or statements (sent by multiple clients connected simultaneously to a single CockroachDB cluster).
+- They operate on table rows with the same index key values (either on [primary keys](/docs/v25.4/primary-key) or secondary [indexes](/docs/v25.4/indexes) ).
+- At least one of the transactions holds a [write intent](/docs/v25.4/architecture/transaction-layer#write-intents) or exclusive [locking read](/docs/v25.4/select-for-update#lock-strengths) on the data.
+
+Writing transactions ["lock" rows](/docs/v25.4/architecture/transaction-layer#writing) to prevent interactions with concurrent transactions. Locking reads issued with [`SELECT... FOR UPDATE`](/docs/v25.4/select-for-update) perform a similar function by placing an [_exclusive lock_](/docs/v25.4/select-for-update#lock-strengths) on rows, which can cause contention.
+
+By default under [`SERIALIZABLE`](/docs/v25.4/demo-serializable) isolation, transactions that operate on the same index key values (specifically, that operate on the same [column family](/docs/v25.4/column-families) for a given index key) are strictly serialized. To maintain this isolation, `SERIALIZABLE` transactions [refresh their reads](/docs/v25.4/architecture/transaction-layer#read-refreshing) at commit time to verify that the values they read were not subsequently updated by other, concurrent transactions. If read refreshing is unsuccessful, then the transaction must be retried.
+
+[When transactions are experiencing contention](/docs/v25.4/performance-recipes#indicators-that-your-application-is-experiencing-transaction-contention), you may observe:
+
+- [Delays in query completion](/docs/v25.4/query-behavior-troubleshooting#hanging-or-stuck-queries). This occurs when multiple transactions are trying to write to the same "locked" data at the same time, making a transaction unable to complete. This is also known as _lock contention_.
+- [Transaction retries](/docs/v25.4/transactions#automatic-retries) performed automatically by CockroachDB. This occurs if a transaction cannot be placed into a serializable ordering among all of the currently-executing transactions. This is also called a _serialization conflict_.
+- [Transaction retry errors](/docs/v25.4/transaction-retry-error-reference), which are emitted to your client when an automatic retry is not possible or fails. Under `SERIALIZABLE` isolation, your application must address transaction retry errors with [client-side retry handling](/docs/v25.4/transaction-retry-error-reference#client-side-retry-handling).
+- [Cluster hotspots](#hotspots).
+
+To mitigate these effects, [reduce the causes of transaction contention](/docs/v25.4/performance-best-practices-overview#reduce-transaction-contention) and [reduce hotspots](/docs/v25.4/understand-hotspots#reduce-hotspots). For further background on transaction contention, see [What is Database Contention, and Why Should You Care?](https://www.cockroachlabs.com/blog/what-is-database-contention).
+
+### Reduce transaction contention
+
+You can reduce the causes of transaction contention:
+
+- Limit the number of affected rows by following [optimizing queries](/docs/v25.4/apply-statement-performance-rules) (e.g., avoiding full scans, creating secondary indexes, etc.). Not only will transactions run faster, lock fewer rows, and hold locks for a shorter duration, but the chances of [read invalidation](/docs/v25.4/architecture/transaction-layer#read-refreshing) when the transaction's [timestamp is pushed](/docs/v25.4/architecture/transaction-layer#timestamp-cache), due to a conflicting write, are decreased because of a smaller read set (i.e., a smaller number of rows read).
+- Break down larger transactions (e.g., [bulk deletes](/docs/v25.4/bulk-delete-data)) into smaller ones to have transactions hold locks for a shorter duration. For example, use [common table expressions](/docs/v25.4/common-table-expressions) to group multiple clauses together in a single SQL statement. This will also decrease the likelihood of [pushed timestamps](/docs/v25.4/architecture/transaction-layer#timestamp-cache). For instance, as the size of writes (number of rows written) decreases, the chances of the transaction's timestamp getting bumped by concurrent reads decreases.
+- Use [`SELECT FOR UPDATE`](/docs/v25.4/select-for-update) to aggressively lock rows that will later be updated in the transaction. Updates must operate on the most recent version of a row, so a concurrent write to the row will cause a retry error ([`RETRY_WRITE_TOO_OLD`](/docs/v25.4/transaction-retry-error-reference#retry_write_too_old)). Locking early in the transaction forces concurrent writers to block until the transaction is finished, which prevents the retry error. Note that this locks the rows for the duration of the transaction; whether this is tenable will depend on your workload. For more information, see [When and why to use `SELECT FOR UPDATE` in CockroachDB](https://www.cockroachlabs.com/blog/when-and-why-to-use-select-for-update-in-cockroachdb).
+- Use historical reads ([`SELECT... AS OF SYSTEM TIME`](/docs/v25.4/as-of-system-time)), preferably [bounded staleness reads](/docs/v25.4/follower-reads#when-to-use-bounded-staleness-reads) or [exact staleness with follower reads](/docs/v25.4/follower-reads#run-queries-that-use-exact-staleness-follower-reads) when possible to reduce conflicts with other writes. This reduces the likelihood of [`RETRY_SERIALIZABLE`](/docs/v25.4/transaction-retry-error-reference#retry_serializable) errors as fewer writes will happen at the historical timestamp. More specifically, writes' timestamps are less likely to be pushed by historical reads as they would [when the read has a higher priority level](/docs/v25.4/architecture/transaction-layer#transaction-conflicts). Note that if the `AS OF SYSTEM TIME` value is below the closed timestamp, the read cannot be invalidated.
+- When replacing values in a row, use [`UPSERT`](/docs/v25.4/upsert) and specify values for all columns in the inserted rows. This will usually have the best performance under contention, compared to combinations of [`SELECT`](/docs/v25.4/select-clause), [`INSERT`](/docs/v25.4/insert), and [`UPDATE`](/docs/v25.4/update).
+- If applicable to your workload, assign [column families](/docs/v25.4/column-families#default-behavior) and separate columns that are frequently read and written into separate columns. Transactions will operate on disjoint column families and reduce the likelihood of conflicts.
+- For workloads where large [`UPDATE`](/docs/v25.4/update) or [`INSERT`](/docs/v25.4/insert) transactions run concurrently over similar key ranges, watch for [transaction record](/docs/v25.4/architecture/transaction-layer#transaction-records) anchor hotspots (for example, many concurrent transactions with [records](/docs/v25.4/architecture/transaction-layer#transaction-records) on the same [range](/docs/v25.4/architecture/glossary#range)). In these cases, consider enabling the [`transaction.randomized_anchor_key.enabled`](/docs/v25.4/cluster-settings#setting-kv-transaction-randomized-anchor-key-enabled) cluster setting to randomize the location of transaction anchor keys. This can spread transaction records across ranges and reduce hotspotting. Only use this setting after confirming anchor hotspots via contention and range-level observability.
+- As a last resort, consider adjusting the [closed timestamp interval](/docs/v25.4/architecture/transaction-layer#closed-timestamps) using the `kv.closed_timestamp.target_duration` [cluster setting](/docs/v25.4/cluster-settings) to reduce the likelihood of long-running write transactions having their [timestamps pushed](/docs/v25.4/architecture/transaction-layer#timestamp-cache). This setting should be carefully adjusted if **no other mitigations are available** because there can be downstream implications (e.g., historical reads, change data capture feeds, statistics collection, handling zone configurations, etc.). For example, a transaction _A_ is forced to refresh (i.e., change its timestamp) due to hitting the maximum [_closed timestamp_](/docs/v25.4/architecture/transaction-layer#closed-timestamps) interval (closed timestamps enable [Follower Reads](/docs/v25.4/follower-reads#how-stale-follower-reads-work) and [Change Data Capture (CDC)](/docs/v25.4/change-data-capture-overview)). This can happen when transaction _A_ is a long-running transaction, and there is a write by another transaction to data that _A_ has already read.
+
+<Note>
+  If you increase the `kv.closed_timestamp.target_duration` setting, it means that you are increasing the amount of time
+  by which the data available in [Follower Reads](/docs/v25.4/follower-reads) and [CDC
+  changefeeds](/docs/v25.4/change-data-capture-overview) lags behind the current state of the cluster. In other words,
+  there is a trade-off here: if you absolutely must execute long-running transactions that execute concurrently with
+  other transactions that are writing to the same data, you may have to settle for longer delays on Follower Reads
+  and/or CDC to avoid frequent serialization errors. The anomaly that would be exhibited if these transactions were not
+  retried is called [write skew](https://www.cockroachlabs.com/blog/what-write-skew-looks-like).
+</Note>
+
+### Improve transaction performance by sizing and configuring the cluster
+
+To maximize transaction performance, you'll need to maximize the performance of a single [range](/docs/v25.4/architecture/glossary#architecture-range). To achieve this, you can apply multiple strategies:
+
+- Minimize the network distance between the [replicas of a range](/docs/v25.4/architecture/overview#architecture-replica), possibly using [zone configs](/docs/v25.4/configure-replication-zones) and [partitioning](/docs/v25.4/partitioning), or the newer [Multi-region SQL capabilities](/docs/v25.4/multiregion-overview).
+- Use the fastest [storage devices](/docs/v25.4/recommended-production-settings#storage) available.
+- If the contending transactions operate on different keys within the same range, add [more CPU power (more cores) per node](/docs/v25.4/recommended-production-settings#sizing). However, if the transactions all operate on the same key, this may not provide an improvement.
+
+## Hotspots
+
+A _hotspot_ is any location on the cluster receiving significantly more requests than another. Hotspots are a symptom of _resource contention_ and can create problems as requests increase, including excessive [transaction contention](#transaction-contention).
+
+For a detailed explanation of hotspot causes and mitigation strategies, refer to [Understand Hotspots](/docs/v25.4/understand-hotspots).
+
+## See also
+
+- If you aren't sure whether SQL query performance needs to be improved on your cluster, see [Identify slow queries](/docs/v25.4/query-behavior-troubleshooting#identify-slow-queries).
+- For deployment and data location techniques to minimize network latency in multi-region clusters, see [Topology Patterns](/docs/v25.4/topology-patterns).
+- To read more about SQL best practices, see our [SQL Performance Best Practices](https://www.cockroachlabs.com/blog/sql-performance-best-practices) blog post.

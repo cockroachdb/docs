@@ -1,0 +1,192 @@
+## Step 4. Select your driver or ORM
+<Tabs>
+    <Tab title="node-postgres">
+        ## Step 5. Connect to the cluster
+    
+        Set a `DATABASE_URL` environment variable to your connection string.
+
+        ```shell
+        $env:DATABASE_URL = "{connection string}"
+        ```
+
+        To connect to CockroachDB with [node-postgres](https://node-postgres.com/), create a new [`Client`](https://node-postgres.com/apis/client) object with a connection string.
+
+        For example:
+
+        ```js
+        const { Client } = require('pg')
+
+        const client = new Client(process.env.DATABASE_URL)
+
+        client.connect()
+        ```
+
+        Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+        node-postgres accepts the following format for CockroachDB connection strings:
+
+        ```text
+        postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
+        ```
+
+        <Note>
+        The connection information shown on this page uses [client certificate and key authentication](/docs/v23.2/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+        To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v23.2/authentication#using-digital-certificates-with-cockroachdb).
+
+        For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v23.2/secure-a-cluster).
+        </Note>
+
+        For more information about connecting with node-postgres, see the [official node-postgres documentation](https://node-postgres.com/features/connecting).
+    </Tab>
+    <Tab title="Sequelize">
+        ## Step 5. Connect to the cluster
+        
+        Set a `DATABASE_URL` environment variable to your connection string.
+
+        ```shell
+        $env:DATABASE_URL = "{connection string}"
+        ```
+
+        To connect to CockroachDB with [Sequelize](https://sequelize.org/), create a `Sequelize` object with the [CockroachDB Sequelize adapter](https://github.com/cockroachdb/sequelize-cockroachdb).
+
+        For example:
+
+        ```js
+        const Sequelize = require("sequelize-cockroachdb");
+
+        const connectionString = process.env.DATABASE_URL
+        const sequelize = new Sequelize(connectionString)
+        ```
+
+        Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+        Sequelize accepts the following format for CockroachDB connection strings:
+
+        ```text
+        postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
+        ```
+
+        <Note>
+        The connection information shown on this page uses [client certificate and key authentication](/docs/v23.2/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+        To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v23.2/authentication#using-digital-certificates-with-cockroachdb).
+
+        For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v23.2/secure-a-cluster).
+        </Note>
+
+        <Note>
+        To connect to CockroachDB with Sequelize, you must install the [CockroachDB Sequelize adapter](https://github.com/cockroachdb/sequelize-cockroachdb).
+        </Note>
+
+        For more information about connecting with Sequelize, see the [official Sequelize documentation](https://sequelize.org/docs/v6).
+    </Tab>
+    <Tab title="TypeORM">
+        ## Step 5. Connect to the cluster
+        
+        Set a `DATABASE_URL` environment variable to your connection string.
+
+        ```shell
+        $env:DATABASE_URL = "{connection string}"
+        ```
+
+        To connect to CockroachDB with [TypeORM](https://typeorm.io/), update your project's [`DataSource`](https://typeorm.io/data-source) with the required connection properties.
+
+        For example, suppose that you are defining the `DataSource` for your application in a file named `datasource.ts`.
+
+        CockroachDB Advanced requires you to specify the `type`, `url`, and `ssl` properties:
+
+        ```ts
+        import { DataSource } from "typeorm"
+
+        export const AppDataSource = new DataSource({
+            type: "cockroachdb",
+            url: process.env.DATABASE_URL,
+            ssl: {
+                ca: process.env.CA_CERT,
+                key: process.env.CLIENT_KEY,
+                cert: process.env.CLIENT_CERT
+            },
+        ...
+        });
+        ```
+
+        Where:
+
+        - `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+        - `CA_CERT` is an environment variable set to the root certificate. You can generate this certificate with [`cockroach cert create-ca`](/docs/v23.2/cockroach-cert#subcommands), or you can use a [custom CA cert](/docs/v23.2/create-security-certificates-custom-ca).
+        - `CLIENT_KEY` is an environment variable set to the [client key](/docs/v23.2/cockroach-cert#client-key-and-certificates) for the user connecting to the cluster. You can generate this key with [`cockroach cert create-client`](/docs/v23.2/cockroach-cert#subcommands).
+        - `CLIENT_CERT` is an environment variable set to the [client certificate](/docs/v23.2/cockroach-cert#client-key-and-certificates) for the user connecting to the cluster. You can generate this certificate with [`cockroach cert create-client`](/docs/v23.2/cockroach-cert#subcommands).
+
+        <Note>
+        The connection information shown on this page uses [client certificate and key authentication](/docs/v23.2/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+        To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v23.2/authentication#using-digital-certificates-with-cockroachdb).
+
+        For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v23.2/secure-a-cluster).
+        </Note>
+
+        TypeORM accepts the following format for CockroachDB connection strings:
+
+        ```text
+        postgresql://<username>@<host>:<port>/<database>
+        ```
+
+        You can then import the `AppDataSource` into any file in your project and call `AppDataSource.initialize()` to connect to CockroachDB:
+
+        ```ts
+        import { AppDataSource } from "./datasource";
+
+        AppDataSource.initialize()
+        .then(async () => {
+            // Execute operations
+        });
+        ```
+
+        For more information about connecting with TypeORM, see the [official TypeORM documentation](https://typeorm.io/#/).
+    </Tab>
+    <Tab title="Prisma">
+        ## Step 5. Connect to the cluster
+        
+        Set a `DATABASE_URL` environment variable to your connection string.
+
+        ```shell
+        $env:DATABASE_URL = "{connection string}"
+        ```
+
+        To connect to CockroachDB with [Prisma](https://prisma.io/), set the `url` field of the `datasource` block in your Prisma schema to your database connection URL:
+
+        ```js
+        generator client {
+            provider = "prisma-client-js"
+        }
+
+        datasource db {
+            provider = "cockroachdb"
+            url      = env("DATABASE_URL")
+        }
+
+        model Widget {
+            id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+        }
+        ```
+
+        Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+        Prisma accepts the following format for CockroachDB connection strings:
+
+        ```
+        postgresql://<username>@<host>:<port>/<database>?sslmode=verify-full&sslrootcert=<root-cert>&sslcert=<client-cert>&sslkey=<client-key>
+        ```
+
+        <Note>
+        The connection information shown on this page uses [client certificate and key authentication](/docs/v23.2/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+        To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v23.2/authentication#using-digital-certificates-with-cockroachdb).
+
+        For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v23.2/secure-a-cluster).
+        </Note>
+
+        For more information about connecting with Prisma, see the [official Prisma documentation](https://www.prisma.io/cockroachdb).
+    </Tab>
+</Tabs>

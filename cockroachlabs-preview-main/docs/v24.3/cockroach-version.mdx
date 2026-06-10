@@ -1,0 +1,32 @@
+---
+title: "cockroach version"
+old_description: "To view version details for a specific cockroach binary, run the cockroach version command."
+---
+
+To view version details for a specific `cockroach` binary, run the `cockroach version` [command](/docs/v24.3/cockroach-commands), or run `cockroach --version`:
+
+```shell
+$ cockroach version
+```
+
+```text
+Build Tag:        v24.3.29
+Build Time:       2026-03-09 00:00:00
+Distribution:     CCL
+Platform:         darwin amd64 (x86_64-apple-darwin19)
+Go Version:       go1.15.11
+C Compiler:       Clang 10.0.0
+Build Commit ID:  ac916850f403f083ea62e2b0dfdfecbbeaaa4d05
+Build Type:       release
+```
+
+## Response
+
+The `cockroach version` command outputs the following fields:
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>Build Tag</code></td><td>The CockroachDB version.<br/><br/>To return just the build tag, use <code>cockroach version --build-tag</code>.</td></tr><tr><td><code>Build Time</code></td><td>The date and time when the binary was built.</td></tr><tr><td><code>Distribution</code></td><td>The scope of the binary. If <code>CCL</code>, the binary contains functionality covered by both the CockroachDB Community License (CCL) and the Business Source License (BSL). If <code>OSS</code>, the binary contains only functionality covered by the Apache 2.0 license. The v19.2 release converts to Apache 2.0 as of Oct 1, 2022, at which time you can use the <code>make buildoss</code> command to build a pure open-source binary. For more details about licensing, see the <a href="/docs/v24.3/licensing-faqs">Licensing FAQs</a>.</td></tr><tr><td><code>Platform</code></td><td>The platform that the binary can run on.</td></tr><tr><td><code>Go Version</code></td><td>The version of Go in which the source code is written.</td></tr><tr><td><code>C Compiler</code></td><td>The C compiler used to build the binary.</td></tr><tr><td><code>Build Commit ID</code></td><td>The SHA-1 hash of the commit used to build the binary.</td></tr><tr><td><code>Build Type</code></td><td>The type of release. If <code>release</code>, <code>release-gnu</code>, or <code>release-musl</code>, the binary is for a production <a href="/docs/releases">release</a>. If <code>development</code>, the binary is for a testing release.</td></tr></tbody></table>
+
+## See also
+
+- [Install CockroachDB](/docs/v24.3/install-cockroachdb)
+- [`cockroach` Commands Overview](/docs/v24.3/cockroach-commands)

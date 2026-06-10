@@ -1,0 +1,172 @@
+<svg height="847" width="1513" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="66" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">GRANT</text>
+<rect height="32" rx="10" width="44" x="65" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="63" y="67"></rect>
+<text class="terminal" x="73" y="87">ALL</text>
+<rect height="32" rx="10" width="104" x="149" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="104" x="147" y="99"></rect>
+<text class="terminal" x="157" y="119">PRIVILEGES</text>
+<rect height="32" rx="10" width="40" x="293" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="291" y="67"></rect>
+<text class="terminal" x="301" y="87">ON</text><a xlink:href="/docs/v23.2/sql-grammar#grant_targets" xlink:title="grant_targets">
+<rect height="32" width="108" x="373" y="69"></rect>
+<rect class="nonterminal" height="32" width="108" x="371" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="383" y="87">grant_targets</text></a><rect height="32" rx="10" width="54" x="373" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="371" y="111"></rect>
+<text class="terminal" x="381" y="131">TYPE</text><a xlink:href="/docs/v23.2/sql-grammar#target_types" xlink:title="target_types">
+<rect height="32" width="102" x="447" y="113"></rect>
+<rect class="nonterminal" height="32" width="102" x="445" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="78" font-size="10" class="nonterminal" x="457" y="131">target_types</text></a><rect height="32" rx="10" width="44" x="393" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="391" y="187"></rect>
+<text class="terminal" x="401" y="207">ALL</text>
+<rect height="32" rx="10" width="102" x="477" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="102" x="475" y="187"></rect>
+<text class="terminal" x="485" y="207">SEQUENCES</text>
+<rect height="32" rx="10" width="72" x="477" y="233"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="475" y="231"></rect>
+<text class="terminal" x="485" y="251">TABLES</text>
+<rect height="32" rx="10" width="102" x="477" y="277"></rect>
+<rect class="terminal" height="32" rx="10" width="102" x="475" y="275"></rect>
+<text class="terminal" x="485" y="295">FUNCTIONS</text>
+<rect height="32" rx="10" width="112" x="477" y="321"></rect>
+<rect class="terminal" height="32" rx="10" width="112" x="475" y="319"></rect>
+<text class="terminal" x="485" y="339">PROCEDURES</text>
+<rect height="32" rx="10" width="36" x="629" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="36" x="627" y="187"></rect>
+<text class="terminal" x="637" y="207">IN</text>
+<rect height="32" rx="10" width="76" x="705" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="703" y="155"></rect>
+<text class="terminal" x="713" y="175">SCHEMA</text><a xlink:href="/docs/v23.2/sql-grammar#schema_name_list" xlink:title="schema_name_list">
+<rect height="32" width="138" x="801" y="157"></rect>
+<rect class="nonterminal" height="32" width="138" x="799" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="114" font-size="11" class="nonterminal" x="811" y="175">schema_name_list</text></a><rect height="32" rx="10" width="74" x="65" y="365"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="63" y="363"></rect>
+<text class="terminal" x="73" y="383">SYSTEM</text>
+<rect height="32" rx="10" width="44" x="179" y="365"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="177" y="363"></rect>
+<text class="terminal" x="187" y="383">ALL</text>
+<rect height="32" rx="10" width="104" x="263" y="397"></rect>
+<rect class="terminal" height="32" rx="10" width="104" x="261" y="395"></rect>
+<text class="terminal" x="271" y="415">PRIVILEGES</text><a xlink:href="/docs/v23.2/sql-grammar#privilege_list" xlink:title="privilege_list">
+<rect height="32" width="100" x="179" y="441"></rect>
+<rect class="nonterminal" height="32" width="100" x="177" y="439"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="76" font-size="10" class="nonterminal" x="189" y="459">privilege_list</text></a><rect height="32" rx="10" width="38" x="999" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="997" y="67"></rect>
+<text class="terminal" x="1007" y="87">TO</text><a xlink:href="/docs/v23.2/sql-grammar#role_spec_list" xlink:title="role_spec_list">
+<rect height="32" width="108" x="1057" y="69"></rect>
+<rect class="nonterminal" height="32" width="108" x="1055" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="1067" y="87">role_spec_list</text></a><rect height="32" rx="10" width="58" x="1205" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="1203" y="99"></rect>
+<text class="terminal" x="1213" y="119">WITH</text>
+<rect height="32" rx="10" width="66" x="1283" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="1281" y="99"></rect>
+<text class="terminal" x="1291" y="119">GRANT</text>
+<rect height="32" rx="10" width="76" x="1369" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="1367" y="99"></rect>
+<text class="terminal" x="1377" y="119">OPTION</text><a xlink:href="/docs/v23.2/sql-grammar#privilege_list" xlink:title="privilege_list">
+<rect height="32" width="100" x="45" y="485"></rect>
+<rect class="nonterminal" height="32" width="100" x="43" y="483"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="76" font-size="10" class="nonterminal" x="55" y="503">privilege_list</text></a><rect height="32" rx="10" width="40" x="185" y="485"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="183" y="483"></rect>
+<text class="terminal" x="193" y="503">ON</text><a xlink:href="/docs/v23.2/sql-grammar#grant_targets" xlink:title="grant_targets">
+<rect height="32" width="108" x="265" y="485"></rect>
+<rect class="nonterminal" height="32" width="108" x="263" y="483"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="275" y="503">grant_targets</text></a><rect height="32" rx="10" width="54" x="265" y="529"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="263" y="527"></rect>
+<text class="terminal" x="273" y="547">TYPE</text><a xlink:href="/docs/v23.2/sql-grammar#target_types" xlink:title="target_types">
+<rect height="32" width="102" x="339" y="529"></rect>
+<rect class="nonterminal" height="32" width="102" x="337" y="527"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="78" font-size="10" class="nonterminal" x="349" y="547">target_types</text></a><rect height="32" rx="10" width="44" x="285" y="605"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="283" y="603"></rect>
+<text class="terminal" x="293" y="623">ALL</text>
+<rect height="32" rx="10" width="102" x="369" y="605"></rect>
+<rect class="terminal" height="32" rx="10" width="102" x="367" y="603"></rect>
+<text class="terminal" x="377" y="623">SEQUENCES</text>
+<rect height="32" rx="10" width="72" x="369" y="649"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="367" y="647"></rect>
+<text class="terminal" x="377" y="667">TABLES</text>
+<rect height="32" rx="10" width="102" x="369" y="693"></rect>
+<rect class="terminal" height="32" rx="10" width="102" x="367" y="691"></rect>
+<text class="terminal" x="377" y="711">FUNCTIONS</text>
+<rect height="32" rx="10" width="112" x="369" y="737"></rect>
+<rect class="terminal" height="32" rx="10" width="112" x="367" y="735"></rect>
+<text class="terminal" x="377" y="755">PROCEDURES</text>
+<rect height="32" rx="10" width="36" x="521" y="605"></rect>
+<rect class="terminal" height="32" rx="10" width="36" x="519" y="603"></rect>
+<text class="terminal" x="529" y="623">IN</text>
+<rect height="32" rx="10" width="76" x="597" y="573"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="595" y="571"></rect>
+<text class="terminal" x="605" y="591">SCHEMA</text><a xlink:href="/docs/v23.2/sql-grammar#schema_name_list" xlink:title="schema_name_list">
+<rect height="32" width="138" x="693" y="573"></rect>
+<rect class="nonterminal" height="32" width="138" x="691" y="571"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="114" font-size="11" class="nonterminal" x="703" y="591">schema_name_list</text></a><rect height="32" rx="10" width="38" x="871" y="485"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="869" y="483"></rect>
+<text class="terminal" x="879" y="503">TO</text><a xlink:href="/docs/v23.2/sql-grammar#role_spec_list" xlink:title="role_spec_list">
+<rect height="32" width="108" x="929" y="485"></rect>
+<rect class="nonterminal" height="32" width="108" x="927" y="483"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="939" y="503">role_spec_list</text></a><rect height="32" rx="10" width="58" x="1077" y="517"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="1075" y="515"></rect>
+<text class="terminal" x="1085" y="535">WITH</text>
+<rect height="32" rx="10" width="66" x="1155" y="517"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="1153" y="515"></rect>
+<text class="terminal" x="1163" y="535">GRANT</text>
+<rect height="32" rx="10" width="76" x="1241" y="517"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="1239" y="515"></rect>
+<text class="terminal" x="1249" y="535">OPTION</text>
+<rect height="32" rx="10" width="38" x="185" y="781"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="183" y="779"></rect>
+<text class="terminal" x="193" y="799">TO</text><a xlink:href="/docs/v23.2/sql-grammar#role_spec_list" xlink:title="role_spec_list">
+<rect height="32" width="108" x="243" y="781"></rect>
+<rect class="nonterminal" height="32" width="108" x="241" y="779"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="253" y="799">role_spec_list</text></a><rect height="32" rx="10" width="58" x="391" y="813"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="389" y="811"></rect>
+<text class="terminal" x="399" y="831">WITH</text>
+<rect height="32" rx="10" width="66" x="469" y="813"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="467" y="811"></rect>
+<text class="terminal" x="477" y="831">ADMIN</text>
+<rect height="32" rx="10" width="76" x="555" y="813"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="553" y="811"></rect>
+<text class="terminal" x="563" y="831">OPTION</text>
+<path class="line" d="m19 17 h2 m0 0 h10 m66 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-118 66 l2 0 m2 0 l2 0 m2 0 l2 0 m42 0 h10 m44 0 h10 m20 0 h10 m0 0 h114 m-144 0 h20 m124 0 h20 m-164 0 q10 0 10 10 m144 0 q0 -10 10 -10 m-154 10 v12 m144 0 v-12 m-144 12 q0 10 10 10 m124 0 q10 0 10 -10 m-134 10 h10 m104 0 h10 m20 -32 h10 m40 0 h10 m20 0 h10 m108 0 h10 m0 0 h458 m-606 0 h20 m586 0 h20 m-626 0 q10 0 10 10 m606 0 q0 -10 10 -10 m-616 10 v24 m606 0 v-24 m-606 24 q0 10 10 10 m586 0 q10 0 10 -10 m-596 10 h10 m54 0 h10 m0 0 h10 m102 0 h10 m0 0 h390 m-596 -10 v20 m606 0 v-20 m-606 20 v24 m606 0 v-24 m-606 24 q0 10 10 10 m586 0 q10 0 10 -10 m-576 10 h10 m0 0 h282 m-312 0 h20 m292 0 h20 m-332 0 q10 0 10 10 m312 0 q0 -10 10 -10 m-322 10 v12 m312 0 v-12 m-312 12 q0 10 10 10 m292 0 q10 0 10 -10 m-302 10 h10 m44 0 h10 m20 0 h10 m102 0 h10 m0 0 h10 m-152 0 h20 m132 0 h20 m-172 0 q10 0 10 10 m152 0 q0 -10 10 -10 m-162 10 v24 m152 0 v-24 m-152 24 q0 10 10 10 m132 0 q10 0 10 -10 m-142 10 h10 m72 0 h10 m0 0 h40 m-142 -10 v20 m152 0 v-20 m-152 20 v24 m152 0 v-24 m-152 24 q0 10 10 10 m132 0 q10 0 10 -10 m-142 10 h10 m102 0 h10 m0 0 h10 m-142 -10 v20 m152 0 v-20 m-152 20 v24 m152 0 v-24 m-152 24 q0 10 10 10 m132 0 q10 0 10 -10 m-142 10 h10 m112 0 h10 m20 -132 h10 m36 0 h10 m20 -32 h10 m76 0 h10 m0 0 h10 m138 0 h10 m-914 -88 h20 m914 0 h20 m-954 0 q10 0 10 10 m934 0 q0 -10 10 -10 m-944 10 v276 m934 0 v-276 m-934 276 q0 10 10 10 m914 0 q10 0 10 -10 m-924 10 h10 m74 0 h10 m20 0 h10 m44 0 h10 m20 0 h10 m0 0 h114 m-144 0 h20 m124 0 h20 m-164 0 q10 0 10 10 m144 0 q0 -10 10 -10 m-154 10 v12 m144 0 v-12 m-144 12 q0 10 10 10 m124 0 q10 0 10 -10 m-134 10 h10 m104 0 h10 m-228 -32 h20 m228 0 h20 m-268 0 q10 0 10 10 m248 0 q0 -10 10 -10 m-258 10 v56 m248 0 v-56 m-248 56 q0 10 10 10 m228 0 q10 0 10 -10 m-238 10 h10 m100 0 h10 m0 0 h108 m20 -76 h552 m20 -296 h10 m38 0 h10 m0 0 h10 m108 0 h10 m20 0 h10 m0 0 h250 m-280 0 h20 m260 0 h20 m-300 0 q10 0 10 10 m280 0 q0 -10 10 -10 m-290 10 v12 m280 0 v-12 m-280 12 q0 10 10 10 m260 0 q10 0 10 -10 m-270 10 h10 m58 0 h10 m0 0 h10 m66 0 h10 m0 0 h10 m76 0 h10 m-1440 -32 h20 m1440 0 h20 m-1480 0 q10 0 10 10 m1460 0 q0 -10 10 -10 m-1470 10 v396 m1460 0 v-396 m-1460 396 q0 10 10 10 m1440 0 q10 0 10 -10 m-1450 10 h10 m100 0 h10 m20 0 h10 m40 0 h10 m20 0 h10 m108 0 h10 m0 0 h458 m-606 0 h20 m586 0 h20 m-626 0 q10 0 10 10 m606 0 q0 -10 10 -10 m-616 10 v24 m606 0 v-24 m-606 24 q0 10 10 10 m586 0 q10 0 10 -10 m-596 10 h10 m54 0 h10 m0 0 h10 m102 0 h10 m0 0 h390 m-596 -10 v20 m606 0 v-20 m-606 20 v24 m606 0 v-24 m-606 24 q0 10 10 10 m586 0 q10 0 10 -10 m-576 10 h10 m0 0 h282 m-312 0 h20 m292 0 h20 m-332 0 q10 0 10 10 m312 0 q0 -10 10 -10 m-322 10 v12 m312 0 v-12 m-312 12 q0 10 10 10 m292 0 q10 0 10 -10 m-302 10 h10 m44 0 h10 m20 0 h10 m102 0 h10 m0 0 h10 m-152 0 h20 m132 0 h20 m-172 0 q10 0 10 10 m152 0 q0 -10 10 -10 m-162 10 v24 m152 0 v-24 m-152 24 q0 10 10 10 m132 0 q10 0 10 -10 m-142 10 h10 m72 0 h10 m0 0 h40 m-142 -10 v20 m152 0 v-20 m-152 20 v24 m152 0 v-24 m-152 24 q0 10 10 10 m132 0 q10 0 10 -10 m-142 10 h10 m102 0 h10 m0 0 h10 m-142 -10 v20 m152 0 v-20 m-152 20 v24 m152 0 v-24 m-152 24 q0 10 10 10 m132 0 q10 0 10 -10 m-142 10 h10 m112 0 h10 m20 -132 h10 m36 0 h10 m20 -32 h10 m76 0 h10 m0 0 h10 m138 0 h10 m20 -88 h10 m38 0 h10 m0 0 h10 m108 0 h10 m20 0 h10 m0 0 h250 m-280 0 h20 m260 0 h20 m-300 0 q10 0 10 10 m280 0 q0 -10 10 -10 m-290 10 v12 m280 0 v-12 m-280 12 q0 10 10 10 m260 0 q10 0 10 -10 m-270 10 h10 m58 0 h10 m0 0 h10 m66 0 h10 m0 0 h10 m76 0 h10 m-1172 -32 h20 m1172 0 h20 m-1212 0 q10 0 10 10 m1192 0 q0 -10 10 -10 m-1202 10 v276 m1192 0 v-276 m-1192 276 q0 10 10 10 m1172 0 q10 0 10 -10 m-1182 10 h10 m38 0 h10 m0 0 h10 m108 0 h10 m20 0 h10 m0 0 h250 m-280 0 h20 m260 0 h20 m-300 0 q10 0 10 10 m280 0 q0 -10 10 -10 m-290 10 v12 m280 0 v-12 m-280 12 q0 10 10 10 m260 0 q10 0 10 -10 m-270 10 h10 m58 0 h10 m0 0 h10 m66 0 h10 m0 0 h10 m76 0 h10 m20 -32 h686 m20 -296 h108 m23 -416 h-3"></path>
+<polygon points="1503 83 1511 79 1511 87"></polygon>
+<polygon points="1503 83 1495 79 1495 87"></polygon></svg>

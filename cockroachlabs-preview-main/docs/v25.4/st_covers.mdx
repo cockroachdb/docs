@@ -1,0 +1,94 @@
+---
+title: "ST_Covers"
+old_description: "ST_Covers(A, B) returns true if no point in shape B lies outside of shape A"
+---
+
+Given two shapes _A_ and _B_, predicate function `ST_Covers(A, B)` returns `true` if no point in _B_ lies outside of shape _A_. Otherwise, it returns `false`.
+
+In other words, shape _A_ must completely cover every point in _B_.
+
+This behavior is similar to [`ST_Contains`](/docs/v25.4/st_contains), except that the criteria for `ST_Contains` are more exacting, and therefore some pairs of shapes will be accepted by this function that would be rejected by `ST_Contains`.
+
+`ST_Covers` works on the following data types:
+
+- [`GEOMETRY`](/docs/v25.4/architecture/glossary#geometry)
+- [`GEOGRAPHY`](/docs/v25.4/architecture/glossary#geography)
+
+<Note>
+  `ST_Covers` will attempt to use any available [spatial index](/docs/v25.4/spatial-indexes) to speed up its operation.
+  Use the prefixed variant `_ST_Covers` if you do not want any spatial indexes to be used.
+</Note>
+
+<Note>This function is the inverse of [`ST_CoveredBy`](/docs/v25.4/st_coveredby).</Note>
+
+## Examples
+
+<Note>
+  The screenshots in these examples were generated using [geojson.io](http://geojson.io/), but they are designed to
+  showcase the shapes, not the map. Representing `GEOMETRY` data in GeoJSON can lead to unexpected results if using
+  geometries with [SRIDs](/docs/v25.4/architecture/glossary#srid) other than 4326 (as shown below).
+</Note>
+
+### True
+
+In this example, `ST_Covers` returns `true` because:
+
+- No Point in the smaller Polygon _B_ lies outside of the larger Polygon _A_.
+
+```sql
+SELECT ST_Covers(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;POLYGON((-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832))'));
+```
+
+```text
+   st_covers
+---------------
+     true
+
+(1 row)
+```
+
+<Frame>![ST_Covers - true](/images/v25.4/geospatial/st_covers_true.png)</Frame>
+
+### False
+
+In this example, `ST_Covers` returns `false` because:
+
+- Many Points in the smaller Polygon _B_ lie outside of the larger Polygon _A_.
+
+```sql
+SELECT ST_Covers(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'), st_geomfromtext('SRID=4326;POLYGON((-84.191605 39.758949, -75.165222 39.952583, -78.878738 42.880230, -84.191605 39.758949))'));
+```
+
+```text
+   st_covers
+---------------
+     false
+(1 row)
+```
+
+<Frame>![ST_Covers - false](/images/v25.4/geospatial/st_covers_false.png)</Frame>
+
+## See also
+
+- [Export Spatial Data](/docs/v25.4/export-spatial-data)
+- [Spatial tutorial](/docs/v25.4/spatial-tutorial)
+- [Spatial and GIS Glossary of Terms](/docs/v25.4/architecture/glossary)
+- [Spatial indexes](/docs/v25.4/spatial-indexes)
+- [Spatial functions](/docs/v25.4/functions-and-operators#spatial-functions)
+- [`ST_CoveredBy`](/docs/v25.4/st_coveredby)
+- [`ST_Contains`](/docs/v25.4/st_contains)
+- [`ST_Within`](/docs/v25.4/st_within)
+- [`ST_Intersects`](/docs/v25.4/st_intersects)
+- [`ST_CoveredBy`](/docs/v25.4/st_coveredby)
+- [`ST_Disjoint`](/docs/v25.4/st_disjoint)
+- [`ST_Equals`](/docs/v25.4/st_equals)
+- [`ST_Overlaps`](/docs/v25.4/st_overlaps)
+- [`ST_Touches`](/docs/v25.4/st_touches)
+- [`ST_ConvexHull`](/docs/v25.4/st_convexhull)
+- [`ST_Union`](/docs/v25.4/st_union)
+- [Migrate from Shapefiles](/docs/v25.4/migrate-from-shapefiles)
+- [Migrate from GeoJSON](/docs/v25.4/migrate-from-geojson)
+- [Migrate from GeoPackage](/docs/v25.4/migrate-from-geopackage)
+- [Migrate from OpenStreetMap](/docs/v25.4/migrate-from-openstreetmap)
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data) (blog post)
+- [Using GeoServer with CockroachDB](/docs/v25.4/geoserver)

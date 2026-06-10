@@ -1,0 +1,78 @@
+export const CreateLogicalReplicationStreamStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="169" width="673" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="72" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">CREATE</text>
+<rect height="32" rx="10" width="98" x="123" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="98" x="121" y="1"></rect>
+<text class="terminal" x="131" y="21">LOGICALLY</text>
+<rect height="32" rx="10" width="106" x="241" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="106" x="239" y="1"></rect>
+<text class="terminal" x="249" y="21">REPLICATED</text><a xlink:href="#logical_replication_resources" xlink:title="logical_replication_resources">
+<rect height="32" width="204" x="367" y="3"></rect>
+<rect class="nonterminal" height="32" width="204" x="365" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="180" font-size="10" class="nonterminal" x="377" y="21">logical_replication_resources</text></a><rect height="32" rx="10" width="60" x="591" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="589" y="1"></rect>
+<text class="terminal" x="599" y="21">FROM</text><a xlink:href="#logical_replication_resources" xlink:title="logical_replication_resources">
+<rect height="32" width="204" x="117" y="69"></rect>
+<rect class="nonterminal" height="32" width="204" x="115" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="180" font-size="10" class="nonterminal" x="127" y="87">logical_replication_resources</text></a><rect height="32" rx="10" width="40" x="341" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="339" y="67"></rect>
+<text class="terminal" x="349" y="87">ON</text><a xlink:href="#string_or_placeholder" xlink:title="string_or_placeholder">
+<rect height="32" width="158" x="401" y="69"></rect>
+<rect class="nonterminal" height="32" width="158" x="399" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="134" font-size="10" class="nonterminal" x="411" y="87">string_or_placeholder</text></a><a xlink:href="#opt_logical_replication_create_table_options" xlink:title="opt_logical_replication_create_table_options">
+<rect height="32" width="306" x="339" y="135"></rect>
+<rect class="nonterminal" height="32" width="306" x="337" y="133"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="282" font-size="10" class="nonterminal" x="349" y="153">opt_logical_replication_create_table_options</text></a><path class="line" d="m17 17 h2 m0 0 h10 m72 0 h10 m0 0 h10 m98 0 h10 m0 0 h10 m106 0 h10 m0 0 h10 m204 0 h10 m0 0 h10 m60 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-578 66 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m204 0 h10 m0 0 h10 m40 0 h10 m0 0 h10 m158 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-264 66 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m306 0 h10 m3 0 h-3"></path>
+<polygon points="663 149 671 145 671 153"></polygon>
+<polygon points="663 149 655 145 655 153"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

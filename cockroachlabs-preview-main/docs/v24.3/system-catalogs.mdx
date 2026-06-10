@@ -1,0 +1,40 @@
+---
+title: "System Catalogs"
+old_description: "CockroachDB includes several virtual schemas that enable you to interface with CockroachDB."
+---
+
+CockroachDB includes a set of system catalogs that provide non-stored data to client applications.
+
+The following system catalogs are available as schemas preloaded to every database:
+
+- [`information_schema`](/docs/v24.3/information-schema), a schema provided for compatibility with the SQL standard.
+- [`crdb_internal`](/docs/v24.3/crdb-internal), a schema with information about CockroachDB internals.
+- [`pg_catalog`](/docs/v24.3/pg-catalog), a schema provided for compatibility with PostgreSQL.
+- [`pg_extension`](/docs/v24.3/pg-extension), a schema catalog with information about CockroachDB extensions.
+
+<Warning>
+Tables in the system catalogs have varying levels of stability. Not all system catalog tables are meant for programmatic purposes. For more information, see [API Support Policy](/docs/v24.3/api-support-policy).
+</Warning>
+
+To see all of the system catalogs for the [current database](/docs/v24.3/sql-name-resolution#current-database), you can use a [`SHOW SCHEMAS`](/docs/v24.3/show-schemas) statement:
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name     | owner
+---------------------+--------
+  crdb_internal      | NULL
+  information_schema | NULL
+  pg_catalog         | NULL
+  pg_extension       | NULL
+  public             | admin
+(5 rows)
+```
+
+## See also
+
+- [`SHOW`](/docs/v24.3/show-vars)
+- [`SHOW SCHEMAS`](/docs/v24.3/show-schemas)
+- [SQL Name Resolution](/docs/v24.3/sql-name-resolution)

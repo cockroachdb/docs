@@ -1,0 +1,20 @@
+---
+title: "Get Started with the ccloud CLI"
+old_description: "Install the ccloud CLI for management of CockroachDB Cloud clusters"
+---
+
+import CcloudGetStarted from "/snippets/cockroachcloud/ccloud-get-started.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CcloudGetStarted />

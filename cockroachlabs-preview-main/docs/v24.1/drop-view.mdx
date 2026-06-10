@@ -1,0 +1,116 @@
+---
+title: "DROP VIEW"
+old_description: "The DROP VIEW statement removes a view from a database."
+---
+
+import { DropView3 } from "/snippets/syntax-diagrams/DropView3.jsx";
+
+The `DROP VIEW` [statement](/docs/v24.1/sql-statements) removes a [view](/docs/v24.1/views) from a database.
+
+<Note>
+The `DROP VIEW` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v24.1/online-schema-changes).
+</Note>
+
+## Required privileges
+
+The user must have the `DROP` [privilege](/docs/v24.1/security-reference/authorization#managing-privileges) on the specified view(s). If `CASCADE` is used to drop dependent views, the user must have the `DROP` privilege on each dependent view as well.
+
+## Synopsis
+
+<DropView3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>MATERIALIZED</code></td><td>Drop a <a href="/docs/v24.1/views#materialized-views">materialized view</a>.</td></tr><tr><td><code>IF EXISTS</code></td><td>Drop the view if it exists; if it does not exist, do not return an error.</td></tr><tr><td><code>view&#95;name&#95;list</code></td><td>A comma-separated list of view names. To find view names, use:<br/><br/><code>SELECT &#42; FROM information&#95;schema.tables WHERE table&#95;type = 'VIEW';</code></td></tr><tr><td><code>CASCADE</code></td><td>Drop other views that depend on the view being dropped.<br/><br/><code>CASCADE</code> does not list views it drops, so should be used cautiously.</td></tr><tr><td><code>RESTRICT</code></td><td><em>(Default)</em> Do not drop the view if other views depend on it.</td></tr></tbody></table>
+
+## Examples
+
+### Remove a view (no dependencies)
+
+In this example, other views do not depend on the view being dropped.
+
+```sql
+> SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
+```
+
+```text
+  table_catalog | table_schema |  table_name   | table_type | is_insertable_into | version
+----------------+--------------+---------------+------------+--------------------+----------
+  bank          | public       | user_accounts | VIEW       | NO                 |       2
+  bank          | public       | user_emails   | VIEW       | NO                 |       1
+(2 rows)
+```
+
+```sql
+> DROP VIEW bank.user_emails;
+```
+
+```text
+DROP VIEW
+```
+
+```sql
+> SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
+```
+
+```text
+  table_catalog | table_schema |  table_name   | table_type | is_insertable_into | version
+----------------+--------------+---------------+------------+--------------------+----------
+  bank          | public       | user_accounts | VIEW       | NO                 |       4
+(1 row)
+```
+
+### Remove a view (with dependencies)
+
+In this example, another view depends on the view being dropped. Therefore, it's only possible to drop the view while simultaneously dropping the dependent view using `CASCADE`.
+
+<Warning>
+`CASCADE` drops *all* dependent views without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.
+</Warning>
+
+```sql
+> SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
+```
+
+```text
+  table_catalog | table_schema |  table_name   | table_type | is_insertable_into | version
+----------------+--------------+---------------+------------+--------------------+----------
+  bank          | public       | user_accounts | VIEW       | NO                 |       2
+  bank          | public       | user_emails   | VIEW       | NO                 |       1
+(2 rows)
+```
+
+```sql
+> DROP VIEW bank.user_accounts;
+```
+
+```text
+ERROR: cannot drop relation "user_accounts" because view "user_emails" depends on it
+SQLSTATE: 2BP01
+```
+
+```sql
+> DROP VIEW bank.user_accounts CASCADE;
+```
+
+```text
+DROP VIEW
+```
+
+```sql
+> SELECT * FROM information_schema.tables WHERE table_type = 'VIEW';
+```
+
+```text
+  table_catalog | table_schema | table_name | table_type | is_insertable_into | version
+----------------+--------------+------------+------------+--------------------+----------
+(0 rows)
+```
+
+## See also
+
+- [Views](/docs/v24.1/views)
+- [`CREATE VIEW`](/docs/v24.1/create-view)
+- [`SHOW CREATE`](/docs/v24.1/show-create)
+- [`ALTER VIEW`](/docs/v24.1/alter-view)
+- [Online Schema Changes](/docs/v24.1/online-schema-changes)

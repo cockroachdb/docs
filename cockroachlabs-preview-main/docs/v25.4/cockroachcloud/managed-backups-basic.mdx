@@ -1,0 +1,20 @@
+---
+title: "Managed Backups in CockroachDB Basic Clusters"
+old_description: "Learn about CockroachDB Cloud managed backups."
+---
+
+import ManagedBackupsBasic from "/snippets/cockroachcloud/managed-backups-basic.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ManagedBackupsBasic />

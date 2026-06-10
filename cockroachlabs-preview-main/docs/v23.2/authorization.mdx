@@ -1,0 +1,48 @@
+---
+title: "Manage Cluster User Authorization"
+old_description: "Learn procedures for managing the lifecycle of SQL users and roles."
+---
+
+This page documents procedures for managing the lifecycle of SQL users and roles on CockroachDB clusters.
+
+Procedures for managing access are covered in [Managing Access in CockroachDB Cloud](/docs/cockroachcloud/managing-access).
+
+<Note>
+The concept of *Organization user* is distinct from Authorization of *SQL user/role* on clusters is distinct from authorization of CockroachDB Cloud users within CockroachDB Cloud organizations.
+
+Learn more: [Overview of the CockroachDB Cloud authorization model](/docs/cockroachcloud/authorization#overview-of-the-cockroachdb-cloud-authorization-model)
+</Note>
+
+For reference documentation and explanation of related concepts, see [Security Reference—Authorization](/docs/v23.2/security-reference/authorization).
+
+## Create CockroachDB users
+
+Use the [`CREATE USER`](/docs/v23.2/create-user) and [`DROP USER`](/docs/v23.2/drop-user) statements to create and remove users, the [`ALTER USER`](/docs/v23.2/alter-user) statement to add or change a user's password and role options, the [`GRANT`](/docs/v23.2/grant) and [`REVOKE`](/docs/v23.2/revoke) statements to manage the user’s privileges, and the [`SHOW USERS`](/docs/v23.2/show-users) statement to list users.
+
+A new user must be granted the required privileges for each database and table that the user needs to access.
+
+<Note>
+By default, a new user belongs to the `public` role and has no privileges other than those assigned to the `public` role.
+</Note>
+
+## Create and manage roles
+
+For examples showing how to create and manage your cluster's users and roles, see the following documentation:
+
+<table><thead><tr><th>Statement</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/v23.2/create-role"><code>CREATE ROLE</code></a></td><td>Create SQL roles.</td></tr><tr><td><a href="/docs/v23.2/drop-role"><code>DROP ROLE</code></a></td><td>Remove one or more SQL roles.</td></tr><tr><td><a href="/docs/v23.2/alter-role"><code>ALTER ROLE</code></a></td><td>Change passwords, role options, and default session variables for a role.</td></tr><tr><td><a href="/docs/v23.2/create-user"><code>CREATE USER</code></a></td><td>Create SQL users.</td></tr><tr><td><a href="/docs/v23.2/create-user"><code>DROP USER</code></a></td><td>Remove one or more SQL users.</td></tr><tr><td><a href="/docs/v23.2/alter-user"><code>ALTER USER</code></a></td><td>Change passwords and role options for a user.</td></tr><tr><td><a href="/docs/v23.2/grant"><code>GRANT</code></a></td><td>Manage each role or user's SQL privileges for interacting with specific databases and tables, or add a role or user as a member to a role.</td></tr><tr><td><a href="/docs/v23.2/revoke"><code>REVOKE</code></a></td><td>Revoke privileges from users and/or roles, or revoke a role or user's membership to a role.</td></tr><tr><td><a href="/docs/v23.2/show-roles"><code>SHOW ROLES</code></a></td><td>List the roles for all databases.</td></tr><tr><td><a href="/docs/v23.2/show-grants"><code>SHOW GRANTS</code></a></td><td>List the privileges granted to users.</td></tr></tbody></table>
+
+## See also
+
+- [Client Connection Parameters](/docs/v23.2/connection-parameters)
+- [SQL Statements](/docs/v23.2/sql-statements)
+- [`CREATE USER`](/docs/v23.2/create-user)
+- [`ALTER USER`](/docs/v23.2/alter-user)
+- [`DROP USER`](/docs/v23.2/drop-user)
+- [`SHOW USERS`](/docs/v23.2/show-users)
+- [`CREATE ROLE`](/docs/v23.2/create-role)
+- [`ALTER ROLE`](/docs/v23.2/alter-role)
+- [`DROP ROLE`](/docs/v23.2/drop-role)
+- [`SHOW ROLES`](/docs/v23.2/show-roles)
+- [`GRANT`](/docs/v23.2/grant)
+- [`REVOKE`](/docs/v23.2/revoke)
+- [`SHOW GRANTS`](/docs/v23.2/show-grants)

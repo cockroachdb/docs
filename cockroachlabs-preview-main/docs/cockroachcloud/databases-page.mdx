@@ -1,0 +1,193 @@
+---
+title: "Databases Page"
+old_description: "The Databases page provides details about databases configured, the tables and indexes in each database, and the grants assigned to each role and user."
+---
+
+The **Databases** page of the CockroachDB Cloud Console provides details of the following:
+
+- The databases configured.
+- The tables in each database and the indexes on each table.
+- The grants assigned to each role and SQL user.
+- [Index recommendations](#index-recommendations).
+
+To view this information, select a cluster from the [**Clusters** page](/docs/cockroachcloud/cluster-management#view-clusters-page), and click **Databases** in the **Data** section of the left side navigation menu. This will give you access to the following:
+
+- [Databases List Page](#databases-list-page): initial page that lists the databases on the cluster.
+- [Database Details Page](#database-details-page)
+    - [Tables List Tab](#tables-list-tab): lists tables in a database.
+    - [Database Grants Tab](#database-grants-tab): lists privileges on a database.
+- [Table Details Page](#table-details-page)
+    - [Overview Tab](#overview-tab): displays a table’s details.
+    - [Table Grants Tab](#table-grants-tab): lists privileges on a table.
+    - [Indexes List Tab](#indexes-list-tab): lists indexes on a table with index recommendations and actions.
+- [Index Details Page](#index-details-page): displays an index’s details with index recommendations.
+
+## Index recommendations
+
+The [Indexes List Tab](#indexes-list-tab) of the [Table Details Page](#table-details-page) shows recommendations to drop indexes based on index usage with a **Drop index** button. Admin users can click this to drop an unused index.
+
+The [Index Details Page](#index-details-page) also shows recommendations to drop the selected index based on index usage.
+
+To configure the threshold for when CockroachDB will recommend that you drop an index due to low usage, change the [`sql.index_recommendation.drop_unused_duration` cluster setting](/docs/v25.4/cluster-settings). The default value is 7 days.
+
+## Databases List Page
+
+To view this page, click **Databases** in the left side navigation menu.
+
+The Databases List Page shows:
+
+- Whether [automatic statistics collection](/docs/v25.4/cost-based-optimizer#table-statistics) is enabled for the cluster. The **Auto stats collection** indicator is on the top right.
+- A list of the databases on the cluster.
+
+The following information is displayed for each database:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Name</td><td>The name of the database. Click a database name to view the <a href="#database-details-page">Database Details Page</a> for the selected database.</td></tr><tr><td>Size</td><td>The approximate total disk size across all table replicas in the database.</td></tr><tr><td>Tables</td><td>The total number of tables in the database.</td></tr><tr><td>Regions/Nodes</td><td>Regions/Nodes on which the database tables are located. Hover on a region for a list of nodes in that region.<br/><br/><strong>Note:</strong> Not available on Standard or Basic clusters.</td></tr></tbody></table>
+
+### Search and filter databases
+
+By default, the Databases List Page displays up to 10 databases on page 1. If more than 10 databases exist, use the page navigation at the bottom of the page to display the additional databases.
+
+To search for specific databases, use the search field above the list table:
+
+1. Enter a string in the search box.
+2. Press `Enter`.
+
+    The list of databases is filtered by the string.
+
+To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown above the list table:
+
+1. Click the dropdown arrow.
+2. Select one or more nodes. You may need to scroll down for nodes in different regions. You may also type in the beginning of the node name to narrow the list.
+
+    The list of databases is filtered by the nodes selected.
+
+<Note>
+Nodes multi-select dropdown is not available on Standard or Basic clusters.
+</Note>
+
+### Refresh data
+
+The `system.table_metadata` table caches the necessary metadata of a table that populates the following:
+
+- [Databases List Page](#databases-list-page)
+- [Tables List Tab](#tables-list-tab) of the [Database Details Page](#database-details-page)
+- [Overview Tab](#overview-tab) of the [Table Details Page](#table-details-page)
+
+The [cluster settings](/docs/v25.4/cluster-settings) that control the refresh behavior for the cached data in the `system.table_metadata` table are:
+
+- `obs.tablemetadata.automatic_updates.enabled` (default: `false` ) enables automatic updates of the table metadata cache `system.table_metadata`.
+- `obs.tablemetadata.data_valid_duration` (default: `20m0s` ) is the duration for which the data in `system.table_metadata` is considered valid.
+
+On the [Databases List Page](#databases-list-page) and the [Tables List Tab](#tables-list-tab) of the [Database Details Page](#database-details-page), above the table of information, the **Last refreshed** indicator displays how long ago the cached data was last refreshed automatically (per the cluster settings) or manually.
+
+The cached data can be refreshed in the following ways:
+
+- Automatically: Set the cluster setting `obs.tablemetadata.automatic_updates.enabled` to `true`. The frequency of refreshes is controlled by the cluster setting `obs.tablemetadata.data_valid_duration`. Automatic updates is disabled by default to avoid unnecessarily consuming resources. However, if you want databases and tables information immediately when you visit the corresponding page, then enable automatic updates.
+- Manually: When any user clicks the **Refresh data** icon button to the right of the **Last refreshed** indicator. If a refresh job has been triggered, the **Refresh data** icon button will be disabled and the hover text will display the time the job was started and the progress of the job.
+- Additionally, when any user visits the [Databases List Page](#databases-list-page), the **Last refreshed** timestamp is compared to the cluster setting `obs.tablemetadata.data_valid_duration`. If the time since the **Last refreshed** timestamp exceeds the `obs.tablemetadata.data_valid_duration`, then a cache refresh is triggered.
+
+## Database Details Page
+
+To view this page, click on a database name on the [Databases List Page](#databases-list-page). The Database Details Page has two tabs: [**Tables**](#tables-list-tab) and [**Grants**](#database-grants-tab).
+
+### Tables List Tab
+
+Click on the **Tables** tab of the [Database Details Page](#database-details-page) to view a list of the tables in the selected database.
+
+You can [refresh the data](#refresh-data) that is displayed on this page. **Note:** This also refreshes data on the [Databases List Page](#databases-list-page).
+
+The following information is displayed for each table:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Name</td><td>The name of the table. Click a table name to view the <a href="#table-details-page">Table Details Page</a> for the selected table.</td></tr><tr><td>Replication Size</td><td>The approximate compressed total disk size across all <a href="/docs/v25.4/architecture/glossary#replica">replicas</a> of the table.</td></tr><tr><td>Ranges</td><td>The number of <a href="/docs/v25.4/architecture/glossary#range">ranges</a> in the table.</td></tr><tr><td>Columns</td><td>The number of columns in the table.</td></tr><tr><td>Indexes</td><td>The number of <a href="/docs/v25.4/indexes">indexes</a> in the table.</td></tr><tr><td>Regions/Nodes</td><td>Regions/Nodes on which the table's data is stored.<br/><br/><strong>Note:</strong> Not available on Standard or Basic clusters.</td></tr><tr><td>% of Live Data</td><td>The percentage of total uncompressed logical data that has not been modified (updated or deleted).</td></tr><tr><td>Table auto stats enabled</td><td>Whether automatic <a href="/docs/v25.4/cost-based-optimizer#table-statistics">table statistics</a> is enabled. Automatic statistics can help improve query performance.</td></tr><tr><td>Stats last updated</td><td>The last time table statistics used by the SQL optimizer were updated.</td></tr></tbody></table>
+
+#### Search and filter tables
+
+By default, the Tables List Tab displays up to 10 tables of the selected database on page 1. If more than 10 tables exist, use the page navigation at the bottom of the page to display the additional tables.
+
+To search for specific tables, use the search field above the list table:
+
+1. Enter a string in the search box.
+2. Press `Enter`.
+
+    The list of tables is filtered by the string.
+
+To filter databases based on the nodes on which the database tables are located, use the nodes multi-select dropdown above the list table:
+
+1. Click the dropdown arrow.
+2. Select one or more nodes. You may need to scroll down for nodes in different regions. You may also type in the beginning of the node name to narrow the list.
+
+    The list of tables is filtered by the nodes selected.
+
+<Note>
+Nodes multi-select dropdown is not available on Standard or Basic clusters.
+</Note>
+
+### Database Grants Tab
+
+Click on the **Grants** tab [Database Details Page](#database-details-page) to show the [privileges](/docs/v25.4/security-reference/authorization#managing-privileges) granted to users and roles on the database.
+
+The following information is displayed for each grantee:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Grantee</td><td>The role or user.</td></tr><tr><td>Privileges</td><td>The list of privileges for the role or user on the database.</td></tr></tbody></table>
+
+For more details about grants and privileges, refer to [`GRANT`](/docs/v25.4/grant).
+
+## Table Details Page
+
+To view this page, click on a table name on the [Tables List Tab](#tables-list-tab) of the [Database Details Page](#database-details-page).
+
+### Overview Tab
+
+Click on the **Overview** tab of the [Table Details Page](#table-details-page) to view the SQL statement used to [create the table](/docs/v25.4/create-table) and other table details.
+
+The following information is displayed for the table:
+
+<table><thead><tr><th>Detail</th><th>Description</th></tr></thead><tbody><tr><td>Size</td><td>The approximate compressed total disk size across all replicas of the table.</td></tr><tr><td>Ranges</td><td>The number of <a href="/docs/v25.4/architecture/replication-layer">ranges</a> in the table.</td></tr><tr><td>Replicas</td><td>The number of <a href="/docs/v25.4/architecture/glossary#architecture-range">replicas</a> in the table.</td></tr><tr><td>Regions/Nodes</td><td>Regions/Nodes on which the table's data is stored.<br/><br/>NOTE: Not available on Standard or Basic clusters.</td></tr><tr><td>% of Live Data</td><td>The percentage of total uncompressed logical data that has not been modified (updated or deleted).</td></tr><tr><td>Auto stats collections</td><td>Whether automatic <a href="/docs/v25.4/cost-based-optimizer#table-statistics">table statistics</a> is enabled. Automatic statistics can help improve query performance.</td></tr><tr><td>Stats last updated</td><td>The last time table statistics used by the SQL optimizer were updated.</td></tr></tbody></table>
+
+#### Last updated
+
+The **Last updated** timestamp is the actual time the [metadata was last refreshed](#refresh-data) for the selected table.
+
+When the refresh job runs to update the `system.table_metadata` table, if it encounters an error retrieving the metadata for the selected table, an error indicator will appear next to the **Last updated** timestamp and the error message will appear in the hover text.
+
+### Table Grants Tab
+
+Click on the **Grants** tab of the [Table Details Page](#table-details-page) to view the [privileges](/docs/v25.4/security-reference/authorization#managing-privileges) granted to users and roles on the table.
+
+The following information is displayed for each grantee:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Grantee</td><td>The role or user.</td></tr><tr><td>Privileges</td><td>The list of privileges for the role or user on the table.</td></tr></tbody></table>
+
+For more details about grants and privileges, refer to [`GRANT`](/docs/v25.4/grant).
+
+### Indexes List Tab
+
+Click on the **Indexes** tab of the [Table Details Page](#table-details-page) to view a list of indexes on a table with index recommendations and actions.
+
+The following information is displayed for each index:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Index Name</td><td>The name of the index. Click an index name to view the <a href="#index-details-page">Index Details Page</a> for the selected index.</td></tr><tr><td>Last Read</td><td>The time the index was created, last read, or index statistics were reset.</td></tr><tr><td>Total Reads</td><td>The number of times the index was read since index statistics were reset.</td></tr><tr><td>Recommendations</td><td>A <a href="#index-recommendations">recommendation</a> to drop the index if it is unused.</td></tr><tr><td>Action</td><td>If recommended, a <strong>Drop index</strong> button is displayed. <a href="/docs/v25.4/security-reference/authorization#admin-role">Admin users</a> can click this to drop an unused index.</td></tr></tbody></table>
+
+#### Reset all index statistics
+
+Index statistics accumulate from the time an index was created or when statistics were reset. If desired, [admin users](/docs/v25.4/security-reference/authorization#admin-role) may reset index statistics for the entire cluster by clicking **Reset all index stats**. This link does not appear for non-admin users. **Last reset** is the timestamp at which the last reset started.
+
+## Index Details Page
+
+To view this page, click on a index name on the [Indexes List Tab](#indexes-list-tab) of the [Table Details Page](#table-details-page).
+
+The **Index** page displays the SQL statement used to [create the index](/docs/v25.4/create-index) and an index’s details. The page also allows [admin users](/docs/v25.4/security-reference/authorization#admin-role) to [**Reset all index stats**](#reset-all-index-statistics).
+
+The following information is displayed for the index:
+
+<table><thead><tr><th>Detail</th><th>Description</th></tr></thead><tbody><tr><td>Total Reads</td><td>The number of times the index was read since index statistics were reset.</td></tr><tr><td>Last Read</td><td>The time the index was created, last read, or index statistics were reset.</td></tr><tr><td>Index Recommendations</td><td>A <a href="#index-recommendations">recommendation</a> to drop the index if it is unused.</td></tr></tbody></table>
+
+### Index Usage
+
+The **Index Usage** table displays a list of the most executed statement fingerprints using this index. This table is only visible to [Admin users](/docs/v25.4/security-reference/authorization#admin-role). The information displayed for each statement fingerprint is similar to the table on the [**Statements**](/docs/v25.4/ui-statements-page#statements-table) page.
+
+## See also
+
+- [Statements page](/docs/cockroachcloud/statements-page)
+- [Assign privileges](/docs/v25.4/security-reference/authorization#managing-privileges)
+- [`GRANT`](/docs/v25.4/grant)

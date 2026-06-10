@@ -1,0 +1,165 @@
+---
+title: "Admission Control"
+old_description: "Learn about admission control to maintain cluster performance and availability during high load."
+---
+
+CockroachDB supports an admission control system to maintain cluster performance and availability when some nodes experience high load. When admission control is enabled, CockroachDB sorts request and response operations into work queues by priority, giving preference to higher priority operations. Internal operations critical to node health are high priority. The admission control system also prioritizes transactions that hold [locks](/docs/v25.4/crdb-internal#cluster_locks), to reduce [contention](/docs/v25.4/performance-best-practices-overview#transaction-contention) and release locks earlier.
+
+## How admission control works
+
+At a high level, the admission control system works by queueing requests to use the following system resources:
+
+- CPU
+- Storage IO (writes to disk)
+
+For CPU, different types of usage are queued differently based on priority to allow important work to make progress even under [high CPU utilization](/docs/v25.4/common-issues-to-monitor#cpu-usage).
+
+For storage IO, the goal is to prevent the [storage layer's log-structured merge tree](/docs/v25.4/architecture/storage-layer#log-structured-merge-trees) (LSM) from experiencing high [read amplification](/docs/v25.4/architecture/storage-layer#read-amplification), which slows down reads, while also maintaining the ability to absorb bursts of writes.
+
+Admission control works on a per-[node](/docs/v25.4/architecture/overview#node) basis, since even though a large CockroachDB cluster may be well-provisioned as a whole, individual nodes are stateful and may experience performance [hotspots](/docs/v25.4/understand-hotspots).
+
+For more details about how the admission control system works, see:
+
+- The [Admission Control tech note](https://github.com/cockroachdb/cockroach/blob/master/docs/tech-notes/admission_control.md).
+- The blog post [Here's how CockroachDB keeps your database from collapsing under load](https://www.cockroachlabs.com/blog/admission-control-in-cockroachdb).
+
+## Use cases for admission control
+
+A well-provisioned CockroachDB cluster may still encounter performance bottlenecks at the node level, as stateful nodes can develop [hotspots](/docs/v25.4/understand-hotspots) that last until the cluster rebalances itself. When hotspots occur, they should not cause failures or degraded performance for important work.
+
+This is particularly important for CockroachDB Standard and CockroachDB Basic, where one user tenant cluster experiencing high load should not degrade the performance or availability of a different, isolated tenant cluster running on the same host.
+
+Admission control can help if your cluster has degraded performance due to the following types of node overload scenarios:
+
+- The node has more than 32 runnable goroutines per CPU, visible in the **Runnable goroutines per CPU** graph in the [**Overload** dashboard](/docs/v25.4/ui-overload-dashboard#runnable-goroutines-per-cpu).
+- The node has a high amount of overload in the Pebble LSM tree, visible in the **IO Overload** graph in the [**Overload** dashboard](/docs/v25.4/ui-overload-dashboard#io-overload).
+- The node has high CPU usage, visible in the **CPU Utilization** graph in the [**Overload** dashboard](/docs/v25.4/ui-overload-dashboard#cpu-utilization).
+- The node is experiencing out-of-memory errors, visible in the **Memory Usage** graph in the [**Hardware** dashboard](/docs/v25.4/ui-hardware-dashboard#memory-usage). Even though admission control does not explicitly target controlling memory usage, it can reduce memory usage as a side effect of delaying the start of operation execution when the CPU is overloaded.
+
+## Operations subject to admission control
+
+Almost all database operations that use CPU or perform storage IO are controlled by the admission control system. From a user's perspective, specific operations that are affected by admission control include:
+
+- [General SQL queries](/docs/v25.4/selection-queries) have their CPU usage subject to admission control, as well as storage IO for writes to [leaseholder replicas](/docs/v25.4/architecture/replication-layer#leases) and [follower replicas](#replication-admission-control).
+- [Bulk data imports](/docs/v25.4/import-into).
+- [`COPY`](/docs/v25.4/copy) statements.
+- [Deletes](/docs/v25.4/delete-data) (including deletes initiated by [row-level TTL jobs](/docs/v25.4/row-level-ttl); the [selection queries](/docs/v25.4/selection-queries) performed by TTL jobs are also subject to CPU admission control).
+- [Backups](/docs/v25.4/backup-and-restore-overview).
+- [Restore](/docs/v25.4/restore) operations, including [full cluster](/docs/v25.4/restore#full-cluster), [database](/docs/v25.4/restore#databases), and [table](/docs/v25.4/restore#tables) restores.
+- [Schema changes](/docs/v25.4/online-schema-changes), including index and column backfills (on both the [leaseholder replica](/docs/v25.4/architecture/replication-layer#leases) and [follower replicas](/docs/v25.4/architecture/replication-layer#raft) ).
+- [Follower replication work](#replication-admission-control).
+- [Raft log entries being written to disk](/docs/v25.4/architecture/replication-layer#raft).
+- [Changefeeds](/docs/v25.4/create-and-configure-changefeeds).
+- [Intent resolution](/docs/v25.4/architecture/transaction-layer#write-intents).
+
+<Note>
+  Admission control is beneficial when overall cluster health is good but some nodes are experiencing overload. If you
+  see these overload scenarios on many nodes in the cluster, that typically means the cluster needs more resources.
+</Note>
+
+### Replication admission control
+
+The admission control subsystem paces all work done at the [Replication Layer](/docs/v25.4/architecture/replication-layer#raft) to avoid cluster overload. This includes user-facing writes from SQL statements, as well as background (elastic) replication work.
+
+The pacing of catchup writes is controlled at the replication layer to avoid overloading slow or [newly restarted nodes](/docs/v25.4/eventlog#node_restart) with replication flows. Note that this pacing does not slow down user-facing SQL writes; it only ensures there are fewer impacts from background operations.
+
+At a high level, replication admission control works by:
+
+- Pacing regular SQL writes at the rate of replica quorum. ()
+- Pacing background (elastic) replication at the rate of the slowest replica.
+
+This has the following effects:
+
+1. Does not overload slow/restarted nodes with replication flows. ()
+2. Isolates performance between regular and elastic traffic.
+3. Paces regular writes at quorum speed. ()
+4. Paces elastic writes at the slowest replica's speed.
+
+For example, prior to CockroachDB v25.1, when a leader and follower replica were disconnected from each other due to a node going away and coming back, once the follower came back the leader would slam the follower with any Raft entries it had missed. In v25.1 and later, the leader paces the entries it sends to the follower. The result is that baseline cluster QPS (queries per second) and latency should not change substantially during perturbations such as [node restarts](/docs/v25.4/eventlog#node_restart).
+
+To monitor the behavior of replication admission control, refer to [UI Overload Dashboard &gt; Replication Admission Control](/docs/v25.4/ui-overload-dashboard#admission-queueing-delay-p99-replication-admission-control).
+
+## Enable and disable admission control
+
+Admission control is enabled by default. To enable or disable admission control, use the following [cluster settings](/docs/v25.4/cluster-settings):
+
+- `admission.kv.enabled` for work performed by the [KV layer](/docs/v25.4/architecture/distribution-layer).
+- `admission.sql_kv_response.enabled` for work performed in the SQL layer when receiving [KV responses](/docs/v25.4/architecture/distribution-layer).
+- `admission.sql_sql_response.enabled` for work performed in the SQL layer when receiving [DistSQL responses](/docs/v25.4/architecture/sql-layer#distsql).
+- `kvadmission.store.snapshot_ingest_bandwidth_control.enabled` to optionally limit the disk impact of ingesting snapshots on a node. This cluster setting is in [Preview](/docs/v25.4/cockroachdb-feature-availability#features-in-preview).
+- `kvadmission.store.provisioned_bandwidth` to optionally limit the disk bandwidth capacity of stores on the cluster. Disk bandwidth admission control paces background disk writes to keep disk bandwidth within its provisioned bandwidth. This cluster setting is in [Preview](/docs/v25.4/cockroachdb-feature-availability#features-in-preview).
+
+When you enable or disable admission control settings for one layer, Cockroach Labs recommends that you enable or disable them for **all layers**.
+
+## Work queues and ordering
+
+When admission control is enabled, request and response operations are sorted into work queues where the operations are organized by priority and transaction start time.
+
+Higher priority operations are processed first. The criteria for determining higher and lower priority operations is different at each processing layer, and is determined by the CPU and storage I/O of the operation. Write operations in the [KV storage layer](/docs/v25.4/architecture/storage-layer) in particular are often the cause of performance bottlenecks, and admission control prevents [the Pebble storage engine](/docs/v25.4/architecture/storage-layer#pebble) from experiencing high [read amplification](/docs/v25.4/architecture/storage-layer#read-amplification). Critical cluster operations are processed as high priority, as are transactions that hold [locks](/docs/v25.4/crdb-internal#cluster_locks) in order to avoid [contention](/docs/v25.4/performance-recipes#transaction-contention) and release locks earlier.
+
+The transaction start time is used within the priority queue and gives preference to operations with earlier transaction start times. For example, within the high priority queue operations with an earlier transaction start time are processed first.
+
+### Set quality of service level for a session
+
+In an overload scenario where CockroachDB cannot service all requests, you can identify which requests should be prioritized. This is often referred to as _quality of service_ (QoS). Admission control queues work throughout the system. To set the quality of service level on the admission control queues on behalf of SQL requests submitted in a session, use the [`default_transaction_quality_of_service`](/docs/v25.4/set-vars#default-transaction-quality-of-service) session variable. The valid values are `critical`, `background`, and `regular`. Admission control must be enabled for this setting to have an effect.
+
+To increase the priority of subsequent SQL requests, run:
+
+```sql
+SET default_transaction_quality_of_service=critical;
+```
+
+To decrease the priority of subsequent SQL requests, run:
+
+```sql
+SET default_transaction_quality_of_service=background;
+```
+
+To reset the priority to the default session setting (in between background and critical), run:
+
+```sql
+SET default_transaction_quality_of_service=regular;
+```
+
+The quality of service for [`COPY`](/docs/v25.4/copy) statements is configured separately with the [`copy_transaction_quality_of_service`](/docs/v25.4/set-vars#copy-transaction-quality-of-service) session variable, which defaults to `background`.
+
+To increase the priority of subsequent `COPY` statements, run:
+
+```sql
+SET copy_transaction_quality_of_service=critical;
+```
+
+### Set quality of service level for a transaction
+
+To set the quality of service level for a single [transaction](/docs/v25.4/transactions), set the [`default_transaction_quality_of_service`](/docs/v25.4/set-vars#default-transaction-quality-of-service) and/or [`copy_transaction_quality_of_service`](/docs/v25.4/set-vars#copy-transaction-quality-of-service) session variable for just that transaction using the [`SET LOCAL`](/docs/v25.4/set-vars#set-a-variable-for-the-duration-of-a-single-transaction) statement inside a [`BEGIN`](/docs/v25.4/begin-transaction)... [`COMMIT`](/docs/v25.4/commit-transaction) block, as shown in the following example. The valid values are `critical`, `background`, and `regular`.
+
+```sql
+BEGIN;
+SET LOCAL default_transaction_quality_of_service = 'regular'; -- Edit transaction QoS to desired level
+SET LOCAL copy_transaction_quality_of_service = 'regular'; -- Edit COPY QoS to desired level
+-- Statements to run in this transaction go here
+COMMIT;
+```
+
+## Known limitations
+
+Admission control works on the level of each node, not at the cluster level. The admission control system queues requests until the operations are processed or the request exceeds the timeout value (for example by using [`SET statement_timeout`](/docs/v25.4/set-vars#supported-variables)). If you specify aggressive timeout values, the system may operate correctly but have low throughput as the operations exceed the timeout value while only completing part of the work. There is no mechanism for preemptively rejecting requests when the work queues are long.
+
+Organizing operations by priority can mean that higher priority operations consume all the available resources while lower priority operations remain in the queue until the operation times out.
+
+## Considerations
+
+[Client connections](/docs/v25.4/connection-parameters) are not managed by the admission control subsystem. Too many connections per [gateway node](/docs/v25.4/architecture/sql-layer#gateway-node) can also lead to cluster overload.
+
+To control the maximum number of non-superuser ([`root`](/docs/v25.4/security-reference/authorization#root-user) user or other [`admin` role](/docs/v25.4/security-reference/authorization#admin-role)) connections a [gateway node](/docs/v25.4/architecture/sql-layer#gateway-node) can have open at one time, use the `server.max_connections_per_gateway` [cluster setting](/docs/v25.4/cluster-settings). If a new non-superuser connection would exceed this limit, the error message `"sorry, too many clients already"` is returned, along with error code `53300`.
+
+## Observe admission control performance
+
+The [DB Console Overload dashboard](/docs/v25.4/ui-overload-dashboard) shows metrics related to the performance of the admission control system.
+
+## See also
+
+- The [Overload Dashboard](/docs/v25.4/ui-overload-dashboard) in the [DB Console](/docs/v25.4/ui-overview).
+- The [technical note for admission control](https://github.com/cockroachdb/cockroach/blob/master/docs/tech-notes/admission_control.md) for details on the design of the admission control system.
+- The blog post [Here's how CockroachDB keeps your database from collapsing under load](https://www.cockroachlabs.com/blog/admission-control-in-cockroachdb).
+- The blog post [Rubbing Control Theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory).

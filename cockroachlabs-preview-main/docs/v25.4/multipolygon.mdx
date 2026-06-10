@@ -1,0 +1,61 @@
+---
+title: "MULTIPOLYGON"
+old_description: "The spatial MULTIPOLYGON object is a collection of POLYGONs."
+---
+
+A `MULTIPOLYGON` is a collection of [Polygons](/docs/v25.4/polygon). MultiPolygons are useful for gathering a group of Polygons into one geometry. For example, you may want to gather the Polygons denoting a group of properties in a particular municipality. Another use of MultiPolygons is to represent states or countries that include islands, or that are otherwise made up of non-overlapping shapes.
+
+You can also store a `MULTIPOLYGON` with the following additional dimensions:
+
+- A third dimension coordinate `Z` ( `MULTIPOLYGONZ` ).
+- A measure coordinate `M` ( `MULTIPOLYGONM` ).
+- Both a third dimension and a measure coordinate ( `MULTIPOLYGONZM` ).
+
+The `Z` and `M` dimensions can be accessed or modified using a number of [built-in functions](/docs/v25.4/functions-and-operators#spatial-functions), including:
+
+- `ST_Z`
+- `ST_M`
+- `ST_Affine`
+- `ST_Zmflag`
+- `ST_MakePoint`
+- `ST_MakePointM`
+- `ST_Force3D`
+- `ST_Force3DZ`
+- `ST_Force3DM`
+- `ST_Force4D`
+- `ST_Snap`
+- `ST_SnapToGrid`
+- `ST_RotateZ`
+- `ST_AddMeasure`
+
+Note that CockroachDB's [spatial indexing](/docs/v25.4/spatial-indexes) is still based on the 2D coordinate system. This means that:
+
+- The Z/M dimension is not index accelerated when using spatial predicates.
+- Some spatial functions ignore the Z/M dimension, with transformations discarding the Z/M value.
+
+## Examples
+
+A MultiPolygon can be created from SQL by calling the `st_geomfromtext` function on a MultiPolygon definition expressed in the [Well Known Text (WKT)](/docs/v25.4/architecture/glossary#wkt) format.
+
+```sql
+SELECT ST_GeomFromText('SRID=4326;MULTIPOLYGON(((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902), (-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832), (-84.191605 39.758949, -75.165222 39.952583, -78.878738 42.880230, -84.191605 39.758949)))');
+```
+
+```text
+                                                                                                                                                                                                                            st_geomfromtext
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  0106000020E610000001000000010300000003000000040000006FF1F09E03FA55C0DFDFA0BDFA844540545227A089FF57C0791EDC9DB513424064B14D2A1AED52C0CCCF0D4DD90942406FF1F09E03FA55C0DFDFA0BDFA84454004000000A4A7C821E2E755C07C48F8DEDFF0444073309B00C38C56C038BF61A241504340E884D041979C54C0967A1684F2344340A4A7C821E2E755C07C48F8DEDFF044400400000001309E41430C55C07C2AA73D25E143401AA54BFF92CA52C0DFDC5F3DEEF9434028F04E3E3DB853C0A27A6B60AB70454001309E41430C55C07C2AA73D25E14340
+(1 row)
+```
+
+## See also
+
+- [Spatial tutorial](/docs/v25.4/spatial-tutorial)
+- [Spatial objects](/docs/v25.4/spatial-data-overview#spatial-objects)
+- [POINT](/docs/v25.4/point)
+- [LINESTRING](/docs/v25.4/linestring)
+- [POLYGON](/docs/v25.4/polygon)
+- [MULTIPOINT](/docs/v25.4/multipoint)
+- [MULTILINESTRING](/docs/v25.4/multilinestring)
+- [GEOMETRYCOLLECTION](/docs/v25.4/geometrycollection)
+- [Using GeoServer with CockroachDB](/docs/v25.4/geoserver)

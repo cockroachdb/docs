@@ -1,0 +1,48 @@
+---
+title: "SHOW TYPES"
+old_description: "The SHOW TYPES statement lists the user-defined data types in a database."
+---
+
+The `SHOW TYPES` statement lists the user-defined [data types](/docs/v23.2/data-types) in the current database.
+
+## Syntax
+
+```text
+SHOW TYPES
+```
+
+## Required privileges
+
+The `CONNECT` [privilege](/docs/v23.2/security-reference/authorization#managing-privileges) on the database is required to list any user-defined types in the database.
+
+## Examples
+
+The following example creates a [user-defined type](/docs/v23.2/create-type).
+
+```sql
+> CREATE TYPE weekday AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday');
+```
+
+```sql
+> CREATE TYPE weekend AS ENUM ('sunday', 'saturday');
+```
+
+```sql
+> SHOW TYPES;
+```
+
+```text
+  schema |  name   | owner
+---------+---------+--------
+  public | weekday | root
+  public | weekend | root
+(2 rows)
+```
+
+## See also
+
+- [`ENUM`](/docs/v23.2/enum)
+- [Data types](/docs/v23.2/data-types)
+- [`CREATE TYPE`](/docs/v23.2/create-type)
+- [`ALTER TYPE`](/docs/v23.2/alter-type)
+- [`DROP TYPE`](/docs/v23.2/drop-type)

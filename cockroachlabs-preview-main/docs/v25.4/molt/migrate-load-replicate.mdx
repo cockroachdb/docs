@@ -1,0 +1,20 @@
+---
+title: "Load and Replicate"
+old_description: "Learn how to migrate data from a source database (such as PostgreSQL, MySQL, or Oracle) into a CockroachDB cluster."
+---
+
+import MigrateLoadReplicate from "/snippets/molt/migrate-load-replicate.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MigrateLoadReplicate />
