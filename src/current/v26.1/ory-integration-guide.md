@@ -5,15 +5,17 @@ toc: true
 docs_area: Integrate
 ---
 
-This tutorial demonstrates how to set up a CockroachDB environment that uses [Ory]({% link {{ page.version.version }}/ory-overview.md %}) for Identity and Access Management (IAM). This page describes the architecture of the integration, then walks through how to perform and test it. 
+[Ory](https://www.ory.com/) is an open-source identity and access management (IAM) platform that provides modular components for authentication and authorization in distributed systems. Key components include:
 
-By the end of this tutorial, you will have a working environment where Ory’s services (Hydra, Kratos, and Keto) use a CockroachDB cluster for storage.
+- [Ory Hydra](https://www.ory.com/hydra) is a server implementation of the [OAuth 2.0 authorization framework](https://oauth.net/2/) and the [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0-final.html). Hydra tracks clients, consent requests, and tokens with consistency to prevent replay attacks and duplicate authorizations.
+- [Ory Kratos](https://www.ory.com/kratos) stores user identity records, recovery flows, sessions, and login attempts in transactional tables.
+- [Ory Keto](https://www.ory.com/keto) provides scalable, relationship-based access control (ReBAC).
+
+CockroachDB's scalability and resiliency make it well-suited to serve as the datastore for Ory components. This page describes how to provision a joint CockroachDB/Ory environment.
 
 ## Integration Architecture Overview
 
-This example environment integrates [Ory Hydra]({% link {{ page.version.version }}/ory-overview.md %}#ory-hydra), [Ory Kratos]({% link {{ page.version.version }}/ory-overview.md %}#ory-kratos), and [Ory Keto]({% link {{ page.version.version }}/ory-overview.md %}#ory-keto).
-
-In a CockroachDB/Ory integration, each of these components relies on CockroachDB to store their state in a consistent and durable way, enabling them to function correctly even in the presence of partial outages or regional network partitions. Each Ory component is deployed as a stateless service, with its only persistence requirement being a backing SQL database.
+This example environment integrates Ory Hydra, Ory Kratos, and Ory Keto with CockroachDB. Each of these components relies on CockroachDB to store their state in a consistent and durable way, enabling them to function correctly even in the presence of partial outages or regional network partitions. Each Ory component is deployed as a stateless service, with its only persistence requirement being a backing SQL database.
 
 CockroachDB provides the database layer that ensures the accuracy and availability of user identities, access control rules, and session tokens. This makes it easier to horizontally scale Ory services, perform rolling updates, or deploy new regions without having to orchestrate complex data migrations.
 
@@ -39,11 +41,9 @@ In this example environment, both Ory and CockroachDB are deployed within the `u
 
 ## Set up a joint CockroachDB/Ory environment
 
-This tutorial walks you through the manual setup of a joint CockroachDB/Ory environment. 
+This tutorial walks you through the manual setup of a joint CockroachDB/Ory environment. By the end of this tutorial, you will have a working environment where Ory’s services (Hydra, Kratos, and Keto) use a CockroachDB cluster for storage.
 
 ### Before you begin
-
-Before starting this tutorial, read the [Ory overview]({% link {{ page.version.version }}/ory-overview.md %}). 
 
 To complete this tutorial, you will need:
 
@@ -53,51 +53,42 @@ To complete this tutorial, you will need:
 - Basic knowledge of [Kubernetes](https://kubernetes.io/) concepts.
 - (Optional) A domain and DNS configuration if you plan to expose services publicly.
 
-Estimated setup time: 45–60 minutes.
-
 ### Step 1. Provision a CockroachDB cluster
 
 First you need to provision the CockroachDB cluster that Ory will use for its services. Choose one of the following methods to create a new CockroachDB cluster, or use an existing cluster and skip to [Step 2](#step-2-create-databases-for-ory-services).
 
-{{site.data.alerts.callout_info}}
-Be sure to create a **secure** cluster. This is necessary for the user creation step of this tutorial.
-{{site.data.alerts.end}}
+Be sure to create a **secure** cluster that supports client connections with TLS. This is necessary for the user creation step of this tutorial.
 
-#### Create a secure cluster locally
+#### Deploy a CockroachDB self-hosted cluster
+You can manually deploy a multi-node, self-hosted CockroachDB cluster, either on-premises or on various cloud platforms.
 
-If you have the CockroachDB binary installed locally, you can manually deploy a multi-node, self-hosted CockroachDB cluster on your local machine.
+Learn how to [deploy a self-hosted CockroachDB cluster]({% link {{ page.version.version }}/manual-deployment.md %}).
 
-Learn how to [deploy a CockroachDB cluster locally]({% link {{ page.version.version }}/secure-a-cluster.md %}).
-
-#### Create a CockroachDB Self-Hosted cluster on AWS
-
-You can manually deploy a multi-node, self-hosted CockroachDB cluster on Amazon's AWS EC2 platform, using AWS's managed load-balancing service to distribute client traffic.
-
-Learn how to [deploy a CockroachDB cluster on AWS]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %}).
-
-#### Create a CockroachDB Cloud cluster
-
+#### Deploy a CockroachDB Cloud cluster
 CockroachDB Cloud is a fully-managed service run by Cockroach Labs, which simplifies the deployment and management of CockroachDB.
 
-[Sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud) and [create a cluster]({% link cockroachcloud/create-your-cluster.md %}) using [trial credits]({% link cockroachcloud/free-trial.md %}).
+[Sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud) and [create a cluster]({% link cockroachcloud/create-your-cluster.md %}), optionally using [trial credits]({% link cockroachcloud/free-trial.md %}).
+
+#### Deploy a cluster locally
+You can install the CockroachDB binary to manually deploy a multi-node, self-hosted CockroachDB cluster on your local machine.
+
+Learn how to [deploy a CockroachDB cluster locally]({% link {{ page.version.version }}/secure-a-cluster.md %}).
 
 ### Step 2. Create Databases for Ory Services
 
 Before integrating Ory components with CockroachDB, you will need to set up separate databases for each service. Each Ory service manages its own schema and migrations:
 
-- [Ory Hydra]({% link {{ page.version.version }}/ory-overview.md %}#ory-hydra) manages OAuth2 clients, consent sessions, access/refresh tokens
-- [Ory Kratos]({% link {{ page.version.version }}/ory-overview.md %}#ory-kratos) handles identity, credentials, sessions, verification tokens
-- [Ory Keto]({% link {{ page.version.version }}/ory-overview.md %}#ory-keto) stores relation tuples (RBAC/ABAC data) for permissions
+- Ory Hydra manages OAuth2 clients, consent sessions, access/refresh tokens
+- Ory Kratos handles identity, credentials, sessions, verification tokens
+- Ory Keto stores relation tuples (RBAC/ABAC data) for permissions
 
 Keeping these in separate databases simplifies maintenance and ensures isolation between identity, OAuth2, and authorization data.
 
-1. Go to your [CockroachDB SQL client]({% link {{ page.version.version }}/cockroach-sql.md %}).
-
-1. Replace `{certs-dir}` with the certificates directory that you established during the cluster setup, and `{crdb-fqdn}` with your CockroachDB load balancer domain name. Then run the following command:
+1. Connect to your CockroachDB cluster using the SQL Shell client. Replace `{certs-dir}` with the certificates directory that you established during the cluster setup, and `{cluster-host}` with your cluster hostname:
 
     {% include_cached copy-clipboard.html %}
     ~~~ shell
-    cockroach sql --certs-dir={certs-dir} --host={crdb-fqdn}:26257
+    cockroach sql --certs-dir={certs-dir} --host={cluster-host}:26257
     ~~~
 
 1. Once connected to the SQL shell, [create the following databases]({% link {{page.version.version}}/create-database.md %}):
@@ -113,13 +104,33 @@ Keeping these in separate databases simplifies maintenance and ensures isolation
 
     {% include_cached copy-clipboard.html %}
     ~~~ sql
-    CREATE USER ory WITH PASSWORD 'securepass';
+    CREATE USER ory WITH PASSWORD 'your_secure_password';
     GRANT ALL ON DATABASE hydra TO ory;
     GRANT ALL ON DATABASE kratos TO ory;
     GRANT ALL ON DATABASE keto TO ory;
     ~~~
 
-### Step 3. Provision a Kubernetes cluster for Ory
+### Step 3. Configure the connection string
+
+When configuring each Ory service to use CockroachDB, you will need to provide connection URIs. The connection string format for CockroachDB is:
+
+~~~
+postgres://ory:your_secure_password@{cluster-host}:26257/{database-name}?sslmode=verify-full&sslcert={client-cert}&sslkey={client-key}&sslrootcert={ca-cert}
+~~~
+
+Replace the following placeholders:
+
+- `{cluster-host}`: Your CockroachDB cluster hostname or load balancer address
+- `{database-name}`: The database for the specific Ory service (`hydra`, `kratos`, or `keto`)
+- `{client-cert}`: Path to the client certificate file
+- `{client-key}`: Path to the client key file
+- `{ca-cert}`: Path to the CA certificate file
+
+For more information about CockroachDB connection parameters, refer to [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %}).
+
+For CockroachDB {{ site.data.products.cloud }} clusters, refer to [Connect to a CockroachDB {{ site.data.products.cloud }} Cluster]({% link cockroachcloud/connect-to-your-cluster.md %}) for connection details.
+
+### Step 4. Provision a Kubernetes cluster for Ory
 
 This section describes how to deploy Ory on a self-hosted Kubernetes cluster in EKS.
 
@@ -176,737 +187,153 @@ This section describes how to deploy Ory on a self-hosted Kubernetes cluster in 
     helm repo update
     ~~~
 
-### Step 4. Deploy Ory services on Kubernetes
+### Step 5. Install and configure Ory services on Kubernetes
 
-Use Helm charts to deploy Ory Hydra, Kratos, and Keto on Kubernetes:
+For instructions on installing and configuring Ory services on Kubernetes, refer to the Ory documentation:
 
-<div class="filters clearfix">
-  <button class="filter-button page-level" data-scope="hydra">Deploy Hydra</button>
-  <button class="filter-button page-level" data-scope="kratos">Deploy Kratos</button>
-  <button class="filter-button page-level" data-scope="keto">Deploy Keto</button>
-</div>
-<p></p>
+- [Install and configure Ory Hydra](https://k8s.ory.sh/helm/hydra.html)
+- [Install and configure Ory Kratos](https://k8s.ory.sh/helm/kratos.html)
+- [Install and configure Ory Keto](https://k8s.ory.sh/helm/keto.html)
 
-<section class="filter-content" markdown="1" data-scope="hydra">
-1. Copy/Paste the following code block in a `hydra_values.yaml` file and replace `{crdb-fqdn}` with your CockroachDB load balancer domain name. Refer to the [Hydra Helm chart template](https://www.ory.com/docs/hydra/reference/configuration).
+Make sure to use the three connection strings defined in [Step 3](#step-3-configure-the-connection-string) as the values for `hydra.config.dsn`, `kratos.config.dsn` and `keto.config.dsn`.
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ yaml
-    image:
-      repository: oryd/hydra
-      tag: latest
-      pullPolicy: IfNotPresent
-    service:
-      public:
-        enabled: true
-        type: LoadBalancer
-        port: 4444
-        name: hydra-http-public
-      admin:
-        enabled: true
-        type: LoadBalancer
-        port: 4445
-        name: hydra-http-admin
-    maester:
-      enabled: false
-    hydra:
-      dev: true
-      automigration:
-        enabled: true
-      config:
-        serve:
-          public:
-            port: 4444
-          admin:
-            port: 4445
-        dsn: "cockroach://ory:securepass@{crdb-fqdn}:26257/hydra?sslmode=disable"
-    ~~~
+### Step 6. Define authorization, identity, and access data
 
-2. Install the Ory Hydra Helm chart using your custom values file:
+Once Ory Hyrdra, Kratos, and Keto have been deployed on your CockroachDB, you can use Ory's HTTP API, CLI, and SDK for each service.
+
+- Refer to the [Ory Hydra reference documentation](https://www.ory.com/docs/hydra/reference/api) to learn how to use Hydra to define authorization data.
+- Refer to the [Ory Kratos reference documentation](https://www.ory.com/docs/kratos/reference/api) to learn how to use Kratos to store user identities, credentials, and sessions. Use 
+- Refer to the [Ory Keto reference documentation](https://www.ory.com/docs/keto/reference/rest-api) to learn how to use Keto to store relationship data for user permissions.
+
+### Step 7. Verify the integration
+
+Store authorization, identity, and permissions data in CockroachDB using your Ory deployment, then verify that the data has been stored correctly in CockroachDB. If the following queries return the expected result sets, CockroachDB has successfully been configured as the datastore for Ory services.
+
+#### Ory Hydra
+
+1. Use Hydra to [create an OAuth2.0 client](https://www.ory.com/docs/hydra/cli/hydra-create-oauth2-client), [perform the OAuth2.0 Client Credentials Flow](https://www.ory.com/docs/hydra/cli/hydra-perform-client-credentials), and then [perform a token introspection](https://www.ory.com/docs/hydra/cli/hydra-introspect-token) to confirm the validity of the resulting token.
+
+2. In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Hydra's OAuth2 client data using CockroachDB:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    helm upgrade --install ory-hydra ory/hydra --namespace ory -f hydra_values.yaml
+    ~~~ sql
+    SELECT id, client_secret, scope, client_secret_expires_at, jwks, token_endpoint_auth_method, request_object_signing_alg, userinfo_signed_response_alg, subject_type, created_at, updated_at, metadata, registration_access_token_signature, redirect_uris, grant_types, response_types FROM public.hydra_client;
     ~~~
 
-    {{site.data.alerts.callout_danger}}
-    To allow the Ory Hydra pods to successfully deploy, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm commands.
-    {{site.data.alerts.end}}
+    The result set contains data about the OAuth2 client. The `id` should match the `client_id` found in the JSON response of the token introspection:
 
-3. Confirm that cluster initialization has completed successfully, with the pods for Hydra showing `1/1` under `READY` and the pod for auto-migrate showing `Completed` under `STATUS`:
+    ~~~
+    -[ RECORD 1 ]
+    id                                  | 9692d3f9-fcdc-4526-80c4-fc667d959a5f
+    client_secret                       | $pbkdf2-sha256$i=25000,l=32$yt3tVhLriCpIFiLmTl94Bw$zatRVZKz4v7bv+rCZviMidN7Iws92OANloDKwGjLzq8
+    scope                               | offline_access offline openid
+    client_secret_expires_at            | 0
+    jwks                                | {}
+    token_endpoint_auth_method          | client_secret_basic
+    request_object_signing_alg          | RS256
+    userinfo_signed_response_alg        | none
+    subject_type                        | public
+    created_at                          | 2025-06-11 16:43:55
+    updated_at                          | 2025-06-11 16:43:54.848259
+    metadata                            | {}
+    registration_access_token_signature | QXGo_1vPI2UWzEWoChhZ0fUEtuuKVO6EARVF0BBx55c
+    redirect_uris                       | []
+    grant_types                         | ["client_credentials"]
+    response_types                      | ["code"]
+
+    Time: 4ms total (execution 3ms / network 0ms)
+    ~~~
+
+3. Run the following query to verify the accessibilty of Ory Hydra's token creation data using CockroachDB:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    kubectl get pods
+    ~~~ sql
+    SELECT signature, request_id, requested_at, client_id, form_data, session_data, subject, active, challenge_id, expires_at FROM public.hydra_oauth2_access;
     ~~~
 
+    The result set contains data about the access token you generated. The `client_id` should match the `client_id` found in the JSON response of the token introspection:
+
     ~~~
-    NAME                                READY     STATUS      RESTARTS   AGE
-    hydra-7fd94df448-hwhnq              1/1       Running     0          20m
-    hydra-automigrate-hxzsc             1/1       Completed   0          20m
+    -[ RECORD 1 ]
+    signature          | 5d666e7d5e54afceeaed54bca47a69eb787acc9be89d3086ca1cf4d55f27f981ae79cbc7e1890c2e5632f86a2dce9074
+    request_id         | 8f5b8564-4b3f-47c2-ab4c-c440c31dd733
+    requested_at       | 2025-06-11 20:03:48.092544
+    client_id          | 9692d3f9-fcdc-4526-80c4-fc667d959a5f
+    form_data          | grant_type=client_credentials
+    session_data       | FRYn1xS63MhiLoBOeVHp3MO5DTKRM1-usLDjSYyai-f9lHO2MmI_8YJQsAaC9EIo2iYxAqSS3pnv__cmP4SOYm5Hg_fefz78VHfWTb7KGny-6PRyd4eXLpdn_TDT-8yb5vRoZ2pW1aFAwlczeuqw5yN56C_0J24GWYvOFF3AoS3GejcPhyvPe_HkHuuK1Pkm4Xfxfc6KvQfQv6UZfX2unbiDCvk-eJ0KRGdvQkGQiztmdc5Ba6BGAuYfKkNqBmN_-4e27YPT2Ud8sQJKZ3o5xzevDg5gMOTgF1XejxQhlP-ThZM6nABjwjL3wL7hLfTE_eVXcCjj-v2VdLlDPL_iynGlsiBZiflN-bNaFIsXfBom8Ks6tjgR4PfhrVYAdsRABW6VbNIOuKvxhwi5GYaiK8jCmKGqwqX63RXKFlF9SSDIFAynvjeEgt_NyM3RNv2kqkgDtVUVmbdVGWbfw6a7oP9zsNINlQ5HyL6MTsE9dtEMNGz1NgDy727krULU1KkYw9tY7gFXb1UD7pkAc1rp-rTO7xG_z1E0QzaPwYtk7JGit6_gec5fkrLiSSaAAbKWHs6MbQdRQC5JTyB5eA6X6DZozXeO2e5SGB-_K1mQ8FaLxnnMlE1ofmooNolQ_qj6SHdB5_SEJpD4KDa8gib8MuUm9666XFxkOzGOoFlXFJFtyB11mB0ztYnIetKw-aEESehuFV6l0BpExVKjLpfR07w48Jsav4_NPKzlPoEIseh_P33Sk8FF19th_Z9D0EkELVaCGIH6Nu-N9dSiJIqMAquzSzlvUBBChvT5rEw_eas3b8-4M3m6EEA-yPPARoVJ_W6qVfibdmjz_36ex04cPD3Wiak=
+    subject            | 8196400e-3849-4c72-b304-f097b8eef1cc
+    active             | t
+    challenge_id       | NULL
+    expires_at         | 2025-06-11 20:03:48.115208
+
+    Time: 3ms total (execution 3ms / network 0ms)
     ~~~
 
-4. Verify that the Hydra services were created successfully:
+#### Ory Kratos
+
+1. Use Kratos to [create a Registration Flow](https://www.ory.com/docs/kratos/self-service/flows/user-registration), [create a Login Flow](https://www.ory.com/docs/kratos/self-service/flows/user-login), and then [check the login session](https://www.ory.com/docs/identities/sign-in/check-session-token-cookie-api).
+
+1. In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Kratos's identity data using CockroachDB:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    kubectl get svc
+    ~~~ sql
+    SELECT i.id, i.schema_id, i.traits, i.created_at, i.updated_at, i.nid, state, i.state_changed_at, ic.config as credentials, ict.name as identity_type
+    FROM public.identities i 
+    join public.identity_credentials ic  on i.id = ic.identity_id
+    join public.identity_credential_types ict on ic.identity_credential_type_id = ict.id;
     ~~~
 
+    The result set contains data about the `identity` established when you initialized the Registration Flow. Much of this data, including `id` and `traits`, should match the data found in the Login Flow JSON response:
+
     ~~~
-    NAME                   TYPE           CLUSTER-IP       EXTERNAL-IP                                                               PORT(S)          AGE
-    ory-hydra-admin        LoadBalancer   172.20.236.212   ae746b705aae34bad9795e0d83f085d3-323598019.us-east-1.elb.amazonaws.com    4445:32070/TCP   22m
-    ory-hydra-public       LoadBalancer   172.20.128.144   a78f38833d17a4b6394cf687abebd8c9-546060028.us-east-1.elb.amazonaws.com    4444:32404/TCP   22m
+    -[ RECORD 1 ]
+    id               | 3ad9fe8b-ef2e-4fa4-8f3e-4b959ace03e6
+    schema_id        | default
+    traits           | {"email": "max@roach.com", "name": {"first": "Max", "last": "Roach"}}
+    created_at       | 2025-06-15T22:28:38.747278Z
+    updated_at       | 2025-06-15T22:28:38.747278Z
+    nid              | e3e5cec5-da67-4754-8e85-ad1bb832a79e
+    state            | active
+    state_changed_at | 2025-06-15T22:28:38.743591684Z
+    credentials      | {"hashed_password": "$2a$12$.ySX6DzFP/Kuf.PFJfz0.OVN6bH.V7JOFrWH5LI0Twzbe25GiDl9W"}
+    identity_type    | password
+
+    Time: 6ms total (execution 5ms / network 0ms)
     ~~~
 
-5. To test this deployment, you will need to execute a few API calls over the [Hydra REST API](https://www.ory.com/docs/hydra/reference/api). For this, you need to export the URLs for both admin and public endpoints:
+#### Ory Keto
+
+1. Use Keto to [create a relation tuple](https://www.ory.com/docs/keto/cli/keto-relation-tuple-create), [determine who has access to objects](https://www.ory.com/docs/keto/cli/keto-expand), and [check user permissions](https://www.ory.com/docs/keto/cli/keto-check).
+
+1. In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Keto's access control data using CockroachDB:
 
     {% include_cached copy-clipboard.html %}
-    ~~~ shell
-      hydra_admin_hostname=$(kubectl get svc --namespace ory ory-hydra-admin --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
-      hydra_public_hostname=$(kubectl get svc --namespace ory ory-hydra-public --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
-      export HYDRA_ADMIN_URL=http://$hydra_admin_hostname:4445
-      export HYDRA_PUBLIC_URL=http://$hydra_public_hostname:4444
+    ~~~ sql
+    SELECT t.namespace, (select m.string_representation from public.keto_uuid_mappings m where m.id = t.object) as object_string, t.relation, 
+    (select m.string_representation from public.keto_uuid_mappings m where m.id = t.subject_id) as subject_string, t.commit_time FROM public.keto_relation_tuples t;
     ~~~
 
-</section>
-
-<section class="filter-content" markdown="1" data-scope="kratos">
-1. Copy/Paste the following code block in a `kratos_values.yaml` file and replace `{crdb-fqdn}` with your CockroachDB load balancer domain name. Refer to the [Kratos Helm chart template](https://www.ory.com/docs/kratos/reference/configuration).
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ yaml
-    image:
-      repository: oryd/kratos
-      tag: latest
-      pullPolicy: IfNotPresent
-    service:
-      admin:
-        enabled: true
-        type: LoadBalancer
-        port: 4433
-        name: kratos-http-admin
-      public:
-        enabled: true
-        type: LoadBalancer
-        port: 4434
-        name: kratos-http-public
-    kratos:
-      development: true
-      automigration:
-        enabled: true
-      config:
-        serve:
-          admin:
-            port: 4433
-          public:
-            port: 4434
-        dsn: "cockroach://ory:securepass@{crdb-fqdn}:26257/kratos?sslmode=disable"
-        selfservice:
-          default_browser_return_url: "http://127.0.0.1/home"
-        identity:
-          default_schema_id: default
-          schemas:
-            - id: default
-              url: https://cockroachdb-integration-guides.s3.us-east-1.amazonaws.com/ory/kratos-schema.json
-    courier:
-      enabled: false
-    ~~~
-
-2. Install the Ory Kratos Helm chart using your custom values file:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    helm upgrade --install ory-kratos ory/kratos --namespace ory -f kratos_values.yaml
-    ~~~
-
-    {{site.data.alerts.callout_danger}}
-    To allow the Ory Kratos pods to successfully deploy, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm commands.
-    {{site.data.alerts.end}}
-
-3. Confirm that cluster initialization has completed successfully, with the pods for Kratos showing `1/1` under `READY` and the pod for auto-migrate showing `Completed` under `STATUS`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    kubectl get pods
-    ~~~
+    The result set contains permissions data. Much of this data, including `object_string`, `relation`, and `subject_string`, should match that provided in the preceding relation tuple data:
 
     ~~~
-    NAME                                READY     STATUS      RESTARTS   AGE
-    kratos-2ab64de672-nkhnq             1/1       Running     0          20m
-    kratos-automigrate-jfsms            1/1       Completed   0          20m
+    -[ RECORD 1 ]
+    namespace      | documents
+    object_string  | doc-123
+    relation       | viewer
+    subject_string | user:alice
+    commit_time    | 2025-12-09 21:37:02.207403
+
+    Time: 3ms total (execution 3ms / network 0ms)
     ~~~
 
-4. Verify that the Kratos services were created successfully:
+## Next steps
 
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    kubectl get svc
-    ~~~
-
-    ~~~
-    NAME                   TYPE           CLUSTER-IP       EXTERNAL-IP                                                               PORT(S)          AGE
-    ory-kratos-admin       LoadBalancer   172.20.11.131    addef980f1fab499c9c16b2ebe0311a6-1426652526.us-east-1.elb.amazonaws.com   4433:30363/TCP   21m
-    ory-kratos-public      LoadBalancer   172.20.185.210   a6d6a72c1776646379830045ccaa2bdb-1651469880.us-east-1.elb.amazonaws.com   4434:31616/TCP   21m
-    ~~~
-   
-5. To test this deployment, you will need to execute a few API calls over the [Kratos REST API](https://www.ory.com/docs/kratos/reference/api). For this, you need to export the URLs for both admin and public endpoints:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-      kratos_admin_hostname=$(kubectl get svc --namespace ory ory-kratos-admin --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
-      kratos_public_hostname=$(kubectl get svc --namespace ory ory-kratos-public --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
-      export KRATOS_ADMIN_URL=http://$kratos_admin_hostname:4433
-      export KRATOS_PUBLIC_URL=http://$kratos_public_hostname:4434
-    ~~~
-
-</section>
-
-<section class="filter-content" markdown="1" data-scope="keto">
-1. Copy/Paste the following code block in a `keto_values.yaml` file and replace `{crdb-fqdn}` with the CockroachDB load balancer domain name. Refer to the [Keto Helm chart template](https://www.ory.com/docs/keto/reference/configuration).
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ yaml
-    image:
-      repository: oryd/keto
-      tag: latest
-      pullPolicy: IfNotPresent
-    service:
-      read:
-        enabled: true
-        type: LoadBalancer
-        name: ory-keto-read
-        port: 4466
-        appProtocol: http
-        headless:
-          enabled: false
-      write:
-        enabled: true
-        type: LoadBalancer
-        name: ory-keto-write
-        port: 4467
-        appProtocol: http
-        headless:
-          enabled: false
-    keto:
-      automigration:
-        enabled: true
-      config:
-        serve:
-          read:
-            port: 4466
-          write:
-            port: 4467
-        namespaces:
-          - id: 0
-            name: default_namespace
-          - id: 1
-            name: documents
-          - id: 2
-            name: users
-        dsn: "cockroach://ory:securepass@{crdb-fqdn}:26257/keto?sslmode=disable"
-    ~~~
-
-2. Install the Ory Keto Helm chart using your custom values file:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    helm upgrade --install ory-keto ory/keto --namespace ory -f keto_values.yaml
-    ~~~
-
-    {{site.data.alerts.callout_danger}}
-    To allow the Ory Keto pods to successfully deploy, do not set the [`--wait` flag](https://helm.sh/docs/intro/using_helm/#helpful-options-for-installupgraderollback) when using Helm commands.
-    {{site.data.alerts.end}}
-
-3. Confirm that cluster initialization has completed successfully, with the pods for keto showing `1/1` under `READY` and the pod for auto-migrate showing `Completed` under `STATUS`:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    kubectl get pods
-    ~~~
-
-    ~~~
-    NAME                                READY     STATUS      RESTARTS   AGE
-    keto-3ce98ab371-zkaknh              1/1       Running     0          20m
-    ~~~
-
-4. Verify that the Keto services were created successfully:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-    kubectl get svc
-    ~~~
-
-    ~~~
-    NAME                   TYPE           CLUSTER-IP       EXTERNAL-IP                                                               PORT(S)          AGE
-    ory-keto-read          LoadBalancer   172.20.252.154   a20d7e0cdab3c4bc086c15ad4e99b3ba-578912090.us-east-1.elb.amazonaws.com    4466:32018/TCP   20m
-    ory-keto-write         LoadBalancer   172.20.114.76    a17754810e49d4314b7797a2f65f5031-451201736.us-east-1.elb.amazonaws.com    4467:30092/TCP   20m
-    ~~~
-
-5. To test this deployment, you will need to execute a few API calls over the [Keto REST API](https://www.ory.com/docs/keto/reference/rest-api). For this, you need to export the URLs for both read and write endpoints:
-
-    {% include_cached copy-clipboard.html %}
-    ~~~ shell
-      keto_read_hostname=$(kubectl get svc --namespace ory ory-keto-read --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
-      keto_write_hostname=$(kubectl get svc --namespace ory ory-keto-write --template "{% raw %}{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}{% endraw %}")
-      export KETO_WRITE_REMOTE=http://$keto_write_hostname:4467
-      export KETO_READ_REMOTE=http://$keto_read_hostname:4466
-    ~~~
-
-</section>
-
-You now have a high-availability deployment for a joint CockroachDB/Ory environment within a single cloud region. This architecture is designed to protect against failures at the AZ level by distributing nodes of the database cluster across multiple AZs within the same region.
-
-## Test the CockroachDB/Ory Integration
-
-Once both CockroachDB and Ory are provisioned, configured, and network-accessible, the next step is to validate that all components work together as intended.
-
-Below is a practical guide for testing and debugging each part of this integration.
-
-### Test Ory Hydra
-
-To test Ory Hydra, create an OAuth2 client, generate an access token, then introspect it. These steps use the `$HYDRA_ADMIN_URL` and `$HYDRA_PUBLIC_URL` that you exported at the end of the [Ory Hydra deployment](?filters=hydra#step-4-deploy-ory-services-on-kubernetes).
-
-#### 1. Create the OAuth2 client
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-hydra create oauth2-client --endpoint $HYDRA_ADMIN_URL --format json --grant-type client_credentials
-~~~
-
-Once you have created the OAuth2 client, you can parse the JSON response to get the `client_id` and `client_secret`:
-
-~~~ json
-{
-  "client_id": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
-  "client_name": "",
-  "client_secret": "F-~KQ8bKSeTxBKdZSS6woHSs9C",
-  "client_secret_expires_at": 0,
-  "client_uri": "",
-  "created_at": "2025-06-11T16:43:07Z",
-  "grant_types": ["client_credentials"],
-  "jwks": {},
-  "logo_uri": "",
-  "metadata": {},
-  "owner": "",
-  "policy_uri": "",
-  "registration_access_token": "ory_at_8xQlVk7rA_MX1yenToVmA7Wr7MLOLXJZdhh9iYHDEAQ.xGPfP4-AiGuOxAKkX-ZIdSntOJo8fy3a4b75ckE_V-g",
-  "registration_client_uri": "http://public.hydra.localhost:4444/oauth2/register/",
-  "request_object_signing_alg": "RS256",
-  "response_types": ["code"],
-  "scope": "offline_access offline openid",
-  "skip_consent": false,
-  "skip_logout_consent": false,
-  "subject_type": "public",
-  "token_endpoint_auth_method": "client_secret_basic",
-  "tos_uri": "",
-  "updated_at": "2025-06-11T16:43:07.320505Z",
-  "userinfo_signed_response_alg": "none"
-}
-~~~ 
-
-#### 2. Generate an access token
-
-Replace `{client_id}` and `{client_secret}` with the values you found in the JSON response:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-hydra perform client-credentials --endpoint $HYDRA_PUBLIC_URL --client-id {client_id} --client-secret {client_secret}
-~~~
-
-This will generate an access token for Ory Hydra. Copy the string beside `ACCESS TOKEN`.
-
-~~~
-ACCESS TOKEN	ory_at_A2TpIR394rnUOtA0PLhvARKQyODmLIH7Fer5Y8clwe8.J61E8kR3ZH2w529D-5HOkuqoaTZy-CNLlNtvunYpdjg
-REFRESH TOKEN	<empty>
-ID TOKEN	<empty>
-EXPIRY		2025-06-11 19:49:39 +0200 CEST
-~~~ 
-
-#### 3. Perform a token introspection to confirm the validity of this new token
-
-Replace `{access_token}` with the string that you just copied:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-hydra introspect token --format json-pretty --endpoint $HYDRA_ADMIN_URL {access_token}
-~~~
-
-This should generate a JSON response that includes your `client_id`, `"active": true`, an expiration timestamp (`exp`), and [other data](https://www.ory.com/docs/hydra/reference/api#tag/oAuth2/operation/introspectOAuth2Token):
-
-~~~ json
-{
-  "active": true,
-  "client_id": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
-  "exp": 1749664180,
-  "iat": 1749660580,
-  "iss": "http://public.hydra.localhost:4444",
-  "nbf": 1749660580,
-  "sub": "9692d3f9-fcdc-4526-80c4-fc667d959a5f",
-  "token_type": "Bearer",
-  "token_use": "access_token"
-}
-~~~
-
-#### 4. Access Hydra data with CockroachDB SQL
-
-In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Hydra's OAuth2 client data using CockroachDB:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT id, client_secret, scope, client_secret_expires_at, jwks, token_endpoint_auth_method, request_object_signing_alg, userinfo_signed_response_alg, subject_type, created_at, updated_at, metadata, registration_access_token_signature, redirect_uris, grant_types, response_types FROM public.hydra_client;
-~~~
-
-The result set contains data about the OAuth2 client. The `id` should match the `client_id` found in the JSON response above:
-
-~~~
--[ RECORD 1 ]
-id                                  | 9692d3f9-fcdc-4526-80c4-fc667d959a5f
-client_secret                       | $pbkdf2-sha256$i=25000,l=32$yt3tVhLriCpIFiLmTl94Bw$zatRVZKz4v7bv+rCZviMidN7Iws92OANloDKwGjLzq8
-scope                               | offline_access offline openid
-client_secret_expires_at            | 0
-jwks                                | {}
-token_endpoint_auth_method          | client_secret_basic
-request_object_signing_alg          | RS256
-userinfo_signed_response_alg        | none
-subject_type                        | public
-created_at                          | 2025-06-11 16:43:55
-updated_at                          | 2025-06-11 16:43:54.848259
-metadata                            | {}
-registration_access_token_signature | QXGo_1vPI2UWzEWoChhZ0fUEtuuKVO6EARVF0BBx55c
-redirect_uris                       | []
-grant_types                         | ["client_credentials"]
-response_types                      | ["code"]
-
-Time: 4ms total (execution 3ms / network 0ms)
-~~~
-
-Then run the following query to verify the accessibilty of Ory Hydra's token creation data using CockroachDB:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT signature, request_id, requested_at, client_id, form_data, session_data, subject, active, challenge_id, expires_at FROM public.hydra_oauth2_access;
-~~~
-
-The result set contains data about the access token you generated. The `client_id` should match the `client_id` found in the JSON response above:
-
-~~~
--[ RECORD 1 ]
-signature          | 5d666e7d5e54afceeaed54bca47a69eb787acc9be89d3086ca1cf4d55f27f981ae79cbc7e1890c2e5632f86a2dce9074
-request_id         | 8f5b8564-4b3f-47c2-ab4c-c440c31dd733
-requested_at       | 2025-06-11 20:03:48.092544
-client_id          | 9692d3f9-fcdc-4526-80c4-fc667d959a5f
-form_data          | grant_type=client_credentials
-session_data       | FRYn1xS63MhiLoBOeVHp3MO5DTKRM1-usLDjSYyai-f9lHO2MmI_8YJQsAaC9EIo2iYxAqSS3pnv__cmP4SOYm5Hg_fefz78VHfWTb7KGny-6PRyd4eXLpdn_TDT-8yb5vRoZ2pW1aFAwlczeuqw5yN56C_0J24GWYvOFF3AoS3GejcPhyvPe_HkHuuK1Pkm4Xfxfc6KvQfQv6UZfX2unbiDCvk-eJ0KRGdvQkGQiztmdc5Ba6BGAuYfKkNqBmN_-4e27YPT2Ud8sQJKZ3o5xzevDg5gMOTgF1XejxQhlP-ThZM6nABjwjL3wL7hLfTE_eVXcCjj-v2VdLlDPL_iynGlsiBZiflN-bNaFIsXfBom8Ks6tjgR4PfhrVYAdsRABW6VbNIOuKvxhwi5GYaiK8jCmKGqwqX63RXKFlF9SSDIFAynvjeEgt_NyM3RNv2kqkgDtVUVmbdVGWbfw6a7oP9zsNINlQ5HyL6MTsE9dtEMNGz1NgDy727krULU1KkYw9tY7gFXb1UD7pkAc1rp-rTO7xG_z1E0QzaPwYtk7JGit6_gec5fkrLiSSaAAbKWHs6MbQdRQC5JTyB5eA6X6DZozXeO2e5SGB-_K1mQ8FaLxnnMlE1ofmooNolQ_qj6SHdB5_SEJpD4KDa8gib8MuUm9666XFxkOzGOoFlXFJFtyB11mB0ztYnIetKw-aEESehuFV6l0BpExVKjLpfR07w48Jsav4_NPKzlPoEIseh_P33Sk8FF19th_Z9D0EkELVaCGIH6Nu-N9dSiJIqMAquzSzlvUBBChvT5rEw_eas3b8-4M3m6EEA-yPPARoVJ_W6qVfibdmjz_36ex04cPD3Wiak=
-subject            | 8196400e-3849-4c72-b304-f097b8eef1cc
-active             | t
-challenge_id       | NULL
-expires_at         | 2025-06-11 20:03:48.115208
-
-Time: 3ms total (execution 3ms / network 0ms)
-~~~
-
-### Test Ory Kratos
-
-To test Ory Kratos, you need to use the Kratos API endpoints to register the API flow, to start the log in flow, and verify the session token. These steps use the `$KRATOS_PUBLIC_URL` that you exported at the end of the [Ory Kratos deployment](?filters=kratos#step-4-deploy-ory-services-on-kubernetes).
-
-#### 1. Initialize the API flow
-
-Use the Kratos registration endpoint to get a valid Registration Flow ID:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-flowId=$(curl -s -X GET -H "Accept: application/json" $KRATOS_PUBLIC_URL/self-service/registration/api | jq -r '.id')
-~~~
-
-You can then submit the registration form using the following payload:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl -s -X POST -H "Accept: application/json Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/registration?flow=$flowId -d '{
-  "method": "password",
-  "password": "HelloCockro@ch123",
-  "traits": {
-        "email": "max@roach.com",
-        "name": {
-            "first": "Max",
-            "last": "Roach"
-        }
-  }
-}'
-~~~
-
-Kratos responds with a JSON payload which includes the signed up `identity`:
-
-~~~ json
-{
-    "identity": {
-        "id": "3ad9fe8b-ef2e-4fa4-8f3e-4b959ace03e6",
-        "schema_id": "default",
-        "schema_url": "http://ory-kratos-5f7474c79c-wgv9p:4434/schemas/ZGVmYXVsdA",
-        "state": "active",
-        "state_changed_at": "2025-06-15T22:28:38.743591684Z",
-        "traits": {
-            "email": "max@roach.com",
-            "name": {
-                "first": "Max",
-                "last": "Roach"
-            }
-        },
-        "metadata_public": null,
-        "created_at": "2025-06-15T22:28:38.747278Z",
-        "updated_at": "2025-06-15T22:28:38.747278Z",
-        "organization_id": null
-    },
-    "continue_with": null
-}
-~~~
-
-#### 2. Start the login flow
-
-Having completed the registration, you can now start the Login Flow by fetching a valid Login Flow ID:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-flowId=$(curl -s -X GET -H  "Accept: application/json Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/login/api | jq -r '.id')
-~~~
-
-Then you can submit the login form [using a request payload](https://www.ory.com/docs/reference/api#tag/frontend/operation/updateLoginFlow) that includes the password that you submitted when initializing the API flow:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl -s -X POST -H  "Accept: application/json" -H "Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/login?flow=$flowId \
--d '{"identifier": "max@roach.com", "password": "HelloCockro@ch123", "method": "password"}'
-~~~
-
-Kratos responds with a JSON payload which includes the identity which just authenticated, the session, and the session token:
-
-~~~ json
-{
-    "session_token": "ory_st_l209ZOnRSEaQRcIauchAUdFC5iYQDQld",
-    "session": {
-        "id": "fd4bde12-1c3d-4c95-a45f-337c6bdd6905",
-        "active": true,
-        "expires_at": "2025-06-16T22:50:12.810367548Z",
-        "authenticated_at": "2025-06-15T22:50:12.810367548Z",
-        "authenticator_assurance_level": "aal1",
-        "authentication_methods": [
-            {
-                "method": "password",
-                "aal": "aal1",
-                "completed_at": "2025-06-15T22:50:12.810362223Z"
-            }
-        ],
-        "issued_at": "2025-06-15T22:50:12.810367548Z",
-        "identity": {
-            "id": "3ad9fe8b-ef2e-4fa4-8f3e-4b959ace03e6",
-            "schema_id": "default",
-            "schema_url": "http://ory-kratos-5f7474c79c-wgv9p:4434/schemas/ZGVmYXVsdA",
-            "state": "active",
-            "state_changed_at": "2025-06-15T22:28:38.743591Z",
-            "traits": {
-                "email": "max@roach.com",
-                "name": {
-                    "first": "Max",
-                    "last": "Roach"
-                }
-            },
-            "metadata_public": null,
-            "created_at": "2025-06-15T22:28:38.747278Z",
-            "updated_at": "2025-06-15T22:28:38.747278Z",
-            "organization_id": null
-        },
-        "devices": [
-            {
-                "id": "da0ccae2-9865-4ff7-b8b3-1f3f4808327e",
-                "ip_address": "10.2.3.40:54026",
-                "user_agent": "curl/8.5.0",
-                "location": ""
-            }
-        ]
-    },
-    "continue_with": null
-}
-~~~ 
-
-#### 3. Check the session token
-
-The Ory Session Token can be checked at the Kratos [`/sessions/whoami` endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/listMySessions) Replace `{session_token}` with the session token ID that was returned in the Login Flow JSON response:
-
-{% include_cached copy-clipboard.html %}
-~~~ shell
-curl -s -X GET -H "Accept: application/json" -H "Authorization: Bearer {session_token}" $KRATOS_PUBLIC_URL/sessions/whoami
-~~~
-
-Kratos responds with a JSON payload which includes data about the current session:
-
-~~~ json
-{
-    "id": "fd4bde12-1c3d-4c95-a45f-337c6bdd6905",
-    "active": true,
-    "expires_at": "2025-06-16T22:50:12.810367Z",
-    "authenticated_at": "2025-06-15T22:50:12.810367Z",
-    "authenticator_assurance_level": "aal1",
-    "authentication_methods": [
-        {
-            "method": "password",
-            "aal": "aal1",
-            "completed_at": "2025-06-15T22:50:12.810362223Z"
-        }
-    ],
-    "issued_at": "2025-06-15T22:50:12.810367Z",
-    "identity": {
-        "id": "3ad9fe8b-ef2e-4fa4-8f3e-4b959ace03e6",
-        "schema_id": "default",
-        "schema_url": "http://ory-kratos-5f7474c79c-wgv9p:4434/schemas/ZGVmYXVsdA",
-        "state": "active",
-        "state_changed_at": "2025-06-15T22:28:38.743591Z",
-        "traits": {
-            "email": "max@roach.com",
-            "name": {
-                "first": "Max",
-                "last": "Roach"
-            }
-        },
-        "metadata_public": null,
-        "created_at": "2025-06-15T22:28:38.747278Z",
-        "updated_at": "2025-06-15T22:28:38.747278Z",
-        "organization_id": null
-    },
-    "devices": [
-        {
-            "id": "da0ccae2-9865-4ff7-b8b3-1f3f4808327e",
-            "ip_address": "10.2.3.40:54026",
-            "user_agent": "curl/8.5.0",
-            "location": ""
-        }
-    ]
-}
-~~~
-
-#### 4. Log out
-
-To log out of the session, you can revoke the session token by calling the [logout API endpoint](https://www.ory.com/docs/reference/api#tag/frontend/operation/performNativeLogout).
-
-Replace `{session_token}` with the session token ID that was returned in the Login Flow JSON response:
-
-{% include_cached copy-clipboard.html %}
- ~~~ shell
-curl -s -X DELETE -H "Accept: application/json" -H "Content-Type: application/json" $KRATOS_PUBLIC_URL/self-service/logout/api -d '{
-"session_token": "{session_token}"
-}'
- ~~~
-
-#### 5. Access Kratos data with CockroachDB SQL
-
-In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Kratos's identity data using CockroachDB:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT i.id, i.schema_id, i.traits, i.created_at, i.updated_at, i.nid, state, i.state_changed_at, ic.config as credentials, ict.name as identity_type
-FROM public.identities i 
-join public.identity_credentials ic  on i.id = ic.identity_id
-join public.identity_credential_types ict on ic.identity_credential_type_id = ict.id;
-~~~
-
-The result set contains data about the `identity` established when you initialized the API flow. Much of this data, including `id` and `traits`, should match the data found in the Login Flow JSON response:
-
-~~~
--[ RECORD 1 ]
-id               | 3ad9fe8b-ef2e-4fa4-8f3e-4b959ace03e6
-schema_id        | default
-traits           | {"email": "max@roach.com", "name": {"first": "Max", "last": "Roach"}}
-created_at       | 2025-06-15T22:28:38.747278Z
-updated_at       | 2025-06-15T22:28:38.747278Z
-nid              | e3e5cec5-da67-4754-8e85-ad1bb832a79e
-state            | active
-state_changed_at | 2025-06-15T22:28:38.743591684Z
-credentials      | {"hashed_password": "$2a$12$.ySX6DzFP/Kuf.PFJfz0.OVN6bH.V7JOFrWH5LI0Twzbe25GiDl9W"}
-identity_type    | password
-
-Time: 6ms total (execution 5ms / network 0ms)
-~~~
-
-### Test Ory Keto
-
-To test Ory Keto, create relationships between users and objects. Then use Ory Keto commands to check who has access to what objects. These steps use the `$KETO_WRITE_REMOTE` that you exported at the end of the [Ory Keto deployment](?filters=keto#step-4-deploy-ory-services-on-kubernetes).
-
-#### 1. Create a relation tuple 
-
-Create a Keto relation tuple [using the Keto SDK](https://www.ory.com/docs/keto/cli/keto-relation-tuple-create):
-
-{% include_cached copy-clipboard.html %}
- ~~~ shell
-echo '{"namespace":"documents","object":"doc-123","relation":"viewer","subject_id":"user:alice"}'  | keto relation-tuple create /dev/stdin --insecure-disable-transport-security
- ~~~ 
-
-or by [using the Keto REST API](https://www.ory.com/docs/keto/reference/rest-api#tag/relationship/operation/createRelationship):
-
-{% include_cached copy-clipboard.html %}
- ~~~ shell
-curl -i -X PUT "$KETO_WRITE_REMOTE"/admin/relation-tuples \
--H "Content-Type: application/json" \
--d '{"namespace":"documents","object":"doc-123","relation":"viewer","subject_id":"user:alice"}'
- ~~~ 
-
-#### 2. See who can access objects
-
-You can use the [Ory Keto expand-API](https://www.ory.com/docs/keto/cli/keto-expand) to display who has access to an object, and why:
-
-{% include_cached copy-clipboard.html %}
- ~~~ shell
-keto expand viewer documents photos --insecure-disable-transport-security
- ~~~ 
-
-To assist users with managing permissions for their files, the application has to display who has access to a file and why. In this example, we assume that the application knows the following files and directories:
-
- ~~~
-├─ photos            (owner: maureen; shared with laura)
-├─ beach.jpg         (owner: maureen)
-├─ mountains.jpg     (owner: laura)
- ~~~ 
-
-#### 3. Check permissions
-
-It's important to test your permission model. To test the permissions manually, you can create relationships and [check permissions with the SDK](https://www.ory.com/docs/keto/cli/keto-check):
-
-{% include_cached copy-clipboard.html %}
- ~~~ shell
-keto check \"user:alice\" viewer documents /photos/beach.jpg --insecure-disable-transport-security
-# allowed
- ~~~ 
-
-#### 4. Access Keto data with CockroachDB SQL
-
-In your CockroachDB SQL client, run the following query to verify the accessibilty of Ory Keto's access control data using CockroachDB:
-
-{% include_cached copy-clipboard.html %}
-~~~ sql
-SELECT t.namespace, (select m.string_representation from public.keto_uuid_mappings m where m.id = t.object) as object_string, t.relation, 
-(select m.string_representation from public.keto_uuid_mappings m where m.id = t.subject_id) as subject_string, t.commit_time FROM public.keto_relation_tuples t;
-~~~
-
-The result set contains permissions data. Much of this data, including `object_string`, `relation`, and `subject_string`, should match that provided in the relation tuple data above:
-
-~~~
--[ RECORD 1 ]
-namespace      | documents
-object_string  | doc-123
-relation       | viewer
-subject_string | user:alice
-commit_time    | 2025-12-09 21:37:02.207403
-
-Time: 3ms total (execution 3ms / network 0ms)
-~~~
-
-### Next steps
-
-The tests above confirm that each Ory component in this deployment is properly connected using CockroachDB as the shared data layer. If you get the expected results from these tests, then your integration is ready for use in your application. You can begin building authentication, authorization, and access control features with CockroachDB and Ory.
+Your CockroachDB/Ory integration is ready for use in your application. You can begin building authentication, authorization, and access control features with CockroachDB and Ory.
 
 ## See also
 
-- [Ory Overview]({% link {{ page.version.version }}/ory-overview.md %})
-- [Deploy a Local Cluster from Binary (Secure)]({% link {{ page.version.version }}/secure-a-cluster.md %})
-- [Deploy CockroachDB on AWS EC2]({% link {{ page.version.version }}/deploy-cockroachdb-on-aws.md %})
+- [Client Connection Parameters]({% link {{ page.version.version }}/connection-parameters.md %})
+- [Monitoring and Alerting]({% link {{ page.version.version }}/monitoring-and-alerting.md %})
+- [DB Console Overview]({% link {{ page.version.version }}/ui-overview.md %})
 - [cockroach sql]({% link {{ page.version.version }}/cockroach-sql.md %})
-- [CREATE DATABASE]({% link {{page.version.version}}/create-database.md %})
+- [Optimize Statement Performance Overview]({% link {{ page.version.version }}/make-queries-fast.md %})
