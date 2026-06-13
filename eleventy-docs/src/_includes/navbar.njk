@@ -1,0 +1,311 @@
+<div class="shadow-sm main-nav-wrapper position-relative megamenu">
+<div class="main-nav main-nav-contained-800">
+  <nav class="navbar navbar-expand-lg navbar-light py-0 fixed-top">
+    <div class="container-xl px-0">
+      <a class="navbar-brand me-0 me-md-2 d-xl-block" href="/" id="crdb-icon-name">
+        <img 
+          width="170" 
+          height="24" 
+          alt="Cockroach Labs" 
+          class="br0 db mb0" 
+          src="/images/cockroachlabs-logo-170.png"
+        >
+      </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+      <!-- Mobile nav -->
+      <div class="d-lg-none pt-2 mobile-menu-wrapper">
+        <div class="accordion " id="accordionExample">
+
+          <!-- Mobile product -->
+          <div class="card">
+            <div class="card-header bg-white py-4" id="mobileProduct">
+                <h2 class="mb-0">
+                    <button class="btn btn-link w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseProduct" aria-expanded="false" aria-controls="collapseProduct" style="font-weight: 450;">
+                        Product
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseProduct" class="collapse" aria-labelledby="mobileProduct" data-bs-parent="#accordionExample">
+              <div class="card-body">
+                {% include "nav/nav-product.njk" %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile solutions -->
+          <div class="card">
+            <div class="card-header bg-white py-4" id="mobileSolutions">
+                <h2 class="mb-0">
+                    <button class="btn btn-link w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseSolutions" aria-expanded="false" aria-controls="collapseSolutions" style="font-weight: 450;">
+                        Solutions
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseSolutions" class="collapse" aria-labelledby="mobileSolutions" data-bs-parent="#accordionExample">
+              <div class="card-body">
+                {% include "nav/nav-solutions.njk" %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Resources -->
+
+          <div class="card">
+            <div class="card-header bg-white py-4" id="mobileResources">
+                <h2 class="mb-0">
+                    <button class="btn btn-link w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseResources" aria-expanded="false" aria-controls="collapseResources" style="font-weight: 450;">
+                        Resources
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseResources" class="collapse" aria-labelledby="mobileResources" data-bs-parent="#accordionExample">
+              <div class="card-body">
+                {% include "nav/nav-resources.njk" %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Docs -->
+
+          <div class="card">
+            <div class="card-header bg-white py-4" id="mobileDocs">
+                <h2 class="mb-0">
+                    <button class="btn btn-link w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseDocs" aria-expanded="false" aria-controls="collapseDocs" style="font-weight: 450;">
+                        Docs
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseDocs" class="collapse" aria-labelledby="mobileDocs" data-bs-parent="#accordionExample">
+              <div class="card-body">
+                {% include "nav/nav-docs.njk" %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Company -->
+
+         <div class="card">
+            <div class="card-header bg-white py-4" id="mobileCompany">
+                <h2 class="mb-0">
+                    <button class="btn btn-link w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseCompany" aria-expanded="false" aria-controls="collapseCompany" style="font-weight: 450;">
+                        Company
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseCompany" class="collapse" aria-labelledby="mobileCompany" data-bs-parent="#accordionExample">
+              <div class="card-body">
+                {% include "nav/nav-company.njk" %}
+              </div>
+            </div>
+          </div> 
+
+          <!-- Mobile Customers -->
+
+          <div class="card">
+            <div class="card-header bg-white py-4" id="mobileCustomers">
+                <h2 class="mb-0">
+                    <button class="btn btn-link w-100 text-start d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseCustomers" aria-expanded="false" aria-controls="collapseCustomers" style="font-weight: 450;">
+                        Customers
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseCustomers" class="collapse" aria-labelledby="mobileCustomers" data-bs-parent="#accordionExample">
+              <div class="card-body">
+                {% include "nav/nav-customers.njk" %}
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header bg-white py-4" id="">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/pricing/" style="font-weight: 450;">Pricing</a>
+                </h2>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header bg-white py-4" id="">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left btn-link-chevron-right d-flex justify-content-between align-items-center" href="https://www.cockroachlabs.com/contact/" style="font-weight: 450;">Contact us</a>
+                </h2>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header bg-white py-4" id="">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left" href="https://cockroachlabs.cloud/" style="font-weight: 450;">Sign In</a>
+                </h2>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      <!-- end mobile nav -->
+       
+      <!-- Desktop nav (left side) -->
+      <ul class="d-none d-lg-flex navbar-nav me-auto mr-auto mb-2 mb-lg-0 mt-auto">
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1" >
+
+          <a
+          class="nav-link nav-link-border dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          style="font-weight: 450;"
+          >Product</a>
+          <div class="dropdown-menu w-100 p-45" aria-labelledby="navbarDropdown">
+            {% include "nav/nav-product.njk" %}
+          </div>
+        </li>
+
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+          <a
+          class="nav-link nav-link-border dropdown-toggle"
+          href="#"
+          id="dropdownSolutions"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          style="font-weight: 450;"
+          >Solutions</a>
+          <div class="dropdown-menu w-100 p-45" aria-labelledby="dropdownSolutions">
+            {% include "nav/nav-solutions.njk" %}
+          </div>
+        </li>
+
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+          <a
+          class="nav-link nav-link-border dropdown-toggle"
+          href="#"
+          id="dropdownResources"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          style="font-weight: 450;"
+          >Resources</a>
+          <div class="dropdown-menu w-100 p-45" aria-labelledby="dropdownResources">
+            {% include "nav/nav-resources.njk" %}
+          </div>
+        </li>
+
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+          <a
+          class="nav-link nav-link-border dropdown-toggle"
+          href="#"
+          id="dropdownDocs"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          style="font-weight: 450;"
+          >Docs</a>
+          <div class="dropdown-menu w-100 p-45 docs" aria-labelledby="dropdownDocs">
+            {% include "nav/nav-docs.njk" %}
+          </div>
+        </li>
+
+        <li class="nav-item dropdown position-static py-4 mx-0 px-2">
+          <a
+          class="nav-link nav-link-border no-chevron"
+          href="https://www.cockroachlabs.com/pricing/"
+          style="font-weight: 450;"
+          >Pricing</a>
+        </li>
+
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+          <a
+          class="nav-link nav-link-border dropdown-toggle"
+          href="#"
+          id="dropdownCustomers"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          style="font-weight: 450;"
+          >Customers</a>
+          <div class="dropdown-menu w-100 p-45 company" aria-labelledby="dropdownCustomers">
+            {% include "nav/nav-customers.njk" %}
+          </div>
+        </li>
+
+        <li class="nav-item dropdown position-static py-4 mx-1 px-1">
+          <a
+          class="nav-link nav-link-border dropdown-toggle"
+          href="#"
+          id="dropdownCompany"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          style="font-weight: 450;"
+          >Company</a>
+          <div class="dropdown-menu w-100 p-45 company" aria-labelledby="dropdownCompany">
+            {% include "nav/nav-company.njk" %}
+          </div>
+        </li>
+
+      </ul>
+      <!-- end desktop nav -->
+
+      <!-- right side nav -->
+      <div class="ms-auto ml-auto">
+        <ul class="d-none d-lg-flex navbar-nav mb-2 mb-lg-0 mt-auto">
+          <li class="nav-item">
+            <a class="nav-link right-nav-text" href="https://www.cockroachlabs.com/contact/" role="button" style="font-weight: 450;">
+              Contact us
+            </a>
+            <a class="nav-link nav-icon-md" href="https://www.cockroachlabs.com/contact/" role="button">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <rect x="3" y="5" width="18" height="14" rx="2" ry="2" stroke="#000" stroke-width="1.5" fill="#fff"/>
+                <path d="M4 7l8 6 8-6" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="https://cockroachlabs.cloud/" class="nav-link right-nav-text" style="font-weight: 450;">Sign In</a>
+            <a href="https://cockroachlabs.cloud/" class="nav-link nav-icon-md">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="10.25" fill="white" style="fill: white" stroke="black" stroke-width="1.5"/>
+                <circle cx="11" cy="9" r="2.25" stroke="black" stroke-width="1.5"/>
+                <path d="M6 16C6.47619 14.6667 8.14286 12 11 12C13.8571 12 15.5238 14.6667 16 16" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </a>
+          </li>
+          <li class="nav-item d-flex justify-content-center flex-column">
+            <a class="btn btn-primary rounded-pill px-3 font-family-poppins py-1 ms-2" href="https://cockroachlabs.cloud/signup" style="color: #fff;font-weight: 450;">
+              Get started free
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!-- End right side nav -->
+    </div>
+  </div>
+  </nav>
+</div>
+</div>

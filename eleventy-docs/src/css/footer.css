@@ -1,0 +1,365 @@
+/* Footer styles converted from SCSS */
+
+section.footer {
+  background: #F5F7FA; /* $cl_gray_footer -> $neutral-100 */
+  padding: 0 0 20px;
+  z-index: 1;
+  position: relative; /* needed for z-index */
+}
+
+/* Match Jekyll's container styling */
+.footer .container {
+  max-width: 1600px !important; /* Match Jekyll's xl breakpoint */
+  margin: 0 auto !important;
+  padding-left: 15px !important; /* Bootstrap default */
+  padding-right: 15px !important; /* Bootstrap default */
+}
+
+@media (min-width: 992px) { /* $screen-md: 992px */
+  section.footer {
+    padding: 0 0 40px;
+  }
+
+  section.footer .container {
+    padding: 60px 15px 20px 45px !important; /* Match Jekyll: top, right, bottom, left */
+    margin: 0 auto !important;
+    max-width: 1600px !important;
+  }
+}
+
+/* Match Jekyll's row and column spacing */
+.footer .row {
+  margin-left: -12px !important; /* Half of Jekyll's $grid-gutter-width: 24px */
+  margin-right: -12px !important;
+}
+
+.footer [class*="col-"] {
+  padding-left: 12px !important; /* Half of Jekyll's $grid-gutter-width: 24px */
+  padding-right: 12px !important;
+}
+
+.footer {
+  z-index: 1;
+  position: relative;
+  background: #F5F7FA; /* $cl_gray_footer -> $neutral-100 */
+}
+
+.footer__flex-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 992px) { /* $screen-md: 992px */
+  .footer__flex-wrap {
+    width: 68%;
+  }
+}
+
+.footer__right {
+  display: flex;
+  border-bottom: none; /* Hide border on mobile */
+}
+
+@media (min-width: 992px) { /* $screen-md: 992px */
+  .footer__right {
+    border-bottom: none;
+    border-left: 1.5px solid #C0C6D9;; /* Darker/thicker border for desktop */
+    width: 25%;
+    padding-top: 0;
+    padding-left: 60px;
+    margin-left: 50px;
+  }
+}
+
+/* Nav Items */
+.footer-nav {
+  width: 100%;
+  list-style: none;
+  margin-bottom: 0;
+}
+
+/* mobile only - remove border-top to eliminate line breaks */
+@media (max-width: 991.98px) { /* max $screen-md */
+  .footer-nav {
+    border-top: none !important; /* Remove line breaks between columns */
+    padding: 20px 0 !important; /* Keep vertical padding but remove horizontal */
+  }
+}
+
+@media (min-width: 992px) { /* $screen-md: 992px */
+  .footer-nav {
+    width: calc(100% / 4 - 1px);
+    padding-left: 0;
+  }
+
+  .footer-nav--product {
+    -webkit-box-ordinal-group: -1;
+    -ms-flex-order: -2;
+    order: -2;
+  }
+
+  .footer-nav--documentation {
+    -webkit-box-ordinal-group: 0;
+    -ms-flex-order: -1;
+    order: -1;
+  }
+}
+
+.footer-nav li {
+  color: #152849; /* $cl_blue */
+  list-style: none;
+  text-align: left;
+  padding: 0;
+  margin: 0 10px 0 0;
+  text-indent: 0;
+}
+
+@media (min-width: 992px) { /* $screen-md: 992px */
+  .footer-nav li {
+    width: 100%;
+    margin-right: 20px;
+  }
+}
+
+.footer-nav li a {
+  /* Source Sans Pro Regular 14px equivalent */
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px; /* Increased from 14px to match Jekyll appearance */
+  font-weight: 400;
+  color: #111D39; /* $cl_blue_dark */
+  line-height: 40px;
+  text-transform: none;
+  display: block;
+  transition: color 0.3s ease; /* @include groovy(color) equivalent */
+  text-decoration: none;
+}
+
+@media (min-width: 992px) { /* $screen-md: 992px */
+  .footer-nav li a {
+    line-height: 25px;
+    margin-bottom: 10px;
+  }
+}
+
+.footer-nav li a:hover {
+  color: #6933FF; /* $electric-purple */
+  text-decoration: none;
+}
+
+.footer-nav li.header {
+  /* Poppins SemiBold 16px equivalent */
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px; /* Increased from 14px to match Jekyll appearance */
+  font-weight: 600;
+  line-height: 5px;
+}
+
+@media (min-width: 992px) { /* $screen-md: 992px */
+  .footer-nav li.header {
+    margin-bottom: 15px;
+  }
+}
+
+.footer-nav li:before {
+  content: "";
+  display: none;
+  left: auto;
+  top: auto;
+}
+
+.footer-sub-nav {
+  display: none;
+  margin-top: 20px;
+  padding-left: 0;
+}
+
+@media (min-width: 992px) { /* $screen-md: 992px */
+  .footer-sub-nav {
+    display: block;
+  }
+}
+
+.footer-get-dev-news{
+  margin-left: 15px;
+}
+
+.copyright {
+  margin: 20px 0 0 20px;
+  /* @include type-caption equivalent */
+  font-size: 12px;
+  color: #152849; /* $cl_blue */
+}
+
+@media (min-width: 992px) { /* $screen-md: 992px */
+  .copyright {
+    text-align: left;
+    width: 100%;
+    margin-top: 15px;
+    margin-left: 0;
+  }
+}
+
+.blue-arrow {
+  margin-right: -12px;
+  cursor: pointer;
+}
+
+/* Newsletter section header styling */
+.footer .fw-bold,
+.footer p.fw-bold {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-size: 16px !important; /* Match other footer headers */
+  font-weight: 600 !important;
+  color: #111D39 !important;
+}
+
+
+
+/* Marketo form specific styles - force left alignment */
+#footer-mktoForm_1083 {
+  width: 100% !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* General form styling to match footer */
+#footer-mktoForm_1083 {
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Only force font size on form inputs and buttons, not all elements */
+#footer-mktoForm_1083 input,
+#footer-mktoForm_1083 button,
+#footer-mktoForm_1083 .mktoButton {
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* Hide required asterisk */
+#footer-mktoForm_1083 .mktoAsterix {
+  display: none !important;
+}
+
+/* Hide field labels */
+#footer-mktoForm_1083 .mktoLabel {
+  display: none !important;
+}
+
+/* Style the email input field */
+#footer-mktoForm_1083 #Email {
+  display: block !important;
+  width: 70% !important;
+  height: calc(1.725em + 1rem + 2px) !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+  line-height: 1.725 !important;
+  color: #495057 !important;
+  background-color: #fff !important;
+  background-clip: padding-box !important;
+  border: 1px solid #ced4da !important;
+  border-radius: 5px !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  margin: 0 !important;
+}
+
+/* Style the submit button with higher specificity */
+#footer-mktoForm_1083 .mktoButton,
+#footer-mktoForm_1083 .mktoButton[type="submit"],
+#footer-mktoForm_1083 input.mktoButton {
+  border-radius: 5px !important;
+  display: inline-block !important;
+  font-weight: 400 !important;
+  color: #fff !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  user-select: none !important;
+  background: #6933FF !important;
+  background-color: #6933FF !important;
+  border: 1px solid #6933FF !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 1rem !important;
+  line-height: 1.725 !important;
+  height: calc(1.725em + 1rem + 2px) !important;
+  margin-left: -1px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+  cursor: pointer !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+#footer-mktoForm_1083 .mktoButton:hover,
+#footer-mktoForm_1083 .mktoButton[type="submit"]:hover,
+#footer-mktoForm_1083 input.mktoButton:hover {
+  background: #6933FF !important;
+  background-color: #6933FF !important;
+  border-color: #6933FF !important;
+  box-shadow: -4px 4px 7px -3px rgba(25, 15, 51, 0.5) !important;
+}
+
+/* Fix form row layout */
+#footer-mktoForm_1083 .mktoButtonRow {
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Fix form field layout */
+#footer-mktoForm_1083 .mktoFormRow {
+  margin-bottom: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Fix field wrapper */
+#footer-mktoForm_1083 .mktoFieldWrap {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Style form validation messages */
+#footer-mktoForm_1083 .mktoError {
+  display: block !important;
+  color: #ffffff !important; /* White text for error messages */
+  font-size: 12px !important;
+  margin-top: 4px !important;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+#footer-mktoForm_1083 .mktoError .mktoErrorMsg {
+  display: block !important;
+  color: #ffffff !important; /* White text for error messages */
+  font-size: 12px !important;
+}
+
+/* Fix button wrapper */
+#footer-mktoForm_1083 .mktoButtonWrap {
+  margin-left: 0 !important;
+  margin-top: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Ensure no default Marketo margins */
+#footer-mktoForm_1083 .mktoGutter {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Override any Bootstrap success/primary button colors */
+#footer-mktoForm_1083 .btn-success,
+#footer-mktoForm_1083 .btn-primary {
+  background: #6933FF !important;
+  background-color: #6933FF !important;
+  border-color: #6933FF !important;
+}
