@@ -41,7 +41,11 @@ When inserting a `STRING` value or a `STRING`-related-type value:
 - If the value is cast with a length limit (e.g., `CAST('hello world' AS STRING(5))`), CockroachDB truncates to the limit. This applies to `STRING(n)` and all related types.
 - If the value exceeds the column's length limit, CockroachDB returns an error. This applies to `STRING(n)` and all related types.
 - For `STRING(n)` and `VARCHAR(n)`/`CHARACTER VARYING(n)` types, if the value is under the column's length limit, CockroachDB does **not** add space padding to the end of the value.
-- For `CHAR(n)`/`CHARACTER(n)` types, if the value is under the column's length limit, CockroachDB adds space padding from the end of the value to the length limit.
+- For `CHAR(n)`/`CHARACTER(n)` types, values shorter than the column length are displayed to SQL clients with trailing spaces added to the length limit. SQL expressions treat trailing spaces as insignificant, so functions such as `length()` evaluate the unpadded value.
+
+{{site.data.alerts.callout_info}}
+Changefeeds evaluate `CHAR(n)` values through SQL expressions, so trailing padding is not emitted unless you add it explicitly in the changefeed query, for example with `rpad()`. Use `STRING(n)`/`VARCHAR(n)` if trailing spaces must be preserved as stored data.
+{{site.data.alerts.end}}
 
                         Type                      |          Length
 --------------------------------------------------|------------------------------
