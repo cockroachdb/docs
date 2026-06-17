@@ -1,5 +1,5 @@
 - release_name: beta-20160407
-  major_version: v1.0
+  major_version: "v1.0"
   release_date: '2016-04-07'
   release_type: Testing
   go_version: go1.8.3
@@ -11708,3 +11708,31 @@
     docker_arm_experimental: false
     docker_arm_limited_access: false
   source: true
+
+
+- release_name: v24.1.30
+  major_version: v24.1
+  release_date: '2026-06-15'
+  release_type: Production
+  go_version: go1.22.12
+  sha: b19103512da46a5d610456a13cbec70542c7fe00
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.29
