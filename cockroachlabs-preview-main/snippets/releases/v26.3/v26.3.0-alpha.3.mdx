@@ -1,0 +1,117 @@
+## v26.3.0-alpha.3
+
+Release Date: June 24, 2026
+
+### Downloads
+
+<Danger>
+CockroachDB v26.3.0-alpha.3 is a testing release. Testing releases are intended for testing and experimentation only, and are not qualified for production environments and not eligible for support or uptime SLA commitments.
+</Danger>
+
+<Note>
+Experimental downloads are not qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
+</Note>
+
+<table><thead><tr><th>Operating System</th><th>Architecture</th><th>Full executable</th><th>SQL-only executable</th></tr></thead><tbody><tr><td rowspan="2">Linux</td><td>Intel</td><td><a href="https://binaries.cockroachdb.com/cockroach-v26.3.0-alpha.3.linux-amd64.tgz">cockroach-v26.3.0-alpha.3.linux-amd64.tgz</a><br/>(<a href="https://binaries.cockroachdb.com/cockroach-v26.3.0-alpha.3.linux-amd64.tgz.sha256sum">SHA256</a>)</td><td><a href="https://binaries.cockroachdb.com/cockroach-sql-v26.3.0-alpha.3.linux-amd64.tgz">cockroach-sql-v26.3.0-alpha.3.linux-amd64.tgz</a><br/>(<a href="https://binaries.cockroachdb.com/cockroach-sql-v26.3.0-alpha.3.linux-amd64.tgz.sha256sum">SHA256</a>)</td></tr><tr><td>ARM</td><td><a href="https://binaries.cockroachdb.com/cockroach-v26.3.0-alpha.3.linux-arm64.tgz">cockroach-v26.3.0-alpha.3.linux-arm64.tgz</a><br/>(<a href="https://binaries.cockroachdb.com/cockroach-v26.3.0-alpha.3.linux-arm64.tgz.sha256sum">SHA256</a>)</td><td><a href="https://binaries.cockroachdb.com/cockroach-sql-v26.3.0-alpha.3.linux-arm64.tgz">cockroach-sql-v26.3.0-alpha.3.linux-arm64.tgz</a><br/>(<a href="https://binaries.cockroachdb.com/cockroach-sql-v26.3.0-alpha.3.linux-arm64.tgz.sha256sum">SHA256</a>)</td></tr><tr><td rowspan="2">Mac<br/>(Experimental)</td><td>Intel</td><td><a href="https://binaries.cockroachdb.com/cockroach-v26.3.0-alpha.3.darwin-10.9-amd64.tgz">cockroach-v26.3.0-alpha.3.darwin-10.9-amd64.tgz</a><br/>(<a href="https://binaries.cockroachdb.com/cockroach-v26.3.0-alpha.3.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>)</td><td><a href="https://binaries.cockroachdb.com/cockroach-sql-v26.3.0-alpha.3.darwin-10.9-amd64.tgz">cockroach-sql-v26.3.0-alpha.3.darwin-10.9-amd64.tgz</a><br/>(<a href="https://binaries.cockroachdb.com/cockroach-sql-v26.3.0-alpha.3.darwin-10.9-amd64.tgz.sha256sum">SHA256</a>)</td></tr><tr><td>ARM</td><td><a href="https://binaries.cockroachdb.com/cockroach-v26.3.0-alpha.3.darwin-11.0-arm64.tgz">cockroach-v26.3.0-alpha.3.darwin-11.0-arm64.tgz</a><br/>(<a href="https://binaries.cockroachdb.com/cockroach-v26.3.0-alpha.3.darwin-11.0-arm64.tgz.sha256sum">SHA256</a>)</td><td><a href="https://binaries.cockroachdb.com/cockroach-sql-v26.3.0-alpha.3.darwin-11.0-arm64.tgz">cockroach-sql-v26.3.0-alpha.3.darwin-11.0-arm64.tgz</a><br/>(<a href="https://binaries.cockroachdb.com/cockroach-sql-v26.3.0-alpha.3.darwin-11.0-arm64.tgz.sha256sum">SHA256</a>)</td></tr><tr><td rowspan="1">Windows<br/>(Experimental)</td><td>Intel</td><td><a href="https://binaries.cockroachdb.com/cockroach-v26.3.0-alpha.3.windows-6.2-amd64.zip">cockroach-v26.3.0-alpha.3.windows-6.2-amd64.zip</a><br/>(<a href="https://binaries.cockroachdb.com/cockroach-v26.3.0-alpha.3.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</td><td><a href="https://binaries.cockroachdb.com/cockroach-sql-v26.3.0-alpha.3.windows-6.2-amd64.zip">cockroach-sql-v26.3.0-alpha.3.windows-6.2-amd64.zip</a><br/>(<a href="https://binaries.cockroachdb.com/cockroach-sql-v26.3.0-alpha.3.windows-6.2-amd64.zip.sha256sum">SHA256</a>)</td></tr></tbody></table>
+
+### Docker image
+
+[Multi-platform images](https://docs.docker.com/build/building/multi-platform) include support for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.
+
+Within the multi-platform image, both Intel and ARM images are **generally available** for production use.
+
+To download the Docker image:
+
+```shell
+docker pull cockroachdb/cockroach-unstable:v26.3.0-alpha.3
+```
+
+### Source tag
+
+To view or download the source code for CockroachDB v26.3.0-alpha.3 on Github, visit [v26.3.0-alpha.3 source tag](https://github.com/cockroachdb/cockroach/releases/tag/v26.3.0-alpha.3).
+
+### Backward-incompatible changes
+
+- Changed `ALTER TABLE ... RENAME TO`, `ALTER VIEW ... RENAME TO`, and `ALTER SEQUENCE ... RENAME TO` to require the `CREATE` privilege on the schema that contains the object (instead of `CREATE` on the database), matching PostgreSQL behavior. In the default configuration, renaming objects in the `public` schema is unaffected. [#479](https://github.com/cockroachlabs/cockroach/pull/479)
+- `COPY ... FROM` in text format now correctly decodes `BYTES`/`BYTEA` input (including the standard `\x...` hex format), matching PostgreSQL. Previously, these values could be stored as literal text instead of being decoded. To restore the previous behavior for workloads that depend on it, set `copy_from_decode_bytes_enabled` to `off`. [#591](https://github.com/cockroachlabs/cockroach/pull/591)
+
+### Security updates
+
+- Fixed the declarative schema-changer component to further address the privilege-escalation vulnerability in constraint validation. Constraint, column `NOT NULL`, and `enum-value-removal` validation now execute under the schema-change issuer's privileges instead of with internal node-level privileges, so a UDF reached via a `CHECK` predicate, `RLS USING` clause, or virtual computed column is bounded by the issuer's own grants. [#185](https://github.com/cockroachlabs/cockroach/pull/185)
+- Fixed a privilege-escalation vulnerability in Logical Data Replication. Writer-side internal-executor sessions previously ran with internal node-level privileges, so any user-supplied expression evaluated on the destination table (including the optional UDF configured by `CREATE LOGICAL REPLICATION STREAM ... WITH FUNCTION`, `CHECK` constraints, computed columns, RLS policy expressions, and trigger bodies) inherited that authority and could escalate any user with `REPLICATIONDEST` to admin via `crdb_internal.execute_internally`. LDR writer sessions now run with the stream creator's privileges, scoped to the destination tables; row-level-security policies on the destination are bypassed for the writer so replicated rows are applied rather than rejected by a policy the stream creator cannot satisfy. [#185](https://github.com/cockroachlabs/cockroach/pull/185)
+- Fixed a dead-letter-queue component to further address the privilege-escalation vulnerability in constraint validation. An attacker with `CREATE` privileges on the destination database who pre-created the predictably-named DLQ table with extra columns, `CHECK` constraints, or triggers could otherwise have those evaluated under the LDR job owner's identity. The DLQ writer now refuses to use a DLQ table whose owner is not the node user, or a table the LDR job did not create. [#185](https://github.com/cockroachlabs/cockroach/pull/185)
+- Fixed the declarative schema-changer component to further address the privilege-escalation vulnerability in constraint validation. Constraint, column `NOT NULL`, and `enum-value-removal` validation now execute under the schema-change issuer's privileges instead of with internal node-level privileges, so a UDF reached via a `CHECK` predicate, `RLS USING` clause, or virtual computed column is bounded by the issuer's own grants. [#185](https://github.com/cockroachlabs/cockroach/pull/185)
+- Fixed a privilege-escalation vulnerability in constraint validation. Previously, a SQL user with `CREATE TABLE` and `CREATE FUNCTION` privileges could escalate to admin by adding a `CHECK` constraint, an FK, an RLS policy, or a virtual computed column whose expression invoked a UDF that called `crdb_internal.execute_internally` with a privileged statement; the constraint and foreign-key validation queries ran with internal node-level privileges, which the UDF body inherited under `SECURITY INVOKER`. Validation now runs with the schema-change issuer's privileges. [#185](https://github.com/cockroachlabs/cockroach/pull/185)
+
+### General changes
+
+- Improved the default batching mechanism for changefeeds to Kafka, Google Cloud Pub/Sub, and webhooks, including for multi-topic feeds (such as `EACH_FAMILY` changefeeds). [#487](https://github.com/cockroachlabs/cockroach/pull/487)
+
+### SQL language changes
+
+- Added support for `ALTER TRIGGER ... ON ... RENAME TO` to rename a trigger on a table. Renaming a trigger requires `OWNERSHIP` on the table. CockroachDB also supports `ALTER TRIGGER IF EXISTS` (an extension to PostgreSQL), which performs no action if the table or trigger does not exist. [#222](https://github.com/cockroachlabs/cockroach/pull/222)
+- Added per-execution enrichment columns to the virtual tables `crdb_internal.node_active_session_history` and `crdb_internal.cluster_active_session_history`, and to the table `system.active_session_history`, when ASH enrichment is enabled with the cluster setting `obs.ash.enrichment.enabled`. The new columns are `user`, `plan_gist`, `canary_stats`, `txn_id`, `session_id`. [#238](https://github.com/cockroachlabs/cockroach/pull/238)
+- Added support for `ALTER DOMAIN ... ADD CONSTRAINT`. Constraints added this way are created as `NOT VALID` (they are not checked against existing rows). [#314](https://github.com/cockroachlabs/cockroach/pull/314)
+- `ALTER DOMAIN ... ADD CONSTRAINT` and `ALTER DOMAIN ... NOT NULL` now validate new constraints against existing data before applying them. [#315](https://github.com/cockroachlabs/cockroach/pull/315)
+- Backwards-incompatible change: Changed execution insights to record only statements that have an insight (for example, slow or failed statements) within a flagged transaction, rather than recording every statement in the transaction. This results in the following changes:
+  - `crdb_internal.{cluster,node}_stmt_execution_insights` no longer lists problem-free statements from flagged transactions.
+  - The `query` column of `crdb_internal.{cluster,node}_txn_execution_insights` now includes only statements that generated an insight, and can be empty if the transaction was flagged due to an issue like a failure at `COMMIT` or high contention.
+  - In the DB Console, the Transaction Insight Details page's Statement Executions tab now lists only statements that generated an insight.
+To view all statements for a transaction, including those hidden by this change, refer to the transaction in SQL activity. [#346](https://github.com/cockroachlabs/cockroach/pull/346)
+- Backwards-incompatible change: Changed `CREATE DOMAIN ... DEFAULT` and `ALTER DOMAIN ... SET DEFAULT` to sanitize and validate default expressions. These statements now reject defaults that reference other database objects. [#404](https://github.com/cockroachlabs/cockroach/pull/404)
+- Improved `ALTER TABLE ... ALTER COLUMN TYPE` so it can succeed even when the column is referenced by dependent user-defined functions or stored procedures, as long as the type change is compatible with the routine bodies. Incompatible changes now return an error that identifies the routine that would become invalid. [#411](https://github.com/cockroachlabs/cockroach/pull/411)
+- Improved PostgreSQL compatibility for sequences:
+  - Added the built-in function `pg_get_sequence_data()` for compatibility with `pg_dump`, which uses it to read sequence data during dumps.
+  - Fixed `SELECT last_value, is_called FROM <sequence>` on a sequence that has never been used to return the sequence start value with `is_called = false` (matching PostgreSQL behavior). [#418](https://github.com/cockroachlabs/cockroach/pull/418)
+- `COPY FROM` now accepts values for `GENERATED ALWAYS AS IDENTITY` columns and writes them as supplied, matching PostgreSQL behavior. Previously, such columns could not appear in a `COPY` column list. [#453](https://github.com/cockroachlabs/cockroach/pull/453)
+- Added support for the PostgreSQL-compatible `OVERRIDING SYSTEM VALUE` and `OVERRIDING USER VALUE` clauses to `INSERT` for identity columns:
+  - `OVERRIDING SYSTEM VALUE` allows inserting an explicit value into a `GENERATED ALWAYS AS IDENTITY` column.
+  - `OVERRIDING USER VALUE` ignores explicit identity-column values and uses the sequence-generated value instead. [#459](https://github.com/cockroachlabs/cockroach/pull/459)
+- Changed `DROP TRIGGER` to allow users with the `DROP` privilege on a table (in addition to the table owner and admins) to drop triggers on that table. [#514](https://github.com/cockroachlabs/cockroach/pull/514)
+- Added the per-table storage parameter `sql_stats_forecasts_min_goodness_of_fit`, which lets you override the cluster setting `sql.stats.forecasts.min_goodness_of_fit` for individual tables to better support statistics forecasting on tables with irregular growth patterns. [#617](https://github.com/cockroachlabs/cockroach/pull/617)
+- The `CREATE DOMAIN ... CHECK` statements now sanitize and validate check expressions. References to descriptors are rejected. [#656](https://github.com/cockroachlabs/cockroach/pull/656)
+- The `information_schema.crdb_node_active_session_history` and `information_schema.crdb_cluster_active_session_history` views now include the `query`, `query_summary`, and `database` columns for statement samples, which makes Active Session History easier to interpret without manually joining to statement statistics. [#693](https://github.com/cockroachlabs/cockroach/pull/693)
+- Added support for `ALTER DOMAIN ... RENAME CONSTRAINT`. [#810](https://github.com/cockroachlabs/cockroach/pull/810)
+- Added the view `information_schema.crdb_persisted_active_session_history`, which exposes durable, cluster-wide Active Session History (ASH) samples stored in `system.active_session_history`. The view returns the same columns as `crdb_node_active_session_history` and `crdb_cluster_active_session_history`, including the sampled statement's `query`, `query_summary`, and `database`. [#815](https://github.com/cockroachlabs/cockroach/pull/815)
+- Added Active Session History (ASH) per-execution enrichment columns to the `information_schema` views `crdb_node_active_session_history`, `crdb_cluster_active_session_history`, and `crdb_persisted_active_session_history`: `user`, `plan_gist`, `canary_stats`, `txn_id`, and `session_id`. [#856](https://github.com/cockroachlabs/cockroach/pull/856)
+- Added support for `ALTER DOMAIN ... DROP CONSTRAINT`. [#907](https://github.com/cockroachlabs/cockroach/pull/907)
+
+### Operational changes
+
+- Added the cluster setting `sql.insights.cooldown.duration` (default `5m`), which suppresses repeated execution insights for the same transaction fingerprint and problem profile within a configurable window. This helps prevent noisy transactions from crowding out the bounded insights store; set the value to `0` to record every occurrence. Added the metrics `sql.insights.cooldown.suppressed` and `sql.insights.cooldown.evictions` to monitor this behavior. [#684](https://github.com/cockroachlabs/cockroach/pull/684)
+- Added an experimental Ubuntu-based Docker image alongside the existing Red Hat UBI-based Docker image. The Ubuntu-based image is available from the same registries with a `-noble` tag suffix. [#857](https://github.com/cockroachlabs/cockroach/pull/857)
+
+### Bug fixes
+
+- Fixed a bug where a `DELETE` or `UPDATE` that triggered a foreign key cascade could hit an internal assertion error ("execution requires all update columns have a fetch column") if a concurrent `ALTER TABLE ... ADD COLUMN` or `ALTER TABLE ... DROP COLUMN` modified the child table while the cascade was running. [#450](https://github.com/cockroachlabs/cockroach/pull/450)
+- Fixed a bug where `DROP TABLE ... CASCADE` could fail when another `REGIONAL BY ROW` table referenced it via a foreign key used to infer its region column with the `infer_rbr_region_col_using_constraint` storage parameter. [#464](https://github.com/cockroachlabs/cockroach/pull/464)
+- Fixed a bug where incremental backups could fail when the collection URI had no path component (for example, `gs://my-bucket?AUTH=...`). [#469](https://github.com/cockroachlabs/cockroach/pull/469)
+- Fixed a bug where `INSERT`, `UPSERT`, and `UPDATE` statements could fail with the error "Access to crdb_internal and system is restricted" while adding an expression index, adding a computed column, or changing a column's type, even when the statement did not reference `crdb_internal`. This error occurred only while the schema change was in progress. [#478](https://github.com/cockroachlabs/cockroach/pull/478)
+- Fixed a bug that could cause a node to crash with a `transaction unexpectedly finalized` error when a transaction disabled write buffering mid-transaction and then issued `ROLLBACK` while buffered writes were still pending. [#490](https://github.com/cockroachlabs/cockroach/pull/490)
+- Fixed a bug where a node whose `store descriptor` stopped being propagated via gossip was not kept in the `suspect` state for the configured interval, which could cause a flapping node to be reported as `live` and rejoin service prematurely. [#496](https://github.com/cockroachlabs/cockroach/pull/496)
+- Fixed a bug where `FETCH FIRST` on an empty `WITH HOLD` cursor could return an internal error. [#557](https://github.com/cockroachlabs/cockroach/pull/557)
+- Fixed a bug where concurrent role DDL (for example, `CREATE USER`, `ALTER ROLE`, `DROP USER`, `GRANT`, and `REVOKE`) could leave orphaned lease records and block subsequent role schema changes until the affected node was restarted. [#637](https://github.com/cockroachlabs/cockroach/pull/637)
+- Fixed issues in multi-tenant deployments (virtual clusters) where the DB Console `All sources` view displayed incorrect metric values, including:
+  - Missing totals for application- and SQL-level metrics across tenants.
+  - Double-counting some store metrics, such as per-replica CPU and intent age. [#650](https://github.com/cockroachlabs/cockroach/pull/650)
+- Fixed bugs in the DB Console `All sources` view that caused incorrect time-series metric totals in deployments using virtual clusters:
+  - Application/SQL metrics now show the sum across all virtual clusters.
+  - Several store metrics are no longer double-counted or incorrectly scoped to a tenant. [#650](https://github.com/cockroachlabs/cockroach/pull/650)
+- Fixed a bug where running `ALTER SEQUENCE IF EXISTS` with the `SEQUENCE NAME` option on a non-existent sequence could cause a panic. [#685](https://github.com/cockroachlabs/cockroach/pull/685)
+- Fixed a bug where the `STANDBY READ TS POLLER` job on a Physical Cluster Replication (PCR) standby cluster could get stuck waiting for the system `public` schema descriptor (ID 29) lease to expire. [#721](https://github.com/cockroachlabs/cockroach/pull/721)
+- Fixed a bug where the row-count verification run after `IMPORT` could double-count rows that straddle span boundaries. [#742](https://github.com/cockroachlabs/cockroach/pull/742)
+- Fixed a bug where a schema change could hang indefinitely if a node's clock lagged behind the commit timestamp of a new descriptor version. The lease manager now retries reading the new version instead of abandoning lease cleanup. [#760](https://github.com/cockroachlabs/cockroach/pull/760)
+- Fixed a bug where a changefeed using a CDC expression (for example, `CREATE CHANGEFEED ... AS SELECT ...`) could fail during certain schema changes (adding a computed column, creating an expression index, or changing a column type) with an error like `function "crdb_internal.assignment_cast" unsupported by CDC`, even when the changefeed expression did not reference the new column. [#776](https://github.com/cockroachlabs/cockroach/pull/776)
+- Fixed a bug where `pg_catalog.pg_enum` could expose enum values that were still being added by a schema change and were not yet usable. This could cause confusing errors for tools that read enum values from `pg_enum` and then attempted to use them in queries. [#792](https://github.com/cockroachlabs/cockroach/pull/792)
+- Fixed a race condition in the SQL lease manager where a schema change could leave a stale lease record in `system.lease`, causing later lease acquisitions for that descriptor to fail with a "failed to insert lease" error until the stale record was cleaned up. [#858](https://github.com/cockroachlabs/cockroach/pull/858)
+
+### Performance improvements
+
+- Improved performance for SQL routines, including user-defined functions (UDFs) and procedures, by deferring routine body construction to execution time instead of planning time. [#267](https://github.com/cockroachlabs/cockroach/pull/267)
+- Improved planning performance for queries against tables with user-defined `ENUM` columns. [#350](https://github.com/cockroachlabs/cockroach/pull/350)
+
+### Miscellaneous
+
+- Added the Physical Cluster Replication (PCR) metric `physical_replication.cluster.replication_lag`, which reports replication lag directly (without requiring manual calculation). [#236](https://github.com/cockroachlabs/cockroach/pull/236)
+- Backwards-incompatible change: Changed `ALTER VIRTUAL CLUSTER ... RENAME TO` to disallow renaming a tenant while it is participating in a Physical Cluster Replication (PCR) stream. [#460](https://github.com/cockroachlabs/cockroach/pull/460)
+
