@@ -107,6 +107,7 @@ Follow these steps to create the intermediate IAM role:
     "ec2:CreateTags",
     "ec2:CreateVpc",
     "ec2:CreateVpcEndpoint",
+    "ec2:CreateVpcEndpointServiceConfiguration",
     "ec2:CreateVpcPeeringConnection",
     "ec2:DeleteFlowLogs",
     "ec2:DeleteInternetGateway",
