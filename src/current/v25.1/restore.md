@@ -202,7 +202,7 @@ You can also restore individual tables (which automatically includes their index
 
 By default, tables, views, and sequences are restored into a target database matching the name of the database from which they were backed up. If the target database does not exist, you must [create it]({% link {{ page.version.version }}/create-database.md %}). You can choose to change the target database with the [`into_db` option](#into_db).
 
-The target database must not have tables, views, or sequences with the same name as the the object you're restoring. If any of the restore target's names are being used, you can:
+The target database must not have tables, views, or sequences with the same name as the object you're restoring. If any of the restore target's names are being used, you can:
 
 - [`DROP TABLE`]({% link {{ page.version.version }}/drop-table.md %}), [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %}), or [`DROP SEQUENCE`]({% link {{ page.version.version }}/drop-sequence.md %}) and then restore them. Note that a sequence cannot be dropped while it is being used in a column's `DEFAULT` expression, so those expressions must be dropped before the sequence is dropped, and recreated after the sequence is recreated. The `setval` [function]({% link {{ page.version.version }}/functions-and-operators.md %}#sequence-functions) can be used to set the value of the sequence to what it was previously.
 - [Restore the table, view, or sequence into a different database](#into_db).
