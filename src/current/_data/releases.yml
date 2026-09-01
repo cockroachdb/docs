@@ -10673,34 +10673,6 @@
   previous_release: v24.3.27
 
 
-- release_name: v24.3.28
-  major_version: v24.3
-  release_date: '2026-03-05'
-  release_type: Production
-  go_version: go1.25.5
-  sha: 420f0a2d5b89a882231340a4c500c434ab4fe753
-  has_sql_only: true
-  has_sha256sum: true
-  mac:
-    mac_arm: true
-    mac_arm_experimental: true
-    mac_arm_limited_access: false
-  windows: true
-  linux:
-    linux_arm: true
-    linux_arm_experimental: false
-    linux_arm_limited_access: false
-    linux_intel_fips: true
-    linux_arm_fips: false
-  docker:
-    docker_image: cockroachdb/cockroach
-    docker_arm: true
-    docker_arm_experimental: false
-    docker_arm_limited_access: false
-  source: true
-  previous_release: v24.3.27
-
-
 - release_name: v24.3.29
   major_version: v24.3
   release_date: '2026-03-09'
@@ -11925,3 +11897,634 @@
     docker_arm_limited_access: false
   source: true
   previous_release: v26.1.5
+
+- release_name: v26.3.0-alpha.2
+  major_version: v26.3
+  release_date: '2026-06-17'
+  release_type: Testing
+  go_version: go1.26.4
+  sha: b412ef56a814cb4370a566de48072571f706a34e
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+
+- release_name: v26.3.0-beta.1
+  major_version: v26.3
+  release_date: '2026-06-24'
+  release_type: Testing
+  go_version: go1.26.4
+  sha: 9caafebcafcd887c18107a3a718e5a07f38938d0
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.3.0-alpha.1
+
+- release_name: v26.3.0-beta.2
+  major_version: v26.3
+  release_date: '2026-07-01'
+  release_type: Testing
+  go_version: go1.26.4
+  sha: ead424529c906eb3b3cbbe9fbcb512c2ea783dae
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.3.0-alpha.1
+
+- release_name: v26.3.0-beta.3
+  major_version: v26.3
+  release_date: '2026-07-08'
+  release_type: Testing
+  go_version: go1.26.4
+  sha: 269ded56854c56ebccb0e1f9e7abe5296ba2632e
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.3.0-alpha.1
+
+- release_name: v25.2.21
+  major_version: v25.2
+  release_date: '2026-07-16'
+  release_type: Production
+  go_version: go1.23.12
+  sha: 3b4bfa8d28783dc0a388147caa9eb7cc4b8d1e42
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.2.20
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters. To request to upgrade
+      a CockroachDB self-hosted cluster to this version,
+      [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
+- release_name: v25.4.13
+  major_version: v25.4
+  release_date: '2026-07-16'
+  release_type: Production
+  go_version: go1.23.12
+  sha: 74b9b757cd20ee8092b9a15a2a93e59c740802bc
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.4.12
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters. To request to upgrade
+      a CockroachDB self-hosted cluster to this version,
+      [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
+- release_name: v26.1.7
+  major_version: v26.1
+  release_date: '2026-07-16'
+  release_type: Production
+  go_version: go1.25.5
+  sha: 9fa5342b1901c276b69136b46b784d2803a7f543
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.1.6
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters. To request to upgrade
+      a CockroachDB self-hosted cluster to this version,
+      [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
+- release_name: v26.2.4
+  major_version: v26.2
+  release_date: '2026-07-16'
+  release_type: Production
+  go_version: go1.25.5
+  sha: 80586181eb50e380e2cc982f61841eaf38af9982
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.2.3
+  cloud_only: true
+  cloud_only_message_short: 'Available only for select CockroachDB Cloud clusters'
+  cloud_only_message: >
+      This version is currently available only for select
+      CockroachDB Cloud clusters. To request to upgrade
+      a CockroachDB self-hosted cluster to this version,
+      [contact support](https://support.cockroachlabs.com/hc/requests/new).
+
+- release_name: v26.3.0-rc.1
+  major_version: v26.3
+  release_date: '2026-07-16'
+  release_type: Testing
+  go_version: go1.26.4
+  sha: b60f2917c1a560facb9bf0946c197e036334658c
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.3.0-alpha.1
+
+
+- release_name: v24.1.32
+  major_version: v24.1
+  release_date: '2026-07-22'
+  release_type: Production
+  go_version: go1.22.12
+  sha: 05d1555f8bfd7d803e57855381ba3cfa45ebdd64
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.31
+
+
+- release_name: v26.3.0
+  major_version: v26.3
+  release_date: '2026-07-27'
+  release_type: Production
+  go_version: go1.26.4
+  sha: 6fc76e440f10d42bf6336089d8df503603f4894a
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.3.0-rc.1
+
+
+- release_name: v25.2.22
+  major_version: v25.2
+  release_date: '2026-07-24'
+  release_type: Production
+  go_version: go1.23.12
+  sha: ccce6864a4597a1c87fb715abf2a1c67c80b0836
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.2.21
+
+
+- release_name: v25.4.14
+  major_version: v25.4
+  release_date: '2026-07-24'
+  release_type: Production
+  go_version: go1.23.12
+  sha: d1378d90bb3714c794ff0c7441dc19b82d9258f9
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.4.13
+
+
+- release_name: v26.1.8
+  major_version: v26.1
+  release_date: '2026-07-24'
+  release_type: Production
+  go_version: go1.25.5
+  sha: 3d421e85223ec623d51149b4bf67c78ea0e16c56
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.1.7
+
+
+- release_name: v26.2.5
+  major_version: v26.2
+  release_date: '2026-07-24'
+  release_type: Production
+  go_version: go1.25.5
+  sha: 0996c85a8557204febcf99cef0ada1a5e147d0e0
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.2.4
+
+
+- release_name: v24.3.35
+  major_version: v24.3
+  release_date: '2026-07-28'
+  release_type: Production
+  go_version: go1.22.12
+  sha: cafa0afe5114f0fc410260fbee17fa0c30ae5ff2
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.34
+
+
+- release_name: v25.2.23
+  major_version: v25.2
+  release_date: '2026-08-21'
+  release_type: Production
+  go_version: go1.23.12
+  sha: bae624cb34196597859b8ce6d6e59069ac2a81d8
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.2.22
+
+- release_name: v24.3.36
+  major_version: v24.3
+  release_date: '2026-08-26'
+  release_type: Production
+  go_version: go1.22.12
+  sha: df2779a1c9d83969164fc6993b62b9ca0d0f05b0
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.3.35
+
+- release_name: v24.1.33
+  major_version: v24.1
+  release_date: '2026-08-26'
+  release_type: Production
+  go_version: go1.22.12
+  sha: 108ba49f8bb33ff2618f706321c6b6bdc2860419
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v24.1.32
+
+- release_name: v25.4.15
+  major_version: v25.4
+  release_date: '2026-08-21'
+  release_type: Production
+  go_version: go1.23.12
+  sha: 2a1fdc5d950c33a755fd049df425ffc2f496d149
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v25.4.14
+
+
+- release_name: v26.3.1
+  major_version: v26.3
+  release_date: '2026-08-21'
+  release_type: Testing
+  go_version: go1.26.6
+  sha: 3a0a7b8176595bd32687c34a2210e166c5535af4
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach-unstable
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.3.0
+
+
+- release_name: v26.2.6
+  major_version: v26.2
+  release_date: '2026-08-21'
+  release_type: Production
+  go_version: go1.25.13
+  sha: f0adfbe4c645d4d458de930b415fd46c4459ad90
+  has_sql_only: true
+  has_sha256sum: true
+  mac:
+    mac_arm: true
+    mac_arm_experimental: true
+    mac_arm_limited_access: false
+  windows: true
+  linux:
+    linux_arm: true
+    linux_arm_experimental: false
+    linux_arm_limited_access: false
+    linux_intel_fips: true
+    linux_arm_fips: false
+  docker:
+    docker_image: cockroachdb/cockroach
+    docker_arm: true
+    docker_arm_experimental: false
+    docker_arm_limited_access: false
+  source: true
+  previous_release: v26.2.5
