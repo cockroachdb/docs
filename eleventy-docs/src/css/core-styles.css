@@ -1,0 +1,200 @@
+/* Core Styles - Converted from Jekyll SCSS */
+
+/* Font families */
+body {
+  font-family: 'SourceSansPro-Regular', 'Open Sans', sans-serif;
+  color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Avenir-Light', 'Open Sans', sans-serif;
+}
+
+/* Poppins font styles */
+.font-poppins,
+.navbar-nav {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-weight-semi-bold {
+  font-weight: 600;
+}
+
+.font-size-16 {
+  font-size: 16px;
+}
+
+/* Main navigation specific styles */
+.main-nav {
+  background-color: white;
+  z-index: 9;
+}
+
+.main-nav .nav-button {
+  border: 1px solid #6933fe;
+  color: #000;
+  border-radius: 30px;
+}
+
+.main-nav .navbar-toggler {
+  border: none;
+}
+
+.main-nav a, 
+.main-nav .btn {
+  color: #000;
+}
+
+.main-nav .start-instantly-nav-btn {
+  color: white !important;
+}
+
+.main-nav .list-unstyled a {
+  color: #000000;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.main-nav .navbar .dropdown-menu * {
+  font-family: "Open Sans", sans-serif;
+}
+
+.main-nav .navbar p {
+  font-weight: 300;
+}
+
+.main-nav .navbar .nav-icon-md {
+  display: none;
+}
+
+.main-nav .navbar .font-weight-semi-bold {
+  font-weight: 600;
+}
+
+.main-nav .navbar .navbar-brand {
+  margin-bottom: 7px;
+  padding: 0;
+}
+
+.main-nav .navbar .nav-link {
+  position: relative;
+}
+
+.main-nav .navbar .dropdown-menu {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background-image: url(https://crl2020.imgix.net/img/nav-bg.svg);
+  background-repeat: no-repeat;
+  padding: 20px;
+  margin-top: 0;
+  border-top: 1px solid #ccc;
+  box-shadow: 0 12px 6px 0 rgba(0,0,0,0.2);
+}
+
+.main-nav .navbar .dropdown-menu .btn {
+  border-width: 2px;
+  padding: 0.75rem 0.45rem;
+  font-size: 0.9rem;
+}
+
+.main-nav .navbar .dropdown-toggle:after {
+  display: none;
+}
+
+.main-nav .navbar .dropdown-toggle.no-chevron:before {
+  display: none;
+}
+
+/* Width utilities */
+.width-990 {
+  max-width: 1250px;
+}
+
+/* Navigation image holder */
+.nav-img-holder {
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.33);
+  max-width: 325px;
+  margin-top: 30px;
+}
+
+@media (min-width: 992px) {
+  .nav-img-holder {
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.33);
+    max-width: 275px;
+    margin: auto;
+  }
+}
+
+/* Dropdown hover effects */
+.dropdown-menu ul li a:hover {
+  color: #6933fe !important;
+}
+
+/* Mobile navbar styles */
+@media (max-width: 992px) {
+  .main-nav .navbar {
+    padding-left: 20px;
+    height: 100%;
+    overflow-y: scroll;
+  }
+}
+
+/* Medium screen navbar adjustments */
+@media (min-width: 993px) and (max-width: 1080px) {
+  .main-nav .navbar .nav-text-md {
+    display: none;
+  }
+  .main-nav .navbar .nav-link.nav-icon-md {
+    display: block;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+/* Large screen navbar */
+@media (min-width: 992px) {
+  .main-nav .navbar .nav-link {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+/* Mobile menu chevron styles */
+.main-nav .navbar .card-header .btn-link-chevron-right:after {
+  content: '';
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  transform: rotate(-90deg);
+}
+
+/* Main navigation wrapper */
+.main-nav-wrapper {
+  z-index: 9;
+  background-color: white;
+}
+
+.main-nav-contained-800 .dropdown-menu {
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+/* Additional utility classes */
+.text-small {
+  font-size: 16px !important;
+}
+
+.small9 {
+  font-size: 9px;
+}
+
+.small10 {
+  font-size: 10px;
+  font-weight: 500;
+}

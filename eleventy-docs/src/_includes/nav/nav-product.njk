@@ -1,0 +1,37 @@
+<style>
+   .custom-row { margin-left: -10px; margin-right: -10px; }
+   .custom-col { padding-left: 10px; padding-right: 10px; }
+   .nav-img-holder { margin-bottom: 1rem; }
+   @media (min-width: 992px) {
+     .custom-col { padding-left: 15px; padding-right: 15px; }
+     .nav-img-holder { margin-bottom: 0; }
+   }
+   @media (min-width: 576px) { .container-sm.width-990 { max-width: 990px; } }
+</style>
+<div class="container-sm width-990">
+  <div class="row g-0 custom-row">
+    <div class="col-md-4 custom-col">
+      <ul class="mb-0 mb-md-3 list-unstyled p-0">
+        <li class="pb-2"><a href="https://www.cockroachlabs.com/product/cloud/">CockroachDB Cloud</a></li>
+        <li class="pb-2"><a href="https://www.cockroachlabs.com/resilience/">Resilience platform</a></li>
+        <li class="pb-2"><a href="https://www.cockroachlabs.com/pricing/">Pricing</a></li>
+        <li class="pb-2"><a href="https://www.cockroachlabs.com/support/">Support</a></li>
+        <li class="pb-2"><a href="https://www.cockroachlabs.com/whatsnew/">Latest release</a></li>
+      </ul>
+    </div>
+    <div class="col-lg-4 custom-col">
+      <div class="nav-img-holder mb-5 mb-m-lg-0">
+        <a href="https://www.cockroachlabs.com/blog/what-is-a-dbaas-and-why-would-you-want-one/">
+          <img class="img-fluid" src="https://www.cockroachlabs.com/img/DBaaS.png" alt="Database as a service" />
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 custom-col">
+      <div class="nav-img-holder mb-5 mb-m-lg-0">
+        <a href="https://www.cockroachlabs.com/blog/what-is-distributed-sql/">
+          <img class="img-fluid" src="https://www.cockroachlabs.com/img/DistribSQL.png" alt="Distributed SQL" />
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
