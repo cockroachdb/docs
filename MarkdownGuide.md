@@ -199,7 +199,7 @@ When linking to a versioned page from a non-versioned page (such as `cockroachcl
 
 When linking to a versioned page from a Technical Advisory (in `advisories`), hardcode the page version.
 
-**Example:** [`debug.zip`]({% link v25.1/cockroach-debug-zip.md %})
+**Example:** [`debug.zip`]({% link v25.4/cockroach-debug-zip.md %})
 
 ### Custom anchor links
 
