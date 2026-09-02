@@ -93,7 +93,7 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
 1. In the AWS Console, open **AWS DMS**.
 1. Open **Endpoints** in the sidebar. A list of endpoints will display, if any exist.
 1. In the top-right portion of the window, select **Create endpoint**.
-    <img src="{{ 'images/v23.1/aws-dms-create-endpoint.png' | relative_url }}" alt="AWS-DMS-Create-Endpoint" style="max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-dms-create-endpoint.png" alt="AWS-DMS-Create-Endpoint" style="max-width:100%" />
 
     A configuration page will open.
 1. In the **Endpoint type** section, select **Target endpoint**.
@@ -107,10 +107,10 @@ As of publishing, AWS DMS supports migrations from these relational databases (f
     {{site.data.alerts.callout_info}}
     To connect to a CockroachDB {{ site.data.products.standard }} or {{ site.data.products.basic }} cluster, set the **Database name** to `{host}.{database}`. For details on how to find these parameters, see [Connect to your cluster]({% link cockroachcloud/connect-to-your-cluster.md %}?filters=connection-parameters#connect-to-your-cluster). Also set **Secure Socket Layer (SSL) mode** to **require**.
     {{site.data.alerts.end}}
-    <img src="{{ 'images/v23.1/aws-dms-endpoint-configuration.png' | relative_url }}" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-dms-endpoint-configuration.png" alt="AWS-DMS-Endpoint-Configuration" style="max-width:100%" />
 1. If needed, you can test the connection under **Test endpoint connection (optional)**.
 1. To create the endpoint, select **Create endpoint**.
-    <img src="{{ 'images/v23.1/aws-dms-test-endpoint.png' | relative_url }}" alt="AWS-DMS-Test-Endpoint" style="max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-dms-test-endpoint.png" alt="AWS-DMS-Test-Endpoint" style="max-width:100%" />
 
 ## Step 2. Create a database migration task
 
@@ -124,7 +124,7 @@ To conserve CPU, consider migrating tables in multiple replication tasks, rather
 
 1. While in **AWS DMS**, select **Database migration tasks** in the sidebar. A list of database migration tasks will display, if any exist.
 1. In the top-right portion of the window, select **Create task**.
-    <img src="{{ 'images/v23.1/aws-dms-create-db-migration-task.png' | relative_url }}" alt="AWS-DMS-Create-DB-Migration-Task" style="max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-dms-create-db-migration-task.png" alt="AWS-DMS-Create-DB-Migration-Task" style="max-width:100%" />
 
     A configuration page will open.
 1. Supply a **Task identifier** to identify the replication task.
@@ -135,17 +135,17 @@ To conserve CPU, consider migrating tables in multiple replication tasks, rather
     {{site.data.alerts.callout_danger}}
     If you choose **Migrate existing data and replicate ongoing changes** or **Replicate data changes only**, you must first [disable revision history for backups](#setup).
     {{site.data.alerts.end}}
-    <img src="{{ 'images/v23.1/aws-dms-task-configuration.png' | relative_url }}" alt="AWS-DMS-Task-Configuration" style="max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-dms-task-configuration.png" alt="AWS-DMS-Task-Configuration" style="max-width:100%" />
 
 ### Step 2.2. Task settings
 
 1. For the **Editing mode** radio button, keep **Wizard** selected.
 1. To preserve the schema you manually created, select **Truncate** or **Do nothing** for the **Target table preparation mode**.
-    <img src="{{ 'images/v23.1/aws-dms-task-settings.png' | relative_url }}" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-dms-task-settings.png" alt="AWS-DMS-Task-Settings" style="max-width:100%" />
 1. Optionally check **Enable validation** to compare the data in the source and target rows, and verify that the migration succeeded. You can view the results in the [**Table statistics**](#step-3-verify-the-migration) for your migration task. For more information about data validation, see the [AWS documentation](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Validating.html).
 1. Check the **Enable CloudWatch logs** option. We highly recommend this for troubleshooting potential migration issues.
 1. For the **Target Load**, select **Detailed debug**.
-    <img src="{{ 'images/v23.1/aws-dms-cloudwatch-logs.png' | relative_url }}" alt="AWS-DMS-CloudWatch-Logs" style="max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-dms-cloudwatch-logs.png" alt="AWS-DMS-CloudWatch-Logs" style="max-width:100%" />
 
 ### Step 2.3. Table mappings
 
@@ -161,7 +161,7 @@ When specifying a range of tables to migrate, the following aspects of the sourc
 1. Select **Add new selection rule**.
 1. In the **Schema** dropdown, select **Enter a schema**.
 1. Supply the appropriate **Source name** (schema name), **Table name**, and **Action**.
-    <img src="{{ 'images/v23.1/aws-dms-table-mappings.png' | relative_url }}" alt="AWS-DMS-Table-Mappings" style="max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-dms-table-mappings.png" alt="AWS-DMS-Table-Mappings" style="max-width:100%" />
 
     {{site.data.alerts.callout_info}}
     Use `%` as an example of a wildcard for all schemas in a PostgreSQL database. However, in MySQL, using `%` as a schema name imports all the databases, including the metadata/system ones, as MySQL treats schemas and databases as the same.
@@ -209,7 +209,7 @@ If your migration succeeded, you should now:
 
 If your migration failed for some reason, you can check the checkbox next to the table(s) you wish to re-migrate and select **Reload table data**.
 
-<img src="{{ 'images/v23.1/aws-dms-reload-table-data.png' | relative_url }}" alt="AWS-DMS-Reload-Table-Data" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/aws-dms-reload-table-data.png" alt="AWS-DMS-Reload-Table-Data" style="max-width:100%" />
 
 ## Optional configurations
 
@@ -225,7 +225,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 1. Choose your task, and then choose **Modify**.
 1. From the **Task settings** section, switch the **Editing mode** from **Wizard** to **JSON editor**. Locate the `BatchApplyEnabled` setting and change its value to `true`. Information about the `BatchApplyEnabled` setting can be found [here](https://aws.amazon.com/premiumsupport/knowledge-center/dms-batch-apply-cdc-replication/).
 
-<img src="{{ 'images/v23.1/aws-dms-batchapplyenabled.png' | relative_url }}" alt="AWS-DMS-BatchApplyEnabled" style="max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/aws-dms-batchapplyenabled.png" alt="AWS-DMS-BatchApplyEnabled" style="max-width:100%" />
 
 {{site.data.alerts.callout_info}}
 `BatchApplyEnabled` does not work when using **Drop tables on target** as a target table preparation mode. Thus, all schema-related changes must be manually copied over if using `BatchApplyEnabled`.
@@ -248,7 +248,7 @@ The `BatchApplyEnabled` setting can improve replication performance and is recom
 
     To prevent this error, set the [`expect_and_ignore_not_visible_columns_in_copy` session variable]({% link {{ page.version.version }}/session-variables.md %}#expect-and-ignore-not-visible-columns-in-copy) in the DMS [target endpoint configuration](#step-1-create-a-target-endpoint-pointing-to-cockroachdb). Under **Endpoint settings**, add an **AfterConnectScript** setting with the value `SET expect_and_ignore_not_visible_columns_in_copy=on`.
 
-    <img src="{{ 'images/v23.1/aws-dms-endpoint-settings.png' | relative_url }}" alt="AWS-DMS-Endpoint-Settings" style="max-width:100%" />
+    <img src="/docs/images/{{ page.version.version }}/aws-dms-endpoint-settings.png" alt="AWS-DMS-Endpoint-Settings" style="max-width:100%" />
 
 ## Troubleshooting common issues
 

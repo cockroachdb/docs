@@ -1,4 +1,4 @@
-<img src="{{ 'images/v23.1/ui_cpu_percent.png' | relative_url }}" alt="DB Console CPU Percent graph" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui_cpu_percent.png" alt="DB Console CPU Percent graph" style="border:1px solid #eee;max-width:100%" />
 
 The **CPU Percent** graph displays the current user and system CPU percentage consumed by the CockroachDB process, normalized by number of cores, as tracked by the `sys.cpu.combined.percent-normalized` metric.
 

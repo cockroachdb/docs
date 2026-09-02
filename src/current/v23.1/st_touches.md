@@ -47,7 +47,7 @@ SELECT st_touches(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.
 (1 row)
 ~~~
 
-<img src="{{ 'images/v23.1/geospatial/st_touches_true.png' | relative_url }}" alt="ST_Touches - true" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geospatial/st_touches_true.png" alt="ST_Touches - true" style="border:1px solid #eee;max-width:100%" />
 
 ### False
 
@@ -67,7 +67,7 @@ SELECT st_touches(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.
 (1 row)
 ~~~
 
-<img src="{{ 'images/v23.1/geospatial/st_touches_false.png' | relative_url }}" alt="ST_Touches - false" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/geospatial/st_touches_false.png" alt="ST_Touches - false" style="border:1px solid #eee;max-width:100%" />
 
 ## See also
 

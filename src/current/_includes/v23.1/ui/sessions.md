@@ -1,10 +1,10 @@
 {% if page.cloud != true %}
-<img src="{{ 'images/v23.1/ui-sessions-page.png' | relative_url }}" alt="Sessions Page" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-sessions-page.png" alt="Sessions Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
 To filter the sessions, click the **Filters** field.
 
-<img src="{{ 'images/v23.1/ui-session-filter.png' | relative_url }}" alt="Session filter" />
+<img src="/docs/images/{{ page.version.version }}/ui-session-filter.png" alt="Session filter" />
 
 - To filter by [application]({{ link_prefix }}connection-parameters.html#additional-connection-parameters), select **Application Name** and choose one or more applications.
 
@@ -40,7 +40,7 @@ To view details of a session, click a **Session Start Time (UTC)** to display se
 If a session is idle, the **Transaction** and **Most Recent Statement** panels will display **No Active [Transaction | Statement]**.
 
 {% if page.cloud != true %}
-<img src="{{ 'images/v23.1/ui-sessions-details-page.png' | relative_url }}" alt="Sessions Details Page" style="border:1px solid #eee;max-width:100%" />
+<img src="/docs/images/{{ page.version.version }}/ui-sessions-details-page.png" alt="Sessions Details Page" style="border:1px solid #eee;max-width:100%" />
 {% endif %}
 
 The **Cancel statement** button ends the SQL statement. The session running this statement will receive an error.
