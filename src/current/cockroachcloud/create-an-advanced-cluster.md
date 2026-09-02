@@ -65,7 +65,7 @@ You can use CockroachDB {{ site.data.products.cloud }}'s default IP range and si
 1. In the **VPC Peering section**, select **Configure the IP range** to configure your own IP range.
 
 1. Enter the IP range and size (in CIDR format) for the CockroachDB {{ site.data.products.cloud }} network based on the following considerations:
-      -  As per [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
+      - To comply with [GCP's overlapping subnets restriction](https://cloud.google.com/vpc/docs/vpc-peering#restrictions), configure an IP range that doesn't overlap with the IP ranges in your application network.
       - The IP range and size cannot be changed after the cluster is created. Configuring a smaller IP range size may limit your ability to expand into multiple regions in the future. We recommend configuring an IP range size of `/16` or lower.
 
         {{site.data.alerts.callout_info}}
@@ -89,6 +89,7 @@ The choice of hardware per node determines the [cost](#step-2-select-the-cloud-p
 1. Select the **Storage per node**, up to <b>{{ cap_per_vcpu }}</b>. Refer to [Storage capacity]({% link cockroachcloud/plan-your-cluster-advanced.md %}#storage-capacity) and [Pricing](https://www.cockroachlabs.com/pricing/) for details.
 
 After your cluster is created, refer to:
+
 - [Manage a CockroachDB {{ site.data.products.advanced }} Cluster]({% link cockroachcloud/cluster-management.md %})
 - [Establish private connectivity]({% link cockroachcloud/connect-to-an-advanced-cluster.md %}#establish-private-connectivity)
 
