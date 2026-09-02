@@ -75,3 +75,9 @@ sass:
   sass_dir: css
   style: compressed
 site_title: CockroachDB Docs
+jekyll-include-cache:
+  cache_dir: '.jekyll-cache'
+  include:
+    - '**/*.html'
+    - '**/*.md'
+    - '**/*.json'
