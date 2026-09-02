@@ -486,12 +486,19 @@ STORAGE,queue.replicate.addreplica,Number of replica additions attempted by the 
 STORAGE,queue.replicate.addreplica.error,Number of failed replica additions processed by the replicate queue,Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.addreplica.success,Number of successful replica additions processed by the replicate queue,Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.addvoterreplica,Number of voter replica additions attempted by the replicate queue,Replica Additions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,queue.replicate.enqueue.add,Number of replicas successfully added to the replicate queue,Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,queue.replicate.enqueue.failedprecondition,Number of replicas that failed the precondition checks and were therefore not added to the replicate queue,Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,queue.replicate.enqueue.noaction,Number of replicas for which ShouldQueue determined no action was needed and were therefore not added to the replicate queue,Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,queue.replicate.enqueue.unexpectederror,"Number of replicas that were expected to be enqueued (ShouldQueue returned true or the caller decided to add to the replicate queue directly), but failed to be enqueued due to unexpected errors",Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.nonvoterpromotions,Number of non-voters promoted to voters by the replicate queue,Promotions of Non Voters to Voters,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.pending,Number of pending replicas in the replicate queue,Replicas,GAUGE,COUNT,AVG,NONE
+STORAGE,queue.replicate.priority_inversion.requeue,"Number of priority inversions in the replicate queue that resulted in requeuing of the replicas. A priority inversion occurs when the priority at processing time ends up being lower than at enqueue time. When the priority has changed from a high priority repair action to rebalance, the change is requeued to avoid unfairness.",Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,queue.replicate.priority_inversion.total,Total number of priority inversions in the replicate queue. A priority inversion occurs when the priority at processing time ends up being lower than at enqueue time,Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.process.failure,Number of replicas which failed processing in the replicate queue,Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.process.success,Number of replicas successfully processed by the replicate queue,Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.processingnanos,Nanoseconds spent processing replicas in the replicate queue,Processing Time,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.purgatory,"Number of replicas in the replicate queue's purgatory, awaiting allocation options",Replicas,GAUGE,COUNT,AVG,NONE
+STORAGE,queue.replicate.queue_full,Number of times a replica was dropped from the queue due to queue fullness,Replicas,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.rebalancenonvoterreplica,Number of non-voter replica rebalancer-initiated additions attempted by the replicate queue,Replica Additions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.rebalancereplica,Number of replica rebalancer-initiated additions attempted by the replicate queue,Replica Additions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,queue.replicate.rebalancevoterreplica,Number of voter replica rebalancer-initiated additions attempted by the replicate queue,Replica Additions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -762,6 +769,8 @@ have a good estimate for this information for all of its followers, and since
 followers are expected to be behind (when they are not required as part of a
 quorum) *and* the aggregate thus scales like the count of such followers, it is
 difficult to meaningfully interpret this metric.",Log Entries,GAUGE,COUNT,AVG,NONE
+STORAGE,raftlog.size.max,Approximate size of the largest Raft log on the store.,Bytes,GAUGE,BYTES,AVG,NONE
+STORAGE,raftlog.size.total,Approximate size of all Raft logs on the store.,Bytes,GAUGE,BYTES,AVG,NONE
 STORAGE,raftlog.truncated,Number of Raft log entries truncated,Log Entries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,range.adds,Number of range additions,Range Ops,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,range.merges,Number of range merges,Range Ops,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -832,6 +841,12 @@ STORAGE,rangekeybytes,Number of bytes taken up by range keys (e.g. MVCC range to
 STORAGE,rangekeycount,Count of all range keys (e.g. MVCC range tombstones),Keys,GAUGE,COUNT,AVG,NONE
 STORAGE,ranges,Number of ranges,Ranges,GAUGE,COUNT,AVG,NONE
 STORAGE,ranges.decommissioning,Number of ranges with at lease one replica on a decommissioning node,Ranges,GAUGE,COUNT,AVG,NONE
+STORAGE,ranges.decommissioning.nudger.enqueue,"Number of enqueued enqueues of a range for decommissioning by the decommissioning nudger. Note: This metric tracks when the nudger attempts to enqueue, but the replica might not end up being enqueued by the priority queue due to various filtering or failure conditions.",Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,ranges.decommissioning.nudger.enqueue.failure,Number of ranges that failed to enqueue at the replicate queue,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,ranges.decommissioning.nudger.enqueue.success,Number of ranges that were successfully enqueued by the decommisioning nudger,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,ranges.decommissioning.nudger.not_leaseholder_or_invalid_lease,Number of ranges that were not the leaseholder or had an invalid lease at the decommissioning nudger,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,ranges.decommissioning.nudger.process.failure,Number of ranges enqueued by the decommissioning nudger that failed to process by the replicate queue,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+STORAGE,ranges.decommissioning.nudger.process.success,Number of ranges enqueued by the decommissioning nudger that were successfully processed by the replicate queue,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 STORAGE,ranges.overreplicated,Number of ranges with more live replicas than the replication target,Ranges,GAUGE,COUNT,AVG,NONE
 STORAGE,ranges.unavailable,Number of ranges with fewer live replicas than needed for quorum,Ranges,GAUGE,COUNT,AVG,NONE
 STORAGE,ranges.underreplicated,Number of ranges with fewer live replicas than the replication target,Ranges,GAUGE,COUNT,AVG,NONE
@@ -1252,7 +1267,7 @@ APPLICATION,changefeed.frontier_updates,Number of change frontier updates across
 APPLICATION,changefeed.internal_retry_message_count,Number of messages for which an attempt to retry them within an aggregator node was made,Messages,GAUGE,COUNT,AVG,NONE
 APPLICATION,changefeed.kafka_throttling_hist_nanos,Time spent in throttling due to exceeding kafka quota,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.lagging_ranges,The number of ranges considered to be lagging behind,Ranges,GAUGE,COUNT,AVG,NONE
-APPLICATION,changefeed.max_behind_nanos,(Deprecated in favor of checkpoint_progress) The most any changefeed's persisted checkpoint is behind the present,Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
+APPLICATION,changefeed.max_behind_nanos,The most any changefeed's persisted checkpoint is behind the present,Nanoseconds,GAUGE,NANOSECONDS,AVG,NONE
 APPLICATION,changefeed.message_size_hist,Message size histogram,Bytes,HISTOGRAM,BYTES,AVG,NONE
 APPLICATION,changefeed.messages.messages_pushback_nanos,Total time spent throttled for messages quota,Nanoseconds,COUNTER,NANOSECONDS,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,changefeed.network.bytes_in,The number of bytes received from the network by changefeeds,Bytes,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -1355,6 +1370,7 @@ APPLICATION,distsender.rangefeed.retry.replica_removed,Number of ranges that enc
 APPLICATION,distsender.rangefeed.retry.send,Number of ranges that encountered retryable send error,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,distsender.rangefeed.retry.slow_consumer,Number of ranges that encountered retryable SLOW_CONSUMER error,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,distsender.rangefeed.retry.store_not_found,Number of ranges that encountered retryable store not found error,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,distsender.rangefeed.retry.unknown,Number of ranges that encountered retryable unknown error,Ranges,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,distsender.rangefeed.total_ranges,"Number of ranges executing rangefeed
 
 This counts the number of ranges with an active rangefeed.
@@ -2210,6 +2226,7 @@ APPLICATION,jobs.row_level_ttl.fail_or_cancel_completed,Number of row_level_ttl 
 APPLICATION,jobs.row_level_ttl.fail_or_cancel_failed,Number of row_level_ttl jobs which failed with a non-retriable error on their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.row_level_ttl.fail_or_cancel_retry_error,Number of row_level_ttl jobs which failed with a retriable error on their failure or cancelation process,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.row_level_ttl.num_active_spans,Number of active spans the TTL job is deleting from.,num_active_spans,GAUGE,COUNT,AVG,NONE
+APPLICATION,jobs.row_level_ttl.num_delete_batch_retries,Number of times the row level TTL job had to reduce the delete batch size and retry.,num_retries,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,jobs.row_level_ttl.protected_age_sec,The age of the oldest PTS record protected by row_level_ttl jobs,seconds,GAUGE,SECONDS,AVG,NONE
 APPLICATION,jobs.row_level_ttl.protected_record_count,Number of protected timestamp records held by row_level_ttl jobs,records,GAUGE,COUNT,AVG,NONE
 APPLICATION,jobs.row_level_ttl.resume_completed,Number of row_level_ttl jobs which successfully resumed to completion,jobs,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2288,16 +2305,16 @@ APPLICATION,kv.protectedts.reconciliation.records_processed,number of records pr
 APPLICATION,kv.protectedts.reconciliation.records_removed,number of records removed during reconciliation runs on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.batch_hist_nanos,Time spent flushing a batch,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,logical_replication.catchup_ranges,Source side ranges undergoing catch up scans (inaccurate with multiple LDR jobs),Ranges,GAUGE,COUNT,AVG,NONE
-APPLICATION,logical_replication.catchup_ranges_by_label,Source side ranges undergoing catch up scans,Ranges,GAUGE,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,logical_replication.catchup_ranges_by_label,Source side ranges undergoing catch up scans,Ranges,GAUGE,COUNT,AVG,NONE
 APPLICATION,logical_replication.checkpoint_events_ingested,Checkpoint events ingested by all replication jobs,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.commit_latency,"Event commit latency: a difference between event MVCC timestamp and the time it was flushed into disk. If we batch events, then the difference between the oldest event in the batch and flush is recorded",Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,logical_replication.events_dlqed,Row update events sent to DLQ,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_dlqed_age,Row update events sent to DLQ due to reaching the maximum time allowed in the retry queue,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,logical_replication.events_dlqed_by_label,Row update events sent to DLQ by label,Failures,GAUGE,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,logical_replication.events_dlqed_by_label,Row update events sent to DLQ by label,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_dlqed_errtype,Row update events sent to DLQ due to an error not considered retryable,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_dlqed_space,Row update events sent to DLQ due to capacity of the retry queue,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_ingested,Events ingested by all replication jobs,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,logical_replication.events_ingested_by_label,Events ingested by all replication jobs by label,Events,GAUGE,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,logical_replication.events_ingested_by_label,Events ingested by all replication jobs by label,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_initial_failure,Failed attempts to apply an incoming row update,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_initial_success,Successful applications of an incoming row update,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.events_retry_failure,Failed re-attempts to apply a row update,Failures,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2306,12 +2323,12 @@ APPLICATION,logical_replication.kv.update_too_old,Total number of updates that w
 APPLICATION,logical_replication.kv.value_refreshes,Total number of batches that refreshed the previous value,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.logical_bytes,Logical bytes (sum of keys + values) received by all replication jobs,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,logical_replication.replan_count,Total number of dist sql replanning events,Events,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
-APPLICATION,logical_replication.replicated_time_by_label,Replicated time of the logical replication stream by label,Seconds,GAUGE,SECONDS,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,logical_replication.replicated_time_by_label,Replicated time of the logical replication stream by label,Seconds,GAUGE,SECONDS,AVG,NONE
 APPLICATION,logical_replication.replicated_time_seconds,The replicated time of the logical replication stream in seconds since the unix epoch.,Seconds,GAUGE,SECONDS,AVG,NONE
 APPLICATION,logical_replication.retry_queue_bytes,The replicated time of the logical replication stream in seconds since the unix epoch.,Bytes,GAUGE,BYTES,AVG,NONE
 APPLICATION,logical_replication.retry_queue_events,The replicated time of the logical replication stream in seconds since the unix epoch.,Events,GAUGE,COUNT,AVG,NONE
 APPLICATION,logical_replication.scanning_ranges,Source side ranges undergoing an initial scan (inaccurate with multiple LDR jobs),Ranges,GAUGE,COUNT,AVG,NONE
-APPLICATION,logical_replication.scanning_ranges_by_label,Source side ranges undergoing an initial scan,Ranges,GAUGE,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,logical_replication.scanning_ranges_by_label,Source side ranges undergoing an initial scan,Ranges,GAUGE,COUNT,AVG,NONE
 APPLICATION,obs.tablemetadata.update_job.duration,Time spent running the update table metadata job.,Duration,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,obs.tablemetadata.update_job.errors,The total number of errors that have been emitted from the update table metadata job.,Errors,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,obs.tablemetadata.update_job.runs,The total number of runs of the update table metadata job.,Executions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2333,6 +2350,10 @@ Note that this is not a good signal for KV health. The remote side of the
 RPCs tracked here may experience contention, so an end user can easily
 cause values for this metric to be emitted by leaving a transaction open
 for a long time and contending with it using a second transaction.",Requests,GAUGE,COUNT,AVG,NONE
+APPLICATION,round-trip-default-class-latency,"Distribution of round-trip latencies with other nodes.
+
+Similar to round-trip-latency, but only for default class connections.
+",Round-trip time,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,round-trip-latency,"Distribution of round-trip latencies with other nodes.
 
 This only reflects successful heartbeats and measures gRPC overhead as well as
@@ -2342,6 +2363,18 @@ can similarly elevate this metric. The operator should look towards OS-level
 metrics such as packet loss, retransmits, etc, to conclusively diagnose network
 issues. Heartbeats are not very frequent (~seconds), so they may not capture
 rare or short-lived degradations.
+",Round-trip time,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,round-trip-raft-class-latency,"Distribution of round-trip latencies with other nodes.
+
+Similar to round-trip-latency, but only for raft class connections.
+",Round-trip time,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,round-trip-rangefeed-class-latency,"Distribution of round-trip latencies with other nodes.
+
+Similar to round-trip-latency, but only for rangefeed class connections.
+",Round-trip time,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,round-trip-system-class-latency,"Distribution of round-trip latencies with other nodes.
+
+Similar to round-trip-latency, but only for system class connections.
 ",Round-trip time,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,rpc.client.bytes.egress,Counter of TCP bytes sent via gRPC on connections we initiated.,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,rpc.client.bytes.ingress,Counter of TCP bytes received via gRPC on connections we initiated.,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2575,6 +2608,7 @@ APPLICATION,sql.savepoint.rollback.started.count.internal,Number of `ROLLBACK TO
 APPLICATION,sql.savepoint.started.count,Number of SQL SAVEPOINT statements started,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.savepoint.started.count.internal,Number of SQL SAVEPOINT statements started (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.schema.invalid_objects,Gauge of detected invalid objects within the system.descriptor table (measured by querying crdb_internal.invalid_objects),Objects,GAUGE,COUNT,AVG,NONE
+APPLICATION,sql.schema_changer.object_count,Counter of the number of objects in the cluster,Objects,GAUGE,COUNT,AVG,NONE
 APPLICATION,sql.schema_changer.permanent_errors,Counter of the number of permanent errors experienced by the schema changer,Errors,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.schema_changer.retry_errors,Counter of the number of retriable errors experienced by the schema changer,Errors,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.schema_changer.running,Gauge of currently running schema changes,Schema changes,GAUGE,COUNT,AVG,NONE
@@ -2585,8 +2619,20 @@ APPLICATION,sql.select.started.count,Number of SQL SELECT statements started,SQL
 APPLICATION,sql.select.started.count.internal,Number of SQL SELECT statements started (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.service.latency,Latency of SQL request execution,Latency,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,sql.service.latency.internal,Latency of SQL request execution (internal queries),SQL Internal Statements,HISTOGRAM,NANOSECONDS,AVG,NONE
+APPLICATION,sql.statement_timeout.count,Count of statements that failed because they exceeded the statement timeout,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statement_timeout.count.internal,Count of statements that failed because they exceeded the statement timeout (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.statements.active,Number of currently active user SQL statements,Active Statements,GAUGE,COUNT,AVG,NONE
 APPLICATION,sql.statements.active.internal,Number of currently active user SQL statements (internal queries),SQL Internal Statements,GAUGE,COUNT,AVG,NONE
+APPLICATION,sql.statements.auto_retry.count,Number of SQL statement automatic retries,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statements.auto_retry.count.internal,Number of SQL statement automatic retries (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statements.bytes_read.count,Number of bytes read by SQL statements,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statements.bytes_read.count.internal,Number of bytes read by SQL statements (internal queries),SQL Internal Statements,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statements.index_bytes_written.count,Number of primary and secondary index bytes modified by SQL statements,Bytes,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statements.index_bytes_written.count.internal,Number of primary and secondary index bytes modified by SQL statements (internal queries),SQL Internal Statements,COUNTER,BYTES,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statements.index_rows_written.count,Number of primary and secondary index rows modified by SQL statements,Rows,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statements.index_rows_written.count.internal,Number of primary and secondary index rows modified by SQL statements (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statements.rows_read.count,Number of rows read by SQL statements,Rows,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.statements.rows_read.count.internal,Number of rows read by SQL statements (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.stats.activity.update.latency,The latency of updates made by the SQL activity updater job. Includes failed update attempts,Nanoseconds,HISTOGRAM,NANOSECONDS,AVG,NONE
 APPLICATION,sql.stats.activity.updates.failed,Number of update attempts made by the SQL activity updater job that failed with errors,failed updates,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.stats.activity.updates.successful,Number of successful updates made by the SQL activity updater job,successful updates,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2606,8 +2652,12 @@ APPLICATION,sql.temp_object_cleaner.active_cleaners,number of cleaner tasks curr
 APPLICATION,sql.temp_object_cleaner.schemas_deletion_error,number of errored schema deletions by the temp object cleaner on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.temp_object_cleaner.schemas_deletion_success,number of successful schema deletions by the temp object cleaner on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.temp_object_cleaner.schemas_to_delete,number of schemas to be deleted by the temp object cleaner on this node,Count,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.transaction_timeout.count,Count of statements that failed because they exceeded the transaction timeout,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.transaction_timeout.count.internal,Count of statements that failed because they exceeded the transaction timeout (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.txn.abort.count,Number of SQL transaction abort errors,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.txn.abort.count.internal,Number of SQL transaction abort errors (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.txn.auto_retry.count,Number of SQL transaction automatic retries,SQL Transactions,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+APPLICATION,sql.txn.auto_retry.count.internal,Number of SQL transaction automatic retries (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.txn.begin.count,Number of SQL transaction BEGIN statements successfully executed,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.txn.begin.count.internal,Number of SQL transaction BEGIN statements successfully executed (internal queries),SQL Internal Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 APPLICATION,sql.txn.begin.started.count,Number of SQL transaction BEGIN statements started,SQL Statements,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
@@ -2739,6 +2789,38 @@ SERVER,sys.host.net.send.bytes,Bytes sent on all network interfaces since this p
 SERVER,sys.host.net.send.drop,Sending packets that got dropped on all network interfaces since this process started (as reported by the OS),Packets,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 SERVER,sys.host.net.send.err,Error on sending packets on all network interfaces since this process started (as reported by the OS),Packets,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 SERVER,sys.host.net.send.packets,Packets sent on all network interfaces since this process started (as reported by the OS),Packets,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+SERVER,sys.host.net.send.tcp.fast_retrans_segs,"Segments retransmitted due to the fast retransmission mechanism in TCP.
+Fast retransmissions occur when the sender learns that intermediate segments have been lost.",Segments,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+SERVER,sys.host.net.send.tcp.loss_probes,"
+Number of TCP tail loss probes sent. Loss probes are an optimization to detect
+loss of the last packet earlier than the retransmission timer, and can indicate
+network issues. Tail loss probes are aggressive, so the base rate is often nonzero
+even in healthy networks.",Probes,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+SERVER,sys.host.net.send.tcp.retrans_segs,"
+The number of TCP segments retransmitted across all network interfaces.
+This can indicate packet loss occurring in the network. However, it can
+also be caused by recipient nodes not consuming packets in a timely manner,
+or the local node overflowing its outgoing buffers, for example due to overload.
+
+Retransmissions also occur in the absence of problems, as modern TCP stacks
+err on the side of aggressively retransmitting segments.
+
+The linux tool 'ss -i' can show the Linux kernel's smoothed view of round-trip
+latency and variance on a per-connection basis.  Additionally, 'netstat -s'
+shows all TCP counters maintained by the kernel.
+",Segments,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+SERVER,sys.host.net.send.tcp.slow_start_retrans,"
+Number of TCP retransmissions in slow start. This can indicate that the network
+is unable to support the initial fast ramp-up in window size, and can be a sign
+of packet loss or congestion.
+",Segments,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
+SERVER,sys.host.net.send.tcp_timeouts,"
+Number of TCP retransmission timeouts. These typically imply that a packet has
+not been acknowledged within at least 200ms.  Modern TCP stacks use
+optimizations such as fast retransmissions and loss probes to avoid hitting
+retransmission timeouts. Anecdotally, they still occasionally present themselves
+even in supposedly healthy cloud environments.
+",Timeouts,COUNTER,COUNT,AVG,NON_NEGATIVE_DERIVATIVE
 SERVER,sys.rss,Current process RSS,RSS,GAUGE,BYTES,AVG,NONE
 SERVER,sys.runnable.goroutines.per.cpu,"Average number of goroutines that are waiting to run, normalized by number of cores",goroutines,GAUGE,COUNT,AVG,NONE
 SERVER,sys.totalmem,Total memory (both free and used),Memory,GAUGE,BYTES,AVG,NONE
