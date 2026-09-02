@@ -1,0 +1,38 @@
+name: Release Notes AI Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
+    paths:
+      - 'src/current/_data/releases.yml'
+      - 'src/current/_includes/releases/**'
+
+permissions:
+  pull-requests: write
+  checks: write
+  contents: read
+
+jobs:
+  ai-review:
+    name: AI Release Notes Review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests pydantic PyYAML openai
+
+      - name: Run AI release notes review
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python .github/scripts/run_release_review.py
