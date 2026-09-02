@@ -1,0 +1,20 @@
+---
+title: "MOLT Fetch"
+old_description: "Learn how to use the MOLT Fetch tool to move data from a source database to CockroachDB."
+---
+
+import MoltFetch from "/snippets/molt/molt-fetch.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MoltFetch />

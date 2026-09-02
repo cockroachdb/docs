@@ -1,0 +1,193 @@
+---
+title: "Install CockroachDB on Linux"
+old_description: "Install CockroachDB on Mac, Linux, or Windows. Sign up for product release notes."
+---
+
+<Tip>
+To try CockroachDB Cloud instead of running CockroachDB yourself, refer to the [Cloud Quickstart](/docs/cockroachcloud/quickstart).
+</Tip>
+
+CockroachDB v24.3 is the latest supported production release. It is a required [Regular release](/docs/releases/release-support-policy#support-types). To learn more, refer to [CockroachDB v24.3 Release Notes](https://cockroachlabs.com/docs/releases/v24.3).
+
+Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to v24.3](/docs/v24.3/upgrade-cockroach-version).
+
+- To install a FIPS-compliant CockroachDB binary, refer to [Install a FIPS-compliant build of CockroachDB](/docs/v24.3/fips) instead of this page.
+- For limitations of CockroachDB on ARM, refer to [ARM limitations](#arm).
+- For limitations of CockroachDB on a NUMA architecture, refer to [NUMA limitations](#numa).
+
+## Download the binary
+
+The CockroachDB binary for Linux requires `glibc`, `libncurses`, and `tzdata`, which are found by default on nearly all Linux distributions.
+
+1. Visit [Releases](/docs/releases) to download the CockroachDB archive for the architecture of your Linux host. The archive contains the `cockroach` binary and the supporting libraries that are used to provide [spatial features](/docs/v24.3/spatial-data-overview). Follow the steps shown below to install the `cockroach` binary into your `PATH` so you can execute [cockroach commands](/docs/v24.3/cockroach-commands) from any shell.
+    1. Download the binary you want from the [Releases](/docs/releases) page. In the following commands, replace `{VERSION}` with the version of CockroachDB you are installing (e.g., v24.3), and replace `{ARCHITECTURE}` with `linux-amd64` for Intel, or with `linux-arm64` for ARM.
+    2. Extract the archive:
+
+        ```shell
+        tar-xz cockroach-{VERSION}.linux-{ARCHITECTURE}.tgz
+        ```
+    3. Copy the `cockroach` binary into your `PATH`:
+
+        ```shell
+        cp -i cockroach-{VERSION}.linux-{ARCHITECTURE}/cockroach /usr/local/bin/
+        ```
+
+        <Note>
+        If you plan to use CockroachDB's [spatial features](/docs/v24.3/spatial-data-overview), you must complete the following steps. Otherwise, your installation is now complete.
+        </Note>
+2. CockroachDB uses custom-built versions of the [GEOS](/docs/v24.3/architecture/glossary#geos) libraries. Copy these libraries to one of the locations where CockroachDB expects to find them.
+
+    By default, CockroachDB looks for external libraries in `/usr/local/lib/cockroach` or a `lib` subdirectory of the CockroachDB binary's current directory. If you place these libraries in another location, you must pass the location in the [`--spatial-libs` flag to `cockroach start`](/docs/v24.3/cockroach-start#flags-spatial-libs). The instructions below assume the `/usr/local/lib/cockroach` location.
+
+    1. Create the directory where the external libraries will be stored:
+
+        ```shell
+        mkdir -p /usr/local/lib/cockroach
+        ```
+    2. Copy the library files to the directory. In the following commands, replace `{VERSION}` with the version of CockroachDB you are installing, and replace `{ARCHITECTURE}` with `linux-amd64` for Intel, or with `linux-arm64` for ARM.
+
+        ```shell
+        cp -i cockroach-{VERSION}.linux-{ARCHITECTURE}/lib/libgeos.so /usr/local/lib/cockroach/
+        ```
+
+        ```shell
+        cp -i cockroach-{VERSION}.linux-{ARCHITECTURE}/lib/libgeos_c.so /usr/local/lib/cockroach/
+        ```
+
+        If you get a permissions error, prefix the command with `sudo`.
+3. Verify that CockroachDB can execute spatial queries.
+    1. Make sure the `cockroach` binary you just installed is the one that runs when you type `cockroach` in your shell:
+
+        ```shell
+        which cockroach
+        ```
+
+        ```text
+        /usr/local/bin/cockroach
+        ```
+    2. Start a temporary, in-memory cluster using [`cockroach demo`](/docs/v24.3/cockroach-demo):
+
+        ```shell
+        cockroach demo
+        ```
+    3. In the demo cluster's interactive SQL shell, run the following command to test that the spatial libraries have loaded properly:
+
+        ```sql
+        > SELECT ST_IsValid(ST_MakePoint(1,2));
+        ```
+
+        You should see the following output:
+
+        ```text
+          st_isvalid
+        --------------
+        true
+        (1 row)
+        ```
+
+        If your `cockroach` binary is not properly accessing the dynamically linked C libraries in `/usr/local/lib/cockroach`, it will output an error message like the one below.
+
+        ```text
+        ERROR: st_isvalid(): geos: error during GEOS init: geos: cannot load GEOS from dir "/usr/local/lib/cockroach": failed to execute dlopen
+                  Failed running "sql"
+        ```
+4. Keep up-to-date with CockroachDB releases and best practices:
+
+## Use Kubernetes
+
+To orchestrate CockroachDB using [Kubernetes](https://kubernetes.io/), either with configuration files or the [Helm](https://helm.sh/) package manager, use the following tutorials:
+
+- [Orchestrate CockroachDB Locally with Minikube](/docs/v24.3/orchestrate-a-local-cluster-with-kubernetes)
+- [Orchestrate CockroachDB in a Single Kubernetes Cluster](/docs/v24.3/deploy-cockroachdb-with-kubernetes)
+- [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](/docs/v24.3/orchestrate-cockroachdb-with-kubernetes-multi-cluster)
+
+## Use Docker
+
+<Warning>
+Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.
+</Warning>
+
+CockroachDB's Docker images are [multi-platform images](https://docs.docker.com/build/building/multi-platform) that contain binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.
+
+Experimental images are not qualified for production use and not eligible for support or uptime SLA commitments.
+
+1. Install a container runtime, such as [Docker Desktop](https://docs.docker.com/desktop).
+2. Verify that the runtime service is installed correctly and running in the background. Refer to the runtime's documentation. For Docker, start a terminal and run `docker version`. If you get an error, verify your installation and try again.
+3. Visit [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach) and decide which image tag to pull. Releases are rolled out gradually. Docker images for a new release are published when other binary artifacts are published. The following tag formats are commonly used, although other tags are available.
+
+    <table><thead><tr><td>Tag</td><td>Example</td><td>Description</td></tr></thead><tbody><tr><td>An exact patch</td><td><code>v24.3.29</code></td><td>Pins a cluster to an exact patch. The cluster is upgraded to a newer patch or major version only when you pull a newer tag.</td></tr><tr><td>Latest patch within a major version</td><td><code>latest-v24.3</code></td><td>Automatically updates a cluster to the latest patch of the version you specify. This tag is recommended in production, because it keeps your cluster updated within a major version but does not automatically upgrade your cluster to a new major version.</td></tr><tr><td><code>latest</code></td><td>The latest patch within the latest major version. This is the default if you do not specify a tag. It updates your cluster automatically to each new patch and major version, and is not recommended in production.</td></tr></tbody></table>
+
+    Copy the tag you want to pull.
+4. Pull the image. Replace `{TAG}` with the tag from the previous step.
+
+    ```shell
+    docker pull cockroachdb/cockroach:{TAG}
+    ```
+5. Start a cluster by starting the container on each node using `docker start`. The default command is `cockroach start`. Pass your desired flags as the final argument. For details, refer to [Deploy a local container in Docker](/docs/v24.3/start-a-local-cluster-in-docker).
+
+For CockroachDB v22.2.beta-5 and above, Docker images are [multi-platform images](https://docs.docker.com/build/building/multi-platform) that contain binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.
+
+Docker images for previous releases contain Intel binaries only. Intel binaries can run on ARM systems, but with a significant reduction in performance.
+
+CockroachDB on ARM is in **[Limited Access](/docs/v24.3/cockroachdb-feature-availability#feature-availability-phases)** in v22.2.13, and is **experimental** in all other versions. Experimental images are not qualified for production use and not eligible for support or uptime SLA commitments.
+
+1. Install [Docker for Linux](https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu). Please carefully check that you meet all prerequisites.
+2. Confirm that the Docker daemon is running in the background:
+
+    ```text
+    $ docker version
+    ```
+
+    If you do not see the server listed, start the **Docker** daemon.
+
+    <Note>
+    On Linux, Docker needs sudo privileges.
+    </Note>
+3. Pull the image for the v24.3.29 release of CockroachDB from [Docker Hub](https://hub.docker.com/r/cockroachdb/cockroach):
+
+    ```text
+    $ sudo docker pull cockroachdb/cockroach:v24.3.29
+    ```
+4. Keep up-to-date with CockroachDB releases and best practices:
+
+## Build from Source
+
+See the [public wiki](https://wiki.crdb.io/wiki/spaces/CRDB/pages/181338446/Getting+and+building+CockroachDB+from+source) for guidance. When building on the ARM architecture, refer to [Limitations](#limitations).
+
+## Limitations
+
+### ARM
+
+CockroachDB runtimes built for the ARM architecture have the following limitations:
+
+- Floating point operations may yield different results on ARM than on Intel, particularly [Fused Multiply Add (FMA) intrinsics](https://en.wikipedia.org/wiki/Multiply%E2%80%93accumulate_operation#Fused_multiply.E2.80.93add). Validate workloads that rely on floating point operations or FMA instrincs before migrating those workloads to ARM in production.
+- When [building from source](#install-source) on ARM, it is not currently possible to disable FMA intrinsics in Go. To track the status of this feature request, refer to [GoLang issue #36971](https://github.com/golang/go/issues/36971).
+- In production, Cockroach Labs recommends that all cluster nodes have identical CockroachDB versions, CPU architecture, hardware, and software.
+- A mix of Intel and ARM nodes is supported as a temporary transitional state during the migration only. Cockroach Labs recommends that you test and validate your workload ahead of the migration to ensure that the workload and your application work as expected in a cluster with both Intel and ARM nodes, especially with respect to floating-point arithmetic.
+
+### NUMA
+
+In a [NUMA (non-uniform memory access) architecture](https://en.wikipedia.org/wiki/Non-uniform_memory_access), the system’s memory is physically distributed across multiple memory banks or "nodes", and each node is assigned to a processor. A processor can access its local memory much faster than non-local memory. This non-uniform memory access can lead to performance differences depending on data location.
+
+CockroachDB is written in Go, which has no process-level support for NUMA scheduling or pinning. Instead, you must manage NUMA at the operating system level. To run multiple CockroachDB clusters on a NUMA architecture:
+
+- Assign no more than 32 cores to the node for each instance. Refer to the documentation for [`numactl --membind`](https://man7.org/linux/man-pages/man8/numactl.8).
+- Ensure that your orchestration framework, process manager, or startup scripts start each CockroachDB in a separate NUMA node.
+- If multiple CockroachDB nodes for the same CockroachDB cluster run on the same physical host, ensure that they are in the same [`--locality`](/docs/v23.2/architecture/replication-layer#intra-locality) to ensure that data is distributed across different physical hosts.
+- Ensure that each CockroachDB node writes to a unique set of storage volumes (block devices).
+
+## What's next?
+
+- If you're just getting started with CockroachDB:
+    - [Create a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?experience=enterprise) where you can [generate and manage licenses](/docs/v24.3/licensing-faqs) for CockroachDB installations
+    - [Start a cluster locally](/docs/v24.3/start-a-local-cluster) and talk to it via the built-in SQL client
+    - [Learn more about CockroachDB SQL](/docs/v24.3/learn-cockroachdb-sql)
+    - [Build a simple application](/docs/v24.3/example-apps) with CockroachDB using PostgreSQL-compatible client drivers and ORMs
+    - [Explore CockroachDB features](/docs/v24.3/demo-replication-and-rebalancing) like automatic replication, rebalancing, and fault tolerance
+- If you're ready to run CockroachDB in production:
+    - Review the [Production Checklist](/docs/v24.3/recommended-production-settings)
+    - [Deploy CockroachDB manually](/docs/v24.3/manual-deployment) or [use an orchestration system like Kubernetes](/docs/v24.3/kubernetes-overview)
+
+<Note>
+By default, each node of a CockroachDB cluster periodically shares anonymous usage details with Cockroach Labs. For an explanation of the details that get shared and how to opt-out of reporting, see [Diagnostics Reporting](/docs/v24.3/diagnostics-reporting).
+</Note>

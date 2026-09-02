@@ -1,0 +1,67 @@
+export const CreateTableAs11 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="113" width="583" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 33 1 29 1 37"></polygon>
+<polygon points="17 33 9 29 9 37"></polygon>
+<rect height="32" rx="10" width="84" x="91" y="19"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="89" y="17"></rect>
+<text class="terminal" x="99" y="37">PRIMARY</text>
+<rect height="32" rx="10" width="46" x="195" y="19"></rect>
+<rect class="terminal" height="32" rx="10" width="46" x="193" y="17"></rect>
+<text class="terminal" x="203" y="37">KEY</text><a xlink:href="/docs/v24.3/sql-grammar#opt_with_storage_parameter_list" xlink:title="opt_with_storage_parameter_list">
+<rect height="32" width="234" x="261" y="19"></rect>
+<rect class="nonterminal" height="32" width="234" x="259" y="17"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="210" font-size="10" class="nonterminal" x="271" y="37">opt_with_storage_parameter_list</text></a><rect height="32" rx="10" width="72" x="91" y="63"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="89" y="61"></rect>
+<text class="terminal" x="99" y="81">FAMILY</text><a xlink:href="/docs/v24.3/sql-grammar#family_name" xlink:title="family_name">
+<rect height="32" width="100" x="183" y="63"></rect>
+<rect class="nonterminal" height="32" width="100" x="181" y="61"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="76" font-size="11" class="nonterminal" x="193" y="81">family_name</text></a><path class="line" d="m17 33 h2 m60 0 h10 m84 0 h10 m0 0 h10 m46 0 h10 m0 0 h10 m234 0 h10 m-444 0 h20 m424 0 h20 m-464 0 q10 0 10 10 m444 0 q0 -10 10 -10 m-454 10 v24 m444 0 v-24 m-444 24 q0 10 10 10 m424 0 q10 0 10 -10 m-434 10 h10 m72 0 h10 m0 0 h10 m100 0 h10 m0 0 h212 m-464 -44 l20 0 m-1 0 q-9 0 -9 -10 l0 -12 q0 -10 10 -10 m464 32 l20 0 m-20 0 q10 0 10 -10 l0 -12 q0 -10 -10 -10 m-464 0 h10 m0 0 h454 m-504 32 h20 m504 0 h20 m-544 0 q10 0 10 10 m524 0 q0 -10 10 -10 m-534 10 v58 m524 0 v-58 m-524 58 q0 10 10 10 m504 0 q10 0 10 -10 m-514 10 h10 m0 0 h494 m23 -78 h-3"></path>
+<polygon points="573 33 581 29 581 37"></polygon>
+<polygon points="573 33 565 29 565 37"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

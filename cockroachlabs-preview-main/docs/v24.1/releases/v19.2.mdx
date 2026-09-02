@@ -1,0 +1,20 @@
+---
+title: "What's New in v19.2"
+old_description: "Additions and changes in CockroachDB version v19.2 since version v19.1"
+---
+
+import V19_2 from "/snippets/releases/v19.2.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<V19_2 />

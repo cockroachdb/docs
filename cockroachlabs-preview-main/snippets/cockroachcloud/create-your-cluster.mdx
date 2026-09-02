@@ -1,0 +1,117 @@
+---
+title: "Create a CockroachDB Standard Cluster"
+old_description: "Learn how to create your CockroachDB Standard cluster."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<Note>
+CockroachDB Standard is currently in <a href="/docs/VERSION_PLACEHOLDER/cockroachdb-feature-availability" data-versioned="true">Preview</a>.
+</Note>
+
+<LinkedPageTabs
+  versioned={true}
+  currentPath="/docs/VERSION_PLACEHOLDER/cockroachcloud/create-your-cluster"
+  items={[
+    {
+      title: "CockroachDB Basic",
+      href: "/docs/VERSION_PLACEHOLDER/cockroachcloud/create-a-basic-cluster",
+    },
+    {
+      title: "CockroachDB Standard",
+      href: "/docs/VERSION_PLACEHOLDER/cockroachcloud/create-your-cluster",
+    },
+    {
+      title: "CockroachDB Advanced",
+      href: "/docs/VERSION_PLACEHOLDER/cockroachcloud/create-an-advanced-cluster",
+    },
+  ]}
+/>
+
+This page guides you through the process of creating a CockroachDB Standard cluster using the [Cloud Console](https://cockroachlabs.cloud/). To use the Cloud API instead, refer to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api#create-a-standard-cluster" data-versioned="true">Create a Standard cluster</a> in the API documentation.
+
+If you need permission to create a cluster, contact an CockroachDB Cloud Organization Admin.
+
+<Tip>
+To create and connect to a 30-day free CockroachDB Standard cluster and run your first query, refer to the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/quickstart-trial-cluster" data-versioned="true">Quickstart</a>.
+</Tip>
+
+## Step 1. Start the cluster creation process
+
+1. If you haven't already, [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?referralId=docs_create_account), then [log in](https://cockroachlabs.cloud/).
+
+    <Note>
+    We recommend that CockroachDB Cloud Console users log in with <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-org-sso" data-versioned="true">Single Sign-On (SSO)</a>, optionally with two-factor authentication (2FA) enabled for the SSO provider. This prevents potential attackers from using stolen credentials to access or tamper with your critical data.
+    </Note>
+
+    CockroachDB Cloud <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-org-sso#basic-sso" data-versioned="true">Basic SSO</a> supports SSO with GitHub, Google, and Microsoft. <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-org-sso#cloud-organization-sso" data-versioned="true">Cloud Organization SSO</a> provides additional configuration and flexibility, and includes support for OIDC or SAML protocols, autoprovisioning, and limiting the email domains that can use a given authentication method.
+
+    Visit your CockroachDB Cloud Console's [account settings page](https://cockroachlabs.cloud/account/profile) and switch to SSO to improve the security of your cluster.
+2. [Log in](https://cockroachlabs.cloud/) to your CockroachDB Cloud account.
+3. If there are multiple organizations in your account, select the correct organization in the top right corner.
+4. On the **Overview** page, click **Create Cluster**.
+5. On the **Select a plan** page, select the **Standard** plan.
+
+## Step 2. Select the cloud provider
+
+On the **Cloud &amp; Regions page**, in the **Cloud provider** section, select your deployment environment: **Google Cloud** or **AWS**. Creating a CockroachDB Standard cluster on Azure is not yet supported.
+
+You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. For optimal performance, create your cluster on the cloud provider and in the regions that best align with your existing cloud services.
+
+Pricing depends on your cloud provider and region selections.
+
+Pricing depends on your cloud provider and region selections. Refer to [Pricing](https://www.cockroachlabs.com/pricing) for details.
+
+## Step 3. Configure regions
+
+In the **Regions** section, select at least one region. Refer to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/regions" data-versioned="true">CockroachDB Cloud Regions</a> for the regions where CockroachDB Standard clusters can be deployed.
+
+For optimal performance, create your cluster on the cloud provider and in the regions that best align with your existing cloud services. For example, if your application is deployed in GCP's `us-east1` region, create your cluster on GCP and select `us-east1` for your CockroachDB Standard cluster.
+
+A multi-region cluster can survive the loss of a single region. For multi-region clusters, CockroachDB will optimize access to data from the primary region. Refer to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster" data-versioned="true">Planning your cluster</a> for the configuration requirements and recommendations for CockroachDB Standard clusters.
+
+<Note>
+You cannot remove a region.
+</Note>
+
+After creating a multi-region cluster deployed on AWS, you can optionally <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/network-authorization#aws-privatelink" data-versioned="true">set up AWS PrivateLink (Limited Access)</a> so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
+
+Private connectivity is not available for Standard clusters on GCP.
+
+Click **Next: Capacity**.
+
+## Step 4. Provision cluster capacity
+
+Provisioned capacity refers to the reserved compute capacity for your cluster, expressed in vCPUs. We recommend at minimum 4-8 vCPUs for production workloads, and allowing for at least 40% above expected peak workload to avoid performance issues. Refer to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster" data-versioned="true">Plan your cluster</a> for the configuration requirements and recommendations for CockroachDB Standard clusters.
+
+Click **Next: Finalize**.
+
+## Step 5. Enter billing details
+
+1. On the **Finalize** page, verify:
+    - Your cluster's cloud provider, regions, and configuration.
+    - The hourly estimated cost for the cluster. The cost displayed does not include taxes. You will be billed monthly.
+2. Add your preferred <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/billing-management" data-versioned="true">payment method</a>.
+3. If applicable, the 30-day trial code is pre-applied to your cluster.
+
+    <Note>
+    Make sure that you <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-management#delete-cluster" data-versioned="true">delete your trial cluster</a> before the trial expires. Your credit card will be charged after the trial ends. You can check the validity of the code on the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/billing-management" data-versioned="true">Billing</a> page.
+    </Note>
+
+## Step 6. Name the cluster
+
+The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
+
+Click **Create cluster**. Your cluster will be created in a few seconds.
+
+## Step 7. Finish creating the cluster
+
+Click **Create cluster**. Your cluster will be created in approximately 20-30 minutes.
+
+## What's next
+
+To start using your CockroachDB Standard cluster, refer to:
+
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/connect-to-your-cluster" data-versioned="true">Connect to your cluster</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/managing-access" data-versioned="true">Authorize users</a>
+- For a multi-region cluster, it is important to choose the most appropriate <a href="/docs/VERSION_PLACEHOLDER/multiregion-survival-goals" data-versioned="true">survival goal</a> for each database and the most appropriate <a href="/docs/VERSION_PLACEHOLDER/table-localities" data-versioned="true">table locality</a> for each table. Otherwise, your cluster may experience unexpected latency and reduced resiliency. For more information, refer to <a href="/docs/VERSION_PLACEHOLDER/multiregion-overview" data-versioned="true">Multi-Region Capabilities Overview</a>.

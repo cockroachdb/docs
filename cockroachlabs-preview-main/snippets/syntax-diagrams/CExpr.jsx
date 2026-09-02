@@ -1,0 +1,67 @@
+export const CExpr = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="157" width="349" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="#d_expr" xlink:title="d_expr">
+<rect height="32" width="64" x="51" y="3"></rect>
+<rect class="nonterminal" height="32" width="64" x="49" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="40" font-size="10" class="nonterminal" x="61" y="21">d_expr</text></a><a xlink:href="#array_subscripts" xlink:title="array_subscripts">
+<rect height="32" width="126" x="155" y="35"></rect>
+<rect class="nonterminal" height="32" width="126" x="153" y="33"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="102" font-size="10" class="nonterminal" x="165" y="53">array_subscripts</text></a><a xlink:href="#case_expr" xlink:title="case_expr">
+<rect height="32" width="84" x="51" y="79"></rect>
+<rect class="nonterminal" height="32" width="84" x="49" y="77"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="60" font-size="10" class="nonterminal" x="61" y="97">case_expr</text></a><rect height="32" rx="10" width="70" x="51" y="123"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="49" y="121"></rect>
+<text class="terminal" x="59" y="141">EXISTS</text><a xlink:href="#select_with_parens" xlink:title="select_with_parens">
+<rect height="32" width="144" x="141" y="123"></rect>
+<rect class="nonterminal" height="32" width="144" x="139" y="121"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="120" font-size="10" class="nonterminal" x="151" y="141">select_with_parens</text></a><path class="line" d="m17 17 h2 m20 0 h10 m64 0 h10 m20 0 h10 m0 0 h136 m-166 0 h20 m146 0 h20 m-186 0 q10 0 10 10 m166 0 q0 -10 10 -10 m-176 10 v12 m166 0 v-12 m-166 12 q0 10 10 10 m146 0 q10 0 10 -10 m-156 10 h10 m126 0 h10 m-270 -32 h20 m270 0 h20 m-310 0 q10 0 10 10 m290 0 q0 -10 10 -10 m-300 10 v56 m290 0 v-56 m-290 56 q0 10 10 10 m270 0 q10 0 10 -10 m-280 10 h10 m84 0 h10 m0 0 h166 m-280 -10 v20 m290 0 v-20 m-290 20 v24 m290 0 v-24 m-290 24 q0 10 10 10 m270 0 q10 0 10 -10 m-280 10 h10 m70 0 h10 m0 0 h10 m144 0 h10 m0 0 h16 m23 -120 h-3"></path>
+<polygon points="339 17 347 13 347 21"></polygon>
+<polygon points="339 17 331 13 331 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

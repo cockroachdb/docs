@@ -1,0 +1,183 @@
+---
+title: "DROP INDEX"
+old_description: "The DROP INDEX statement removes indexes from tables."
+---
+
+import { DropIndex2 } from "/snippets/syntax-diagrams/DropIndex2.jsx";
+
+The `DROP INDEX` [statement](/docs/v23.2/sql-statements) removes indexes from tables.
+
+<Note>
+The `DROP INDEX` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v23.2/online-schema-changes).
+</Note>
+
+## Synopsis
+
+<DropIndex2 />
+
+## Required privileges
+
+The user must have the `CREATE` [privilege](/docs/v23.2/security-reference/authorization#managing-privileges) on each specified table.
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF EXISTS</code></td><td>Drop the named indexes if they exist; if they do not exist, do not return an error.</td></tr><tr><td><code>table&#95;name</code></td><td>The name of the table with the index you want to drop. Find table names with <a href="/docs/v23.2/show-tables"><code>SHOW TABLES</code></a>.</td></tr><tr><td><code>index&#95;name</code></td><td>The name of the index you want to drop. Find index names with <a href="/docs/v23.2/show-index"><code>SHOW INDEX</code></a>.<br/><br/>You cannot drop a table's primary index.</td></tr><tr><td><code>CASCADE</code></td><td>Drop all objects (such as <a href="/docs/v23.2/constraints">constraints</a>) that depend on the indexes. <code>CASCADE</code> does not list objects it drops, so should be used cautiously.<br/><br/>To drop an index created with <a href="/docs/v23.2/create-index#unique-indexes"><code>CREATE UNIQUE INDEX</code></a>, you do not need to use <code>CASCADE</code>.</td></tr><tr><td><code>RESTRICT</code></td><td><em>(Default)</em> Do not drop the indexes if any objects (such as <a href="/docs/v23.2/constraints">constraints</a>) depend on them.</td></tr><tr><td><code>CONCURRENTLY</code></td><td>Optional, no-op syntax for PostgreSQL compatibility. All indexes are dropped concurrently in CockroachDB.</td></tr></tbody></table>
+
+## Viewing schema changes
+
+This schema change statement is registered as a job. You can view long-running jobs with [`SHOW JOBS`](/docs/v23.2/show-jobs).
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v23.2/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v23.2/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Remove an index with no dependencies
+
+<Warning>
+[`UNIQUE` indexes](/docs/v23.2/create-index) created as part of a [`CREATE TABLE`](/docs/v23.2/create-table) statement cannot be removed without using [`CASCADE`](#remove-an-index-and-dependent-objects-with-cascade). Unique indexes created with [`CREATE INDEX`](/docs/v23.2/create-index) do not have this limitation.
+</Warning>
+
+Suppose you create an index on the `name` and `city` columns of the `users` table:
+
+```sql
+> CREATE INDEX ON users (name, city);
+```
+
+```sql
+> SHOW INDEXES FROM users;
+```
+
+```text
+  table_name |     index_name      | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
+-------------+---------------------+------------+--------------+-------------+-----------+---------+----------+----------
+  users      | users_name_city_idx |     t      |            1 | name        | ASC       |    f    |    f     |    t
+  users      | users_name_city_idx |     t      |            2 | city        | ASC       |    f    |    f     |    t
+  users      | users_name_city_idx |     t      |            3 | id          | ASC       |    f    |    t     |    t
+  users      | users_pkey          |     f      |            1 | city        | ASC       |    f    |    f     |    t
+  users      | users_pkey          |     f      |            2 | id          | ASC       |    f    |    f     |    t
+  users      | users_pkey          |     f      |            3 | name        | N/A       |    t    |    f     |    t
+  users      | users_pkey          |     f      |            4 | address     | N/A       |    t    |    f     |    t
+  users      | users_pkey          |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
+(8 rows)
+```
+
+You can drop this index with the `DROP INDEX` statement:
+
+```sql
+> DROP INDEX users@users_name_city_idx;
+```
+
+```sql
+> SHOW INDEXES FROM users;
+```
+
+```text
+  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
+-------------+------------+------------+--------------+-------------+-----------+---------+----------+----------
+  users      | users_pkey |     f      |            1 | city        | ASC       |    f    |    f     |    t
+  users      | users_pkey |     f      |            2 | id          | ASC       |    f    |    f     |    t
+  users      | users_pkey |     f      |            3 | name        | N/A       |    t    |    f     |    t
+  users      | users_pkey |     f      |            4 | address     | N/A       |    t    |    f     |    t
+  users      | users_pkey |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
+(5 rows)
+```
+
+### Remove an index and dependent objects with `CASCADE`
+
+<Warning>
+`CASCADE` drops *all* dependent objects without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend dropping objects individually in most cases.
+</Warning>
+
+Suppose you create a [`UNIQUE`](/docs/v23.2/unique) constraint on the `id` and `name` columns of the `users` table:
+
+```sql
+> ALTER TABLE users ADD CONSTRAINT id_name_unique UNIQUE (id, name);
+```
+
+```sql
+> SHOW CONSTRAINTS from users;
+```
+
+```text
+  table_name | constraint_name | constraint_type |            details             | validated
+-------------+-----------------+-----------------+--------------------------------+------------
+  users      | id_name_unique  | UNIQUE          | UNIQUE (id ASC, name ASC)      |     t
+  users      | users_pkey      | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |     t
+(2 rows)
+```
+
+If no index exists on `id` and `name`, CockroachDB automatically creates an index:
+
+```sql
+> SHOW INDEXES from users;
+```
+
+```text
+  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
+-------------+----------------+------------+--------------+-------------+-----------+---------+----------+----------
+  users      | id_name_unique |     f      |            1 | id          | ASC       |    f    |    f     |    t
+  users      | id_name_unique |     f      |            2 | name        | ASC       |    f    |    f     |    t
+  users      | id_name_unique |     f      |            3 | city        | ASC       |    t    |    t     |    t
+  users      | users_pkey     |     f      |            1 | city        | ASC       |    f    |    f     |    t
+  users      | users_pkey     |     f      |            2 | id          | ASC       |    f    |    f     |    t
+  users      | users_pkey     |     f      |            3 | name        | N/A       |    t    |    f     |    t
+  users      | users_pkey     |     f      |            4 | address     | N/A       |    t    |    f     |    t
+  users      | users_pkey     |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
+(8 rows)
+```
+
+The `UNIQUE` constraint is dependent on the `id_name_unique` index, so you cannot drop the index with a simple `DROP INDEX` statement:
+
+```sql
+> DROP INDEX id_name_unique;
+```
+
+```text
+ERROR: index "id_name_unique" is in use as unique constraint
+SQLSTATE: 2BP01
+HINT: use CASCADE if you really want to drop it.
+```
+
+To drop an index and its dependent objects, you can use `CASCADE`:
+
+```sql
+> DROP INDEX id_name_unique CASCADE;
+```
+
+```sql
+> SHOW INDEXES from users;
+```
+
+```text
+  table_name | index_name | non_unique | seq_in_index | column_name | direction | storing | implicit | visible
+-------------+------------+------------+--------------+-------------+-----------+---------+----------+----------
+  users      | users_pkey |     f      |            1 | city        | ASC       |    f    |    f     |    t
+  users      | users_pkey |     f      |            2 | id          | ASC       |    f    |    f     |    t
+  users      | users_pkey |     f      |            3 | name        | N/A       |    t    |    f     |    t
+  users      | users_pkey |     f      |            4 | address     | N/A       |    t    |    f     |    t
+  users      | users_pkey |     f      |            5 | credit_card | N/A       |    t    |    f     |    t
+(5 rows)
+```
+
+```sql
+> SHOW CONSTRAINTS from users;
+```
+
+```text
+  table_name | constraint_name | constraint_type |            details             | validated
+-------------+-----------------+-----------------+--------------------------------+------------
+  users      | users_pkey      | PRIMARY KEY     | PRIMARY KEY (city ASC, id ASC) |   true
+(1 row)
+```
+
+## See also
+
+- [Indexes](/docs/v23.2/indexes)
+- [Online Schema Changes](/docs/v23.2/online-schema-changes)
+- [`SHOW JOBS`](/docs/v23.2/show-jobs)

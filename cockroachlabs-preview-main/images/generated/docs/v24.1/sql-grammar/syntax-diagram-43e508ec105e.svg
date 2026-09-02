@@ -1,0 +1,124 @@
+<svg height="917" width="623" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="210" x="71" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="210" x="69" y="1"></rect>
+<text class="terminal" x="79" y="21">ENCRYPTION_PASSPHRASE</text>
+<rect height="32" rx="10" width="84" x="71" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="69" y="45"></rect>
+<text class="terminal" x="79" y="65">INTO_DB</text>
+<rect height="32" rx="10" width="150" x="71" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="150" x="69" y="89"></rect>
+<text class="terminal" x="79" y="109">DEBUG_PAUSE_ON</text>
+<rect height="32" rx="10" width="128" x="71" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="128" x="69" y="133"></rect>
+<text class="terminal" x="79" y="153">NEW_DB_NAME</text>
+<rect height="32" rx="10" width="198" x="71" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="198" x="69" y="177"></rect>
+<text class="terminal" x="79" y="197">VIRTUAL_CLUSTER_NAME</text>
+<rect height="32" rx="10" width="150" x="71" y="223"></rect>
+<rect class="terminal" height="32" rx="10" width="150" x="69" y="221"></rect>
+<text class="terminal" x="79" y="241">VIRTUAL_CLUSTER</text>
+<rect height="32" rx="10" width="100" x="71" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="100" x="69" y="265"></rect>
+<text class="terminal" x="79" y="285">EXECUTION</text>
+<rect height="32" rx="10" width="88" x="191" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="88" x="189" y="265"></rect>
+<text class="terminal" x="199" y="285">LOCALITY</text>
+<rect height="32" rx="10" width="30" x="321" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="319" y="1"></rect>
+<text class="terminal" x="329" y="21">=</text><a xlink:href="#string_or_placeholder" xlink:title="string_or_placeholder">
+<rect height="32" width="158" x="371" y="3"></rect>
+<rect class="nonterminal" height="32" width="158" x="369" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="134" font-size="10" class="nonterminal" x="381" y="21">string_or_placeholder</text></a><rect height="32" rx="10" width="50" x="71" y="311"></rect>
+<rect class="terminal" height="32" rx="10" width="50" x="69" y="309"></rect>
+<text class="terminal" x="79" y="329">KMS</text>
+<rect height="32" rx="10" width="200" x="71" y="355"></rect>
+<rect class="terminal" height="32" rx="10" width="200" x="69" y="353"></rect>
+<text class="terminal" x="79" y="373">INCREMENTAL_LOCATION</text>
+<rect height="32" rx="10" width="30" x="311" y="311"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="309" y="309"></rect>
+<text class="terminal" x="319" y="329">=</text><a xlink:href="#string_or_placeholder_opt_list" xlink:title="string_or_placeholder_opt_list">
+<rect height="32" width="214" x="361" y="311"></rect>
+<rect class="nonterminal" height="32" width="214" x="359" y="309"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="190" font-size="10" class="nonterminal" x="371" y="329">string_or_placeholder_opt_list</text></a><rect height="32" rx="10" width="240" x="51" y="399"></rect>
+<rect class="terminal" height="32" rx="10" width="240" x="49" y="397"></rect>
+<text class="terminal" x="59" y="417">SKIP_MISSING_FOREIGN_KEYS</text>
+<rect height="32" rx="10" width="216" x="51" y="443"></rect>
+<rect class="terminal" height="32" rx="10" width="216" x="49" y="441"></rect>
+<text class="terminal" x="59" y="461">SKIP_MISSING_SEQUENCES</text>
+<rect height="32" rx="10" width="278" x="51" y="487"></rect>
+<rect class="terminal" height="32" rx="10" width="278" x="49" y="485"></rect>
+<text class="terminal" x="59" y="505">SKIP_MISSING_SEQUENCE_OWNERS</text>
+<rect height="32" rx="10" width="180" x="51" y="531"></rect>
+<rect class="terminal" height="32" rx="10" width="180" x="49" y="529"></rect>
+<text class="terminal" x="59" y="549">SKIP_MISSING_VIEWS</text>
+<rect height="32" rx="10" width="170" x="51" y="575"></rect>
+<rect class="terminal" height="32" rx="10" width="170" x="49" y="573"></rect>
+<text class="terminal" x="59" y="593">SKIP_MISSING_UDFS</text>
+<rect height="32" rx="10" width="92" x="51" y="619"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="49" y="617"></rect>
+<text class="terminal" x="59" y="637">DETACHED</text>
+<rect height="32" rx="10" width="200" x="51" y="663"></rect>
+<rect class="terminal" height="32" rx="10" width="200" x="49" y="661"></rect>
+<text class="terminal" x="59" y="681">SKIP_LOCALITIES_CHECK</text>
+<rect height="32" rx="10" width="124" x="51" y="707"></rect>
+<rect class="terminal" height="32" rx="10" width="124" x="49" y="705"></rect>
+<text class="terminal" x="59" y="725">SCHEMA_ONLY</text>
+<rect height="32" rx="10" width="232" x="51" y="751"></rect>
+<rect class="terminal" height="32" rx="10" width="232" x="49" y="749"></rect>
+<text class="terminal" x="59" y="769">VERIFY_BACKUP_TABLE_DATA</text>
+<rect height="32" rx="10" width="334" x="51" y="795"></rect>
+<rect class="terminal" height="32" rx="10" width="334" x="49" y="793"></rect>
+<text class="terminal" x="59" y="813">UNSAFE_RESTORE_INCOMPATIBLE_VERSION</text>
+<rect height="32" rx="10" width="126" x="51" y="839"></rect>
+<rect class="terminal" height="32" rx="10" width="126" x="49" y="837"></rect>
+<text class="terminal" x="59" y="857">EXPERIMENTAL</text>
+<rect height="32" rx="10" width="90" x="197" y="839"></rect>
+<rect class="terminal" height="32" rx="10" width="90" x="195" y="837"></rect>
+<text class="terminal" x="205" y="857">DEFERRED</text>
+<rect height="32" rx="10" width="58" x="307" y="839"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="305" y="837"></rect>
+<text class="terminal" x="315" y="857">COPY</text>
+<rect height="32" rx="10" width="150" x="51" y="883"></rect>
+<rect class="terminal" height="32" rx="10" width="150" x="49" y="881"></rect>
+<text class="terminal" x="59" y="901">REMOVE_REGIONS</text>
+<path class="line" d="m17 17 h2 m40 0 h10 m210 0 h10 m-250 0 h20 m230 0 h20 m-270 0 q10 0 10 10 m250 0 q0 -10 10 -10 m-260 10 v24 m250 0 v-24 m-250 24 q0 10 10 10 m230 0 q10 0 10 -10 m-240 10 h10 m84 0 h10 m0 0 h126 m-240 -10 v20 m250 0 v-20 m-250 20 v24 m250 0 v-24 m-250 24 q0 10 10 10 m230 0 q10 0 10 -10 m-240 10 h10 m150 0 h10 m0 0 h60 m-240 -10 v20 m250 0 v-20 m-250 20 v24 m250 0 v-24 m-250 24 q0 10 10 10 m230 0 q10 0 10 -10 m-240 10 h10 m128 0 h10 m0 0 h82 m-240 -10 v20 m250 0 v-20 m-250 20 v24 m250 0 v-24 m-250 24 q0 10 10 10 m230 0 q10 0 10 -10 m-240 10 h10 m198 0 h10 m0 0 h12 m-240 -10 v20 m250 0 v-20 m-250 20 v24 m250 0 v-24 m-250 24 q0 10 10 10 m230 0 q10 0 10 -10 m-240 10 h10 m150 0 h10 m0 0 h60 m-240 -10 v20 m250 0 v-20 m-250 20 v24 m250 0 v-24 m-250 24 q0 10 10 10 m230 0 q10 0 10 -10 m-240 10 h10 m100 0 h10 m0 0 h10 m88 0 h10 m0 0 h2 m20 -264 h10 m30 0 h10 m0 0 h10 m158 0 h10 m0 0 h46 m-564 0 h20 m544 0 h20 m-584 0 q10 0 10 10 m564 0 q0 -10 10 -10 m-574 10 v288 m564 0 v-288 m-564 288 q0 10 10 10 m544 0 q10 0 10 -10 m-534 10 h10 m50 0 h10 m0 0 h150 m-240 0 h20 m220 0 h20 m-260 0 q10 0 10 10 m240 0 q0 -10 10 -10 m-250 10 v24 m240 0 v-24 m-240 24 q0 10 10 10 m220 0 q10 0 10 -10 m-230 10 h10 m200 0 h10 m20 -44 h10 m30 0 h10 m0 0 h10 m214 0 h10 m-554 -10 v20 m564 0 v-20 m-564 20 v68 m564 0 v-68 m-564 68 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m240 0 h10 m0 0 h284 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m216 0 h10 m0 0 h308 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m278 0 h10 m0 0 h246 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m180 0 h10 m0 0 h344 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m170 0 h10 m0 0 h354 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m92 0 h10 m0 0 h432 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m200 0 h10 m0 0 h324 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m124 0 h10 m0 0 h400 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m232 0 h10 m0 0 h292 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m334 0 h10 m0 0 h190 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m126 0 h10 m0 0 h10 m90 0 h10 m0 0 h10 m58 0 h10 m0 0 h210 m-554 -10 v20 m564 0 v-20 m-564 20 v24 m564 0 v-24 m-564 24 q0 10 10 10 m544 0 q10 0 10 -10 m-554 10 h10 m150 0 h10 m0 0 h374 m23 -880 h-3"></path>
+<polygon points="613 17 621 13 621 21"></polygon>
+<polygon points="613 17 605 13 605 21"></polygon></svg>

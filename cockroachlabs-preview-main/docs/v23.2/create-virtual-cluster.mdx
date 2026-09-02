@@ -1,0 +1,81 @@
+---
+title: "CREATE VIRTUAL CLUSTER"
+old_description: "The CREATE VIRTUAL CLUSTER statement creates a new target virtual cluster for physical replication."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+import { CreateVirtualCluster2 } from "/snippets/syntax-diagrams/CreateVirtualCluster2.jsx";
+
+<Note>
+**This feature is in [preview](/docs/v23.2/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2: The `CREATE VIRTUAL CLUSTER` statement creates a new virtual cluster. It is supported only starting a [**physical cluster replication (PCR)** job](/docs/v23.2/set-up-physical-cluster-replication).
+
+PCR happens between an *active* primary cluster and a *passive* standby cluster that accepts updates from the primary cluster. The unit of replication is a *virtual cluster*, which is part of the underlying infrastructure in the primary and standby clusters. The CockroachDB cluster has:
+
+- The system virtual cluster manages the cluster's control plane and the replication of the cluster's data. Admins connect to the system virtual cluster to configure and manage the underlying CockroachDB cluster, set up PCR, create and manage a virtual cluster, and observe metrics and logs for the CockroachDB cluster and each virtual cluster.
+- Each other virtual cluster manages its own data plane. Users connect to a virtual cluster by default, rather than the system virtual cluster. To connect to the system virtual cluster, the connection string must be modified. Virtual clusters contain user data and run application workloads. When PCR is enabled, the non-system virtual cluster on both primary and secondary clusters is named `application`.
+
+For more detail, refer to the [Physical Cluster Replication Overview](/docs/v23.2/physical-cluster-replication-overview).
+
+## Required privileges
+
+`CREATE VIRTUAL CLUSTER` requires one of the following privileges:
+
+- The `admin` role.
+- The `MANAGEVIRTUALCLUSTER` [system privilege](/docs/v23.2/security-reference/authorization#privileges) allows the user to run all the related `VIRTUAL CLUSTER` SQL statements for PCR.
+
+Use the [`GRANT SYSTEM`](/docs/v23.2/grant) statement:
+
+```sql
+GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
+```
+
+## Synopsis
+
+xml version="1.0" encoding="UTF-8"?
+
+<CreateVirtualCluster2 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>virtual&#95;cluster&#95;name</code></td><td>The name for the new virtual cluster.</td></tr><tr><td><code>primary&#95;virtual&#95;cluster</code></td><td>The name of the primary's virtual cluster to replicate.</td></tr><tr><td><code>primary&#95;connection&#95;string</code></td><td>The PostgreSQL connection string to the primary cluster. Refer to <a href="#connection-string">Connection string</a> for more detail.</td></tr></tbody></table>
+
+## Connection string
+
+When you [initiate a replication stream](/docs/v23.2/set-up-physical-cluster-replication#step-4-start-replication) from the standby cluster, it is necessary to pass a connection string to the system virtual cluster on the primary cluster:
+
+```text
+'postgresql://{replication user}:{password}@{node IP or hostname}:26257?options=-ccluster=system&sslmode=verify-full&sslrootcert=certs/{primary cert}.crt'
+```
+
+To form a connection string similar to the example, include the following values and query parameters. Replace values in `{...}` with the appropriate values for your configuration:
+
+<table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;replication user&#125;</code></td><td>The user on the primary cluster that has the <code>REPLICATION</code> system privilege. Refer to the <a href="/docs/v23.2/set-up-physical-cluster-replication#create-a-replication-user-and-password">Create a replication user and password</a> for more detail.</td></tr><tr><td><code>&#123;password&#125;</code></td><td>The replication user's password.</td></tr><tr><td><code>&#123;node ID or hostname&#125;</code></td><td>The node IP address or hostname of any node from the primary cluster.</td></tr><tr><td><code>options=ccluster=system</code></td><td>The parameter to connect to the system virtual cluster on the primary cluster.</td></tr><tr><td><code>sslmode=verify-full</code></td><td>The <code>verify-full</code> secure connection type.</td></tr><tr><td><code>sslrootcert=&#123;primary cert&#125;</code></td><td>The path to the primary cluster's CA certificate on the standby cluster.</td></tr></tbody></table>
+
+## Capabilities
+
+<Note>
+Cockroach Labs does not recommend changing the default capabilities of created virtual clusters.
+</Note>
+
+*Capabilities* control what a virtual cluster can do. The [configuration profile](/docs/v23.2/set-up-physical-cluster-replication#start-the-standby-cluster) included at startup creates the `template` virtual cluster with the same set of capabilities per CockroachDB version. When you start a replication stream, you can specify the `template` VC with `LIKE` to ensure other virtual clusters on the standby cluster will work in the same way. `LIKE` will refer to a virtual cluster on the CockroachDB cluster you're running the statement from.
+
+## Examples
+
+### Start a replication stream
+
+To start a replication stream to the standby of the primary's application virtual cluster:
+
+```sql
+CREATE VIRTUAL CLUSTER application LIKE template FROM REPLICATION OF application ON 'postgresql://{connection string to primary}';
+```
+
+This will create a virtual cluster in the standby cluster that is based on the `template` virtual cluster, which is created during [cluster startup with `--config-profile`](/docs/v23.2/set-up-physical-cluster-replication#start-the-primary-cluster). The standby's system virtual cluster will connect to the primary cluster to initiate the replication stream job. For detail on the replication stream, refer to the [Responses](/docs/v23.2/show-virtual-cluster#responses) for `SHOW VIRTUAL CLUSTER`.
+
+## See also
+
+- [`DROP VIRTUAL CLUSTER`](/docs/v23.2/drop-virtual-cluster)
+- [`ALTER VIRTUAL CLUSTER`](/docs/v23.2/alter-virtual-cluster)
+- [`SHOW VIRTUAL CLUSTER`](/docs/v23.2/show-virtual-cluster)

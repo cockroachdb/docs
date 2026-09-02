@@ -1,0 +1,98 @@
+<svg height="447" width="755" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 61 1 57 1 65"></polygon>
+<polygon points="17 61 9 57 9 65"></polygon>
+<rect height="32" rx="10" width="72" x="31" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="29" y="45"></rect>
+<text class="terminal" x="39" y="65">CREATE</text>
+<rect height="32" rx="10" width="62" x="123" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="121" y="45"></rect>
+<text class="terminal" x="131" y="65">TABLE</text>
+<rect height="32" width="96" x="205" y="47"></rect>
+<rect class="nonterminal" height="32" width="96" x="203" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="215" y="65">table_name</text><rect height="32" rx="10" width="26" x="321" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="319" y="45"></rect>
+<text class="terminal" x="329" y="65">(</text><a xlink:href="/docs/v25.4/sql-grammar#column_table_def" xlink:title="column_table_def">
+<rect height="32" width="134" x="387" y="47"></rect>
+<rect class="nonterminal" height="32" width="134" x="385" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="110" font-size="11" class="nonterminal" x="397" y="65">column_table_def</text></a><rect height="32" rx="10" width="24" x="387" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="385" y="1"></rect>
+<text class="terminal" x="395" y="21">,</text>
+<rect height="32" rx="10" width="110" x="45" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="110" x="43" y="187"></rect>
+<text class="terminal" x="53" y="207">CONSTRAINT</text><a xlink:href="/docs/v25.4/sql-grammar#constraint_name" xlink:title="constraint_name">
+<rect height="32" width="126" x="175" y="189"></rect>
+<rect class="nonterminal" height="32" width="126" x="173" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="102" font-size="10" class="nonterminal" x="185" y="207">constraint_name</text></a><rect height="32" rx="10" width="112" x="341" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="112" x="339" y="155"></rect>
+<text class="terminal" x="349" y="175">FOREIGN KEY</text>
+<rect height="32" rx="10" width="26" x="473" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="471" y="155"></rect>
+<text class="terminal" x="481" y="175">(</text><a xlink:href="/docs/v25.4/sql-grammar#fk_column_name" xlink:title="fk_column_name">
+<rect height="32" width="128" x="539" y="157"></rect>
+<rect class="nonterminal" height="32" width="128" x="537" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="11" class="nonterminal" x="549" y="175">fk_column_name</text></a><rect height="32" rx="10" width="24" x="539" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="537" y="111"></rect>
+<text class="terminal" x="547" y="131">,</text>
+<rect height="32" rx="10" width="26" x="707" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="705" y="155"></rect>
+<text class="terminal" x="715" y="175">)</text>
+<rect height="32" rx="10" width="108" x="101" y="299"></rect>
+<rect class="terminal" height="32" rx="10" width="108" x="99" y="297"></rect>
+<text class="terminal" x="109" y="317">REFERENCES</text>
+<rect height="32" width="102" x="229" y="299"></rect>
+<rect class="nonterminal" height="32" width="102" x="227" y="297"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="78" font-size="10" class="nonterminal" x="239" y="317">parent_table</text><rect height="32" rx="10" width="26" x="371" y="299"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="369" y="297"></rect>
+<text class="terminal" x="379" y="317">(</text><a xlink:href="/docs/v25.4/sql-grammar#ref_column_name" xlink:title="ref_column_name">
+<rect height="32" width="134" x="437" y="299"></rect>
+<rect class="nonterminal" height="32" width="134" x="435" y="297"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="110" font-size="11" class="nonterminal" x="447" y="317">ref_column_name</text></a><rect height="32" rx="10" width="24" x="437" y="255"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="435" y="253"></rect>
+<text class="terminal" x="445" y="273">,</text>
+<rect height="32" rx="10" width="26" x="611" y="299"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="609" y="297"></rect>
+<text class="terminal" x="619" y="317">)</text>
+<rect height="32" width="130" x="531" y="413"></rect>
+<rect class="nonterminal" height="32" width="130" x="529" y="411"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="106" font-size="10" class="nonterminal" x="541" y="431">table_constraints</text><rect height="32" rx="10" width="26" x="701" y="381"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="699" y="379"></rect>
+<text class="terminal" x="709" y="399">)</text>
+<path class="line" d="m17 61 h2 m0 0 h10 m72 0 h10 m0 0 h10 m62 0 h10 m0 0 h10 m96 0 h10 m0 0 h10 m26 0 h10 m20 0 h10 m134 0 h10 m-174 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m154 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-154 0 h10 m24 0 h10 m0 0 h110 m22 44 l2 0 m2 0 l2 0 m2 0 l2 0 m-560 110 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h266 m-296 0 h20 m276 0 h20 m-316 0 q10 0 10 10 m296 0 q0 -10 10 -10 m-306 10 v12 m296 0 v-12 m-296 12 q0 10 10 10 m276 0 q10 0 10 -10 m-286 10 h10 m110 0 h10 m0 0 h10 m126 0 h10 m20 -32 h10 m112 0 h10 m0 0 h10 m26 0 h10 m20 0 h10 m128 0 h10 m-168 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m148 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-148 0 h10 m24 0 h10 m0 0 h104 m20 44 h10 m26 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-676 142 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m108 0 h10 m0 0 h10 m102 0 h10 m20 0 h10 m26 0 h10 m20 0 h10 m134 0 h10 m-174 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m154 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-154 0 h10 m24 0 h10 m0 0 h110 m20 44 h10 m26 0 h10 m-306 0 h20 m286 0 h20 m-326 0 q10 0 10 10 m306 0 q0 -10 10 -10 m-316 10 v14 m306 0 v-14 m-306 14 q0 10 10 10 m286 0 q10 0 10 -10 m-296 10 h10 m0 0 h276 m22 -34 l2 0 m2 0 l2 0 m2 0 l2 0 m-190 82 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h140 m-170 0 h20 m150 0 h20 m-190 0 q10 0 10 10 m170 0 q0 -10 10 -10 m-180 10 v12 m170 0 v-12 m-170 12 q0 10 10 10 m150 0 q10 0 10 -10 m-160 10 h10 m130 0 h10 m20 -32 h10 m26 0 h10 m3 0 h-3"></path>
+<polygon points="745 395 753 391 753 399"></polygon>
+<polygon points="745 395 737 391 737 399"></polygon></svg>

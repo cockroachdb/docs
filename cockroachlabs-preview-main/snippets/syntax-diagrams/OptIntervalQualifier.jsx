@@ -1,0 +1,56 @@
+export const OptIntervalQualifier = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="57" width="225" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 5 1 1 1 9"></polygon>
+<polygon points="17 5 9 1 9 9"></polygon><a xlink:href="#interval_qualifier" xlink:title="interval_qualifier">
+<rect height="32" width="126" x="51" y="23"></rect>
+<rect class="nonterminal" height="32" width="126" x="49" y="21"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="102" font-size="10" class="nonterminal" x="61" y="41">interval_qualifier</text></a><path class="line" d="m17 5 h2 m20 0 h10 m0 0 h136 m-166 0 h20 m146 0 h20 m-186 0 q10 0 10 10 m166 0 q0 -10 10 -10 m-176 10 v12 m166 0 v-12 m-166 12 q0 10 10 10 m146 0 q10 0 10 -10 m-156 10 h10 m126 0 h10 m23 -32 h-3"></path>
+<polygon points="215 5 223 1 223 9"></polygon>
+<polygon points="215 5 207 1 207 9"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

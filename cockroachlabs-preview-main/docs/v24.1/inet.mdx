@@ -1,0 +1,79 @@
+---
+title: "INET"
+old_description: "The INET data type stores an IPv4 or IPv6 address."
+---
+
+The `INET` [data type](/docs/v24.1/data-types) stores an IPv4 or IPv6 address.
+
+## Syntax
+
+A constant value of type `INET` can be expressed using an [interpreted literal](/docs/v24.1/sql-constants#interpreted-literals), or a string literal [annotated with](/docs/v24.1/scalar-expressions#explicitly-typed-expressions) type `INET` or [coerced to](/docs/v24.1/scalar-expressions#explicit-type-coercions) type `INET`.
+
+`INET` constants can be expressed using the following formats:
+
+<table><thead><tr><th>Format</th><th>Description</th></tr></thead><tbody><tr><td>IPv4</td><td>Standard <a href="https://tools.ietf.org/html/rfc791">RFC791</a>-specified format of 4 octets expressed individually in decimal numbers and separated by periods. Optionally, the address can be followed by a subnet mask.<br/><br/>Examples: <code>'190.0.0.0'</code>, <code>'190.0.0.0/24'</code></td></tr><tr><td>IPv6</td><td>Standard <a href="https://tools.ietf.org/html/rfc8200">RFC8200</a>-specified format of 8 colon-separated groups of 4 hexadecimal digits. An IPv6 address can be mapped to an IPv4 address. Optionally, the address can be followed by a subnet mask.<br/><br/>Examples: <code>'2001:4f8:3:ba:2e0:81ff:fe22:d1f1'</code>, <code>'2001:4f8:3:ba:2e0:81ff:fe22:d1f1/120'</code>, <code>'::ffff:192.168.0.1/24'</code></td></tr></tbody></table>
+
+<Note>
+IPv4 addresses will sort before IPv6 addresses, including IPv4-mapped IPv6 addresses.
+</Note>
+
+## Size
+
+An `INET` value is 32 bits for IPv4 or 128 bits for IPv6.
+
+## Example
+
+```sql
+> CREATE TABLE computers (
+    ip INET PRIMARY KEY,
+    user_email STRING,
+    registration_date DATE
+  );
+```
+
+```sql
+> SHOW COLUMNS FROM computers;
+```
+
+```text
+     column_name    | data_type | is_nullable | column_default | generation_expression |  indices  | is_hidden
+--------------------+-----------+-------------+----------------+-----------------------+-----------+------------
+  ip                | INET      |    false    | NULL           |                       | {primary} |   false
+  user_email        | STRING    |    true     | NULL           |                       | {primary} |   false
+  registration_date | DATE      |    true     | NULL           |                       | {primary} |   false
+
+(3 rows)
+```
+
+```sql
+> INSERT INTO computers
+  VALUES
+    ('192.168.0.1', 'info@cockroachlabs.com', '2018-01-31'),
+    ('192.168.0.2/10', 'lauren@cockroachlabs.com', '2018-01-31'),
+    ('2001:4f8:3:ba:2e0:81ff:fe22:d1f1/120', 'test@cockroachlabs.com', '2018-01-31');
+```
+
+```sql
+> SELECT * FROM computers;
+```
+
+```text
++--------------------------------------+--------------------------+---------------------------+
+|                  ip                  |        user_email        |     registration_date     |
++--------------------------------------+--------------------------+---------------------------+
+| 192.168.0.1                          | info@cockroachlabs.com   | 2018-01-31 00:00:00+00:00 |
+| 192.168.0.2/10                       | lauren@cockroachlabs.com | 2018-01-31 00:00:00+00:00 |
+| 2001:4f8:3:ba:2e0:81ff:fe22:d1f1/120 | test@cockroachlabs.com   | 2018-01-31 00:00:00+00:00 |
++--------------------------------------+--------------------------+---------------------------+
+```
+
+## Supported casting and conversion
+
+`INET` values can be [cast](/docs/v24.1/data-types#data-type-conversions-and-casts) to the following data type:
+
+- `STRING` - Converts to format `'Address/subnet'`.
+
+## See also
+
+- [Data Types](/docs/v24.1/data-types)
+- [Functions and Operators](/docs/v24.1/functions-and-operators)

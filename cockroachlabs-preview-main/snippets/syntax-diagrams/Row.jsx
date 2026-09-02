@@ -1,0 +1,67 @@
+export const Row = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="81" width="369" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="54" x="51" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="49" y="1"></rect>
+<text class="terminal" x="59" y="21">ROW</text>
+<rect height="32" rx="10" width="26" x="125" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="123" y="1"></rect>
+<text class="terminal" x="133" y="21">(</text><a xlink:href="#opt_expr_list" xlink:title="opt_expr_list">
+<rect height="32" width="104" x="171" y="3"></rect>
+<rect class="nonterminal" height="32" width="104" x="169" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="80" font-size="10" class="nonterminal" x="181" y="21">opt_expr_list</text></a><rect height="32" rx="10" width="26" x="295" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="293" y="1"></rect>
+<text class="terminal" x="303" y="21">)</text><a xlink:href="#expr_tuple_unambiguous" xlink:title="expr_tuple_unambiguous">
+<rect height="32" width="182" x="51" y="47"></rect>
+<rect class="nonterminal" height="32" width="182" x="49" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="158" font-size="11" class="nonterminal" x="61" y="65">expr_tuple_unambiguous</text></a><path class="line" d="m17 17 h2 m20 0 h10 m54 0 h10 m0 0 h10 m26 0 h10 m0 0 h10 m104 0 h10 m0 0 h10 m26 0 h10 m-310 0 h20 m290 0 h20 m-330 0 q10 0 10 10 m310 0 q0 -10 10 -10 m-320 10 v24 m310 0 v-24 m-310 24 q0 10 10 10 m290 0 q10 0 10 -10 m-300 10 h10 m182 0 h10 m0 0 h88 m23 -44 h-3"></path>
+<polygon points="359 17 367 13 367 21"></polygon>
+<polygon points="359 17 351 13 351 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,20 @@
+---
+title: "Userscript Quickstart"
+old_description: "Get started writing and validating your first MOLT userscript."
+---
+
+import UserscriptQuickstart from "/snippets/molt/userscript-quickstart.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<UserscriptQuickstart />

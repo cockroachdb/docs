@@ -1,0 +1,116 @@
+---
+title: "cockroach init"
+old_description: "Perform a one-time-only initialization of a CockroachDB cluster."
+---
+
+This page explains the `cockroach init` [command](/docs/v25.2/cockroach-commands), which you use to perform a one-time initialization of a new multi-node cluster. For a full tutorial of the cluster startup and initialization process, see one of the [Manual Deployment](/docs/v25.2/manual-deployment) tutorials.
+
+<Note>
+When starting a single-node cluster with [`cockroach start-single-node`](/docs/v25.2/cockroach-start-single-node), you do not need to use the `cockroach init` command.
+</Note>
+
+## Synopsis
+
+Perform a one-time initialization of a cluster:
+
+```shell
+$ cockroach init <flags>
+```
+
+View help:
+
+```shell
+$ cockroach init --help
+```
+
+## Flags
+
+The `cockroach init` command supports the following [client connection](#client-connection) and [logging](#logging) flags.
+
+<Note>
+`cockroach init` must target one of the nodes that was listed with [`--join`](/docs/v25.2/cockroach-start#networking) when starting the cluster. Otherwise, the command will not initialize the cluster correctly.
+</Note>
+
+### Client connection
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a></a><code>--url</code></td><td>A <a href="/docs/v25.2/connection-parameters#connect-using-a-url">connection URL</a> to use instead of the other arguments. To convert a connection URL to the syntax that works with your client driver, run <a href="/docs/v25.2/connection-parameters#convert-a-url-for-different-drivers"><code>cockroach convert-url</code></a>.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;URL</code><br/><strong>Default:</strong> no URL</td></tr><tr><td><code>--host</code></td><td>The server host and port number to connect to. This can be the address of any node in the cluster.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;HOST</code><br/><strong>Default:</strong><code>localhost:26257</code></td></tr><tr><td><code>--port</code><br/><br/><code>-p</code></td><td>The server port to connect to. Note: The port number can also be specified via <code>--host</code>.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;PORT</code><br/><strong>Default:</strong><code>26257</code></td></tr><tr><td><code>--user</code><br/><br/><code>-u</code></td><td>The <a href="/docs/v25.2/create-user">SQL user</a> that will own the client session.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;USER</code><br/><strong>Default:</strong><code>root</code></td></tr><tr><td><code>--insecure</code></td><td>Use an insecure connection.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;INSECURE</code><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--cert-principal-map</code></td><td>A comma-separated list of <code>&lt;cert-principal&gt;:&lt;db-principal&gt;</code> mappings. This allows mapping the principal in a cert to a DB principal such as <code>node</code> or <code>root</code> or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the <code>Subject.CommonName</code> or <code>SubjectAlternateName</code> fields in the certificate (e.g., disallowing a <code>CommonName</code> like <code>node</code> or <code>root</code>). If multiple mappings are provided for the same <code>&lt;cert-principal&gt;</code>, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A cert is allowed to authenticate a DB principal if the DB principal name is contained in the mapped <code>CommonName</code> or DNS-type <code>SubjectAlternateName</code> fields.</td></tr><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v25.2/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr><tr><td><code>--cluster-name</code></td><td>The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, you must include this flag. For more information, see <a href="/docs/v25.2/cockroach-start#general"><code>cockroach start</code></a>.</td></tr><tr><td><code>--disable-cluster-name-verification</code></td><td>Disables the cluster name check for this command. This flag must be paired with <code>--cluster-name</code>. For more information, see <a href="/docs/v25.2/cockroach-start#general"><code>cockroach start</code></a>.</td></tr></tbody></table>
+
+See [Client Connection Parameters](/docs/v25.2/connection-parameters) for details.
+
+### Logging
+
+By default, this command logs messages to `stderr`. This includes events with `WARNING` [severity](/docs/v25.2/logging#logging-levels-severities) and higher.
+
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior](/docs/v25.2/configure-logs).
+
+## Examples
+
+Usage of `cockroach init` assumes that nodes have already been started with [`cockroach start`](/docs/v25.2/cockroach-start) and are waiting to be initialized as a new cluster. For a more detailed tutorial, see one of the [Manual Deployment](/docs/v25.2/manual-deployment) tutorials.
+
+### Initialize a Cluster on a Node's Machine
+
+<Tabs>
+<Tab title="Secure">
+
+1. SSH to the machine where the node has been started. This must be a node that was listed with [`--join`](/docs/v25.2/cockroach-start#networking) when starting the cluster.
+2. Make sure the `client.root.crt` and `client.root.key` files for the `root` user are on the machine.
+3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the current node:
+
+    ```shell
+    $ cockroach init --certs-dir=certs --host=<address of this node>
+    ```
+
+    At this point, all the nodes complete startup and print helpful details to the [standard output](/docs/v25.2/cockroach-start#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.
+
+</Tab>
+<Tab title="Insecure">
+
+1. SSH to the machine where the node has been started. This must be a node that was listed with [`--join`](/docs/v25.2/cockroach-start#networking) when starting the cluster.
+2. Run the `cockroach init` command with the `--host` flag set to the address of the current node:
+
+    ```shell
+    $ cockroach init --insecure --host=<address of this node>
+    ```
+
+    At this point, all the nodes complete startup and print helpful details to the [standard output](/docs/v25.2/cockroach-start#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.
+
+</Tab>
+</Tabs>
+
+### Initialize a cluster from another machine
+
+<Tabs>
+<Tab title="Secure">
+
+1. [Install the `cockroach` binary](/docs/v25.2/install-cockroachdb) on a machine separate from the node.
+2. Create a `certs` directory and copy the CA certificate and the client certificate and key for the `root` user into the directory.
+3. Run the `cockroach init` command with the `--certs-dir` flag set to the directory containing the `ca.crt` file and the files for the `root` user, and with the `--host` flag set to the address of the node. This must be a node that was listed with [`--join`](/docs/v25.2/cockroach-start#networking) when starting the cluster:
+
+    ```shell
+    $ cockroach init --certs-dir=certs --host=<address of any node on --join list>
+    ```
+
+    At this point, all the nodes complete startup and print helpful details to the [standard output](/docs/v25.2/cockroach-start#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.
+
+</Tab>
+<Tab title="Insecure">
+
+1. [Install the `cockroach` binary](/docs/v25.2/install-cockroachdb) on a machine separate from the node.
+2. Run the `cockroach init` command with the `--host` flag set to the address of the node. This must be a node that was listed with [`--join`](/docs/v25.2/cockroach-start#networking) when starting the cluster:
+
+    ```shell
+    $ cockroach init --insecure --host=<address of any node on --join list>
+    ```
+
+    At this point, all the nodes complete startup and print helpful details to the [standard output](/docs/v25.2/cockroach-start#standard-output), such as the CockroachDB version, the URL for the DB Console, and the SQL URL for clients.
+
+</Tab>
+</Tabs>
+
+## See also
+
+- [Manual Deployment](/docs/v25.2/manual-deployment)
+- [Orchestrated Deployment](/docs/v25.2/kubernetes-overview)
+- [Local Deployment](/docs/v25.2/start-a-local-cluster)
+- [`cockroach start`](/docs/v25.2/cockroach-start)
+- [`cockroach` Commands Overview](/docs/v25.2/cockroach-commands)

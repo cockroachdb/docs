@@ -1,0 +1,20 @@
+---
+title: "Technical Advisories"
+old_description: "Advisories about important security and stability aspects of CockroachDB."
+---
+
+import Advisories from "/snippets/advisories.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<Advisories />

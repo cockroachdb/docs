@@ -1,0 +1,20 @@
+---
+title: "Manage a CockroachDB Standard Cluster"
+old_description: "Manage your cluster's schema, data, and more."
+---
+
+import ClusterManagement from "/snippets/cockroachcloud/cluster-management.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ClusterManagement />

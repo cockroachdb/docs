@@ -1,0 +1,57 @@
+<svg height="177" width="291" xmlns="http://www.w3.org/2000/svg"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 5 1 1 1 9"></polygon>
+<polygon points="17 5 9 1 9 9"></polygon>
+<rect height="32" rx="10" width="48" x="71" y="55"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="69" y="53"></rect>
+<text class="terminal" x="79" y="73">NOT</text>
+<rect height="32" rx="10" width="76" x="159" y="23"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="157" y="21"></rect>
+<text class="terminal" x="167" y="41">VISIBLE</text>
+<rect height="32" rx="10" width="92" x="51" y="99"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="49" y="97"></rect>
+<text class="terminal" x="59" y="117">INVISIBLE</text>
+<rect height="32" rx="10" width="98" x="51" y="143"></rect>
+<rect class="terminal" height="32" rx="10" width="98" x="49" y="141"></rect>
+<text class="terminal" x="59" y="161">VISIBILITY</text>
+<rect height="32" rx="10" width="74" x="169" y="143"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="167" y="141"></rect>
+<text class="terminal" x="177" y="161">FCONST</text>
+<path class="line" d="m17 5 h2 m20 0 h10 m0 0 h202 m-232 0 h20 m212 0 h20 m-252 0 q10 0 10 10 m232 0 q0 -10 10 -10 m-242 10 v12 m232 0 v-12 m-232 12 q0 10 10 10 m212 0 q10 0 10 -10 m-202 10 h10 m0 0 h58 m-88 0 h20 m68 0 h20 m-108 0 q10 0 10 10 m88 0 q0 -10 10 -10 m-98 10 v12 m88 0 v-12 m-88 12 q0 10 10 10 m68 0 q10 0 10 -10 m-78 10 h10 m48 0 h10 m20 -32 h10 m76 0 h10 m0 0 h8 m-222 -10 v20 m232 0 v-20 m-232 20 v56 m232 0 v-56 m-232 56 q0 10 10 10 m212 0 q10 0 10 -10 m-222 10 h10 m92 0 h10 m0 0 h100 m-222 -10 v20 m232 0 v-20 m-232 20 v24 m232 0 v-24 m-232 24 q0 10 10 10 m212 0 q10 0 10 -10 m-222 10 h10 m98 0 h10 m0 0 h10 m74 0 h10 m23 -152 h-3"></path>
+<polygon points="281 5 289 1 289 9"></polygon>
+<polygon points="281 5 273 1 273 9"></polygon></svg>

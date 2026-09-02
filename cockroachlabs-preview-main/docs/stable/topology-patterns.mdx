@@ -1,0 +1,73 @@
+---
+title: "Topology Patterns Overview"
+old_description: "Recommended topology patterns for running CockroachDB in a cloud environment."
+---
+
+This page describes recommended topology patterns for running CockroachDB in a cloud environment and the expected impacts of these patterns on latency and resiliency.
+
+<Note>
+You can observe latency for your cluster on the [Network Latency page](/docs/v26.1/ui-network-latency-page) of the DB Console.
+</Note>
+
+## Single-region
+
+When your clients are in a single geographic region, choosing a topology pattern is straightforward.
+
+<table><thead><tr><th>Deployment Type</th><th>Latency</th><th>Resiliency</th><th>Configuration</th></tr></thead><tbody><tr><td>Development</td><td>- Fast reads and writes</td><td>- None</td><td>- 1 node<br/><br/>- No replication</td></tr><tr><td><a href="/docs/v26.1/topology-basic-production">Basic Production</a></td><td>- Fast reads and writes</td><td>- 1 zone failure</td><td>- 1 region<br/><br/>- 3 zones<br/><br/>- 3+ nodes across zones</td></tr></tbody></table>
+
+## Multi-region
+
+When your clients are in multiple geographic regions, it is important to deploy your cluster across regions properly and then carefully choose the right:
+
+- [Survival goal](/docs/v26.1/multiregion-overview#survival-goals) for each database.
+- [Table locality](/docs/v26.1/multiregion-overview#table-locality) for each table.
+
+Failure to consider either of these aspects can result in unexpected impacts on latency and resiliency. For more information, see the [Multi-Region Capabilities Overview](/docs/v26.1/multiregion-overview).
+
+The multi-region patterns described in the following table are almost always table-specific. For example, you might use [Regional Tables](/docs/v26.1/regional-tables) for frequently updated tables that are tied to a specific region, and [Global Tables](/docs/v26.1/global-tables) for reference tables that are not tied to a specific region, and that are read frequently but updated infrequently.
+
+<table><thead><tr><th>Pattern</th><th>Latency</th></tr></thead><tbody><tr><td><a href="/docs/v26.1/regional-tables">Regional Tables</a></td><td>Low latency for single-region writes and multi-region stale reads.</td></tr><tr><td><a href="/docs/v26.1/global-tables">Global Tables</a></td><td>Low-latency multi-region reads from all regions, at the expense of higher latency cross-region writes.</td></tr><tr><td><a href="/docs/v26.1/topology-follower-reads">Follower Reads</a></td><td>Fast regional (historical) reads, slower cross-region writes.</td></tr><tr><td><a href="/docs/v26.1/topology-follow-the-workload">Follow-the-Workload</a></td><td>Fast regional reads in the active region; slower cross-region reads elsewhere. Slower cross-region writes.</td></tr></tbody></table>
+
+<Note>
+In [multi-region databases](/docs/v26.1/multiregion-overview), the resiliency of each database depends on its [survival goal settings](/docs/v26.1/multiregion-overview#survival-goals).
+</Note>
+
+If you want low-latency read-only access to your data in multiple regions, Cockroach Labs recommends that you default to using stale follower reads on `REGIONAL` tables (the default locality). However, there are two reasons you might want to upgrade a table to `GLOBAL`:
+
+- You want low-latency consistent (non-stale) read access to the table in multiple regions from read-write transactions. One case where this is important is if the table is referenced by a [foreign key](/docs/v26.1/foreign-key) from a [`REGIONAL BY ROW`](/docs/v26.1/regional-tables#regional-by-row-tables) table. In these cases, the foreign key check that accompanies a write cannot use a stale read because it must be transactionally consistent with the write. To keep this foreign key check fast, you can make the reference table `GLOBAL`, at the expense of slower writes to that table.
+- When an [ORM](/docs/v26.1/install-client-drivers) or application-level tool makes follower reads too hard to use. In these cases, `GLOBAL` tables can allow you to achieve low-latency reads through a schema-level setting.
+
+In summary, Cockroach Labs recommends that you use follower reads whenever you can, and use `GLOBAL` tables when you can't.
+
+In the following demo, we show the importance of choosing the correct topology patterns for your tables:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/sO1Mr0Gmde0" title="YouTube video player" width="560"></iframe>
+</Frame>
+
+## Anti-patterns
+
+The following anti-patterns are ineffective or risky:
+
+- Single-region deployments using 2 zones, or multi-region deployments using 2 regions. In these cases, the cluster would be unable to survive the loss of a single zone or a single region, respectively.
+- Broadly distributed multi-region deployments (e.g., `us-west`, `asia`, and `europe` ) using only the default [Follow-the-Workload](/docs/v26.1/topology-follow-the-workload) behavior. In this case, latency will likely be unacceptably high.
+
+## See also
+
+- [Multi-Region Capabilities Overview](/docs/v26.1/multiregion-overview)
+- [How to Choose a Multi-Region Configuration](/docs/v26.1/choosing-a-multi-region-configuration)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](/docs/v26.1/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](/docs/v26.1/table-localities#when-to-use-regional-vs-global-tables)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v26.1/demo-low-latency-multi-region-deployment)
+- [Migrate to Multi-Region SQL](/docs/v26.1/migrate-to-multiregion-sql)
+- [Secondary regions](/docs/v26.1/multiregion-overview#secondary-regions)
+- [`ALTER DATABASE... SET SECONDARY REGION`](/docs/v26.1/alter-database#set-secondary-region)
+- [`ALTER DATABASE... DROP SECONDARY REGION`](/docs/v26.1/alter-database#drop-secondary-region)
+- [Topology Patterns Overview](/docs/v26.1/topology-patterns)
+    - Single-region patterns
+        - [Basic Production](/docs/v26.1/topology-basic-production)
+    - Multi-region patterns
+        - [`REGIONAL` Tables](/docs/v26.1/regional-tables)
+        - [`GLOBAL` Tables](/docs/v26.1/global-tables)
+        - [Follower Reads](/docs/v26.1/topology-follower-reads)
+        - [Follow-the-Workload](/docs/v26.1/topology-follow-the-workload)

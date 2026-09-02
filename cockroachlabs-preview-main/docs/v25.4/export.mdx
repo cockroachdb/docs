@@ -1,0 +1,267 @@
+---
+title: "EXPORT"
+old_description: "Export tabular data from a CockroachDB cluster in CSV format."
+---
+
+import { Export6 } from "/snippets/syntax-diagrams/Export6.jsx";
+
+<Note>
+**Cockroach Labs recommends using [changefeeds to export data](/docs/v25.4/export-data-with-changefeeds)** because they provide better performance for growing workloads. Additionally, changefeeds operate as jobs, which offer [observability](/docs/v25.4/monitor-and-debug-changefeeds), [scheduling](/docs/v25.4/export-data-with-changefeeds#create-a-scheduled-changefeed-to-export-filtered-data), and [job management](/docs/v25.4/create-and-configure-changefeeds).
+</Note>
+
+The `EXPORT` [statement](/docs/v25.4/sql-statements) exports tabular data or the results of arbitrary `SELECT` statements to the following:
+
+- CSV files
+- Parquet files
+
+Using the [CockroachDB distributed execution engine](/docs/v25.4/architecture/sql-layer#distsql), `EXPORT` parallelizes file creation across all nodes in the cluster, making it possible to quickly get large sets of data out of CockroachDB in a format that can be ingested by downstream systems.
+
+If you do not need distributed exports, you can [export tabular data in CSV format](#non-distributed-export-using-the-sql-client).
+
+## Cancelling export
+
+After the export has been initiated, you can cancel it with [`CANCEL QUERY`](/docs/v25.4/cancel-query).
+
+For detail on handling partially complete exports at the destination, refer to [Export File URL](#export-file-url).
+
+## Synopsis
+
+<Export6 />
+
+<Note>
+The `EXPORT` statement cannot be used within a [transaction](/docs/v25.4/transactions).
+</Note>
+
+## Required privileges
+
+The user must have the `SELECT` [privilege](/docs/v25.4/security-reference/authorization#managing-privileges) on the table being exported, unless the [destination URI requires `admin` privileges](/docs/v25.4/import-into#source-privileges).
+
+### Destination privileges
+
+You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege](/docs/v25.4/security-reference/authorization#supported-privileges) to interact with external resources that require implicit access.
+
+Either the `EXTERNALIOIMPLICITACCESS` [system-level privilege](/docs/v25.4/security-reference/authorization#supported-privileges) or the [`admin`](/docs/v25.4/security-reference/authorization#admin-role) role is required for the following scenarios:
+
+- Interacting with a cloud storage resource using [`IMPLICIT` authentication](/docs/v25.4/cloud-storage-authentication).
+- Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints) on S3.
+- Using the [`cockroach nodelocal upload`](/docs/v25.4/cockroach-nodelocal-upload) command.
+- Using [HTTP](/docs/v25.4/use-a-local-file-server) or HTTPS.
+
+No special privilege is required for:
+
+- Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
+- Using [Userfile](/docs/v25.4/use-userfile-storage) storage.
+
+We recommend using [cloud storage](/docs/v25.4/use-cloud-storage). You also need to ensure that the permissions at your storage destination are configured for the operation. See [Storage Permissions](/docs/v25.4/use-cloud-storage#storage-permissions) for a list of the necessary permissions that each bulk operation requires.
+
+<Warning>
+While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test [S3-compatible services](/docs/v25.4/cloud-storage-authentication) (e.g., [MinIO](https://min.io/), [Red Hat Ceph](https://docs.ceph.com/en/pacific/radosgw/s3)).
+</Warning>
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>file&#95;location</code></td><td>Specify the <a href="#export-file-url">URL of the file location</a> where you want to store the exported data.<br/><br/>Note: It is best practice to use a unique destination for each export, to avoid mixing files from different exports in one directory.</td></tr><tr><td><code>opt&#95;with&#95;options</code></td><td>Control your export's behavior with <a href="#export-options">these options</a>.</td></tr><tr><td><code>select&#95;stmt</code></td><td>Specify the query whose result you want to export.</td></tr><tr><td><code>table&#95;name</code></td><td>Specify the name of the table you want to export.</td></tr></tbody></table>
+
+### Export file URL
+
+You can specify the base directory where you want to store the exported files. CockroachDB will create the export file(s) in the specified directory with programmatically generated names (e.g., `exportabc123-n1.1.csv`, `exportabc123-n1.2.csv`, `exportabc123-n2.1.csv`,...). Each export should use a unique destination directory to avoid collision with other exports.
+
+The `EXPORT` command [returns](#success-responses) the list of files to which the data was exported. You may wish to record these for use in subsequent imports.
+
+If an export encounters some kind of failure or [cancellation](#cancel-a-running-export), it will leave any written files behind in the destination. To run a new export and avoid collision with previously written export files, consider doing the following:
+
+- Change the destination (or destination prefix) that you are exporting to.
+- Remove the partial results at the destination from any previously attempted exports.
+- Use a [changefeed export](/docs/v25.4/export-data-with-changefeeds) instead because it operates as a job, offering more observability into failures.
+
+<Note>
+A hexadecimal hash code (`abc123...` in the file names) uniquely identifies each export **run**; files sharing the same hash are part of the same export. If you see multiple hash codes within a single destination directory, then the directory contains multiple exports, which will likely cause confusion (duplication) on import. We recommend that you manually clean up the directory, to ensure that it contains only a single export run.
+</Note>
+
+For more information, see the following:
+
+- [Use Cloud Storage](/docs/v25.4/use-cloud-storage)
+- [Use a Local File Server](/docs/v25.4/use-a-local-file-server)
+
+You can create an external connection to represent an external storage or sink URI. This allows you to specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](/docs/v25.4/create-external-connection) page.
+
+### Export options
+
+You can control the [`EXPORT`](/docs/v25.4/export) process's behavior using any of the following key-value pairs as a `kv_option`.
+
+<table><thead><tr><th>Key</th><th>Context</th><th>Value</th></tr></thead><tbody><tr><td><code>delimiter</code></td><td><code>CSV DATA</code></td><td>The ASCII character that delimits columns in your rows. If not using comma as your column delimiter, you can specify another ASCII character as the delimiter. <strong>Default:</strong><code>,</code>.<br/><br/>To use tab-delimited values: <code>WITH delimiter = e'\t'</code><br/><br/>See the <a href="#export-a-table-into-csv">example</a>.</td></tr><tr><td><code>nullas</code></td><td><code>CSV DATA</code>, <code>DELIMITED DATA</code></td><td>The string that should be used to represent <code>NULL</code> values. To avoid collisions, it is important to pick <code>nullas</code> values that do not appear in the exported data.<br/><br/>To use empty columns as <code>NULL</code>: <code>WITH nullas = ''</code><br/><br/>See the <a href="#export-a-table-into-csv">example</a>.</td></tr><tr><td><code>compression</code></td><td><code>CSV DATA</code>, <code>PARQUET DATA</code></td><td>This instructs export to write compressed files to the specified destination.<br/><br/>For <code>CSV DATA</code>, <code>gzip</code> compression is supported. For <code>PARQUET DATA</code>, both <code>gzip</code> and <code>snappy</code> compression is supported.<br/><br/>See the <a href="#export-compressed-files">example</a>.</td></tr><tr><td><code>chunk&#95;rows</code></td><td><code>CSV DATA</code>, <code>PARQUET DATA</code></td><td>The number of rows to be converted and written to a single file. <strong>Default:</strong><code>100000</code>.<br/>For example, <code>WITH chunk&#95;rows = '5000'</code> for a table with 10,000 rows would produce two files.<br/><br/><strong>Note</strong>:<code>EXPORT</code> will stop and upload the file whether the configured limit for <code>chunk&#95;rows</code> or <code>chunk&#95;size</code> is reached first.</td></tr><tr><td><code>chunk&#95;size</code></td><td><code>CSV DATA</code>, <code>PARQUET DATA</code></td><td>A target size per file that you can specify during an <code>EXPORT</code>. Once the target size is reached, the file is uploaded before processing further rows. <strong>Default:</strong><code>32MB</code>.<br/>For example, to set the size of each file uploaded during the export to 10MB: <code>WITH chunk&#95;size = '10MB'</code>.<br/><br/><strong>Note</strong>:<code>EXPORT</code> will stop and upload the file whether the configured limit for <code>chunk&#95;rows</code> or <code>chunk&#95;size</code> is reached first.</td></tr></tbody></table>
+
+## Success responses
+
+Successful `EXPORT` returns a table of (perhaps multiple) files to which the data was exported:
+
+<table><thead><tr><th>Response</th><th>Description</th></tr></thead><tbody><tr><td><code>filename</code></td><td>The file to which the data was exported.</td></tr><tr><td><code>rows</code></td><td>The number of rows exported to this file.</td></tr><tr><td><code>bytes</code></td><td>The file size in bytes.</td></tr></tbody></table>
+
+## Parquet types
+
+CockroachDB types map to [Parquet types](https://github.com/apache/parquet-format/blob/master/LogicalTypes.md) listed in the following table. All columns witten to Parquet files will be nullable, therefore the Parquet repetition level is `optional`.
+
+<table><thead><tr><th>CockroachDB Type</th><th>Parquet Type</th><th>Parquet Logical Type</th></tr></thead><tbody><tr><td><a href="/docs/v25.4/bool"><code>BOOL</code></a></td><td><code>BOOLEAN</code></td><td><code>nil</code></td></tr><tr><td><a href="/docs/v25.4/string"><code>STRING</code></a></td><td>byte array</td><td><code>STRING</code></td></tr><tr><td><a href="/docs/v25.4/collate"><code>COLLATE</code></a></td><td>byte array</td><td><code>STRING</code></td></tr><tr><td><a href="/docs/v25.4/inet"><code>INET</code></a></td><td>byte array</td><td><code>STRING</code></td></tr><tr><td><a href="/docs/v25.4/jsonb"><code>JSONB</code></a></td><td>byte array</td><td><code>JSON</code></td></tr><tr><td><a href="/docs/v25.4/int"><code>INT</code></a><a href="/docs/v25.4/int"><code>INT8</code></a></td><td><code>INT64</code></td><td><code>nil</code></td></tr><tr><td><a href="/docs/v25.4/int"><code>INT2</code></a><a href="/docs/v25.4/int"><code>INT4</code></a></td><td><code>INT32</code></td><td><code>nil</code></td></tr><tr><td><a href="/docs/v25.4/float"><code>FLOAT</code></a><a href="/docs/v25.4/float"><code>FLOAT8</code></a></td><td><code>FLOAT64</code></td><td><code>nil</code></td></tr><tr><td><a href="/docs/v25.4/float"><code>FLOAT4</code></a></td><td><code>FLOAT32</code></td><td><code>nil</code></td></tr><tr><td><a href="/docs/v25.4/decimal"><code>DECIMAL</code></a></td><td>byte array</td><td><code>DECIMAL</code><br/>Note: scale and precision data are preserved in the Parquet file.</td></tr><tr><td><a href="/docs/v25.4/uuid"><code>UUID</code></a></td><td><code>fixed&#95;len&#95;byte&#95;array</code></td><td><code>nil</code></td></tr><tr><td><a href="/docs/v25.4/bytes"><code>BYTES</code></a></td><td>byte array</td><td><code>nil</code></td></tr><tr><td><a href="/docs/v25.4/bit"><code>BIT</code></a></td><td>byte array</td><td><code>nil</code></td></tr><tr><td><a href="/docs/v25.4/enum"><code>ENUM</code></a></td><td>byte array</td><td><code>ENUM</code></td></tr><tr><td><a href="/docs/v25.4/data-types#data-type-conversions-and-casts"><code>Box2D</code></a></td><td>byte array</td><td><code>STRING</code></td></tr><tr><td><a href="/docs/v25.4/data-types#data-type-conversions-and-casts"><code>GEOGRAPHY</code></a></td><td>byte array</td><td><code>nil</code></td></tr><tr><td><a href="/docs/v25.4/data-types#data-type-conversions-and-casts"><code>GEOMETRY</code></a></td><td>byte array</td><td><code>nil</code></td></tr><tr><td><a href="/docs/v25.4/date"><code>DATE</code></a></td><td>byte array</td><td><code>STRING</code></td></tr><tr><td><a href="/docs/v25.4/time"><code>TIME</code></a></td><td><code>INT64</code></td><td><code>TIME</code><br/>Note: microseconds after midnight;<br/>exporting to microsecond precision.</td></tr><tr><td><a href="/docs/v25.4/time"><code>TIMETZ</code></a></td><td>byte array</td><td><code>STRING</code><br/>Note: exporting to microsecond precision.</td></tr><tr><td><a href="/docs/v25.4/interval"><code>INTERVAL</code></a></td><td>byte array</td><td><code>STRING</code><br/>Note: specifically represented as ISO8601.</td></tr><tr><td><a href="/docs/v25.4/timestamp"><code>TIMESTAMP</code></a></td><td>byte array</td><td><code>STRING</code><br/>Note: exporting to microsecond precision.</td></tr><tr><td><a href="/docs/v25.4/timestamp"><code>TIMESTAMPTZ</code></a></td><td>byte array</td><td><code>STRING</code><br/>Note: exporting to microsecond precision.</td></tr><tr><td><a href="/docs/v25.4/array"><code>ARRAY</code></a></td><td>Encoded as a repeated field;<br/>each array value is encoded as per the preceding types.</td><td><code>nil</code></td></tr></tbody></table>
+
+## Exports and `AS OF SYSTEM TIME`
+
+The [`AS OF SYSTEM TIME`](/docs/v25.4/as-of-system-time) clause is not required in `EXPORT` statements, even though they are long-running queries. If it is omitted, `AS OF SYSTEM TIME` is implicitly set to the start of the statement's execution. The risk of [contention](/docs/v25.4/performance-best-practices-overview#transaction-contention) is low because other transactions would need to have exactly the same transaction start time as the `EXPORT` statement's start time.
+
+## Examples
+
+The following examples make use of:
+
+- Amazon S3 connection strings. For guidance on connecting to other storage options or using other authentication parameters instead, read [Use Cloud Storage](/docs/v25.4/use-cloud-storage#example-file-urls).
+- The **default** `AUTH=specified` parameter. For guidance on using `AUTH=implicit` authentication with Amazon S3 buckets instead, read [Cloud Storage Authentication](/docs/v25.4/cloud-storage-authentication).
+
+Also, note the following features for connecting and authenticating to cloud storage:
+
+- External connections, which allow you to represent an external storage or sink URI. You can then specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](/docs/v25.4/create-external-connection) page.
+- Assume role authentication, which allows you to limit the control specific users have over your storage buckets. See [Assume role authentication](/docs/v25.4/cloud-storage-authentication) for more information.
+
+Each of these examples use the `bank` database and the `customers` table; `customer-export-data` is the demonstration path to which we're exporting our customers' data in this example.
+
+### Export a table into CSV
+
+This example uses the `delimiter` option to define the ASCII character that delimits columns in your rows:
+
+```sql
+> EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+```
+
+This examples uses the `nullas` option to define the string that represents `NULL` values:
+
+```sql
+> EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  WITH nullas = '' FROM TABLE bank.customers;
+```
+
+### Export a table into Parquet
+
+```sql
+> EXPORT INTO PARQUET
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  FROM TABLE bank.customers;
+```
+
+### Export using a `SELECT` statement
+
+```sql
+> EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  FROM SELECT * FROM bank.customers WHERE id >= 100;
+```
+
+For more information, see [selection queries](/docs/v25.4/selection-queries).
+
+### Non-distributed export using the SQL client
+
+```shell
+$ cockroach sql -e "SELECT * from bank.customers WHERE id>=100;" --format=csv > my.csv
+```
+
+For more information about the SQL client, see [`cockroach sql`](/docs/v25.4/cockroach-sql).
+
+### Export compressed files
+
+`gzip` compression is supported for both `PARQUET` and `CSV` file formats:
+
+```sql
+> EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  WITH compression = 'gzip' FROM TABLE bank.customers;
+```
+
+```text
+filename                                           | rows | bytes
+---------------------------------------------------+------+--------
+export16808a04292505c80000000000000001-n1.0.csv.gz |   17 |   824
+(1 row)
+```
+
+`PARQUET` data also supports `snappy` compression:
+
+```sql
+> EXPORT INTO PARQUET
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  WITH compression = 'snappy' FROM TABLE bank.customers;
+```
+
+```text
+filename                                                   | rows | bytes
+-----------------------------------------------------------+------+--------
+export16808a04292505c80000000000000001-n1.0.parquet.snappy |   17 |   824
+(1 row)
+```
+
+### Export tabular data with an S3 storage class
+
+To associate your export objects with a [specific storage class](/docs/v25.4/use-cloud-storage#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+```sql
+> EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+```
+
+Use the parameter to set one of these [storage classes](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject#AmazonS3-PutObject-request-header-StorageClass) listed in Amazon's documentation. For more general usage information, see Amazon's [Using Amazon S3 storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro) documentation.
+
+### Export data out of CockroachDB Cloud
+
+Using `EXPORT` with [`userfile`](/docs/v25.4/use-userfile-storage) is not recommended. You can either export data to [cloud storage](/docs/v25.4/use-cloud-storage) or to a local CSV file by using [`cockroach sql --execute`](/docs/v25.4/cockroach-sql#general):
+
+<Tabs>
+<Tab title="local CSV">
+
+The following example exports the `customers` table from the `bank` database into a local CSV file:
+
+```shell
+$ cockroach sql \
+--url 'postgres://{username}:{password}@{host}:26257?sslmode=verify-full&sslrootcert={path/to/certs_dir}/cc-ca.crt' \
+--execute "SELECT * FROM bank.customers" --format=csv > /Users/{username}/{path/to/file}/customers.csv
+```
+
+</Tab>
+<Tab title="Cloud storage">
+
+The following example exports the `customers` table from the `bank` database into a cloud storage bucket in CSV format:
+
+```sql
+EXPORT INTO CSV
+  's3://{BUCKET NAME}/{customer-export-data}?AWS_ACCESS_KEY_ID={ACCESS KEY}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+  WITH delimiter = '|' FROM TABLE bank.customers;
+```
+
+</Tab>
+</Tabs>
+
+### View a running export
+
+View running exports by using [`SHOW STATEMENTS`](/docs/v25.4/show-statements):
+
+```sql
+> SHOW STATEMENTS;
+```
+
+### Cancel a running export
+
+Use [`SHOW STATEMENTS`](/docs/v25.4/show-statements) to get a running export's `query_id`, which can be used to [cancel the export](/docs/v25.4/cancel-query):
+
+```sql
+> CANCEL QUERY '14dacc1f9a781e3d0000000000000001';
+```
+
+For detail on handling partially complete exports at the destination, refer to [Export File URL](#export-file-url).
+
+## Known limitation
+
+`EXPORT` may fail with an error if the SQL statements are incompatible with DistSQL. In that case, [export tabular data in CSV format](#non-distributed-export-using-the-sql-client).
+
+## See also
+
+- [`IMPORT INTO`](/docs/v25.4/import-into)
+- [Use a Local File Server](/docs/v25.4/use-a-local-file-server)
+- [Use Cloud Storage](/docs/v25.4/use-cloud-storage)

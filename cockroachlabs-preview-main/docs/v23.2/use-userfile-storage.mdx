@@ -1,0 +1,162 @@
+---
+title: "Use Userfile Storage"
+old_description: "Store data from CockroachDB operations in your cluster's userfile storage."
+---
+
+To put files on your CockroachDB cluster without external servers, use `userfile`, a per-user file storage. To interact with `userfile`, use the following [commands](/docs/v23.2/cockroach-commands):
+
+- [`cockroach userfile upload`](#upload-a-file)
+- [`cockroach userfile list`](#list-files)
+- [`cockroach userfile get`](#get-files)
+- [`cockroach userfile delete`](#delete-files)
+
+Once a userfile is uploaded, you can run [`IMPORT`](#import-from-userfile).
+
+For `PGDUMP` and `MYSQLDUMP` formats, you can use [`cockroach import`](#upload-and-import-from-a-dump-file) to upload a userfile, import its data, and delete the userfile in one command.
+
+You can create an external connection to represent an external storage or sink URI. This allows you to specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](/docs/v23.2/create-external-connection) page.
+
+## Upload a file
+
+<Note>
+A userfile uses storage space in the cluster, and is replicated with the rest of the cluster's data. We recommend using [`cockroach userfile upload`](/docs/v23.2/cockroach-userfile-upload) for quick uploads from your client (about 15MB or smaller).
+</Note>
+
+```shell
+$ cockroach userfile upload /Users/maxroach/Desktop/test-data.csv /test-data.csv --certs-dir=certs
+```
+
+```text
+successfully uploaded to userfile://defaultdb.public.userfiles_root/test-data.csv
+```
+
+For more information, see [`cockroach userfile upload`](/docs/v23.2/cockroach-userfile-upload).
+
+## List files
+
+```shell
+$ cockroach userfile list '*.csv' --certs-dir=certs
+```
+
+```text
+userfile://defaultdb.public.userfiles_root/test-data-2.csv
+userfile://defaultdb.public.userfiles_root/test-data.csv
+```
+
+For more information, see [`cockroach userfile list`](/docs/v23.2/cockroach-userfile-list).
+
+## Get files
+
+```shell
+$ cockroach userfile get test-data.csv --certs-dir=certs
+```
+
+For more information, see [`cockroach userfile get`](/docs/v23.2/cockroach-userfile-get).
+
+## Delete files
+
+```shell
+$ cockroach userfile delete test-data.csv --certs-dir=certs
+```
+
+```text
+deleted userfile://defaultdb.public.userfiles_root/test-data.csv
+```
+
+For more information, see [`cockroach userfile delete`](/docs/v23.2/cockroach-userfile-delete).
+
+## Upload and import from a dump file
+
+<Note>
+We recommend using [`cockroach import`](/docs/v23.2/cockroach-import) for quick imports from your client (about 15MB or smaller). For larger imports, use the [IMPORT](/docs/v23.2/import) statement.
+</Note>
+
+```shell
+$ cockroach import db mysqldump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
+```
+
+```text
+successfully imported mysqldump file /Users/maxroach/Desktop/test-db.sql
+```
+
+For more information, see [`cockroach import`](/docs/v23.2/cockroach-import).
+
+## Import from `userfile`
+
+To import from `userfile`, first create the table that you would like to import into:
+
+```sql
+CREATE TABLE customers (
+  id INT,
+  dob DATE,
+  first_name STRING,
+  last_name STRING,
+  joined DATE
+);
+```
+
+Then, use `IMPORT INTO` to import data into the table:
+
+```sql
+IMPORT INTO customers (id, dob, first_name, last_name, joined)
+   CSV DATA ('userfile:///test-data.csv');
+```
+
+`userfile:///` references the default path (`userfile://defaultdb.public.userfiles_$user/`).
+
+```text
+        job_id       |  status   | fraction_completed |  rows  | index_entries |  bytes
+---------------------+-----------+--------------------+--------+---------------+-----------
+  599865027685613569 | succeeded |                  1 | 300024 |             0 | 13389972
+(1 row)
+```
+
+For more import options, see [`IMPORT INTO`](/docs/v23.2/import-into).
+
+## Backup and restore with `userfile`
+
+We recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](/docs/v23.2/as-of-system-time). Read our guidance in the [Performance](/docs/v23.2/backup#performance) section on the [`BACKUP`](/docs/v23.2/backup) page.
+
+<Note>
+Only database and table-level backups are possible when using `userfile` as storage. Restoring cluster-level backups will not work because `userfile` data is stored in the `defaultdb` database, and you cannot restore a cluster with existing table data.
+</Note>
+
+When working on the same cluster, `userfile` storage allows for database and table-level backups.
+
+First, run the following statement to backup a database to a directory in the default `userfile` space:
+
+```sql
+BACKUP DATABASE bank INTO 'userfile://defaultdb.public.userfiles_$user/bank-backup' AS OF SYSTEM TIME '-10s';
+```
+
+This directory will hold the files that make up a backup; including the manifest file and data files.
+
+<Note>
+When backing up from a cluster and restoring a database or table that is stored in your `userfile` space to a different cluster, you can run [`cockroach userfile get`](/docs/v23.2/cockroach-userfile-get) to download the backup files to a local machine and [`cockroach userfile upload -r <location/of/file> <userfile destination/of/file> --url {CONNECTION STRING}`](/docs/v23.2/cockroach-userfile-upload#upload-a-directory-recursively) to upload to the `userfile` of the restoring cluster.
+</Note>
+
+In cases when your database needs to be restored, run the following:
+
+```sql
+RESTORE DATABASE bank FROM LATEST IN 'userfile://defaultdb.public.userfiles_$user/bank-backup';
+```
+
+It is also possible to run `userfile:///bank-backup` as `userfile:///` refers to the default path `userfile://defaultdb.public.userfiles_$user/`.
+
+Once the backup data is no longer needed, delete from the `userfile` storage with the following command:
+
+```shell
+cockroach userfile delete bank-backup --url {CONNECTION STRING}
+```
+
+If you use `cockroach userfile delete {file}`, it will take as long as the [garbage collection](/docs/v23.2/configure-replication-zones#gc-ttlseconds) to be removed from disk.
+
+## See also
+
+- [`cockroach userfile upload`](/docs/v23.2/cockroach-userfile-upload)
+- [`cockroach userfile list`](/docs/v23.2/cockroach-userfile-list)
+- [`cockroach userfile get`](/docs/v23.2/cockroach-userfile-get)
+- [`cockroach userfile delete`](/docs/v23.2/cockroach-userfile-delete)
+- [`cockroach` Commands Overview](/docs/v23.2/cockroach-commands)
+- [`IMPORT`](/docs/v23.2/import)
+- [`IMPORT INTO`](/docs/v23.2/import-into)

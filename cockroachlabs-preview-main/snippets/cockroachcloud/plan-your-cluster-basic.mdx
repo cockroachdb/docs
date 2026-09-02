@@ -1,0 +1,91 @@
+---
+title: "Plan a CockroachDB Basic Cluster"
+old_description: "Plan your cluster's configuration."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  versioned={true}
+  currentPath="/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster-basic"
+  items={[
+    {
+      title: "CockroachDB Basic",
+      href: "/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster-basic",
+    },
+    {
+      title: "CockroachDB Standard",
+      href: "/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster",
+    },
+    {
+      title: "CockroachDB Advanced",
+      href: "/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster-advanced",
+    },
+  ]}
+/>
+
+This page describes how resource usage, pricing, and cluster configurations work in CockroachDB Basic. For information on diagnosing and optimizing your resource consumption, see <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/resource-usage" data-versioned="true">Optimize your Resource Usage</a>.
+
+## Request Units
+
+All cluster activity, including SQL queries, bulk operations, and background jobs, is measured in Request Units, or RUs. An RU is an abstracted metric that represents the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/resource-usage#understand-resource-consumption" data-versioned="true">compute and I/O resources</a> used by a database operation. In addition to queries that you run, background activity, such as automatic statistics to optimize your queries or running a changefeed to an external sink, also consumes RUs. You can review how many request units your cluster has used on the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-overview-page#request-units" data-versioned="true">Cluster Overview</a> page.
+
+## Pricing
+
+With CockroachDB Basic, you are charged only for the storage and activity of your cluster. Cluster activity is measured in [Request Units](#request-units); cluster storage is measured in GiB and is based on the total amount of storage your cluster used over a billing period. Request Unit consumption scales to zero when your cluster has no activity.
+
+RU and storage consumption is prorated at the following prices:
+
+<table><thead><tr><th>Unit</th><th>Cost</th></tr></thead><tbody><tr><td>1M Request Units</td><td>&#36;0.20</td></tr><tr><td>1 GiB storage</td><td>&#36;0.50</td></tr></tbody></table>
+
+Refer to [Pricing](https://cockroachlabs.com/pricing) to see cost estimates of common queries and how they increase with the size and complexity of the query. You can view your cluster's RU and storage usage on the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-overview-page" data-versioned="true">**Cluster Overview** page</a>.
+
+## Free vs. paid usage
+
+CockroachDB Basic clusters scale based on your workload so that you will only pay for what you use beyond the free resources. Each pay-as-you-go CockroachDB Cloud organization - those paying monthly by credit card or marketplace - is given &#36;15 of resource consumption (equivalent to 50 million [Request Units](#request-units) and 10 GiB of storage) for free each month. Every monthly billing cycle, this free monthly resource benefit can be spent across all CockroachDB Basic clusters in an organization. The free usage appears as a &#36;15 deduction on your monthly invoice.
+
+<Note>
+Customers with annual or multi-year contracts are not eligible for the free monthly resource benefit.
+</Note>
+
+Setting resource limits will allow your cluster to scale to meet your application's needs and maintain a high level of performance. You must <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/basic-cluster-management#edit-cluster-capacity" data-versioned="true">set resource limits</a> if you've already created one free CockroachDB Basic cluster. To set your limits, you can either set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You can also choose an unlimited amount of resources to prevent your cluster from ever being throttled or disabled.
+
+## Choose resource limits
+
+Your cluster's <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/create-a-basic-cluster#step-4-configure-cluster-capacity" data-versioned="true">configured capacity</a> determines the <a href="/docs/VERSION_PLACEHOLDER/architecture/glossary#resource-limits" data-versioned="true">resource limits</a> (the maximum amount of storage and RUs the cluster can use in a month).
+
+- If you reach your storage limit, your cluster will be unable to write to its storage unless you delete data or increase your storage limit.
+- If you reach your RU limit, your cluster will be disabled until you increase your RU limit or a new billing cycle begins.
+
+The best way to estimate your resource usage is to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/basic-cluster-management#edit-cluster-capacity" data-versioned="true">set resource limits</a> you're comfortable with and run your workload. You can see the RUs and storage your cluster has used in the **Usage this month** section of the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/basic-cluster-management#view-cluster-overview" data-versioned="true">**Cluster Overview**</a> page. Once enough usage data is available, you can also see a graph of your monthly resource usage and recommended spend limit on the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/basic-cluster-management#edit-cluster-capacity" data-versioned="true">**Edit cluster**</a> page.
+
+A typical `SELECT` query consumes between 1 and 15 RUs, depending on the amount of data it scans and returns. A typical `INSERT` or `UPDATE` statement consumes between 10 and 25 RUs, depending on the amount of data it inserts or updates. To estimate the RU consumption of individual SQL statements, you can use the <a href="/docs/VERSION_PLACEHOLDER/explain-analyze" data-versioned="true">`EXPLAIN ANALYZE`</a> SQL statement. For an example, see <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/resource-usage#example-request-unit-calculation" data-versioned="true">Example Request Unit calculation</a>.
+
+Cockroach Labs recommends setting your resource limits to about 30% higher than your expected usage to prevent cluster disruption. To learn about tuning your workload to reduce costs, refer to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/resource-usage" data-versioned="true">Understand your Resource Usage</a>.
+
+Each <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#organization-admin" data-versioned="true">Organization Admin</a> will receive email alerts when a cluster reaches 50%, 75%, and 100% of its <a href="/docs/VERSION_PLACEHOLDER/architecture/glossary#resource-limits" data-versioned="true">resource limits</a>.
+
+## Multi-region clusters
+
+When you create a multi-region Basic cluster, you will be prompted to select a **Primary region** from which CockroachDB will optimize access to data. If you want to change your region configuration, <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/basic-cluster-management#edit-regions" data-versioned="true">you can use the Cloud Console</a>, or you can <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/managed-backups" data-versioned="true">back up and restore</a> your data into a new cluster with the desired configuration.
+
+<Note>
+You cannot currently remove regions once they have been added.
+</Note>
+
+For optimal performance, deploy client applications in one of your cluster's configured regions. CockroachDB Basic uses a geolocation routing policy to automatically route clients to the nearest region, even if that region is not one of your cluster's configured regions. This means that if you are running an application from a region that is not used by your cluster, connecting to that region may cause high network latency. This may be acceptable for development, but should be avoided for any production or performance-sensitive applications.
+
+While multi-region CockroachDB Advanced clusters must have a minimum of three regions, Basic clusters can survive <a href="/docs/VERSION_PLACEHOLDER/multiregion-survival-goals#survive-zone-failures" data-versioned="true">zone failures</a> with only two regions. To survive a <a href="/docs/VERSION_PLACEHOLDER/multiregion-survival-goals#survive-region-failures" data-versioned="true">regional failure</a>, a minimum of three regions is required.
+
+Databases created in CockroachDB Basic will automatically inherit all of a cluster's regions, so it is not necessary to run <a href="/docs/VERSION_PLACEHOLDER/alter-database#add-region" data-versioned="true">`ALTER DATABASE... ADD REGION`</a> to configure regions when adding a database to the cluster. To override the default inheritance, you can specify the primary region with the <a href="/docs/VERSION_PLACEHOLDER/create-database" data-versioned="true">`CREATE DATABASE <db_name> WITH PRIMARY REGION`</a> SQL syntax or the <a href="/docs/VERSION_PLACEHOLDER/cluster-settings#setting-sql-defaults-primary-region" data-versioned="true">`sql.defaults_primary_region`</a> setting.
+
+Storage for a multi-region cluster is billed at the same rate as a single-region cluster. However, by default data is replicated three times in the primary region and once in each additional region, and each replica in the additional regions will accrue more storage costs. For example, a three-region cluster with data replicated five times will use 5/3 times the storage space of a single-region cluster where data is replicated three times.
+
+Cross-region operations consume RUs for cross-region networking. Cross-region networking costs depend on the source and destination regions. For read operations, the source region contains the replica and the destination region is the gateway region. For write operations, the source region is the gateway region and the destination region contains the replica. There is a network charge for each replica to which an operation writes. Refer to [Pricing](https://www.cockroachlabs.com/pricing) for a matrix of cross-region costs.
+
+Keep in mind the following key points when planning your multi-region CockroachDB Basic application's architecture:
+
+- Write-heavy applications may experience a significant increase in RU consumption because replicating writes across all regions consumes more resources.
+- Read-heavy applications may experience a smaller increase in RU consumption because the resources required to read from a single region of a multi-region cluster are comparable with a single-region cluster.
+- Cross-region reads are an anti-pattern and may significantly increase RU consumption. Features such as <a href="/docs/VERSION_PLACEHOLDER/global-tables" data-versioned="true">global tables</a>, <a href="/docs/VERSION_PLACEHOLDER/regional-tables" data-versioned="true">regional by row tables</a>, and <a href="/docs/VERSION_PLACEHOLDER/follower-reads" data-versioned="true">follower reads</a> help avoid most cross-region reads.
+- Cross-region writes will also consume additional RUs, but should not significantly increase consumption.

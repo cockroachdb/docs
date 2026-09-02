@@ -1,0 +1,81 @@
+export const DeleteStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="169" width="701" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="#opt_with_clause" xlink:title="opt_with_clause">
+<rect height="32" width="124" x="31" y="3"></rect>
+<rect class="nonterminal" height="32" width="124" x="29" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="100" font-size="10" class="nonterminal" x="41" y="21">opt_with_clause</text></a><rect height="32" rx="10" width="70" x="175" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="173" y="1"></rect>
+<text class="terminal" x="183" y="21">DELETE</text><a xlink:href="#opt_batch_clause" xlink:title="opt_batch_clause">
+<rect height="32" width="132" x="265" y="3"></rect>
+<rect class="nonterminal" height="32" width="132" x="263" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="108" font-size="10" class="nonterminal" x="275" y="21">opt_batch_clause</text></a><rect height="32" rx="10" width="60" x="417" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="415" y="1"></rect>
+<text class="terminal" x="425" y="21">FROM</text><a xlink:href="#table_expr_opt_alias_idx" xlink:title="table_expr_opt_alias_idx">
+<rect height="32" width="182" x="497" y="3"></rect>
+<rect class="nonterminal" height="32" width="182" x="495" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="158" font-size="10" class="nonterminal" x="507" y="21">table_expr_opt_alias_idx</text></a><a xlink:href="#opt_using_clause" xlink:title="opt_using_clause">
+<rect height="32" width="132" x="65" y="69"></rect>
+<rect class="nonterminal" height="32" width="132" x="63" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="108" font-size="10" class="nonterminal" x="75" y="87">opt_using_clause</text></a><a xlink:href="#opt_where_clause" xlink:title="opt_where_clause">
+<rect height="32" width="136" x="217" y="69"></rect>
+<rect class="nonterminal" height="32" width="136" x="215" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="112" font-size="11" class="nonterminal" x="227" y="87">opt_where_clause</text></a><a xlink:href="#opt_sort_clause" xlink:title="opt_sort_clause">
+<rect height="32" width="122" x="373" y="69"></rect>
+<rect class="nonterminal" height="32" width="122" x="371" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="98" font-size="10" class="nonterminal" x="383" y="87">opt_sort_clause</text></a><a xlink:href="#opt_limit_clause" xlink:title="opt_limit_clause">
+<rect height="32" width="124" x="515" y="69"></rect>
+<rect class="nonterminal" height="32" width="124" x="513" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="100" font-size="10" class="nonterminal" x="525" y="87">opt_limit_clause</text></a><a xlink:href="#returning_clause" xlink:title="returning_clause">
+<rect height="32" width="126" x="547" y="135"></rect>
+<rect class="nonterminal" height="32" width="126" x="545" y="133"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="102" font-size="10" class="nonterminal" x="557" y="153">returning_clause</text></a><path class="line" d="m17 17 h2 m0 0 h10 m124 0 h10 m0 0 h10 m70 0 h10 m0 0 h10 m132 0 h10 m0 0 h10 m60 0 h10 m0 0 h10 m182 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-658 66 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m132 0 h10 m0 0 h10 m136 0 h10 m0 0 h10 m122 0 h10 m0 0 h10 m124 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-136 66 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m126 0 h10 m3 0 h-3"></path>
+<polygon points="691 149 699 145 699 153"></polygon>
+<polygon points="691 149 683 145 683 153"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

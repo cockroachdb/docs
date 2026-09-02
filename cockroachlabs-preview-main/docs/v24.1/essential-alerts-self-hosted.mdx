@@ -1,0 +1,505 @@
+---
+title: "Essential Alerts for CockroachDB Self-Hosted Deployments"
+old_description: "Learn about the recommended essential alerts for monitoring your CockroachDB &#123;&#123; site.data.products.core &#125;&#125; cluster."
+---
+
+## Platform
+
+### High CPU
+
+A node with a high CPU utilization, an *overloaded* node, has a limited ability to process the user workload and increases the risks of cluster instability.
+
+**Metric**
+[`sys.cpu.combined.percent-normalized`](/docs/v24.1/essential-metrics-self-hosted#sys-cpu-combined-percent-normalized)
+[`sys.cpu.host.combined.percent-normalized`](/docs/v24.1/essential-metrics-self-hosted#sys-cpu-host-combined-percent-normalized)
+
+**Rule**
+Set alerts for each node for each of the listed metrics:
+WARNING: Metric greater than `0.80` for `4 hours`
+CRITICAL: Metric greater than `0.90` for `1 hour`
+
+**Action**
+
+- Refer to [CPU Usage](/docs/v24.1/common-issues-to-monitor#cpu-usage) and [Workload Concurrency](/docs/v24.1/common-issues-to-monitor#workload-concurrency).
+- In the DB Console, navigate to **Metrics**, [**Hardware** dashboard](/docs/v24.1/ui-hardware-dashboard) for the cluster and check for high values on the [**CPU Percent** graph](/docs/v24.1/ui-hardware-dashboard#cpu-percent) and the [**Host CPU Percent** graph](/docs/v24.1/ui-hardware-dashboard#host-cpu-percent).
+- In the DB Console, navigate to **Metrics**, [**SQL** dashboard](/docs/v24.1/ui-sql-dashboard) for the cluster and check for high values on the [**Active SQL Statements** graph](/docs/v24.1/ui-sql-dashboard#active-sql-statements). This graph shows the true concurrency of the workload, which may exceed the cluster capacity planning guidance of no more than 4 active statements per vCPU or core.
+- A persistently high CPU utilization of all nodes in a CockroachDB cluster suggests the current compute resources may be insufficient to support the user workload's concurrency requirements. If confirmed, the number of processors (vCPUs or cores) in the CockroachDB cluster needs to be adjusted to sustain the required level of workload concurrency. For a prompt resolution, either add cluster nodes or throttle the workload concurrency, for example, by reducing the number of concurrent connections to not exceed 4 active statements per vCPU or core.
+
+### Hot node (hot spot)
+
+Unbalanced utilization of CockroachDB nodes in a cluster may negatively affect the cluster's performance and stability, with some nodes getting overloaded while others remain relatively underutilized.
+
+**Metric**
+[`sys.cpu.combined.percent-normalized`](/docs/v24.1/essential-metrics-self-hosted#sys-cpu-host-combined-percent-normalized)
+[`sys.cpu.host.combined.percent-normalized`](/docs/v24.1/essential-metrics-self-hosted#sys-cpu-host-combined-percent-normalized)
+
+**Rule**
+Set alerts for each of the listed metrics:
+WARNING: The max CPU utilization across all nodes exceeds the cluster's median CPU utilization by `30` for `2 hours`
+
+**Action**
+
+- Refer to [Hot spots](/docs/v24.1/performance-recipes#hot-spots).
+
+### Node memory utilization
+
+One node with high memory utilization is a cluster stability risk. High memory utilization is a prelude to a node's [out-of-memory (OOM) crash](/docs/v24.1/cluster-setup-troubleshooting#out-of-memory-oom-crash) — the process is terminated by the OS when the system is critically low on memory. An OOM condition is not expected to occur if a CockroachDB cluster is provisioned and sized per [Cockroach Labs guidance](/docs/v24.1/common-issues-to-monitor#memory-planning).
+
+**Metric**
+[`sys.rss`](/docs/v24.1/essential-metrics-self-hosted#sys-rss)
+
+**Rule**
+Set alerts for each node:
+WARNING: `sys.rss` greater than `0.80` for `4 hours`
+CRITICAL: `sys.rss` greater than `0.90` for `1 hour`
+
+**Action**
+
+- Provision all CockroachDB VMs or machines with [sufficient RAM](/docs/v24.1/recommended-production-settings#memory).
+
+### Node storage performance
+
+Under-configured or under-provisioned disk storage is a common root cause of inconsistent CockroachDB cluster performance and could also lead to cluster instability. Refer to [Disk IOPS](/docs/v24.1/common-issues-to-monitor#disk-iops).
+
+**Metric**
+[`sys.host.disk.iopsinprogress`](/docs/v24.1/essential-metrics-self-hosted#sys-host-disk-iopsinprogress)
+
+**Rule**
+WARNING: `sys.host.disk.iopsinprogress` greater than `10` for `10 seconds`
+CRITICAL: `sys.host.disk.iopsinprogress` greater than `20` for `10 seconds`
+
+**Action**
+
+- Provision enough storage capacity for CockroachDB data, and configure your volumes to maximize disk I/O. Refer to [Storage and disk I/O](/docs/v24.1/common-issues-to-monitor#storage-and-disk-i-o).
+
+### Version mismatch
+
+All CockroachDB cluster nodes should be running the same exact executable (with identical build label). This warning guards against an operational error where some nodes were not upgraded.
+
+**Metric**
+`build.timestamp`
+
+**Rule**
+Set alerts for each node:
+WARNING: `build.timestamp` not the same across cluster nodes for more than `4 hours`
+
+**Action**
+
+- Ensure all cluster nodes are running exactly the same CockroachDB version, including the patch release version number.
+
+### High open file descriptor count
+
+Send an alert when a cluster is getting close to the open file descriptor limit.
+
+**Metric**
+`sys.fd.open`
+`sys.fd.softlimit`
+
+**Rule**
+Set alerts for each node:
+WARNING: `sys_fd_open` / `sys_fd_softlimit` greater than `0.8` for `10 minutes`
+
+**Action**
+
+- Refer to [File descriptors limit](/docs/v24.1/recommended-production-settings#file-descriptors-limit).
+
+## Storage
+
+### Node storage capacity
+
+A CockroachDB node will not able to operate if there is no free disk space on a CockroachDB [store](/docs/v24.1/cockroach-start#store) volume.
+
+**Metric**
+[`capacity`](/docs/v24.1/essential-metrics-self-hosted#capacity)
+[`capacity.available`](/docs/v24.1/essential-metrics-self-hosted#capacity-available)
+
+**Rule**
+Set alerts for each node:
+WARNING: `capacity.available`/`capacity` is less than `0.30` for `24 hours`
+CRITICAL: `capacity.available`/`capacity` is less than `0.10` for `1 hour`
+
+**Action**
+
+- Refer to [Storage Capacity](/docs/v24.1/common-issues-to-monitor#storage-capacity).
+- Increase the size of CockroachDB node storage capacity. CockroachDB storage volumes should not be utilized more than 60% (40% free space).
+- In a "disk full" situation, you may be able to get a node "unstuck" by removing the [automatically created emergency ballast file](/docs/v24.1/cluster-setup-troubleshooting#automatic-ballast-files).
+
+### Write stalls
+
+A high `write-stalls` value means CockroachDB is unable to write to a disk in an acceptable time, resulting in CockroachDB facing a disk latency issue and not responding to writes.
+
+**Metric**
+[`storage.write-stalls`](/docs/v24.1/essential-metrics-self-hosted#storage-write-stalls)
+
+**Rule**
+Set alerts for each node:
+WARNING: `storage.write-stalls` per minute is greater than or equal to `1` per minute
+CRITICAL: `storage.write-stalls` per second is greater than or equal to `1` per second
+
+**Action**
+
+- Refer to [Disk stalls](/docs/v24.1/cluster-setup-troubleshooting#disk-stalls).
+
+## Health
+
+### Node restarting too frequently
+
+Send an alert if a node has restarted more than once in the last 10 minutes. Calculate this using the number of times the `sys.uptime` metric was reset back to zero.
+
+**Metric**
+[`sys.uptime`](/docs/v24.1/essential-metrics-self-hosted#sys-uptime)
+
+**Rule**
+Set alerts for each node:
+WARNING: `sys.uptime` resets greater than `1` in the last `10 minutes`
+
+**Action**
+
+- Refer to [Node process restarts](/docs/v24.1/common-issues-to-monitor#node-process-restarts).
+
+### Node LSM storage health
+
+CockroachDB uses the [Pebble](/docs/v24.1/architecture/storage-layer#pebble) storage engine that uses a [Log-structured Merge-tree (LSM tree)](/docs/v24.1/architecture/storage-layer#log-structured-merge-trees) to manage data storage. The health of an LSM tree can be measured by the [*read amplification*](/docs/v24.1/architecture/storage-layer#inverted-lsms), which is the average number of [SST files](/docs/v24.1/architecture/storage-layer#log-structured-merge-trees) being checked per read operation. A value in the single digits is characteristic of a healthy LSM tree. A value in the double, triple, or quadruple digits suggests an [inverted LSM](/docs/v24.1/architecture/storage-layer#inverted-lsms). A node reporting a high read amplification is an indication of a problem on that node that is likely to affect the workload.
+
+**Metric**
+`rocksdb.read-amplification`
+
+**Rule**
+Set alerts for each node:
+WARNING: `rocksdb.read-amplification` greater than `50` for `1 hour`
+CRITICAL: `rocksdb.read-amplification` greater than `150` for `15 minutes`
+
+**Action**
+
+- Refer to [LSM Health](/docs/v24.1/common-issues-to-monitor#lsm-health).
+
+## Expiration of license and certificates
+
+### Enterprise license expiration
+
+Avoid [license](/docs/v24.1/licensing-faqs#types-of-licenses) expiration to avoid any disruption to feature access.
+
+**Metric**
+[`seconds.until.enterprise.license.expiry`](/docs/v24.1/essential-metrics-self-hosted#seconds-until-enterprise-license-expiry)
+
+**Rule**
+WARNING: `seconds.until.enterprise.license.expiry` is greater than `0` and less than `1814400` seconds (3 weeks)
+CRITICAL: `seconds.until.enterprise.license.expiry` is greater than `0` and less than `259200` seconds (3 days)
+
+**Action**
+
+[Renew the enterprise license](/docs/v24.1/licensing-faqs#renew-an-expired-license).
+
+### Security certificate expiration
+
+Avoid [security certificate](/docs/v24.1/cockroach-cert) expiration.
+
+**Metric**
+[`security.certificate.expiration.ca`](/docs/v24.1/essential-metrics-self-hosted#security-certificate-expiration-ca)
+[`security.certificate.expiration.client-ca`](/docs/v24.1/essential-metrics-self-hosted#security-certificate-expiration-client-ca)
+[`security.certificate.expiration.ui`](/docs/v24.1/essential-metrics-self-hosted#security-certificate-expiration-ui)
+[`security.certificate.expiration.ui-ca`](/docs/v24.1/essential-metrics-self-hosted#security-certificate-expiration-ui-ca)
+[`security.certificate.expiration.node`](/docs/v24.1/essential-metrics-self-hosted#security-certificate-expiration-node)
+[`security.certificate.expiration.node-client`](/docs/v24.1/essential-metrics-self-hosted#security-certificate-expiration-node-client)
+
+**Rule**
+Set alerts for each of the listed metrics:
+WARNING: Metric is greater than `0` and less than `1814400` seconds (3 weeks) until enterprise license expiration
+CRITICAL: Metric is greater than `0` and less than `259200` seconds (3 days) until enterprise license expiration
+
+**Action**
+
+[Rotate the expiring certificates](/docs/v24.1/rotate-certificates).
+
+## KV distributed
+
+<Note>
+During [rolling maintenance](/docs/v24.1/upgrade-cockroach-version) or planned cluster resizing, the nodes' state and count will be changing. **Mute KV distributed alerts described in the following sections during routine maintenance procedures** to avoid unnecessary distractions.
+</Note>
+
+### Heartbeat latency
+
+Monitor the cluster health for early signs of instability. If this metric exceeds 1 second, it is a sign of instability.
+
+**Metric**
+[`liveness.heartbeatlatency`](/docs/v24.1/essential-metrics-self-hosted#liveness-heartbeatlatency)
+
+**Rule**
+WARNING: `liveness.heartbeatlatency` greater than `0.5s`
+CRITICAL: `liveness.heartbeatlatency` greater than `3s`
+
+**Action**
+
+- Refer to [Node liveness issues](/docs/v24.1/cluster-setup-troubleshooting#node-liveness-issues).
+
+### Live node count change
+
+The liveness checks reported by a node is inconsistent with the rest of the cluster. Number of live nodes in the cluster (will be 0 if this node is not itself live). This is a critical metric that tracks the live nodes in the cluster.
+
+**Metric**
+[`liveness.livenodes`](/docs/v24.1/essential-metrics-self-hosted#liveness-livenodes)
+
+**Rule**
+Set alerts for each node:
+WARNING: max(`liveness.livenodes`) for the cluster - min(`liveness.livenodes`) for node &gt; `0` for `2 minutes`
+CRITICAL: max(`liveness.livenodes`) for the cluster - min(`liveness.livenodes`) for node &gt; `0` for `5 minutes`
+
+**Action**
+
+- Refer to [Node liveness issues](/docs/v24.1/cluster-setup-troubleshooting#node-liveness-issues).
+
+### Intent buildup
+
+Send an alert when very large transactions are [locking](/docs/v24.1/architecture/transaction-layer#write-intents) millions of keys (rows). A common example is a transaction with a [`DELETE`](/docs/v24.1/delete) that affects a large number of rows. Transactions with an excessively large scope are often inadvertent, perhaps due to a non-selective filter and a specific data distribution that was not anticipated by an application developer.
+
+Transactions that create a large number of [write intents](/docs/v24.1/architecture/transaction-layer#write-intents) could have a negative effect on the workload's performance. These transactions may create locking contention, thus limiting concurrency. This would reduce throughput, and in extreme cases, lead to stalled workloads.
+
+**Metric**
+`intentcount`
+
+**Rule**
+WARNING: `intentcount` greater than 10,000,000 for 2 minutes
+CRITICAL: `intentcount` greater than 10,000,000 for 5 minutes
+For tighter transaction scope scrutiny, lower the `intentcount` threshold that triggers an alert.
+
+**Action**
+
+- Identify the large scope transactions that acquire a lot of locks. Consider reducing the scope of large transactions, implementing them as several smaller scope transactions. For example, if the alert is triggered by a large scope `DELETE`, consider "paging" `DELETE` s that target thousands of records instead of millions. This is often the most effective resolution, however it generally means an application level [refactoring](/docs/v24.1/bulk-update-data).
+- After reviewing the workload, you may conclude that a possible performance impact of allowing transactions to take a large number of intents is not a concern. For example, a large delete of obsolete, not-in-use data may create no concurrency implications and the elapsed time to execute that transaction may not be impactful. In that case, no response could be a valid way to handle this alert.
+
+## KV replication
+
+### Unavailable ranges
+
+Send an alert when the number of ranges with fewer live replicas than needed for quorum is non-zero for too long.
+
+**Metric**
+[`ranges.unavailable`](/docs/v24.1/essential-metrics-self-hosted#ranges-unavailable)
+
+**Rule**
+WARNING: `ranges.unavailable` greater than `0` for `10 minutes`
+
+**Action**
+
+- Refer to [Replication issues](/docs/v24.1/cluster-setup-troubleshooting#replication-issues).
+
+### Tripped replica circuit breakers
+
+Send an alert when a replica stops serving traffic due to other replicas being offline for too long.
+
+**Metric**
+`kv.replica_circuit_breaker.num_tripped_replicas`
+
+**Rule**
+WARNING: `kv.replica_circuit_breaker.num_tripped_replicas` greater than `0` for `10 minutes`
+
+**Action**
+
+- Refer to [Per-replica circuit breakers](/docs/v24.1/architecture/replication-layer#per-replica-circuit-breakers) and [Replication issues](/docs/v24.1/cluster-setup-troubleshooting#replication-issues).
+
+### Under-replicated ranges
+
+Send an alert when the number of ranges with replication below the replication factor is non-zero for too long.
+
+**Metric**
+[`ranges.underreplicated`](/docs/v24.1/essential-metrics-self-hosted#ranges-underreplicated)
+
+**Rule**
+WARNING: `ranges.underreplicated` greater than `0` for `1 hour`
+
+**Action**
+
+- Refer to [Replication issues](/docs/v24.1/cluster-setup-troubleshooting#replication-issues).
+
+### Requests stuck in Raft
+
+Send an alert when requests are taking a very long time in replication. An (evaluated) request has to pass through the replication layer, notably the quota pool and raft. If it fails to do so within a highly permissive duration, the gauge is incremented (and decremented again once the request is either applied or returns an error). A nonzero value indicates range or replica unavailability, and should be investigated. This can also be a symptom of a [leader-leaseholder split](/docs/v24.1/architecture/replication-layer#leader-leaseholder-splits).
+
+**Metric**
+`requests.slow.raft`
+
+**Rule**
+WARNING: `requests.slow.raft` greater than `0` for `10 minutes`
+
+**Action**
+
+- Refer to [Raft](/docs/v24.1/architecture/replication-layer#raft) and [Replication issues](/docs/v24.1/cluster-setup-troubleshooting#replication-issues).
+
+## SQL
+
+### Node not executing SQL
+
+Send an alert when a node is not executing SQL despite having connections. `sql.conns` shows the number of connections as well as the distribution, or balancing, of connections across cluster nodes. An imbalance can lead to nodes becoming overloaded.
+
+**Metric**
+[`sql.conns`](/docs/v24.1/essential-metrics-self-hosted#sql-conns)
+`sql.query.count`
+
+**Rule**
+Set alerts for each node:
+WARNING: `sql.conns` greater than `0` while `sql.query.count` equals `0`
+
+**Action**
+
+- Refer to [Connection Pooling](/docs/v24.1/connection-pooling).
+
+### SQL query failure
+
+Send an alert when the query failure count exceeds a user-determined threshold based on their application's SLA.
+
+**Metric**
+[`sql.failure.count`](/docs/v24.1/essential-metrics-self-hosted#sql-failure-count)
+
+**Rule**
+WARNING: `sql.failure.count` is greater than a threshold (based on the user’s application SLA)
+
+**Action**
+
+- Use the [**Insights** page](/docs/v24.1/ui-insights-page) to find failed executions with their error code to troubleshoot or use application-level logs, if instrumented, to determine the cause of error.
+
+### SQL queries experiencing high latency
+
+Send an alert when the query latency exceeds a user-determined threshold based on their application’s SLA.
+
+**Metric**
+[`sql.service.latency`](/docs/v24.1/essential-metrics-self-hosted#sql-service-latency)
+[`sql.conn.latency`](/docs/v24.1/essential-metrics-self-hosted#sql-conn-latency)
+
+**Rule**
+WARNING: (p99 or p90 of `sql.service.latency` plus average of `sql.conn.latency`) is greater than a threshold (based on the user’s application SLA)
+
+**Action**
+
+- Apply the time range of the alert to the [**SQL Activity** pages](/docs/v24.1/monitoring-and-alerting#sql-activity-pages) to investigate. Use the [**Statements** page](/docs/v24.1/ui-statements-page) P90 Latency and P99 latency columns to correlate [statement fingerprints](/docs/v24.1/ui-statements-page#sql-statement-fingerprints) with this alert.
+
+## Backup
+
+### Backup failure
+
+While CockroachDB is a distributed product, there is always a need to ensure backups complete.
+
+**Metric**
+[`schedules.BACKUP.failed`](/docs/v24.1/essential-metrics-self-hosted#schedules-BACKUP-failed)
+
+**Rule**
+Set alerts for each node:
+WARNING: `schedules.BACKUP.failed` is greater than `0`
+
+**Action**
+
+- Refer to [Backup and Restore Monitoring](/docs/v24.1/backup-and-restore-monitoring).
+
+## Changefeeds
+
+<Note>
+During [rolling maintenance](/docs/v24.1/upgrade-cockroach-version), [changefeed jobs](/docs/v24.1/change-data-capture-overview) restart following node restarts. **Mute changefeed alerts described in the following sections during routine maintenance procedures** to avoid unnecessary distractions.
+</Note>
+
+### Changefeed failure
+
+Changefeeds can suffer permanent failures (that the [jobs system](/docs/v24.1/monitor-and-debug-changefeeds) will not try to restart). Any increase in this metric counter should prompt investigative action.
+
+**Metric**
+[`changefeed.failures`](/docs/v24.1/essential-metrics-self-hosted#changefeed-failures)
+
+**Rule**
+CRITICAL: If `changefeed.failures` is greater than `0`
+
+**Action**
+
+1. If the alert is triggered during cluster maintenance, mute it. Otherwise start investigation with the following query:
+
+    ```sql
+    SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency", created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused', 'pause-requested') ORDER BY created DESC;
+    ```
+2. If the cluster is not undergoing maintenance, check the health of [sink](/docs/v24.1/changefeed-sinks) endpoints. If the sink is [Kafka](/docs/v24.1/changefeed-sinks#kafka), check for sink connection errors such as `ERROR: connecting to kafka: path.to.cluster:port: kafka: client has run out of available brokers to talk to (Is your cluster reachable?)`.
+
+### Frequent changefeed restarts
+
+Changefeeds automatically restart in case of transient errors. However too many restarts outside of a routine maintenance procedure may be due to a systemic condition and should be investigated.
+
+**Metric**
+[`changefeed.error_retries`](/docs/v24.1/essential-metrics-self-hosted#changefeed-error-retries)
+
+**Rule**
+WARNING: If `changefeed.error_retries` is greater than `50` for more than `15 minutes`
+
+**Action**
+
+- Follow the action for a [changefeed failure](#changefeed-failure).
+
+### Changefeed falling behind
+
+Changefeed has fallen behind. This is determined by the end-to-end lag between a committed change and that change applied at the destination. This can be due to cluster capacity or changefeed sink availability.
+
+**Metric**
+[`changefeed.commit_latency`](/docs/v24.1/essential-metrics-self-hosted#changefeed-commit-latency)
+
+**Rule**
+WARNING: `changefeed.commit_latency` is greater than `10 minutes`
+CRITICAL: `changefeed.commit_latency` is greater than `15 minutes`
+
+**Action**
+
+1. In the DB Console, navigate to **Metrics**, [**Changefeeds** dashboard](/docs/v24.1/ui-cdc-dashboard) for the cluster and check the maximum values on the [**Commit Latency** graph](/docs/v24.1/ui-cdc-dashboard#commit-latency). Alternatively, individual changefeed latency can be verified by using the following SQL query:
+
+    ```sql
+    SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency", created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused', 'pause-requested') ORDER BY created DESC;
+    ```
+2. Copy the `job_id` for the changefeed job with highest `changefeed latency` and pause the job:
+
+    ```sql
+    PAUSE JOB 681491311976841286;
+    ```
+3. Check the status of the pause request by running the query from step 1. If the job status is `pause-requested`, check again in a few minutes.
+4. After the job is `paused`, resume the job.
+
+    ```sql
+    RESUME JOB 681491311976841286;
+    ```
+5. If the changefeed latency does not progress after these steps due to lack of cluster resources or availability of the changefeed sink, [contact Support](https://support.cockroachlabs.com/).
+
+### Changefeed has been paused a long time
+
+Changefeed jobs should not be paused for a long time because [the protected timestamp prevents garbage collection](/docs/v24.1/protect-changefeed-data). To protect against an operational error, this alert guards against an inadvertently forgotten pause.
+
+**Metric**
+[`jobs.changefeed.currently_paused`](/docs/v24.1/essential-metrics-self-hosted#changefeed-currently-paused)
+
+**Rule**
+WARNING: `jobs.changefeed.currently_paused` is greater than `0` for more than `15 minutes`
+CRITICAL: `jobs.changefeed.currently_paused` is greater than `0` for more than `60 minutes`
+
+**Action**
+
+1. Check the status of each changefeed using the following SQL query:
+
+    ```sql
+    SELECT job_id, status, ((high_water_timestamp/1000000000)::INT::TIMESTAMP) - NOW() AS "changefeed latency",created, LEFT(description, 60), high_water_timestamp FROM crdb_internal.jobs WHERE job_type = 'CHANGEFEED' AND status IN ('running', 'paused','pause-requested') ORDER BY created DESC;
+    ```
+2. If all the changefeeds have status as `running`, one or more changefeeds may have run into an error and recovered. In the DB Console, navigate to **Metrics**, [**Changefeeds** dashboard](/docs/v24.1/ui-cdc-dashboard) for the cluster and check the [**Changefeed Restarts** graph](/docs/v24.1/ui-cdc-dashboard#changefeed-restarts).
+3. Resume paused changefeed(s) with the `job_id` using:
+
+    ```sql
+    RESUME JOB 681491311976841286;
+    ```
+
+### Changefeed experiencing high latency
+
+Send an alert when the maximum latency of any running changefeed exceeds a specified threshold, which is less than the [`gc.ttlseconds`](/docs/v24.1/configure-replication-zones#replication-zone-variables) variable set in the cluster. This alert ensures that the changefeed progresses faster than the garbage collection TTL, preventing a changefeed's protected timestamp from delaying garbage collection.
+
+**Metric**
+[`changefeed.checkpoint_progress`](/docs/v24.1/monitor-and-debug-changefeeds#metrics)
+
+**Rule**
+WARNING: (current time minus `changefeed.checkpoint_progress`) is greater than a threshold (that is less than `gc.ttlseconds` variable)
+
+**Action**
+
+- Refer to [Monitor and Debug Changefeeds](/docs/v24.1/monitor-and-debug-changefeeds#recommended-changefeed-metrics-to-track).
+
+## See also
+
+- [Events to alert on](/docs/v24.1/monitoring-and-alerting#events-to-alert-on)
+- [Common Issues to Monitor](/docs/v24.1/common-issues-to-monitor)
+- [Essential Metrics for CockroachDB Self-Hosted Deployments](/docs/v24.1/essential-metrics-self-hosted)

@@ -1,0 +1,20 @@
+---
+title: "Customer-Managed Encryption Keys (CMEK) Overview"
+old_description: "Use cryptographic keys that you manage to protect data at rest in a CockroachDB Advanced cluster."
+---
+
+import Cmek from "/snippets/cockroachcloud/cmek.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<Cmek />

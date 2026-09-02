@@ -1,0 +1,76 @@
+---
+title: "CHECK EXTERNAL CONNECTION"
+old_description: "Test the connection of each node to your cloud storage location."
+---
+
+import { CheckExternalConnection3 } from "/snippets/syntax-diagrams/CheckExternalConnection3.jsx";
+
+The `CHECK EXTERNAL CONNECTION` tests the connection from each node in the cluster to an external cloud storage location. `CHECK EXTERNAL CONNECTION` will measure the time it takes each node to write a file, read it, and delete it from the specified storage location. You can adjust the number and concurrency of the test runs as well as the size of the file to write and read for each test.
+
+<Note>
+You can use the `CHECK EXTERNAL CONNECTION` to test the connection to [**cloud storage**](/docs/v25.4/use-cloud-storage) locations.
+</Note>
+
+## Synopsis
+
+<CheckExternalConnection3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>connection&#95;uri</code></td><td>The URI to the external storage. Specify the <a href="/docs/v25.4/use-cloud-storage">provider's URI</a> (e.g., <code>gs://bucket&#95;name?AUTH...</code>) or a user-defined <a href="/docs/v25.4/create-external-connection">external connection</a> (e.g., <code>external://gcs</code>).</td></tr></tbody></table>
+
+## Options
+
+<table><thead><tr><th>Option</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>concurrently</code></td><td><code>INT</code></td><td>Run multiple connection tests concurrently. If you also set the <code>time</code> option, it will run the specified number of concurrent tests until the time has elapsed. By default, only <code>1</code> connection test will run.</td></tr><tr><td><code>time</code></td><td><code>STRING</code></td><td>Run the test repeatedly until the duration has elapsed.</td></tr><tr><td><code>transfer</code></td><td><code>STRING</code></td><td>The size of the file that is written and read during each iteration of the connection test. By default, this will transfer a <code>32MiB</code> file.</td></tr></tbody></table>
+
+## Responses
+
+<table><thead><tr><th>Field</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>node</code></td><td><code>INT</code></td><td>The node ID.</td></tr><tr><td><code>locality</code></td><td><code>STRING</code></td><td>The <a href="/docs/v25.4/cockroach-start#locality">locality</a> of the node.</td></tr><tr><td><code>ok</code></td><td><code>BOOL</code></td><td>Whether the test run succeeded.</td></tr><tr><td><code>error</code></td><td><code>STRING</code></td><td>Errors encountered during the test run.</td></tr><tr><td><code>transferred</code></td><td><code>STRING</code></td><td>The size of the file transferred during the test.</td></tr><tr><td><code>read&#95;speed</code></td><td><code>STRING</code></td><td>The speed at which the node read the test file.</td></tr><tr><td><code>write&#95;speed</code></td><td><code>STRING</code></td><td>The speed at which the node wrote the test file.</td></tr><tr><td><code>can&#95;delete</code></td><td><code>BOOL</code></td><td>Whether file deletion succeeded.</td></tr></tbody></table>
+
+## Test an external connection
+
+Specify the connection URI to the [external storage location](/docs/v25.4/use-cloud-storage), or a created [external connection](/docs/v25.4/create-external-connection):
+
+```sql
+CHECK EXTERNAL CONNECTION 'external://cloud-storage';
+```
+
+```text
+  node |                 locality                  | ok | error | transferred | read_speed  | write_speed | can_delete
+-------+-------------------------------------------+----+-------+-------------+-------------+-------------+-------------
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 32 MiB      | 66.17 MiB/s | 37.52 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 32 MiB      | 41.77 MiB/s | 33.55 MiB/s |     t
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 32 MiB      | 14.23 MiB/s | 37.12 MiB/s |     t
+```
+
+To modify the testing parameters, use one or a combination of the options: `concurrently`, `time`, `transfer`. For details on each, refer to [Options](#options).
+
+```sql
+CHECK EXTERNAL CONNECTION 'external://cloud-storage' WITH transfer = '50MiB', concurrently = 5, time = '1ms';
+```
+
+```text
+  node |                 locality                  | ok | error | transferred | read_speed  | write_speed | can_delete
+-------+-------------------------------------------+----+-------+-------------+-------------+-------------+-------------
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 59.85 MiB/s | 34.99 MiB/s |     t
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 58.26 MiB/s | 34.91 MiB/s |     t
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 57.69 MiB/s | 32.30 MiB/s |     t
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 55.51 MiB/s | 33.02 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 59.29 MiB/s | 31.45 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 55.61 MiB/s | 32.58 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 61.04 MiB/s | 29.63 MiB/s |     t
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 47.69 MiB/s | 34.04 MiB/s |     t
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 55.66 MiB/s | 30.39 MiB/s |     t
+     1 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 57.77 MiB/s | 29.64 MiB/s |     t
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 44.95 MiB/s | 34.41 MiB/s |     t
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 46.77 MiB/s | 33.31 MiB/s |     t
+     2 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 57.64 MiB/s | 28.96 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 58.99 MiB/s | 26.65 MiB/s |     t
+     3 | cloud=gce,region=us-east1,zone=us-east1-b | t  |       | 50 MiB      | 15.14 MiB/s | 33.45 MiB/s |     t
+```
+
+## See also
+
+- [Use Cloud Storage](/docs/v25.4/use-cloud-storage)
+- [Backup and Restore Overview](/docs/v25.4/backup-and-restore-overview)
+- [`CREATE EXTERNAL CONNECTION`](/docs/v25.4/create-external-connection)

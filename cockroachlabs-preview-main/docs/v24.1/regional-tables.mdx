@@ -1,0 +1,249 @@
+---
+title: "Regional Tables"
+old_description: "Guidance on using regional table locality in a multi-region deployment."
+---
+
+In a [multi-region deployment](/docs/v24.1/multiregion-overview), [regional table locality](/docs/v24.1/multiregion-overview#table-locality) is a good choice for tables with the following requirements:
+
+- Read and write latency must be low.
+- Rows in the table, and all latency-sensitive queries, can be tied to specific regions.
+
+Tables with regional table locality can survive zone or region failures, depending on the database-level [survival goal](/docs/v24.1/multiregion-overview#survival-goals) setting.
+
+<Tip>
+For new clusters using the [multi-region SQL abstractions](/docs/v24.1/multiregion-overview), Cockroach Labs recommends lowering the [`--max-offset`](/docs/v24.1/cockroach-start#flags-max-offset) setting to `250ms`. This setting is especially helpful for lowering the write latency of [global tables](/docs/v24.1/table-localities#global-tables). Nodes can run with different values for `--max-offset`, but only for the purpose of updating the setting across the cluster using a rolling upgrade.
+</Tip>
+
+## Before you begin
+
+### Fundamentals
+
+Multi-region patterns require thinking about the following questions:
+
+- What are your [survival goals](/docs/v24.1/multiregion-overview#survival-goals)? Do you need to survive a [zone failure](/docs/v24.1/multiregion-survival-goals#survive-zone-failures)? Do you need to survive a [region failure](/docs/v24.1/multiregion-survival-goals#survive-region-failures)?
+- What are the [table localities](/docs/v24.1/multiregion-overview#table-locality) that will provide the performance characteristics you need for each table's data?
+    - Do you need low-latency reads and writes from a single region? Do you need that single region to be configurable at the [row level](/docs/v24.1/table-localities#regional-by-row-tables)? Or will [a single optimized region for the entire table](/docs/v24.1/table-localities#regional-tables) suffice?
+    - Do you have a "read-mostly" [table of reference data that is rarely updated](/docs/v24.1/table-localities#global-tables), but that must be read with low latency from all regions?
+
+For more information about CockroachDB multi-region capabilities, review the following pages:
+
+- [Multi-Region Capabilities Overview](/docs/v24.1/multiregion-overview)
+- [How to Choose a Multi-Region Configuration](/docs/v24.1/choosing-a-multi-region-configuration)
+- [When to use `ZONE` vs. `REGION` Survival Goals](/docs/v24.1/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals)
+- [When to use `REGIONAL` vs. `GLOBAL` Tables](/docs/v24.1/table-localities#when-to-use-regional-vs-global-tables)
+
+In addition, reviewing the following information will be helpful:
+
+- The concept of [locality](/docs/v24.1/cockroach-start#locality), which CockroachDB uses to place and balance data based on how you define survival goal and table locality settings.
+- The recommendations in our [Production Checklist](/docs/v24.1/recommended-production-settings), including our [hardware recommendations](/docs/v24.1/recommended-production-settings#hardware). Afterwards, perform a proof of concept to size hardware for your use case.
+- [SQL Performance Best Practices](/docs/v24.1/performance-best-practices-overview)
+
+### Cluster setup
+
+Each [multi-region pattern](/docs/v24.1/topology-patterns#multi-region) assumes the following setup:
+
+<Frame>
+  ![Multi-region hardware setup](/images/v24.1/topology-patterns/topology_multi-region_hardware.png)
+</Frame>
+
+#### Hardware
+
+- 3 regions
+- Per region, 3+ AZs with 3+ VMs evenly distributed across them
+- Region-specific app instances and load balancers
+    - Each load balancer redirects to CockroachDB nodes in its region.
+    - When CockroachDB nodes are unavailable in a region, the load balancer redirects to nodes in other regions.
+
+#### Cluster startup
+
+Start each node with the [`--locality`](/docs/v24.1/cockroach-start#locality) flag specifying its region and AZ combination. For example, the following command starts a node in the `west1` AZ of the `us-west` region:
+
+```shell
+$ cockroach start \
+--locality=region=us-west,zone=west1 \
+--certs-dir=certs \
+--advertise-addr=<node1 internal address> \
+--join=<node1 internal address>:26257,<node2 internal address>:26257,<node3 internal address>:26257 \
+--cache=.25 \
+--max-sql-memory=.25 \
+--background
+```
+
+## Configuration
+
+### Summary
+
+To use this pattern, set the [table locality](/docs/v24.1/multiregion-overview#table-locality) to either [`REGIONAL BY TABLE`](#regional-tables) or [`REGIONAL BY ROW`](#regional-by-row-tables).
+
+#### Regional tables
+
+In a *regional* table, access to the table will be fast in the table's home region and slower in other regions. In other words, CockroachDB optimizes access to data in a regional table from a single region. By default, a regional table's home region is the [database's primary region](/docs/v24.1/multiregion-overview#database-regions), but that can be changed to use any region in the database. Regional tables work well when your application requires low-latency reads and writes for an entire table from a single region.
+
+For instructions showing how to set a table's locality to `REGIONAL BY TABLE` and configure its home region, see [`ALTER TABLE... SET LOCALITY`](/docs/v24.1/alter-table#regional-by-table).
+
+By default, all tables in a multi-region database are *regional* tables that use the database's primary region. Unless you know your application needs different performance characteristics than regional tables provide, there is no need to change this setting.
+
+#### Regional by row tables
+
+In a *regional by row* table, individual rows are optimized for access from different home regions. Each row's home region is specified in a hidden [`crdb_region` column](/docs/v24.1/alter-table#crdb_region), and is by default the region of the [gateway node](/docs/v24.1/architecture/life-of-a-distributed-transaction#gateway) from which the row is inserted. The `REGIONAL BY ROW` setting automatically divides a table and all of [its indexes](/docs/v24.1/table-localities#indexes-on-regional-by-row-tables) into [partitions](/docs/v24.1/partitioning) that use `crdb_region` as the prefix.
+
+Use regional by row tables when your application requires low-latency reads and writes at a row level where individual rows are primarily accessed from a single region. For an example of a table in a multi-region cluster that can benefit from the `REGIONAL BY ROW` setting, see the `users` table from the [MovR application](/docs/v24.1/movr), which could store users' data in specific regions for better performance.
+
+To take advantage of regional by row tables:
+
+- Use unique key lookups or queries with [`LIMIT`](/docs/v24.1/limit-offset) clauses to enable [locality optimized searches](/docs/v24.1/cost-based-optimizer#locality-optimized-search-in-multi-region-clusters) that prioritize rows in the gateway node's region. If there is a possibility that the results of the query all live in local rows, CockroachDB will first search for rows in the gateway node's region. The search only continues in remote regions if rows in the local region did not satisfy the query.
+- Use [foreign keys](/docs/v24.1/foreign-key#rules-for-creating-foreign-keys) that reference the [`crdb_region` column](/docs/v24.1/alter-table#crdb_region) in [`REGIONAL BY ROW`](/docs/v24.1/table-localities#regional-by-row-tables) tables, unless [auto-rehoming is enabled](/docs/v24.1/alter-table#turn-on-auto-rehoming-for-regional-by-row-tables) for those tables.
+- [Turn on auto-rehoming for regional by row tables](/docs/v24.1/alter-table#turn-on-auto-rehoming-for-regional-by-row-tables). A row's home region will be automatically set to the gateway region of any [`UPDATE`](/docs/v24.1/update) or [`UPSERT`](/docs/v24.1/upsert) statements that write to those rows.
+
+For instructions showing how to set a table's locality to `REGIONAL BY ROW` and configure the home regions of its rows, see [`ALTER TABLE... SET LOCALITY`](/docs/v24.1/alter-table#crdb_region).
+
+For more information on regional by row tables, see the [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/regional-by-row).
+
+<Warning>
+[Secondary regions](/docs/v24.1/multiregion-overview#secondary-regions) are not compatible with databases containing [`REGIONAL BY ROW`](/docs/v24.1/table-localities#regional-by-row-tables) tables. CockroachDB does not prevent you from defining secondary regions on databases with regional by row tables, but the interaction of these features is not supported.
+
+Therefore, Cockroach Labs recommends that you avoid defining secondary regions on databases that use regional by row table configurations.
+</Warning>
+
+### Steps
+
+<Note>
+By default, all tables in a multi-region database are [regional tables](#regional-tables). Therefore, the steps below show how to set up [regional by row tables](#regional-by-row-tables).
+</Note>
+
+1. Create a database and set it as the default database:
+
+    ```sql
+    CREATE DATABASE test;
+    ```
+
+    ```sql
+    USE test;
+    ```
+
+    [This cluster is already deployed across three regions](#cluster-setup). Therefore, to make this database a "multi-region database", issue the following SQL statement to [set the primary region](/docs/v24.1/alter-database#set-the-primary-region):
+
+    ```sql
+    ALTER DATABASE test PRIMARY REGION "us-east";
+    ```
+
+    <Note>
+    Every multi-region database must have a primary region. For more information, see [Database regions](/docs/v24.1/multiregion-overview#database-regions).
+    </Note>
+2. Issue the following [`ADD REGION`](/docs/v24.1/alter-database#add-region) statements to add the remaining regions to the database:
+
+    ```sql
+    ALTER DATABASE test ADD REGION "us-west";
+    ```
+
+    ```sql
+    ALTER DATABASE test ADD REGION "us-central";
+    ```
+3. Create a `users` table:
+
+    ```sql
+    CREATE TABLE users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        city STRING NOT NULL,
+        first_name STRING NOT NULL,
+        last_name STRING NOT NULL,
+        address STRING NOT NULL
+    );
+    ```
+
+    By default, all tables in a multi-region cluster default to the [`REGIONAL BY TABLE`](#regional-tables) locality setting. To verify this, issue a [`SHOW CREATE`](/docs/v24.1/show-create) on the `users` table you just created:
+
+    ```sql
+    SHOW CREATE TABLE users;
+    ```
+
+    ```text
+      table_name |                        create_statement
+    -------------+------------------------------------------------------------------
+      users      | CREATE TABLE public.users (
+                 |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+                 |     city STRING NOT NULL,
+                 |     first_name STRING NOT NULL,
+                 |     last_name STRING NOT NULL,
+                 |     address STRING NOT NULL,
+                 |     CONSTRAINT "primary" PRIMARY KEY (id ASC),
+                 |     FAMILY "primary" (id, city, first_name, last_name, address)
+                 | ) LOCALITY REGIONAL BY TABLE IN PRIMARY REGION
+    ```
+4. Set the table's locality to [`REGIONAL BY ROW`](#regional-by-row-tables) using the [`ALTER TABLE... SET LOCALITY`](/docs/v24.1/alter-table#set-locality) statement:
+
+    ```sql
+    ALTER TABLE users SET LOCALITY REGIONAL BY ROW;
+    ```
+
+    ```text
+    NOTICE: LOCALITY changes will be finalized asynchronously; further schema changes on this table may be restricted until the job completes
+    ALTER TABLE SET LOCALITY
+    ```
+5. Identify which rows need to be optimized for access from which regions. Issue [`UPDATE`](/docs/v24.1/update) statements that modify the automatically created [`crdb_region`](/docs/v24.1/alter-table#crdb_region) column. Issue the statements below to associate each row with a home region that depends on its `city` column:
+
+    ```sql
+    UPDATE users SET crdb_region = 'us-central'   WHERE city IN ('chicago', 'milwaukee', 'dallas');
+    UPDATE users SET crdb_region = 'us-east'      WHERE city IN ('washington dc', 'boston', 'new york');
+    UPDATE users SET crdb_region = 'us-west'      WHERE city IN ('los angeles', 'san francisco', 'seattle');
+    ```
+
+    By default, the region column will get auto-assigned on insert; this is also known as "auto-homing". For more information about how the `crdb_region` column works, see [`ALTER TABLE... SET LOCALITY REGIONAL BY ROW`](/docs/v24.1/alter-table#regional-by-row).
+
+Note that the [SQL engine](/docs/v24.1/architecture/sql-layer) will avoid sending requests to nodes in other regions when it can instead read a value from a unique column that is stored locally. This capability is known as [*locality optimized search*](/docs/v24.1/cost-based-optimizer#locality-optimized-search-in-multi-region-clusters).
+
+<Tip>
+A good way to check that your [table locality settings](/docs/v24.1/multiregion-overview#table-locality) are having the expected effect is by monitoring how the performance metrics of a workload change as the settings are applied to a running cluster. For a tutorial showing how table localities can improve performance metrics across a multi-region cluster, see [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.1/demo-low-latency-multi-region-deployment).
+</Tip>
+
+## Characteristics
+
+### Latency
+
+For [`REGIONAL BY TABLE` tables](#regional-tables), you get low latency for single-region writes and reads, as well as multi-region stale reads.
+
+For [`REGIONAL BY ROW` tables](#regional-by-row-tables), you get low-latency consistent multi-region reads &amp; writes for rows which are homed in specific regions, and low-latency multi-region stale reads from all other regions.
+
+### Resiliency
+
+Because the `test` database does not specify a [survival goal](/docs/v24.1/multiregion-overview#survival-goals), it uses the default [`ZONE` survival goal](/docs/v24.1/multiregion-survival-goals#survive-zone-failures). With the default settings, an entire availability zone (AZ) can fail without interrupting access to the database.
+
+For more information about how to choose a database survival goal, see [When to use `ZONE` vs. `REGION` survival goals](/docs/v24.1/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals).
+
+## Alternatives
+
+- If rows in the table **cannot** be tied to specific geographies, reads must be up-to-date for business reasons or because the table is referenced by [foreign keys](/docs/v24.1/foreign-key), and the table is rarely modified, consider the [`GLOBAL` Table Locality Pattern](/docs/v24.1/global-tables).
+- If your application can tolerate historical reads in some cases, consider the [Follower Reads pattern](/docs/v24.1/topology-follower-reads).
+
+## Tutorial
+
+For a step-by-step demonstration showing how CockroachDB's multi-region capabilities (including [`REGIONAL BY ROW` tables](#regional-by-row-tables)) give you low-latency reads in a distributed cluster, see the tutorial on [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.1/demo-low-latency-multi-region-deployment).
+
+## Demo video
+
+If you'd prefer to watch a video on Regional Tables, check out the following video:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/3gmF_yXj3q8" title="YouTube video player" width="560"></iframe>
+</Frame>
+
+## See also
+
+- [Multi-Region Capabilities Overview](/docs/v24.1/multiregion-overview)
+- [How to Choose a Multi-Region Configuration](/docs/v24.1/choosing-a-multi-region-configuration)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](/docs/v24.1/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](/docs/v24.1/table-localities#when-to-use-regional-vs-global-tables)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.1/demo-low-latency-multi-region-deployment)
+- [Migrate to Multi-Region SQL](/docs/v24.1/migrate-to-multiregion-sql)
+- [Secondary regions](/docs/v24.1/multiregion-overview#secondary-regions)
+- [`ALTER DATABASE... SET SECONDARY REGION`](/docs/v24.1/alter-database#set-secondary-region)
+- [`ALTER DATABASE... DROP SECONDARY REGION`](/docs/v24.1/alter-database#drop-secondary-region)
+- [Topology Patterns Overview](/docs/v24.1/topology-patterns)
+    - Single-region patterns
+        - [Development](/docs/v24.1/topology-development)
+        - [Basic Production](/docs/v24.1/topology-basic-production)
+    - Multi-region patterns
+        - [`REGIONAL` Tables](/docs/v24.1/regional-tables)
+        - [`GLOBAL` Tables](/docs/v24.1/global-tables)
+        - [Follower Reads](/docs/v24.1/topology-follower-reads)
+        - [Follow-the-Workload](/docs/v24.1/topology-follow-the-workload)

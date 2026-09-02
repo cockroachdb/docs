@@ -1,0 +1,61 @@
+---
+title: "Custom Metrics Chart Page"
+old_description: "The Custom Metrics Chart page lets you create custom charts showing the time series data for an available metric or combination of metrics."
+---
+
+The **Custom Metrics Chart** page allows you to create custom charts showing the time-series data for an available metric or combination of metrics. To view this page, select a cluster from the [**Clusters** page](/docs/cockroachcloud/cluster-management#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation. Navigate to the **Custom** tab.
+
+<Note>
+**This feature is in [preview](/docs/stable/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+## Use the Custom Metrics Chart page
+
+<Frame>
+  ![Custom Metrics Chart](/images/cockroachcloud/custom-metrics-chart.png)
+</Frame>
+
+On the **Custom Metrics Chart** page, you can set the time range for all charts, add new custom charts, and edit or remove existing charts:
+
+- To set the time range for the page, use the time interval selector at the top right of the page to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected for all charts on all tabs of the [**Metrics** page](/docs/cockroachcloud/metrics#cockroachdb-cloud-console-metrics-page).
+- To add a chart, click **Create** to create the first custom chart or **Add Chart** to create subsequent custom charts. The [**Create custom chart** dialog](#create-custom-chart-dialog) is displayed.
+- To edit a chart, click the pencil icon to display the [**Edit custom chart** dialog](#create-custom-chart-dialog).
+- To delete a chart, click the trash icon.
+
+## Create custom chart dialog
+
+In the **Create custom chart** dialog, you can customize each chart.
+
+<Frame>
+  ![Create Custom Chart](/images/cockroachcloud/custom-metrics-chart-create.png)
+</Frame>
+
+- Under **Select metrics**, add the metrics to be queried, and how they'll be combined and displayed. Options include:
+
+    <table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Metric</td><td>How the system refers to this metric, for example, <code>jobs.row&#95;level&#95;ttl.rows&#95;deleted</code>.<br/><br/><strong>Note</strong>: available metric options are filtered by <strong>Units</strong> selected.</td></tr><tr><td>Aggregator</td><td>Used to combine data points.<br/><br/>Options:<br/><br/>- <strong>Sum</strong>: Returns the sum of all values seen.<br/><br/>- <strong>Max</strong>: Returns the highest value seen.<br/><br/>- <strong>Min</strong>: Returns the lowest value seen.<br/><br/>- <strong>Avg</strong>: Returns the average value over the time period.</td></tr><tr><td>Rate</td><td>Determines how to display the rate of change during the selected time period.<br/><br/>Option:<br/><br/>- <strong>Normal</strong>: Returns the actual recorded value.</td></tr><tr><th>Units</th><td>Sets the units to display.<br/><br/>Options:<br/><br/>- <strong>Bytes</strong><br/><br/>- <strong>Count</strong><br/><br/>- <strong>Duration</strong><br/><br/>- <strong>Percentage</strong><br/><br/>- <strong>USD</strong><br/><br/>Units can be selected in two ways:<br/><br/>1. Manually select a unit option.<br/><br/>2. When the first metric has been added - if no unit has been selected yet - the metric's unit will automatically be selected.<br/><br/>Once a unit is selected, the available <strong>Metric</strong> options will be filtered to metrics with that unit type. For example, if the <code>Bytes</code> unit is selected, only metrics that are measured in <code>Bytes</code> will be available as <strong>Metric</strong> options.<br/><br/><strong>Note</strong>: Changing the unit will clear the selected metrics.</td></tr></tbody></table>
+- To reset the dialog to a blank state - no metrics, aggregators or units set, click **Clear all metrics**.
+- Under **Provide a chart name**, enter title text or keep default title with names of selected metrics.
+- The **Preview** shows data, if available, for the selected metrics in the time range set by the **Metrics** page's time interval selector.
+- Once the chart is verified in the **Preview**, click **Submit** to add the new custom chart or click **Close** to return to the existing **Custom Metrics Chart** page.
+
+## Available metrics
+
+The following is a list of available metrics for use in the Custom Metrics Chart page.
+
+### Changefeed
+
+<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td><code>changefeed.running</code></td><td>Number of currently running changefeeds, including sinkless</td></tr><tr><td><code>changefeed.failures</code></td><td>Total number of <code>changefeed</code> jobs which have failed</td></tr><tr><td><code>changefeed.error&#95;retries</code></td><td>Total retryable errors encountered by all changefeeds</td></tr><tr><td><code>changefeed.emitted&#95;messages</code></td><td>Messages emitted by all feeds</td></tr><tr><td><code>changefeed.emitted&#95;bytes</code></td><td>Bytes emitted by all feeds</td></tr><tr><td><code>changefeed.commit&#95;latency</code></td><td>Event commit latency: a difference between event MVCC timestamp and the time it was acknowledged by the downstream sink. If the sink batches events, then the difference between the earliest event in the batch and acknowledgement is recorded; Excludes latency during backfill</td></tr><tr><td><code>jobs.changefeed.currently&#95;paused</code></td><td>Number of <code>changefeed</code> jobs currently considered Paused</td></tr><tr><td><code>jobs.changefeed.protected&#95;age&#95;sec</code></td><td>The age of the oldest PTS record protected by <code>changefeed</code> jobs.</td></tr></tbody></table>
+
+### Row-Level TTL
+
+<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td><code>jobs.row&#95;level&#95;ttl.resume&#95;completed</code></td><td>Number of <code>row&#95;level&#95;ttl</code> jobs which successfully resumed to completion</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.resume&#95;failed</code></td><td>Number of <code>row&#95;level&#95;ttl</code> jobs which failed with a non-retryable error</td></tr><tr><td><code>jobs&#95;row&#95;level&#95;ttl.rows&#95;selected</code></td><td>Number of rows selected for deletion by the row level TTL job.</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.rows&#95;deleted</code></td><td>Number of rows deleted by the row level TTL job.</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.currently&#95;paused</code></td><td>Number of <code>row&#95;level&#95;ttl</code> jobs currently considered Paused</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.currently&#95;running</code></td><td>Number of <code>row&#95;level&#95;ttl</code> jobs currently running</td></tr><tr><td><code>schedules.scheduled-row-level-ttl-executor.failed</code></td><td>Number of <code>scheduled-row-level-ttl-executor</code> jobs failed</td></tr></tbody></table>
+
+### Table Statistics
+
+<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody><tr><td><code>jobs.auto&#95;create&#95;stats.resume&#95;failed</code></td><td>Number of <code>auto&#95;create&#95;stats</code> jobs which failed with a non-retryable error</td></tr><tr><td><code>jobs.auto&#95;create&#95;stats.currently&#95;running</code></td><td>Number of <code>auto&#95;create&#95;stats</code> jobs currently running</td></tr><tr><td><code>jobs.auto&#95;create&#95;stats.currently&#95;paused</code></td><td>Number of <code>auto&#95;create&#95;stats</code> jobs currently considered Paused</td></tr><tr><td><code>jobs.create&#95;stats.currently&#95;running</code></td><td>Number of <code>create&#95;stats</code> jobs currently running</td></tr></tbody></table>
+
+## See also
+
+- [Metrics Overview](/docs/cockroachcloud/metrics)
+- [Essential Metrics for CockroachDB Standard Deployments](/docs/cockroachcloud/metrics-essential)
+- [Essential Metrics for CockroachDB Advanced Deployments](/docs/v25.4/essential-metrics-advanced)

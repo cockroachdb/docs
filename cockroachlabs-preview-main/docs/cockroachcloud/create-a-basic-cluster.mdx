@@ -1,0 +1,134 @@
+---
+title: "Create a CockroachDB Basic Cluster"
+old_description: "Learn how to create a cluster using CockroachDB Basic."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/cockroachcloud/create-a-basic-cluster"
+  items={[
+    {
+      title: "CockroachDB Basic",
+      href: "/docs/cockroachcloud/create-a-basic-cluster",
+    },
+    {
+      title: "CockroachDB Standard",
+      href: "/docs/cockroachcloud/create-your-cluster",
+    },
+    {
+      title: "CockroachDB Advanced",
+      href: "/docs/cockroachcloud/create-an-advanced-cluster",
+    },
+  ]}
+/>
+
+This page guides you through the process of creating a cluster using CockroachDB Basic. Note that only [CockroachDB Cloud Organization Admins](/docs/cockroachcloud/authorization#organization-admin) or users with Cluster Creator / Cluster Admin roles assigned at organization scope can create clusters. If you are a Developer and need to create a cluster, contact your CockroachDB Cloud Administrator.
+
+New CockroachDB Basic clusters always use the latest stable version of CockroachDB, and are automatically [upgraded](/docs/cockroachcloud/upgrade-cockroach-version) to new patch versions, as well as new major versions, to maintain uninterrupted support and SLA guarantees. For more details, refer to [CockroachDB Cloud Upgrade Policy](/docs/cockroachcloud/upgrade-policy).
+
+## Before you begin
+
+If you haven't already, [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?referralId=docs_create_account).
+
+<Note>
+Organizations without billing information on file can only create one CockroachDB Basic cluster.
+</Note>
+
+## Step 1. Start the cluster creation process
+
+1. If you haven't already, [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?referralId=docs_create_account), then [log in](https://cockroachlabs.cloud/).
+
+    <Note>
+    We recommend that CockroachDB Cloud Console users log in with [Single Sign-On (SSO)](/docs/cockroachcloud/cloud-org-sso), optionally with two-factor authentication (2FA) enabled for the SSO provider. This prevents potential attackers from using stolen credentials to access or tamper with your critical data.
+    </Note>
+
+    CockroachDB Cloud [Basic SSO](/docs/cockroachcloud/cloud-org-sso#basic-sso) supports SSO with GitHub, Google, and Microsoft. [Cloud Organization SSO](/docs/cockroachcloud/cloud-org-sso#cloud-organization-sso) provides additional configuration and flexibility, and includes support for OIDC or SAML protocols, autoprovisioning, and limiting the email domains that can use a given authentication method.
+
+    Visit your CockroachDB Cloud Console's [account settings page](https://cockroachlabs.cloud/account/profile) and switch to SSO to improve the security of your cluster.
+2. If there are multiple [organizations](/docs/v25.4/architecture/glossary#organization) in your account, verify the one that is selected in the top right corner.
+3. On the **Clusters** page, click **Create Cluster** or, if you also have permission to create folders, then click **Create &gt; Create Cluster**.
+4. On the **Select a plan** page, select **Basic**.
+
+## Step 2. Select the cloud provider
+
+On the **Cloud &amp; Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section. Basic is not supported on Azure.
+
+You do not need an account in the deployment environment you choose. The cluster is created on infrastructure managed by Cockroach Labs. For optimal performance, create your cluster on the cloud provider and in the regions that best align with your existing cloud services.
+
+## Step 3. Select the regions
+
+In the **Regions** section, select a region for the cluster. Refer to [CockroachDB Cloud Regions](/docs/cockroachcloud/regions) for the regions where CockroachDB Basic clusters can be deployed.
+
+For optimal performance, select the cloud provider and region nearest to where your SQL clients, applications, or external data are located. For multi-region clusters, CockroachDB will optimize access to data from the [**Primary region**](/docs/v25.4/multiregion-overview). Refer to [Plan a CockroachDB Basic Cluster](/docs/cockroachcloud/plan-your-cluster-basic#multi-region-clusters) to learn more. To express interest in additional regions, [contact Support](https://support.cockroachlabs.com/) or your Cockroach Labs account team.
+
+To create a multi-region cluster, click **Add regions** and select additional regions. A cluster can have at most six regions.
+
+<Note>
+You cannot remove a region.
+</Note>
+
+After creating a multi-region cluster deployed on AWS, you can optionally [set up AWS PrivateLink (Limited Access)](/docs/cockroachcloud/network-authorization#aws-privatelink) so that incoming connections to your cluster from applications or services running in your AWS account flow over private AWS network infrastructure rather than the public internet.
+
+Private connectivity is not available for Basic clusters on GCP.
+
+Click **Next: Capacity**.
+
+## Step 4. Configure cluster capacity
+
+Your cluster's capacity dictates its resource limits, which are the maximum amount of storage and RUs you can use in a month. Resource limits are optional. If you reach your storage limit, your cluster will be throttled and you may only be able to delete data. If you reach your RU limit, your cluster will be disabled until the end of the billing cycle unless you raise the limit.
+
+Each CockroachDB Cloud organization gets 50M RUs and 10 GiB of storage for free each month. Free resources can be spent across all CockroachDB Basic clusters in an organization. You can set higher resource limits to maintain a high level of performance with larger workloads. You will only be charged for what you use.
+
+The best way to estimate your resource usage is to [set resource limits](/docs/cockroachcloud/basic-cluster-management#edit-cluster-capacity) you're comfortable with and run your workload. You can see the RUs and storage your cluster has used in the **Usage this month** section of the [**Cluster Overview**](/docs/cockroachcloud/basic-cluster-management#view-cluster-overview) page. Once enough usage data is available, you can also see a graph of your monthly resource usage and recommended spend limit on the [**Edit cluster**](/docs/cockroachcloud/basic-cluster-management#edit-cluster-capacity) page.
+
+A typical `SELECT` query consumes between 1 and 15 RUs, depending on the amount of data it scans and returns. A typical `INSERT` or `UPDATE` statement consumes between 10 and 25 RUs, depending on the amount of data it inserts or updates. To estimate the RU consumption of individual SQL statements, you can use the [`EXPLAIN ANALYZE`](/docs/v25.4/explain-analyze) SQL statement. For an example, see [Example Request Unit calculation](/docs/cockroachcloud/resource-usage#example-request-unit-calculation). For more information, see [Planning your cluster](/docs/cockroachcloud/plan-your-cluster).
+
+<Tabs>
+<Tab title="Free">
+
+1. On the **Capacity** page, select **Start for free**.
+
+    <Note>
+    This will be available only if you haven't already created a free CockroachDB Basic cluster or set up billing information.
+    </Note>
+2. Click **Next: Finalize**.
+
+</Tab>
+<Tab title="Paid">
+
+1. On the **Capacity** page, select **Upgrade your capacity**, even if the option to **Start for free** is also available.
+2. Configure **On-Demand capacity**.
+    - **Unlimited**: your cluster will scale to meet your application's needs. You will only be charged for the resources you use.
+    - **Set a monthly limit**: you can set storage and RU limits individually, or enter a dollar amount that will be split automatically between both resources. You will only be charged for the resources you use.
+3. Click **Next: Finalize**.
+
+</Tab>
+</Tabs>
+
+## Step 5. Enter billing details
+
+1. On the **Finalize** page, verify your cluster and capacity configuration.
+
+    <Note>
+    The cost displayed does not include taxes and provides a maximum cost estimate. Your final bill will reflect your actual usage.
+    </Note>
+2. If you haven't already, add your preferred [payment method](/docs/cockroachcloud/billing-management).
+
+## Step 6. Name the cluster
+
+The cluster is automatically given a randomly-generated name. If desired, change the cluster's name. The cluster name must be 6-20 characters in length, and can include lowercase letters, numbers, and dashes (but no leading or trailing dashes). A cluster's name cannot be edited after it is created.
+
+Click **Create cluster**. Your cluster will be created in a few seconds.
+
+## What's next
+
+- [Connect to your CockroachDB Basic cluster](/docs/cockroachcloud/connect-to-your-cluster)
+- [Manage access](/docs/cockroachcloud/managing-access)
+- Learn [CockroachDB SQL](/docs/v25.4/sql-statements).
+- [Migrate your existing data](/docs/molt/migration-overview).
+- Build a simple CRUD application in [Go](/docs/v25.4/build-a-go-app-with-cockroachdb), [Java](/docs/v25.4/build-a-java-app-with-cockroachdb), [Node.js](/docs/v25.4/build-a-nodejs-app-with-cockroachdb), or [Python](/docs/v25.4/build-a-python-app-with-cockroachdb).
+- For examples of applications that use free CockroachDB Cloud clusters, check out the following [Hack the North](https://hackthenorth.com/) projects:
+    - [flock](https://devpost.com/software/flock-figure-out-what-film-to-watch-with-friends)
+    - [mntr.tech](https://devpost.com/software/mntr-tech)
+    - [curbshop.online](https://devpost.com/software/curbshop-online)

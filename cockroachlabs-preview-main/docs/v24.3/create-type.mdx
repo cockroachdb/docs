@@ -1,0 +1,187 @@
+---
+title: "CREATE TYPE"
+old_description: "The CREATE TYPE statement creates a new user-defined data type in a database."
+---
+
+import { CreateType4 } from "/snippets/syntax-diagrams/CreateType4.jsx";
+
+The `CREATE TYPE` [statement](/docs/v24.3/sql-statements) creates a new type in a [database](/docs/v24.3/create-database). After the type is created, it can only be referenced from the database that contains the type.
+
+The following user-defined data types can be created with this statement:
+
+- [Enumerated data type](#create-an-enumerated-data-type)
+- [Composite data type](#create-a-composite-data-type)
+
+<Note>
+The `CREATE TYPE` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v24.3/online-schema-changes).
+</Note>
+
+## Synopsis
+
+<CreateType4 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>type&#95;name</code></td><td>The name of the type. You can qualify the name with a <a href="/docs/v24.3/sql-name-resolution">database and schema name</a> (e.g., <code>db.typename</code>), but after the type is created, it can only be referenced from the database that contains the type.</td></tr><tr><td><code>IF NOT EXISTS</code></td><td>Create a new type only if a type of the same name does not already exist in the database; if one does exist, do not return an error.</td></tr><tr><td><code>opt&#95;enum&#95;val&#95;list</code></td><td>A list of values that make up the type's <a href="#create-an-enumerated-data-type">enumerated set</a>.</td></tr><tr><td><code>opt&#95;composite&#95;type&#95;list</code></td><td>A list of values that make up the set of types that make up a <a href="#create-a-composite-data-type">composite type</a>.</td></tr></tbody></table>
+
+## Required privileges
+
+- To create a type, the user must have [the `CREATE` privilege](/docs/v24.3/security-reference/authorization#supported-privileges) on the parent database and the schema in which the type is being created.
+- To use a user-defined type in a table (e.g., when defining a column's type), the user must have [the `USAGE` privilege](/docs/v24.3/security-reference/authorization#supported-privileges) on the type.
+
+## Example
+
+### Create an enumerated data type
+
+Use the statements below to create an [`ENUM`](/docs/v24.3/enum) data type.
+
+```sql
+> CREATE TYPE IF NOT EXISTS status AS ENUM ('open', 'closed', 'inactive');
+```
+
+To see all user-defined data types, use [`SHOW TYPES`](/docs/v24.3/show-types):
+
+```sql
+> SHOW TYPES;
+```
+
+```text
+  schema |  name  | owner
+---------+--------+--------
+  public | status | root
+(1 row)
+```
+
+To see the values accepted by the underlying [`ENUM`](/docs/v24.3/enum) data type, use [`SHOW ENUMS`](/docs/v24.3/show-enums):
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema |  name  |         values         | owner
+---------+--------+------------------------+--------
+  public | status | {open,closed,inactive} | root
+(1 row)
+```
+
+```sql
+> CREATE TABLE IF NOT EXISTS accounts (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        balance DECIMAL,
+        status status
+);
+```
+
+```sql
+> INSERT INTO accounts(balance,status) VALUES (500.50,'open'), (0.00,'closed'), (1.25,'inactive');
+```
+
+```sql
+> SELECT * FROM accounts;
+```
+
+```text
+                   id                  | balance |  status
+---------------------------------------+---------+-----------
+  3848e36d-ebd4-44c6-8925-8bf24bba957e |  500.50 | open
+  60928059-ef75-47b1-81e3-25ec1fb6ff10 |    0.00 | closed
+  71ae151d-99c3-4505-8e33-9cda15fce302 |    1.25 | inactive
+(3 rows)
+```
+
+```sql
+> SHOW CREATE TABLE accounts;
+```
+
+```text
+  table_name |                create_statement
+-------------+--------------------------------------------------
+  accounts   | CREATE TABLE public.accounts (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     balance DECIMAL NULL,
+             |     status public.status NULL,
+             |     CONSTRAINT accounts_pkey PRIMARY KEY (id ASC)
+             | )
+(1 row)
+```
+
+```sql
+> SELECT * FROM accounts WHERE status='open';
+```
+
+```text
+                   id                  | balance | status
+---------------------------------------+---------+---------
+  3848e36d-ebd4-44c6-8925-8bf24bba957e |  500.50 | open
+(1 row)
+```
+
+### Create a composite data type
+
+Use the statements below to create a composite data type:
+
+```sql
+CREATE TYPE IF NOT EXISTS my_point AS (x INT, y INT);
+```
+
+```sql
+CREATE TABLE IF NOT EXISTS points (
+    id UUID DEFAULT gen_random_uuid(), p my_point,
+    CONSTRAINT my_point_xcheck
+        CHECK (((p).x >= 0) AND ((p).x <= 10000)),
+    CONSTRAINT my_point_ycheck
+        CHECK (((p).y >= 0) AND ((p).y <= 10000))
+);
+```
+
+Insert 10,000 randomly generated values of type `mypoint`:
+
+```sql
+INSERT INTO points (p) SELECT (floor(random()*10000),floor(random()*10000))::MY_POINT FROM generate_series(1,10000);
+```
+
+```sql
+SELECT * FROM points ORDER BY ((p).x) ASC LIMIT 25;
+```
+
+```text
+                   id                  |     p
+---------------------------------------+------------
+  434095ae-6297-490a-9040-278c749b4d29 | (0,9982)
+  4f3155f6-d184-415b-98af-22b061da6623 | (1,5242)
+  ff3eda0a-c144-43c4-9bbc-0c14e90a0349 | (1,4053)
+  8a97e5f1-9db6-4458-8d3a-172f8624560c | (7,9857)
+  1a599ed3-0a86-4096-851b-d5b35fb9cea4 | (7,599)
+  5fc17aef-6de4-452c-a434-a709b2210938 | (9,9786)
+  0967799c-c726-4f42-915e-4517ea3c589b | (9,458)
+  6c1a46a9-66f8-4e96-8501-49fe6f77490c | (10,1447)
+  a10824ec-3d17-4162-8457-372a76675a84 | (10,808)
+  e7edf3fb-88f6-4675-9c79-44f74b7d0f49 | (11,1654)
+  fd477aec-6685-4607-a940-7d4b1608913b | (11,6563)
+  5806fcb5-28b6-4a94-b8dc-229fadb1d46d | (12,5519)
+  a9545c0c-2b45-4e1f-bb19-e9a7a1630d6f | (12,4474)
+  d591111b-a1c1-4168-8565-41f3d914dc6d | (12,7164)
+  262482e5-d58d-463a-8a1d-ed66389e9424 | (15,3047)
+  dfd75b68-1da0-4ea1-8e6e-66a9dd7389da | (16,1306)
+  060070ee-40df-4c97-badb-9c08a2f54209 | (16,3016)
+  33b77621-596b-4ee3-98e9-127ba942f1a7 | (16,2343)
+  f3c7e11a-1784-4604-b083-e78dd32ab8b4 | (17,5155)
+  485d45ae-0870-47b6-b986-4fabf0207644 | (17,4715)
+  319f2184-3743-4fb2-8fe7-8efb0710bbee | (19,8570)
+  ca55a46a-e5b6-4da5-8be5-575a39cea07c | (19,6667)
+  f1ef70f6-0fb7-4338-b488-14cc6187e61b | (20,9113)
+  3b18c682-967b-408d-8877-4ac102da3f12 | (21,5736)
+  d0dd5914-a353-4603-a9a8-494f68db01f9 | (21,4328)
+(25 rows)
+```
+
+## See also
+
+- [Data types](/docs/v24.3/data-types)
+- [Online Schema Changes](/docs/v24.3/online-schema-changes)
+- [`ALTER TYPE`](/docs/v24.3/alter-type)
+- [`DROP TYPE`](/docs/v24.3/drop-type)
+- [`SHOW TYPES`](/docs/v24.3/show-types)
+- [`ENUM`](/docs/v24.3/enum)
+- [`SHOW ENUMS`](/docs/v24.3/show-enums)

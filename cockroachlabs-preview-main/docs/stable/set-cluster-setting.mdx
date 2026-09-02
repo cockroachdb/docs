@@ -1,0 +1,161 @@
+---
+title: "SET CLUSTER SETTING"
+old_description: "The SET CLUSTER SETTING statement configures one cluster setting."
+---
+
+import { SetClusterSetting } from "/snippets/syntax-diagrams/SetClusterSetting.jsx";
+
+The `SET CLUSTER SETTING` [statement](/docs/v26.1/sql-statements) modifies a [cluster-wide setting](/docs/v26.1/cluster-settings).
+
+<Warning>
+  Many cluster settings are intended for tuning CockroachDB internals. Before changing these settings, we strongly
+  encourage you to discuss your goals with CockroachDB; otherwise, you use them at your own risk.
+</Warning>
+
+## Required privileges
+
+To use the `SET CLUSTER SETTING` statement, a user must have one of the following attributes:
+
+- Be a member of the `admin` role. (By default, the `root` user belongs to the `admin` role.)
+- Have the `MODIFYCLUSTERSETTING` [system-level privilege](/docs/v26.1/security-reference/authorization#privileges) granted. `root` and [`admin`](/docs/v26.1/security-reference/authorization#admin-role) users have this system-level privilege by default and are capable of granting it to other users and roles using the [`GRANT`](/docs/v26.1/grant) statement. For example to grant this system-level privilege to user `maxroach`:
+
+  ```sql
+  GRANT SYSTEM MODIFYCLUSTERSETTING TO maxroach;
+  ```
+
+- Have the `MODIFYSQLCLUSTERSETTING` [system-level privilege](/docs/v26.1/security-reference/authorization#privileges) granted. Users with this privilege are allowed to modify only [`sql.defaults.*` cluster settings](/docs/v26.1/cluster-settings#setting-sql-defaults-cost-scans-with-default-col-size-enabled), not all cluster settings.
+
+## Synopsis
+
+<SetClusterSetting />
+
+<Note>
+The `SET CLUSTER SETTING` statement is unrelated to the other [`SET TRANSACTION`](/docs/v26.1/set-transaction) and [`SET {session variable}`](/docs/v26.1/set-vars) statements.
+</Note>
+
+## Parameters
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>var&#95;name</code>
+      </td>
+      <td>
+        The name of the <a href="/docs/v26.1/cluster-settings">cluster setting</a> (case-insensitive).
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>var&#95;value</code>
+      </td>
+      <td>
+        The value for the <a href="/docs/v26.1/cluster-settings">cluster setting</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>DEFAULT</code>
+      </td>
+      <td>
+        Reset the <a href="/docs/v26.1/cluster-settings">cluster setting</a> to its default value.
+        <br />
+        <br />
+        The{" "}
+        <a href="/docs/v26.1/reset-cluster-setting">
+          <code>RESET CLUSTER SETTING</code>
+        </a>{" "}
+        resets a cluster setting as well.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Examples
+
+### Change the default distributed execution parameter
+
+To configure a cluster so that new sessions automatically try to run queries [in a distributed fashion](https://www.cockroachlabs.com/blog/local-and-distributed-processing-in-cockroachdb):
+
+```sql
+> SET CLUSTER SETTING sql.defaults.distsql = 1;
+```
+
+To disable distributed execution for all new sessions:
+
+```sql
+> SET CLUSTER SETTING sql.defaults.distsql = 0;
+```
+
+<Note>
+  Use [`ALTER ROLE ALL SET {sessionvar} = {val}
+  `](/docs/v26.1/alter-role#set-default-session-variable-values-for-all-users) instead of the `sql.defaults.*` [cluster
+  settings](/docs/v26.1/cluster-settings). This allows you to set a default value for all users for any [session
+  variable](/docs/v26.1/set-vars) that applies during login, making the `sql.defaults.*` cluster settings redundant.
+</Note>
+
+### Disable automatic diagnostic reporting
+
+To opt out of [automatic diagnostic reporting](/docs/v26.1/diagnostics-reporting) of usage data to Cockroach Labs:
+
+```sql
+> SET CLUSTER SETTING diagnostics.reporting.enabled = false;
+```
+
+```sql
+> SHOW CLUSTER SETTING diagnostics.reporting.enabled;
+```
+
+```text
+  diagnostics.reporting.enabled
+---------------------------------
+              false
+(1 row)
+```
+
+### Reset a setting to its default value
+
+<Tip>You can use [`RESET CLUSTER SETTING`](/docs/v26.1/reset-cluster-setting) to reset a cluster setting as well.</Tip>
+
+```sql
+> SET CLUSTER SETTING sql.metrics.statement_details.enabled = false;
+```
+
+```sql
+> SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
+```
+
+```text
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  false
+(1 row)
+```
+
+```sql
+> SET CLUSTER SETTING sql.metrics.statement_details.enabled = DEFAULT;
+```
+
+```sql
+> SHOW CLUSTER SETTING sql.metrics.statement_details.enabled;
+```
+
+```text
+  sql.metrics.statement_details.enabled
+-----------------------------------------
+                  true
+(1 row)
+```
+
+## See also
+
+- [`SET {session variable}`](/docs/v26.1/set-vars)
+- [`SHOW CLUSTER SETTING`](/docs/v26.1/show-cluster-setting)
+- [Cluster settings](/docs/v26.1/cluster-settings)
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`](/docs/v26.1/show-default-session-variables-for-role)

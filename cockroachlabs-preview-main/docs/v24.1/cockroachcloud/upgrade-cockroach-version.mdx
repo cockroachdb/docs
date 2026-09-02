@@ -1,0 +1,20 @@
+---
+title: "Upgrade a cluster in CockroachDB Cloud"
+old_description: "Learn how to upgrade a cluster in CockroachDB Cloud"
+---
+
+import UpgradeCockroachVersion from "/snippets/cockroachcloud/upgrade-cockroach-version.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<UpgradeCockroachVersion />

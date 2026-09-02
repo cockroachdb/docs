@@ -1,0 +1,182 @@
+---
+title: "CREATE DATABASE"
+old_description: "The CREATE DATABASE statement creates a new CockroachDB database."
+---
+
+import { CreateDatabase6 } from "/snippets/syntax-diagrams/CreateDatabase6.jsx";
+
+The `CREATE DATABASE` [statement](/docs/v25.4/sql-statements) creates a new CockroachDB database.
+
+<Note>
+The `CREATE DATABASE` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.4/online-schema-changes).
+</Note>
+
+## Required privileges
+
+To create a database, the user must be a member of the `admin` role or must have the [`CREATEDB`](/docs/v25.4/create-role#create-a-role-that-can-create-and-rename-databases) parameter set.
+
+## Synopsis
+
+<CreateDatabase6 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF NOT EXISTS</code></td><td>Create a new database only if a database of the same name does not already exist; if one does exist, do not return an error.</td></tr><tr><td><code>name</code></td><td>The name of the database to create, which <a href="#create-fails-name-already-in-use">must be unique</a> and follow these <a href="/docs/v25.4/keywords-and-identifiers#identifiers">identifier rules</a>.<br/><br/>Cockroach Labs recommends against starting your database name with the string <code>cluster:</code>. If your database name begins with this string, you must append the following to the URI connection string to <a href="/docs/v25.4/connect-to-the-database">connect to the cluster</a>: <code>&amp;options=-ccluster=system</code></td></tr><tr><td><code>encoding</code></td><td>The <code>CREATE DATABASE</code> statement accepts an optional <code>ENCODING</code> clause for compatibility with PostgreSQL, but <code>UTF-8</code> is the only supported encoding. The aliases <code>UTF8</code> and <code>UNICODE</code> are also accepted. Values should be enclosed in single quotes and are case-insensitive.<br/><br/>Example: <code>CREATE DATABASE bank ENCODING = 'UTF-8'</code>.</td></tr><tr><td><code>CONNECTION LIMIT</code></td><td>Supported for compatibility with PostgreSQL. A value of <code>-1</code> indicates no connection limit. Values other than <code>-1</code> are currently not supported. By default, <code>CONNECTION LIMIT = -1</code>. (<a href="#connlimit-note">&#42;</a>)</td></tr><tr><td><code>PRIMARY REGION region&#95;name</code></td><td>Create a <a href="/docs/v25.4/multiregion-overview">multi-region database</a> with <code>region&#95;name</code> as <a href="/docs/v25.4/multiregion-overview#database-regions">the primary region</a>.<br/>Allowed values include any region returned by <a href="/docs/v25.4/show-regions"><code>SHOW REGIONS FROM CLUSTER</code></a>.</td></tr><tr><td><code>REGIONS region&#95;name&#95;list</code></td><td>Create a <a href="/docs/v25.4/multiregion-overview">multi-region database</a> with <code>region&#95;name&#95;list</code> as <a href="/docs/v25.4/multiregion-overview#database-regions">database regions</a>.<br/>Allowed values include any region returned by <a href="/docs/v25.4/show-regions"><code>SHOW REGIONS FROM CLUSTER</code></a>.<br/>To set database regions at database creation, a primary region must be specified in the same <code>CREATE DATABASE</code> statement.</td></tr><tr><td><code>SURVIVE ZONE FAILURE</code> (<em>Default</em>)<br/><code>SURVIVE REGION FAILURE</code></td><td>Create a <a href="/docs/v25.4/multiregion-overview">multi-region database</a> with regional failure or zone failure <a href="/docs/v25.4/multiregion-overview#survival-goals">survival goals</a>.<br/>To set the regional failure survival goal, the database must have at least 3 <a href="/docs/v25.4/multiregion-overview#database-regions">database regions</a>.<br/>Surviving zone failures is the default setting for multi-region databases.</td></tr></tbody></table>
+
+* To control the maximum number of non-superuser ([`root`](/docs/v25.4/security-reference/authorization#root-user) user or other [`admin` role](/docs/v25.4/security-reference/authorization#admin-role)) connections a [gateway node](/docs/v25.4/architecture/sql-layer#gateway-node) can have open at one time, use the `server.max_connections_per_gateway` [cluster setting](/docs/v25.4/cluster-settings). If a new non-superuser connection would exceed this limit, the error message `"sorry, too many clients already"` is returned, along with error code `53300`. This setting may be useful until the `CONNECTION LIMIT` syntax is fully supported.
+
+## Example
+
+### Create a database
+
+```sql
+> CREATE DATABASE bank;
+```
+
+```text
+CREATE DATABASE
+```
+
+```sql
+> SHOW DATABASES;
+```
+
+```text
+  database_name | owner | primary_region | regions | survival_goal
+----------------+-------+----------------+---------+----------------
+  bank          | demo  | NULL           | {}      | NULL
+  defaultdb     | root  | NULL           | {}      | NULL
+  postgres      | root  | NULL           | {}      | NULL
+  system        | node  | NULL           | {}      | NULL
+(4 rows)
+```
+
+### Create fails (name already in use)
+
+```sql
+> CREATE DATABASE bank;
+```
+
+```text
+ERROR: database "bank" already exists
+SQLSTATE: 42P04
+```
+
+```sql
+> CREATE DATABASE IF NOT EXISTS bank;
+```
+
+```text
+CREATE DATABASE
+```
+
+SQL does not generate an error, but instead responds `CREATE DATABASE` even though a new database wasn't created.
+
+```sql
+> SHOW DATABASES;
+```
+
+```text
+  database_name | owner | primary_region | regions | survival_goal
+----------------+-------+----------------+---------+----------------
+  bank          | demo  | NULL           | {}      | NULL
+  defaultdb     | root  | NULL           | {}      | NULL
+  postgres      | root  | NULL           | {}      | NULL
+  system        | node  | NULL           | {}      | NULL
+(4 rows)
+```
+
+### Create a multi-region database
+
+Suppose you start a cluster with region and zone [localities specified at startup](/docs/v25.4/cockroach-start#locality).
+
+For this example, let's use a [demo cluster](/docs/v25.4/cockroach-demo), with the [`--demo-locality` flag](/docs/v25.4/cockroach-demo#general) to simulate a multi-region cluster:
+
+```shell
+cockroach demo --nodes=6 --demo-locality=region=us-east1,zone=us-east1-a:region=us-east1,zone=us-east1-b:region=us-central1,zone=us-central1-a:region=us-central1,zone=us-central1-b:region=us-west1,zone=us-west1-a:region=us-west1,zone=us-west1-b --no-example-database
+```
+
+```sql
+> SHOW REGIONS;
+```
+
+```text
+    region    |             zones             | database_names | primary_region_of
+--------------+-------------------------------+----------------+--------------------
+  us-central1 | {us-central1-a,us-central1-b} | {}             | {}
+  us-east1    | {us-east1-a,us-east1-b}       | {}             | {}
+  us-west1    | {us-west1-a,us-west1-b}       | {}             | {}
+(3 rows)
+```
+
+If regions are set at cluster start-up, you can create multi-region databases in the cluster that use the cluster regions.
+
+Use the following command to specify regions and survival goals at database creation:
+
+```sql
+> CREATE DATABASE bank PRIMARY REGION "us-east1" REGIONS "us-east1", "us-central1", "us-west1" SURVIVE REGION FAILURE;
+```
+
+```sql
+> SHOW DATABASES;
+```
+
+```text
+  database_name | owner | primary_region |             regions             | survival_goal
+----------------+-------+----------------+---------------------------------+----------------
+  bank          | demo  | us-east1       | {us-central1,us-east1,us-west1} | region
+  defaultdb     | root  | NULL           | {}                              | NULL
+  postgres      | root  | NULL           | {}                              | NULL
+  system        | node  | NULL           | {}                              | NULL
+(4 rows)
+```
+
+```sql
+> SHOW REGIONS FROM DATABASE bank;
+```
+
+```text
+  database |   region    | primary |             zones
+-----------+-------------+---------+--------------------------------
+  bank     | us-east1    |  true   | {us-east1-a,us-east1-b}
+  bank     | us-central1 |  false  | {us-central1-a,us-central1-b}
+  bank     | us-west1    |  false  | {us-west1-a,us-west1-b}
+(3 rows)
+```
+
+### Create a multi-region database with a secondary region
+
+You can add a [secondary region](/docs/v25.4/multiregion-overview#database-regions) to a [multi-region database](/docs/v25.4/multiregion-overview) for failover purposes. If the [primary region](/docs/v25.4/alter-database#set-primary-region) fails, the secondary region becomes the new primary region.
+
+To add a secondary region during database creation, use the following steps:
+
+1. Start a `cockroach demo` cluster as described in the example [Create a multi-region database](#create-a-multi-region-database).
+2. Issue a `CREATE DATABASE` statement like the following. It is the same as in the [Create a multi-region database](#create-a-multi-region-database) example, except that it adds a `SECONDARY REGION {region}` clause:
+
+```sql
+CREATE DATABASE bank PRIMARY REGION "us-east1" REGIONS "us-east1", "us-central1", "us-west1" SURVIVE REGION FAILURE SECONDARY REGION "us-west1";
+```
+
+```text
+CREATE DATABASE
+```
+
+For more information about secondary regions, see [Secondary regions](/docs/v25.4/multiregion-overview#secondary-regions).
+
+<Warning>
+[Secondary regions](/docs/v25.4/multiregion-overview#secondary-regions) are not compatible with databases containing [`REGIONAL BY ROW`](/docs/v25.4/table-localities#regional-by-row-tables) tables. CockroachDB does not prevent you from defining secondary regions on databases with regional by row tables, but the interaction of these features is not supported. Therefore, Cockroach Labs recommends that you avoid defining secondary regions on databases that use regional by row table configurations.
+</Warning>
+
+## See also
+
+- [`SHOW DATABASES`](/docs/v25.4/show-databases)
+- [`SHOW CREATE DATABASE`](/docs/v25.4/show-create)
+- [`ALTER DATABASE... RENAME TO`](/docs/v25.4/alter-database#rename-to)
+- [`SET DATABASE`](/docs/v25.4/set-vars)
+- [`DROP DATABASE`](/docs/v25.4/drop-database)
+- [SQL Statements](/docs/v25.4/sql-statements)
+- [Online Schema Changes](/docs/v25.4/online-schema-changes)
+- [Multiregion overview](/docs/v25.4/multiregion-overview)
+- [Secondary regions](/docs/v25.4/multiregion-overview#secondary-regions).
+- [`SET SECONDARY REGION`](/docs/v25.4/alter-database#set-secondary-region)
+- [`DROP SECONDARY REGION`](/docs/v25.4/alter-database#drop-secondary-region)

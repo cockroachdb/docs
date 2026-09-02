@@ -1,0 +1,20 @@
+---
+title: "Plan a CockroachDB Standard Cluster"
+old_description: "Plan your cluster's configuration."
+---
+
+import PlanYourCluster from "/snippets/cockroachcloud/plan-your-cluster.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<PlanYourCluster />

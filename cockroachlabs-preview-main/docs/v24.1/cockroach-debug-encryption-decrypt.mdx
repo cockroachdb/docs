@@ -1,0 +1,58 @@
+---
+title: "cockroach debug encryption-decrypt"
+old_description: "Learn the commands for collecting debug information from all nodes in your cluster."
+---
+
+<Warning>
+We strongly recommend only using `cockroach debug encryption-decrypt` when working directly with the [Cockroach Labs support team](/docs/v24.1/support-resources).
+</Warning>
+
+The [`cockroach debug encryption-decrypt`](/docs/v24.1/cockroach-commands) command decrypts store files on a node that are [encrypted at rest](/docs/v24.1/encryption) so that they can be examined to add more context to logs gathered from the [`cockroach debug zip`](/docs/v24.1/cockroach-debug-zip) command. Unless they are decrypted, Cockroach Labs cannot examine store files that are encrypted at rest.
+
+## Synopsis
+
+```shell
+cockroach debug encryption-decrypt {store_directory} {input_file} {output_file} --enterprise-encryption={encryption_spec} {flags}
+```
+
+Replace:
+
+- `{encryption_spec}`: The cluster's [encryption details](/docs/v24.1/encryption#starting-a-node-with-encryption).
+- `{store_directory}`: The directory where the node [stores data files](/docs/v24.1/cockroach-start#store).
+- `{input_file}`: The name of an encrypted store file.
+- `{output_file}`: A name for the decrypted store file. If not specified, the command will output the decrypted contents to `stdout`.
+
+Run the command locally on a node. It does not support the `--url` flag.
+
+After running the command, you can send the requested decrypted file to Cockroach Labs.
+
+## Subcommands
+
+While the `cockroach debug` command has a few subcommands, users are expected to use only the [`zip`](/docs/v24.1/cockroach-debug-zip), [`encryption-active-key`](/docs/v24.1/cockroach-debug-encryption-active-key), [`merge-logs`](/docs/v24.1/cockroach-debug-merge-logs), [`list-files`](/docs/v24.1/cockroach-debug-list-files), [`tsdump`](/docs/v24.1/cockroach-debug-tsdump), and [`ballast`](/docs/v24.1/cockroach-debug-ballast) subcommands.
+
+We recommend using the [`encryption-decrypt`](/docs/v24.1/cockroach-debug-encryption-decrypt) and [`job-trace`](/docs/v24.1/cockroach-debug-job-trace) subcommands only when directed by the [Cockroach Labs support team](/docs/v24.1/support-resources).
+
+The other `debug` subcommands are useful only to Cockroach Labs. Output of `debug` commands may contain sensitive or secret information.
+
+## Flags
+
+The `debug encryption-decrypt` subcommand supports the following [general-use](#general) and [client connection](#client-connection) flags.
+
+### General
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--timeout</code></td><td>Return an error if the command does not conclude within a specified nonzero value. The timeout is suffixed with <code>s</code> (seconds), <code>m</code> (minutes), or <code>h</code> (hours). For example:<br/><br/><code>--timeout=2m</code></td></tr></tbody></table>
+
+### Client connection
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--user</code><br/><br/><code>-u</code></td><td>The <a href="/docs/v24.1/create-user">SQL user</a> that will own the client session.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;USER</code><br/><strong>Default:</strong><code>root</code></td></tr><tr><td><code>--insecure</code></td><td>Use an insecure connection.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;INSECURE</code><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--cert-principal-map</code></td><td>A comma-separated list of <code>&lt;cert-principal&gt;:&lt;db-principal&gt;</code> mappings. This allows mapping the principal in a certificate to a DB principal such as <code>node</code> or <code>root</code> or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the <code>Subject.CommonName</code> or <code>SubjectAlternateName</code> fields in the certificate (e.g., disallowing a <code>CommonName</code> like <code>node</code> or <code>root</code>). If multiple mappings are provided for the same <code>&lt;cert-principal&gt;</code>, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A certificate is allowed to authenticate a DB principal if the DB principal name is contained in the mapped <code>CommonName</code> or DNS-type <code>SubjectAlternateName</code> fields.</td></tr><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v24.1/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr></tbody></table>
+
+## Files
+
+The `cockroach debug encryption-decrypt` command will output the decrypted store file to the specified location. If no location is specified, the decrypted contents are sent to`stdout`.
+
+## See also
+
+- [File an Issue](/docs/v24.1/file-an-issue)
+- [`cockroach` Commands Overview](/docs/v24.1/cockroach-commands)
+- [Troubleshooting Overview](/docs/v24.1/troubleshooting-overview)
+- [Support Resources](/docs/v24.1/support-resources)

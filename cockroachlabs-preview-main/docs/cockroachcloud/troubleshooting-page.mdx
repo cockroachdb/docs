@@ -1,0 +1,171 @@
+---
+title: "Troubleshoot Cloud Setup"
+old_description: "CockroachDB Cloud errors and solutions."
+---
+
+This page describes common CockroachDB Cloud errors and their solutions.
+
+<Warning>
+On June 17, 2021, Cockroach Labs updated the CA certificate used by CockroachDB Basic and Standard clusters. If you downloaded this certificate prior to June 17, 2021, **you must [download the updated certificate](/docs/cockroachcloud/connect-to-your-cluster#connect-to-your-cluster) by September 30, 2021** to avoid disruptions to your service.
+</Warning>
+
+## Connection errors
+
+### Cannot load certificates
+
+You see the following error when you are using the [`cockroach sql`](/docs/v25.4/cockroach-sql) command to connect to your CockroachDB Standard or Basic cluster:
+
+```text
+ERROR: cannot load certificates.
+Check your certificate settings, set --certs-dir, or use --insecure for insecure clusters.
+
+problem using security settings: no certificates found; does certs dir exist?
+Failed running "sql"
+```
+
+#### Solution
+
+Update to the latest [CockroachDB client](/docs/releases). You need to use v21.2.5 or later of the CockroachDB client to connect to your cluster without specifying the CA certificate path in the connection string.
+
+### Certificate signed by unknown authority
+
+The following error is displayed when trying to connect to a cluster:
+
+```text
+Error: x509: certificate signed by unknown authority
+Failed running "sql"
+```
+
+#### Solution: CA certificate conflicts
+
+If you have existing certificates in `~/.cockroach-certs` used to connect to CockroachDB self-hosted or CockroachDB Advanced clusters and are trying to connect to a CockroachDB Standard or Basic cluster using [`cockroach sql`](/docs/v25.4/cockroach-sql), you need to download the CA cert by running the command from the **Cluster Overview** &gt; **Connect** dialog if you have not already done so, and then set the `sslrootcert` parameter in the connection string you use when running `cockroach sql`.
+
+For example, on Linux and Mac, set the `sslrootcert` parameter to `$HOME/.postgresql/root.crt` in the connection string:
+
+```shell
+cockroach sql --url "postgresql://maxroach@blue-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=$HOME/.postgresql/root.crt"
+```
+
+### Invalid cluster name in a third-party tool
+
+The following error is displayed if you try to connect to a [third-party tool](/docs/v25.4/third-party-database-tools) with the wrong cluster or database name. The actual error message may vary depending on your tool:
+
+```text
+FATAL: CodeParamsRoutingFailed: rejected by BackendConfigFromParams: Invalid cluster name
+```
+
+#### Solution
+
+Check that you are using the correct cluster and database names. You can find these parameters in the CockroachDB Cloud Console by navigating to **Cluster Overview** &gt; **Connect** &gt; **Step 2. Connect** &gt; **Connection parameters**.
+
+For connection examples with your tool, see [these examples](/docs/v25.4/third-party-database-tools).
+
+### I/O timeout
+
+The following error is most often caused by trying to connect to a cluster without [authorizing the right network](/docs/cockroachcloud/connect-to-your-cluster#authorize-your-network), not having an internet connection, or an issue in your application environment:
+
+```text
+Is the server running?
+If the server is running, check --host client-side and --advertise server-side.
+
+dial tcp 35.196.33.161:26257: i/o timeout
+Failed running "sql"
+```
+
+#### Solution
+
+Check if you have internet access.
+
+If you do have internet access, check if you have [authorized the right network](/docs/cockroachcloud/connect-to-your-cluster#authorize-your-network):
+
+- In a development environment, you need to authorize your application server’s network and your local machine’s network. If you change your location, you need to authorize the new location’s network, or else the connection from that network will be rejected.
+- In a production environment, you need to authorize your application server’s network.
+- An `i/o timeout` can also be caused by firewall rules, which require your network administrator to investigate.
+
+If neither of the above steps succeed, investigate your application's timeout value and environment:
+
+- Increase the timeout value (e.g., from 5 seconds to 30 seconds) for your application's driver or framework and see if connection succeeds.
+- If you can connect and run the same query in the SQL CLI, investigate your application environment.
+- Investigate your network infrastructure to see if there is a network related performance problem, or [contact support](https://support.cockroachlabs.com/) with these details.
+
+### No such host
+
+The following error is displayed when you supply an incorrect host name:
+
+```text
+ERROR: cannot dial server.
+Is the server running?
+If the server is running, check --host client-side and --advertise server-side.
+
+dial tcp: lookup gcp-us-east4.crdb.io: no such host
+Failed running "sql"
+```
+
+#### Solution
+
+Check if you are using the correct host name.
+
+You can find your host name in the CockroachDB Cloud Console by navigating to **Cluster Overview** &gt; **Connect** &gt; **Step 2. Connect** &gt; **Connection parameters** and locating the **Host** field. If the error persists, [contact Support](https://support.cockroachlabs.com/).
+
+### Connection refused
+
+The following error is displayed if your cluster connection is dropped:
+
+```text
+Error: dial tcp 35.240.101.1:26257: connect: connection refused
+```
+
+#### Solution
+
+CockroachDB Cloud connections can occasionally become invalid due to upgrades, restarts, or other disruptions. Your application should use a [pool of persistent connections](/docs/v25.4/connection-pooling) and [mitigate connection disruptions](/docs/cockroachcloud/production-checklist#sql-connection-handling) to ensure that connections remain current. See the [Production Checklist](/docs/cockroachcloud/production-checklist) for more information.
+
+## Security errors
+
+### Incorrect certs path
+
+The following error is displayed if the directory path for the CA certificate is incorrect:
+
+```text
+Error: open test-cluster-ca.crt: no such file or directory
+Failed running "sql"
+```
+
+#### Solution
+
+Check the directory path for the [CA certificate in the connection method](/docs/cockroachcloud/connect-to-your-cluster#connect-to-your-cluster). If you have downloaded multiple CA certificates, check that you are using the right one.
+
+### Issue with CockroachDB workloads
+
+The following error is displayed while trying to a run [CockroachDB workload](/docs/v25.4/cockroach-workload) with `sslmode=verify-full`:
+
+```text
+Error: x509: certificate signed by unknown authority
+```
+
+#### Solution
+
+This is a known issue. Use `sslmode=require` instead.
+
+<Note>
+Using `sslmode=require` can leave your cluster vulnerable to MITM and impersonation attacks. For more information, see PostgreSQL's [SSL Support](https://www.postgresql.org/docs/9.4/libpq-ssl) document.
+</Note>
+
+## CockroachDB Basic and Standard
+
+### Delayed cluster access
+
+To enhance security, CockroachDB Basic and Standard clusters use authentication throttling tracked per proxy and per (client IP, cluster) pair. This means if multiple login attempts fail on the same client to the same cluster (for example, due to repeated incorrect passwords or brute force attacks), access is temporarily delayed, with the wait time increasing after each attempt (up to an hour).
+
+#### Solution
+
+If you are experiencing access issues, ensure that the password is correct. If the problem persists, [contact support](https://support.cockroachlabs.com/).
+
+### Hanging or stuck queries
+
+A hanging or stuck query using a CockroachDB Basic or Standard cluster may be caused by reaching the cluster's configured [resource limits](/docs/cockroachcloud/plan-your-cluster-basic#choose-resource-limits) for [Request Units](/docs/cockroachcloud/plan-your-cluster-basic#request-units) or storage space. SQL Statements and `cockroach` CLI commands may be impacted. You can check your cluster's resource limits and status from the [**Cluster Overview** page](/docs/cockroachcloud/cluster-overview-page) in the Cloud Console. Resource limits are displayed in **Usage this month**. If you've used all your storage, your cluster will be labeled **THROTTLED**, and you will be limited to a single SQL connection which you can use to delete data. If you've used all your RUs, your cluster will be **DISABLED**.
+
+#### Solution
+
+If you've reached your storage or RU limit, you can [increase your resource limits](/docs/cockroachcloud/basic-cluster-management#edit-cluster-capacity) and then re-run the query.
+
+If you've only reached your RU limit, you can wait until the next billing cycle when [monthly free RUs](/docs/cockroachcloud/plan-your-cluster-basic#free-vs-paid-usage) become available and then re-run the query.

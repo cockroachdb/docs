@@ -1,0 +1,101 @@
+---
+title: "Userscript Overview"
+old_description: "Learn how userscripts work and how they can customize a MOLT Replicator process."
+---
+
+<a href="/docs/VERSION_PLACEHOLDER/molt/molt-replicator" data-versioned="true">MOLT Replicator</a> can apply *userscripts*, specified with the <a href="/docs/VERSION_PLACEHOLDER/molt/replicator-flags#userscript" data-versioned="true">`--userscript` flag</a>, to customize how data is processed and transformed as it moves through the live replication pipeline.
+
+Userscripts are intended to address unique business or data transformation needs. They perform operations that cannot be handled by the source change data capture (CDC) stream, such as filtering out specific tables, rows, or columns; routing data from a single source table to multiple target tables; transforming column values or adding computed columns; and implementing custom error handling. For more examples of how userscripts can be used, refer to [Common uses](#common-uses).
+
+Userscripts are <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook" data-versioned="true">written in TypeScript</a> and run inside MOLT Replicator, giving you full programmatic control of your replication flow while maintaining type safety and consistency.
+
+## Prerequisites
+
+- <a href="/docs/VERSION_PLACEHOLDER/molt/molt-replicator" data-versioned="true">Install MOLT Replicator **v1.3.0 or later**</a> for full compatibility with the <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-api" data-versioned="true">userscript API</a>.
+- [Install TypeScript](https://www.typescriptlang.org/download), and install a TypeScript-compatible IDE (for example, VS Code).
+- Download the [userscript type definitions file](https://replicator.cockroachdb.com/userscripts/replicator@v2.d.ts) and the [tsconfig.json file](https://replicator.cockroachdb.com/userscripts/tsconfig.json). Place these files in your working directory to enable autocomplete, inline documentation, and real-time error detection directly in your IDE.
+
+## How it works
+
+Userscripts act as a customizable processing layer within MOLT Replicator's live replication lifecycle. They are used to intercept, inspect, and modify the flow of data as it moves from the source database to the target database, enabling full control over how rows are transformed, filtered, or written; as well as providing the ability to run custom transactional logic against the target database.
+
+Userscripts are comparable to MOLT Fetch's <a href="/docs/VERSION_PLACEHOLDER/molt/molt-fetch#transformations" data-versioned="true">transformations</a>, which are used during the initial bulk load phase of a migration. However, userscripts provide much greater customizability. When performing an <a href="/docs/VERSION_PLACEHOLDER/molt/migrate-load-replicate" data-versioned="true">initial data load followed by live replication</a>, **apply equivalent transformations in both the Fetch command and Replicator userscript** to ensure data consistency.
+
+The following diagram illustrates how userscripts fit into the replication pipeline:
+
+<Frame>
+  ![Userscript flow](/images/molt/userscript-flow.png)
+</Frame>
+
+1. **Source changefeed**: Replicator continuously listens to the source database's changefeed for row modification events.
+2. **Userscript processing**: When Replicator receives change events from the source database, it passes them through the userscript in two phases, in the following sequence:
+    1. Schema-level handlers ( <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-api#configure-target-schema-on-row-upsert" data-versioned="true">`onRowUpsert`</a>, <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-api#configure-target-schema-on-row-delete" data-versioned="true">`onRowDelete`</a> ) are invoked to transform, filter, or route rows before buffering them in a <a href="/docs/VERSION_PLACEHOLDER/molt/molt-replicator#terminology" data-versioned="true">staging database</a> for ordered processing.
+    2. After rows are retrieved from the staging database, table-level handlers ( <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-api#configure-target-tables-on-row-upsert" data-versioned="true">`onRowUpsert`</a> and <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-api#configure-target-tables-on-row-delete" data-versioned="true">`onRowDelete`</a>, followed by <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-api#configure-target-tables-on-write" data-versioned="true">`onWrite`</a> ) are invoked to apply final transformations and custom write logic.
+
+        <Tip>
+        For details on these handlers and other configuration functions, refer to <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-api" data-versioned="true">Userscript API</a>.
+        </Tip>
+3. **Commit to target database**: Replicator commits the transformed rows to the target database in a single transactional write. Target database writes and logic will only be scheduled to be committed after `onWrite` returns, or all table-level handlers are run.
+
+This allows you to precisely defines how data from your source system should look and behave once it reaches your target database, without needing to modify MOLT Replicator's core logic.
+
+Userscripts run in a sandboxed JavaScript runtime inside <a href="/docs/VERSION_PLACEHOLDER/molt/molt-replicator" data-versioned="true">MOLT Replicator</a> that implements the core ECMAScript language but does **not** include the extended standard library APIs found in Node.js or web browsers (such as filesystem, networking, or timers). Learn more about [unsupported TypeScript features](#unsupported-typescript-features).
+
+## Usage
+
+To have MOLT Replicator apply a userscript, include the <a href="/docs/VERSION_PLACEHOLDER/molt/replicator-flags#userscript" data-versioned="true">`--userscript`</a> flag with any <a href="/docs/VERSION_PLACEHOLDER/molt/molt-replicator#commands" data-versioned="true">Replicator command</a>. The flag accepts a path to a TypeScript filename.
+
+```text
+--userscript 'path/to/script.ts'
+```
+
+For example, to apply a userscript named `table_filter.ts` during PostgreSQL replication:
+
+```shell
+replicator pglogical \
+  --sourceConn $SOURCE \
+  --targetConn $TARGET \
+  ...
+  --userscript 'table_filter.ts'
+```
+
+## Common uses
+
+Userscripts customize the standard behavior of the source change data capture (CDC) stream consumed by Replicator. Common use cases include:
+
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook#rename-tables" data-versioned="true">Renaming tables</a>: Map source table names to different names on the target.
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook#rename-columns" data-versioned="true">Renaming columns</a>: Map source column names to different names on the target.
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook#select-data-to-replicate" data-versioned="true">Row filtering</a>: Filter out specific rows based on conditions, such as excluding soft-deleted records or test data.
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook#filter-multiple-tables" data-versioned="true">Table filtering</a>: Exclude specific tables from replication.
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook#filter-columns" data-versioned="true">Column filtering</a>: Remove sensitive or unnecessary columns from replicated data.
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook#compute-new-columns" data-versioned="true">Data transformation</a>: Transform column values, compute new columns, or change data types during replication.
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook#route-table-partitions" data-versioned="true">Table partitioning</a>: Distribute rows from a single source table across multiple target tables based on partitioning rules.
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook#implement-a-dead-letter-queue" data-versioned="true">Dead-letter queues</a>: Route failed operations to a separate (DLQ) table for offline inspection and recovery.
+
+For ready-to-use templates that handle the preceding use cases, refer to the <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook" data-versioned="true">userscript cookbook</a>.
+
+## Unsupported TypeScript features
+
+Userscripts are TypeScript files that support [ECMAScript 5.1](https://262.ecma-international.org/5.1), with partial [ES6](https://262.ecma-international.org/6.0) support.
+
+The JavaScript execution environment in which userscripts run is intentionally minimal. It implements the core ECMAScript language but does not include the extended standard library APIs found in Node.js or web browsers. This ensures that userscripts remain lightweight, deterministic, and focused solely on processing data and executing transactional logic.
+
+The following capabilities are not available within userscripts:
+
+- **Filesystem**: No file reading or writing, directory listing, file streams, or `fs` module.
+- **Networking**: No HTTP/HTTPS requests, sockets, WebSockets or `fetch`.
+- **Process and operating system**: No `process` object, environment variables, subprocess execution, or OS-level access.
+- **Timers and scheduling**: No `setTimeout` / `setInterval`.
+- **Cryptography and binary utilities**: No hashing or HMAC, secure random generation, WebCrypto, or compression or binary buffers.
+- **Workers and parallelism**: No Web Workers, threads, or shared memory.
+- **Persistent storage**: No local/session storage, filesystem-backed persistence, built-in key–value store.
+
+Your IDE will not recognize unsupported functions, and attempting to use any of the preceding features will result in a runtime error.
+
+## See also
+
+- <a href="/docs/VERSION_PLACEHOLDER/molt/molt-replicator" data-versioned="true">MOLT Replicator</a>
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-quickstart" data-versioned="true">Userscript Quickstart</a>
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-api" data-versioned="true">Userscript API</a>
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook" data-versioned="true">Userscript Cookbook</a>
+- <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-metrics" data-versioned="true">Userscript Metrics</a>

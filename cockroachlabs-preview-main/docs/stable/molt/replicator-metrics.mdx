@@ -1,0 +1,20 @@
+---
+title: "Replicator Metrics"
+old_description: "Learn how to monitor stages of the MOLT Replicator pipeline."
+---
+
+import ReplicatorMetrics from "/snippets/molt/replicator-metrics.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ReplicatorMetrics />

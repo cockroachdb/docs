@@ -1,0 +1,65 @@
+---
+title: "SHOW EXTERNAL CONNECTION"
+old_description: "The SHOW EXTERNAL CONNECTION statement lists external connections."
+---
+
+import { ShowExternalConnection4 } from "/snippets/syntax-diagrams/ShowExternalConnection4.jsx";
+
+You can use external connections to specify and interact with resources that are external from CockroachDB. When creating an external connection, you define a name for an external connection while passing the provider URI and query parameters. `SHOW EXTERNAL CONNECTION` displays the connection name, URI, and the type of connection.
+
+You can also use the following SQL statements to work with external connections:
+
+- [`CREATE EXTERNAL CONNECTION`](/docs/v25.4/create-external-connection)
+- [`SHOW CREATE EXTERNAL CONNECTION`](/docs/v25.4/show-create-external-connection)
+- [`DROP EXTERNAL CONNECTION`](/docs/v25.4/drop-external-connection)
+
+## Required privileges
+
+Users with the [`admin` role](/docs/v25.4/security-reference/authorization#admin-role) can view all external connections with `SHOW EXTERNAL CONNECTION`.
+
+Without the `admin` role, users can view the external connections that they own. Users own external connections that they have created with `CREATE EXTERNAL CONNECTION`.
+
+## Synopsis
+
+<ShowExternalConnection4 />
+
+### Parameters
+
+`string_or_placeholder` is the name of the created external connection.
+
+## Responses
+
+<table><thead><tr><th>Response</th><th>Description</th></tr></thead><tbody><tr><td><code>connection&#95;name</code></td><td>The user-specified name of the external connection.</td></tr><tr><td><code>connection&#95;uri</code></td><td>The <a href="/docs/v25.4/create-external-connection#supported-external-storage-and-sinks">storage/sink</a> URI that the external connection references.</td></tr><tr><td><code>connection&#95;type</code></td><td>Possible values are:<br/><br/>- <code>STORAGE</code> applies to <a href="/docs/v25.4/use-cloud-storage">storage for backups and imports</a> and <a href="/docs/v25.4/changefeed-sinks">changefeed sinks</a>.<br/><br/>- <code>KMS</code> applies to <a href="/docs/v25.4/take-and-restore-encrypted-backups">storage for encrypted backups</a>.<br/><br/>- <code>FOREIGNDATA</code> applies to <a href="/docs/v25.4/set-up-physical-cluster-replication#connection-reference"><code>postgres://</code> connections for physical cluster replication</a>.<br/><br/>.</td></tr></tbody></table>
+
+## Examples
+
+### Show all external connections in the cluster
+
+```sql
+SHOW EXTERNAL CONNECTIONS;
+```
+
+```text
+  connection_name |                                                                                                                                    connection_uri                                                                                                                                     | connection_type
+------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------------------
+  msk             | kafka://boot-vzq1qitx.c1.kafka-serverless.us-east-1.amazonaws.com:9098/?sasl_aws_iam_role_arn={ARN}&sasl_aws_iam_session_name={session name}t&sasl_aws_region=us-east-1&sasl_enabled=true&sasl_mechanism=AWS_MSK_IAM&tls_enabled=true                                                 | STORAGE
+  s3_bucket       | s3://bucket name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY=redacted                                                                                                                                                                                                        | STORAGE
+```
+
+### Show an external connection
+
+```sql
+SHOW EXTERNAL CONNECTION s3_bucket;
+```
+
+```text
+  connection_name |                                       connection_uri                                       | connection_type
+------------------+--------------------------------------------------------------------------------------------+------------------
+  s3_bucket       | s3://bucket name?AWS_ACCESS_KEY_ID={access key}&AWS_SECRET_ACCESS_KEY=redacted             | STORAGE
+(1 row)
+```
+
+## See also
+
+- [Changefeed Sinks](/docs/v25.4/changefeed-sinks)
+- [Use Cloud Storage](/docs/v25.4/use-cloud-storage)

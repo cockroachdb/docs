@@ -1,0 +1,20 @@
+---
+title: "Manage CMEK for CockroachDB Advanced"
+old_description: "Tutorial for getting a CockroachDB Advanced cluster up and running with Customer-Managed Encryption Keys (CMEK)"
+---
+
+import ManagingCmek from "/snippets/cockroachcloud/managing-cmek.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ManagingCmek />

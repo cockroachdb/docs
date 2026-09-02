@@ -1,0 +1,20 @@
+---
+title: "SQL Shell"
+old_description: "Use Cloud Console SQL Shell to run statements."
+---
+
+import SqlShell from "/snippets/cockroachcloud/sql-shell.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<SqlShell />

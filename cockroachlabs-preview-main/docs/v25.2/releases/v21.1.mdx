@@ -1,0 +1,20 @@
+---
+title: "What's New in v21.1"
+old_description: "Additions and changes in CockroachDB version v21.1 since version v20.2"
+---
+
+import V21_1 from "/snippets/releases/v21.1.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<V21_1 />

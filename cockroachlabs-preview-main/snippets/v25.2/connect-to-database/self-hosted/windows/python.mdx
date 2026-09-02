@@ -1,0 +1,176 @@
+## Step 4. Select your driver or ORM
+<Tabs>
+    <Tab title="Psycopg2">
+        Set a `DATABASE_URL` environment variable to your connection string.
+
+        ```shell
+        $env:DATABASE_URL = "{connection string}"
+        ```
+
+        To connect to CockroachDB with [Psycopg2](https://www.psycopg.org/), pass a connection string to the [`psycopg2.connect` function](https://www.psycopg.org/docs/connection).
+
+        For example:
+
+        ```python
+        import psycopg2
+        import os
+
+        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        ```
+
+        Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+        Psycopg2 accepts the following format for CockroachDB connection strings:
+
+        ```text
+        postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+        ```
+
+        <Note>
+        The connection information shown on this page uses [client certificate and key authentication](/docs/v25.2/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+        To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v25.2/authentication#using-digital-certificates-with-cockroachdb).
+
+        For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v25.2/secure-a-cluster).
+        </Note>
+
+        For more information about connecting with Psycopg, see the [official Psycopg documentation](https://www.psycopg.org/docs).
+    </Tab>
+    <Tab title="Psycopg3">
+        Set a `DATABASE_URL` environment variable to your connection string.
+
+        ```shell
+        $env:DATABASE_URL = "{connection string}"
+        ```
+
+        To connect to CockroachDB with [Psycopg3](https://www.psycopg.org/), pass a connection string to the [`psycopg.connect` function](https://www.psycopg.org/psycopg3/docs/basic/usage).
+
+        For example:
+
+        ```python
+        import psycopg
+        import os
+
+        with psycopg.connect(os.environ['DATABASE_URL']) as conn:
+        # application logic here
+        ```
+
+        Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+        Psycopg accepts the following format for CockroachDB connection strings:
+
+        ```text
+        postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+        ```
+
+        <Note>
+        The connection information shown on this page uses [client certificate and key authentication](/docs/v25.2/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+        To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v25.2/authentication#using-digital-certificates-with-cockroachdb).
+
+        For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v25.2/secure-a-cluster).
+        </Note>
+
+        For more information about connecting with Psycopg, see the [official Psycopg documentation](https://www.psycopg.org/psycopg3/docs/basic).
+    </Tab>
+    <Tab title="SQLAlchemy">
+        Set a `DATABASE_URL` environment variable to your connection string.
+
+        ```shell
+        $env:DATABASE_URL = "{connection string}"
+        ```
+
+        To connect to CockroachDB with [SQLAlchemy](http://docs.sqlalchemy.org/), [create an `Engine` object](https://docs.sqlalchemy.org/core/engines) by passing the connection string to the `create_engine` function.
+
+        For example:
+
+        ```python
+        from sqlalchemy import create_engine
+        import os
+
+        engine = create_engine(os.environ['DATABASE_URL'])
+        engine.connect()
+        ```
+
+        Where `DATABASE_URL` is an environment variable set to a valid CockroachDB connection string.
+
+        SQLAlchemy accepts the following format for CockroachDB connection strings:
+
+        ```text
+        cockroachdb://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+        ```
+
+        <Note>
+        The connection information shown on this page uses [client certificate and key authentication](/docs/v25.2/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+        To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v25.2/authentication#using-digital-certificates-with-cockroachdb).
+
+        For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v25.2/secure-a-cluster).
+        </Note>
+
+        <Note>
+        To connect to CockroachDB with SQLAlchemy, you must install the [CockroachDB SQLAlchemy adapter](https://github.com/cockroachdb/sqlalchemy-cockroachdb).
+        </Note>
+
+        For more information about connecting with SQLAlchemy, see the [official SQLAlchemy documentation](https://docs.sqlalchemy.org/core/engines_connections).
+
+        <Note>
+        In order for SQLAlchemy to use the CockroachDB adapter, the connection string must begin with `cockroachdb://`. You can use the following code to modify the general connection string, which begins with `postgresql://`, to the format that works with SQLAlchemy and the CockroachDB adapter:
+
+        ```python
+        engine = create_engine(os.environ['DATABASE_URL'].replace("postgresql://", "cockroachdb://"))
+        engine.connect()
+        ```
+        </Note>
+    </Tab>
+    <Tab title="Django">
+        Set a `DATABASE_URL` environment variable to your connection string.
+
+        ```shell
+        $env:DATABASE_URL = "{connection string}"
+        ```
+
+        To connect to CockroachDB from a [Django](https://www.djangoproject.com/) application, update the `DATABASES` property in the project's `settings.py` file.
+
+        Django accepts the following format for CockroachDB connection information:
+
+        ```python
+        ## settings.py
+
+        ...
+
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django_cockroachdb',
+                'NAME': '{database}',
+                'USER': '{username}',
+                'PASSWORD': '{password}',
+                'HOST': '{host}',
+                'PORT': '{port}',
+                'OPTIONS': {
+                    'sslmode': 'verify-full',
+                    'sslrootcert': os.path.expandvars('{root-cert}'),
+                    'sslcert': os.path.expandvars('{client-cert}'),
+                    'sslkey': os.path.expandvars('{client-key}'),
+                },
+            },
+        }
+
+        ...
+        ```
+
+        <Note>
+        The connection information shown on this page uses [client certificate and key authentication](/docs/v25.2/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+        To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v25.2/authentication#using-digital-certificates-with-cockroachdb).
+
+        For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v25.2/secure-a-cluster).
+        </Note>
+
+        <Note>
+        To connect to CockroachDB with Django, you must install the [CockroachDB Django adapter](https://github.com/cockroachdb/django-cockroachdb).
+        </Note>
+
+        For more information about connecting with Django, see the [official Django documentation](https://docs.djangoproject.com/en/4.0).
+    </Tab>
+</Tabs>

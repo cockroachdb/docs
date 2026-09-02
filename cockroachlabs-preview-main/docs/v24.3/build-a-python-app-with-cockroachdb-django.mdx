@@ -1,0 +1,647 @@
+---
+title: "Build a Python App with CockroachDB and Django"
+old_description: "Learn how to use CockroachDB from a simple Django application."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v24.3/build-a-python-app-with-cockroachdb-django"
+  items={[
+    {
+      title: "Use psycopg3",
+      href: "/docs/v24.3/build-a-python-app-with-cockroachdb-psycopg3",
+    },
+    {
+      title: "Use psycopg2",
+      href: "/docs/v24.3/build-a-python-app-with-cockroachdb",
+    },
+    {
+      title: "Use SQLAlchemy",
+      href: "/docs/v24.3/build-a-python-app-with-cockroachdb-sqlalchemy",
+    },
+    {
+      title: "Use Django",
+      href: "/docs/v24.3/build-a-python-app-with-cockroachdb-django",
+    },
+    {
+      title: "Use asyncpg",
+      href: "/docs/v24.3/build-a-python-app-with-cockroachdb-asyncpg",
+    },
+  ]}
+/>
+
+This tutorial shows you how build a simple Python application with CockroachDB and the [Django](https://www.djangoproject.com/) framework.
+
+CockroachDB supports Django versions 3.1+.
+
+<Note>
+The example code and instructions on this page use Python 3.9 and Django 3.1.
+</Note>
+
+## Step 1. Start CockroachDB
+
+<Tabs>
+<Tab title="Use CockroachDB Basic">
+
+### Choose your installation method
+
+You can install a CockroachDB Basic cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or `ccloud`, a command-line interface (CLI) tool.
+
+<Tabs>
+<Tab title="Use the Cloud Console (GUI)">
+
+### Create a free cluster
+
+<Note>
+Organizations without billing information on file can only create one CockroachDB Basic cluster.
+</Note>
+
+1. If you haven't already, [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?referralId=docs_python_django).
+2. [Log in](https://cockroachlabs.cloud/) to your CockroachDB Cloud account.
+3. On the **Clusters** page, click **Create cluster**.
+4. On the **Select a plan** page, select **Basic**.
+5. On the **Cloud &amp; Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section.
+6. In the **Regions** section, select a region for the cluster. Refer to [CockroachDB Cloud Regions](/docs/cockroachcloud/regions) for the regions where CockroachDB Basic clusters can be deployed. To create a multi-region cluster, click **Add region** and select additional regions.
+7. Click **Next: Capacity**.
+8. On the **Capacity** page, select **Start for free**. Click **Next: Finalize**.
+9. On the **Finalize** page, click **Create cluster**.
+
+    Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.
+
+### Create a SQL user
+
+The **Create SQL user** dialog allows you to create a new SQL user and password.
+
+1. Enter a username in the **SQL user** field or use the one provided by default.
+2. Click **Generate &amp; save password**.
+3. Copy the generated password and save it in a secure location.
+4. Click **Next**.
+
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Manage SQL users on a cluster](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster).
+
+### Get the root certificate
+
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **General connection string** from the **Select option** dropdown.
+2. Open a new terminal on your local machine, and run the **CA Cert download command** provided in the **Download CA Cert** section. The client driver used in this tutorial requires this certificate to connect to CockroachDB Cloud.
+
+### Get the connection information
+
+1. Select **Parameters only** from the **Select option** dropdown.
+2. Copy the connection information for each parameter displayed and save it in a secure location.
+
+</Tab>
+<Tab title="Use ccloud (CLI)">
+
+Follow these steps to create a CockroachDB Basic cluster using the `ccloud` CLI tool.
+
+<Note>
+The `ccloud` CLI tool is in Preview.
+</Note>
+
+### Install `ccloud`
+
+Choose your OS:
+
+<Tabs>
+<Tab title="Mac">
+
+You can install `ccloud` using either Homebrew or by downloading the binary.
+
+### Use Homebrew
+
+1. [Install Homebrew](http://brew.sh/).
+2. Install using the `ccloud` tap:
+
+    ```shell
+    brew install cockroachdb/tap/ccloud
+    ```
+
+### Download the binary
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-amd64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+Use the ARM 64 binary if you have an M-series Mac:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-arm64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Linux">
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.6.12.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Windows">
+
+In a PowerShell window, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud/ccloud_windows-amd64_0.6.12.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force ccloud/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
+```
+
+</Tab>
+</Tabs>
+
+### Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrieve the connection string.
+
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB Basic cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+
+```shell
+ccloud quickstart
+```
+
+The `ccloud quickstart` command will open a browser window to log you in to CockroachDB Cloud. If you are new to CockroachDB Cloud, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
+
+The `ccloud quickstart` command will prompt you for the cluster name, cloud provider, and cloud provider region, then ask if you want to connect to the cluster. Each prompt has default values that you can select, or change if you want a different option.
+
+Select **Parameters only** then copy the connection parameters displayed and save them in a secure location.
+
+```text
+? How would you like to connect? Parameters only
+Looking up cluster ID: succeeded
+Creating SQL user: succeeded
+Success! Created SQL user
+ name: maxroach
+ cluster: 37174250-b944-461f-b1c1-3a99edb6af32
+Retrieving cluster info: succeeded
+Connection parameters
+ Database:  defaultdb
+ Host:      blue-dog-147.6wr.cockroachlabs.cloud
+ Password:  ThisIsNotAGoodPassword
+ Port:      26257
+ Username:  maxroach
+```
+
+</Tab>
+</Tabs>
+
+## Step 2. Get the sample code
+
+Clone the code's GitHub repo:
+
+```shell
+$ git clone https://github.com/cockroachlabs/example-app-python-django/
+```
+
+The project directory structure should look like this:
+
+```text
+├── Dockerfile
+├── README.md
+├── cockroach_example
+│   ├── cockroach_example
+│   │   ├── __init__.py
+│   │   ├── asgi.py
+│   │   ├── migrations
+│   │   │   ├── 0001_initial.py
+│   │   │   └── __init__.py
+│   │   ├── models.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   │   └── wsgi.py
+│   └── manage.py
+└── requirements.txt
+```
+
+## Step 3. Install the application requirements
+
+To use CockroachDB with Django, the following modules are required:
+
+- [`django`](https://docs.djangoproject.com/en/3.1/topics/install)
+- [`psycopg2`](https://pypi.org/project/psycopg2) (recommended for production environments) or [`psycopg2-binary`](https://pypi.org/project/psycopg2-binary) (recommended for development and testing).
+- [`django-cockroachdb`](https://github.com/cockroachdb/django-cockroachdb)
+
+<Note>
+The major version of `django-cockroachdb` must correspond to the major version of `django`. The minor release numbers do not need to match.
+</Note>
+
+The `requirements.txt` file at the top level of the `example-app-python-django` project directory contains a list of the requirements needed to run this application:
+
+```python
+psycopg2-binary
+django==5.0.1
+django-cockroachdb==5.0
+```
+
+This tutorial uses [`virtualenv`](https://virtualenv.pypa.io/) for dependency management.
+
+1. Install `virtualenv`:
+
+    ```shell
+    $ pip install virtualenv
+    ```
+2. At the top level of the app's project directory, create and then activate a virtual environment:
+
+    ```shell
+    $ virtualenv env
+    ```
+
+    ```shell
+    $ source env/bin/activate
+    ```
+3. Install the modules listed in `requirements.txt` to the virtual environment:
+
+    ```shell
+    $ pip install -r requirements.txt
+    ```
+
+## Step 4. Build out the application
+
+### Configure the database connection
+
+Open `cockroach_example/cockroach_example/settings.py`, and configure [the `DATABASES` dictionary](https://docs.djangoproject.com/en/3.2/ref/settings#databases) to connect to your cluster using the connection parameters that you copied earlier.
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_cockroachdb',
+        'NAME': '{database}',
+        'USER': '{username}',
+        'PASSWORD': '{password}',
+        'HOST': '{host}',
+        'PORT': '{port}',
+        'OPTIONS': {
+            'sslmode': 'verify-full'
+        },
+    },
+}
+```
+
+For more information about configuration a Django connection to CockroachDB Standard, see [Connect to a CockroachDB Cluster](/docs/v24.3/connect-to-the-database?filters=python&filters=django).
+
+After you have configured the app's database connection, you can start building out the application.
+
+</Tab>
+<Tab title="Use a Local Cluster">
+
+1. If you haven't already, [download the CockroachDB binary](/docs/v24.3/install-cockroachdb).
+2. Run the [`cockroach start-single-node`](/docs/v24.3/cockroach-start-single-node) command:
+
+    ```shell
+    $ cockroach start-single-node --advertise-addr 'localhost' --insecure
+    ```
+
+    This starts an insecure, single-node cluster.
+3. Take note of the following connection information in the SQL shell welcome text:
+
+    ```text
+    CockroachDB node starting at 2021-08-30 17:25:30.06524 +0000 UTC (took 4.3s)
+    build:               CCL v21.1.6 @ 2021/07/20 15:33:43 (go1.15.11)
+    webui:               http://localhost:8080
+    sql:                 postgresql://root@localhost:26257?sslmode=disable
+    ```
+
+    You'll use the `sql` connection string to connect to the cluster later in this tutorial.
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+## Step 2. Get the sample code
+
+Clone the code's GitHub repo:
+
+```shell
+$ git clone https://github.com/cockroachlabs/example-app-python-django/
+```
+
+The project directory structure should look like this:
+
+```text
+├── Dockerfile
+├── README.md
+├── cockroach_example
+│   ├── cockroach_example
+│   │   ├── __init__.py
+│   │   ├── asgi.py
+│   │   ├── migrations
+│   │   │   ├── 0001_initial.py
+│   │   │   └── __init__.py
+│   │   ├── models.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   │   └── wsgi.py
+│   └── manage.py
+└── requirements.txt
+```
+
+## Step 3. Install the application requirements
+
+To use CockroachDB with Django, the following modules are required:
+
+- [`django`](https://docs.djangoproject.com/en/3.1/topics/install)
+- [`psycopg2`](https://pypi.org/project/psycopg2) (recommended for production environments) or [`psycopg2-binary`](https://pypi.org/project/psycopg2-binary) (recommended for development and testing).
+- [`django-cockroachdb`](https://github.com/cockroachdb/django-cockroachdb)
+
+<Note>
+The major version of `django-cockroachdb` must correspond to the major version of `django`. The minor release numbers do not need to match.
+</Note>
+
+The `requirements.txt` file at the top level of the `example-app-python-django` project directory contains a list of the requirements needed to run this application:
+
+```python
+psycopg2-binary
+django==5.0.1
+django-cockroachdb==5.0
+```
+
+This tutorial uses [`virtualenv`](https://virtualenv.pypa.io/) for dependency management.
+
+1. Install `virtualenv`:
+
+    ```shell
+    $ pip install virtualenv
+    ```
+2. At the top level of the app's project directory, create and then activate a virtual environment:
+
+    ```shell
+    $ virtualenv env
+    ```
+
+    ```shell
+    $ source env/bin/activate
+    ```
+3. Install the modules listed in `requirements.txt` to the virtual environment:
+
+    ```shell
+    $ pip install -r requirements.txt
+    ```
+
+## Step 4. Build out the application
+
+</Tab>
+</Tabs>
+
+### Models
+
+Start by building some [models](https://docs.djangoproject.com/en/3.1/topics/db/models), defined in a file called `models.py`. You can copy the sample code below and paste it into a new file, or you can [download the file directly](https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/models.py).
+
+```python
+from django.db import models
+import uuid
+
+class Customers(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False)
+    name = models.CharField(max_length=250)
+
+class Products(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False)
+    name = models.CharField(max_length=250)
+    price = models.DecimalField(max_digits=18, decimal_places=2)
+
+class Orders(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False)
+    subtotal = models.DecimalField(max_digits=18, decimal_places=2)
+    customer = models.ForeignKey(
+        Customers, on_delete=models.CASCADE, null=True)
+    product = models.ManyToManyField(Products)
+```
+
+In this file, we define some simple classes that map to the tables in the cluster.
+
+### Views
+
+Next, build out some [class-based views](https://docs.djangoproject.com/en/3.1/topics/class-based-views) for the application in a file called `views.py`. You can copy the sample code below and paste it into a new file, or you can [download the file directly](https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/views.py).
+
+```python
+from django.http import JsonResponse, HttpResponse
+from django.utils.decorators import method_decorator
+from django.views.generic import View
+from django.views.decorators.csrf import csrf_exempt
+from django.db import Error, IntegrityError
+from django.db.transaction import atomic
+from psycopg2 import errorcodes
+import json
+import sys
+import time
+
+from .models import *
+
+# Warning: Do not use retry_on_exception in an inner nested transaction.
+
+def retry_on_exception(num_retries=3, on_failure=HttpResponse(status=500), delay_=0.5, backoff_=1.5):
+    def retry(view):
+        def wrapper(*args, **kwargs):
+            delay = delay_
+            for i in range(num_retries):
+                try:
+                    return view(*args, **kwargs)
+                except IntegrityError as ex:
+                    if i == num_retries - 1:
+                        return on_failure
+                    elif getattr(ex.__cause__, 'pgcode', '') == errorcodes.SERIALIZATION_FAILURE:
+                        time.sleep(delay)
+                        delay *= backoff_
+                except Error as ex:
+                    return on_failure
+        return wrapper
+    return retry
+
+class PingView(View):
+    def get(self, request, *args, **kwargs):
+        return HttpResponse("python/django", status=200)
+
+@method_decorator(csrf_exempt, name='dispatch')
+class CustomersView(View):
+    def get(self, request, id=None, *args, **kwargs):
+        if id is None:
+            customers = list(Customers.objects.values())
+        else:
+            customers = list(Customers.objects.filter(id=id).values())
+        return JsonResponse(customers, safe=False)
+
+    @retry_on_exception(3)
+    @atomic
+    def post(self, request, *args, **kwargs):
+        form_data = json.loads(request.body.decode())
+        name = form_data['name']
+        c = Customers(name=name)
+        c.save()
+        return HttpResponse(status=200)
+
+    @retry_on_exception(3)
+    @atomic
+    def delete(self, request, id=None, *args, **kwargs):
+        if id is None:
+            return HttpResponse(status=404)
+        Customers.objects.filter(id=id).delete()
+        return HttpResponse(status=200)
+
+    # The PUT method is shadowed by the POST method, so there doesn't seem
+    # to be a reason to include it.
+
+@method_decorator(csrf_exempt, name='dispatch')
+class ProductView(View):
+    def get(self, request, id=None, *args, **kwargs):
+        if id is None:
+            products = list(Products.objects.values())
+        else:
+            products = list(Products.objects.filter(id=id).values())
+        return JsonResponse(products, safe=False)
+
+    @retry_on_exception(3)
+    @atomic
+    def post(self, request, *args, **kwargs):
+        form_data = json.loads(request.body.decode())
+        name, price = form_data['name'], form_data['price']
+        p = Products(name=name, price=price)
+        p.save()
+        return HttpResponse(status=200)
+
+    # The REST API outlined in the github does not say that /product/ needs
+    # a PUT and DELETE method
+
+@method_decorator(csrf_exempt, name='dispatch')
+class OrdersView(View):
+    def get(self, request, id=None, *args, **kwargs):
+        if id is None:
+            orders = list(Orders.objects.values())
+        else:
+            orders = list(Orders.objects.filter(id=id).values())
+        return JsonResponse(orders, safe=False)
+
+    @retry_on_exception(3)
+    @atomic
+    def post(self, request, *args, **kwargs):
+        form_data = json.loads(request.body.decode())
+        c = Customers.objects.get(id=form_data['customer']['id'])
+        o = Orders(subtotal=form_data['subtotal'], customer=c)
+        o.save()
+        for p in form_data['products']:
+            p = Products.objects.get(id=p['id'])
+            o.product.add(p)
+        o.save()
+        return HttpResponse(status=200)
+```
+
+This file defines the application's views as classes. Each view class corresponds to one of the table classes defined in `models.py`. The methods of these classes define read and write transactions on the tables in the database.
+
+Importantly, the file defines a [transaction retry loop](/docs/v24.3/transactions#transaction-retries) in the decorator function `retry_on_exception()`. This function decorates each view method, ensuring that transaction ordering guarantees meet the ANSI [SERIALIZABLE](https://wikipedia.org/wiki/Isolation_(database_systems)#Serializable) isolation level. For more information about how transactions (and retries) work, see [Transactions](/docs/v24.3/transactions).
+
+### URL routes
+
+Lastly, define some [URL routes](https://docs.djangoproject.com/en/3.1/topics/http/urls) in a file called `urls.py`. You can copy the sample code below and paste it into the existing `urls.py` file, or you can [download the file directly](https://raw.githubusercontent.com/cockroachlabs/example-app-python-django/master/cockroach_example/cockroach_example/urls.py) and replace the existing one.
+
+```python
+from django.contrib import admin
+from django.urls import path
+
+from .views import CustomersView, OrdersView, PingView, ProductView
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+
+    path('ping/', PingView.as_view()),
+
+    # Endpoints for customers URL.
+    path('customer/', CustomersView.as_view(), name='customers'),
+    path('customer/<uuid:id>/', CustomersView.as_view(), name='customers'),
+
+    # Endpoints for customers URL.
+    path('product/', ProductView.as_view(), name='product'),
+    path('product/<uuid:id>/', ProductView.as_view(), name='product'),
+
+    path('order/', OrdersView.as_view(), name='order'),
+]
+```
+
+## Step 5. Initialize the database
+
+In the top `cockroach_example` directory, use the [`manage.py` script](https://docs.djangoproject.com/en/3.1/ref/django-admin) to create [Django migrations](https://docs.djangoproject.com/en/3.1/topics/migrations) that initialize the database for the application:
+
+```shell
+$ python manage.py makemigrations cockroach_example
+```
+
+```shell
+$ python manage.py migrate
+```
+
+This initializes the tables defined in `models.py`, in addition to some other tables for the admin functionality included with Django's starter application.
+
+## Step 6. Run the app
+
+1. In a different terminal, navigate to the top of the `cockroach_example` directory, and start the app:
+
+    ```shell
+    $ python manage.py runserver 0.0.0.0:8000
+    ```
+
+    The output should look like this:
+
+    ```text
+    ...
+    Starting development server at http://0.0.0.0:8000/
+    Quit the server with CONTROL-C.
+    ```
+
+    To perform simple reads and writes to the database, you can send HTTP requests to the application server listening at `http://0.0.0.0:8000/`.
+2. In a new terminal, use `curl` to send a POST request to the application:
+
+    ```shell
+    $ curl --header "Content-Type: application/json" \
+    --request POST \
+    --data '{"name":"Carl"}' http://0.0.0.0:8000/customer/
+    ```
+
+    This request inserts a new row into the `cockroach_example_customers` table.
+3. Send a GET request to read from the `cockroach_example_customers` table:
+
+    ```shell
+    $ curl http://0.0.0.0:8000/customer/
+    ```
+
+    ```text
+    [{"id": "bb7d6c4d-efb3-45f8-b790-9911aae7d8b2", "name": "Carl"}]
+    ```
+
+    You can also query the table directly in the [SQL shell](/docs/v24.3/cockroach-sql) to see the changes:
+
+    ```sql
+    > SELECT * FROM cockroach_example_customers;
+    ```
+
+    ```text
+                       id                  | name
+    ---------------------------------------+-------
+      bb7d6c4d-efb3-45f8-b790-9911aae7d8b2 | Carl
+    (1 row)
+    ```
+4. Enter **Ctrl+C** to stop the application.
+
+## What's next?
+
+Read more about writing a [Django app](https://docs.djangoproject.com/en/3.1/intro/tutorial01).
+
+You might also be interested in the following pages:
+
+- [Client Connection Parameters](/docs/v24.3/connection-parameters)
+- [Connection Pooling](/docs/v24.3/connection-pooling)
+- [Data Replication](/docs/v24.3/demo-replication-and-rebalancing)
+- [CockroachDB Resilience](/docs/v24.3/demo-cockroachdb-resilience)
+- [Replication &amp; Rebalancing](/docs/v24.3/demo-replication-and-rebalancing)
+- [Cross-Cloud Migration](/docs/v24.3/demo-automatic-cloud-migration)
+- [Automated Operations](/docs/v24.3/orchestrate-a-local-cluster-with-kubernetes-insecure)

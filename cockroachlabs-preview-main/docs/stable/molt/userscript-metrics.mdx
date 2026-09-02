@@ -1,0 +1,20 @@
+---
+title: "Userscript Metrics"
+old_description: "A list of the available userscript metrics, for improving observability and dubugging."
+---
+
+import UserscriptMetrics from "/snippets/molt/userscript-metrics.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<UserscriptMetrics />

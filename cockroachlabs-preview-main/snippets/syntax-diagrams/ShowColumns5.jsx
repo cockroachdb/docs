@@ -1,0 +1,71 @@
+export const ShowColumns5 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="69" width="653" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="64" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">SHOW</text>
+<rect height="32" rx="10" width="88" x="115" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="88" x="113" y="1"></rect>
+<text class="terminal" x="123" y="21">COLUMNS</text>
+<rect height="32" rx="10" width="60" x="223" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="221" y="1"></rect>
+<text class="terminal" x="231" y="21">FROM</text><a xlink:href="/docs/v25.2/sql-grammar#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="303" y="3"></rect>
+<rect class="nonterminal" height="32" width="96" x="301" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="313" y="21">table_name</text></a><rect height="32" rx="10" width="58" x="439" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="437" y="33"></rect>
+<text class="terminal" x="447" y="53">WITH</text>
+<rect height="32" rx="10" width="88" x="517" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="88" x="515" y="33"></rect>
+<text class="terminal" x="525" y="53">COMMENT</text>
+<path class="line" d="m17 17 h2 m0 0 h10 m64 0 h10 m0 0 h10 m88 0 h10 m0 0 h10 m60 0 h10 m0 0 h10 m96 0 h10 m20 0 h10 m0 0 h176 m-206 0 h20 m186 0 h20 m-226 0 q10 0 10 10 m206 0 q0 -10 10 -10 m-216 10 v12 m206 0 v-12 m-206 12 q0 10 10 10 m186 0 q10 0 10 -10 m-196 10 h10 m58 0 h10 m0 0 h10 m88 0 h10 m23 -32 h-3"></path>
+<polygon points="643 17 651 13 651 21"></polygon>
+<polygon points="643 17 635 13 635 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,20 @@
+---
+title: "Export CockroachDB Cloud Organization Audit Logs"
+old_description: "Learn about exporting CockroachDB Cloud organization audit logs."
+---
+
+import CloudOrgAuditLogs from "/snippets/cockroachcloud/cloud-org-audit-logs.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CloudOrgAuditLogs />

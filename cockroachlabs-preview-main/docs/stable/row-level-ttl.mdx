@@ -1,0 +1,574 @@
+---
+title: "Batch Delete Expired Data with Row-Level TTL"
+old_description: "Automatically delete rows of expired data older than a specified interval."
+---
+
+CockroachDB has support for Time to Live ("TTL") expiration on table rows, also known as *Row-Level TTL*. Row-Level TTL is a mechanism whereby rows from a table are considered "expired" and can be automatically deleted once those rows have been stored longer than a specified expiration time.
+
+By using Row-Level TTL, you can avoid the complexity of writing and managing scheduled jobs from the application layer to mark rows as expired and perform the necessary deletions. Doing it yourself can become complicated due to the need to balance the timeliness of the deletions vs. the potentially negative performance impact of those deletions on foreground traffic from your application.
+
+Use cases for Row-Level TTL include:
+
+- Delete inactive data events to manage data size and performance: For example, you may want to delete order records from an online store after 90 days.
+- Delete data no longer needed for compliance: For example, a banking application may need to keep some subset of data for a period of time due to financial regulations. Row-Level TTL can be used to remove data older than that period on a rolling, continuous basis.
+- Outbox pattern: When events are written to an outbox table and published to an external system like [Kafka](https://wikipedia.org/wiki/Apache_Kafka) using CockroachDB's [Change Data Capture (CDC)](/docs/v26.1/change-data-capture-overview) feature (also known as ["changefeeds"](#changefeeds)), those events must be deleted to prevent unbounded growth in the size of the outbox table.
+
+## How it works
+
+At a high level, Row-Level TTL works by:
+
+- Issuing a [selection query](/docs/v26.1/selection-queries) at a [historical timestamp](/docs/v26.1/as-of-system-time), yielding a set of rows that are eligible for deletion (also known as "expired").
+- Issuing batched [`DELETE`](/docs/v26.1/delete) statements for the expired rows.
+- As part of the above process, deciding how many rows to [`SELECT`](/docs/v26.1/select-clause) and [`DELETE`](/docs/v26.1/delete) at once in each of the above queries.
+- Running the SQL queries described above in parallel as [background jobs](/docs/v26.1/show-jobs).
+- Periodically checkpointing progress across [key spans](/docs/v26.1/show-ranges#span-statistics) so that if a TTL job is retried, paused and resumed, or a node restarts, the job resumes from the last checkpoint without reprocessing spans that were already completed.
+- To minimize the performance impact on foreground application queries, the background deletion queries are rate limited; they are also submitted at a lower priority level using the [admission control system](/docs/v26.1/admission-control). When foreground traffic increases, CockroachDB will reduce the resources allocated to TTL deletes to handle the foreground traffic. When foreground traffic decreases, CockroachDB will increase the resources allocated to TTL deletes.
+- Latency of row-level TTL queries is further reduced by using the elastic CPU limiter, which dynamically controls the total CPU percentage used by row-level TTL reads. The elastic CPU limiter can be disabled for row-level TTL queries by setting the `kvadmission.low_pri_read_elastic_control.enabled` and `sqladmission.low_pri_read_response_elastic_control.enabled` [cluster settings](/docs/v26.1/cluster-settings) to `false`.
+
+The process above is conceptually similar to the process described by [Batch delete on an indexed column](/docs/v26.1/bulk-delete-data#batch-delete-on-an-indexed-column), except that Row-Level TTL is built into CockroachDB, so it saves you from having to write code to manage the process from your application and/or external job processing framework, including tuning the rate and performance of your background queries so they don't affect foreground application query performance.
+
+## When are rows deleted?
+
+Once rows are expired (that is, are older than the specified [TTL interval](#param-ttl-expire-after)), they are eligible to be deleted. However, eligible rows may not be deleted right away. Instead, they are scheduled for deletion using a [background job](#view-scheduled-ttl-jobs) that is run at the interval defined by the `ttl_job_cron` [storage parameter](#ttl-storage-parameters).
+
+## Syntax overview
+
+TTLs are defined using either the `ttl_expiration_expression` or `ttl_expire_after` [storage parameters](#ttl-storage-parameters).
+
+- [Using `ttl_expiration_expression`](#using-ttl_expiration_expression) is useful for customizing expiration logic by providing an expression. For example, you could get the same behavior as `ttl_expire_after` by creating a [`TIMESTAMPTZ`](/docs/v26.1/timestamp) column with a default value and having the `ttl_expiration_expression` reference that column.
+- [Using `ttl_expire_after`](#using-ttl_expire_after) is a convenient way of setting rows to expire a fixed amount of time after they are created or updated.
+
+<Tip>
+Most users should use `ttl_expiration_expression` instead of `ttl_expire_after` for the following reasons:
+
+- If you add `ttl_expire_after` to an existing table, it **will cause a full table rewrite, which can affect performance**. Specifically, it will result in a [schema change](/docs/v26.1/online-schema-changes) that (1) creates a new [hidden column](/docs/v26.1/show-create#show-the-create-table-statement-for-a-table-with-a-hidden-column) `crdb_internal_expiration` for all rows, and (2) backfills the value of that new column to `now()` + `ttl_expire_after`.
+- You cannot use `ttl_expire_after` with an existing [`TIMESTAMPTZ`](/docs/v26.1/timestamp) column.
+- If you use `ttl_expiration_expression`, you can use an existing [`TIMESTAMPTZ`](/docs/v26.1/timestamp) column called e.g. `updated_at`.
+</Tip>
+
+### Using `ttl_expiration_expression`
+
+Use [`ttl_expiration_expression`](#param-ttl-expiration-expression) for customizing the expiration logic by providing a SQL expression. For example, you could get the same behavior as `ttl_expire_after` by creating a column with a default value and having the `ttl_expiration_expression` reference that column.
+
+To add custom expiration logic using `ttl_expiration_expression`, issue the following SQL statement that uses the [`ttl_expiration_expression`](#param-ttl-expiration-expression) parameter, which defines a [`TIMESTAMPTZ`](/docs/v26.1/timestamp) after which the row is considered expired:
+
+```sql
+CREATE TABLE ttl_test_per_row (
+  id UUID PRIMARY KEY default gen_random_uuid(),
+  description TEXT,
+  expired_at TIMESTAMPTZ NOT NULL DEFAULT now() + '30 days'
+) WITH (ttl_expiration_expression = 'expired_at', ttl_job_cron = '@daily');
+```
+
+The statement has the following effects:
+
+1. Creates a repeating [scheduled job](#view-scheduled-ttl-jobs) for the table and sets it to run once per day.
+2. Implicitly adds the `ttl` and `ttl_cron` [storage parameters](#ttl-storage-parameters).
+
+To see the storage parameters, enter the [`SHOW CREATE TABLE`](/docs/v26.1/show-create) statement:
+
+```sql
+SHOW CREATE TABLE ttl_test_per_row;
+```
+
+```text
+     table_name    |                                    create_statement
+-------------------+------------------------------------------------------------------------------------------
+  ttl_test_per_row | CREATE TABLE public.ttl_test_per_row (
+                   |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+                   |     description STRING NULL,
+                   |     expired_at TIMESTAMPTZ NOT NULL DEFAULT now():::TIMESTAMPTZ + '30 days':::INTERVAL,
+                   |     CONSTRAINT ttl_test_per_row_pkey PRIMARY KEY (id ASC)
+                   | ) WITH (ttl = 'on', ttl_expiration_expression = 'expired_at', ttl_job_cron = '@daily')
+(1 row)
+```
+
+<Tip>
+Most users should use `ttl_expiration_expression` instead of `ttl_expire_after` for the following reasons:
+
+- If you add `ttl_expire_after` to an existing table, it **will cause a full table rewrite, which can affect performance**. Specifically, it will result in a [schema change](/docs/v26.1/online-schema-changes) that (1) creates a new [hidden column](/docs/v26.1/show-create#show-the-create-table-statement-for-a-table-with-a-hidden-column) `crdb_internal_expiration` for all rows, and (2) backfills the value of that new column to `now()` + `ttl_expire_after`.
+- You cannot use `ttl_expire_after` with an existing [`TIMESTAMPTZ`](/docs/v26.1/timestamp) column.
+- If you use `ttl_expiration_expression`, you can use an existing [`TIMESTAMPTZ`](/docs/v26.1/timestamp) column called e.g. `updated_at`.
+</Tip>
+
+### Using `ttl_expire_after`
+
+To set rows to expire a fixed amount of time after they are created or updated, issue the following SQL statement using the [`ttl_expire_after`](#param-ttl-expire-after) storage parameter:
+
+```sql
+CREATE TABLE ttl_test_per_table (
+  id UUID PRIMARY KEY default gen_random_uuid(),
+  description TEXT,
+  inserted_at TIMESTAMPTZ default current_timestamp()
+) WITH (ttl_expire_after = '3 months', ttl_job_cron = '@daily');
+```
+
+The statement has the following effects:
+
+1. Creates a repeating [scheduled job](#view-scheduled-ttl-jobs) for the table and sets it to run once per day.
+2. Adds a `NOT VISIBLE` column called `crdb_internal_expiration` of type [`TIMESTAMPTZ`](/docs/v26.1/timestamp) to represent the TTL.
+3. Implicitly adds the `ttl` and `ttl_cron` [storage parameters](#ttl-storage-parameters).
+
+To see the hidden column and the storage parameters, enter the [`SHOW CREATE TABLE`](/docs/v26.1/show-create) statement:
+
+```sql
+SHOW CREATE TABLE ttl_test_per_table;
+```
+
+```text
+      table_name     |                                                                                         create_statement
+---------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  ttl_test_per_table | CREATE TABLE public.ttl_test_per_table (
+                     |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+                     |     description STRING NULL,
+                     |     inserted_at TIMESTAMPTZ NULL DEFAULT current_timestamp():::TIMESTAMPTZ,
+                     |     crdb_internal_expiration TIMESTAMPTZ NOT VISIBLE NOT NULL DEFAULT current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL ON UPDATE current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL,
+                     |     CONSTRAINT ttl_test_per_table_pkey PRIMARY KEY (id ASC)
+                     | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@daily')
+(1 row)
+```
+
+<Tip>
+Most users should use `ttl_expiration_expression` instead of `ttl_expire_after` for the following reasons:
+
+- If you add `ttl_expire_after` to an existing table, it **will cause a full table rewrite, which can affect performance**. Specifically, it will result in a [schema change](/docs/v26.1/online-schema-changes) that (1) creates a new [hidden column](/docs/v26.1/show-create#show-the-create-table-statement-for-a-table-with-a-hidden-column) `crdb_internal_expiration` for all rows, and (2) backfills the value of that new column to `now()` + `ttl_expire_after`.
+- You cannot use `ttl_expire_after` with an existing [`TIMESTAMPTZ`](/docs/v26.1/timestamp) column.
+- If you use `ttl_expiration_expression`, you can use an existing [`TIMESTAMPTZ`](/docs/v26.1/timestamp) column called e.g. `updated_at`.
+</Tip>
+
+## TTL storage parameters
+
+The settings that control the behavior of Row-Level TTL are provided using [storage parameters](/docs/v26.1/sql-grammar#opt_with_storage_parameter_list). These parameters can be set during table creation using [`CREATE TABLE`](#create-a-table-with-a-ttl_expiration_expression), added to an existing table using the [`ALTER TABLE`](#add-or-update-the-row-level-ttl-for-an-existing-table) statement, or [reset to default values](#reset-a-storage-parameter-to-its-default-value).
+
+<table><thead><tr><th>Option</th><th>Description</th><th>Associated cluster setting</th></tr></thead><tbody><tr><td><code>ttl&#95;expiration&#95;expression</code><a></a></td><td><strong>Recommended</strong>. SQL expression that defines the TTL expiration. Must evaluate to a <a href="/docs/v26.1/timestamp"><code>TIMESTAMPTZ</code></a>. This and/or <a href="#param-ttl-expire-after"><code>ttl&#95;expire&#95;after</code></a> are required to enable TTL. This parameter is useful when you want to set the TTL for individual rows in the table. For an example, see <a href="#create-a-table-with-a-ttl_expiration_expression">Create a table with a <code>ttl&#95;expiration&#95;expression</code></a>.</td><td>N/A</td></tr><tr><td><code>ttl&#95;expire&#95;after</code><a></a></td><td>The <a href="/docs/v26.1/interval">interval</a> when a TTL will expire. This and/or <a href="#param-ttl-expiration-expression"><code>ttl&#95;expiration&#95;expression</code></a> are required to enable TTL. Minimum value: <code>'1 microsecond'</code>.</td><td>N/A</td></tr><tr><td><code>ttl</code><a></a></td><td>Signifies if a TTL is active. Automatically set.</td><td>N/A</td></tr><tr><td><code>ttl&#95;select&#95;batch&#95;size</code></td><td>How many rows to <a href="/docs/v26.1/select-clause">select</a> at one time during the row expiration check. Defaults to the value of the associated cluster setting if unset.</td><td><code>sql.ttl.default&#95;select&#95;batch&#95;size</code><br/>Default: 500. Minimum: 1.</td></tr><tr><td><code>ttl&#95;delete&#95;batch&#95;size</code><a></a></td><td>How many rows to <a href="/docs/v26.1/delete">delete</a> at a time. Defaults to the value of the associated cluster setting if unset.</td><td><code>sql.ttl.default&#95;delete&#95;batch&#95;size</code><br/>Default: 100. Minimum: 1.</td></tr><tr><td><code>ttl&#95;select&#95;rate&#95;limit</code></td><td>Maximum number of rows to be selected per second (rate limit). Defaults to the value of the associated cluster setting if unset.<br/><br/>Note: The rate limit is applied per node per table. The TTL job prefers to assign work to the leaseholder of each range, but this is not guaranteed. In some cases, non-leaseholder nodes may be assigned work.<br/><br/>As a result, the effective cluster-wide rate depends on how many nodes end up processing TTL work for the table.</td><td><code>sql.ttl.default&#95;select&#95;rate&#95;limit</code><br/>Default: 0. Minimum: 0 (unlimited).</td></tr><tr><td><code>ttl&#95;delete&#95;rate&#95;limit</code></td><td>Maximum number of rows to be deleted per second (rate limit). Defaults to the value of the associated cluster setting if unset.<br/><br/>Note: The rate limit is applied per node per table, with the same leaseholder preference and fallback behavior as <code>ttl&#95;select&#95;rate&#95;limit</code>.<br/><br/>The actual cluster-wide rate will vary depending on which nodes execute TTL work.</td><td><code>sql.ttl.default&#95;delete&#95;rate&#95;limit</code><br/>Default: 100. Minimum: 0 (unlimited).</td></tr><tr><td><code>ttl&#95;row&#95;stats&#95;poll&#95;interval</code></td><td>If set, counts rows and expired rows on the table to report as Prometheus metrics while the TTL job is running. Unset by default, meaning no stats are fetched and reported.</td><td>N/A</td></tr><tr><td><code>ttl&#95;pause</code><a></a></td><td>If set, stops the TTL job from executing.</td><td>N/A</td></tr><tr><td><code>ttl&#95;job&#95;cron</code><a></a></td><td>Frequency at which the TTL job runs, specified using <a href="https://cron.help/">CRON syntax</a>. Default: <code>'@daily'</code> (was <code>'@hourly'</code>).</td><td>N/A</td></tr><tr><td><code>ttl&#95;disable&#95;changefeed&#95;replication</code></td><td>Disables <a href="/docs/v26.1/change-data-capture-overview">changefeed</a> replication for the deletes performed by the TTL job.</td><td><code>sql.ttl.changefeed&#95;replication.disabled</code></td></tr></tbody></table>
+
+For more information about TTL-related cluster settings, see [View TTL-related cluster settings](#view-ttl-related-cluster-settings).
+
+## TTL metrics
+
+The table below lists the metrics you can use to monitor the effectiveness of your TTL settings. These metrics are visible on the [Advanced Debug Page](/docs/v26.1/ui-debug-pages), as well as at the [Prometheus endpoint](/docs/v26.1/prometheus-endpoint) which can be scraped by [Prometheus](/docs/v26.1/monitor-cockroachdb-with-prometheus).
+
+<table><thead><tr><th>Name</th><th>Description</th><th>Measurement</th><th>Type</th></tr></thead><tbody><tr><td><code>jobs.row&#95;level&#95;ttl.range&#95;total&#95;duration</code></td><td>Duration for processing a range during row level TTL.</td><td><code>nanoseconds</code></td><td>Histogram</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.select&#95;duration</code></td><td>Duration for select requests during row level TTL.</td><td><code>nanoseconds</code></td><td>Histogram</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.delete&#95;duration</code></td><td>Duration for delete requests during row level TTL.</td><td><code>nanoseconds</code></td><td>Histogram</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.rows&#95;selected</code></td><td>Number of rows selected for deletion by the row level TTL job.</td><td><code>num&#95;rows</code></td><td>Counter</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.rows&#95;deleted</code></td><td>Number of rows deleted by the row level TTL job.</td><td><code>num&#95;rows</code></td><td>Counter</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.num&#95;active&#95;ranges</code></td><td>Number of active workers attempting to delete for row level TTL.</td><td><code>num&#95;active&#95;workers</code></td><td>Count</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.total&#95;rows</code></td><td>Approximate number of rows on the TTL table.</td><td><code>total&#95;rows</code></td><td>Count</td></tr><tr><td><code>jobs.row&#95;level&#95;ttl.total&#95;expired&#95;rows</code></td><td>Approximate number of expired rows on the TTL table.</td><td><code>total&#95;expired&#95;rows</code></td><td>Count</td></tr></tbody></table>
+
+By default, these metrics are aggregated, meaning that all TTL tables will report the metrics under the same label. If you want to have metrics labelled by table name (at the risk of added cardinality), you must take the following steps:
+
+- Set the `server.child_metrics.enabled` [cluster setting](/docs/v26.1/cluster-settings) to `true`.
+- Set the `ttl_label_metrics` storage parameter to `true`.
+
+<Note>
+For more information about the issues (including negative performance impacts) that can arise when you add cardinality, see the considerations listed in [Using changefeed metrics labels](/docs/v26.1/monitor-and-debug-changefeeds#using-changefeed-metrics-labels).
+</Note>
+
+## Examples
+
+### Create a table with a `ttl_expiration_expression`
+
+Use the SQL syntax shown below, which uses the [`ttl_expiration_expression`](#param-ttl-expiration-expression) parameter to refer to an `expire_at` column that determines each row's expiration:
+
+```sql
+CREATE TABLE ttl_test_ttl_expiration_expression (
+  id INT PRIMARY KEY,
+  expire_at TIMESTAMPTZ
+) WITH (ttl_expiration_expression = 'expire_at');
+```
+
+The [`ttl_expiration_expression`](#param-ttl-expiration-expression)" parameter takes a SQL expression (often a column name) that defines the TTL expiration. It is used when you want to set the TTL for individual rows in a table.
+
+The `ttl_expiration_expression` parameter has the following requirements:
+
+- It must evaluate to a [`TIMESTAMPTZ`](/docs/v26.1/timestamp).
+- It must not reference any columns outside the table to which it is applied.
+- Any column it references cannot be [dropped](/docs/v26.1/alter-table#drop-column) or have its [type altered](/docs/v26.1/alter-type).
+- Finally, if the [column is renamed](/docs/v26.1/alter-table#rename-column), the value of `ttl_expiration_expression` is automatically updated.
+
+### Use a `ttl_expiration_expression` on a `DATE` or `TIMESTAMPTZ` column
+
+Use the SQL syntax shown below to create a new table with rows that expire 30 days after an event ends using a `ttl_expiration_expression`.
+
+A `ttl_expiration_expression` that uses an existing `DATE` column:
+
+```sql
+CREATE TABLE events_using_date (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  description TEXT,
+  start_date DATE DEFAULT now() NOT NULL,
+  end_date DATE NOT NULL
+) WITH (
+  ttl_expiration_expression = $$(end_date::TIMESTAMPTZ + '30 days')$$
+);
+```
+
+A `ttl_expiration_expression` that uses an existing `TIMESTAMPTZ` column:
+
+```sql
+CREATE TABLE events_using_timestamptz (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  description TEXT,
+  start_date TIMESTAMPTZ DEFAULT now() NOT NULL,
+  end_date TIMESTAMPTZ NOT NULL
+) WITH (
+  ttl_expiration_expression = $$(end_date + '30 days')$$
+);
+```
+
+When using a `ttl_expiration_expression` on a `DATE` or `TIMESTAMPTTZ` column, use `AT TIME ZONE` to explicitly set the time zone for the expression. By setting the time zone to UTC in the expression, you set an exact time when the delete should be performed, regardless of the local time zone of the node.
+
+### Create a table with `ttl_expire_after`
+
+Use the SQL syntax shown below to create a new table with rows that expire after a 3 month [interval](/docs/v26.1/interval), execute a statement like the following:
+
+```sql
+CREATE TABLE events (
+  id UUID PRIMARY KEY default gen_random_uuid(),
+  description TEXT,
+  inserted_at TIMESTAMPTZ default current_timestamp()
+) WITH (ttl_expire_after = '3 months', ttl_job_cron = '@daily');
+```
+
+```text
+CREATE TABLE
+```
+
+Insert some data; it should work as expected:
+
+```sql
+INSERT INTO events (description) VALUES ('a thing'), ('another thing'), ('yet another thing');
+```
+
+```text
+INSERT 3
+```
+
+To see the rows and their expirations, enter the following query:
+
+```sql
+SELECT *, crdb_internal_expiration FROM events;
+```
+
+```text
+                   id                  |    description    |        inserted_at         |   crdb_internal_expiration
+---------------------------------------+-------------------+----------------------------+--------------------------------
+  117c35fe-97f6-43bc-919f-fcd2ea13779e | a thing           | 2022-04-19 18:29:53.846697 | 2022-07-19 18:29:53.846697+00
+  c294890f-2f14-4e18-8001-5f806ed9bfd1 | yet another thing | 2022-04-19 18:29:53.846697 | 2022-07-19 18:29:53.846697+00
+  ea72189c-2f17-4a8e-b479-6b050a87e3bb | another thing     | 2022-04-19 18:29:53.846697 | 2022-07-19 18:29:53.846697+00
+(3 rows)
+```
+
+### Add or update the row-level TTL for an existing table
+
+To add or change the row-level TTL expiration for an existing table, use [`ALTER TABLE`](/docs/v26.1/alter-table) as shown in the following example. This example assumes you have an existing [`TIMESTAMPTZ`](/docs/v26.1/timestamp) or [`DATE`](/docs/v26.1/date) column you can use for the [`ttl_expiration_expression`](#param-ttl-expiration-expression).
+
+```sql
+ALTER TABLE events_using_date SET (ttl_expiration_expression = $$(end_date::TIMESTAMPTZ + '90 days')$$);
+```
+
+```text
+ALTER TABLE
+```
+
+### View scheduled TTL jobs
+
+You can use [`SHOW SCHEDULES`](/docs/v26.1/show-schedules) to view all TTL-related scheduled jobs by executing the following query:
+
+```sql
+SHOW SCHEDULES;
+```
+
+```text
+          id         |                          label                          | schedule_status |        next_run        |  state  | recurrence  | jobsrunning | owner |            created            | on_previous_running | on_execution_failure |     command
+---------------------+---------------------------------------------------------+-----------------+------------------------+---------+-------------+-------------+-------+-------------------------------+---------------------+----------------------+-------------------
+  935320932302127105 | sql-stats-compaction                                    | ACTIVE          | 2024-01-17 17:00:00+00 | pending | @hourly     |           0 | node  | 2024-01-17 16:08:16.061494+00 | SKIP                | RETRY_SCHED          | {}
+  935320932701732865 | sql-schema-telemetry                                    | ACTIVE          | 2024-01-23 19:22:00+00 | pending | 22 19 * * 2 |           0 | node  | 2024-01-17 16:08:16.34813+00  | SKIP                | RETRY_SCHED          | {}
+  935326966421323777 | row-level-ttl: ttl_test_per_row [166]                   | ACTIVE          | 2024-01-18 00:00:00+00 | NULL    | @daily      |           0 | root  | 2024-01-17 16:38:57.67189+00  | WAIT                | RETRY_SCHED          | {"tableId": 166}
+  935327228200321025 | row-level-ttl: ttl_test_per_table [168]                 | ACTIVE          | 2024-01-18 00:00:00+00 | NULL    | @daily      |           0 | root  | 2024-01-17 16:40:17.560295+00 | WAIT                | RETRY_SCHED          | {"tableId": 168}
+  935327358744035329 | row-level-ttl: ttl_test_ttl_expiration_expression [169] | ACTIVE          | 2024-01-18 00:00:00+00 | NULL    | @daily      |           0 | root  | 2024-01-17 16:40:57.400097+00 | WAIT                | RETRY_SCHED          | {"tableId": 169}
+  935327502619377665 | row-level-ttl: events_using_date [171]                  | ACTIVE          | 2024-01-18 00:00:00+00 | NULL    | @daily      |           0 | root  | 2024-01-17 16:41:41.306759+00 | WAIT                | RETRY_SCHED          | {"tableId": 171}
+  935327535652569089 | row-level-ttl: events_using_timestamptz [172]           | ACTIVE          | 2024-01-18 00:00:00+00 | NULL    | @daily      |           0 | root  | 2024-01-17 16:41:51.377205+00 | WAIT                | RETRY_SCHED          | {"tableId": 172}
+  935327578138443777 | row-level-ttl: events [173]                             | ACTIVE          | 2024-01-18 00:00:00+00 | NULL    | @daily      |           0 | root  | 2024-01-17 16:42:04.354076+00 | WAIT                | RETRY_SCHED          | {"tableId": 173}
+(8 rows)
+```
+
+### View running TTL jobs
+
+You can use [`SHOW JOBS`](/docs/v26.1/show-jobs) to see any running TTL jobs by executing the following query:
+
+```sql
+WITH x AS (SHOW JOBS) SELECT * from x WHERE job_type = 'ROW LEVEL TTL';
+```
+
+```text
+        job_id       |   job_type    | description | statement | user_name | status | running_status |          created           |          started           |          finished          |          modified          | fraction_completed |                                    error                                    | coordinator_id |      trace_id       |          last_run          |          next_run          | num_runs | execution_errors
+---------------------+---------------+-------------+-----------+-----------+--------+----------------+----------------------------+----------------------------+----------------------------+----------------------------+--------------------+-----------------------------------------------------------------------------+----------------+---------------------+----------------------------+----------------------------+----------+-------------------
+  751553547665211401 | ROW LEVEL TTL | ttl         |           | node      | failed | NULL           | 2022-04-08 13:59:00.008994 | 2022-04-08 13:59:02.730252 | 2022-04-08 13:59:03.367008 | 2022-04-08 13:59:02.587079 |                  0 | found a recent schema change on the table at 2022-04-08T13:58:35Z, aborting |              5 | 6643876482632317647 | 2022-04-08 13:59:03.224766 | 2022-04-08 13:59:33.224766 |        1 | {}
+(1 row)
+```
+
+<Tip>
+You can also view running TTL jobs using the [Jobs page in the DB Console](/docs/v26.1/ui-jobs-page)
+</Tip>
+
+### View TTL storage parameters on a table
+
+To view TTL storage parameters on a table, you can use [`SHOW CREATE TABLE`](/docs/v26.1/show-create):
+
+```sql
+SHOW CREATE TABLE events;
+```
+
+```text
+  table_name |                                                                                         create_statement
+-------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  events     | CREATE TABLE public.events (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     description STRING NULL,
+             |     inserted_at TIMESTAMPTZ NULL DEFAULT current_timestamp():::TIMESTAMPTZ,
+             |     crdb_internal_expiration TIMESTAMPTZ NOT VISIBLE NOT NULL DEFAULT current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL ON UPDATE current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL,
+             |     CONSTRAINT events_pkey PRIMARY KEY (id ASC)
+             | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@daily')
+(1 row)
+```
+
+You can also use the following query:
+
+```sql
+SELECT relname, reloptions FROM pg_class WHERE relname = 'events';
+```
+
+```text
+  relname |                                reloptions
+----------+---------------------------------------------------------------------------
+  events  | NULL
+  events  | {ttl='on',"ttl_expire_after='3 mons':::INTERVAL",ttl_job_cron='@daily'}
+(2 rows)
+```
+
+### Control how often the TTL job runs
+
+Setting a TTL on a table controls when the rows therein are considered expired, but it only says that such rows *may* be deleted at any time after the expiration. To control how often the TTL deletion job runs, use the [`ttl_job_cron` storage parameter](#param-ttl-job-cron), which supports [CRON syntax](https://cron.help/). Cockroach Labs recommends setting `ttl_job_cron` to be equal to or longer than the [`gc.ttlseconds`](/docs/v26.1/configure-replication-zones#gc-ttlseconds) setting, which is the garbage collection interval for the cluster. The default value of `gc.ttlseconds` is 14400, or 4 hours. The CRON pattern for every four hours is `'0 */4 * * *'`.
+
+To control the job interval at [`CREATE TABLE`](/docs/v26.1/create-table) time, add the storage parameter as shown below:
+
+```sql
+CREATE TABLE tbl (
+  id UUID PRIMARY KEY default gen_random_uuid(),
+  value TEXT
+) WITH (ttl_expire_after = '3 weeks', ttl_job_cron = '0 */4 * * *');
+```
+
+```text
+CREATE TABLE
+```
+
+<Note>
+To set the [`ttl_job_cron` storage parameter](#param-ttl-job-cron) when creating a table with Row-Level TTL, you must also set either the [`ttl_expire_after`](#param-ttl-expire-after) parameter or the [`ttl_expiration_expression`](#param-ttl-expiration-expression) parameter.
+</Note>
+
+To update the TTL deletion job interval on a table that already has Row-Level TTL enabled, use [`ALTER TABLE`](/docs/v26.1/alter-table):
+
+```sql
+ALTER TABLE tbl SET (ttl_job_cron = '@weekly');
+```
+
+```text
+ALTER TABLE
+```
+
+### Pause the TTL job from running
+
+To pause the TTL job from running on a table, use the [`ttl_pause` storage parameter](#param-ttl-pause):
+
+```sql
+ALTER TABLE events SET (ttl_pause = 'on');
+```
+
+```text
+ALTER TABLE
+```
+
+If you run the TTL pausing statement above against a table that does not have TTL enabled, you will get the following error:
+
+```text
+ERROR: "ttl_expire_after" must be set
+SQLSTATE: 22023
+```
+
+### Filter out expired rows from a selection query
+
+To fetch only those rows from a table with [table-wide TTL](#create-a-table-with-ttl_expire_after) that have not yet expired their TTL, use the [hidden `crdb_internal_expiration` column](#crdb-internal-expiration):
+
+```sql
+SELECT * FROM events WHERE crdb_internal_expiration > now();
+```
+
+```text
+                   id                  |    description    |        inserted_at
+---------------------------------------+-------------------+-----------------------------
+  6d25862e-2e48-4993-ac3a-a2abbebebf32 | yet another thing | 2022-03-17 20:01:56.138216
+  a9404386-c4da-415f-b0b0-0dfad0f13c80 | a thing           | 2022-03-17 20:01:56.138216
+  d4ebf8cd-e482-4abb-8968-2ba39c9197d9 | another thing     | 2022-03-17 20:01:56.138216
+(3 rows)
+```
+
+To fetch only those rows from a table with [a `ttl_expiration_expression`](#create-a-table-with-a-ttl_expiration_expression) that have not yet expired their TTL, use the `expired_at` column you created earlier:
+
+```sql
+SELECT * FROM ttl_test_per_row WHERE expired_at > now();
+```
+
+### Reset a storage parameter to its default value
+
+To reset a [TTL storage parameter](#ttl-storage-parameters) to its default value, use the [`ALTER TABLE`](/docs/v26.1/alter-table) statement:
+
+```sql
+ALTER TABLE events RESET (ttl_job_cron);
+```
+
+```text
+ALTER TABLE
+```
+
+### Remove Row-Level TTL from a table
+
+To drop the TTL on an existing table, reset the [`ttl` storage parameter](#param-ttl).
+
+```sql
+ALTER TABLE events RESET (ttl);
+```
+
+If both [`ttl_expire_after`](#param-ttl-expire-after) and [`ttl_expiration_expression`](#param-ttl-expiration-expression) are set, and you want to remove one or the other, you can use either of:
+
+```sql
+ALTER TABLE events RESET (ttl_expire_after);
+```
+
+```sql
+ALTER TABLE events_using_date RESET (ttl_expiration_expression);
+```
+
+### Disable TTL jobs for the whole cluster
+
+To disable TTL jobs for the whole cluster, set the `sql.ttl.job.enabled` [cluster setting](/docs/v26.1/cluster-settings) to `false`:
+
+```sql
+SET CLUSTER SETTING sql.ttl.job.enabled = false;
+```
+
+```text
+SET CLUSTER SETTING
+```
+
+### View TTL-related cluster settings
+
+To view the [cluster settings](/docs/v26.1/cluster-settings) that control how Row-Level TTL works, issue the following query:
+
+```sql
+WITH x AS (SHOW CLUSTER SETTINGS) SELECT * FROM x WHERE variable LIKE 'sql.ttl.%';
+```
+
+```text
+              variable              | value | setting_type |                                 description
+------------------------------------+-------+--------------+------------------------------------------------------------------------------
+  sql.ttl.default_delete_batch_size | 100   | i            | default amount of rows to delete in a single query during a TTL job
+  sql.ttl.default_delete_rate_limit | 100   | i            | default delete rate limit for all TTL jobs. Use 0 to signify no rate limit.
+  sql.ttl.default_select_batch_size | 500   | i            | default amount of rows to select in a single query during a TTL job
+  sql.ttl.default_select_rate_limit | 0     | i            | default select rate limit for all TTL jobs. Use 0 to signify no rate limit.
+  sql.ttl.job.enabled               | false | b            | whether the TTL job is enabled
+(6 rows)
+```
+
+## Common errors
+
+If you attempt to update a [TTL storage parameter](#ttl-storage-parameters) on a table that does not have TTL enabled, you will get an error as shown below:
+
+```sql
+ALTER TABLE events SET (ttl_job_cron = '@weekly');
+```
+
+```text
+ERROR: "ttl_expire_after" and/or "ttl_expiration_expression" must be set
+SQLSTATE: 22023
+```
+
+If you try to reset a [TTL storage parameter](#ttl-storage-parameters) but resetting that parameter would result in an invalid state of the TTL subsystem, CockroachDB will signal an error. For example, there is only one way to [remove Row-Level TTL from a table](#remove-row-level-ttl-from-a-table). If you try to remove the TTL from a table by resetting the `ttl_expire_after` storage parameter you set earlier, you will get the following error:
+
+```sql
+ALTER TABLE tbl RESET (ttl_expire_after);
+```
+
+```text
+ERROR: "ttl_expire_after" and/or "ttl_expiration_expression" must be set
+SQLSTATE: 22023
+```
+
+## Changefeeds
+
+Row-level TTL interacts with [changefeeds](/docs/v26.1/create-and-configure-changefeeds) in the following ways:
+
+- When expired rows are deleted, a [changefeed delete message](/docs/v26.1/changefeed-messages#delete-messages) is emitted.
+
+### Filter changefeeds for tables using row-level TTL
+
+Use the `ttl_disable_changefeed_replication` table storage parameter to prevent changefeeds from sending `DELETE` messages issued by row-level TTL jobs for a table. Include the storage parameter when you create or alter the table. For example:
+
+```sql
+CREATE TABLE tbl (
+  id UUID PRIMARY KEY default gen_random_uuid(),
+  value TEXT
+) WITH (ttl_expire_after = '3 weeks', ttl_job_cron = '@daily', ttl_disable_changefeed_replication = 'true');
+```
+
+```sql
+ALTER TABLE events SET (ttl_expire_after = '1 year', ttl_disable_changefeed_replication = 'true');
+```
+
+You can also widen the scope to the cluster by setting the `sql.ttl.changefeed_replication.disabled` [cluster setting](/docs/v26.1/cluster-settings) to `true`. This will prevent changefeeds from emitting deletes issued by all TTL jobs on a cluster.
+
+If you want to have a changefeed ignore the storage parameter or cluster setting that disables changefeed replication, you can set the changefeed option `ignore_disable_changefeed_replication` to `true`:
+
+```sql
+CREATE CHANGEFEED FOR TABLE table_name INTO 'external://changefeed-sink'
+  WITH resolved, ignore_disable_changefeed_replication = true;
+```
+
+This is useful when you have multiple use cases for different changefeeds on the same table. For example, you have a table with a changefeed streaming changes to another database for analytics workflows in which you do not want to reflect row-level TTL deletes. Secondly, you have a changefeed on the same table for audit-logging purposes for which you need to persist every change through the changefeed.
+
+For guidance on how to filter changefeed messages to emit row-level TTL deletes only, refer to [Change Data Capture Queries](/docs/v26.1/cdc-queries#reference-ttl-in-a-cdc-query).
+
+## Backup and restore
+
+Row-level TTL interacts with [backup and restore](/docs/v26.1/backup-and-restore-overview) in the following ways:
+
+- When you run a [`BACKUP`](/docs/v26.1/backup), all row-level TTL information associated with the tables being backed up (including TTL expiration times) is also backed up.
+- When you [`RESTORE`](/docs/v26.1/restore) from a backup, all row-level TTL information associated with the tables being restored (including TTL expiration times) is also restored. Any expired rows in the restored tables are eligible to be [deleted](#when-are-rows-deleted) by the [TTL job](#how-it-works).
+
+## Required Privileges
+
+To add or update Row-Level TTL settings on a table, you must have one of the following:
+
+- Membership to the [owner](/docs/v26.1/security-reference/authorization#object-ownership) role for the database where the table is located.
+- The [`CREATE` or `ALTER` privilege](/docs/v26.1/security-reference/authorization#supported-privileges) on the database where the table is located.
+
+## Migrating TTL usage from earlier versions of CockroachDB
+
+If you are migrating your TTL usage from an earlier version of CockroachDB, the `ttl_expire_after` and `ttl_expiration_expression` storage parameters can co-exist where the `ttl_expire_after` creates the `crdb_internal_expiration` column and `ttl_expiration_expression` overrides the default value of `crdb_internal_expiration`.
+
+## Known limitations
+
+- Any queries you run against tables with Row-Level TTL enabled (or against tables that have [foreign keys](/docs/v26.1/foreign-key) that reference TTL-enabled tables) do not filter out expired rows from the result set (this includes [`UPDATE`s](/docs/v26.1/update) and [`DELETE`s](/docs/v26.1/delete) ). This feature may be added in a future release. For now, follow the instructions in [Filter out expired rows from a selection query](/docs/v26.1/row-level-ttl#filter-out-expired-rows-from-a-selection-query).
+- Tables with Row-Level TTL can be referenced by [foreign keys](/docs/v26.1/foreign-key). TTL deletes are issued as regular [`DELETE`](/docs/v26.1/delete) statements, so inbound foreign keys apply. If an inbound foreign key uses `ON DELETE RESTRICT` and referencing rows exist, the TTL job fails with a foreign key violation. [#101372](https://github.com/cockroachdb/cockroach/issues/101372)
+- Enabling Row-Level TTL on a table with multiple [secondary indexes](/docs/v26.1/indexes) can have negative performance impacts on a cluster, including increased [latency](/docs/v26.1/common-issues-to-monitor#service-latency) and [contention](/docs/v26.1/performance-best-practices-overview#transaction-contention). This is particularly true for large tables with terabytes of data and billions of rows that are split up into multiple ranges across separate nodes.
+    - Increased latency may occur because secondary indexes aren't necessarily stored on the same underlying [ranges](/docs/v26.1/architecture/overview#architecture-range) as a table's [primary indexes](/docs/v26.1/indexes). Further, the secondary indexes' ranges may have [leaseholders](/docs/v26.1/architecture/overview#architecture-leaseholder) located on different nodes than the primary index.
+    - Increased contention may occur because [intents](/docs/v26.1/architecture/transaction-layer#write-intents) must be written as part of performing the deletions.
+    - Finally, secondary indexes can also have a negative impact on the overall performance of [TTL jobs](/docs/v26.1/row-level-ttl#view-running-ttl-jobs). According to internal testing, the [TTL job processing rate](/docs/v26.1/ui-ttl-dashboard#processing-rate) is worse on tables with secondary indexes. If you encounter this situation, decreasing the [`ttl_delete_batch_size` storage parameter](/docs/v26.1/row-level-ttl#param-ttl-delete-batch-size) may help by decreasing the number of ranges that need to be accessed by the job.
+
+## See also
+
+- [Bulk-delete Data](/docs/v26.1/bulk-delete-data)
+- [Delete data](/docs/v26.1/delete-data)
+- [`DELETE`](/docs/v26.1/delete)
+- [`SELECT` clause](/docs/v26.1/select-clause)
+- [`AS OF SYSTEM TIME`](/docs/v26.1/as-of-system-time)
+- [`TIMESTAMPTZ`](/docs/v26.1/timestamp)
+- [`INTERVAL`](/docs/v26.1/interval)
+- [SQL Performance Best Practices](/docs/v26.1/performance-best-practices-overview)
+- [Developer Guide Overview](/docs/v26.1/developer-guide-overview)

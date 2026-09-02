@@ -1,0 +1,533 @@
+---
+title: "CREATE INDEX"
+old_description: "The CREATE INDEX statement creates an index for a table. Indexes improve your database's performance by helping SQL quickly locate data."
+---
+
+import { CreateIndex } from "/snippets/syntax-diagrams/CreateIndex.jsx";
+import { CreateIndex2 } from "/snippets/syntax-diagrams/CreateIndex2.jsx";
+
+The `CREATE INDEX` [statement](/docs/v26.1/sql-statements) creates an index for a table. [Indexes](/docs/v26.1/indexes) improve your database's performance by helping SQL locate data without having to look through every row of a table.
+
+Indexes are automatically created for a table's [`PRIMARY KEY`](/docs/v26.1/primary-key) and [`UNIQUE`](/docs/v26.1/unique) columns. When querying a table, CockroachDB uses the fastest index. For more information about that process, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2).
+
+The following types cannot be included in an index key, but can be stored (and used in a covered query) using the [`STORING` or `COVERING`](/docs/v26.1/create-index#store-columns) clause:
+
+- [`JSONB`](/docs/v26.1/jsonb)
+- [`ARRAY`](/docs/v26.1/array)
+- The computed [`TUPLE`](/docs/v26.1/scalar-expressions#tuple-constructors) type, even if it is constructed from indexed fields
+
+To create an index on the schemaless data in a [`JSONB`](/docs/v26.1/jsonb) column or on the data in an [`ARRAY`](/docs/v26.1/array), use a [GIN index](/docs/v26.1/inverted-indexes).
+
+<Note>
+  The `CREATE INDEX` statement performs a schema change. For more information about how online schema changes work in
+  CockroachDB, see [Online Schema Changes](/docs/v26.1/online-schema-changes).
+</Note>
+
+## Required privileges
+
+The user must have the `CREATE` [privilege](/docs/v26.1/security-reference/authorization#managing-privileges) on the table.
+
+## Synopsis
+
+### Standard index
+
+<CreateIndex />
+
+### GIN index
+
+<CreateIndex2 />
+
+## Parameters
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>UNIQUE</code>
+      </td>
+      <td>
+        Apply the{" "}
+        <a href="/docs/v26.1/unique">
+          <code>UNIQUE</code> constraint
+        </a>{" "}
+        to the indexed columns.
+        <br />
+        <br />
+        This causes the system to check for existing duplicate values on index creation. It also applies the{" "}
+        <code>UNIQUE</code> constraint at the table level, so the system checks for duplicate values when inserting or
+        updating data.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>INVERTED</code>
+      </td>
+      <td>
+        Create a <a href="/docs/v26.1/inverted-indexes">GIN index</a> on the schemaless data in the specified{" "}
+        <a href="/docs/v26.1/jsonb">
+          <code>JSONB</code>
+        </a>{" "}
+        column.
+        <br />
+        <br />
+        You can also use the PostgreSQL-compatible syntax <code>USING GIN</code>. For more details, see{" "}
+        <a href="/docs/v26.1/inverted-indexes#creation">GIN Indexes</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>VECTOR</code>
+      </td>
+      <td>
+        Create a <a href="/docs/v26.1/vector-indexes">vector index</a> on the specifed{" "}
+        <a href="/docs/v26.1/vector">
+          <code>VECTOR</code>
+        </a>{" "}
+        column.
+        <br />
+        <br />
+        For more details, refer to <a href="/docs/v26.1/vector-indexes">Vector Indexes</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>IF NOT EXISTS</code>
+      </td>
+      <td>
+        Create a new index only if an index of the same name does not already exist; if one does exist, do not return an
+        error.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>opt&#95;index&#95;name</code>
+        <br />
+        <code>index&#95;name</code>
+      </td>
+      <td>
+        The name of the index to create, which must be unique to its table and follow these{" "}
+        <a href="/docs/v26.1/keywords-and-identifiers#identifiers">identifier rules</a>.<br />
+        <br />
+        If you do not specify a name, CockroachDB uses the format{" "}
+        <code>&lt;table&gt;&#95;&lt;columns&gt;&#95;key/idx</code>. <code>key</code> indicates the index applies the{" "}
+        <code>UNIQUE</code> constraint; <code>idx</code> indicates it does not. Example:{" "}
+        <code>accounts&#95;balance&#95;idx</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>table&#95;name</code>
+      </td>
+      <td>The name of the table you want to create the index on.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>USING name</code>
+      </td>
+      <td>
+        An optional clause for compatibility with third-party tools. Accepted values for <code>name</code> are{" "}
+        <code>btree</code>, <code>gin</code>, and <code>gist</code>, with <code>btree</code> for a standard secondary
+        index, <code>gin</code> as the PostgreSQL-compatible syntax for a <a href="#create-gin-indexes">GIN index</a>,{" "}
+        <code>gist</code> for a <a href="/docs/v26.1/spatial-indexes">spatial index</a>, and <code>cspann</code> for a{" "}
+        <a href="/docs/v26.1/vector-indexes">vector index</a>. <code>hnsw</code> is aliased to <code>cspann</code> for
+        compatibility with{" "}
+        <a href="https://github.com/pgvector/pgvector">
+          <code>pgvector</code>
+        </a>{" "}
+        syntax.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>name</code>
+      </td>
+      <td>
+        The name of the column you want to index. For{" "}
+        <a href="/docs/v26.1/multiregion-overview#table-localities">multi-region tables</a>, you can use the{" "}
+        <code>crdb&#95;region</code> column within the index in the event the original index may contain non-unique
+        entries across multiple, unique regions.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>ASC</code> or <code>DESC</code>
+      </td>
+      <td>
+        Sort the column in ascending (<code>ASC</code>) or descending (<code>DESC</code>) order in the index. How
+        columns are sorted affects query results, particularly when using <code>LIMIT</code>.<br />
+        <br />
+        <strong>Default:</strong>
+        <code>ASC</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>STORING ...</code>
+      </td>
+      <td>
+        Store (but do not sort) each column whose name you include.
+        <br />
+        <br />
+        For information on when to use <code>STORING</code>, see <a href="#store-columns">Store Columns</a>. Note that
+        columns that are part of a table's{" "}
+        <a href="/docs/v26.1/primary-key">
+          <code>PRIMARY KEY</code>
+        </a>{" "}
+        cannot be specified as <code>STORING</code> columns in secondary indexes on the table.
+        <br />
+        <br />
+        <code>COVERING</code> and <code>INCLUDE</code> are aliases for <code>STORING</code> and work identically.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>opt&#95;partition&#95;by</code>
+      </td>
+      <td>
+        An option that lets you <a href="/docs/v26.1/partitioning">define index partitions at the row level</a>. As of
+        CockroachDB v21.1 and later, most users should use{" "}
+        <a href="/docs/v26.1/table-localities#regional-by-row-tables">
+          <code>REGIONAL BY ROW</code> tables
+        </a>
+        . Indexes against regional by row tables are automatically partitioned, so explicit index partitioning is not
+        required.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>opt&#95;where&#95;clause</code>
+      </td>
+      <td>
+        An optional <code>WHERE</code> clause that defines the predicate boolean expression of a{" "}
+        <a href="/docs/v26.1/partial-indexes">partial index</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>opt&#95;index&#95;visible</code>
+      </td>
+      <td>
+        An optional <code>VISIBLE</code>, <code>NOT VISIBLE</code>, or <code>VISIBILITY</code> clause that indicates
+        that an{" "}
+        <a href="/docs/v26.1/cost-based-optimizer#control-whether-the-optimizer-uses-an-index">
+          index is visible, not visible, or partially visible to the cost-based optimizer
+        </a>
+        . If not visible, the index will not be used in queries unless it is specifically selected with an{" "}
+        <a href="/docs/v26.1/indexes#selection">index hint</a> or the property is overridden with the{" "}
+        <a href="/docs/v26.1/set-vars#optimizer-use-not-visible-indexes">
+          <code>optimizer&#95;use&#95;not&#95;visible&#95;indexes</code> session variable
+        </a>
+        . For examples, see <a href="/docs/v26.1/alter-index#set-index-visibility">Set index visibility</a>.<br />
+        <br />
+        Indexes that are not visible are still used to enforce <code>UNIQUE</code> and <code>FOREIGN KEY</code>
+        <a href="/docs/v26.1/constraints">constraints</a>. For more considerations, see{" "}
+        <a href="/docs/v26.1/alter-index#not-visible">Index visibility considerations</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>USING HASH</code>
+      </td>
+      <td>
+        Creates a <a href="/docs/v26.1/hash-sharded-indexes">hash-sharded index</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>WITH storage&#95;parameter</code>
+      </td>
+      <td>
+        A comma-separated list of{" "}
+        <a href="/docs/v26.1/spatial-indexes#index-tuning-parameters">spatial index tuning parameters</a>. Supported
+        parameters include <code>fillfactor</code>, <code>s2&#95;max&#95;level</code>, <code>s2&#95;level&#95;mod</code>
+        , <code>s2&#95;max&#95;cells</code>, <code>geometry&#95;min&#95;x</code>, <code>geometry&#95;max&#95;x</code>,{" "}
+        <code>geometry&#95;min&#95;y</code>, and <code>geometry&#95;max&#95;y</code>. The <code>fillfactor</code>{" "}
+        parameter is a no-op, allowed for PostgreSQL-compatibility.
+        <br />
+        <br />
+        For details, see{" "}
+        <a href="/docs/v26.1/spatial-indexes#index-tuning-parameters">Spatial index tuning parameters</a>. For an
+        example, see{" "}
+        <a href="/docs/v26.1/spatial-indexes#create-a-spatial-index-that-uses-all-of-the-tuning-parameters">
+          Create a spatial index that uses all of the tuning parameters
+        </a>
+        .
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>CONCURRENTLY</code>
+      </td>
+      <td>Optional, no-op syntax for PostgreSQL compatibility. All indexes are created concurrently in CockroachDB.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Viewing schema changes
+
+This schema change statement is registered as a job. You can view long-running jobs with [`SHOW JOBS`](/docs/v26.1/show-jobs).
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v26.1/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v26.1/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Create standard indexes
+
+To create the most efficient indexes, we recommend reviewing:
+
+- [Indexes: Best Practices](/docs/v26.1/indexes#best-practices)
+- [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2)
+
+#### Single-column indexes
+
+Single-column indexes sort the values of a single column.
+
+```sql
+> CREATE INDEX ON users (name);
+```
+
+Because each query can only use one index, single-column indexes are not typically as useful as multiple-column indexes.
+
+#### Multiple-column indexes
+
+Multiple-column indexes sort columns in the order you list them.
+
+```sql
+> CREATE INDEX ON users (name, city);
+```
+
+To create the most useful multiple-column indexes, we recommend reviewing our [best practices](/docs/v26.1/schema-design-indexes#best-practices).
+
+#### Unique indexes
+
+Unique indexes do not allow duplicate values among their columns.
+
+```sql
+> CREATE UNIQUE INDEX ON users (name, id);
+```
+
+This also applies the [`UNIQUE` constraint](/docs/v26.1/unique) at the table level, similar to [`ALTER TABLE`](/docs/v26.1/alter-table). The preceding example is equivalent to:
+
+```sql
+> ALTER TABLE users ADD CONSTRAINT users_name_id_key UNIQUE (name, id);
+```
+
+Primary key columns that are not specified within a unique index are automatically marked as [`STORING`](/docs/v26.1/indexes#storing-columns) in the [`information_schema.statistics`](/docs/v26.1/information-schema#statistics) table and in [`SHOW INDEX`](/docs/v26.1/show-index).
+
+### Create GIN indexes
+
+You can create [GIN indexes](/docs/v26.1/inverted-indexes) on schemaless data in a [`JSONB`](/docs/v26.1/jsonb) column.
+
+```sql
+> CREATE INDEX ON promo_codes USING GIN (rules);
+```
+
+The following syntax is equivalent:
+
+```sql
+> CREATE INVERTED INDEX ON promo_codes (rules);
+```
+
+### Create trigram indexes
+
+You can create [trigram indexes](/docs/v26.1/trigram-indexes) on `STRING` columns by specifying the `gin_trgm_ops` or `gist_trgm_ops` opclass:
+
+```sql
+CREATE INDEX ON rides USING GIN (vehicle_city gin_trgm_ops);
+```
+
+The following syntax is equivalent:
+
+```sql
+CREATE INVERTED INDEX ON rides(vehicle_city gin_trgm_ops);
+```
+
+<Note>
+  GIN and GiST indexes are implemented identically on CockroachDB. `GIN` and `GIST` are therefore synonymous when
+  defining a trigram index.
+</Note>
+
+### Create spatial indexes
+
+You can create [spatial indexes](/docs/v26.1/spatial-indexes) on `GEOMETRY` and `GEOGRAPHY` columns. Spatial indexes are a special type of [GIN index](/docs/v26.1/inverted-indexes).
+
+To create a spatial index on a `GEOMETRY` column:
+
+```sql
+CREATE INDEX geom_idx_1 ON some_spatial_table USING GIST(geom);
+```
+
+Unlike GIN indexes, spatial indexes do not support an alternate `CREATE INVERTED INDEX...` syntax. Only the syntax shown here is supported.
+
+For advanced users, there are a number of [spatial index tuning parameters](/docs/v26.1/spatial-indexes#create-a-spatial-index-that-uses-all-of-the-tuning-parameters) that can be passed in using the syntax `WITH (var1=val1, var2=val2)` as follows:
+
+```sql
+CREATE INDEX geom_idx_2
+  ON some_spatial_table USING GIST(geom)
+  WITH (s2_max_cells = 20, s2_max_level = 12, s2_level_mod = 3);
+```
+
+<Warning>
+  Most users should not change the default spatial index settings. There is a risk that you will get worse performance
+  by changing the default settings. For more information, see [Spatial indexes](/docs/v26.1/spatial-indexes).
+</Warning>
+
+### Create vector indexes
+
+You can create [vector indexes](/docs/v26.1/vector-indexes) on [`VECTOR`](/docs/v26.1/vector) columns.
+
+To create a vector index on a `VECTOR` column named `embedding`:
+
+```sql
+CREATE VECTOR INDEX ON items (embedding);
+```
+
+### Store columns
+
+Storing a column improves the performance of queries that retrieve (but do not filter) its values.
+
+```sql
+> CREATE INDEX ON users (city) STORING (name);
+```
+
+However, to use stored columns, queries must filter another column in the same index. For example, SQL can retrieve `name` values from the above index only when a query's `WHERE` clause filters `city`.
+
+<Note>
+  An index that stores all the columns needed by a query is also known as a *covering index* for that query. When a
+  query has a covering index, CockroachDB can use that index directly instead of doing an "index join" with the primary
+  index, which is likely to be slower.
+</Note>
+
+### Change column sort order
+
+To sort columns in descending order, you must explicitly set the option when creating the index. (Ascending order is the default.)
+
+```sql
+> CREATE INDEX ON users (city DESC, name);
+```
+
+How a column is ordered in the index will affect the ordering of the index keys, and may affect the efficiency of queries that include an `ORDER BY` clause.
+
+### Query specific indexes
+
+Normally, CockroachDB selects the index that it calculates will scan the fewest rows. However, you can override that selection and specify the name of the index you want to use. To find the name, use [`SHOW INDEX`](/docs/v26.1/show-index).
+
+```sql
+> SHOW INDEX FROM users;
+```
+
+```text
+  table_name |   index_name        | non_unique | seq_in_index | column_name | direction | storing | implicit
++------------+---------------------+------------+--------------+-------------+-----------+---------+----------+
+  users      | users_pkey          |   false    |            1 | city        | ASC       |  false  |  false
+  users      | users_pkey          |   false    |            2 | id          | ASC       |  false  |  false
+  users      | users_pkey          |   false    |            3 | name        | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            4 | address     | N/A       |  true   |  false
+  users      | users_pkey          |   false    |            5 | credit_card | N/A       |  true   |  false
+  users      | users_city_name_idx |    true    |            1 | city        | DESC      |  false  |  false
+  users      | users_city_name_idx |    true    |            2 | name        | ASC       |  false  |  false
+  users      | users_city_name_idx |    true    |            3 | id          | ASC       |  false  |   true
+(8 rows)
+```
+
+```sql
+> SELECT name FROM users@users_name_idx WHERE city='new york';
+```
+
+```text
+        name
++------------------+
+  Catherine Nelson
+  Devin Jordan
+  James Hamilton
+  Judy White
+  Robert Murphy
+(5 rows)
+```
+
+You can use the `@primary` alias to use the table's primary key in your query if no secondary index explicitly named `primary` exists on that table.
+
+### Create a hash-sharded secondary index
+
+We [discourage indexing on sequential keys](/docs/v26.1/schema-design-indexes#best-practices). If a table **must** be indexed on sequential keys, use [hash-sharded indexes](/docs/v26.1/hash-sharded-indexes). Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range [hotspots](/docs/v26.1/understand-hotspots) and improving write performance on sequentially-keyed indexes at a small cost to read performance.
+
+Let's assume the `events` table already exists:
+
+```sql
+> CREATE TABLE events (
+    product_id INT8,
+    owner UUID,
+    serial_number VARCHAR,
+    event_id UUID,
+    ts TIMESTAMP,
+    data JSONB,
+    PRIMARY KEY (product_id, owner, serial_number, ts, event_id)
+);
+```
+
+You can create a hash-sharded index on an existing table:
+
+```sql
+> CREATE INDEX ON events(ts) USING HASH;
+```
+
+```sql
+> SHOW INDEX FROM events;
+```
+
+```text
+  table_name |  index_name   | non_unique | seq_in_index |        column_name        | direction | storing | implicit
+-------------+---------------+------------+--------------+---------------------------+-----------+---------+-----------
+  events     | events_pkey   |   false    |            1 | product_id                | ASC       |  false  |  false
+  events     | events_pkey   |   false    |            2 | owner                     | ASC       |  false  |  false
+  events     | events_pkey   |   false    |            3 | serial_number             | ASC       |  false  |  false
+  events     | events_pkey   |   false    |            4 | ts                        | ASC       |  false  |  false
+  events     | events_pkey   |   false    |            5 | event_id                  | ASC       |  false  |  false
+  events     | events_pkey   |   false    |            6 | data                      | N/A       |  true   |  false
+  events     | events_ts_idx |    true    |            1 | crdb_internal_ts_shard_16 | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            2 | ts                        | ASC       |  false  |  false
+  events     | events_ts_idx |    true    |            3 | product_id                | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            4 | owner                     | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            5 | serial_number             | ASC       |  false  |   true
+  events     | events_ts_idx |    true    |            6 | event_id                  | ASC       |  false  |   true
+(12 rows)
+```
+
+```sql
+> SHOW COLUMNS FROM events;
+```
+
+```text
+         column_name        | data_type | is_nullable | column_default |               generation_expression               |           indices           | is_hidden
+----------------------------+-----------+-------------+----------------+---------------------------------------------------+-----------------------------+------------
+  product_id                | INT8      |    false    | NULL           |                                                   | {events_pkey,events_ts_idx} |   false
+  owner                     | UUID      |    false    | NULL           |                                                   | {events_pkey,events_ts_idx} |   false
+  serial_number             | VARCHAR   |    false    | NULL           |                                                   | {events_pkey,events_ts_idx} |   false
+  event_id                  | UUID      |    false    | NULL           |                                                   | {events_pkey,events_ts_idx} |   false
+  ts                        | TIMESTAMP |    false    | NULL           |                                                   | {events_pkey,events_ts_idx} |   false
+  data                      | JSONB     |    true     | NULL           |                                                   | {events_pkey}               |   false
+  crdb_internal_ts_shard_16 | INT8      |    false    | NULL           | mod(fnv32(crdb_internal.datums_to_bytes(ts)), 16) | {events_ts_idx}             |   true
+(7 rows)
+```
+
+## See also
+
+- [Indexes](/docs/v26.1/indexes)
+- [`SHOW INDEX`](/docs/v26.1/show-index)
+- [`DROP INDEX`](/docs/v26.1/drop-index)
+- [`ALTER INDEX... RENAME TO`](/docs/v26.1/alter-index#rename-to)
+- [`SHOW JOBS`](/docs/v26.1/show-jobs)
+- [SQL Statements](/docs/v26.1/sql-statements)
+- [Online Schema Changes](/docs/v26.1/online-schema-changes)

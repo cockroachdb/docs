@@ -1,0 +1,295 @@
+---
+title: "ALTER RANGE"
+old_description: "Use the ALTER RANGE statement to configure the replication zone for a system range."
+---
+
+import { AlterRange3 } from "/snippets/syntax-diagrams/AlterRange3.jsx";
+
+The `ALTER RANGE` [statement](/docs/v24.1/sql-statements) applies a [schema change](/docs/v24.1/online-schema-changes) to a range.
+
+## Required privileges
+
+Refer to the respective [subcommands](#subcommands).
+
+## Synopsis
+
+<AlterRange3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>range&#95;id</code></td><td>The name or ID of the range you want to change.</td></tr></tbody></table>
+
+Additional parameters are documented for the respective [subcommands](#subcommands).
+
+## Subcommands
+
+<table><thead><tr><th>Subcommand</th><th>Description</th></tr></thead><tbody><tr><td><a href="#configure-zone"><code>CONFIGURE ZONE</code></a></td><td><a href="/docs/v24.1/configure-replication-zones">Replication Controls</a> for a database.</td></tr><tr><td><a href="#relocate"><code>RELOCATE</code></a></td><td>Move a lease or replica between stores in an emergency situation.</td></tr></tbody></table>
+
+### `CONFIGURE ZONE`
+
+`ALTER RANGE... CONFIGURE ZONE` is used to add, modify, reset, or remove [replication zones](/docs/v24.1/configure-replication-zones) for a range. To view details about existing replication zones, see [`SHOW ZONE CONFIGURATIONS`](/docs/v24.1/show-zone-configurations).
+
+You can use replication zones to control the number and location of replicas for specific sets of data, both when replicas are first added and when they are rebalanced to maintain cluster equilibrium.
+
+For instructions showing how to troubleshoot replication zones that may be misconfigured, see [Troubleshoot Replication Zone Configurations](/docs/v24.1/troubleshoot-replication-zones).
+
+#### Required privileges
+
+The user must be a member of the [`admin` role](/docs/v24.1/security-reference/authorization#admin-role) or have been granted [`CREATE`](/docs/v24.1/security-reference/authorization#supported-privileges) or [`ZONECONFIG`](/docs/v24.1/security-reference/authorization#supported-privileges) privileges. To configure [`system` objects](/docs/v24.1/configure-replication-zones#for-system-data), the user must be a member of the `admin` role.
+
+#### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>variable</code></td><td>The name of the <a href="/docs/v24.1/configure-replication-zones#replication-zone-variables">replication zone variable</a> to change.</td></tr><tr><td><code>value</code></td><td>The value of the <a href="/docs/v24.1/configure-replication-zones#replication-zone-variables">replication zone variable</a> to change.</td></tr><tr><td><code>DISCARD</code></td><td>Remove a replication zone.</td></tr></tbody></table>
+
+For usage, see [Synopsis](#synopsis).
+
+### `RELOCATE`
+
+`ALTER RANGE... RELOCATE` is used to move a lease or [replica](/docs/v24.1/architecture/overview#architecture-replica) between [stores](/docs/v24.1/cockroach-start#store). This is helpful in an emergency situation to relocate data in the cluster.
+
+<Warning>
+Most users should not need to use this statement; it is for use in emergency situations. If you are in an emergency situation where you think using this statement may help, Cockroach Labs recommends contacting [support](/docs/v24.1/support-resources).
+</Warning>
+
+#### Required privileges
+
+To alter a range and move a lease or replica between stores, the user must have one of the following:
+
+- Membership to the [`admin`](/docs/v24.1/security-reference/authorization#admin-role) role for the cluster.
+
+#### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>LEASE</code></td><td>Move <a href="/docs/v24.1/architecture/replication-layer#leases">leases</a>.</td></tr><tr><td><code>VOTERS</code></td><td>Move <a href="/docs/v24.1/architecture/overview#architecture-replica">voting replicas</a> only.</td></tr><tr><td><code>NONVOTERS</code></td><td>Move <a href="/docs/v24.1/architecture/replication-layer#non-voting-replicas">non-voting replicas</a> only.</td></tr><tr><td><code>FROM a&#95;expr</code></td><td>Move a replica from a store ID.</td></tr><tr><td><code>TO a&#95;expr</code></td><td>Move a lease or replica to a new store ID.</td></tr><tr><td><code>select&#95;stmt</code></td><td>A <a href="/docs/v24.1/selection-queries">selection query</a> that produces one or more rows.</td></tr></tbody></table>
+
+For usage, see [Synopsis](#synopsis).
+
+## Examples
+
+### Configure replication zones
+
+#### Create a replication zone for a system range
+
+In addition to the databases and tables that are visible via the SQL interface, CockroachDB stores internal data in what are called system ranges. CockroachDB comes with pre-configured replication zones for some of these ranges:
+
+<table><thead><tr><th>Target Name</th><th>Description</th></tr></thead><tbody><tr><td><code>meta</code></td><td>The "meta" ranges contain the authoritative information about the location of all data in the cluster.<br/><br/>These ranges must retain a majority of replicas for the cluster as a whole to remain available and historical queries are never run on them, so CockroachDB comes with a <strong>pre-configured</strong><code>meta</code> replication zone with <code>num&#95;replicas</code> set to 5 to make these ranges more resilient to node failure and a lower-than-default <code>gc.ttlseconds</code> to keep these ranges smaller for reliable performance.<br/><br/>If your cluster is running in multiple datacenters, it's a best practice to configure the meta ranges to have a copy in each datacenter.</td></tr><tr><td><code>liveness</code></td><td>The "liveness" range contains the authoritative information about which nodes are live at any given time.<br/><br/>These ranges must retain a majority of replicas for the cluster as a whole to remain available and historical queries are never run on them, so CockroachDB comes with a <strong>pre-configured</strong><code>liveness</code> replication zone with <code>num&#95;replicas</code> set to 5 to make these ranges more resilient to node failure and a lower-than-default <code>gc.ttlseconds</code> to keep these ranges smaller for reliable performance.</td></tr><tr><td><code>system</code></td><td>There are system ranges for a variety of other important internal data, including information needed to allocate new table IDs and track the status of a cluster's nodes.<br/><br/>These ranges must retain a majority of replicas for the cluster as a whole to remain available, so CockroachDB comes with a <strong>pre-configured</strong><code>system</code> replication zone with <code>num&#95;replicas</code> set to 5 to make these ranges more resilient to node failure.</td></tr><tr><td><code>timeseries</code></td><td>The "timeseries" ranges contain monitoring data about the cluster that powers the graphs in CockroachDB's DB Console. If necessary, you can add a <code>timeseries</code> replication zone to control the replication of this data.</td></tr></tbody></table>
+
+<Warning>
+Use caution when editing replication zones for system ranges, as they could cause some (or all) parts of your cluster to stop working.
+</Warning>
+
+To control replication for one of the above sets of system ranges, use the [`ALTER RANGE... CONFIGURE ZONE`](/docs/v24.1/alter-range#configure-zone) statement to define the relevant values (other values will be inherited from the parent zone):
+
+```sql
+> ALTER RANGE meta CONFIGURE ZONE USING num_replicas = 7;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> SHOW ZONE CONFIGURATION FROM RANGE meta;
+```
+
+```text
+    target   |            raw_config_sql
++------------+---------------------------------------+
+  RANGE meta | ALTER RANGE meta CONFIGURE ZONE USING
+             |     range_min_bytes = 134217728,
+             |     range_max_bytes = 536870912,
+             |     gc.ttlseconds = 3600,
+             |     num_replicas = 7,
+             |     constraints = '[]',
+             |     lease_preferences = '[]'
+(1 row)
+```
+
+### Move lease or replica
+
+#### Find the cluster store IDs
+
+To use `ALTER RANGE... RELOCATE`, you will need to know your cluster's store IDs. To get the store IDs, run the following statement:
+
+```sql
+SELECT store_id FROM crdb_internal.kv_store_status;
+```
+
+```text
+ store_id
+-----------
+       1
+       2
+       3
+       4
+       5
+       6
+       7
+       8
+       9
+(9 rows)
+```
+
+#### Find range ID and leaseholder information
+
+To use `ALTER RANGE... RELOCATE`, you need to know how to find the range ID, leaseholder, and other information for a [table](/docs/v24.1/show-ranges#show-ranges-for-a-table), [index](/docs/v24.1/show-ranges#show-ranges-for-an-index), or [database](/docs/v24.1/show-ranges#show-ranges-for-a-database). You can find this information using the [`SHOW RANGES`](/docs/v24.1/show-ranges) statement.
+
+For example, to get all range IDs, leaseholder store IDs, and leaseholder localities for the [`movr.users`](/docs/v24.1/movr) table, use the following query:
+
+```sql
+WITH user_info AS (SHOW RANGES FROM TABLE users WITH DETAILS) SELECT range_id, lease_holder, lease_holder_locality FROM user_info;
+```
+
+```text
+  range_id | lease_holder |  lease_holder_locality
+-----------+--------------+---------------------------
+        70 |            3 | region=us-east1,az=d
+        67 |            9 | region=europe-west1,az=d
+        66 |            3 | region=us-east1,az=d
+        65 |            3 | region=us-east1,az=d
+        69 |            3 | region=us-east1,az=d
+        45 |            2 | region=us-east1,az=c
+        50 |            2 | region=us-east1,az=c
+        46 |            2 | region=us-east1,az=c
+        49 |            2 | region=us-east1,az=c
+(9 rows)
+```
+
+#### Move the lease for a range to a specified store
+
+To move the lease for range ID 70 to store ID 4:
+
+```sql
+ALTER RANGE 70 RELOCATE LEASE TO 4;
+```
+
+```text
+  range_id |   pretty   | result
+-----------+------------+---------
+        70 | /Table/106 | ok
+(1 row)
+```
+
+#### Move the lease for all of a table's ranges to a store
+
+To move the leases for all data in the [`movr.users`](/docs/v24.1/movr) table to a specific store:
+
+```sql
+ALTER RANGE RELOCATE LEASE TO 2 FOR SELECT range_id from [SHOW RANGES FROM TABLE users WITH DETAILS];
+```
+
+```text
+  range_id |                                            pretty                                            |                                                                                                                                                result
+-----------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        70 | /Table/106                                                                                   | unable to find store 2 in range r70:/Table/106{-/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"} [(n7,s7):1, (n3,s3):4, (n4,s4):5, next=6, gen=27]
+        67 | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | unable to find store 2 in range r67:/Table/106/1/"{amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"-boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"} [(n3,s3):4, (n9,s9):6, (n6,s6):7, next=8, gen=34, sticky=9223372036.854775807,2147483647]
+        66 | /Table/106/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | unable to find store 2 in range r66:/Table/106/1/"{boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"-los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"} [(n7,s7):1, (n3,s3):4, (n4,s4):5, next=6, gen=25, sticky=9223372036.854775807,2147483647]
+        65 | /Table/106/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | unable to find store 2 in range r65:/Table/106/1/"{los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"-new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"} [(n7,s7):1, (n3,s3):4, (n4,s4):5, next=6, gen=25, sticky=9223372036.854775807,2147483647]
+        69 | /Table/106/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | unable to find store 2 in range r69:/Table/106/1/"{new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"-paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("} [(n9,s9):5, (n3,s3):4, (n4,s4):3, next=6, gen=29, sticky=9223372036.854775807,2147483647]
+        45 | /Table/106/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | ok
+        50 | /Table/106/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | ok
+        46 | /Table/106/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | ok
+        49 | /Table/106/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | ok
+(9 rows)
+```
+
+When it isn't possible to move a lease for a range to the specified store, the `result` column will show the message `unable to find store...` as shown above.
+
+#### Move a replica from one store to another store
+
+If you know the store where a range's replica is located, you can move it to another store:
+
+```sql
+ALTER RANGE 45 RELOCATE FROM 2 to 4;
+```
+
+```text
+  range_id |                                      pretty                                       |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  result
+-----------+-----------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        45 | /Table/106/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00(" | removing learners from r45:/Table/106/1/"{paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("-san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19"} [(n2,s2):1LEARNER, (n8,s8):2, (n5,s5):3, (n4,s4):4, next=5, gen=14, sticky=9223372036.854775807,2147483647]: change replicas of r45 failed: descriptor changed: [expected] r45:/Table/106/1/"{paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("-san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19"} [(n2,s2):1LEARNER, (n8,s8):2, (n5,s5):3, (n4,s4):4, next=5, gen=14, sticky=9223372036.854775807,2147483647] != [actual] r45:/Table/106/1/"{paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("-san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19"} [(n4,s4):4, (n8,s8):2, (n5,s5):3, next=5, gen=15, sticky=9223372036.854775807,2147483647]
+(1 row)
+```
+
+#### Move all of a table's replicas on one store to another store
+
+To move the replicas for all data in the [`movr.users`](/docs/v24.1/movr) table on one store to another store:
+
+```sql
+ALTER RANGE RELOCATE FROM 2 TO 7 FOR SELECT range_id from [SHOW RANGES FROM TABLE users WITH DETAILS];
+```
+
+```text
+  range_id |                                            pretty                                            |                                                                                                                                                                                                                                                                                                                                                                                                                                          result
+-----------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        70 | /Table/106                                                                                   | trying to add a voter to a store that already has a VOTER_FULL
+        67 | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_VOTER Target:n2,s2}
+        66 | /Table/106/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | trying to add a voter to a store that already has a VOTER_FULL
+        65 | /Table/106/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | trying to add a voter to a store that already has a VOTER_FULL
+        69 | /Table/106/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_VOTER Target:n2,s2}
+        45 | /Table/106/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_VOTER Target:n2,s2}
+        50 | /Table/106/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | change replicas of r50 failed: descriptor changed: [expected] r50:/Table/106/1/"s{an francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19"-eattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"} [(n2,s2):1, (n8,s8):2, (n5,s5):3, (n7,s7):4LEARNER, next=5, gen=12, sticky=9223372036.854775807,2147483647] != [actual] r50:/Table/106/1/"s{an francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19"-eattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"} [(n2,s2):1, (n8,s8):2, (n5,s5):3, next=5, gen=13, sticky=9223372036.854775807,2147483647]
+        46 | /Table/106/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | removing learners from r46:/Table/106/1/"{seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"-washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"} [(n2,s2):1LEARNER, (n8,s8):2, (n5,s5):3, (n7,s7):4, next=5, gen=14, sticky=9223372036.854775807,2147483647]: change replicas of r46 failed: descriptor changed: [expected] r46:/Table/106/1/"{seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"-washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"} [(n2,s2):1LEARNER, (n8,s8):2, (n5,s5):3, (n7,s7):4, next=5, gen=14, sticky=9223372036.854775807,2147483647] != [actual] r46:/Table/106/1/"{seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"-washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"} [(n7,s7):4, (n8,s8):2, (n5,s5):3, next=5, gen=15, sticky=9223372036.854775807,2147483647]
+        49 | /Table/106/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | ok
+(9 rows)
+```
+
+See the `result` column in the output for the status of the operation. If it's `ok`, the replica was moved with no issues. Other messages will indicate whether the target store is already full (`VOTER_FULL`), or if the replica you're trying to remove doesn't exist.
+
+#### Move all of a range's voting replicas from one store to another store
+
+To move all of a range's voting replicas from one store to another store:
+
+```sql
+ALTER RANGE RELOCATE VOTERS FROM 7 TO 2 FOR SELECT range_id from [SHOW RANGES FROM TABLE users WITH DETAILS];
+```
+
+```text
+  range_id |                                            pretty                                            |                                                                                                                                                                                                                                                                                                                                                                                                                                       result
+-----------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        70 | /Table/106                                                                                   | ok
+        67 | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_VOTER Target:n7,s7}
+        66 | /Table/106/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | removing learners from r66:/Table/106/1/"{boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"-los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"} [(n7,s7):1LEARNER, (n3,s3):4, (n4,s4):5, (n2,s2):6, next=7, gen=28, sticky=9223372036.854775807,2147483647]: change replicas of r66 failed: descriptor changed: [expected] r66:/Table/106/1/"{boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"-los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"} [(n7,s7):1LEARNER, (n3,s3):4, (n4,s4):5, (n2,s2):6, next=7, gen=28, sticky=9223372036.854775807,2147483647] != [actual] r66:/Table/106/1/"{boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"-los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"} [(n2,s2):6, (n3,s3):4, (n4,s4):5, next=7, gen=29, sticky=9223372036.854775807,2147483647]
+        65 | /Table/106/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | ok
+        69 | /Table/106/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_VOTER Target:n7,s7}
+        45 | /Table/106/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_VOTER Target:n7,s7}
+        50 | /Table/106/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | trying to add a voter to a store that already has a VOTER_FULL
+        46 | /Table/106/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | trying to add a voter to a store that already has a VOTER_FULL
+        49 | /Table/106/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | trying to add a voter to a store that already has a VOTER_FULL
+(9 rows)
+```
+
+See the `result` column in the output for the status of the operation. If it's `ok`, the replica was moved with no issues. Other messages will indicate whether the target store is already full (`VOTER_FULL`), or if the replica you're trying to remove doesn't exist.
+
+#### Move all of a range's non-voting replicas from one store to another store
+
+To move a range's [non-voting replicas](/docs/v24.1/architecture/replication-layer#non-voting-replicas), use the statement below.
+
+<Note>
+This statement will only have an effect on clusters that have non-voting replicas configured, such as [multiregion clusters](/docs/v24.1/multiregion-overview). If your cluster is not a multiregion cluster, it doesn't do anything, and will display errors in the `result` field as shown below.
+</Note>
+
+```sql
+ALTER RANGE RELOCATE NONVOTERS FROM 7 TO 2 FOR SELECT range_id from [SHOW RANGES FROM TABLE users WITH DETAILS];
+```
+
+```text
+  range_id |                                            pretty                                            |                                                            result
+-----------+----------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------
+        70 | /Table/106                                                                                   | type of replica being removed (VOTER_FULL) does not match expectation for change: {ChangeType:REMOVE_NON_VOTER Target:n7,s7}
+        67 | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_NON_VOTER Target:n7,s7}
+        66 | /Table/106/1/"boston"/"333333D\x00\x80\x00\x00\x00\x00\x00\x00\n"                            | type of replica being removed (VOTER_FULL) does not match expectation for change: {ChangeType:REMOVE_NON_VOTER Target:n7,s7}
+        65 | /Table/106/1/"los angeles"/"\x99\x99\x99\x99\x99\x99H\x00\x80\x00\x00\x00\x00\x00\x00\x1e"   | type of replica being removed (VOTER_FULL) does not match expectation for change: {ChangeType:REMOVE_NON_VOTER Target:n7,s7}
+        69 | /Table/106/1/"new york"/"\x19\x99\x99\x99\x99\x99J\x00\x80\x00\x00\x00\x00\x00\x00\x05"      | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_NON_VOTER Target:n7,s7}
+        45 | /Table/106/1/"paris"/"\xcc\xcc\xcc\xcc\xcc\xcc@\x00\x80\x00\x00\x00\x00\x00\x00("            | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_NON_VOTER Target:n7,s7}
+        50 | /Table/106/1/"san francisco"/"\x80\x00\x00\x00\x00\x00@\x00\x80\x00\x00\x00\x00\x00\x00\x19" | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_NON_VOTER Target:n7,s7}
+        46 | /Table/106/1/"seattle"/"ffffffH\x00\x80\x00\x00\x00\x00\x00\x00\x14"                         | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_NON_VOTER Target:n7,s7}
+        49 | /Table/106/1/"washington dc"/"L\xcc\xcc\xcc\xcc\xccL\x00\x80\x00\x00\x00\x00\x00\x00\x0f"    | trying to remove a replica that doesn't exist: {ChangeType:REMOVE_NON_VOTER Target:n7,s7}
+(9 rows)
+```
+
+## See also
+
+- [Replication Controls](/docs/v24.1/configure-replication-zones)
+- [Multiregion Capabilities Overview](/docs/v24.1/multiregion-overview)
+- [Troubleshoot cluster setup](/docs/v24.1/cluster-setup-troubleshooting)
+- [Replication Layer](/docs/v24.1/architecture/replication-layer)
+- [SQL Statements](/docs/v24.1/sql-statements)

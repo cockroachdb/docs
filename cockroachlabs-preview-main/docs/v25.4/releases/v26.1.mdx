@@ -1,0 +1,20 @@
+---
+title: "What's New in v26.1"
+old_description: "Additions and changes in CockroachDB version v26.1 since version v25.4"
+---
+
+import V26_1 from "/snippets/releases/v26.1.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<V26_1 />

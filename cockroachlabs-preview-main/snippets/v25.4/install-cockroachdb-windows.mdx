@@ -1,0 +1,102 @@
+---
+title: "Install CockroachDB on Windows"
+old_description: "Install CockroachDB on Mac, Linux, or Windows. Sign up for product release notes."
+---
+
+import { MarketoEmailForm } from "/snippets/emailform/MarketoEmailForm.jsx";
+
+<Tip>
+To try CockroachDB Cloud instead of running CockroachDB yourself, refer to the [Cloud Quickstart](/docs/cockroachcloud/quickstart).
+</Tip>
+
+CockroachDB v25.4 is the latest supported production release. It is a required [Regular release](/docs/releases/release-support-policy#support-types). To learn more, refer to [CockroachDB v25.4 Release Notes](https://cockroachlabs.com/docs/releases/v25.4).
+
+<Warning>
+CockroachDB executable for Windows is experimental and not suitable for production deployments. Windows 8 or higher is required.
+</Warning>
+
+Use one of the options below to install CockroachDB. To upgrade an existing cluster, refer to [Upgrade to v25.4](/docs/v25.4/upgrade-cockroach-version).
+
+## Download the executable
+
+You can download and install CockroachDB for Windows in two ways. Either:
+
+- **Recommended**: Visit [Releases](/docs/releases?filters=windows) to download CockroachDB. The archive contains the `cockroach.exe` binary. Extract the archive and optionally copy the `cockroach.exe` binary into your `PATH` so you can execute [cockroach commands](/docs/v25.4/cockroach-commands) from any shell. Releases are rolled out gradually, so the latest version may not yet be downloadable.
+- Instead of downloading the binary directly, you can use PowerShell to download and install CockroachDB:
+    1. Visit [Releases](/docs/releases) and make a note of the full version of CockroachDB to install, such as v25.4.6. Releases are rolled out gradually, so the latest version may not yet be downloadable.
+    2. Save the following PowerShell script and replace the following:
+        - `{ VERSION }`: the full version of CockroachDB to download, such as `v25.4.6`. Replace this value in both the `Invoke-WebRequest` statement and the `Copy-Item` statement.
+        - `{ INSTALL_DIRECTORY }`: the local file path where the `cockroachdb.exe` executable will be installed. Replace the value in both the `Destination` argument and the `$Env:PATH` statement, which adds the destination directory to your `PATH`.
+
+            ```powershell
+            $ErrorActionPreference = "Stop";
+            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;$ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/cockroach;
+            Invoke-WebRequest -Uri https://binaries.cockroachdb.com/cockroach-{ VERSION }.windows-6.2-amd64.zip -OutFile cockroach.zip;
+            Expand-Archive -Force -Path cockroach.zip;
+            Copy-Item -Force "cockroach/cockroach-{ VERSION }.windows-6.2-amd64/cockroach.exe" -Destination $env:{ INSTALL_DIRECTORY };$Env:PATH += ";$env:{ INSTALL_DIRECTORY }"
+            ```
+    3. Run the PowerShell script. To run a PowerShell script from a file, use syntax like:
+
+        ```powershell
+        powershell.exe -Command "{path_to_script}"
+        ```
+    4. Check that the installation succeeded and that you can run `cockroach` commands:
+
+        ```shell
+        cockroach version
+        ```
+
+## Use Kubernetes
+
+To orchestrate CockroachDB locally using [Kubernetes](https://kubernetes.io/), either with configuration files or the [Helm](https://helm.sh/) package manager, refer to [Orchestrate a local cluster with Kubernetes](/docs/v25.4/orchestrate-a-local-cluster-with-kubernetes).
+
+## Use Docker
+
+This section shows how to install CockroachDB on a Windows host using Docker. On a Linux or Windows Docker host, the image creates a Linux container.
+
+<Warning>
+Running a stateful application like CockroachDB in Docker is more complex and error-prone than most uses of Docker. Unless you are very experienced with Docker, we recommend starting with a different installation and deployment method.
+</Warning>
+
+Docker images are [multi-platform images](https://docs.docker.com/build/building/multi-platform) that contain binaries for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.
+
+Intel binaries can run on ARM systems, but with a significant reduction in performance.
+
+1. Install [Docker for Windows](https://docs.docker.com/docker-for-windows/install).
+
+    <Tip>
+    Docker for Windows requires 64-bit Windows 10 Pro and Microsoft Hyper-V. Refer to the [official documentation](https://docs.docker.com/docker-for-windows/install#what-to-know-before-you-install) for more details. If your system does not satisfy the stated requirements, you can try using [Docker Toolbox](https://docs.docker.com/toolbox/overview).
+    </Tip>
+2. In PowerShell, confirm that Docker is running in the background:
+
+    ```powershell
+    docker version
+    ```
+
+    If you see an error, verify your Docker for Windows installation, then try again.
+3. [Enable synchronized drive sharing](https://docs.docker.com/desktop/synchronized-file-sharing) so you can mount local directories as data volumes to persist node data after containers are stopped or deleted.
+4. Visit [Docker Hub](https://hub.docker.com/layers/cockroachdb/cockroach) and make a note of the full version of CockroachDB to pull. Releases are rolled out gradually, so the latest version may not yet be available. Using the `latest` tag is not recommended; to pull the latest release within a major version, use a tag like `latest-v25.4`. The following command always pulls the `v25.4.6` image.
+
+    ```powershell
+    docker pull cockroachdb/cockroach:v25.4.6
+    ```
+
+Keep up-to-date with CockroachDB releases and best practices:
+
+<MarketoEmailForm />
+
+## What's next?
+
+- If you're just getting started with CockroachDB:
+    - [Create a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?experience=enterprise) where you can [generate and manage licenses](/docs/v25.4/licensing-faqs) for CockroachDB installations
+    - [Start a cluster locally](/docs/v25.4/start-a-local-cluster) and talk to it via the built-in SQL client
+    - [Learn more about CockroachDB SQL](/docs/v25.4/learn-cockroachdb-sql)
+    - [Build a simple application](/docs/v25.4/example-apps) with CockroachDB using PostgreSQL-compatible client drivers and ORMs
+    - [Explore CockroachDB features](/docs/v25.4/demo-replication-and-rebalancing) like automatic replication, rebalancing, and fault tolerance
+- If you're ready to run CockroachDB in production:
+    - Review the [Production Checklist](/docs/v25.4/recommended-production-settings)
+    - [Deploy CockroachDB manually](/docs/v25.4/manual-deployment) or [use an orchestration system like Kubernetes](/docs/v25.4/kubernetes-overview)
+
+<Note>
+By default, each node of a CockroachDB cluster periodically shares anonymous usage details with Cockroach Labs. For an explanation of the details that get shared and how to opt-out of reporting, see [Diagnostics Reporting](/docs/v25.4/diagnostics-reporting).
+</Note>

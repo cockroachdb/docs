@@ -1,0 +1,249 @@
+---
+title: "Create and Configure Changefeeds"
+old_description: "Create and configure a changefeed job for Core and Enterprise."
+---
+
+Core and Enterprise changefeeds offer different levels of configurability. Enterprise changefeeds allow for active changefeed jobs to be [paused](#pause), [resumed](#resume), and [canceled](#cancel).
+
+This page describes:
+
+- [Guidelines](#before-you-create-a-changefeed) to consider before creating a changefeed.
+- [Reference examples](#configure-a-changefeed) for creating and managing a changefeed.
+
+## Before you create a changefeed
+
+1. Enable rangefeeds on CockroachDB Advanced and CockroachDB self-hosted. Refer to [Enable rangefeeds](#enable-rangefeeds) for instructions.
+2. Decide on whether you will run an Enterprise or basic changefeed. Refer to the [Overview](/docs/v24.1/change-data-capture-overview) page for a comparative capability table.
+3. Plan the number of changefeeds versus the number of tables to include in a single changefeed for your cluster. We recommend limiting the number of changefeeds per cluster to 80. Refer to [System resources and running changefeeds](#system-resources-and-running-changefeeds) and [Recommendations for the number of target tables](#recommendations-for-the-number-of-target-tables).
+    - If you're using a CockroachDB Cloud cluster, refer to [Understand CockroachDB Cloud Costs](/docs/cockroachcloud/costs) for detail on how CDC is billed monthly based on usage.
+4. Consider whether your Enterprise [changefeed use case](#create) would be better served by [change data capture queries](/docs/v24.1/cdc-queries) that can filter data on a single table. CDC queries can improve the efficiency of changefeeds because the job will not need to encode as much change data.
+5. Read the [Considerations](#considerations) section that provides information on changefeed interactions that could affect how you configure or run your changefeed.
+
+### Enable rangefeeds
+
+Changefeeds connect to a long-lived request called a *rangefeed*, which pushes changes as they happen. This reduces the latency of row changes, as well as reduces transaction restarts on tables being watched by a changefeed for some workloads.
+
+**Rangefeeds must be enabled for a changefeed to work.** To [enable the cluster setting](/docs/v24.1/set-cluster-setting):
+
+```sql
+SET CLUSTER SETTING kv.rangefeed.enabled = true;
+```
+
+Any created changefeeds will error until this setting is enabled. If you are working on a CockroachDB Serverless cluster, the `kv.rangefeed.enabled` cluster setting is enabled by default.
+
+Enabling rangefeeds has a small performance cost (about a 5–10% increase in write latencies), whether or not the rangefeed is being used in a changefeed. When `kv.rangefeed.enabled` is set to `true`, a small portion of the latency cost is caused by additional write event information that is sent to the [Raft log](/docs/v24.1/architecture/replication-layer#raft-logs) and for [replication](/docs/v24.1/architecture/replication-layer). The remainder of the latency cost is incurred once a changefeed is running; the write event information is reconstructed and sent to an active rangefeed, which will push the event to the changefeed.
+
+For further detail on performance-related configuration, refer to the [Advanced Changefeed Confguration](/docs/v24.1/advanced-changefeed-configuration) page.
+
+<Note>
+[`MuxRangefeed`](/docs/v24.1/advanced-changefeed-configuration#mux-rangefeeds) is a subsystem that improves the performance of rangefeeds with scale, which is enabled by default in v24.1 and later versions.
+</Note>
+
+### Recommendations for the number of target tables
+
+When creating a changefeed, it's important to consider the number of changefeeds versus the number of tables to include in a single changefeed:
+
+- Changefeeds each have their own memory overhead, so every running changefeed will increase total memory usage.
+- Creating a single changefeed that will watch hundreds of tables can affect the performance of a changefeed by introducing coupling, where the performance of a target table affects the performance of the changefeed watching it. For example, any [schema change](/docs/v24.1/changefeed-messages#schema-changes) on any of the tables will affect the entire changefeed's performance.
+
+To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables. However, we do **not** recommend creating a single changefeed for watching hundreds of tables.
+
+Cockroach Labs recommends monitoring your changefeeds to track [retryable errors](/docs/v24.1/monitor-and-debug-changefeeds#changefeed-retry-errors) and [protected timestamp](/docs/v24.1/architecture/storage-layer#protected-timestamps) usage. Refer to the [Monitor and Debug Changefeeds](/docs/v24.1/monitor-and-debug-changefeeds) page for more information.
+
+### System resources and running changefeeds
+
+When you are running more than 10 changefeeds on a cluster, it is important to monitor the [CPU usage](/docs/v24.1/ui-overload-dashboard). A larger cluster will be able to run more changefeeds concurrently compared to a smaller cluster with more limited resources.
+
+<Note>
+We recommend limiting the number of changefeeds per cluster to 80.
+</Note>
+
+To maintain a high number of changefeeds in your cluster:
+
+- Connect to different nodes to create each changefeed. The node on which you start the changefeed will become the *coordinator* node for the changefeed job. The coordinator node acts as an administrator: keeping track of all other nodes during job execution and the changefeed work as it completes. As a result, this node will use more resources for the changefeed job. Refer to [How does an Enterprise changefeed work?](/docs/v24.1/how-does-an-enterprise-changefeed-work) for more detail.
+- Consider logically grouping the target tables into one changefeed. When a changefeed pauses, it will stop emitting messages for the target tables. Grouping tables of related data into a single changefeed may make sense for your workload. However, we do not recommend watching hundreds of tables in a single changefeed. Refer to [Garbage collection and changefeeds](/docs/v24.1/protect-changefeed-data) for more detail on protecting data from garbage collection when a changefeed is paused.
+
+### Considerations
+
+- If you require [`resolved`](/docs/v24.1/create-changefeed#resolved) message frequency under `30s`, then you **must** set the [`min_checkpoint_frequency`](/docs/v24.1/create-changefeed#min-checkpoint-frequency) option to at least the desired `resolved` frequency.
+- Many DDL queries (including [`TRUNCATE`](/docs/v24.1/truncate), [`DROP TABLE`](/docs/v24.1/drop-table), and queries that add a column family) will cause errors on a changefeed watching the affected tables. You will need to [start a new changefeed](/docs/v24.1/create-changefeed#start-a-new-changefeed-where-another-ended). If a table is truncated that a changefeed with `on_error='pause'` is watching, you will also need to start a new changefeed. Refer to the change data capture [Known Limitations](#known-limitations) for more detail.
+- Partial or intermittent sink unavailability may impact changefeed stability. If a sink is unavailable, messages can't send, which means that a changefeed's high-water mark timestamp is at risk of falling behind the cluster's [garbage collection window](/docs/v24.1/configure-replication-zones#replication-zone-variables). Throughput and latency can be affected once the sink is available again. However, [ordering guarantees](/docs/v24.1/changefeed-messages#ordering-and-delivery-guarantees) will still hold for as long as a changefeed [remains active](/docs/v24.1/monitor-and-debug-changefeeds#monitor-a-changefeed).
+- When an [`IMPORT INTO`](/docs/v24.1/import-into) statement is run, any current changefeed jobs targeting that table will fail.
+- After you [restore from a full-cluster backup](/docs/v24.1/restore#full-cluster), changefeed jobs will **not** resume on the new cluster. It is necessary to manually create the changefeeds following the full-cluster restore.
+- As of v22.1, changefeeds filter out [`VIRTUAL` computed columns](/docs/v24.1/computed-columns) from events by default. This is a [backward-incompatible change](/docs/releases/v22.1#v22-1-0-backward-incompatible-changes). To maintain the changefeed behavior in previous versions where [`NULL`](/docs/v24.1/null-handling) values are emitted for virtual computed columns, see the [`virtual_columns`](/docs/v24.1/create-changefeed#virtual-columns) option for more detail.
+
+The following Enterprise and Core sections outline how to create and configure each type of changefeed:
+
+<Tabs>
+<Tab title="Enterprise Changefeeds">
+
+## Configure a changefeed
+
+An Enterprise changefeed streams row-level changes in a configurable format to a configurable sink (i.e., Kafka or a cloud storage sink). You can [create](#create), [pause](#pause), [resume](#resume), and [cancel](#cancel) an Enterprise changefeed. For a step-by-step example connecting to a specific sink, see the [Changefeed Examples](/docs/v24.1/changefeed-examples) page.
+
+### Create
+
+To create an Enterprise changefeed:
+
+```sql
+CREATE CHANGEFEED FOR TABLE table_name, table_name2 INTO '{scheme}://{host}:{port}?{query_parameters}';
+```
+
+<Note>
+Parameters should always be URI-encoded before they are included the changefeed's URI, as they often contain special characters. Use Javascript's [encodeURIComponent](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) function or Go language's [url.QueryEscape](https://golang.org/pkg/net/url#QueryEscape) function to URI-encode the parameters. Other languages provide similar functions to URI-encode special characters.
+</Note>
+
+When you create a changefeed **without** specifying a sink, CockroachDB sends the changefeed events to the SQL client. Consider the following regarding the [display format](/docs/v24.1/cockroach-sql#sql-flag-format) in your SQL client:
+
+- If you do not define a display format, the CockroachDB SQL client will automatically use `ndjson` format.
+- If you specify a display format, the client will use that format (e.g., `--format=csv` ).
+- If you set the client display format to `ndjson` and set the changefeed [`format`](/docs/v24.1/create-changefeed#format) to `csv`, you'll receive JSON format with CSV nested inside.
+- If you set the client display format to `csv` and set the changefeed [`format`](/docs/v24.1/create-changefeed#format) to `json`, you'll receive a comma-separated list of JSON values.
+
+For more information, see [`CREATE CHANGEFEED`](/docs/v24.1/create-changefeed).
+
+### Show
+
+To show a list of Enterprise changefeed jobs:
+
+```sql
+SHOW CHANGEFEED JOBS;
+```
+
+```text
+    job_id             |                                                                                   description                                                                  | ...
++----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------+ ...
+  685724608744325121   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | ...
+  685723987509116929   | CREATE CHANGEFEED FOR TABLE mytable INTO 'kafka://localhost:9092' WITH confluent_schema_registry = 'http://localhost:8081', format = 'avro', resolved, updated | ...
+(2 rows)
+```
+
+To show an individual Enterprise changefeed:
+
+```sql
+SHOW CHANGEFEED JOB {job_id};
+```
+
+```text
+        job_id       |                                     description                                      | user_name | status  |              running_status              |          created           |          started           | finished |          modified          |      high_water_timestamp      | error |    sink_uri    |  full_table_names   | topics | format
+---------------------+--------------------------------------------------------------------------------------+-----------+---------+------------------------------------------+----------------------------+----------------------------+----------+----------------------------+--------------------------------+-------+----------------+---------------------+--------+----------
+  866218332400680961 | CREATE CHANGEFEED FOR TABLE movr.users INTO 'external://aws' WITH format = 'parquet' | root      | running | running: resolved=1684438482.937939878,0 | 2023-05-18 14:14:16.323465 | 2023-05-18 14:14:16.360245 | NULL     | 2023-05-18 19:35:16.120407 | 1684438482937939878.0000000000 |       | external://aws | {movr.public.users} | NULL   | parquet
+(1 row)
+```
+
+All changefeed jobs will display regardless of if the job completed and when it completed. You can define a retention time and delete completed jobs by using the `jobs.retention_time` [cluster setting](/docs/v24.1/cluster-settings).
+
+You can filter the columns that `SHOW CHANGEFEED JOBS` displays using a `SELECT` statement:
+
+```sql
+SELECT job_id, sink_uri, status, format FROM [SHOW CHANGEFEED JOBS] WHERE job_id = 997306743028908033;
+```
+
+```text
+        job_id       |    sink_uri      | status   | format
+---------------------+------------------+----------+---------
+  997306743028908033 | external://kafka | running  | json
+```
+
+For more information, refer to [`SHOW CHANGEFEED JOB`](/docs/v24.1/show-jobs#show-changefeed-jobs).
+
+### Pause
+
+To pause an Enterprise changefeed:
+
+```sql
+PAUSE JOB job_id;
+```
+
+For more information, refer to [`PAUSE JOB`](/docs/v24.1/pause-job).
+
+### Resume
+
+To resume a paused Enterprise changefeed:
+
+```sql
+RESUME JOB job_id;
+```
+
+For more information, refer to [`RESUME JOB`](/docs/v24.1/resume-job).
+
+### Cancel
+
+To cancel an Enterprise changefeed:
+
+```sql
+CANCEL JOB job_id;
+```
+
+For more information, refer to [`CANCEL JOB`](/docs/v24.1/cancel-job).
+
+### Modify a changefeed
+
+To modify an Enterprise changefeed, [pause](/docs/v24.1/create-and-configure-changefeeds#pause) the job and then use:
+
+```sql
+ALTER CHANGEFEED job_id {ADD table DROP table SET option UNSET option};
+```
+
+You can add new table targets, remove them, set new [changefeed options](/docs/v24.1/create-changefeed#options), and unset them.
+
+For more information, see [`ALTER CHANGEFEED`](/docs/v24.1/alter-changefeed).
+
+### Configuring all changefeeds
+
+It is useful to be able to pause all running changefeeds during troubleshooting, testing, or when a decrease in CPU load is needed.
+
+To pause all running changefeeds:
+
+```sql
+PAUSE JOBS (WITH x AS (SHOW CHANGEFEED JOBS) SELECT job_id FROM x WHERE status = ('running'));
+```
+
+This will change the status for each of the running changefeeds to `paused`, which can be verified with [`SHOW CHANGEFEED JOBS`](/docs/v24.1/show-jobs#show-changefeed-jobs).
+
+To resume all running changefeeds:
+
+```sql
+RESUME JOBS (WITH x AS (SHOW CHANGEFEED JOBS) SELECT job_id FROM x WHERE status = ('paused'));
+```
+
+This will resume the changefeeds and update the status for each of the changefeeds to `running`.
+
+</Tab>
+<Tab title="Basic Changefeeds">
+
+## Create a changefeed
+
+A basic changefeed streams row-level changes to the client indefinitely until the underlying connection is closed or the changefeed is canceled.
+
+To create a basic changefeed:
+
+```sql
+EXPERIMENTAL CHANGEFEED FOR table_name;
+```
+
+For more information, see [`EXPERIMENTAL CHANGEFEED FOR`](/docs/v24.1/changefeed-for).
+
+</Tab>
+</Tabs>
+
+## Known limitations
+
+- Changefeed target options are limited to tables and [column families](/docs/v24.1/changefeeds-on-tables-with-column-families). [#73435](https://github.com/cockroachdb/cockroach/issues/73435)
+- [VPC Peering](/docs/cockroachcloud/network-authorization#vpc-peering) and [AWS PrivateLink](/docs/cockroachcloud/network-authorization#aws-privatelink) in CockroachDB Advanced clusters do **not** support connecting to a [Kafka](/docs/v24.1/changefeed-sinks#kafka) sink's internal IP addresses for [changefeeds](/docs/v24.1/change-data-capture-overview). To connect to a Kafka sink from CockroachDB Advanced, it is necessary to expose the Kafka cluster's external IP address and open ports with firewall rules to allow access from a CockroachDB Advanced cluster.
+- Webhook sinks only support HTTPS. Use the [`insecure_tls_skip_verify`](/docs/v24.1/create-changefeed#insecure-tls-skip-verify) parameter when testing to disable certificate verification; however, this still requires HTTPS and certificates. [#73431](https://github.com/cockroachdb/cockroach/issues/73431)
+- Formats for changefeed messages are not supported by all changefeed sinks. Refer to the [Changefeed Sinks](/docs/v24.1/changefeed-sinks) page for details on compatible formats with each sink and the [`format`](/docs/v24.1/create-changefeed) option to specify a changefeed message format. [#73432](https://github.com/cockroachdb/cockroach/issues/73432)
+- Using the [`split_column_families`](/docs/v24.1/create-changefeed#split-column-families) and [`resolved`](/docs/v24.1/create-changefeed#resolved) options on the same changefeed will cause an error when using the following [sinks](/docs/v24.1/changefeed-sinks): Kafka and Google Cloud Pub/Sub. Instead, use the individual `FAMILY` keyword to specify column families when creating a changefeed. [#79452](https://github.com/cockroachdb/cockroach/issues/79452)
+- Changefeed types are not fully integrated with [user-defined composite types](/docs/v24.1/create-type). Running changefeeds with user-defined composite types is in [Preview](/docs/v24.1/cockroachdb-feature-availability#feature-availability-phases). Certain changefeed types do not support user-defined composite types. Refer to the change data capture [Known Limitations](/docs/v24.1/create-and-configure-changefeeds#known-limitations) for more detail. The following limitations apply:
+    - A changefeed in [Avro format](/docs/v24.1/changefeed-messages#avro) will not be able to serialize [user-defined composite (tuple) types](/docs/v24.1/create-type). [#102903](https://github.com/cockroachdb/cockroach/issues/102903)
+    - A changefeed emitting [CSV](/docs/v24.1/changefeed-messages#csv) will include `AS` labels in the message format when the changefeed serializes a [user-defined composite type](/docs/v24.1/create-type). [#102905](https://github.com/cockroachdb/cockroach/issues/102905)
+- After the [failover process](/docs/v24.1/failover-replication) for [physical cluster replication](/docs/v24.1/physical-cluster-replication-overview), [scheduled changefeeds](/docs/v24.1/create-schedule-for-changefeed) will continue on the promoted cluster. You will need to manage [pausing](/docs/v24.1/pause-schedules) or [canceling](/docs/v24.1/drop-schedules) the schedule on the promoted standby cluster to avoid two clusters running the same changefeed to one sink. [#123776](https://github.com/cockroachdb/cockroach/issues/123776)
+- [`ALTER CHANGEFEED`](/docs/v24.1/alter-changefeed) is not fully supported with changefeeds that use [CDC queries](/docs/v24.1/cdc-queries). You can alter the options that a changefeed uses, but you cannot alter the changefeed target tables. [#83033](https://github.com/cockroachdb/cockroach/issues/83033)
+- Creating a changefeed with [CDC queries](/docs/v24.1/cdc-queries) on tables with more than one [column family](/docs/v24.1/changefeeds-on-tables-with-column-families) is not supported. [#127761](https://github.com/cockroachdb/cockroach/issues/127761)
+- When you create a changefeed on a table with more than one [column family](/docs/v24.1/changefeeds-on-tables-with-column-families), the changefeed will emit messages per column family in separate streams. As a result, [changefeed messages](/docs/v24.1/changefeed-messages) for different column families will arrive at the [sink](/docs/v24.1/changefeed-sinks) under separate topics. [#127736](https://github.com/cockroachdb/cockroach/issues/127736)
+
+## See also
+
+- [`SHOW JOBS`](/docs/v24.1/show-jobs)
+- [`EXPERIMENTAL CHANGEFEED FOR`](/docs/v24.1/changefeed-for)
+- [`CREATE CHANGEFEED`](/docs/v24.1/create-changefeed)

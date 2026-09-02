@@ -1,0 +1,573 @@
+---
+title: "UPDATE"
+old_description: "The UPDATE statement updates one or more rows in a table."
+---
+
+import { Update2 } from "/snippets/syntax-diagrams/Update2.jsx";
+
+The `UPDATE` [statement](/docs/v23.2/sql-statements) updates rows in a table.
+
+<Warning>
+If you update a row that contains a column referenced by a [foreign key constraint](/docs/v23.2/foreign-key) and has an [`ON UPDATE` action](/docs/v23.2/foreign-key#foreign-key-actions), all of the dependent rows will also be updated.
+</Warning>
+
+## Required privileges
+
+The user must have the `SELECT` and `UPDATE` [privileges](/docs/v23.2/security-reference/authorization#managing-privileges) on the table.
+
+## Synopsis
+
+<Update2 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>common&#95;table&#95;expr</code></td><td>See <a href="/docs/v23.2/common-table-expressions">Common Table Expressions</a>.</td></tr><tr><td><code>table&#95;name</code></td><td>The name of the table that contains the rows you want to update.</td></tr><tr><td><code>AS table&#95;alias&#95;name</code></td><td>An alias for the table name. When an alias is provided, it completely hides the actual table name.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the column whose values you want to update.</td></tr><tr><td><code>a&#95;expr</code></td><td>The new value you want to use, the <a href="/docs/v23.2/functions-and-operators#aggregate-functions">aggregate function</a> you want to perform, or the <a href="/docs/v23.2/scalar-expressions">scalar expression</a> you want to use.<br/><br/>To fill columns with their <a href="/docs/v23.2/default-value">default values</a>, use <code>DEFAULT VALUES</code> in place of <code>a&#95;expr</code>. To fill a specific column with its default value, leave the value out of the <code>a&#95;expr</code> or use <code>DEFAULT</code> at the appropriate position.</td></tr><tr><td><code>FROM table&#95;ref</code></td><td>Specify a table to reference, but not update, in <code>UPDATE</code> expressions, or in <code>RETURNING</code> and <code>WHERE</code> clauses. For more details, see <a href="#reference-other-tables-in-an-update">Reference other tables in an update</a>.</td></tr><tr><td><code>select&#95;stmt</code></td><td>A <a href="/docs/v23.2/selection-queries">selection query</a>. Each value must match the <a href="/docs/v23.2/data-types">data type</a> of its column on the left side of <code>=</code>.</td></tr><tr><td><code>WHERE a&#95;expr</code></td><td><code>a&#95;expr</code> must be a <a href="/docs/v23.2/scalar-expressions">scalar expression</a> that returns Boolean values using columns (e.g., <code>&lt;column&gt; = &lt;value&gt;</code>). Update rows that return <code>TRUE</code>.<br/><br/><strong>Without a <code>WHERE</code> clause in your statement, <code>UPDATE</code> updates all rows in the table.</strong></td></tr><tr><td><code>sort&#95;clause</code></td><td>An <code>ORDER BY</code> clause. See <a href="/docs/v23.2/order-by">Ordering Query Results</a> and <a href="/docs/v23.2/order-by#ordering-rows-in-dml-statements">Ordering of rows in DML statements</a> for more details.</td></tr><tr><td><code>limit&#95;clause</code></td><td>A <code>LIMIT</code> clause. See <a href="/docs/v23.2/limit-offset">Limit Query Results</a> for more details.</td></tr><tr><td><code>RETURNING target&#95;list</code></td><td>Return values based on rows updated, where <code>target&#95;list</code> can be specific column names from the table, <code>&#42;</code> for all columns, or computations using <a href="/docs/v23.2/scalar-expressions">scalar expressions</a>.<br/><br/>To return nothing in the response, not even the number of rows updated, use <code>RETURNING NOTHING</code>.</td></tr><tr><td><code>ONLY ... &#42;</code></td><td>Supported for compatibility with PostgreSQL table inheritance syntax. This clause is a no-op, as CockroachDB does not currently support table inheritance.</td></tr></tbody></table>
+
+## Force index selection for updates
+
+By using the [explicit index annotation](/docs/v23.2/table-expressions#force-index-selection) (also known as "index hinting"), you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2) and use a specific [index](/docs/v23.2/indexes) for updating rows of a named table.
+
+<Note>
+Index selection can impact [performance](/docs/v23.2/performance-best-practices-overview), but does not change the result of a query.
+</Note>
+
+The syntax to force an update for a specific index is:
+
+```sql
+> UPDATE table@my_idx SET ...
+```
+
+This is equivalent to the longer expression:
+
+```sql
+> UPDATE table@{FORCE_INDEX=my_idx} SET ...
+```
+
+To view how the index hint modifies the query plan that CockroachDB follows for updating rows, use an [`EXPLAIN (OPT)`](/docs/v23.2/explain#opt-option) statement. To see all indexes available on a table, use [`SHOW INDEXES`](/docs/v23.2/show-index).
+
+For examples, see [Update with index hints](#update-with-index-hints).
+
+## Reference other tables in an update
+
+To reference values from a table other than the table being updated, add a `FROM` clause that specifies one or more tables in the cluster. Values from tables specified in a `FROM` clause can be used in `UPDATE` expressions, and in `RETURNING` and `WHERE` clauses.
+
+When executing an `UPDATE` query with a `FROM` clause, CockroachDB [joins](/docs/v23.2/joins) the target table (i.e., the table being updated) to the tables referenced in the `FROM` clause. The output of this join should have the same number of rows as the rows being updated in the target table, as CockroachDB uses a single row from the join output to update a given row in the target table. If the join produces more rows than the rows being updated in the target table, there is no way to predict which row from the join output will be used to update a row in the target table.
+
+For an example, see [Update using values from a different table](#update-using-values-from-a-different-table).
+
+## Bulk-update data
+
+To update a large number of rows (i.e., tens of thousands of rows or more), we recommend iteratively updating subsets of the rows that you want to update, until all of the rows have been updated. You can write a script to do this, or you can write a loop into your application.
+
+For guidance and an example, see [Bulk-update Data](/docs/v23.2/bulk-update-data).
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v23.2/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v23.2/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Update a single column in a single row
+
+```sql
+> SELECT * FROM users LIMIT 10;
+```
+
+```text
+                   id                  |   city    |        name        |            address             | credit_card
++--------------------------------------+-----------+--------------------+--------------------------------+-------------+
+  c28f5c28-f5c2-4000-8000-000000000026 | amsterdam | Maria Weber        | 14729 Karen Radial             | 5844236997
+  c7ae147a-e147-4000-8000-000000000027 | amsterdam | Tina Miller        | 97521 Mark Extensions          | 8880478663
+  cccccccc-cccc-4000-8000-000000000028 | amsterdam | Taylor Cunningham  | 89214 Jennifer Well            | 5130593761
+  d1eb851e-b851-4800-8000-000000000029 | amsterdam | Kimberly Alexander | 48474 Alfred Hollow            | 4059628542
+  19999999-9999-4a00-8000-000000000005 | boston    | Nicole Mcmahon     | 11540 Patton Extensions        | 0303726947
+  1eb851eb-851e-4800-8000-000000000006 | boston    | Brian Campbell     | 92025 Yang Village             | 9016427332
+  23d70a3d-70a3-4800-8000-000000000007 | boston    | Carl Mcguire       | 60124 Palmer Mews Apt. 49      | 4566257702
+  28f5c28f-5c28-4600-8000-000000000008 | boston    | Jennifer Sanders   | 19121 Padilla Brooks Apt. 12   | 1350968125
+  80000000-0000-4000-8000-000000000019 | chicago   | Matthew Clay       | 49220 Lisa Junctions           | 9132291015
+  851eb851-eb85-4000-8000-00000000001a | chicago   | Samantha Coffey    | 6423 Jessica Underpass Apt. 87 | 9437219051
+(10 rows)
+```
+
+```sql
+> UPDATE users SET address = '201 E Randolph St' WHERE id = '851eb851-eb85-4000-8000-00000000001a';
+```
+
+```sql
+> SELECT * FROM users LIMIT 10;
+```
+
+```text
+                   id                  |   city    |        name        |           address            | credit_card
++--------------------------------------+-----------+--------------------+------------------------------+-------------+
+  c28f5c28-f5c2-4000-8000-000000000026 | amsterdam | Maria Weber        | 14729 Karen Radial           | 5844236997
+  c7ae147a-e147-4000-8000-000000000027 | amsterdam | Tina Miller        | 97521 Mark Extensions        | 8880478663
+  cccccccc-cccc-4000-8000-000000000028 | amsterdam | Taylor Cunningham  | 89214 Jennifer Well          | 5130593761
+  d1eb851e-b851-4800-8000-000000000029 | amsterdam | Kimberly Alexander | 48474 Alfred Hollow          | 4059628542
+  19999999-9999-4a00-8000-000000000005 | boston    | Nicole Mcmahon     | 11540 Patton Extensions      | 0303726947
+  1eb851eb-851e-4800-8000-000000000006 | boston    | Brian Campbell     | 92025 Yang Village           | 9016427332
+  23d70a3d-70a3-4800-8000-000000000007 | boston    | Carl Mcguire       | 60124 Palmer Mews Apt. 49    | 4566257702
+  28f5c28f-5c28-4600-8000-000000000008 | boston    | Jennifer Sanders   | 19121 Padilla Brooks Apt. 12 | 1350968125
+  80000000-0000-4000-8000-000000000019 | chicago   | Matthew Clay       | 49220 Lisa Junctions         | 9132291015
+  851eb851-eb85-4000-8000-00000000001a | chicago   | Samantha Coffey    | 201 E Randolph St            | 9437219051
+(10 rows)
+```
+
+### Update multiple columns in a single row
+
+```sql
+> UPDATE rides SET (end_address, revenue) = ('201 E Randolph St', 25.00) WHERE id = '851eb851-eb85-4000-8000-000000000104';
+```
+
+```sql
+> SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
+```
+
+```text
+                   id                  |  city   | vehicle_city |               rider_id               |              vehicle_id              |         start_address         |         end_address         |        start_time         |         end_time          | revenue
++--------------------------------------+---------+--------------+--------------------------------------+--------------------------------------+-------------------------------+-----------------------------+---------------------------+---------------------------+---------+
+  849ba5e3-53f7-4000-8000-000000000103 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 77630 Steven Road Suite 60    | 74140 Andrew Spur           | 2018-12-30 03:04:05+00:00 | 2018-12-31 08:04:05+00:00 |   20.00
+  851eb851-eb85-4000-8000-000000000104 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 76707 Timothy Square          | 201 E Randolph St           | 2018-12-15 03:04:05+00:00 | 2018-12-17 07:04:05+00:00 |   25.00
+  86a7ef9d-b22d-4000-8000-000000000107 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 28532 Kevin Villages Suite 90 | 27493 Ortega Radial Apt. 60 | 2018-12-08 03:04:05+00:00 | 2018-12-09 03:04:05+00:00 |   36.00
+  92f1a9fb-e76c-4800-8000-00000000011f | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 56955 Edward Walks            | 53193 Jerry Village         | 2019-01-01 03:04:05+00:00 | 2019-01-01 15:04:05+00:00 |   35.00
+  94fdf3b6-45a1-4800-8000-000000000123 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 63820 Robinson Fields         | 89245 Eric Orchard          | 2018-12-14 03:04:05+00:00 | 2018-12-16 10:04:05+00:00 |   80.00
+(5 rows)
+```
+
+```sql
+> UPDATE rides SET end_address = '10000 W OHare Ave', revenue = 60.00 WHERE id = '94fdf3b6-45a1-4800-8000-000000000123';
+```
+
+```sql
+> SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
+```
+
+```text
+                   id                  |  city   | vehicle_city |               rider_id               |              vehicle_id              |         start_address         |         end_address         |        start_time         |         end_time          | revenue
++--------------------------------------+---------+--------------+--------------------------------------+--------------------------------------+-------------------------------+-----------------------------+---------------------------+---------------------------+---------+
+  849ba5e3-53f7-4000-8000-000000000103 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 77630 Steven Road Suite 60    | 74140 Andrew Spur           | 2018-12-30 03:04:05+00:00 | 2018-12-31 08:04:05+00:00 |   20.00
+  851eb851-eb85-4000-8000-000000000104 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 76707 Timothy Square          | 201 E Randolph St           | 2018-12-15 03:04:05+00:00 | 2018-12-17 07:04:05+00:00 |   25.00
+  86a7ef9d-b22d-4000-8000-000000000107 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 28532 Kevin Villages Suite 90 | 27493 Ortega Radial Apt. 60 | 2018-12-08 03:04:05+00:00 | 2018-12-09 03:04:05+00:00 |   36.00
+  92f1a9fb-e76c-4800-8000-00000000011f | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 56955 Edward Walks            | 53193 Jerry Village         | 2019-01-01 03:04:05+00:00 | 2019-01-01 15:04:05+00:00 |   35.00
+  94fdf3b6-45a1-4800-8000-000000000123 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 63820 Robinson Fields         | 10000 W OHare Ave           | 2018-12-14 03:04:05+00:00 | 2018-12-16 10:04:05+00:00 |   60.00
+(5 rows)
+```
+
+### Update using `SELECT` statement
+
+```sql
+> UPDATE rides SET (revenue, start_address) =
+    (SELECT revenue, end_address FROM rides WHERE id = '94fdf3b6-45a1-4800-8000-000000000123')
+     WHERE id = '851eb851-eb85-4000-8000-000000000104';
+```
+
+```sql
+> SELECT * FROM rides WHERE rider_id = '851eb851-eb85-4000-8000-00000000001a';
+```
+
+```text
+                   id                  |  city   | vehicle_city |               rider_id               |              vehicle_id              |         start_address         |         end_address         |        start_time         |         end_time          | revenue
++--------------------------------------+---------+--------------+--------------------------------------+--------------------------------------+-------------------------------+-----------------------------+---------------------------+---------------------------+---------+
+  849ba5e3-53f7-4000-8000-000000000103 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 77630 Steven Road Suite 60    | 74140 Andrew Spur           | 2018-12-30 03:04:05+00:00 | 2018-12-31 08:04:05+00:00 |   20.00
+  851eb851-eb85-4000-8000-000000000104 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 10000 W OHare Ave             | 201 E Randolph St           | 2018-12-15 03:04:05+00:00 | 2018-12-17 07:04:05+00:00 |   60.00
+  86a7ef9d-b22d-4000-8000-000000000107 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 28532 Kevin Villages Suite 90 | 27493 Ortega Radial Apt. 60 | 2018-12-08 03:04:05+00:00 | 2018-12-09 03:04:05+00:00 |   36.00
+  92f1a9fb-e76c-4800-8000-00000000011f | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 56955 Edward Walks            | 53193 Jerry Village         | 2019-01-01 03:04:05+00:00 | 2019-01-01 15:04:05+00:00 |   35.00
+  94fdf3b6-45a1-4800-8000-000000000123 | chicago | chicago      | 851eb851-eb85-4000-8000-00000000001a | 88888888-8888-4800-8000-000000000008 | 63820 Robinson Fields         | 10000 W OHare Ave           | 2018-12-14 03:04:05+00:00 | 2018-12-16 10:04:05+00:00 |   60.00
+(5 rows)
+```
+
+### Update with default values
+
+```sql
+> UPDATE users SET address = DEFAULT WHERE id = '19999999-9999-4a00-8000-000000000005';
+```
+
+```sql
+> SELECT * FROM users LIMIT 5;
+```
+
+```text
+                   id                  |   city    |        name        |        address        | credit_card
++--------------------------------------+-----------+--------------------+-----------------------+-------------+
+  c28f5c28-f5c2-4000-8000-000000000026 | amsterdam | Maria Weber        | 14729 Karen Radial    | 5844236997
+  c7ae147a-e147-4000-8000-000000000027 | amsterdam | Tina Miller        | 97521 Mark Extensions | 8880478663
+  cccccccc-cccc-4000-8000-000000000028 | amsterdam | Taylor Cunningham  | 89214 Jennifer Well   | 5130593761
+  d1eb851e-b851-4800-8000-000000000029 | amsterdam | Kimberly Alexander | 48474 Alfred Hollow   | 4059628542
+  19999999-9999-4a00-8000-000000000005 | boston    | Nicole Mcmahon     | NULL                  | 0303726947
+(5 rows)
+```
+
+### Update using values from a different table
+
+```sql
+> UPDATE rides SET revenue = NULL FROM vehicles WHERE rides.rider_id=vehicles.owner_id AND rides.vehicle_id=vehicles.id;
+```
+
+```sql
+> SELECT * FROM rides WHERE revenue IS NULL LIMIT 5;
+```
+
+```text
+                   id                  |   city    | vehicle_city |               rider_id               |              vehicle_id              |         start_address          |         end_address         |        start_time         |         end_time          | revenue
+---------------------------------------+-----------+--------------+--------------------------------------+--------------------------------------+--------------------------------+-----------------------------+---------------------------+---------------------------+----------
+  ab020c49-ba5e-4800-8000-00000000014e | amsterdam | amsterdam    | c28f5c28-f5c2-4000-8000-000000000026 | aaaaaaaa-aaaa-4800-8000-00000000000a | 1905 Christopher Locks Apt. 77 | 66037 Belinda Plaza Apt. 93 | 2018-12-13 03:04:05+00:00 | 2018-12-14 08:04:05+00:00 | NULL
+  ac083126-e978-4800-8000-000000000150 | amsterdam | amsterdam    | c28f5c28-f5c2-4000-8000-000000000026 | aaaaaaaa-aaaa-4800-8000-00000000000a | 50217 Victoria Fields Apt. 44  | 56217 Wilson Spring         | 2018-12-07 03:04:05+00:00 | 2018-12-07 10:04:05+00:00 | NULL
+  af9db22d-0e56-4800-8000-000000000157 | amsterdam | amsterdam    | c28f5c28-f5c2-4000-8000-000000000026 | aaaaaaaa-aaaa-4800-8000-00000000000a | 20937 Gibson River             | 50480 Steven Row            | 2018-12-23 03:04:05+00:00 | 2018-12-25 11:04:05+00:00 | NULL
+  b22d0e56-0418-4000-8000-00000000015c | amsterdam | amsterdam    | bd70a3d7-0a3d-4000-8000-000000000025 | bbbbbbbb-bbbb-4800-8000-00000000000b | 36054 Ward Crescent Suite 35   | 7745 John Run               | 2018-12-09 03:04:05+00:00 | 2018-12-10 18:04:05+00:00 | NULL
+  b53f7ced-9168-4000-8000-000000000162 | amsterdam | amsterdam    | bd70a3d7-0a3d-4000-8000-000000000025 | bbbbbbbb-bbbb-4800-8000-00000000000b | 86091 Mcdonald Motorway        | 1652 Robert Ford            | 2018-12-05 03:04:05+00:00 | 2018-12-05 06:04:05+00:00 | NULL
+(5 rows)
+```
+
+### Update all rows
+
+<Warning>
+If you do not use the `WHERE` clause to specify the rows to be updated, the values for all rows will be updated.
+</Warning>
+
+<Note>
+If the [`sql_safe_updates`](/docs/v23.2/cockroach-sql#allow-potentially-unsafe-sql-statements) session variable is set to `true`, the client will prevent the update. `sql_safe_updates` is set to `true` by default.
+</Note>
+
+```sql
+> UPDATE rides SET revenue = 7.00;
+```
+
+```text
+pq: rejected: UPDATE without WHERE clause (sql_safe_updates = true)
+```
+
+You can use a [`SET`](/docs/v23.2/set-vars) statement to set session variables.
+
+```sql
+> SET sql_safe_updates = false;
+```
+
+```sql
+> UPDATE rides SET revenue = 7.00;
+```
+
+```sql
+> SELECT * FROM rides LIMIT 5;
+```
+
+```text
+                   id                  |   city    | vehicle_city |               rider_id               |              vehicle_id              |         start_address          |            end_address            |        start_time         |         end_time          | revenue
++--------------------------------------+-----------+--------------+--------------------------------------+--------------------------------------+--------------------------------+-----------------------------------+---------------------------+---------------------------+---------+
+  c0000000-0000-4000-8000-000000000177 | amsterdam | amsterdam    | c28f5c28-f5c2-4000-8000-000000000026 | cccccccc-cccc-4000-8000-00000000000c | 65738 Williams Summit          | 72424 Thomas Field Suite 82       | 2018-12-31 03:04:05+00:00 | 2019-01-01 03:04:05+00:00 |    7.00
+  c083126e-978d-4000-8000-000000000178 | amsterdam | amsterdam    | cccccccc-cccc-4000-8000-000000000028 | cccccccc-cccc-4000-8000-00000000000c | 53613 Johnson Terrace          | 12667 Monica Hollow               | 2018-12-16 03:04:05+00:00 | 2018-12-17 15:04:05+00:00 |    7.00
+  c10624dd-2f1a-4000-8000-000000000179 | amsterdam | amsterdam    | c7ae147a-e147-4000-8000-000000000027 | cccccccc-cccc-4000-8000-00000000000c | 61921 Brittany Orchard Apt. 85 | 81157 Stephanie Court Suite 96    | 2018-12-30 03:04:05+00:00 | 2019-01-01 07:04:05+00:00 |    7.00
+  c189374b-c6a7-4000-8000-00000000017a | amsterdam | amsterdam    | cccccccc-cccc-4000-8000-000000000028 | cccccccc-cccc-4000-8000-00000000000c | 75456 Gray View                | 69175 Christopher Shoals Suite 47 | 2018-12-23 03:04:05+00:00 | 2018-12-23 03:04:05+00:00 |    7.00
+  c20c49ba-5e35-4000-8000-00000000017b | amsterdam | amsterdam    | cccccccc-cccc-4000-8000-000000000028 | cccccccc-cccc-4000-8000-00000000000c | 38892 Joseph Summit Suite 86   | 89582 Melissa Streets             | 2018-12-27 03:04:05+00:00 | 2018-12-28 18:04:05+00:00 |    7.00
+(5 rows)
+```
+
+### Update and return values
+
+In this example, the `RETURNING` clause returns the `id` value of the row updated. The language-specific versions assume that you have installed the relevant [client drivers](/docs/v23.2/install-client-drivers).
+
+<Note>
+When a driver provides a `query()` method for statements that return results and an `exec()` method for statements that do not (e.g., Go), it's likely necessary to use the `query()` method for `UPDATE` statements with `RETURNING`.
+</Note>
+
+<Tabs>
+<Tab title="Shell">
+
+```sql
+> UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;
+```
+
+```text
+                   id
++--------------------------------------+
+  00000000-0000-4000-8000-000000000000
+  11111111-1111-4100-8000-000000000001
+(2 rows)
+```
+
+</Tab>
+<Tab title="Python">
+
+```python
+# Import the driver.
+import psycopg2
+
+# Connect to the "bank" database.
+conn = psycopg2.connect(
+    database='movr',
+    user='root',
+    host='localhost',
+    port=26257
+)
+
+# Make each statement commit immediately.
+conn.set_session(autocommit=True)
+
+# Open a cursor to perform database operations.
+cur = conn.cursor()
+
+# Update a row in the "vehicles" table
+# and return the "id" value.
+cur.execute(
+    "UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;"
+)
+
+# Print out the returned value.
+rows = cur.fetchall()
+print('IDs:')
+for row in rows:
+    print([str(cell) for cell in row])
+
+# Close the database connection.
+cur.close()
+conn.close()
+```
+
+The printed value would look like:
+
+```text
+IDs:
+['00000000-0000-4000-8000-000000000000']
+['11111111-1111-4100-8000-000000000001']
+```
+
+</Tab>
+<Tab title="Ruby">
+
+```ruby
+# Import the driver.
+require 'pg'
+
+# Connect to the "bank" database.
+conn = PG.connect(
+    user: 'root',
+    dbname: 'movr',
+    host: 'localhost',
+    port: 26257
+)
+
+# Update a row in the "vehicles" table
+# and return the "id" value.
+conn.exec(
+    "UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;"
+) do |res|
+
+# Print out the returned value.
+puts "IDs:"
+    res.each do |row|
+        puts row
+    end
+end
+
+# Close communication with the database.
+conn.close()
+```
+
+The printed value would look like:
+
+```text
+IDs:
+{"id"=>"00000000-0000-4000-8000-000000000000"}
+{"id"=>"11111111-1111-4100-8000-000000000001"}
+```
+
+</Tab>
+<Tab title="Go">
+
+```go
+package main
+
+import (
+    "database/sql"
+    "fmt"
+    "log"
+
+    _ "github.com/lib/pq"
+)
+
+func main() {
+    //Connect to the "bank" database.
+    db, err := sql.Open(
+        "postgres",
+        "postgresql://root@localhost:26257/movr?sslmode=disable",
+    )
+    if err != nil {
+        log.Fatal("error connecting to the database: ", err)
+    }
+
+    // Update a row in the "vehicles" table
+    // and return the "id" value.
+    rows, err := db.Query(
+        "UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;",
+    )
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // Print out the returned value.
+    defer rows.Close()
+    fmt.Println("IDs:")
+    for rows.Next() {
+        var id string
+        if err := rows.Scan(&id); err != nil {
+            log.Fatal(err)
+        }
+        fmt.Printf("%s\n", id)
+    }
+}
+```
+
+The printed value would look like:
+
+```text
+IDs:
+00000000-0000-4000-8000-000000000000
+11111111-1111-4100-8000-000000000001
+```
+
+</Tab>
+<Tab title="Node.js">
+
+```js
+var async = require('async')
+var pg = require('pg')
+
+// Config to connect to the "movr" database.
+var config = {
+    user: 'root',
+    host: 'localhost',
+    database: 'movr',
+    port: 26257
+  }
+
+// Create pool
+var pool = new pg.Pool(config)
+
+pool.connect(function (err, client, done) {
+
+    // Close communication with the database and exit.
+    var finish = function () {
+        done()
+        process.exit()
+    }
+
+    if (err) {
+        console.error('could not connect to cockroachdb', err);
+        finish()
+    }
+    async.waterfall([function (next) {
+        client.query(
+            `UPDATE vehicles SET status = 'available' WHERE city = 'new york' RETURNING id;`,
+          next
+        )
+      }
+    ],
+    function (err, results) {
+      if (err) {
+        console.error('error updating and selecting from users', err);
+        finish()
+      }
+      // Print out the returned value.
+      console.log('IDs:')
+      results.rows.forEach(function (row) {
+        console.log(row)
+      })
+
+      finish()
+    })
+  })
+```
+
+The printed value would like:
+
+```text
+IDs:
+{ id: '00000000-0000-4000-8000-000000000000' }
+{ id: '11111111-1111-4100-8000-000000000001' }
+```
+
+</Tab>
+</Tabs>
+
+### Update with index hints
+
+Suppose that you create a multi-column index on the `users` table with the `name` and `city` columns.
+
+```sql
+> CREATE INDEX ON users (name, city);
+```
+
+Now suppose you want to update a couple rows in the table, based on their contents. You can use the [`EXPLAIN (OPT)`](/docs/v23.2/explain#opt-option) command to see how the [cost-based optimizer](/docs/v23.2/cost-based-optimizer) decides to perform the `UPDATE` statement:
+
+```sql
+> EXPLAIN (opt) UPDATE users SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
+```
+
+```text
+                                        text
+------------------------------------------------------------------------------------
+  update users
+   └── project
+        ├── index-join users
+        │    └── scan users@users_name_city_idx
+        │         └── constraint: /10/9/8: [/'Patricia Smith' - /'Patricia Smith']
+        └── projections
+             └── 'Patricia Smith (there are two)'
+(7 rows)
+```
+
+The output of the `EXPLAIN` statement shows that the optimizer scans the newly-created `users_name_city_idx` index when performing the update. This makes sense, as you are performing an update based on the `name` column.
+
+Although `users_name_city_idx` is likely the most efficient index for the table scan, you may want to assess the performance difference between scanning on `users_name_city_idx` and scanning on the primary index. You can provide an index hint (i.e., force the index selection) to use the primary key of the `users` table:
+
+```sql
+> EXPLAIN (opt) UPDATE users@users_pkey SET name='Patricia Smith (there are two)' WHERE name='Patricia Smith';
+```
+
+```text
+                       text
+---------------------------------------------------
+  update users
+   └── project
+        ├── select
+        │    ├── scan users
+        │    │    └── flags: force-index=primary
+        │    └── filters
+        │         └── name = 'Patricia Smith'
+        └── projections
+             └── 'Patricia Smith (there are two)'
+(9 rows)
+```
+
+## Limit the size of rows
+
+To help you avoid failures arising from misbehaving applications that bloat the size of rows, you can specify the behavior when a row or individual [column family](/docs/v23.2/column-families) larger than a specified size is written to the database. Use the [cluster settings](/docs/v23.2/cluster-settings) `sql.guardrails.max_row_size_log` to discover large rows and `sql.guardrails.max_row_size_err` to reject large rows.
+
+When you write a row that exceeds `sql.guardrails.max_row_size_log`:
+
+- `INSERT`, `UPSERT`, `UPDATE`, `CREATE TABLE AS`, `CREATE INDEX`, `ALTER TABLE`, `ALTER INDEX`, `IMPORT`, or `RESTORE` statements will log a `LargeRow` to the [`SQL_PERF`](/docs/v23.2/logging#sql_perf) channel.
+- `SELECT`, `DELETE`, `TRUNCATE`, and `DROP` are not affected.
+
+When you write a row that exceeds `sql.guardrails.max_row_size_err`:
+
+- `INSERT`, `UPSERT`, and `UPDATE` statements will fail with a code `54000 (program_limit_exceeded)` error.
+- `CREATE TABLE AS`, `CREATE INDEX`, `ALTER TABLE`, `ALTER INDEX`, `IMPORT`, and `RESTORE` statements will log a `LargeRowInternal` event to the [`SQL_INTERNAL_PERF`](/docs/v23.2/logging#sql_internal_perf) channel.
+- `SELECT`, `DELETE`, `TRUNCATE`, and `DROP` are not affected.
+
+You **cannot** update existing rows that violate the limit unless the update shrinks the size of the row below the limit. You **can** select, delete, alter, back up, and restore such rows. We recommend using the accompanying setting `sql.guardrails.max_row_size_log` in conjunction with `SELECT pg_column_size()` queries to detect and fix any existing large rows before lowering `sql.guardrails.max_row_size_err`.
+
+## See also
+
+- [`DELETE`](/docs/v23.2/delete)
+- [`INSERT`](/docs/v23.2/insert)
+- [`UPSERT`](/docs/v23.2/upsert)
+- [`TRUNCATE`](/docs/v23.2/truncate)
+- [`ALTER TABLE`](/docs/v23.2/alter-table)
+- [`DROP TABLE`](/docs/v23.2/drop-table)
+- [`DROP DATABASE`](/docs/v23.2/drop-database)
+- [SQL Statements](/docs/v23.2/sql-statements)
+- [Limit Query Results](/docs/v23.2/limit-offset)
+- [Ordering of rows in DML statements](/docs/v23.2/order-by#ordering-rows-in-dml-statements)

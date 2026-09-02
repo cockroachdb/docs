@@ -1,0 +1,87 @@
+export const ShowVirtualCluster = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="141" width="957" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 61 1 57 1 65"></polygon>
+<polygon points="17 61 9 57 9 65"></polygon>
+<rect height="32" rx="10" width="64" x="31" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="29" y="45"></rect>
+<text class="terminal" x="39" y="65">SHOW</text>
+<rect height="32" rx="10" width="80" x="115" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="113" y="45"></rect>
+<text class="terminal" x="123" y="65">VIRTUAL</text>
+<rect height="32" rx="10" width="90" x="235" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="90" x="233" y="45"></rect>
+<text class="terminal" x="243" y="65">CLUSTERS</text>
+<rect height="32" rx="10" width="82" x="235" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="82" x="233" y="89"></rect>
+<text class="terminal" x="243" y="109">CLUSTER</text>
+<a xlink:title="virtual_cluster_spec" xmlns:xlink="http://www.w3.org/1999/xlink">
+<rect height="32" width="148" x="337" y="91"></rect>
+<rect class="nonterminal" height="32" width="148" x="335" y="89"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="124" font-size="10" class="nonterminal" x="347" y="109">virtual_cluster_spec</text>
+</a>
+<rect height="32" rx="10" width="58" x="545" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="543" y="45"></rect>
+<text class="terminal" x="553" y="65">WITH</text>
+<rect height="32" rx="10" width="114" x="663" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="114" x="661" y="45"></rect>
+<text class="terminal" x="671" y="65">REPLICATION</text>
+<rect height="32" rx="10" width="72" x="797" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="795" y="45"></rect>
+<text class="terminal" x="805" y="65">STATUS</text>
+<rect height="32" rx="10" width="118" x="663" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="118" x="661" y="89"></rect>
+<text class="terminal" x="671" y="109">CAPABILITIES</text>
+<rect height="32" rx="10" width="24" x="643" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="641" y="1"></rect>
+<text class="terminal" x="651" y="21">,</text>
+<path class="line" d="m17 61 h2 m0 0 h10 m64 0 h10 m0 0 h10 m80 0 h10 m20 0 h10 m90 0 h10 m0 0 h160 m-290 0 h20 m270 0 h20 m-310 0 q10 0 10 10 m290 0 q0 -10 10 -10 m-300 10 v24 m290 0 v-24 m-290 24 q0 10 10 10 m270 0 q10 0 10 -10 m-280 10 h10 m82 0 h10 m0 0 h10 m148 0 h10 m40 -44 h10 m58 0 h10 m40 0 h10 m114 0 h10 m0 0 h10 m72 0 h10 m-246 0 h20 m226 0 h20 m-266 0 q10 0 10 10 m246 0 q0 -10 10 -10 m-256 10 v24 m246 0 v-24 m-246 24 q0 10 10 10 m226 0 q10 0 10 -10 m-236 10 h10 m118 0 h10 m0 0 h88 m-266 -44 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m266 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-266 0 h10 m24 0 h10 m0 0 h222 m-384 44 h20 m384 0 h20 m-424 0 q10 0 10 10 m404 0 q0 -10 10 -10 m-414 10 v58 m404 0 v-58 m-404 58 q0 10 10 10 m384 0 q10 0 10 -10 m-394 10 h10 m0 0 h374 m23 -78 h-3"></path>
+<polygon points="947 61 955 57 955 65"></polygon>
+<polygon points="947 61 939 57 939 65"></polygon>
+</svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,98 @@
+---
+title: "DO"
+old_description: "The DO SQL statement executes a PL/pgSQL code block."
+---
+
+The `DO` [statement](/docs/v26.1/sql-statements) defines a code block that executes [PL/pgSQL](/docs/v26.1/plpgsql) syntax.
+
+## Required privileges
+
+- To define a `DO` block with a [user-defined type](/docs/v26.1/create-type), a user must have `USAGE` privilege on the user-defined type.
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/stable/do/syntax-diagram-183ccbf93171.svg)
+</Frame>
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>routine&#95;body&#95;str</code></td><td>The body of the code block.</td></tr></tbody></table>
+
+## Examples
+
+### Declare a variable in a `DO` block
+
+The following example uses the [PL/pgSQL `DECLARE` syntax](/docs/v26.1/plpgsql#declare-a-variable) to declare variables to use in the code block.
+
+```sql
+DO $$
+DECLARE
+    x INT := 10;
+    y INT := 5;
+    result INT;
+BEGIN
+    result := x + y;
+    RAISE NOTICE 'The sum of % and % is %', x, y, result;
+END $$;
+```
+
+```text
+NOTICE: The sum of 10 and 5 is 15
+DO
+```
+
+### Use a loop in a `DO` block
+
+The following example uses the [PL/pgSQL `WHILE` syntax](/docs/v26.1/plpgsql#write-loops) to loop through several statements.
+
+```sql
+DO $$
+DECLARE
+   counter INT := 1;
+BEGIN
+   WHILE counter <= 5 LOOP
+       RAISE NOTICE 'Counter: %', counter;
+       counter := counter + 1;
+   END LOOP;
+END $$;
+```
+
+```text
+NOTICE: Counter: 1
+NOTICE: Counter: 2
+NOTICE: Counter: 3
+NOTICE: Counter: 4
+NOTICE: Counter: 5
+DO
+```
+
+### Use a common table expression in a `DO` block
+
+The following example uses a [common table expression](/docs/v26.1/common-table-expressions) in the body of the code block.
+
+```sql
+DO $$
+DECLARE
+    sum_result INT;
+BEGIN
+    WITH numbers AS (
+        SELECT generate_series(1, 5) AS num
+    )
+    SELECT sum(num) INTO sum_result
+    FROM numbers;
+
+    RAISE NOTICE 'Sum of numbers 1-5: %', sum_result;
+END $$;
+```
+
+```text
+NOTICE: Sum of numbers 1-5: 15
+DO
+```
+
+## See also
+
+- [PL/pgSQL](/docs/v26.1/plpgsql)
+- [Stored Procedures](/docs/v26.1/stored-procedures)
+- [User-Defined Functions](/docs/v26.1/user-defined-functions)

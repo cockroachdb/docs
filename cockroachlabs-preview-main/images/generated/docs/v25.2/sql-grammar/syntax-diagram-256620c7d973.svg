@@ -1,0 +1,75 @@
+<svg height="245" width="443" xmlns="http://www.w3.org/2000/svg"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 33 1 29 1 37"></polygon>
+<polygon points="17 33 9 29 9 37"></polygon>
+<rect height="32" rx="10" width="72" x="51" y="19"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="49" y="17"></rect>
+<text class="terminal" x="59" y="37">TABLES</text>
+<rect height="32" rx="10" width="80" x="51" y="63"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="49" y="61"></rect>
+<text class="terminal" x="59" y="81">INDEXES</text>
+<rect height="32" rx="10" width="78" x="51" y="107"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="49" y="105"></rect>
+<text class="terminal" x="59" y="125">DETAILS</text>
+<rect height="32" rx="10" width="54" x="51" y="151"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="49" y="149"></rect>
+<text class="terminal" x="59" y="169">KEYS</text>
+<rect height="32" rx="10" width="80" x="51" y="195"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="49" y="193"></rect>
+<text class="terminal" x="59" y="213">EXPLAIN</text>
+<rect height="32" rx="10" width="24" x="211" y="19"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="209" y="17"></rect>
+<text class="terminal" x="219" y="37">,</text>
+<rect height="32" rx="10" width="72" x="275" y="19"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="273" y="17"></rect>
+<text class="terminal" x="283" y="37">TABLES</text>
+<rect height="32" rx="10" width="80" x="275" y="63"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="273" y="61"></rect>
+<text class="terminal" x="283" y="81">INDEXES</text>
+<rect height="32" rx="10" width="78" x="275" y="107"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="273" y="105"></rect>
+<text class="terminal" x="283" y="125">DETAILS</text>
+<rect height="32" rx="10" width="80" x="275" y="151"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="273" y="149"></rect>
+<text class="terminal" x="283" y="169">EXPLAIN</text>
+<rect height="32" rx="10" width="54" x="275" y="195"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="273" y="193"></rect>
+<text class="terminal" x="283" y="213">KEYS</text>
+<path class="line" d="m17 33 h2 m20 0 h10 m72 0 h10 m0 0 h8 m-120 0 h20 m100 0 h20 m-140 0 q10 0 10 10 m120 0 q0 -10 10 -10 m-130 10 v24 m120 0 v-24 m-120 24 q0 10 10 10 m100 0 q10 0 10 -10 m-110 10 h10 m80 0 h10 m-110 -10 v20 m120 0 v-20 m-120 20 v24 m120 0 v-24 m-120 24 q0 10 10 10 m100 0 q10 0 10 -10 m-110 10 h10 m78 0 h10 m0 0 h2 m-110 -10 v20 m120 0 v-20 m-120 20 v24 m120 0 v-24 m-120 24 q0 10 10 10 m100 0 q10 0 10 -10 m-110 10 h10 m54 0 h10 m0 0 h26 m-110 -10 v20 m120 0 v-20 m-120 20 v24 m120 0 v-24 m-120 24 q0 10 10 10 m100 0 q10 0 10 -10 m-110 10 h10 m80 0 h10 m60 -176 h10 m24 0 h10 m20 0 h10 m72 0 h10 m0 0 h8 m-120 0 h20 m100 0 h20 m-140 0 q10 0 10 10 m120 0 q0 -10 10 -10 m-130 10 v24 m120 0 v-24 m-120 24 q0 10 10 10 m100 0 q10 0 10 -10 m-110 10 h10 m80 0 h10 m-110 -10 v20 m120 0 v-20 m-120 20 v24 m120 0 v-24 m-120 24 q0 10 10 10 m100 0 q10 0 10 -10 m-110 10 h10 m78 0 h10 m0 0 h2 m-110 -10 v20 m120 0 v-20 m-120 20 v24 m120 0 v-24 m-120 24 q0 10 10 10 m100 0 q10 0 10 -10 m-110 10 h10 m80 0 h10 m-110 -10 v20 m120 0 v-20 m-120 20 v24 m120 0 v-24 m-120 24 q0 10 10 10 m100 0 q10 0 10 -10 m-110 10 h10 m54 0 h10 m0 0 h26 m-184 -176 l20 0 m-1 0 q-9 0 -9 -10 l0 -12 q0 -10 10 -10 m184 32 l20 0 m-20 0 q10 0 10 -10 l0 -12 q0 -10 -10 -10 m-184 0 h10 m0 0 h174 m-224 32 h20 m224 0 h20 m-264 0 q10 0 10 10 m244 0 q0 -10 10 -10 m-254 10 v190 m244 0 v-190 m-244 190 q0 10 10 10 m224 0 q10 0 10 -10 m-234 10 h10 m0 0 h214 m23 -210 h-3"></path>
+<polygon points="433 33 441 29 441 37"></polygon>
+<polygon points="433 33 425 29 425 37"></polygon></svg>

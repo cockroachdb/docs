@@ -1,0 +1,21 @@
+---
+title: Overview Page
+summary: How to use the Overview page to view cluster details on CockroachDB Cloud.
+docs_area: manage
+---
+
+import OverviewPage from "/snippets/cockroachcloud/overview-page.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<OverviewPage />

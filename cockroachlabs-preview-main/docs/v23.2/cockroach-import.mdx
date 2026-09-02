@@ -1,0 +1,101 @@
+---
+title: "cockroach import"
+old_description: "The cockroach import command imports a database or table from a local dump file into a running cluster."
+---
+
+<Warning>
+The statements on this page are **deprecated** as of v23.1 and will be removed in a future release. To move data into CockroachDB, use [`IMPORT INTO`](/docs/v23.2/import-into) or [`COPY FROM`](/docs/v23.2/copy).
+</Warning>
+
+The `cockroach import` [command](/docs/v23.2/cockroach-commands) imports a database or table from a local dump file into a running cluster. This command [uploads a userfile](/docs/v23.2/cockroach-userfile-upload), imports its data, then [deletes the userfile](/docs/v23.2/cockroach-userfile-delete). `PGDUMP` and `MYSQLDUMP` file formats are currently supported.
+
+## Required privileges
+
+The user must have `CREATE` [privileges](/docs/v23.2/security-reference/authorization#managing-privileges) on `defaultdb`.
+
+## Synopsis
+
+Import a database:
+
+```shell
+$ cockroach import db <format> <location/of/file> <flags>
+```
+
+Import a table:
+
+```shell
+$ cockroach import table <table_name> <format> <location/of/file> <flags>
+```
+
+View help:
+
+```shell
+$ cockroach import --help
+```
+
+## Supported Formats
+
+- [`pgdump`](/docs/molt/migrate-to-cockroachdb)
+- [`mysqldump`](/docs/molt/migrate-to-cockroachdb?filters=mysql)
+
+## Flags
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v23.2/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr><tr><td><code>--insecure</code></td><td>Use an insecure connection.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;INSECURE</code><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--user</code><br/><code>-u</code></td><td>The <a href="/docs/v23.2/create-user">SQL user</a> that will own the client session.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;USER</code><br/><strong>Default:</strong><code>root</code></td></tr><tr><td><code>--ignore-unsupported-statements</code></td><td>Ignore statements that are unsupported during an import from a PGDUMP file.<br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--log-ignored-statements</code></td><td>Log statements that are ignored during an import from a PGDUMP file to the specified destination (i.e., <a href="/docs/v23.2/use-cloud-storage">cloud storage</a> or <a href="/docs/v23.2/use-userfile-storage">userfile storage</a>.</td></tr><tr><td><code>--row-limit=</code></td><td>The number of rows to import for each table during a PGDUMP or MYSQLDUMP import.<br/>This can be used to check schema and data correctness without running the entire import.<br/><strong>Default:</strong><code>0</code></td></tr></tbody></table>
+
+## Examples
+
+### Import a database
+
+To import a database from a local file:
+
+```shell
+$ cockroach import db mysqldump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
+```
+
+```text
+successfully imported mysqldump file /Users/maxroach/Desktop/test-db.sql
+```
+
+### Import a table
+
+To import a table from a local file:
+
+```shell
+$ cockroach import table test_table pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs
+```
+
+```text
+successfully imported table test_table from pgdump file /Users/maxroach/Desktop/test-db.sql
+```
+
+### Import a database with unsupported SQL syntax and log all unsupported statements
+
+To import a database from a `PGDUMP` file that contains unsupported SQL syntax and log the ignored statements to a [userfile](/docs/v23.2/use-userfile-storage):
+
+```shell
+$ cockroach import db pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs --ignore-unsupported-statements=true --log-ignored-statements='userfile://defaultdb.public.userfiles_root/unsupported-statements.log'
+```
+
+```text
+successfully imported table test_table from pgdump file /Users/maxroach/Desktop/test-db.sql
+```
+
+### Import a limited number of rows from a dump file
+
+To limit the number of rows imported from a dump file:
+
+```shell
+$ cockroach import table test_table pgdump /Users/maxroach/Desktop/test-db.sql --certs-dir=certs --row-limit='50'
+```
+
+```text
+successfully imported table test_table from pgdump file /Users/maxroach/Desktop/test-db.sql
+```
+
+## See also
+
+- [`cockroach` Commands Overview](/docs/v23.2/cockroach-commands)
+- [`IMPORT`](/docs/v23.2/import)
+- [`IMPORT INTO`](/docs/v23.2/import-into)
+- [Migrate from PostgreSQL](/docs/molt/migrate-to-cockroachdb)
+- [Migrate from MySQL](/docs/molt/migrate-to-cockroachdb?filters=mysql)

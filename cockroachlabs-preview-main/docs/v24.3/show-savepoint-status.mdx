@@ -1,0 +1,62 @@
+---
+title: "SHOW SAVEPOINT STATUS"
+old_description: "The SHOW SAVEPOINT STATUS statement lists the active savepoints in the current transaction."
+---
+
+The `SHOW SAVEPOINT STATUS` [statement](/docs/v24.3/sql-statements) lists the active [savepoints](/docs/v24.3/savepoint) in the current [transaction](/docs/v24.3/transactions).
+
+## Required privileges
+
+No [privileges](/docs/v24.3/security-reference/authorization#managing-privileges) are required to create or show a savepoint. However, privileges are required for each statement within a transaction.
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v24.3/show-savepoint-status/syntax-diagram-850e24556552.svg)
+</Frame>
+
+## Response
+
+The following fields are returned for each savepoint.
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>savepoint&#95;name</code></td><td>The name of the savepoint.</td></tr><tr><td><code>is&#95;initial&#95;savepoint</code></td><td>Whether the savepoint is the outermost savepoint in the transaction.</td></tr></tbody></table>
+
+## Example
+
+1. Open a [transaction](/docs/v24.3/transactions) using [`BEGIN`](/docs/v24.3/begin-transaction), and create a [nested transaction](/docs/v24.3/transactions#nested-transactions) using a [savepoint](/docs/v24.3/savepoint):
+
+    ```sql
+    > BEGIN;
+    SAVEPOINT foo;
+    ```
+2. Use the `SHOW SAVEPOINT STATUS` statement to list the active savepoints in the current nested transaction.
+
+    ```sql
+    > SHOW SAVEPOINT STATUS;
+    ```
+
+    ```text
+      savepoint_name | is_initial_savepoint
+    -----------------+-----------------------
+      foo            |        true
+    (1 row)
+    ```
+
+    Currently, there is only one savepoint.
+3. Commit this nested transaction by issuing the [`RELEASE SAVEPOINT`](/docs/v24.3/release-savepoint) statement, then clear the connection for the next transaction by issuing a [`COMMIT`](/docs/v24.3/commit-transaction) statement:
+
+    ```sql
+    > RELEASE SAVEPOINT foo;
+    COMMIT;
+    ```
+
+    If we did not want to commit this nested transaction, but restart it instead, we would have issued a [`ROLLBACK TO SAVEPOINT`](/docs/v24.3/rollback-transaction#rollback-a-nested-transaction).
+
+## See also
+
+- [`SAVEPOINT`](/docs/v24.3/savepoint)
+- [`RELEASE SAVEPOINT`](/docs/v24.3/release-savepoint)
+- [`ROLLBACK`](/docs/v24.3/rollback-transaction)
+- [`BEGIN`](/docs/v24.3/begin-transaction)
+- [`COMMIT`](/docs/v24.3/commit-transaction)
+- [Transactions](/docs/v24.3/transactions)

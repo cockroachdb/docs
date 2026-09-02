@@ -1,0 +1,699 @@
+---
+title: "Simple SELECT Clause"
+old_description: "The Simple SELECT clause loads or computes data from various sources."
+---
+
+import { SelectClause4 } from "/snippets/syntax-diagrams/SelectClause4.jsx";
+
+The simple `SELECT` clause is the main SQL syntax to read and process existing data.
+
+When used as a stand-alone statement, the simple `SELECT` clause is also called "the `SELECT` statement". However, it is also a [selection clause](/docs/v24.1/selection-queries#selection-clauses) that can be combined with other constructs to form more complex [selection queries](/docs/v24.1/selection-queries).
+
+## Synopsis
+
+<SelectClause4 />
+
+<Tip>
+The simple `SELECT` clause also has other applications not covered here, such as executing [functions](/docs/v24.1/functions-and-operators) like `SELECT current_timestamp();`.
+</Tip>
+
+## Required privileges
+
+The user must have the `SELECT` [privilege](/docs/v24.1/security-reference/authorization#managing-privileges) on the tables used as operands.
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>DISTINCT</code> or <code>ALL</code></td><td>See <a href="#eliminate-duplicate-rows">Eliminate Duplicate Rows</a>.</td></tr><tr><td><code>DISTINCT ON ( a&#95;expr &#91;, ...&#93; )</code></td><td><code>DISTINCT ON</code> followed by a list of <a href="/docs/v24.1/scalar-expressions">scalar expressions</a> within parentheses. See <a href="#eliminate-duplicate-rows">Eliminate Duplicate Rows</a>.</td></tr><tr><td><code>target&#95;elem</code></td><td>A <a href="/docs/v24.1/scalar-expressions">scalar expression</a> to compute a column in each result row.<br/><br/><code>&#42;</code> automatically retrieves all columns. If a column has the <a href="/docs/v24.1/create-table#not-visible-property"><code>NOT VISIBLE</code> property</a>, it is not returned with <code>&#42;</code>.<br/><br/>If <code>target&#95;elem</code> contains an <a href="/docs/v24.1/functions-and-operators#aggregate-functions">aggregate function</a>, a <code>GROUP BY</code> clause can be used to further control the aggregation.</td></tr><tr><td><code>table&#95;ref</code></td><td>The <a href="/docs/v24.1/table-expressions">table expression</a> you want to retrieve data from.<br/><br/>Using two or more table expressions in the <code>FROM</code> sub-clause, separated with a comma, is equivalent to a <a href="/docs/v24.1/joins"><code>CROSS JOIN</code></a> expression.</td></tr><tr><td><code>AS OF SYSTEM TIME timestamp</code></td><td>Retrieve data as it existed <a href="/docs/v24.1/as-of-system-time">as of <code>timestamp</code></a>.<br/><br/><strong>Note</strong>: Because <code>AS OF SYSTEM TIME</code> returns historical data, your reads might be stale.</td></tr><tr><td><code>WHERE a&#95;expr</code></td><td><a></a> Only retrieve rows that return <code>TRUE</code> for <code>a&#95;expr</code>, which must be a <a href="/docs/v24.1/scalar-expressions">scalar expression</a> that returns Boolean values using columns (e.g., <code>&lt;column&gt; = &lt;value&gt;</code>).</td></tr><tr><td><code>GROUP BY a&#95;expr</code></td><td>Group results on one or more columns.<br/><br/>When an <a href="/docs/v24.1/functions-and-operators#aggregate-functions">aggregate function</a> follows <code>SELECT</code> as a <code>target&#95;elem</code>, or <code>HAVING</code> as an <code>a&#95;expr</code>, you can <a href="#create-aggregate-groups">create aggregate groups</a> on column groupings listed after <code>GROUP BY</code>.<br/>You can group columns by an alias (i.e., a label assigned to the column with an <code>AS</code> clause) rather than the column name.<br/>If aggregate groups are created on a full primary key, any column in the table can be selected as a <code>target&#95;elem</code>, or specified in a <code>HAVING</code> clause.<br/>If a selected column is in a <a href="/docs/v24.1/subqueries">subquery</a>, and the column references a higher scope, the column does not need to be included in the <code>GROUP BY</code> clause (if one exists).<br/><br/>Using a <code>GROUP BY</code> clause in a statement without an aggregate function is equivalent to using a <a href="#eliminate-duplicate-rows"><code>DISTINCT ON</code></a> clause on the grouping columns.</td></tr><tr><td><code>HAVING a&#95;expr</code></td><td>Only retrieve aggregate function groups that return <code>TRUE</code> for <code>a&#95;expr</code>, which must be a <a href="/docs/v24.1/scalar-expressions">scalar expression</a> that returns Boolean values using an aggregate function (e.g., <code>&lt;aggregate function&gt; = &lt;value&gt;</code>).<br/><br/><code>HAVING</code> works like the <code>WHERE</code> clause, but for aggregate functions.</td></tr><tr><td><code>WINDOW window&#95;definition&#95;list</code></td><td>A list of <a href="/docs/v24.1/window-functions#window-definitions">window definitions</a>.</td></tr></tbody></table>
+
+## Eliminate duplicate rows
+
+The `DISTINCT` subclause specifies to remove duplicate rows.
+
+By default, or when `ALL` is specified, `SELECT` returns all the rows selected, without removing duplicates. When `DISTINCT` is specified, duplicate rows are eliminated.
+
+Without `ON`, two rows are considered duplicates if they are equal on all the results computed by `SELECT`.
+
+With `ON`, two rows are considered duplicates if they are equal only using the [scalar expressions](/docs/v24.1/scalar-expressions) listed with `ON`. When two rows are considered duplicates according to `DISTINCT ON`, the values from the first `FROM` row in the order specified by [`ORDER BY`](/docs/v24.1/order-by) are used to compute the remaining target expressions. If `ORDER BY` is not specified, CockroachDB will pick any one of the duplicate rows as first row, non-deterministically.
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v24.1/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v24.1/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Choose columns
+
+#### Retrieve specific columns
+
+Retrieve specific columns by naming them in a comma-separated list:
+
+```sql
+> SELECT id, city, name FROM users LIMIT 10;
+```
+
+```text
+                   id                  |     city      |       name
++--------------------------------------+---------------+------------------+
+  7ae147ae-147a-4000-8000-000000000018 | los angeles   | Alfred Garcia
+  570a3d70-a3d7-4c00-8000-000000000011 | san francisco | Amy Cobb
+  428f5c28-f5c2-4000-8000-00000000000d | seattle       | Anita Atkinson
+  1eb851eb-851e-4800-8000-000000000006 | boston        | Brian Campbell
+  23d70a3d-70a3-4800-8000-000000000007 | boston        | Carl Mcguire
+  a8f5c28f-5c28-4800-8000-000000000021 | detroit       | Carl Russell
+  147ae147-ae14-4b00-8000-000000000004 | new york      | Catherine Nelson
+  99999999-9999-4800-8000-00000000001e | detroit       | Charles Montoya
+  e147ae14-7ae1-4800-8000-00000000002c | paris         | Cheyenne Smith
+  2e147ae1-47ae-4400-8000-000000000009 | washington dc | Cindy Medina
+(10 rows)
+```
+
+#### Retrieve all columns
+
+Retrieve all columns by using `*`:
+
+```sql
+> SELECT * FROM users LIMIT 10;
+```
+
+```text
+                   id                  |   city    |        name        |            address             | credit_card
++--------------------------------------+-----------+--------------------+--------------------------------+-------------+
+  c28f5c28-f5c2-4000-8000-000000000026 | amsterdam | Maria Weber        | 14729 Karen Radial             | 5844236997
+  c7ae147a-e147-4000-8000-000000000027 | amsterdam | Tina Miller        | 97521 Mark Extensions          | 8880478663
+  cccccccc-cccc-4000-8000-000000000028 | amsterdam | Taylor Cunningham  | 89214 Jennifer Well            | 5130593761
+  d1eb851e-b851-4800-8000-000000000029 | amsterdam | Kimberly Alexander | 48474 Alfred Hollow            | 4059628542
+  19999999-9999-4a00-8000-000000000005 | boston    | Nicole Mcmahon     | 11540 Patton Extensions        | 0303726947
+  1eb851eb-851e-4800-8000-000000000006 | boston    | Brian Campbell     | 92025 Yang Village             | 9016427332
+  23d70a3d-70a3-4800-8000-000000000007 | boston    | Carl Mcguire       | 60124 Palmer Mews Apt. 49      | 4566257702
+  28f5c28f-5c28-4600-8000-000000000008 | boston    | Jennifer Sanders   | 19121 Padilla Brooks Apt. 12   | 1350968125
+  80000000-0000-4000-8000-000000000019 | chicago   | Matthew Clay       | 49220 Lisa Junctions           | 9132291015
+  851eb851-eb85-4000-8000-00000000001a | chicago   | Samantha Coffey    | 6423 Jessica Underpass Apt. 87 | 9437219051
+(10 rows)
+```
+
+### Filter rows
+
+#### Filter on a single condition
+
+Filter rows with expressions that use columns and return Boolean values in the `WHERE` clause:
+
+```sql
+> SELECT name, id FROM users WHERE city='seattle';
+```
+
+```text
+        name       |                  id
++------------------+--------------------------------------+
+  Anita Atkinson   | 428f5c28-f5c2-4000-8000-00000000000d
+  Patricia Herrera | 47ae147a-e147-4000-8000-00000000000e
+  Holly Williams   | 4ccccccc-cccc-4c00-8000-00000000000f
+  Ryan Hickman     | 51eb851e-b851-4c00-8000-000000000010
+(4 rows)
+```
+
+#### Filter on multiple conditions
+
+To use multiple `WHERE` filters join them with `AND` or `OR`. You can also create negative filters with `NOT`:
+
+```sql
+> SELECT * FROM vehicles WHERE city = 'seattle' AND status = 'available';
+```
+
+```text
+                   id                  |  city   | type |               owner_id               |       creation_time       |  status   |    current_location    |                  ext
++--------------------------------------+---------+------+--------------------------------------+---------------------------+-----------+------------------------+----------------------------------------+
+  44444444-4444-4400-8000-000000000004 | seattle | bike | 428f5c28-f5c2-4000-8000-00000000000d | 2019-01-02 03:04:05+00:00 | available | 37754 Farmer Extension | {"brand": "Merida", "color": "yellow"}
+(1 row)
+```
+
+#### Filter values with a list
+
+Using `WHERE <column> IN (<comma separated list of values>)` performs an `OR` search for listed values in the specified column:
+
+```sql
+> SELECT name, id FROM users WHERE city IN ('new york', 'chicago', 'seattle');
+```
+
+```text
+        name       |                  id
++------------------+--------------------------------------+
+  Matthew Clay     | 80000000-0000-4000-8000-000000000019
+  Samantha Coffey  | 851eb851-eb85-4000-8000-00000000001a
+  Jessica Martinez | 8a3d70a3-d70a-4000-8000-00000000001b
+  John Hines       | 8f5c28f5-c28f-4000-8000-00000000001c
+  Kenneth Barnes   | 947ae147-ae14-4800-8000-00000000001d
+  Robert Murphy    | 00000000-0000-4000-8000-000000000000
+  James Hamilton   | 051eb851-eb85-4ec0-8000-000000000001
+  Judy White       | 0a3d70a3-d70a-4d80-8000-000000000002
+  Devin Jordan     | 0f5c28f5-c28f-4c00-8000-000000000003
+  Catherine Nelson | 147ae147-ae14-4b00-8000-000000000004
+  Anita Atkinson   | 428f5c28-f5c2-4000-8000-00000000000d
+  Patricia Herrera | 47ae147a-e147-4000-8000-00000000000e
+  Holly Williams   | 4ccccccc-cccc-4c00-8000-00000000000f
+  Ryan Hickman     | 51eb851e-b851-4c00-8000-000000000010
+(14 rows)
+```
+
+#### Select distinct rows
+
+Columns without the [Primary Key](/docs/v24.1/primary-key) or [Unique](/docs/v24.1/unique) constraints can have multiple instances of the same value:
+
+```sql
+> SELECT name FROM users WHERE city in ('los angeles', 'washington dc');
+```
+
+```text
+         name
++---------------------+
+  Ricky Beck
+  Michael Brown
+  William Wood
+  Alfred Garcia
+  Cindy Medina
+  Daniel Hernandez MD
+  Sarah Wang DDS
+  Michael Brown
+(8 rows)
+```
+
+Using `DISTINCT`, you can remove all but one instance of duplicate values from your retrieved data:
+
+```sql
+> SELECT DISTINCT name FROM users WHERE city in ('los angeles', 'washington dc');
+```
+
+```text
+         name
++---------------------+
+  Ricky Beck
+  Michael Brown
+  William Wood
+  Alfred Garcia
+  Cindy Medina
+  Daniel Hernandez MD
+  Sarah Wang DDS
+(7 rows)
+```
+
+### Rename columns in output
+
+Instead of outputting a column's name in the retrieved table, you can change its label using `AS`:
+
+```sql
+> SELECT current_location AS ny_address, id, type, status FROM vehicles WHERE city = 'new york';
+```
+
+```text
+        ny_address       |                  id                  |    type    | status
++------------------------+--------------------------------------+------------+--------+
+  64110 Richard Crescent | 00000000-0000-4000-8000-000000000000 | skateboard | in_use
+  86667 Edwards Valley   | 11111111-1111-4100-8000-000000000001 | scooter    | in_use
+(2 rows)
+```
+
+This *does not* change the name of the column in the table. To do that, use [`RENAME COLUMN`](/docs/v24.1/alter-table#rename-column).
+
+### Search for string values
+
+Search for partial [string](/docs/v24.1/string) matches in columns using `LIKE`, which supports the following wildcard operators:
+
+- `%` matches 0 or more characters.
+- `_` matches exactly 1 character.
+
+For example:
+
+```sql
+> SELECT city, status, id FROM vehicles WHERE type LIKE 'scoot%';
+```
+
+```text
+      city      |  status   |                  id
++---------------+-----------+--------------------------------------+
+  boston        | in_use    | 22222222-2222-4200-8000-000000000002
+  detroit       | in_use    | 99999999-9999-4800-8000-000000000009
+  minneapolis   | in_use    | aaaaaaaa-aaaa-4800-8000-00000000000a
+  minneapolis   | available | bbbbbbbb-bbbb-4800-8000-00000000000b
+  new york      | in_use    | 11111111-1111-4100-8000-000000000001
+  san francisco | available | 55555555-5555-4400-8000-000000000005
+  washington dc | in_use    | 33333333-3333-4400-8000-000000000003
+(7 rows)
+```
+
+### Aggregate functions
+
+[Aggregate functions](/docs/v24.1/functions-and-operators#aggregate-functions) perform calculations on retrieved rows.
+
+#### Perform aggregate function on entire column
+
+By using an aggregate function as a `target_elem`, you can perform the calculation on the entire column.
+
+```sql
+> SELECT MIN(revenue) FROM rides;
+```
+
+```text
+  min
++------+
+  0.00
+(1 row)
+```
+
+You can also use the retrieved value as part of an expression. For example, you can use the result in the `WHERE` clause to select additional rows that were not part of the aggregate function itself:
+
+```sql
+> SELECT id, city, vehicle_id, rider_id
+FROM rides
+WHERE revenue = (
+      SELECT
+      MIN(revenue)
+      FROM rides
+);
+```
+
+```text
+                   id                  |    city     |              vehicle_id              |               rider_id
++--------------------------------------+-------------+--------------------------------------+--------------------------------------+
+  1f3b645a-1cac-4800-8000-00000000003d | boston      | 22222222-2222-4200-8000-000000000002 | 19999999-9999-4a00-8000-000000000005
+  23d70a3d-70a3-4800-8000-000000000046 | boston      | 22222222-2222-4200-8000-000000000002 | 19999999-9999-4a00-8000-000000000005
+  851eb851-eb85-4000-8000-000000000104 | chicago     | 88888888-8888-4800-8000-000000000008 | 851eb851-eb85-4000-8000-00000000001a
+  85a1cac0-8312-4000-8000-000000000105 | chicago     | 88888888-8888-4800-8000-000000000008 | 947ae147-ae14-4800-8000-00000000001d
+  722d0e56-0418-4400-8000-0000000000df | los angeles | 77777777-7777-4800-8000-000000000007 | 7ae147ae-147a-4000-8000-000000000018
+  ae147ae1-47ae-4800-8000-000000000154 | minneapolis | aaaaaaaa-aaaa-4800-8000-00000000000a | b851eb85-1eb8-4000-8000-000000000024
+  0dd2f1a9-fbe7-4c80-8000-00000000001b | new york    | 11111111-1111-4100-8000-000000000001 | 00000000-0000-4000-8000-000000000000
+  f4bc6a7e-f9db-4000-8000-0000000001de | rome        | eeeeeeee-eeee-4000-8000-00000000000e | f0a3d70a-3d70-4000-8000-00000000002f
+(8 rows)
+```
+
+#### Perform aggregate function on retrieved rows
+
+By filtering the statement, you can perform the calculation only on retrieved rows:
+
+```sql
+> SELECT SUM(revenue) FROM rides WHERE city IN ('new york', 'chicago');
+```
+
+```text
+    sum
++---------+
+  4079.00
+(1 row)
+```
+
+#### Filter columns fed into aggregate functions
+
+You can use `FILTER (WHERE <Boolean expression>)` in the `target_elem` to filter which rows are processed by an aggregate function; those that return `FALSE` or `NULL` for the `FILTER` clause's Boolean expression are not fed into the aggregate function:
+
+```sql
+> SELECT count(*) AS unfiltered, count(*) FILTER (WHERE revenue > 50) AS filtered FROM rides;
+```
+
+```text
+  unfiltered | filtered
++------------+----------+
+         500 |      252
+(1 row)
+```
+
+#### Create aggregate groups
+
+Instead of performing aggregate functions on an the entire set of retrieved rows, you can split the rows into groups and then perform the aggregate function on each of them.
+
+When creating aggregate groups, each column selected as a `target_elem` must be included in a `GROUP BY` clause.
+
+For example:
+
+```sql
+> SELECT city, SUM(revenue) AS city_revenue FROM rides
+WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
+```
+
+```text
+    city   | city_revenue
++----------+--------------+
+  chicago  |      1990.00
+  new york |      2089.00
+  seattle  |      2029.00
+(3 rows)
+```
+
+<Note>
+If the group is created on a primary key column, any column in the table can be selected as a `target_elem`. If a selected column is in a [subquery](/docs/v24.1/subqueries) that references a higher scope, a `GROUP BY` clause is not needed.
+</Note>
+
+#### Filter aggregate groups
+
+To filter aggregate groups, use `HAVING`, which is the equivalent of the `WHERE` clause for aggregate groups, which must evaluate to a Boolean value.
+
+For example:
+
+```sql
+> SELECT city, AVG(revenue) as avg FROM rides GROUP BY city
+HAVING AVG(revenue) BETWEEN 50 AND 60;
+```
+
+```text
+      city      |          avg
++---------------+-----------------------+
+  amsterdam     |                 52.50
+  boston        | 52.666666666666666667
+  los angeles   | 55.951219512195121951
+  minneapolis   | 55.146341463414634146
+  washington dc | 58.756097560975609756
+(5 rows)
+```
+
+#### Use aggregate functions in having clause
+
+Aggregate functions can also be used in the `HAVING` clause without needing to be included as a `target_elem`.
+
+For example:
+
+```sql
+> SELECT vehicle_id, city FROM rides WHERE city IN ('new york', 'chicago', 'seattle')
+GROUP BY vehicle_id, city HAVING COUNT(vehicle_id) > 20;
+```
+
+```text
+               vehicle_id              |   city
++--------------------------------------+----------+
+  88888888-8888-4800-8000-000000000008 | chicago
+  11111111-1111-4100-8000-000000000001 | new york
+  44444444-4444-4400-8000-000000000004 | seattle
+(3 rows)
+```
+
+#### Order aggregate function input rows by column
+
+Non-commutative aggregate functions are sensitive to the order in which the rows are processed in the surrounding `SELECT` clause. To specify the order in which input rows are processed, you can add an [`ORDER BY`](/docs/v24.1/order-by) clause within the function argument list.
+
+For example, suppose you want to create an array of `name` values, ordered alphabetically, and grouped by `city`. You can use the following statement to do so:
+
+```sql
+> SELECT city, array_agg(name ORDER BY name) AS users FROM users WHERE city IN ('new york', 'chicago', 'seattle') GROUP BY city;
+```
+
+```text
+    city   |                                        users
++----------+-------------------------------------------------------------------------------------+
+  new york | {"Catherine Nelson","Devin Jordan","James Hamilton","Judy White","Robert Murphy"}
+  seattle  | {"Anita Atkinson","Holly Williams","Patricia Herrera","Ryan Hickman"}
+  chicago  | {"Jessica Martinez","John Hines","Kenneth Barnes","Matthew Clay","Samantha Coffey"}
+(3 rows)
+```
+
+You can also order input rows using a column different than the input row column. The following statement returns an array of `revenue` values from high-revenue rides, ordered by ride `end_time`:
+
+```sql
+> SELECT city, array_agg(revenue ORDER BY end_time) as revenues FROM rides WHERE revenue > 80 GROUP BY city;
+```
+
+```text
+      city      |                                    revenues
++---------------+---------------------------------------------------------------------------------+
+  amsterdam     | {87.00,95.00,87.00,85.00,87.00,85.00,88.00,95.00,86.00,97.00,98.00,87.00,82.00}
+  boston        | {92.00,92.00,86.00,87.00,94.00}
+  detroit       | {89.00,96.00,94.00,92.00,84.00}
+  minneapolis   | {84.00,98.00,86.00,92.00,81.00,99.00,87.00,86.00,88.00,81.00}
+  new york      | {83.00,94.00,86.00,95.00,81.00,91.00,94.00,81.00,81.00,90.00}
+  san francisco | {96.00,85.00,96.00,84.00,94.00,87.00,93.00}
+  chicago       | {82.00,98.00,84.00,99.00,91.00,90.00,83.00,82.00,91.00}
+  los angeles   | {92.00,98.00,92.00,99.00,93.00,87.00,98.00,91.00,89.00,81.00,87.00}
+  paris         | {87.00,94.00,98.00,98.00,95.00,81.00,99.00,94.00,95.00,82.00}
+  rome          | {83.00,96.00,90.00,98.00,95.00,87.00,86.00,97.00}
+  seattle       | {88.00,88.00,82.00,86.00,91.00,81.00,99.00}
+  washington dc | {96.00,94.00,97.00,96.00,88.00,97.00,93.00}
+(12 rows)
+```
+
+If you include multiple aggregate functions in a single `SELECT` clause, you can order the input rows of the multiple functions on different columns. For example:
+
+```sql
+> SELECT city, array_agg(revenue ORDER BY revenue) as revenues_by_revenue, array_agg(revenue ORDER BY end_time) as revenues_by_end_time FROM rides WHERE revenue > 90 GROUP BY city;
+```
+
+```text
+      city      |             revenues_by_revenue             |            revenues_by_end_time
++---------------+---------------------------------------------+---------------------------------------------+
+  amsterdam     | {95.00,95.00,97.00,98.00}                   | {95.00,95.00,97.00,98.00}
+  boston        | {92.00,92.00,94.00}                         | {92.00,92.00,94.00}
+  minneapolis   | {92.00,98.00,99.00}                         | {98.00,92.00,99.00}
+  new york      | {91.00,94.00,94.00,95.00}                   | {94.00,95.00,91.00,94.00}
+  paris         | {94.00,94.00,95.00,95.00,98.00,98.00,99.00} | {94.00,98.00,98.00,95.00,99.00,94.00,95.00}
+  san francisco | {93.00,94.00,96.00,96.00}                   | {96.00,96.00,94.00,93.00}
+  chicago       | {91.00,91.00,98.00,99.00}                   | {98.00,99.00,91.00,91.00}
+  detroit       | {92.00,94.00,96.00}                         | {96.00,94.00,92.00}
+  los angeles   | {91.00,92.00,92.00,93.00,98.00,98.00,99.00} | {92.00,98.00,92.00,99.00,93.00,98.00,91.00}
+  rome          | {95.00,96.00,97.00,98.00}                   | {96.00,98.00,95.00,97.00}
+  seattle       | {91.00,99.00}                               | {91.00,99.00}
+  washington dc | {93.00,94.00,96.00,96.00,97.00,97.00}       | {96.00,94.00,97.00,96.00,97.00,93.00}
+(12 rows)
+```
+
+### Group by an alias
+
+If a query includes an alias (i.e., a [label assigned to the column with an `AS` clause](#rename-columns-in-output)), you can group the aggregations in the query by the alias rather than by the column name. For example:
+
+```sql
+> SELECT city AS c, SUM(revenue) AS c_rev FROM rides GROUP BY c;
+```
+
+```text
+        c       |  c_rev
+----------------+----------
+  amsterdam     | 2966.00
+  boston        | 3019.00
+  los angeles   | 2772.00
+  new york      | 2923.00
+  paris         | 2849.00
+  rome          | 2653.00
+  san francisco | 2857.00
+  seattle       | 2792.00
+  washington dc | 2797.00
+(9 rows)
+```
+
+### Select from a specific index
+
+By using the explicit index annotation, you can override [CockroachDB's index selection](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2) and use a specific [index](/docs/v24.1/indexes) when reading from a named table.
+
+<Note>
+Index selection can impact [performance](/docs/v24.1/performance-best-practices-overview), but does not change the result of a query.
+</Note>
+
+##### Force index scan
+
+To force a scan of a specific index:
+
+```sql
+SELECT * FROM table@my_idx;
+```
+
+This is equivalent to the longer expression:
+
+```sql
+SELECT * FROM table@{FORCE_INDEX=my_idx};
+```
+
+##### Force reverse scan
+
+To force a reverse scan of a specific index:
+
+```sql
+SELECT * FROM table@{FORCE_INDEX=my_idx,DESC};
+```
+
+Forcing a reverse scan can help with [performance tuning](/docs/v24.1/performance-best-practices-overview). To choose an index and its scan direction:
+
+```sql
+SELECT * FROM table@{FORCE_INDEX=idx[,DIRECTION]};
+```
+
+where the optional `DIRECTION` is either `ASC` (ascending) or `DESC` (descending).
+
+When a direction is specified, that scan direction is forced; otherwise the [cost-based optimizer](/docs/v24.1/cost-based-optimizer) is free to choose the direction it calculates will result in the best performance.
+
+You can verify that the optimizer is choosing your desired scan direction using [`EXPLAIN (OPT)`](/docs/v24.1/explain#opt-option). For example, given the table
+
+```sql
+CREATE TABLE kv (K INT PRIMARY KEY, v INT);
+```
+
+you can check the scan direction with:
+
+```sql
+EXPLAIN (opt) SELECT * FROM users@{FORCE_INDEX=primary,DESC};
+```
+
+```text
+                 text
++-------------------------------------+
+  scan users,rev
+   └── flags: force-index=primary,rev
+(2 rows)
+```
+
+#### Force inverted index scan
+
+To force a scan of any [inverted index](/docs/v24.1/inverted-indexes) of the hinted table:
+
+```sql
+SELECT * FROM table@{FORCE_INVERTED_INDEX};
+```
+
+The `FORCE_INVERTED_INDEX` hint does not allow specifying an inverted index. If no query plan can be generated, the query will result in the error:
+
+```text
+ERROR: could not produce a query plan conforming to the FORCE_INVERTED_INDEX hint
+```
+
+##### Force partial index scan
+
+To force a [partial index scan](/docs/v24.1/partial-indexes), your statement must have a `WHERE` clause that implies the partial index filter.
+
+```sql
+CREATE TABLE t (
+  a INT,
+  INDEX idx (a) WHERE a > 0);
+INSERT INTO t(a) VALUES (5);
+SELECT * FROM t@idx WHERE a > 0;
+```
+
+```text
+CREATE TABLE
+
+Time: 13ms total (execution 12ms / network 0ms)
+
+INSERT 1
+
+Time: 22ms total (execution 21ms / network 0ms)
+
+  a
+-----
+  5
+(1 row)
+
+Time: 1ms total (execution 1ms / network 0ms)
+```
+
+##### Force partial GIN index scan
+
+To force a [partial GIN index](/docs/v24.1/inverted-indexes#partial-gin-indexes) scan, your statement must have a `WHERE` clause that:
+
+- Implies the partial index.
+- Constrains the GIN index scan.
+
+```sql
+DROP TABLE t;
+CREATE TABLE t (
+  j JSON,
+  INVERTED INDEX idx (j) WHERE j->'a' = '1');
+INSERT INTO t(j)
+  VALUES ('{"a": 1}'),
+         ('{"a": 3, "b": 2}'),
+         ('{"a": 1, "b": 2}');
+SELECT * FROM t@idx WHERE j->'a' = '1' AND j->'b' = '2';
+```
+
+```text
+DROP TABLE
+
+Time: 68ms total (execution 22ms / network 45ms)
+
+CREATE TABLE
+
+Time: 10ms total (execution 10ms / network 0ms)
+
+INSERT 3
+
+Time: 22ms total (execution 22ms / network 0ms)
+
+         j
+--------------------
+  {"a": 1, "b": 2}
+(1 row)
+
+Time: 1ms total (execution 1ms / network 0ms)
+```
+
+##### Prevent full scan
+
+- To prevent the optimizer from planning a full scan for a specific table, specify the `NO_FULL_SCAN` index hint. For example:
+
+    ```sql
+    SELECT * FROM table_name@{NO_FULL_SCAN};
+    ```
+- To prevent a full scan of a [partial index](/docs/v24.1/partial-indexes) for a specific table, you must specify `NO_FULL_SCAN` in combination with the index name using [`FORCE_INDEX`](/docs/v24.1/table-expressions#force-index-selection). For example:
+
+    ```sql
+    SELECT * FROM table_name@{FORCE_INDEX=index_name,NO_FULL_SCAN} WHERE b > 0;
+    ```
+
+    This forces a constrained scan of the partial index. If a constrained scan of the partial index is not possible, an error is returned.
+
+<Tip>
+For other ways to prevent full scans, refer to [Prevent the optimizer from planning full scans](/docs/v24.1/performance-best-practices-overview#prevent-the-optimizer-from-planning-full-scans).
+</Tip>
+
+### Select historical data (time-travel)
+
+CockroachDB lets you find data as it was stored at a given point in time using `AS OF SYSTEM TIME` with various [supported formats](/docs/v24.1/as-of-system-time). This can be also advantageous for performance. For more details, see [`AS OF SYSTEM
+TIME`](/docs/v24.1/as-of-system-time).
+
+## Advanced uses of `SELECT` clauses
+
+CockroachDB supports numerous ways to combine results from `SELECT` clauses together.
+
+See [Selection Queries](/docs/v24.1/selection-queries) for details. A few examples follow.
+
+### Sorting and limiting query results
+
+To order the results of a `SELECT` clause or limit the number of rows in the result, you can combine it with `ORDER BY` or `LIMIT` / `OFFSET` to form a [selection query](/docs/v24.1/selection-queries) or [subquery](/docs/v24.1/table-expressions#use-a-subquery).
+
+See [Ordering Query Results](/docs/v24.1/order-by) and [Limiting Query Results](/docs/v24.1/limit-offset) for more details.
+
+<Note>
+When `ORDER BY` is not included in a query, rows are not sorted by any consistent criteria. Instead, CockroachDB returns them as the coordinating node receives them. Also, CockroachDB sorts [`NULL` values](/docs/v24.1/null-handling#nulls-and-sorting) first with `ASC` and last with `DESC`. This differs from PostgreSQL, which sorts `NULL` values last with `ASC` and first with `DESC`.
+</Note>
+
+### Combining results from multiple queries
+
+Results from two or more queries can be combined together as follows:
+
+- Using [`JOIN` expressions](/docs/v24.1/joins) to combine rows according to conditions on specific columns.
+- Using [set operations](/docs/v24.1/selection-queries#set-operations) to combine rows using inclusion/exclusion rules.
+
+### Row-level locking for concurrency control with `SELECT FOR UPDATE`
+
+`SELECT... FOR UPDATE` exclusively locks the rows returned by a [selection query](/docs/v24.1/selection-queries), such that other transactions trying to access those rows must wait for the transaction that locked the rows to commit or rollback.
+
+`SELECT... FOR UPDATE` can be used to:
+
+- Strengthen the isolation of a [`READ COMMITTED`](/docs/v24.1/read-committed) transaction. If you need to read and later update a row within a transaction, use `SELECT... FOR UPDATE` to acquire an exclusive lock on the row. This guarantees data integrity between the transaction's read and write operations. For details, see [Locking reads](/docs/v24.1/read-committed#locking-reads).
+- Order [`SERIALIZABLE`](/docs/v24.1/demo-serializable) transactions by controlling concurrent access to one or more rows of a table. These other transactions are placed into a queue based on when they tried to read the values of the locked rows.
+
+    Because this queueing happens during the read operation, the [thrashing](https://wikipedia.org/wiki/Thrashing_(computer_science)) that would otherwise occur if multiple concurrently executing transactions attempt to `SELECT` the same data and then `UPDATE` the results of that selection is prevented. By preventing thrashing, `SELECT... FOR UPDATE` also prevents [transaction retries](/docs/v24.1/transactions#transaction-retries) that would otherwise occur due to [contention](/docs/v24.1/performance-best-practices-overview#transaction-contention).
+
+    As a result, using `SELECT... FOR UPDATE` leads to increased throughput and decreased tail latency for contended operations.
+
+Note that using `SELECT... FOR UPDATE` does not completely eliminate the chance of [serialization errors](/docs/v24.1/transaction-retry-error-reference). These errors can also arise due to [time uncertainty](/docs/v24.1/architecture/transaction-layer#transaction-conflicts). To eliminate the need for application-level retry logic, in addition to `SELECT FOR UPDATE` your application also needs to use a [driver that implements automatic retry handling](/docs/v24.1/transaction-retry-error-reference#client-side-retry-handling).
+
+<Note>
+By default, CockroachDB uses the `SELECT... FOR UPDATE` locking mechanism during the initial row scan performed in [`UPDATE`](/docs/v24.1/update) and [`UPSERT`](/docs/v24.1/upsert) statement execution. To turn off implicit `SELECT... FOR UPDATE` locking for `UPDATE` and `UPSERT` statements, set the `enable_implicit_select_for_update` [session variable](/docs/v24.1/set-vars) to `false`.
+</Note>
+
+For an example, see [`FOR UPDATE` and `FOR SHARE`](/docs/v24.1/select-for-update).
+
+## See also
+
+- [Scalar Expressions](/docs/v24.1/scalar-expressions)
+- [Selection Clauses](/docs/v24.1/selection-queries#selection-clauses)
+- [`SELECT FOR UPDATE`](/docs/v24.1/select-for-update)
+- [Set Operations](/docs/v24.1/selection-queries#set-operations)
+- [Table Expressions](/docs/v24.1/table-expressions)
+- [Ordering Query Results](/docs/v24.1/order-by)
+- [Limit Query Results](/docs/v24.1/limit-offset)
+- [SQL Performance Best Practices](/docs/v24.1/performance-best-practices-overview)

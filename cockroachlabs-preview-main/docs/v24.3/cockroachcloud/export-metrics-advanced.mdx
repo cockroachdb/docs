@@ -1,0 +1,20 @@
+---
+title: "Export Metrics From a CockroachDB Advanced Cluster"
+old_description: "Export Metrics From a CockroachDB Advanced Cluster to Amazon CloudWatch, Datadog, or Prometheus"
+---
+
+import ExportMetricsAdvanced from "/snippets/cockroachcloud/export-metrics-advanced.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ExportMetricsAdvanced />

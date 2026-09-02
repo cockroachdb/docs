@@ -1,0 +1,101 @@
+export const SelectNoParens = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="333" width="839" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="#simple_select" xlink:title="simple_select">
+<rect height="32" width="106" x="51" y="3"></rect>
+<rect class="nonterminal" height="32" width="106" x="49" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="82" font-size="10" class="nonterminal" x="61" y="21">simple_select</text></a><a xlink:href="#select_clause" xlink:title="select_clause">
+<rect height="32" width="106" x="51" y="47"></rect>
+<rect class="nonterminal" height="32" width="106" x="49" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="82" font-size="10" class="nonterminal" x="61" y="65">select_clause</text></a><a xlink:href="#sort_clause" xlink:title="sort_clause">
+<rect height="32" width="94" x="197" y="47"></rect>
+<rect class="nonterminal" height="32" width="94" x="195" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="207" y="65">sort_clause</text></a><a xlink:href="#opt_sort_clause" xlink:title="opt_sort_clause">
+<rect height="32" width="122" x="197" y="91"></rect>
+<rect class="nonterminal" height="32" width="122" x="195" y="89"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="98" font-size="10" class="nonterminal" x="207" y="109">opt_sort_clause</text></a><a xlink:href="#for_locking_clause" xlink:title="for_locking_clause">
+<rect height="32" width="138" x="359" y="91"></rect>
+<rect class="nonterminal" height="32" width="138" x="357" y="89"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="114" font-size="10" class="nonterminal" x="369" y="109">for_locking_clause</text></a><a xlink:href="#opt_select_limit" xlink:title="opt_select_limit">
+<rect height="32" width="120" x="517" y="91"></rect>
+<rect class="nonterminal" height="32" width="120" x="515" y="89"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="96" font-size="10" class="nonterminal" x="527" y="109">opt_select_limit</text></a><a xlink:href="#select_limit" xlink:title="select_limit">
+<rect height="32" width="92" x="359" y="135"></rect>
+<rect class="nonterminal" height="32" width="92" x="357" y="133"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="68" font-size="10" class="nonterminal" x="369" y="153">select_limit</text></a><a xlink:href="#opt_for_locking_clause" xlink:title="opt_for_locking_clause">
+<rect height="32" width="166" x="471" y="135"></rect>
+<rect class="nonterminal" height="32" width="166" x="469" y="133"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="142" font-size="10" class="nonterminal" x="481" y="153">opt_for_locking_clause</text></a><a xlink:href="#with_clause" xlink:title="with_clause">
+<rect height="32" width="94" x="51" y="179"></rect>
+<rect class="nonterminal" height="32" width="94" x="49" y="177"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="61" y="197">with_clause</text></a><a xlink:href="#select_clause" xlink:title="select_clause">
+<rect height="32" width="106" x="165" y="179"></rect>
+<rect class="nonterminal" height="32" width="106" x="163" y="177"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="82" font-size="10" class="nonterminal" x="175" y="197">select_clause</text></a><a xlink:href="#sort_clause" xlink:title="sort_clause">
+<rect height="32" width="94" x="311" y="211"></rect>
+<rect class="nonterminal" height="32" width="94" x="309" y="209"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="321" y="229">sort_clause</text></a><a xlink:href="#opt_sort_clause" xlink:title="opt_sort_clause">
+<rect height="32" width="122" x="311" y="255"></rect>
+<rect class="nonterminal" height="32" width="122" x="309" y="253"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="98" font-size="10" class="nonterminal" x="321" y="273">opt_sort_clause</text></a><a xlink:href="#for_locking_clause" xlink:title="for_locking_clause">
+<rect height="32" width="138" x="473" y="255"></rect>
+<rect class="nonterminal" height="32" width="138" x="471" y="253"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="114" font-size="10" class="nonterminal" x="483" y="273">for_locking_clause</text></a><a xlink:href="#opt_select_limit" xlink:title="opt_select_limit">
+<rect height="32" width="120" x="631" y="255"></rect>
+<rect class="nonterminal" height="32" width="120" x="629" y="253"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="96" font-size="10" class="nonterminal" x="641" y="273">opt_select_limit</text></a><a xlink:href="#select_limit" xlink:title="select_limit">
+<rect height="32" width="92" x="473" y="299"></rect>
+<rect class="nonterminal" height="32" width="92" x="471" y="297"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="68" font-size="10" class="nonterminal" x="483" y="317">select_limit</text></a><a xlink:href="#opt_for_locking_clause" xlink:title="opt_for_locking_clause">
+<rect height="32" width="166" x="585" y="299"></rect>
+<rect class="nonterminal" height="32" width="166" x="583" y="297"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="142" font-size="10" class="nonterminal" x="595" y="317">opt_for_locking_clause</text></a><path class="line" d="m17 17 h2 m20 0 h10 m106 0 h10 m0 0 h634 m-780 0 h20 m760 0 h20 m-800 0 q10 0 10 10 m780 0 q0 -10 10 -10 m-790 10 v24 m780 0 v-24 m-780 24 q0 10 10 10 m760 0 q10 0 10 -10 m-770 10 h10 m106 0 h10 m20 0 h10 m94 0 h10 m0 0 h366 m-500 0 h20 m480 0 h20 m-520 0 q10 0 10 10 m500 0 q0 -10 10 -10 m-510 10 v24 m500 0 v-24 m-500 24 q0 10 10 10 m480 0 q10 0 10 -10 m-490 10 h10 m122 0 h10 m20 0 h10 m138 0 h10 m0 0 h10 m120 0 h10 m-318 0 h20 m298 0 h20 m-338 0 q10 0 10 10 m318 0 q0 -10 10 -10 m-328 10 v24 m318 0 v-24 m-318 24 q0 10 10 10 m298 0 q10 0 10 -10 m-308 10 h10 m92 0 h10 m0 0 h10 m166 0 h10 m40 -88 h114 m-770 -10 v20 m780 0 v-20 m-780 20 v112 m780 0 v-112 m-780 112 q0 10 10 10 m760 0 q10 0 10 -10 m-770 10 h10 m94 0 h10 m0 0 h10 m106 0 h10 m20 0 h10 m0 0 h470 m-500 0 h20 m480 0 h20 m-520 0 q10 0 10 10 m500 0 q0 -10 10 -10 m-510 10 v12 m500 0 v-12 m-500 12 q0 10 10 10 m480 0 q10 0 10 -10 m-490 10 h10 m94 0 h10 m0 0 h366 m-490 -10 v20 m500 0 v-20 m-500 20 v24 m500 0 v-24 m-500 24 q0 10 10 10 m480 0 q10 0 10 -10 m-490 10 h10 m122 0 h10 m20 0 h10 m138 0 h10 m0 0 h10 m120 0 h10 m-318 0 h20 m298 0 h20 m-338 0 q10 0 10 10 m318 0 q0 -10 10 -10 m-328 10 v24 m318 0 v-24 m-318 24 q0 10 10 10 m298 0 q10 0 10 -10 m-308 10 h10 m92 0 h10 m0 0 h10 m166 0 h10 m63 -296 h-3"></path>
+<polygon points="829 17 837 13 837 21"></polygon>
+<polygon points="829 17 821 13 821 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

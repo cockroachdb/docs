@@ -1,0 +1,167 @@
+<svg height="1841" width="421" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="#show_backup_stmt" xlink:title="show_backup_stmt">
+<rect height="32" width="142" x="51" y="3"></rect>
+<rect class="nonterminal" height="32" width="142" x="49" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="118" font-size="11" class="nonterminal" x="61" y="21">show_backup_stmt</text></a><a xlink:href="#show_columns_stmt" xlink:title="show_columns_stmt">
+<rect height="32" width="150" x="51" y="47"></rect>
+<rect class="nonterminal" height="32" width="150" x="49" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="126" font-size="11" class="nonterminal" x="61" y="65">show_columns_stmt</text></a><a xlink:href="#show_constraints_stmt" xlink:title="show_constraints_stmt">
+<rect height="32" width="168" x="51" y="91"></rect>
+<rect class="nonterminal" height="32" width="168" x="49" y="89"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="144" font-size="11" class="nonterminal" x="61" y="109">show_constraints_stmt</text></a><a xlink:href="#show_triggers_stmt" xlink:title="show_triggers_stmt">
+<rect height="32" width="146" x="51" y="135"></rect>
+<rect class="nonterminal" height="32" width="146" x="49" y="133"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="122" font-size="10" class="nonterminal" x="61" y="153">show_triggers_stmt</text></a><a xlink:href="#show_create_stmt" xlink:title="show_create_stmt">
+<rect height="32" width="138" x="51" y="179"></rect>
+<rect class="nonterminal" height="32" width="138" x="49" y="177"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="114" font-size="11" class="nonterminal" x="61" y="197">show_create_stmt</text></a><a xlink:href="#show_create_schedules_stmt" xlink:title="show_create_schedules_stmt">
+<rect height="32" width="208" x="51" y="223"></rect>
+<rect class="nonterminal" height="32" width="208" x="49" y="221"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="184" font-size="11" class="nonterminal" x="61" y="241">show_create_schedules_stmt</text></a><a xlink:href="#show_create_external_connections_stmt" xlink:title="show_create_external_connections_stmt">
+<rect height="32" width="282" x="51" y="267"></rect>
+<rect class="nonterminal" height="32" width="282" x="49" y="265"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="258" font-size="11" class="nonterminal" x="61" y="285">show_create_external_connections_stmt</text></a><a xlink:href="#show_databases_stmt" xlink:title="show_databases_stmt">
+<rect height="32" width="164" x="51" y="311"></rect>
+<rect class="nonterminal" height="32" width="164" x="49" y="309"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="140" font-size="11" class="nonterminal" x="61" y="329">show_databases_stmt</text></a><a xlink:href="#show_enums_stmt" xlink:title="show_enums_stmt">
+<rect height="32" width="140" x="51" y="355"></rect>
+<rect class="nonterminal" height="32" width="140" x="49" y="353"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="116" font-size="12" class="nonterminal" x="61" y="373">show_enums_stmt</text></a><a xlink:href="#show_external_connections_stmt" xlink:title="show_external_connections_stmt">
+<rect height="32" width="234" x="51" y="399"></rect>
+<rect class="nonterminal" height="32" width="234" x="49" y="397"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="210" font-size="11" class="nonterminal" x="61" y="417">show_external_connections_stmt</text></a><a xlink:href="#show_types_stmt" xlink:title="show_types_stmt">
+<rect height="32" width="132" x="51" y="443"></rect>
+<rect class="nonterminal" height="32" width="132" x="49" y="441"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="108" font-size="11" class="nonterminal" x="61" y="461">show_types_stmt</text></a><a xlink:href="#show_functions_stmt" xlink:title="show_functions_stmt">
+<rect height="32" width="154" x="51" y="487"></rect>
+<rect class="nonterminal" height="32" width="154" x="49" y="485"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="130" font-size="11" class="nonterminal" x="61" y="505">show_functions_stmt</text></a><a xlink:href="#show_procedures_stmt" xlink:title="show_procedures_stmt">
+<rect height="32" width="168" x="51" y="531"></rect>
+<rect class="nonterminal" height="32" width="168" x="49" y="529"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="144" font-size="11" class="nonterminal" x="61" y="549">show_procedures_stmt</text></a><a xlink:href="#show_grants_stmt" xlink:title="show_grants_stmt">
+<rect height="32" width="138" x="51" y="575"></rect>
+<rect class="nonterminal" height="32" width="138" x="49" y="573"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="114" font-size="11" class="nonterminal" x="61" y="593">show_grants_stmt</text></a><a xlink:href="#show_indexes_stmt" xlink:title="show_indexes_stmt">
+<rect height="32" width="146" x="51" y="619"></rect>
+<rect class="nonterminal" height="32" width="146" x="49" y="617"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="122" font-size="11" class="nonterminal" x="61" y="637">show_indexes_stmt</text></a><a xlink:href="#show_partitions_stmt" xlink:title="show_partitions_stmt">
+<rect height="32" width="158" x="51" y="663"></rect>
+<rect class="nonterminal" height="32" width="158" x="49" y="661"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="134" font-size="10" class="nonterminal" x="61" y="681">show_partitions_stmt</text></a><a xlink:href="#show_jobs_stmt" xlink:title="show_jobs_stmt">
+<rect height="32" width="124" x="51" y="707"></rect>
+<rect class="nonterminal" height="32" width="124" x="49" y="705"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="100" font-size="11" class="nonterminal" x="61" y="725">show_jobs_stmt</text></a><a xlink:href="#show_locality_stmt" xlink:title="show_locality_stmt">
+<rect height="32" width="142" x="51" y="751"></rect>
+<rect class="nonterminal" height="32" width="142" x="49" y="749"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="118" font-size="10" class="nonterminal" x="61" y="769">show_locality_stmt</text></a><a xlink:href="#show_schedules_stmt" xlink:title="show_schedules_stmt">
+<rect height="32" width="160" x="51" y="795"></rect>
+<rect class="nonterminal" height="32" width="160" x="49" y="793"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="136" font-size="11" class="nonterminal" x="61" y="813">show_schedules_stmt</text></a><a xlink:href="#show_statements_stmt" xlink:title="show_statements_stmt">
+<rect height="32" width="170" x="51" y="839"></rect>
+<rect class="nonterminal" height="32" width="170" x="49" y="837"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="146" font-size="11" class="nonterminal" x="61" y="857">show_statements_stmt</text></a><a xlink:href="#show_ranges_stmt" xlink:title="show_ranges_stmt">
+<rect height="32" width="142" x="51" y="883"></rect>
+<rect class="nonterminal" height="32" width="142" x="49" y="881"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="118" font-size="11" class="nonterminal" x="61" y="901">show_ranges_stmt</text></a><a xlink:href="#show_range_for_row_stmt" xlink:title="show_range_for_row_stmt">
+<rect height="32" width="190" x="51" y="927"></rect>
+<rect class="nonterminal" height="32" width="190" x="49" y="925"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="166" font-size="11" class="nonterminal" x="61" y="945">show_range_for_row_stmt</text></a><a xlink:href="#show_regions_stmt" xlink:title="show_regions_stmt">
+<rect height="32" width="144" x="51" y="971"></rect>
+<rect class="nonterminal" height="32" width="144" x="49" y="969"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="120" font-size="11" class="nonterminal" x="61" y="989">show_regions_stmt</text></a><a xlink:href="#show_survival_goal_stmt" xlink:title="show_survival_goal_stmt">
+<rect height="32" width="182" x="51" y="1015"></rect>
+<rect class="nonterminal" height="32" width="182" x="49" y="1013"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="158" font-size="11" class="nonterminal" x="61" y="1033">show_survival_goal_stmt</text></a><a xlink:href="#show_roles_stmt" xlink:title="show_roles_stmt">
+<rect height="32" width="128" x="51" y="1059"></rect>
+<rect class="nonterminal" height="32" width="128" x="49" y="1057"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="11" class="nonterminal" x="61" y="1077">show_roles_stmt</text></a><a xlink:href="#show_savepoint_stmt" xlink:title="show_savepoint_stmt">
+<rect height="32" width="160" x="51" y="1103"></rect>
+<rect class="nonterminal" height="32" width="160" x="49" y="1101"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="136" font-size="11" class="nonterminal" x="61" y="1121">show_savepoint_stmt</text></a><a xlink:href="#show_schemas_stmt" xlink:title="show_schemas_stmt">
+<rect height="32" width="152" x="51" y="1147"></rect>
+<rect class="nonterminal" height="32" width="152" x="49" y="1145"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="128" font-size="12" class="nonterminal" x="61" y="1165">show_schemas_stmt</text></a><a xlink:href="#show_sequences_stmt" xlink:title="show_sequences_stmt">
+<rect height="32" width="166" x="51" y="1191"></rect>
+<rect class="nonterminal" height="32" width="166" x="49" y="1189"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="142" font-size="12" class="nonterminal" x="61" y="1209">show_sequences_stmt</text></a><a xlink:href="#show_session_stmt" xlink:title="show_session_stmt">
+<rect height="32" width="146" x="51" y="1235"></rect>
+<rect class="nonterminal" height="32" width="146" x="49" y="1233"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="122" font-size="11" class="nonterminal" x="61" y="1253">show_session_stmt</text></a><a xlink:href="#show_sessions_stmt" xlink:title="show_sessions_stmt">
+<rect height="32" width="152" x="51" y="1279"></rect>
+<rect class="nonterminal" height="32" width="152" x="49" y="1277"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="128" font-size="11" class="nonterminal" x="61" y="1297">show_sessions_stmt</text></a><a xlink:href="#show_stats_stmt" xlink:title="show_stats_stmt">
+<rect height="32" width="128" x="51" y="1323"></rect>
+<rect class="nonterminal" height="32" width="128" x="49" y="1321"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="11" class="nonterminal" x="61" y="1341">show_stats_stmt</text></a><a xlink:href="#show_tables_stmt" xlink:title="show_tables_stmt">
+<rect height="32" width="136" x="51" y="1367"></rect>
+<rect class="nonterminal" height="32" width="136" x="49" y="1365"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="112" font-size="11" class="nonterminal" x="61" y="1385">show_tables_stmt</text></a><a xlink:href="#show_trace_stmt" xlink:title="show_trace_stmt">
+<rect height="32" width="130" x="51" y="1411"></rect>
+<rect class="nonterminal" height="32" width="130" x="49" y="1409"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="106" font-size="11" class="nonterminal" x="61" y="1429">show_trace_stmt</text></a><a xlink:href="#show_transactions_stmt" xlink:title="show_transactions_stmt">
+<rect height="32" width="176" x="51" y="1455"></rect>
+<rect class="nonterminal" height="32" width="176" x="49" y="1453"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="152" font-size="11" class="nonterminal" x="61" y="1473">show_transactions_stmt</text></a><a xlink:href="#show_transfer_stmt" xlink:title="show_transfer_stmt">
+<rect height="32" width="148" x="51" y="1499"></rect>
+<rect class="nonterminal" height="32" width="148" x="49" y="1497"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="124" font-size="11" class="nonterminal" x="61" y="1517">show_transfer_stmt</text></a><a xlink:href="#show_users_stmt" xlink:title="show_users_stmt">
+<rect height="32" width="132" x="51" y="1543"></rect>
+<rect class="nonterminal" height="32" width="132" x="49" y="1541"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="108" font-size="11" class="nonterminal" x="61" y="1561">show_users_stmt</text></a><a xlink:href="#show_default_session_variables_for_role_stmt" xlink:title="show_default_session_variables_for_role_stmt">
+<rect height="32" width="322" x="51" y="1587"></rect>
+<rect class="nonterminal" height="32" width="322" x="49" y="1585"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="298" font-size="10" class="nonterminal" x="61" y="1605">show_default_session_variables_for_role_stmt</text></a><a xlink:href="#show_zone_stmt" xlink:title="show_zone_stmt">
+<rect height="32" width="128" x="51" y="1631"></rect>
+<rect class="nonterminal" height="32" width="128" x="49" y="1629"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="11" class="nonterminal" x="61" y="1649">show_zone_stmt</text></a><a xlink:href="#show_full_scans_stmt" xlink:title="show_full_scans_stmt">
+<rect height="32" width="160" x="51" y="1675"></rect>
+<rect class="nonterminal" height="32" width="160" x="49" y="1673"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="136" font-size="10" class="nonterminal" x="61" y="1693">show_full_scans_stmt</text></a><a xlink:href="#show_statement_hints_stmt" xlink:title="show_statement_hints_stmt">
+<rect height="32" width="202" x="51" y="1719"></rect>
+<rect class="nonterminal" height="32" width="202" x="49" y="1717"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="178" font-size="11" class="nonterminal" x="61" y="1737">show_statement_hints_stmt</text></a><a xlink:href="#show_default_privileges_stmt" xlink:title="show_default_privileges_stmt">
+<rect height="32" width="210" x="51" y="1763"></rect>
+<rect class="nonterminal" height="32" width="210" x="49" y="1761"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="186" font-size="10" class="nonterminal" x="61" y="1781">show_default_privileges_stmt</text></a><a xlink:href="#show_inspect_errors_stmt" xlink:title="show_inspect_errors_stmt">
+<rect height="32" width="188" x="51" y="1807"></rect>
+<rect class="nonterminal" height="32" width="188" x="49" y="1805"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="164" font-size="11" class="nonterminal" x="61" y="1825">show_inspect_errors_stmt</text></a><path class="line" d="m17 17 h2 m20 0 h10 m142 0 h10 m0 0 h180 m-362 0 h20 m342 0 h20 m-382 0 q10 0 10 10 m362 0 q0 -10 10 -10 m-372 10 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m150 0 h10 m0 0 h172 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m168 0 h10 m0 0 h154 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m146 0 h10 m0 0 h176 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m138 0 h10 m0 0 h184 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m208 0 h10 m0 0 h114 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m282 0 h10 m0 0 h40 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m164 0 h10 m0 0 h158 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m140 0 h10 m0 0 h182 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m234 0 h10 m0 0 h88 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m132 0 h10 m0 0 h190 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m154 0 h10 m0 0 h168 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m168 0 h10 m0 0 h154 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m138 0 h10 m0 0 h184 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m146 0 h10 m0 0 h176 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m158 0 h10 m0 0 h164 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m124 0 h10 m0 0 h198 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m142 0 h10 m0 0 h180 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m160 0 h10 m0 0 h162 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m170 0 h10 m0 0 h152 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m142 0 h10 m0 0 h180 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m190 0 h10 m0 0 h132 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m144 0 h10 m0 0 h178 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m182 0 h10 m0 0 h140 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m128 0 h10 m0 0 h194 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m160 0 h10 m0 0 h162 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m152 0 h10 m0 0 h170 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m166 0 h10 m0 0 h156 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m146 0 h10 m0 0 h176 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m152 0 h10 m0 0 h170 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m128 0 h10 m0 0 h194 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m136 0 h10 m0 0 h186 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m130 0 h10 m0 0 h192 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m176 0 h10 m0 0 h146 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m148 0 h10 m0 0 h174 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m132 0 h10 m0 0 h190 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m322 0 h10 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m128 0 h10 m0 0 h194 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m160 0 h10 m0 0 h162 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m202 0 h10 m0 0 h120 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m210 0 h10 m0 0 h112 m-352 -10 v20 m362 0 v-20 m-362 20 v24 m362 0 v-24 m-362 24 q0 10 10 10 m342 0 q10 0 10 -10 m-352 10 h10 m188 0 h10 m0 0 h134 m23 -1804 h-3"></path>
+<polygon points="411 17 419 13 419 21"></polygon>
+<polygon points="411 17 403 13 403 21"></polygon></svg>

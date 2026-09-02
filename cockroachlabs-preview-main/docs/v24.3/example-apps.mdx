@@ -1,0 +1,66 @@
+---
+title: "Advanced Example Applications Overview"
+old_description: "Examples that show you how to build simple applications with CockroachDB"
+---
+
+The examples in this section show you how to build simple applications using CockroachDB.
+
+Click the links in the tables below to see simple but complete example applications for each supported language and library combination.
+
+If you are looking to do a specific task such as connect to the database, insert data, or run multi-statement transactions, see [this list of tasks](#tasks).
+
+<Note>
+Applications may encounter incompatibilities when using advanced or obscure features of a driver or ORM with **partial** support. If you encounter problems, please [open an issue](https://github.com/cockroachdb/cockroach/issues/new) with details to help us make progress toward full support.
+
+Note that tools with [**community-level** support](/docs/v24.3/community-tooling) have been tested or developed by the CockroachDB community, but are not officially supported by Cockroach Labs. If you encounter problems with using these tools, please contact the maintainer of the tool with details.
+</Note>
+
+## JavaScript/TypeScript
+
+<table><thead><tr><th>Driver/ORM Framework</th><th>Support level</th><th>Example apps</th></tr></thead><tbody><tr><td><a href="https://www.npmjs.com/package/pg">node-postgres</a></td><td>Full</td><td><a href="/docs/v24.3/deploy-lambda-function">AWS Lambda</a><br/><a href="/docs/v24.3/build-a-nodejs-app-with-cockroachdb">Simple CRUD</a></td></tr><tr><td><a href="https://www.npmjs.com/package/sequelize">Sequelize</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-nodejs-app-with-cockroachdb-sequelize">Simple CRUD</a></td></tr><tr><td><a href="https://knexjs.org/">Knex.js</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-nodejs-app-with-cockroachdb-knexjs">Simple CRUD</a></td></tr><tr><td><a href="https://prisma.io/">Prisma</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-nodejs-app-with-cockroachdb-prisma">Simple CRUD</a><br/><a href="/docs/v24.3/deploy-app-netlify">React Web App (Netlify)</a><br/><a href="/docs/v24.3/deploy-app-vercel">React Web App (Next.js/Vercel)</a></td></tr><tr><td><a href="https://www.npmjs.com/package/typeorm">TypeORM</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-typescript-app-with-cockroachdb">Simple CRUD</a></td></tr></tbody></table>
+
+## Python
+
+<table><thead><tr><th>Driver/ORM Framework</th><th>Support level</th><th>Example apps</th></tr></thead><tbody><tr><td><a href="https://www.psycopg.org/docs/install">psycopg2</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-python-app-with-cockroachdb">Simple CRUD</a><br/><a href="/docs/v24.3/deploy-lambda-function">AWS Lambda</a></td></tr><tr><td><a href="https://www.psycopg.org/psycopg3/docs">psycopg3</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-python-app-with-cockroachdb-psycopg3">Simple CRUD</a></td></tr><tr><td><a href="https://magicstack.github.io/asyncpg/current">asyncpg</a></td><td>Partial</td><td><a href="/docs/v24.3/build-a-python-app-with-cockroachdb-asyncpg">Simple CRUD</a></td></tr><tr><td><a href="https://www.sqlalchemy.org/">SQLAlchemy</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-python-app-with-cockroachdb-sqlalchemy">Simple CRUD</a><br/><a href="/docs/v24.3/movr">Multi-region Flask Web App</a></td></tr><tr><td><a href="https://pypi.org/project/Django">Django</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-python-app-with-cockroachdb-django">Simple CRUD</a></td></tr></tbody></table>
+
+## Go
+
+<table><thead><tr><th>Driver/ORM Framework</th><th>Support level</th><th>Example apps</th></tr></thead><tbody><tr><td><a href="https://github.com/jackc/pgx/releases">pgx</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-go-app-with-cockroachdb">Simple CRUD</a></td></tr><tr><td><a href="https://github.com/jinzhu/gorm/releases">GORM</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-go-app-with-cockroachdb-gorm">Simple CRUD</a></td></tr><tr><td><a href="https://github.com/lib/pq">pq</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-go-app-with-cockroachdb-pq">Simple CRUD</a></td></tr><tr><td><a href="https://github.com/upper/db">upper/db</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-go-app-with-cockroachdb-upperdb">Simple CRUD</a></td></tr></tbody></table>
+
+## Java
+
+<table><thead><tr><th>Driver/ORM Framework</th><th>Support level</th><th>Example apps</th></tr></thead><tbody><tr><td><a href="https://jdbc.postgresql.org/">JDBC</a></td><td>Full</td><td><a href="/docs/cockroachcloud/quickstart">Quickstart</a><br/><a href="/docs/v24.3/build-a-java-app-with-cockroachdb">Simple CRUD</a><br/><a href="/docs/v24.3/build-a-spring-app-with-cockroachdb-jdbc">Roach Data (Spring Boot App)</a></td></tr><tr><td><a href="https://hibernate.org/orm">Hibernate</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-java-app-with-cockroachdb-hibernate">Simple CRUD</a><br/><a href="/docs/v24.3/build-a-spring-app-with-cockroachdb-jpa">Roach Data (Spring Boot App)</a></td></tr><tr><td><a href="https://www.jooq.org/">jOOQ</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-java-app-with-cockroachdb-jooq">Simple CRUD</a></td></tr></tbody></table>
+
+## Ruby
+
+<table><thead><tr><th>Driver/ORM Framework</th><th>Support level</th><th>Example apps</th></tr></thead><tbody><tr><td><a href="https://rubygems.org/gems/pg">pg</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-ruby-app-with-cockroachdb">Simple CRUD</a></td></tr><tr><td><a href="https://rubygems.org/gems/activerecord">Active Record</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-ruby-app-with-cockroachdb-activerecord">Simple CRUD</a></td></tr></tbody></table>
+
+## C#
+
+<table><thead><tr><th>Driver/ORM Framework</th><th>Support level</th><th>Example apps</th></tr></thead><tbody><tr><td><a href="https://www.npgsql.org/">Npgsql</a></td><td>Full</td><td><a href="/docs/v24.3/build-a-csharp-app-with-cockroachdb">Simple CRUD</a></td></tr></tbody></table>
+
+## Rust
+
+<table><thead><tr><th>Driver/ORM Framework</th><th>Support level</th><th>Example apps</th></tr></thead><tbody><tr><td><a href="https://github.com/sfackler/rust-postgres">Rust-Postgres</a></td><td>Partial</td><td><a href="/docs/v24.3/build-a-rust-app-with-cockroachdb">Simple CRUD</a></td></tr></tbody></table>
+
+## See also
+
+Reference information:
+
+- [Client drivers](/docs/v24.3/install-client-drivers)
+- [Third-Party Tools Supported by Cockroach Labs](/docs/v24.3/third-party-database-tools)
+- [Third-Party Tools Supported by the Community](/docs/v24.3/community-tooling)
+- [Connection parameters](/docs/v24.3/connection-parameters)
+- [Transactions](/docs/v24.3/transactions)
+- [Performance best practices](/docs/v24.3/performance-best-practices-overview)
+
+Specific tasks:
+
+- [Connect to the Database](/docs/v24.3/connect-to-the-database)
+- [Insert Data](/docs/v24.3/insert-data)
+- [Query Data](/docs/v24.3/query-data)
+- [Update Data](/docs/v24.3/update-data)
+- [Delete Data](/docs/v24.3/delete-data)
+- [Optimize Statement Performance](/docs/v24.3/make-queries-fast)
+- [Run Multi-Statement Transactions](/docs/v24.3/run-multi-statement-transactions)
+- [Troubleshoot SQL Statements](/docs/v24.3/query-behavior-troubleshooting)

@@ -1,0 +1,112 @@
+---
+title: "DROP USER"
+old_description: "The DROP USER statement removes one or more SQL users."
+---
+
+The `DROP USER` [statement](/docs/v25.2/sql-statements) removes one or more SQL users. You can use the keywords `ROLE` and `USER` interchangeably. `DROP USER` is an alias for [`DROP ROLE`](/docs/v25.2/drop-role).
+
+<Note>
+The `DROP USER` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.2/online-schema-changes).
+</Note>
+
+## Considerations
+
+- The `admin` user/role cannot be dropped, and `root` must always be a member of `admin`.
+- A user/role cannot be dropped if it has privileges. Use [`REVOKE`](/docs/v25.2/revoke) to remove privileges.
+- Users/roles that [own objects](/docs/v25.2/security-reference/authorization#object-ownership) (such as databases, tables, schemas, and types) cannot be dropped until the [ownership is transferred to another user/role](/docs/v25.2/alter-database#change-a-databases-owner).
+- If a user/role is logged in while a [different session](/docs/v25.2/show-sessions) drops that user, CockroachDB checks that the user exists before allowing it to inherit privileges from [the `public` role](/docs/v25.2/security-reference/authorization). In addition, any active [web](/docs/v25.2/ui-overview#authentication) [sessions](/docs/v25.2/cockroach-auth-session) are revoked when a user is dropped.
+
+## Required privileges
+
+Non-admin users cannot drop admin users. To drop non-admin users, the user must be a member of the `admin` role or have the [`CREATEROLE`](/docs/v25.2/create-user#create-a-user-that-can-create-other-users-and-manage-authentication-methods-for-the-new-users) parameter set.
+
+## Synopsis
+
+See [`DROP ROLE`: Synopsis](/docs/v25.2/drop-role#synopsis).
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>user&#95;name</code></td><td>The name of the user to remove. To remove multiple users, use a comma-separate list of usernames.<br/><br/>You can use <a href="/docs/v25.2/show-users"><code>SHOW USERS</code></a> to find usernames.</td></tr></tbody></table>
+
+## Example
+
+### Remove privileges
+
+All of a user's privileges must be revoked before the user can be dropped.
+
+In this example, first check a user's privileges. Then, revoke the user's privileges before removing the user.
+
+```sql
+CREATE DATABASE test;
+CREATE TABLE customers (k int, v int);
+CREATE USER max;
+GRANT ALL ON TABLE customers TO max;
+```
+
+```sql
+SHOW GRANTS ON customers FOR max;
+```
+
+```text
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  test          | public      | customers  | max     | ALL            |      f
+(1 row)
+```
+
+```sql
+REVOKE CREATE,INSERT,UPDATE ON customers FROM max;
+```
+
+### Remove default privileges
+
+In addition to removing a user's privileges, a user's [default privileges](/docs/v25.2/security-reference/authorization#default-privileges) must be removed prior to dropping the user. If you attempt to drop a user with modified default privileges, you will encounter an error like the following:
+
+```sql
+DROP USER max;
+```
+
+```text
+ERROR: cannot drop role/user max: grants still exist on test.public.customers
+SQLSTATE: 2BP01
+```
+
+To see what privileges the user still has remaining on the table, issue the following statement:
+
+```sql
+SHOW GRANTS ON TABLE test.customers FOR max;
+```
+
+```text
+  database_name | schema_name | table_name | grantee | privilege_type | is_grantable
+----------------+-------------+------------+---------+----------------+---------------
+  test          | public      | customers  | max     | BACKUP         |      f
+  test          | public      | customers  | max     | CHANGEFEED     |      f
+  test          | public      | customers  | max     | DELETE         |      f
+  test          | public      | customers  | max     | DROP           |      f
+  test          | public      | customers  | max     | SELECT         |      f
+  test          | public      | customers  | max     | ZONECONFIG     |      f
+(6 rows)
+```
+
+To drop the user you must revoke all of the user's remaining privileges:
+
+```sql
+REVOKE ALL ON TABLE public.customers FROM max;
+```
+
+Now dropping the user should succeed:
+
+```sql
+DROP USER max;
+```
+
+## See also
+
+- [`CREATE USER`](/docs/v25.2/create-user)
+- [`ALTER USER`](/docs/v25.2/alter-user)
+- [`SHOW USERS`](/docs/v25.2/show-users)
+- [`GRANT`](/docs/v25.2/grant)
+- [`SHOW GRANTS`](/docs/v25.2/show-grants)
+- [Create Security Certificates](/docs/v25.2/cockroach-cert)
+- [SQL Statements](/docs/v25.2/sql-statements)

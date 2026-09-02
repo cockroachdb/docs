@@ -1,0 +1,20 @@
+---
+title: "ccloud CLI Command Reference"
+old_description: "Use the ccloud CLI to create, manage, and connect to CockroachDB Cloud clusters"
+---
+
+import CcloudReference from "/snippets/cockroachcloud/ccloud-reference.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CcloudReference />

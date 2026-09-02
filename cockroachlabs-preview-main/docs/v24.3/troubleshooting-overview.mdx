@@ -1,0 +1,25 @@
+---
+title: "Troubleshooting Overview"
+old_description: "Initial steps to take if you experience an issue when using CockroachDB."
+---
+
+If you experience an issue when using CockroachDB, try these steps to resolve the problem:
+
+- Check your [logs](/docs/v24.3/logging-overview) for errors. Logs are generated on a per-node basis, so you must either identify the node where the issue occurred or [collect the logs from all active nodes in your cluster](/docs/v24.3/cockroach-debug-zip).
+    - Consult the list of [common errors and solutions](/docs/v24.3/common-errors).
+    - If you are getting transaction retry errors, see [client-side retry handling](/docs/v24.3/transaction-retry-error-reference#client-side-retry-handling) and the [Transaction Retry Error Reference](/docs/v24.3/transaction-retry-error-reference#transaction-retry-error-reference).
+- If the problem doesn't match a common error, try the following pages:
+    - [Troubleshoot Cluster Setup](/docs/v24.3/cluster-setup-troubleshooting) helps you start and scale your cluster.
+    - [Troubleshoot Common Problems](/docs/v24.3/query-behavior-troubleshooting) helps you handle errors and troubleshooting problems that may arise during application development.
+    - [Troubleshoot Statement Behavior](/docs/v24.3/query-behavior-troubleshooting) helps you with unexpected query results.
+- If you are using Cockroach Cloud, see the errors and solutions in [Troubleshoot CockroachDB Cloud](/docs/cockroachcloud/troubleshooting-page).
+- If you see discrepancies in metrics, refer to [Differences in Metrics between Third-Party Monitoring Integrations and DB Console](/docs/v24.3/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console).
+- The [critical nodes endpoint](/docs/v24.3/monitoring-and-alerting#critical-nodes-endpoint) lets you query the status of your cluster's data replication, data placement, and zone constraint conformance.
+- If you believe [replicas](/docs/v24.3/architecture/overview#architecture-replica) are not behaving as specified by your zone configurations, whether in terms of data placement or zone constraint conformance, see [Troubleshoot Replication Zones](/docs/v24.3/troubleshoot-replication-zones).
+- If you cannot resolve the issue yourself, the following tools can help you move forward:
+    - [Support Resources](/docs/v24.3/support-resources) identify ways you can get help with troubleshooting.
+    - [File an Issue](/docs/v24.3/file-an-issue) provides details on how to file an issue that you're unable to resolve.
+- In a support escalation, you may be directed to use the following features by the [Cockroach Labs support team](/docs/v24.3/support-resources):
+    - [`cockroach debug zip`](/docs/v24.3/cockroach-debug-zip)
+    - [`cockroach debug tsdump`](/docs/v24.3/cockroach-debug-tsdump)
+    - [Automatic CPU Profiler](/docs/v24.3/automatic-cpu-profiler)

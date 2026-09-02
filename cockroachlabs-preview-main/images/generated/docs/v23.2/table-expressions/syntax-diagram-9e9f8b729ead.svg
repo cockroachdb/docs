@@ -1,0 +1,140 @@
+<svg height="505" width="1211" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="/docs/v23.2/sql-grammar#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="71" y="3"></rect>
+<rect class="nonterminal" height="32" width="96" x="69" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="81" y="21">table_name</text></a><rect height="32" rx="10" width="32" x="207" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="32" x="205" y="33"></rect>
+<text class="terminal" x="215" y="53">@</text>
+<rect height="32" width="98" x="259" y="35"></rect>
+<rect class="nonterminal" height="32" width="98" x="257" y="33"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="74" font-size="11" class="nonterminal" x="269" y="53">index_name</text><rect height="32" rx="10" width="26" x="71" y="79"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="69" y="77"></rect>
+<text class="terminal" x="79" y="97">[</text><a xlink:href="/docs/v23.2/sql-grammar#row_source_extension_stmt" xlink:title="row_source_extension_stmt">
+<rect height="32" width="200" x="117" y="79"></rect>
+<rect class="nonterminal" height="32" width="200" x="115" y="77"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="176" font-size="11" class="nonterminal" x="127" y="97">row_source_extension_stmt</text></a><rect height="32" rx="10" width="26" x="337" y="79"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="335" y="77"></rect>
+<text class="terminal" x="345" y="97">]</text>
+<rect height="32" rx="10" width="80" x="71" y="123"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="69" y="121"></rect>
+<text class="terminal" x="79" y="141">LATERAL</text>
+<rect height="32" rx="10" width="26" x="191" y="123"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="189" y="121"></rect>
+<text class="terminal" x="199" y="141">(</text><a xlink:href="/docs/v23.2/sql-grammar#select_stmt" xlink:title="select_stmt">
+<rect height="32" width="94" x="237" y="123"></rect>
+<rect class="nonterminal" height="32" width="94" x="235" y="121"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="247" y="141">select_stmt</text></a><rect height="32" rx="10" width="26" x="351" y="123"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="349" y="121"></rect>
+<text class="terminal" x="359" y="141">)</text><a xlink:href="/docs/v23.2/sql-grammar#func_application" xlink:title="func_application">
+<rect height="32" width="124" x="191" y="167"></rect>
+<rect class="nonterminal" height="32" width="124" x="189" y="165"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="100" font-size="10" class="nonterminal" x="201" y="185">func_application</text></a><rect height="32" rx="10" width="58" x="457" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="455" y="33"></rect>
+<text class="terminal" x="465" y="53">WITH</text>
+<rect height="32" rx="10" width="108" x="535" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="108" x="533" y="33"></rect>
+<text class="terminal" x="543" y="53">ORDINALITY</text>
+<rect height="32" rx="10" width="38" x="723" y="67"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="721" y="65"></rect>
+<text class="terminal" x="731" y="85">AS</text><a xlink:href="/docs/v23.2/sql-grammar#table_alias_name" xlink:title="table_alias_name">
+<rect height="32" width="134" x="801" y="35"></rect>
+<rect class="nonterminal" height="32" width="134" x="799" y="33"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="110" font-size="11" class="nonterminal" x="811" y="53">table_alias_name</text></a><a xlink:href="/docs/v23.2/sql-grammar#opt_col_def_list_no_types" xlink:title="opt_col_def_list_no_types">
+<rect height="32" width="188" x="955" y="35"></rect>
+<rect class="nonterminal" height="32" width="188" x="953" y="33"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="164" font-size="10" class="nonterminal" x="965" y="53">opt_col_def_list_no_types</text></a><rect height="32" rx="10" width="26" x="51" y="211"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="49" y="209"></rect>
+<text class="terminal" x="59" y="229">(</text><a xlink:href="/docs/v23.2/sql-grammar#select_stmt" xlink:title="select_stmt">
+<rect height="32" width="94" x="117" y="211"></rect>
+<rect class="nonterminal" height="32" width="94" x="115" y="209"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="127" y="229">select_stmt</text></a><rect height="32" rx="10" width="26" x="231" y="211"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="229" y="209"></rect>
+<text class="terminal" x="239" y="229">)</text>
+<rect height="32" rx="10" width="58" x="297" y="243"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="295" y="241"></rect>
+<text class="terminal" x="305" y="261">WITH</text>
+<rect height="32" rx="10" width="108" x="375" y="243"></rect>
+<rect class="terminal" height="32" rx="10" width="108" x="373" y="241"></rect>
+<text class="terminal" x="383" y="261">ORDINALITY</text>
+<rect height="32" rx="10" width="38" x="563" y="275"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="561" y="273"></rect>
+<text class="terminal" x="571" y="293">AS</text><a xlink:href="/docs/v23.2/sql-grammar#table_alias_name" xlink:title="table_alias_name">
+<rect height="32" width="134" x="641" y="243"></rect>
+<rect class="nonterminal" height="32" width="134" x="639" y="241"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="110" font-size="11" class="nonterminal" x="651" y="261">table_alias_name</text></a><a xlink:href="/docs/v23.2/sql-grammar#opt_col_def_list_no_types" xlink:title="opt_col_def_list_no_types">
+<rect height="32" width="188" x="795" y="243"></rect>
+<rect class="nonterminal" height="32" width="188" x="793" y="241"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="164" font-size="10" class="nonterminal" x="805" y="261">opt_col_def_list_no_types</text></a><a xlink:href="/docs/v23.2/sql-grammar#joined_table" xlink:title="joined_table">
+<rect height="32" width="100" x="117" y="319"></rect>
+<rect class="nonterminal" height="32" width="100" x="115" y="317"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="76" font-size="10" class="nonterminal" x="127" y="337">joined_table</text></a><rect height="32" rx="10" width="26" x="237" y="319"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="235" y="317"></rect>
+<text class="terminal" x="245" y="337">)</text>
+<rect height="32" rx="10" width="58" x="303" y="351"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="301" y="349"></rect>
+<text class="terminal" x="311" y="369">WITH</text>
+<rect height="32" rx="10" width="108" x="381" y="351"></rect>
+<rect class="terminal" height="32" rx="10" width="108" x="379" y="349"></rect>
+<text class="terminal" x="389" y="369">ORDINALITY</text>
+<rect height="32" rx="10" width="38" x="549" y="351"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="547" y="349"></rect>
+<text class="terminal" x="557" y="369">AS</text><a xlink:href="/docs/v23.2/sql-grammar#table_alias_name" xlink:title="table_alias_name">
+<rect height="32" width="134" x="627" y="319"></rect>
+<rect class="nonterminal" height="32" width="134" x="625" y="317"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="110" font-size="11" class="nonterminal" x="637" y="337">table_alias_name</text></a><a xlink:href="/docs/v23.2/sql-grammar#opt_col_def_list_no_types" xlink:title="opt_col_def_list_no_types">
+<rect height="32" width="188" x="781" y="319"></rect>
+<rect class="nonterminal" height="32" width="188" x="779" y="317"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="164" font-size="10" class="nonterminal" x="791" y="337">opt_col_def_list_no_types</text></a><a xlink:href="/docs/v23.2/sql-grammar#joined_table" xlink:title="joined_table">
+<rect height="32" width="100" x="51" y="395"></rect>
+<rect class="nonterminal" height="32" width="100" x="49" y="393"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="76" font-size="10" class="nonterminal" x="61" y="413">joined_table</text></a><a xlink:href="/docs/v23.2/sql-grammar#func_application" xlink:title="func_application">
+<rect height="32" width="124" x="51" y="439"></rect>
+<rect class="nonterminal" height="32" width="124" x="49" y="437"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="100" font-size="10" class="nonterminal" x="61" y="457">func_application</text></a><rect height="32" rx="10" width="58" x="215" y="471"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="213" y="469"></rect>
+<text class="terminal" x="223" y="489">WITH</text>
+<rect height="32" rx="10" width="108" x="293" y="471"></rect>
+<rect class="terminal" height="32" rx="10" width="108" x="291" y="469"></rect>
+<text class="terminal" x="301" y="489">ORDINALITY</text><a xlink:href="/docs/v23.2/sql-grammar#opt_func_alias_clause" xlink:title="opt_func_alias_clause">
+<rect height="32" width="162" x="441" y="439"></rect>
+<rect class="nonterminal" height="32" width="162" x="439" y="437"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="138" font-size="10" class="nonterminal" x="451" y="457">opt_func_alias_clause</text></a><path class="line" d="m17 17 h2 m40 0 h10 m96 0 h10 m20 0 h10 m0 0 h160 m-190 0 h20 m170 0 h20 m-210 0 q10 0 10 10 m190 0 q0 -10 10 -10 m-200 10 v12 m190 0 v-12 m-190 12 q0 10 10 10 m170 0 q10 0 10 -10 m-180 10 h10 m32 0 h10 m0 0 h10 m98 0 h10 m20 -32 h20 m-366 0 h20 m346 0 h20 m-386 0 q10 0 10 10 m366 0 q0 -10 10 -10 m-376 10 v56 m366 0 v-56 m-366 56 q0 10 10 10 m346 0 q10 0 10 -10 m-356 10 h10 m26 0 h10 m0 0 h10 m200 0 h10 m0 0 h10 m26 0 h10 m0 0 h34 m-356 -10 v20 m366 0 v-20 m-366 20 v24 m366 0 v-24 m-366 24 q0 10 10 10 m346 0 q10 0 10 -10 m-356 10 h10 m80 0 h10 m20 0 h10 m26 0 h10 m0 0 h10 m94 0 h10 m0 0 h10 m26 0 h10 m-226 0 h20 m206 0 h20 m-246 0 q10 0 10 10 m226 0 q0 -10 10 -10 m-236 10 v24 m226 0 v-24 m-226 24 q0 10 10 10 m206 0 q10 0 10 -10 m-216 10 h10 m124 0 h10 m0 0 h62 m60 -164 h10 m0 0 h196 m-226 0 h20 m206 0 h20 m-246 0 q10 0 10 10 m226 0 q0 -10 10 -10 m-236 10 v12 m226 0 v-12 m-226 12 q0 10 10 10 m206 0 q10 0 10 -10 m-216 10 h10 m58 0 h10 m0 0 h10 m108 0 h10 m40 -32 h10 m0 0 h450 m-480 0 h20 m460 0 h20 m-500 0 q10 0 10 10 m480 0 q0 -10 10 -10 m-490 10 v12 m480 0 v-12 m-480 12 q0 10 10 10 m460 0 q10 0 10 -10 m-450 10 h10 m0 0 h48 m-78 0 h20 m58 0 h20 m-98 0 q10 0 10 10 m78 0 q0 -10 10 -10 m-88 10 v12 m78 0 v-12 m-78 12 q0 10 10 10 m58 0 q10 0 10 -10 m-68 10 h10 m38 0 h10 m20 -32 h10 m134 0 h10 m0 0 h10 m188 0 h10 m-1132 -32 h20 m1132 0 h20 m-1172 0 q10 0 10 10 m1152 0 q0 -10 10 -10 m-1162 10 v188 m1152 0 v-188 m-1152 188 q0 10 10 10 m1132 0 q10 0 10 -10 m-1142 10 h10 m26 0 h10 m20 0 h10 m94 0 h10 m0 0 h10 m26 0 h10 m20 0 h10 m0 0 h196 m-226 0 h20 m206 0 h20 m-246 0 q10 0 10 10 m226 0 q0 -10 10 -10 m-236 10 v12 m226 0 v-12 m-226 12 q0 10 10 10 m206 0 q10 0 10 -10 m-216 10 h10 m58 0 h10 m0 0 h10 m108 0 h10 m40 -32 h10 m0 0 h450 m-480 0 h20 m460 0 h20 m-500 0 q10 0 10 10 m480 0 q0 -10 10 -10 m-490 10 v12 m480 0 v-12 m-480 12 q0 10 10 10 m460 0 q10 0 10 -10 m-450 10 h10 m0 0 h48 m-78 0 h20 m58 0 h20 m-98 0 q10 0 10 10 m78 0 q0 -10 10 -10 m-88 10 v12 m78 0 v-12 m-78 12 q0 10 10 10 m58 0 q10 0 10 -10 m-68 10 h10 m38 0 h10 m20 -32 h10 m134 0 h10 m0 0 h10 m188 0 h10 m-906 -32 h20 m906 0 h20 m-946 0 q10 0 10 10 m926 0 q0 -10 10 -10 m-936 10 v88 m926 0 v-88 m-926 88 q0 10 10 10 m906 0 q10 0 10 -10 m-916 10 h10 m100 0 h10 m0 0 h10 m26 0 h10 m20 0 h10 m0 0 h196 m-226 0 h20 m206 0 h20 m-246 0 q10 0 10 10 m226 0 q0 -10 10 -10 m-236 10 v12 m226 0 v-12 m-226 12 q0 10 10 10 m206 0 q10 0 10 -10 m-216 10 h10 m58 0 h10 m0 0 h10 m108 0 h10 m40 -32 h10 m0 0 h48 m-78 0 h20 m58 0 h20 m-98 0 q10 0 10 10 m78 0 q0 -10 10 -10 m-88 10 v12 m78 0 v-12 m-78 12 q0 10 10 10 m58 0 q10 0 10 -10 m-68 10 h10 m38 0 h10 m20 -32 h10 m134 0 h10 m0 0 h10 m188 0 h10 m0 0 h34 m20 -108 h140 m-1142 -10 v20 m1152 0 v-20 m-1152 20 v164 m1152 0 v-164 m-1152 164 q0 10 10 10 m1132 0 q10 0 10 -10 m-1142 10 h10 m100 0 h10 m0 0 h1012 m-1142 -10 v20 m1152 0 v-20 m-1152 20 v24 m1152 0 v-24 m-1152 24 q0 10 10 10 m1132 0 q10 0 10 -10 m-1142 10 h10 m124 0 h10 m20 0 h10 m0 0 h196 m-226 0 h20 m206 0 h20 m-246 0 q10 0 10 10 m226 0 q0 -10 10 -10 m-236 10 v12 m226 0 v-12 m-226 12 q0 10 10 10 m206 0 q10 0 10 -10 m-216 10 h10 m58 0 h10 m0 0 h10 m108 0 h10 m20 -32 h10 m162 0 h10 m0 0 h560 m23 -436 h-3"></path>
+<polygon points="1201 17 1209 13 1209 21"></polygon>
+<polygon points="1201 17 1193 13 1193 21"></polygon></svg>

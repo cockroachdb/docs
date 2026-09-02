@@ -1,0 +1,574 @@
+---
+title: "JSONB"
+old_description: "The JSONB data type stores JSON (JavaScript Object Notation) data."
+---
+
+The `JSONB` [data type](/docs/v26.1/data-types) stores JSON (JavaScript Object Notation) data as a binary representation of the `JSONB` value, which eliminates whitespace, duplicate keys, and key ordering. `JSONB` supports [GIN indexes](/docs/v26.1/inverted-indexes).
+
+<Tip>
+For a hands-on demonstration of storing and querying JSON data from a third-party API, see the [JSON tutorial](/docs/v26.1/demo-json-support).
+</Tip>
+
+## Alias
+
+In CockroachDB, `JSON` is an alias for `JSONB`.
+
+<Note>
+In PostgreSQL, `JSONB` and `JSON` are two different data types. In CockroachDB, the `JSONB` / `JSON` data type is similar in behavior to the [`JSONB` data type in PostgreSQL](https://www.postgresql.org/docs/current/static/datatype-json).
+</Note>
+
+### Syntax
+
+The syntax for the `JSONB` data type follows the format specified in [RFC8259](https://tools.ietf.org/html/rfc8259). You can express a constant value of type `JSONB` using an [interpreted literal](/docs/v26.1/sql-constants#interpreted-literals) or a string literal [annotated with](/docs/v26.1/scalar-expressions#explicitly-typed-expressions) type `JSONB`.
+
+There are six types of `JSONB` values:
+
+- `null`
+- Boolean
+- String
+- Number (i.e., [`decimal`](/docs/v26.1/decimal), **not** the standard `int64` )
+- Array (i.e., an ordered sequence of `JSONB` values)
+- Object (i.e., a mapping from strings to `JSONB` values)
+
+Examples:
+
+- `'[{"foo":"bar"}]'`
+- `'{"type": "account creation", "username": "harvestboy93"}'`
+- `'{"first_name": "Ernie", "status": "Looking for treats", "location": "Brooklyn"}'`
+- `'{"prices": [ { "05/01/2022": 100.5 }, { "06/01/2022": 101.5 } ]}'`
+
+<Note>
+If duplicate keys are included in the input, only the last value is kept.
+</Note>
+
+## Size
+
+The size of a `JSONB` value is variable, but we recommend that you keep values under 1 MB to ensure satisfactory performance. Above that threshold, [write amplification](/docs/v26.1/architecture/storage-layer#write-amplification) and other considerations may cause significant performance degradation.
+
+<Warning>
+We **strongly recommend** adding size limits to all [indexed columns](/docs/v26.1/indexes), which includes columns in [primary keys](/docs/v26.1/primary-key).
+
+Values exceeding 1 MiB can lead to [storage layer write amplification](/docs/v26.1/architecture/storage-layer#write-amplification) and cause significant performance degradation or even [crashes due to OOMs (out of memory errors)](/docs/v26.1/cluster-setup-troubleshooting#out-of-memory-oom-crash).
+
+To add a size limit using [`CREATE TABLE`](/docs/v26.1/create-table):
+
+```sql
+CREATE TABLE name (first STRING(100), last STRING(100));
+```
+
+To add a size limit using [`ALTER TABLE... ALTER COLUMN`](/docs/v26.1/alter-table#alter-column):
+
+```sql
+ALTER TABLE name ALTER first TYPE STRING(99);
+```
+</Warning>
+
+## Operators
+
+<table><thead><tr><th>Operator</th><th>Description</th><th>Example Query and Output</th></tr></thead><tbody><tr><td><code>-&gt;</code></td><td>Access a <code>JSONB</code> field, returning a <code>JSONB</code> value.</td><td><code>SELECT '&#91;&#123;"foo":"bar"&#125;&#93;'::JSONB-&gt;0-&gt;'foo';</code><br/><br/><code>"bar"::JSONB</code></td></tr><tr><td><code>-&gt;&gt;</code></td><td>Access a <code>JSONB</code> field, returning a string.</td><td><code>SELECT '&#123;"foo":"bar"&#125;'::JSONB-&gt;&gt;'foo';</code><br/><br/><code>bar::STRING</code></td></tr><tr><td><code>@&gt;</code></td><td>Tests whether the left <code>JSONB</code> field contains the right <code>JSONB</code> field.</td><td><code>SELECT ('&#123;"foo": &#123;"baz": 3&#125;, "bar": 2&#125;'::JSONB@&gt;'&#123;"foo": &#123;"baz":3&#125;&#125;'::JSONB );</code><br/><br/><code>true</code></td></tr><tr><td><code>&lt;@</code></td><td>Tests whether the left <code>JSONB</code> field is contained by the right <code>JSONB</code> field.</td><td><code>SELECT('&#123;"bar":2&#125;'::JSONB&lt;@'&#123;"foo":1, "bar":2&#125;'::JSONB);</code><br/><br/><code>true</code></td></tr><tr><td><code>#&gt;</code></td><td>Access a <code>JSONB</code> field at the specified path, returning a <code>JSONB</code> value.</td><td><code>SELECT '&#91;&#123;"foo":"bar"&#125;&#93;'::JSONB#&gt;'&#123;0,foo&#125;';</code><br/><br/><code>"bar"::JSONB</code></td></tr><tr><td><code>#&gt;&gt;</code></td><td>Access a <code>JSONB</code> field at the specified path, returning a string.</td><td><code>SELECT '&#91;&#123;"foo":"bar"&#125;&#93;'::JSONB#&gt;&gt;'&#123;0,foo&#125;';</code><br/><br/><code>bar::STRING</code></td></tr><tr><td><code>?</code></td><td>Does the key or element string exist within the JSONB value?</td><td><code>SELECT('&#123;"foo":1, "bar":2&#125;'::JSONB?'bar');</code><br/><br/><code>true</code></td></tr><tr><td><code>?&amp;</code></td><td>Do all the key or element strings exist within the JSONB value?</td><td><code>SELECT('&#123;"foo":1, "bar":2&#125;'::JSONB?&amp;array&#91;'foo','bar'&#93;);</code><br/><br/><code>true</code></td></tr><tr><td><code>?|</code></td><td>Do any of the key or element strings exist within the JSONB value?</td><td><code>SELECT('&#123;"foo":1, "bar":2&#125;'::JSONB?|array&#91;'bar'&#93;);</code><br/><br/><code>true</code></td></tr><tr><td><code>&#91;</code> ... <code>&#93;</code></td><td>Access a <code>JSONB</code> key, returning a <code>JSONB</code> value or object. For details, see <a href="/docs/v26.1/scalar-expressions#subscripted-expressions">Subscripted expressions</a>.</td><td><code>SELECT('&#123;"foo": &#123;"bar":1&#125;&#125;'::JSONB)&#91;'foo'&#93;&#91;'bar'&#93;;</code><br/><br/><code>1</code></td></tr></tbody></table>
+
+For the full list of supported `JSONB` operators, see [Operators](/docs/v26.1/functions-and-operators#operators).
+
+## Functions
+
+<table><thead><tr><th>Function</th><th>Description</th></tr></thead><tbody><tr><td><code>jsonb&#95;array&#95;elements(&lt;jsonb&gt;)</code></td><td>Expands a <code>JSONB</code> array to a set of <code>JSONB</code> values. See <a href="#map-a-jsonb-array-field-into-rows">Map a <code>JSONB</code> array field into rows</a>.</td></tr><tr><td><code>jsonb&#95;build&#95;object(&lt;any&#95;element&gt;...)</code></td><td>Builds a <code>JSONB</code> object out of a variadic argument list that alternates between keys and values.</td></tr><tr><td><code>jsonb&#95;each(&lt;jsonb&gt;)</code></td><td>Expands the outermost <code>JSONB</code> object into a set of key-value pairs. See <a href="#retrieve-key-value-pairs-from-a-jsonb-field">Retrieve key-value pairs from a <code>JSONB</code> field</a>.</td></tr><tr><td><code>jsonb&#95;object&#95;keys(&lt;jsonb&gt;)</code></td><td>Returns sorted set of keys in the outermost <code>JSONB</code> object. See <a href="#retrieve-the-distinct-keys-from-a-jsonb-field">Retrieve the distinct keys from a <code>JSONB</code> field</a>.</td></tr><tr><td><code>jsonb&#95;pretty(&lt;jsonb&gt;)</code></td><td>Returns the given <code>JSONB</code> value as a <code>STRING</code> indented and with newlines. See <a href="#retrieve-formatted-jsonb-data">Retrieve formatted <code>JSONB</code> data</a>.</td></tr><tr><td><code>jsonb&#95;set(val: jsonb, path: string&#91;&#93;, to: jsonb)</code></td><td>Returns the JSON value pointed to by the variadic arguments. See <a href="#update-an-array-element">Update an array element</a>.</td></tr></tbody></table>
+
+For the full list of supported `JSONB` functions, see [JSONB functions](/docs/v26.1/functions-and-operators#jsonb-functions).
+
+## Index `JSONB` data
+
+To [index](/docs/v26.1/indexes) a `JSONB` column you can use a [GIN index](/docs/v26.1/inverted-indexes#examples) or [index an expression on the column](/docs/v26.1/expression-indexes#use-an-expression-to-index-a-field-in-a-jsonb-column).
+
+## Known limitations
+
+- You cannot use [primary key](/docs/v26.1/primary-key), [foreign key](/docs/v26.1/foreign-key), and [unique](/docs/v26.1/unique) [constraints](/docs/v26.1/constraints) on `JSONB` values.
+
+## Examples
+
+This section shows how to create tables with `JSONB` columns and use operators and functions to access and update `JSONB` data. For the full list of operators and functions, see [Operators](/docs/v26.1/functions-and-operators#operators) and [JSONB functions](/docs/v26.1/functions-and-operators#jsonb-functions).
+
+### Create a table with a `JSONB` column
+
+```sql
+CREATE TABLE users (
+    profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    last_updated TIMESTAMP DEFAULT now(),
+    user_profile JSONB
+  );
+```
+
+```sql
+SHOW COLUMNS FROM users;
+```
+
+```text
+  column_name  | data_type | is_nullable |  column_default   | generation_expression |  indices     | is_hidden
+---------------+-----------+-------------+-------------------+-----------------------+--------------+------------
+  profile_id   | UUID      |    false    | gen_random_uuid() |                       | {users_pkey} |   false
+  last_updated | TIMESTAMP |    true     | now():::TIMESTAMP |                       | {users_pkey} |   false
+  user_profile | JSONB     |    true     | NULL              |                       | {users_pkey} |   false
+(3 rows)
+```
+
+```sql
+INSERT INTO users (user_profile) VALUES
+    ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
+    ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}');
+```
+
+```sql
+SELECT * FROM users;
+```
+
+```text
++--------------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+|              profile_id              |           last_updated           |                               user_profile                                                   |
++--------------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+| 33c0a5d8-b93a-4161-a294-6121ee1ade93 | 2022-02-27 16:39:28.155024+00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location":"NYC", "online": true} |
+| 6a7c15c9-462e-4551-9e93-f389cf63918a | 2022-02-27 16:39:28.155024+00:00 | {"first_name": "Ernie", "location": "Brooklyn", "status": "Looking for treats}               |
++--------------------------------------+----------------------------------+----------------------------------------------------------------------------------------------+
+```
+
+### Retrieve formatted `JSONB` data
+
+To retrieve `JSONB` data with easier-to-read formatting, use the `jsonb_pretty()` function. For example, retrieve data from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
+
+```sql
+SELECT profile_id, last_updated, jsonb_pretty(user_profile) FROM users;
+```
+
+```text
++--------------------------------------+----------------------------------+------------------------------------+
+|              profile_id              |           last_updated           |            jsonb_pretty            |
++--------------------------------------+----------------------------------+------------------------------------+
+| 33c0a5d8-b93a-4161-a294-6121ee1ade93 | 2022-02-27 16:39:28.155024+00:00 | {                                  |
+|                                      |                                  |     "first_name": "Lola",          |
+|                                      |                                  |     "friends": 547,                |
+|                                      |                                  |     "last_name": "Dog",            |
+|                                      |                                  |     "location": "NYC",             |
+|                                      |                                  |     "online": true                 |
+|                                      |                                  | }                                  |
+| 6a7c15c9-462e-4551-9e93-f389cf63918a | 2022-02-27 16:39:28.155024+00:00 | {                                  |
+|                                      |                                  |     "first_name": "Ernie",         |
+|                                      |                                  |     "location": "Brooklyn",        |
+|                                      |                                  |     "status": "Looking for treats" |
+|                                      |                                  | }                                  |
++--------------------------------------+----------------------------------+------------------------------------+
+```
+
+### Retrieve a specific field from `JSONB` data
+
+To retrieve a specific field from `JSONB` data, use the `->` operator. For example, to retrieve a field from the table you created in [Create a table with a `JSONB` column](#create-a-table-with-a-jsonb-column), run:
+
+```sql
+SELECT user_profile->'first_name',user_profile->'location' FROM users;
+```
+
+```text
+  ?column? |  ?column?
+-----------+-------------
+  "Ernie"  | "Brooklyn"
+  "Lola"   | "NYC"
+```
+
+You can also use a [subscripted expression](/docs/v26.1/scalar-expressions#subscripted-expressions) for an equivalent result:
+
+```sql
+SELECT (user_profile)['first_name'],(user_profile)['location'] FROM users;
+```
+
+```text
+  user_profile | user_profile
+---------------+---------------
+  "Ernie"      | "Brooklyn"
+  "Lola"       | "NYC"
+```
+
+Use the `->>` operator to return `JSONB` fields as `STRING` values:
+
+```sql
+SELECT user_profile->>'first_name', user_profile->>'location' FROM users;
+```
+
+```text
+  ?column? | ?column?
+-----------+-----------
+  Ernie    | Brooklyn
+  Lola     | NYC
+```
+
+Use the `@>` operator to filter the values in a field in a `JSONB` column:
+
+```sql
+SELECT user_profile->'first_name', user_profile->'location' FROM users WHERE user_profile @> '{"location":"NYC"}';
+```
+
+```text
+  ?column? | ?column?
+-----------+-----------
+  "Lola"   | "NYC"
+```
+
+Use the `#>>` operator with a path to return all first names:
+
+```sql
+SELECT user_profile#>>'{first_name}' as "first name" from users;
+```
+
+```text
+  first name
+--------------
+  Ernie
+  Lola
+(2 rows)
+```
+
+### Retrieve the distinct keys from a `JSONB` field
+
+```sql
+SELECT DISTINCT jsonb_object_keys(user_profile) AS keys FROM users;
+```
+
+```text
+     keys
+--------------
+  first_name
+  friends
+  last_name
+  location
+  online
+  status
+(6 rows)
+```
+
+### Retrieve key-value pairs from a `JSONB` field
+
+```sql
+SELECT jsonb_each(user_profile) AS pairs FROM users;
+```
+
+```text
+                pairs
+-------------------------------------
+  (first_name,"""Lola""")
+  (friends,547)
+  (last_name,"""Dog""")
+  (location,"""NYC""")
+  (online,true)
+  (first_name,"""Ernie""")
+  (location,"""Brooklyn""")
+  (status,"""Looking for treats""")
+(8 rows)
+```
+
+### Group and order `JSONB` values
+
+To organize your `JSONB` field values, use the `GROUP BY` and `ORDER BY` clauses with the `->>` operator. For example, organize the `first_name` values from the table you created in the [first example](#create-a-table-with-a-jsonb-column):
+
+For this example, we will add a few more records to the existing table. This will help us see clearly how the data is grouped.
+
+```sql
+INSERT INTO users (user_profile) VALUES
+    ('{"first_name": "Lola", "last_name": "Kim", "location": "Seoul", "online": false, "friends": 600}'),
+    ('{"first_name": "Parvati", "last_name": "Patil", "location": "London", "online": false, "friends": 500}');
+```
+
+```sql
+SELECT user_profile->>'first_name' AS first_name, user_profile->>'location' AS location FROM users;
+```
+
+```text
+  first_name | location
+-------------+-----------
+  Ernie      | Brooklyn
+  Lola       | NYC
+  Parvati    | London
+  Lola       | Seoul
+```
+
+Group and order the data.
+
+```sql
+SELECT user_profile->>'first_name' first_name, count(*) total FROM users group by user_profile->>'first_name' order by total;
+```
+
+```text
+  first_name | total
+-------------+-------
+  Ernie      | 1
+  Parvati    | 1
+  Lola       | 2
+```
+
+The `->>` operator returns `STRING` and uses string comparison rules to order the data. If you want numeric ordering, [cast the resulting data](#supported-casting-and-conversion) to `FLOAT`.
+
+### Map a `JSONB` array field into rows
+
+To map a `JSONB` array field into rows, use the `jsonb_array_elements` function:
+
+```sql
+CREATE TABLE commodity (id varchar(10), data jsonb);
+INSERT INTO commodity (id, data) values ('silver', '{"prices" : [ { "05/01/2022" : 100.5 } , { "06/01/2022" : 101.5 } ]}');
+INSERT INTO commodity (id, data) values ('gold', '{"prices" : [ { "05/01/2022" : 200.5 } , { "06/01/2022" : 211.5 } ]}');
+SELECT * FROM commodity;
+```
+
+```text
+    id   |                            data
+---------+-------------------------------------------------------------
+  silver | {"prices": [{"05/01/2022": 100.5}, {"06/01/2022": 101.5}]}
+  gold   | {"prices": [{"05/01/2022": 200.5}, {"06/01/2022": 211.5}]}
+(2 rows)
+```
+
+```sql
+SELECT id as commodity, jsonb_array_elements(commodity.data->'prices') AS "price" FROM commodity;
+```
+
+```text
+  commodity |         price
+------------+------------------------
+  silver    | {"05/01/2022": 100.5}
+  silver    | {"06/01/2022": 101.5}
+  gold      | {"05/01/2022": 200.5}
+  gold      | {"06/01/2022": 211.5}
+(4 rows)
+```
+
+### Access nested `JSONB` fields
+
+To display the commodity prices for May, run:
+
+```sql
+SELECT id AS commodity, data->'prices'->0->'05/01/2022' AS "May prices" from commodity;
+```
+
+```text
+  commodity | May prices
+------------+-------------
+  silver    |      100.5
+  gold      |      200.5
+(2 rows)
+```
+
+### Update an array element
+
+To update a field value, use the `jsonb_set` function. For example, to update the price of `silver` on `06/01/2022` to `90.5`, run:
+
+```sql
+UPDATE commodity SET data = jsonb_set(data, '{prices, 1, "06/01/2022"}', '90.5') where id = 'silver';
+UPDATE 1
+```
+
+```sql
+SELECT * FROM commodity;
+```
+
+```text
+    id   |                            data
+---------+-------------------------------------------------------------
+  silver | {"prices": [{"05/01/2022": 100.5}, {"06/01/2022": 90.5}]}
+  gold   | {"prices": [{"05/01/2022": 200.5}, {"06/01/2022": 211.5}]}
+(2 rows)
+```
+
+### Create a table with a `JSONB` column and a computed column
+
+In this example, create a table with a `JSONB` column and a stored computed column:
+
+```sql
+> CREATE TABLE student_profiles (
+    id STRING PRIMARY KEY AS (profile->>'id') STORED,
+    profile JSONB
+);
+```
+
+Create a compute column after you create a table:
+
+```sql
+> ALTER TABLE student_profiles ADD COLUMN age INT AS ( (profile->>'age')::INT) STORED;
+```
+
+Then, insert a few rows of data:
+
+```sql
+> INSERT INTO student_profiles (profile) VALUES
+    ('{"id": "d78236", "name": "Arthur Read", "age": "16", "school": "PVPHS", "credits": 120, "sports": "none"}'),
+    ('{"name": "Buster Bunny", "age": "15", "id": "f98112", "school": "THS", "credits": 67, "clubs": "MUN"}'),
+    ('{"name": "Ernie Narayan", "school" : "Brooklyn Tech", "id": "t63512", "sports": "Track and Field", "clubs": "Chess"}');
+```
+
+```sql
+> SELECT * FROM student_profiles;
+```
+
+```text
++--------+---------------------------------------------------------------------------------------------------------------------+------+
+|   id   |                                                       profile                                                       | age  |
+---------+---------------------------------------------------------------------------------------------------------------------+------+
+| d78236 | {"age": "16", "credits": 120, "id": "d78236", "name": "Arthur Read", "school": "PVPHS", "sports": "none"}           |   16 |
+| f98112 | {"age": "15", "clubs": "MUN", "credits": 67, "id": "f98112", "name": "Buster Bunny", "school": "THS"}               |   15 |
+| t63512 | {"clubs": "Chess", "id": "t63512", "name": "Ernie Narayan", "school": "Brooklyn Tech", "sports": "Track and Field"} | NULL |
++--------+---------------------------------------------------------------------------------------------------------------------+------|
+```
+
+The primary key `id` is computed as a field from the `profile` column. Additionally the `age` column is computed from the profile column data as well.
+
+This example shows how add a stored computed column with a [coerced type](/docs/v26.1/scalar-expressions#explicit-type-coercions):
+
+```sql
+CREATE TABLE json_data (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    json_info JSONB
+);
+INSERT INTO json_data (json_info) VALUES ('{"amount": "123.45"}');
+```
+
+```sql
+ALTER TABLE json_data ADD COLUMN amount DECIMAL AS ((json_info->>'amount')::DECIMAL) STORED;
+```
+
+```sql
+SELECT * FROM json_data;
+```
+
+```text
+                   id                  |      json_info       | amount
+---------------------------------------+----------------------+---------
+  e7c3d706-1367-4d77-bfb4-386dfdeb10f9 | {"amount": "123.45"} | 123.45
+(1 row)
+```
+
+### Create a table with a `JSONB` column and a virtual computed column
+
+In this example, create a table with a `JSONB` column and virtual computed columns:
+
+```sql
+> CREATE TABLE student_profiles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    profile JSONB,
+    full_name STRING AS (concat_ws(' ',profile->>'firstName', profile->>'lastName')) VIRTUAL,
+    birthday TIMESTAMP AS (parse_timestamp(profile->>'birthdate')) VIRTUAL
+);
+```
+
+Then, insert a few rows of data:
+
+```sql
+> INSERT INTO student_profiles (profile) VALUES
+    ('{"id": "d78236", "firstName": "Arthur", "lastName": "Read", "birthdate": "2010-01-25", "school": "PVPHS", "credits": 120, "sports": "none"}'),
+    ('{"firstName": "Buster", "lastName": "Bunny", "birthdate": "2011-11-07", "id": "f98112", "school": "THS", "credits": 67, "clubs": "MUN"}'),
+    ('{"firstName": "Ernie", "lastName": "Narayan", "school" : "Brooklyn Tech", "id": "t63512", "sports": "Track and Field", "clubs": "Chess"}');
+```
+
+```sql
+> SELECT * FROM student_profiles;
+```
+
+```text
+                   id                  |                                                                   profile                                                                   |   full_name   |      birthday
+---------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------+---------------+----------------------
+  0e420282-105d-473b-83e2-3b082e7033e4 | {"birthdate": "2011-11-07", "clubs": "MUN", "credits": 67, "firstName": "Buster", "id": "f98112", "lastName": "Bunny", "school": "THS"}     | Buster Bunny  | 2011-11-07 00:00:00
+  6e9b77cd-ec67-41ae-b346-7b3d89902c72 | {"birthdate": "2010-01-25", "credits": 120, "firstName": "Arthur", "id": "d78236", "lastName": "Read", "school": "PVPHS", "sports": "none"} | Arthur Read   | 2010-01-25 00:00:00
+  f74b21e3-dc1e-49b7-a648-3c9b9024a70f | {"clubs": "Chess", "firstName": "Ernie", "id": "t63512", "lastName": "Narayan", "school": "Brooklyn Tech", "sports": "Track and Field"}     | Ernie Narayan | NULL
+(3 rows)
+
+Time: 2ms total (execution 2ms / network 0ms)
+```
+
+The virtual column `full_name` is computed as a field from the `profile` column's data. The first name and last name are concatenated and separated by a single whitespace character using the [`concat_ws` string function](/docs/v26.1/functions-and-operators#string-and-byte-functions).
+
+The virtual column `birthday` is parsed as a `TIMESTAMP` value from the `profile` column's `birthdate` string value. The [`parse_timestamp` function](/docs/v26.1/functions-and-operators) is used to parse strings in `TIMESTAMP` format.
+
+## Supported casting and conversion
+
+This section describes how to cast and convert `JSONB` values.
+
+You can [cast](/docs/v26.1/data-types#data-type-conversions-and-casts) all `JSONB` values to the following data type:
+
+- [`STRING`](/docs/v26.1/string)
+
+You can cast numeric `JSONB` values to the following numeric data types:
+
+- [`DECIMAL`](/docs/v26.1/decimal)
+- [`FLOAT`](/docs/v26.1/float)
+- [`INT`](/docs/v26.1/int)
+
+For example:
+
+```sql
+SELECT '100'::JSONB::INT;
+```
+
+```text
+  int8
+--------
+   100
+(1 row)
+```
+
+```sql
+SELECT '100000'::JSONB::FLOAT;
+```
+
+```text
+  float8
+----------
+  100000
+(1 row)
+```
+
+```sql
+SELECT '100.50'::JSONB::DECIMAL;
+```
+
+```text
+  numeric
+-----------
+   100.50
+(1 row)
+```
+
+You can use the [`parse_timestamp` function](/docs/v26.1/functions-and-operators) to parse strings in `TIMESTAMP` format.
+
+```sql
+SELECT parse_timestamp ('2022-05-28T10:53:25.160Z');
+```
+
+```text
+      parse_timestamp
+--------------------------
+2022-05-28 10:53:25.16
+(1 row)
+```
+
+You can use the `parse_timestamp` function to retrieve string representations of timestamp data within `JSONB` columns in `TIMESTAMP` format.
+
+```sql
+CREATE TABLE events (
+  raw JSONB,
+  event_created TIMESTAMP AS (parse_timestamp(raw->'event'->>'created')) VIRTUAL
+);
+INSERT INTO events (raw) VALUES ('{"event":{"created":"2022-05-28T10:53:25.160Z"}}');
+SELECT event_created FROM events;
+```
+
+```text
+CREATE TABLE
+
+INSERT 1
+
+      event_created
+--------------------------
+  2022-05-28 10:53:25.16
+(1 row)
+```
+
+## See also
+
+- [JSON tutorial](/docs/v26.1/demo-json-support)
+- [GIN Indexes](/docs/v26.1/inverted-indexes)
+- [Use an expression to index a field in a JSONB column](/docs/v26.1/expression-indexes#use-an-expression-to-index-a-field-in-a-jsonb-column)
+- [Computed Columns](/docs/v26.1/computed-columns)
+- [Data Types](/docs/v26.1/data-types)
+- [Functions and Operators](/docs/v26.1/functions-and-operators)

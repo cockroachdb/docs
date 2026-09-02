@@ -1,0 +1,221 @@
+---
+title: "FOR UPDATE and FOR SHARE"
+old_description: "The FOR UPDATE and FOR SHARE clauses are used to lock SELECT statements."
+---
+
+import { SelectForUpdate3 } from "/snippets/syntax-diagrams/SelectForUpdate3.jsx";
+
+`SELECT... FOR UPDATE` and `SELECT... FOR SHARE` are used to issue [locking reads](/docs/v24.1/read-committed#locking-reads) at different [lock strengths](#lock-strengths).
+
+## Syntax
+
+The following diagram shows the supported syntax for the optional `FOR` locking clause of a `SELECT` statement.
+
+<SelectForUpdate3 />
+
+<Tip>
+For the full `SELECT` statement syntax documentation, see [Selection Queries](/docs/v24.1/selection-queries).
+</Tip>
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>FOR SHARE</code></td><td>Acquire a shared lock on the rows returned by the <a href="/docs/v24.1/selection-queries"><code>SELECT</code></a> statement. Shared locks are not enabled by default for <code>SERIALIZABLE</code> transactions. For details, see <a href="#for-share-usage"><code>FOR SHARE</code> usage</a>.</td></tr><tr><td><code>FOR UPDATE</code></td><td>Acquire an exclusive lock on the rows returned by the <a href="/docs/v24.1/selection-queries"><code>SELECT</code></a> statement. For details, see <a href="#for-update-usage"><code>FOR UPDATE</code> usage</a>.</td></tr></tbody></table>
+
+Under `SERIALIZABLE` isolation:
+
+- Shared locks are not enabled by default. To enable shared locks for `SERIALIZABLE` transactions, configure the [`enable_shared_locking_for_serializable` session setting](/docs/v24.1/session-variables). To perform [foreign key](/docs/v24.1/foreign-key) checks under `SERIALIZABLE` isolation with shared locks, configure the [`enable_implicit_fk_locking_for_serializable` session setting](/docs/v24.1/session-variables). This matches the default [`READ COMMITTED`](/docs/v24.1/read-committed) behavior.
+- If the [`optimizer_use_lock_op_for_serializable` session setting](/docs/v24.1/session-variables) is enabled, the [cost-based optimizer](/docs/v24.1/cost-based-optimizer) uses a `Lock` operator to construct query plans for `SELECT` statements using the `FOR UPDATE` and `FOR SHARE` clauses. This more closely matches the PostgreSQL behavior, but will create more round trips from [gateway node](/docs/v24.1/architecture/sql-layer#gateway-node) to [replica leaseholder](/docs/v24.1/architecture/replication-layer#leases) in some cases.
+
+### Lock strengths
+
+Lock "strength" determines how restrictive the lock is to concurrent transactions attempting to access the same row.
+
+- `SELECT FOR UPDATE` obtains an *exclusive lock* on each qualifying row, blocking concurrent writes and locking reads on the row. Only one transaction can hold an exclusive lock on a row at a time, and only the transaction holding the exclusive lock can write to the row.
+- `SELECT FOR SHARE` obtains a *shared lock* on each qualifying row, blocking concurrent writes and **exclusive** locking reads on the row. Multiple transactions can hold a shared lock on a row at the same time. When multiple transactions hold a shared lock on a row, none can write to the row. A shared lock grants transactions mutual read-only access to a row, and ensures that they read the latest version of the row.
+
+When a `SELECT FOR UPDATE` or `SELECT FOR SHARE` read is issued on a row, only the latest version of the row is returned to the client. Under [`READ COMMITTED`](/docs/v24.1/read-committed) isolation, neither statement will block concurrent, non-locking reads.
+
+Note that CockroachDB [ensures serializability](/docs/v24.1/demo-serializable) when using `SERIALIZABLE` isolation, regardless of the specified lock strength.
+
+### `FOR UPDATE` usage
+
+`SELECT... FOR UPDATE` can be used to:
+
+- Strengthen the isolation of a [`READ COMMITTED`](/docs/v24.1/read-committed) transaction. If you need to read and later update a row within a transaction, use `SELECT... FOR UPDATE` to acquire an exclusive lock on the row. This guarantees data integrity between the transaction's read and write operations. For details, see [Locking reads](/docs/v24.1/read-committed#locking-reads).
+- Order [`SERIALIZABLE`](/docs/v24.1/demo-serializable) transactions by controlling concurrent access to one or more rows of a table. These other transactions are placed into a queue based on when they tried to read the values of the locked rows.
+
+    Because this queueing happens during the read operation, the [thrashing](https://wikipedia.org/wiki/Thrashing_(computer_science)) that would otherwise occur if multiple concurrently executing transactions attempt to `SELECT` the same data and then `UPDATE` the results of that selection is prevented. By preventing thrashing, `SELECT... FOR UPDATE` also prevents [transaction retries](/docs/v24.1/transaction-retry-error-reference#client-side-retry-handling) that would otherwise occur due to [contention](/docs/v24.1/performance-best-practices-overview#transaction-contention).
+
+    As a result, using `SELECT... FOR UPDATE` leads to increased throughput and decreased tail latency for contended operations.
+
+Note that using `SELECT... FOR UPDATE` does not completely eliminate the chance of [serialization errors](/docs/v24.1/transaction-retry-error-reference). These errors can also arise due to [time uncertainty](/docs/v24.1/architecture/transaction-layer#transaction-conflicts). To eliminate the need for application-level retry logic, in addition to `SELECT FOR UPDATE` your application also needs to use a [driver that implements automatic retry handling](/docs/v24.1/transaction-retry-error-reference#client-side-retry-handling).
+
+<Note>
+By default, CockroachDB uses the `SELECT... FOR UPDATE` locking mechanism during the initial row scan performed in [`UPDATE`](/docs/v24.1/update) and [`UPSERT`](/docs/v24.1/upsert) statement execution. To turn off implicit `SELECT... FOR UPDATE` locking for `UPDATE` and `UPSERT` statements, set the `enable_implicit_select_for_update` [session variable](/docs/v24.1/set-vars) to `false`.
+</Note>
+
+For a demo on `SELECT FOR UPDATE` and how it - alongside SERIALISABLE ISOLATION - can protect you against the [ACID Rain attack](http://www.bailis.org/papers/acidrain-sigmod2017.pdf), watch the following video:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/vfq3o5yG-PU" title="YouTube video player" width="560"></iframe>
+</Frame>
+
+### `FOR SHARE` usage
+
+`SELECT... FOR SHARE` is primarily used with [`READ COMMITTED`](/docs/v24.1/read-committed) transactions.
+
+If you need to read the latest version of a row, but not update the row, use `SELECT... FOR SHARE` to block all concurrent writes on the row without unnecessarily blocking concurrent reads. This allows an application to build cross-row consistency constraints by ensuring that rows that are read in a `READ COMMITTED` transaction will not change before the writes in the same transaction have been committed. For details, see [Locking reads](/docs/v24.1/read-committed#locking-reads).
+
+Under `READ COMMITTED` isolation, CockroachDB uses the `SELECT... FOR SHARE` locking mechanism to perform [foreign key](/docs/v24.1/foreign-key) checks.
+
+<Note>
+Shared locks are not enabled by default for `SERIALIZABLE` transactions. To enable shared locks for `SERIALIZABLE` transactions, configure the [`enable_shared_locking_for_serializable` session setting](/docs/v24.1/session-variables). To perform [foreign key](/docs/v24.1/foreign-key) checks under `SERIALIZABLE` isolation with shared locks, configure the [`enable_implicit_fk_locking_for_serializable` session setting](/docs/v24.1/session-variables). This matches the default `READ COMMITTED` behavior.
+</Note>
+
+### Lock promotion
+
+A shared lock can be "promoted" to an exclusive lock.
+
+If a transaction that holds a shared lock on a row subsqeuently issues an exclusive lock on the row, this will cause the transaction to reacquire the lock, effectively "promoting" the shared lock to an exclusive lock.
+
+A shared lock cannot be promoted until all other shared locks on the row are released. If two concurrent transactions attempt to promote their shared locks on a row, this will cause *deadlock* between the transactions, causing one transaction to abort with a `40001` error ([`ABORT_REASON_ABORTED_RECORD_FOUND`](/docs/v24.1/transaction-retry-error-reference#abort_reason_aborted_record_found) or [`ABORT_REASON_PUSHER_ABORTED`](/docs/v24.1/transaction-retry-error-reference#abort_reason_pusher_aborted)) returned to the client. The remaining open transaction will then promote its lock.
+
+### Lock behavior under `SERIALIZABLE` isolation
+
+- `SKIP LOCKED` cannot be used for tables with multiple [column families](/docs/v24.1/column-families). [#160961](https://github.com/cockroachdb/cockroach/issues/160961)
+- By default under `SERIALIZABLE` isolation, locks acquired using `SELECT... FOR UPDATE` and `SELECT... FOR SHARE` are implemented as fast, in-memory [unreplicated locks](/docs/v24.1/architecture/transaction-layer#unreplicated-locks). If a [lease transfer](/docs/v24.1/architecture/replication-layer#epoch-based-leases-table-data) or [range split/merge](/docs/v24.1/architecture/distribution-layer#range-merges) occurs on a range held by an unreplicated lock, the lock is dropped. The following behaviors can occur:
+    - The desired ordering of concurrent accesses to one or more rows of a table expressed by your use of `SELECT... FOR UPDATE` may not be preserved (that is, a transaction *B* against some table *T* that was supposed to wait behind another transaction *A* operating on *T* may not wait for transaction *A* ).
+    - The transaction that acquired the (now dropped) unreplicated lock may fail to commit, leading to [transaction retry errors with code `40001`](/docs/v24.1/transaction-retry-error-reference) and the [`restart transaction` error message](/docs/v24.1/common-errors#restart-transaction).
+
+        When running under `SERIALIZABLE` isolation, `SELECT... FOR UPDATE` and `SELECT... FOR SHARE` locks should be thought of as best-effort, and should not be relied upon for correctness. Note that [serialization](/docs/v24.1/demo-serializable) is preserved despite this limitation. This limitation is fixed when the `enable_durable_locking_for_serializable` [session setting](/docs/v24.1/session-variables#enable-durable-locking-for-serializable) is set to `true`. This limitation does **not** apply to [`READ COMMITTED`](/docs/v24.1/read-committed) transactions.
+
+### Wait policies
+
+Wait policies determine how a `SELECT... FOR UPDATE` or `SELECT... FOR SHARE` statement handles conflicts with locks held by other active transactions. By default, locking reads that are blocked by an active transaction must wait for the transaction to finish.
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>SKIP LOCKED</code></td><td>Skip rows that cannot be immediately locked.</td></tr><tr><td><code>NOWAIT</code></td><td>Return an error if a row cannot be locked immediately.</td></tr></tbody></table>
+
+For documentation on all other parameters of a `SELECT` statement, see [Selection Queries](/docs/v24.1/selection-queries).
+
+## Required privileges
+
+The user must have the `SELECT` and `UPDATE` [privileges](/docs/v24.1/security-reference/authorization#managing-privileges) on the tables used as operands.
+
+## Aliases
+
+- `FOR KEY SHARE` is an alias for `FOR SHARE`.
+- `FOR NO KEY UPDATE` is an alias for `FOR UPDATE`.
+
+## Examples
+
+### Enforce transaction order when updating the same rows
+
+This example uses `SELECT... FOR UPDATE` to lock a row inside a transaction, forcing other transactions that want to update the same row to wait for the first transaction to complete. The other transactions that want to update the same row are effectively put into a queue based on when they first try to read the value of the row.
+
+This example assumes you are running a [local unsecured cluster](/docs/v24.1/start-a-local-cluster).
+
+First, connect to the running cluster (call this Terminal 1):
+
+```shell
+cockroach sql --insecure
+```
+
+Next, create a table and insert some rows:
+
+```sql
+CREATE TABLE kv (k INT PRIMARY KEY, v INT);
+INSERT INTO kv (k, v) VALUES (1, 5), (2, 10), (3, 15);
+```
+
+Next, we'll start a [transaction](/docs/v24.1/transactions) and lock the row we want to operate on:
+
+```sql
+BEGIN;
+SELECT * FROM kv WHERE k = 1 FOR UPDATE;
+```
+
+Press **Enter** twice in the [SQL client](/docs/v24.1/cockroach-sql) to send the statements to be evaluated. This will result in the following output:
+
+```text
+  k | v
++---+----+
+  1 | 5
+(1 row)
+```
+
+Now open another terminal and connect to the database from a second client (call this Terminal 2):
+
+```shell
+cockroach sql --insecure
+```
+
+From Terminal 2, start a transaction and try to lock the same row for updates that is already being accessed by the transaction we opened in Terminal 1:
+
+```sql
+BEGIN;
+SELECT * FROM kv WHERE k = 1 FOR UPDATE;
+```
+
+Press **Enter** twice to send the statements to be evaluated. Because Terminal 1 has already locked this row, the `SELECT FOR UPDATE` statement from Terminal 2 will appear to "wait".
+
+Back in Terminal 1, update the row and commit the transaction:
+
+```sql
+UPDATE kv SET v = v + 5 WHERE k = 1;
+```
+
+```text
+UPDATE 1
+```
+
+```sql
+COMMIT;
+```
+
+```text
+COMMIT
+```
+
+Now that the transaction in Terminal 1 has committed, the transaction in Terminal 2 will be "unblocked", generating the following output, which shows the value left by the transaction in Terminal 1:
+
+```text
+  k | v
++---+----+
+  1 | 10
+(1 row)
+```
+
+The transaction in Terminal 2 can now receive input, so update the row in question again:
+
+```sql
+UPDATE kv SET v = v + 5 WHERE k = 1;
+```
+
+```text
+UPDATE 1
+```
+
+Finally, commit the transaction in Terminal 2:
+
+```sql
+COMMIT;
+```
+
+```text
+COMMIT
+```
+
+### Reserve rows for updates using exclusive locks
+
+See [Read Committed Transactions](/docs/v24.1/read-committed#reserve-rows-for-updates-using-exclusive-locks).
+
+### Reserve row values using shared locks
+
+See [Read Committed Transactions](/docs/v24.1/read-committed#reserve-row-values-using-shared-locks).
+
+## See also
+
+- [`SELECT`](/docs/v24.1/select-clause)
+- [Selection Queries](/docs/v24.1/selection-queries)
+- [Transaction Contention](/docs/v24.1/performance-best-practices-overview#transaction-contention)
+- [Read Committed Transactions](/docs/v24.1/read-committed)

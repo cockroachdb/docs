@@ -1,0 +1,83 @@
+export const ShowClusterSetting2 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="213" width="549" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="64" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">SHOW</text>
+<rect height="32" rx="10" width="82" x="135" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="82" x="133" y="1"></rect>
+<text class="terminal" x="143" y="21">CLUSTER</text>
+<rect height="32" rx="10" width="80" x="257" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="255" y="1"></rect>
+<text class="terminal" x="265" y="21">SETTING</text><a xlink:href="/docs/v23.2/sql-grammar#var_name" xlink:title="var_name">
+<rect height="32" width="84" x="377" y="3"></rect>
+<rect class="nonterminal" height="32" width="84" x="375" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="60" font-size="12" class="nonterminal" x="387" y="21">var_name</text></a><rect height="32" rx="10" width="44" x="377" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="375" y="45"></rect>
+<text class="terminal" x="385" y="65">ALL</text>
+<rect height="32" rx="10" width="88" x="257" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="88" x="255" y="89"></rect>
+<text class="terminal" x="265" y="109">SETTINGS</text>
+<rect height="32" rx="10" width="44" x="155" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="153" y="133"></rect>
+<text class="terminal" x="163" y="153">ALL</text>
+<rect height="32" rx="10" width="70" x="155" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="153" y="177"></rect>
+<text class="terminal" x="163" y="197">PUBLIC</text>
+<rect height="32" rx="10" width="82" x="265" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="82" x="263" y="133"></rect>
+<text class="terminal" x="273" y="153">CLUSTER</text>
+<rect height="32" rx="10" width="88" x="367" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="88" x="365" y="133"></rect>
+<text class="terminal" x="375" y="153">SETTINGS</text>
+<path class="line" d="m17 17 h2 m0 0 h10 m64 0 h10 m20 0 h10 m82 0 h10 m20 0 h10 m80 0 h10 m20 0 h10 m84 0 h10 m-124 0 h20 m104 0 h20 m-144 0 q10 0 10 10 m124 0 q0 -10 10 -10 m-134 10 v24 m124 0 v-24 m-124 24 q0 10 10 10 m104 0 q10 0 10 -10 m-114 10 h10 m44 0 h10 m0 0 h40 m-244 -44 h20 m244 0 h20 m-284 0 q10 0 10 10 m264 0 q0 -10 10 -10 m-274 10 v68 m264 0 v-68 m-264 68 q0 10 10 10 m244 0 q10 0 10 -10 m-254 10 h10 m88 0 h10 m0 0 h136 m-386 -88 h20 m386 0 h20 m-426 0 q10 0 10 10 m406 0 q0 -10 10 -10 m-416 10 v112 m406 0 v-112 m-406 112 q0 10 10 10 m386 0 q10 0 10 -10 m-376 10 h10 m44 0 h10 m0 0 h26 m-110 0 h20 m90 0 h20 m-130 0 q10 0 10 10 m110 0 q0 -10 10 -10 m-120 10 v24 m110 0 v-24 m-110 24 q0 10 10 10 m90 0 q10 0 10 -10 m-100 10 h10 m70 0 h10 m20 -44 h10 m82 0 h10 m0 0 h10 m88 0 h10 m0 0 h46 m23 -132 h-3"></path>
+<polygon points="539 17 547 13 547 21"></polygon>
+<polygon points="539 17 531 13 531 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

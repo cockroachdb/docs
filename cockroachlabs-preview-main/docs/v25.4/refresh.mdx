@@ -1,0 +1,139 @@
+---
+title: "REFRESH"
+old_description: "The REFRESH statement updates the stored query results of a materialized view."
+---
+
+import { Refresh6 } from "/snippets/syntax-diagrams/Refresh6.jsx";
+
+Stored query results in [materialized view](/docs/v25.4/views#materialized-views) are not automatically updated to reflect the latest state of the table(s) they query. The `REFRESH` [statement](/docs/v25.4/sql-statements) updates the stored query results of a materialized view.
+
+<Note>
+CockroachDB does not support materialized views that are refreshed on [transaction commit](/docs/v25.4/commit-transaction).
+</Note>
+
+## Required privileges
+
+The user must be the [owner](/docs/v25.4/alter-view) of the materialized view or have [admin](/docs/v25.4/security-reference/authorization#admin-role) privileges.
+
+## Synopsis
+
+<Refresh6 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>opt&#95;concurrently</code></td><td><code>CONCURRENTLY</code> (Default behavior) This keyword has no effect. It is present for PostgreSQL compatibility. All materialized views are refreshed concurrently with other jobs.</td></tr><tr><td><code>view&#95;name</code></td><td>The name of the materialized view to refresh.</td></tr><tr><td><code>opt&#95;clear&#95;data</code></td><td><code>WITH DATA</code> (Default behavior) Refresh the stored query results.<br/><code>WITH NO DATA</code> Drop the query results of the materialized view from storage.</td></tr><tr><td><code>AS OF SYSTEM TIME</code></td><td>Use historical data when refreshing the view. This can reduce <a href="/docs/v25.4/performance-best-practices-overview#transaction-contention">contention</a> by leveraging <a href="/docs/v25.4/follower-reads">follower reads</a>. The timestamp must be within the <a href="/docs/v25.4/configure-replication-zones#gc-ttlseconds">garbage collection window</a>. For more information, see <a href="/docs/v25.4/as-of-system-time"><code>AS OF SYSTEM TIME</code></a>.</td></tr></tbody></table>
+
+## Examples
+
+The following example uses the [sample `bank` database](/docs/v25.4/cockroach-workload#bank-workload), populated with some workload values.
+
+Suppose that you create a materialized view on the `bank` table:
+
+```sql
+> CREATE MATERIALIZED VIEW overdrawn_accounts
+  AS SELECT id, balance
+  FROM bank
+  WHERE balance < 0;
+```
+
+```sql
+> SELECT * FROM overdrawn_accounts;
+```
+
+```text
+  id  | balance
+------+----------
+    1 |  -17643
+    3 |   -5928
+   13 |   -3700
+...
+(402 rows)
+```
+
+Now suppose that you update the `balance` values of the `bank` table:
+
+```sql
+> UPDATE bank SET balance = 0 WHERE balance < 0;
+```
+
+```text
+UPDATE 402
+```
+
+The changes can be seen in the table with a simple `SELECT` statement against the table:
+
+```sql
+> SELECT id, balance
+FROM bank
+WHERE balance < 0;
+```
+
+```text
+  id | balance
+-----+----------
+(0 rows)
+```
+
+Recall that materialized views do not automatically update their stored results. Selecting from `overdrawn_accounts` returns stored results, which are outdated:
+
+```sql
+> SELECT * FROM overdrawn_accounts;
+```
+
+```text
+  id  | balance
+------+----------
+    1 |  -17643
+    3 |   -5928
+   13 |   -3700
+...
+(402 rows)
+```
+
+To update the materialized view's results, use a [`REFRESH`](/docs/v25.4/refresh) statement:
+
+```sql
+> REFRESH MATERIALIZED VIEW overdrawn_accounts;
+```
+
+```sql
+> SELECT * FROM overdrawn_accounts;
+```
+
+```text
+  id | balance
+-----+----------
+(0 rows)
+```
+
+### Refresh a materialized view with historical data using `AS OF SYSTEM TIME`
+
+You can refresh a materialized view using historical data with the [`AS OF SYSTEM TIME`](/docs/v25.4/as-of-system-time#parameters) clause. This is useful for reducing [contention](/docs/v25.4/performance-best-practices-overview#transaction-contention) by performing a [follower read](/docs/v25.4/follower-reads) when refreshing the view.
+
+<Note>
+Historical data is available only within the [garbage collection window](/docs/v25.4/configure-replication-zones#gc-ttlseconds).
+</Note>
+
+Refresh a materialized view using [`follower_read_timestamp()`](/docs/v25.4/functions-and-operators#date-and-time-functions) to use the most recent data that is available for [follower reads](/docs/v25.4/follower-reads):
+
+```sql
+REFRESH MATERIALIZED VIEW overdrawn_accounts
+  AS OF SYSTEM TIME follower_read_timestamp();
+```
+
+You can also specify an explicit timestamp:
+
+```sql
+REFRESH MATERIALIZED VIEW overdrawn_accounts
+  AS OF SYSTEM TIME '-10s';
+```
+
+## See also
+
+- [Materialized views](/docs/v25.4/views#materialized-views)
+- [`CREATE VIEW`](/docs/v25.4/create-view)
+- [`SHOW TABLES`](/docs/v25.4/show-tables)
+- [`ALTER VIEW`](/docs/v25.4/alter-view)
+- [`DROP VIEW`](/docs/v25.4/drop-view)
+- [`AS OF SYSTEM TIME`](/docs/v25.4/as-of-system-time)
+- [Follower Reads](/docs/v25.4/follower-reads)

@@ -1,0 +1,51 @@
+---
+title: "File an Issue"
+old_description: "Learn how to file a GitHub issue with CockroachDB."
+---
+
+If you've tried to [troubleshoot](/docs/v25.4/troubleshooting-overview) an issue yourself, have [reached out for help](/docs/v25.4/support-resources), and are still stumped, you can file an issue in GitHub.
+
+To file an issue in GitHub, we need the following information:
+
+1. A summary of the issue.
+2. The steps to reproduce the issue.
+3. The result you expected.
+4. The result that actually occurred.
+5. The first few lines of the log file from each node in the cluster in a timeframe as close as possible to reproducing the issue. On most Unix-based systems running with defaults, you can get this information using the following command:
+
+    ```shell
+    $ grep -F '[config]' cockroach-data/logs/cockroach.log
+    ```
+
+    <Note>
+    You might need to replace `cockroach-data/logs` with the location of your [logs](/docs/v25.4/logging-overview).
+    </Note>
+
+    If the logs are not available, include the output of `cockroach version` for each node in the cluster.
+
+### Template
+
+You can use this as a template for [filing an issue in GitHub](https://github.com/cockroachdb/cockroach/issues/new):
+
+```text
+
+## Summary
+
+## Steps to reproduce
+
+1.
+2.
+3.
+
+## Expected Result
+
+## Actual Result
+
+## Log files/version
+
+### Node 1
+
+### Node 2
+
+### Node 3
+```

@@ -1,0 +1,121 @@
+export const ShowJobs = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="507" width="759" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="64" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">SHOW</text>
+<rect height="32" rx="10" width="102" x="45" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="102" x="43" y="67"></rect>
+<text class="terminal" x="53" y="87">AUTOMATIC</text>
+<rect height="32" rx="10" width="56" x="167" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="165" y="67"></rect>
+<text class="terminal" x="175" y="87">JOBS</text>
+<rect height="32" rx="10" width="56" x="45" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="43" y="111"></rect>
+<text class="terminal" x="53" y="131">JOBS</text><a xlink:href="/docs/stable/sql-grammar#select_stmt" xlink:title="select_stmt">
+<rect height="32" width="94" x="161" y="145"></rect>
+<rect class="nonterminal" height="32" width="94" x="159" y="143"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="171" y="163">select_stmt</text></a><rect height="32" rx="10" width="58" x="315" y="145"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="313" y="143"></rect>
+<text class="terminal" x="323" y="163">WITH</text><a xlink:href="/docs/stable/sql-grammar#show_job_options_list" xlink:title="show_job_options_list">
+<rect height="32" width="162" x="393" y="145"></rect>
+<rect class="nonterminal" height="32" width="162" x="391" y="143"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="138" font-size="10" class="nonterminal" x="403" y="163">show_job_options_list</text></a><rect height="32" rx="10" width="62" x="141" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="139" y="187"></rect>
+<text class="terminal" x="149" y="207">WHEN</text>
+<rect height="32" rx="10" width="92" x="223" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="221" y="187"></rect>
+<text class="terminal" x="231" y="207">COMPLETE</text><a xlink:href="/docs/stable/sql-grammar#select_stmt" xlink:title="select_stmt">
+<rect height="32" width="94" x="335" y="189"></rect>
+<rect class="nonterminal" height="32" width="94" x="333" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="345" y="207">select_stmt</text></a><a xlink:href="/docs/stable/sql-grammar#for_schedules_clause" xlink:title="for_schedules_clause">
+<rect height="32" width="156" x="141" y="233"></rect>
+<rect class="nonterminal" height="32" width="156" x="139" y="231"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="132" font-size="10" class="nonterminal" x="151" y="251">for_schedules_clause</text></a><rect height="32" rx="10" width="110" x="45" y="277"></rect>
+<rect class="terminal" height="32" rx="10" width="110" x="43" y="275"></rect>
+<text class="terminal" x="53" y="295">CHANGEFEED</text>
+<rect height="32" rx="10" width="56" x="195" y="277"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="193" y="275"></rect>
+<text class="terminal" x="203" y="295">JOBS</text><a xlink:href="/docs/stable/sql-grammar#select_stmt" xlink:title="select_stmt">
+<rect height="32" width="94" x="291" y="309"></rect>
+<rect class="nonterminal" height="32" width="94" x="289" y="307"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="301" y="327">select_stmt</text></a><rect height="32" rx="10" width="46" x="195" y="353"></rect>
+<rect class="terminal" height="32" rx="10" width="46" x="193" y="351"></rect>
+<text class="terminal" x="203" y="371">JOB</text>
+<rect height="32" width="58" x="261" y="353"></rect>
+<rect class="nonterminal" height="32" width="58" x="259" y="351"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="34" font-size="10" class="nonterminal" x="271" y="371">job_id</text><rect height="32" rx="10" width="58" x="465" y="309"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="463" y="307"></rect>
+<text class="terminal" x="473" y="327">WITH</text>
+<rect height="32" rx="10" width="148" x="543" y="309"></rect>
+<rect class="terminal" height="32" rx="10" width="148" x="541" y="307"></rect>
+<text class="terminal" x="551" y="327">WATCHED_TABLES</text>
+<rect height="32" rx="10" width="46" x="45" y="397"></rect>
+<rect class="terminal" height="32" rx="10" width="46" x="43" y="395"></rect>
+<text class="terminal" x="53" y="415">JOB</text>
+<rect height="32" width="58" x="131" y="397"></rect>
+<rect class="nonterminal" height="32" width="58" x="129" y="395"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="34" font-size="10" class="nonterminal" x="141" y="415">job_id</text><rect height="32" rx="10" width="58" x="229" y="429"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="227" y="427"></rect>
+<text class="terminal" x="237" y="447">WITH</text><a xlink:href="/docs/stable/sql-grammar#show_job_options_list" xlink:title="show_job_options_list">
+<rect height="32" width="162" x="307" y="429"></rect>
+<rect class="nonterminal" height="32" width="162" x="305" y="427"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="138" font-size="10" class="nonterminal" x="317" y="447">show_job_options_list</text></a><rect height="32" rx="10" width="62" x="131" y="473"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="129" y="471"></rect>
+<text class="terminal" x="139" y="491">WHEN</text>
+<rect height="32" rx="10" width="92" x="213" y="473"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="211" y="471"></rect>
+<text class="terminal" x="221" y="491">COMPLETE</text>
+<rect height="32" width="58" x="325" y="473"></rect>
+<rect class="nonterminal" height="32" width="58" x="323" y="471"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="34" font-size="10" class="nonterminal" x="335" y="491">job_id</text><path class="line" d="m19 17 h2 m0 0 h10 m64 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-116 66 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m102 0 h10 m0 0 h10 m56 0 h10 m0 0 h488 m-706 0 h20 m686 0 h20 m-726 0 q10 0 10 10 m706 0 q0 -10 10 -10 m-716 10 v24 m706 0 v-24 m-706 24 q0 10 10 10 m686 0 q10 0 10 -10 m-696 10 h10 m56 0 h10 m40 0 h10 m0 0 h104 m-134 0 h20 m114 0 h20 m-154 0 q10 0 10 10 m134 0 q0 -10 10 -10 m-144 10 v12 m134 0 v-12 m-134 12 q0 10 10 10 m114 0 q10 0 10 -10 m-124 10 h10 m94 0 h10 m40 -32 h10 m0 0 h250 m-280 0 h20 m260 0 h20 m-300 0 q10 0 10 10 m280 0 q0 -10 10 -10 m-290 10 v12 m280 0 v-12 m-280 12 q0 10 10 10 m260 0 q10 0 10 -10 m-270 10 h10 m58 0 h10 m0 0 h10 m162 0 h10 m-454 -32 h20 m454 0 h20 m-494 0 q10 0 10 10 m474 0 q0 -10 10 -10 m-484 10 v56 m474 0 v-56 m-474 56 q0 10 10 10 m454 0 q10 0 10 -10 m-464 10 h10 m62 0 h10 m0 0 h10 m92 0 h10 m0 0 h10 m94 0 h10 m0 0 h146 m-464 -10 v20 m474 0 v-20 m-474 20 v24 m474 0 v-24 m-474 24 q0 10 10 10 m454 0 q10 0 10 -10 m-464 10 h10 m156 0 h10 m0 0 h278 m20 -120 h116 m-696 -10 v20 m706 0 v-20 m-706 20 v144 m706 0 v-144 m-706 144 q0 10 10 10 m686 0 q10 0 10 -10 m-696 10 h10 m110 0 h10 m20 0 h10 m56 0 h10 m20 0 h10 m0 0 h104 m-134 0 h20 m114 0 h20 m-154 0 q10 0 10 10 m134 0 q0 -10 10 -10 m-144 10 v12 m134 0 v-12 m-134 12 q0 10 10 10 m114 0 q10 0 10 -10 m-124 10 h10 m94 0 h10 m-230 -32 h20 m230 0 h20 m-270 0 q10 0 10 10 m250 0 q0 -10 10 -10 m-260 10 v56 m250 0 v-56 m-250 56 q0 10 10 10 m230 0 q10 0 10 -10 m-240 10 h10 m46 0 h10 m0 0 h10 m58 0 h10 m0 0 h86 m40 -76 h10 m0 0 h236 m-266 0 h20 m246 0 h20 m-286 0 q10 0 10 10 m266 0 q0 -10 10 -10 m-276 10 v12 m266 0 v-12 m-266 12 q0 10 10 10 m246 0 q10 0 10 -10 m-256 10 h10 m58 0 h10 m0 0 h10 m148 0 h10 m-676 -42 v20 m706 0 v-20 m-706 20 v100 m706 0 v-100 m-706 100 q0 10 10 10 m686 0 q10 0 10 -10 m-696 10 h10 m46 0 h10 m20 0 h10 m58 0 h10 m20 0 h10 m0 0 h250 m-280 0 h20 m260 0 h20 m-300 0 q10 0 10 10 m280 0 q0 -10 10 -10 m-290 10 v12 m280 0 v-12 m-280 12 q0 10 10 10 m260 0 q10 0 10 -10 m-270 10 h10 m58 0 h10 m0 0 h10 m162 0 h10 m-378 -32 h20 m378 0 h20 m-418 0 q10 0 10 10 m398 0 q0 -10 10 -10 m-408 10 v56 m398 0 v-56 m-398 56 q0 10 10 10 m378 0 q10 0 10 -10 m-388 10 h10 m62 0 h10 m0 0 h10 m92 0 h10 m0 0 h10 m58 0 h10 m0 0 h106 m20 -76 h202 m23 -328 h-3"></path>
+<polygon points="749 83 757 79 757 87"></polygon>
+<polygon points="749 83 741 79 741 87"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

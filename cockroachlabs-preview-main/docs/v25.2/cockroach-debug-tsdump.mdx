@@ -1,0 +1,108 @@
+---
+title: "cockroach debug tsdump"
+old_description: "Learn the commands for collecting timeseries debug information from all nodes in your cluster."
+---
+
+The `cockroach debug tsdump` [command](/docs/v25.2/cockroach-commands) connects to your cluster and collects timeseries diagnostic data from each active node (inactive nodes are not included). This includes both current and historical runtime metrics for your cluster, including those exposed in the [DB Console Metrics](/docs/v25.2/ui-overview-dashboard) pages as well as internal metrics.
+
+`cockroach debug tsdump` is mostly used in tandem with the [`cockroach debug zip`](/docs/v25.2/cockroach-debug-zip) command to gather diagnostic data during escalations to Cockroach Labs support. Follow the steps in this procedure to gather and prepare the timeseries diagnostic data and prepare it for transit to Cockroach Labs.
+
+## Subcommands
+
+While the `cockroach debug` command has a few subcommands, users are expected to use only the [`zip`](/docs/v25.2/cockroach-debug-zip), [`encryption-active-key`](/docs/v25.2/cockroach-debug-encryption-active-key), [`merge-logs`](/docs/v25.2/cockroach-debug-merge-logs), [`list-files`](/docs/v25.2/cockroach-debug-list-files), [`tsdump`](/docs/v25.2/cockroach-debug-tsdump), and [`ballast`](/docs/v25.2/cockroach-debug-ballast) subcommands.
+
+We recommend using the [`encryption-decrypt`](/docs/v25.2/cockroach-debug-encryption-decrypt) and [`job-trace`](/docs/v25.2/cockroach-debug-job-trace) subcommands only when directed by the [Cockroach Labs support team](/docs/v25.2/support-resources).
+
+The other `debug` subcommands are useful only to Cockroach Labs. Output of `debug` commands may contain sensitive or secret information.
+
+## Synopsis
+
+```shell
+$ cockroach debug tsdump {flags} > {dump file destination} 
+```
+
+<Note>
+The following [flags](#flags) must apply to an active CockroachDB node. If no nodes are live, you must [start at least one node](/docs/v25.2/cockroach-start).
+</Note>
+
+## Flags
+
+The `debug tsdump` subcommand supports the following [general-use](#general), [client connection](#client-connection), and [logging](#logging) flags.
+
+### General
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--format</code></td><td>The output format to write the collected diagnostic data. Valid options are <code>text</code>, <code>csv</code>, <code>tsv</code>, <code>raw</code>.<br/><br/><strong>Default:</strong><code>text</code></td></tr><tr><td><code>--from</code></td><td>The oldest timestamp to include (inclusive), in the format <code>YYYY-MM-DD &#91;HH:MM&#91;:SS&#93;&#93;</code>.<br/><br/><strong>Default:</strong><code>0001-01-01 00:00:00</code></td></tr><tr><td><code>--to</code></td><td>The newest timestamp to include (inclusive), in the format <code>YYYY-MM-DD &#91;HH:MM&#91;:SS&#93;&#93;</code>.<br/><br/><strong>Default:</strong> Current timestamp plus 29 hours</td></tr></tbody></table>
+
+#### Available resolutions
+
+A `debug tsdump` includes all the available resolutions (10s and 30m) of the raw time series values in the time range set using the `--from` and `--to` flags:
+
+- Time series values will be dumped with a 10 seconds resolution if the supplied time range is within the 10s TTL set by the [`timeseries.storage.resolution_10s.ttl`](/docs/v25.2/cluster-settings#setting-timeseries-storage-resolution-10s-ttl) cluster setting (default: 10 days).
+- Time series values will be dumped with a 30 minutes resolution if the supplied time range is older than the 10s TTL back to the 30m TTL set by the [`timeseries.storage.resolution_30m.ttl`](/docs/v25.2/cluster-settings#setting-timeseries-storage-resolution-30m-ttl) cluster setting (default: 90 days).
+
+For example, if today was `2024-11-15` and `--to` was set to the current timestamp (`2024-11-15`), and `--from` was set to 15 days before the current timestamp (`2024-11-01`), the `debug tsdump` would include:
+
+- Time series values with a 10 seconds resolution for `2024-11-05` to `2024-11-15` (within the 10s TTL of 10 days).
+- Time series values with a 30 minutes resolution for `2024-11-01` to `2024-11-04` (outside the 10s TTL of 10 days, but within the 30s TTL of 90 days).
+
+### Client connection
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--cert-principal-map</code></td><td>A comma-separated list of <code>&lt;cert-principal&gt;:&lt;db-principal&gt;</code> mappings. This allows mapping the principal in a cert to a DB principal such as <code>node</code> or <code>root</code> or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the <code>Subject.CommonName</code> or <code>SubjectAlternateName</code> fields in the certificate (e.g., disallowing a <code>CommonName</code> like <code>node</code> or <code>root</code>). If multiple mappings are provided for the same <code>&lt;cert-principal&gt;</code>, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A cert is allowed to authenticate a DB principal if the DB principal name is contained in the mapped <code>CommonName</code> or DNS-type <code>SubjectAlternateName</code> fields.</td></tr><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v25.2/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr><tr><td><code>--cluster-name</code></td><td>The cluster name to use to verify the cluster's identity. If the cluster has a cluster name, you must include this flag. For more information, see <a href="/docs/v25.2/cockroach-start#general"><code>cockroach start</code></a>.</td></tr><tr><td><code>--disable-cluster-name-verification</code></td><td>Disables the cluster name check for this command. This flag must be paired with <code>--cluster-name</code>. For more information, see <a href="/docs/v25.2/cockroach-start#general"><code>cockroach start</code></a>.</td></tr><tr><td><code>--host</code></td><td>The server host and port number to connect to. This can be the address of any node in the cluster.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;HOST</code><br/><strong>Default:</strong><code>localhost:26257</code></td></tr><tr><td><code>--insecure</code></td><td>Use an insecure connection.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;INSECURE</code><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><a></a><code>--url</code></td><td>A <a href="/docs/v25.2/connection-parameters#connect-using-a-url">connection URL</a> to use instead of the other arguments. To convert a connection URL to the syntax that works with your client driver, run <a href="/docs/v25.2/connection-parameters#convert-a-url-for-different-drivers"><code>cockroach convert-url</code></a>.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;URL</code><br/><strong>Default:</strong> no URL</td></tr></tbody></table>
+
+### Logging
+
+By default, this command logs messages to `stdout`. If you need to troubleshoot this command's behavior, you can [customize its logging behavior](/docs/v25.2/configure-logs).
+
+## Examples
+
+### Generate a tsdump `gob` file
+
+Generate the tsdump `gob` file for an insecure CockroachDB cluster:
+
+```shell
+$ cockroach debug tsdump --format=raw --insecure > tsdump.gob
+```
+
+Generate the tsdump `gob` file for a secure CockroachDB cluster:
+
+```shell
+$ cockroach debug tsdump --format=raw --certs-dir=${HOME}/.cockroach-certs/ > tsdump.gob
+```
+
+<Note>
+Secure examples assume you have the appropriate certificates in the default certificate directory, `${HOME}/.cockroach-certs/`. See the [`cockroach cert`](/docs/v25.2/cockroach-cert) documentation for more information.
+</Note>
+
+### Generate a tsdump `gob` file and compress using `gzip`
+
+Generate a tsdump `gob` file for an insecure CockroachDB cluster, and compress using `gzip` in preparation to send to Cockroach Labs for troubleshooting. Your server must have `gzip` installed:
+
+```shell
+$ cockroach debug tsdump --format=raw --insecure > tsdump.gob
+gzip tsdump.gob
+```
+
+Generate a tsdump `gob` file for a secure CockroachDB cluster, and compress using `gzip` in preparation to send to Cockroach Labs for troubleshooting. Your server must have `gzip` installed:
+
+```shell
+$ cockroach debug tsdump --format=raw --certs-dir=${HOME}/.cockroach-certs/ > tsdump.gob
+gzip tsdump.gob
+```
+
+<Note>
+Secure examples assume you have the appropriate certificates in the default certificate directory, `${HOME}/.cockroach-certs/`. See the [`cockroach cert`](/docs/v25.2/cockroach-cert) documentation for more information.
+</Note>
+
+### Generate a tsdump `gob` file with a custom timestamp range
+
+Generate a tsdump `gob` file specifying a custom timestamp range to limit the data collection to a specific interval. This is useful for reducing the size of the resulting `gob` file if the data needed to troubleshoot falls within a known timestamp range:
+
+```shell
+$ cockroach debug tsdump --format=raw --from='2023-01-10 01:00:00' --to='2023-01-20 23:59:59' > tsdump.gob
+```
+
+## See also
+
+- [File an Issue](/docs/v25.2/file-an-issue)
+- [`cockroach` Commands Overview](/docs/v25.2/cockroach-commands)
+- [Troubleshooting Overview](/docs/v25.2/troubleshooting-overview)

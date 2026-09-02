@@ -1,0 +1,77 @@
+---
+title: "Changefeed Best Practices"
+old_description: "A selection of best practices for starting and running changefeeds."
+---
+
+This page describes best practices to consider when starting changefeeds on a CockroachDB cluster. We recommend referring to this information while planning your cluster's changefeeds and following the links in each of the sections for more details on a topic.
+
+<Note>
+To help in planning your cluster's changefeeds on CockroachDB Cloud clusters, refer to the [Understand CockroachDB Cloud Costs](/docs/stable/cockroachcloud/costs) page for detail on how CDC is billed monthly based on usage.
+</Note>
+
+## Plan the number of watched tables for a single changefeed
+
+When creating a changefeed, it's important to consider the number of changefeeds versus the number of tables to include in a single changefeed:
+
+- Changefeeds each have their own memory overhead, so every running changefeed will increase total memory usage.
+- Creating a single changefeed that will watch hundreds of tables can affect the performance of a changefeed by introducing coupling, where the performance of a target table affects the performance of the changefeed watching it. For example, any [schema change](/docs/v26.1/changefeed-messages#schema-changes) on any of the tables will affect the entire changefeed's performance.
+
+To watch multiple tables, we recommend creating a changefeed with a comma-separated list of tables. However, we do **not** recommend creating a single changefeed for watching hundreds of tables.
+
+Cockroach Labs recommends monitoring your changefeeds to track [retryable errors](/docs/v26.1/monitor-and-debug-changefeeds#changefeed-retry-errors) and [protected timestamp](/docs/v26.1/architecture/storage-layer#protected-timestamps) usage. Refer to the [Monitor and Debug Changefeeds](/docs/v26.1/monitor-and-debug-changefeeds) page for more information.
+
+## Maintain system resources and running changefeeds
+
+When you are running more than 10 changefeeds on a cluster, it is important to monitor the [CPU usage](/docs/v26.1/ui-overload-dashboard). A larger cluster will be able to run more changefeeds concurrently compared to a smaller cluster with more limited resources.
+
+<Note>
+We recommend limiting the number of changefeeds per cluster to 80.
+</Note>
+
+To maintain a high number of changefeeds in your cluster:
+
+- Connect to different nodes to [create](/docs/v26.1/create-changefeed) each changefeed. The node on which you start the changefeed will become the *coordinator* node for the changefeed job. The coordinator node acts as an administrator: keeping track of all other nodes during job execution and the changefeed work as it completes. As a result, this node will use more resources for the changefeed job. For more detail, refer to [How does a changefeed work?](/docs/v26.1/how-does-a-changefeed-work).
+- Consider logically grouping the target tables into one changefeed. When a changefeed [pauses](/docs/v26.1/pause-job), it will stop emitting messages for the target tables. Grouping tables of related data into a single changefeed may make sense for your workload. However, we do not recommend watching hundreds of tables in a single changefeed. For more detail on protecting data from garbage collection when a changefeed is paused, refer to [Garbage collection and changefeeds](/docs/v26.1/protect-changefeed-data).
+
+## Monitor changefeeds
+
+We recommend starting the changefeed with the [`metrics_label` option](/docs/v26.1/monitor-and-debug-changefeeds#using-changefeed-metrics-labels), which allows you to measure metrics per changefeed. Metrics label information is sent with time-series metrics to the Prometheus endpoint.
+
+The key areas to monitor when running changefeeds:
+
+- [Retryable errors](/docs/v26.1/monitor-and-debug-changefeeds#recommended-changefeed-metrics-to-track): `changefeed.error_retries`
+- [Failures](/docs/v26.1/monitor-and-debug-changefeeds#recommended-changefeed-metrics-to-track): `changefeed.failures`
+- [CPU usage](#maintain-system-resources-and-running-changefeeds) for more than 10 changefeeds: [Overload Dashboard](/docs/v26.1/ui-overload-dashboard)
+- [Protected timestamp and garbage collection](/docs/v26.1/protect-changefeed-data):
+    - `jobs.changefeed.protected_age_sec`
+    - `jobs.changefeed.currently_paused`
+    - `jobs.changefeed.expired_pts_records`
+    - `jobs.changefeed.protected_record_count`
+
+## Manage changefeeds and schema changes
+
+When a schema change is issued that causes a column backfill, it can result in a changefeed emitting [duplicate messages](/docs/v26.1/changefeed-messages#schema-changes-with-column-backfill) for an event. We recommend issuing schema changes **outside of explicit transactions**. For more details on schema changes and column backfill generally, refer to the [Online Schema Changes](/docs/v26.1/online-schema-changes) page.
+
+You can also use the [`schema_change_events`](/docs/v26.1/create-changefeed#schema-change-events) and [`schema_change_policy`](/docs/v26.1/create-changefeed#schema-change-policy) options to define a schema change type and an associated policy that will modify how the changefeed behaves under the schema change.
+
+## Lock the schema on changefeed watched tables
+
+To apply `schema_locked` automatically to new tables, set the [`create_table_with_schema_locked` session variable](/docs/v26.1/set-vars#create_table_with_schema_locked). In CockroachDB v26.1 and later, it defaults to `on`.
+
+Use the `schema_locked` [storage parameter](/docs/v26.1/with-storage-parameter) to indicate that a [schema change](/docs/v26.1/online-schema-changes) is not currently ongoing on a watched table. This allows the changefeed to take a fast path that avoids checking if there are schema changes that could require synchronization between [changefeed aggregators](/docs/v26.1/how-does-a-changefeed-work). This helps to decrease the latency between a write committing to a table and it emitting to the [changefeed's sink](/docs/v26.1/changefeed-sinks).
+
+Enable `schema_locked` on the watched table with the [`ALTER TABLE`](/docs/v26.1/alter-table) statement:
+
+```sql
+ALTER TABLE watched_table SET (schema_locked = true);
+```
+
+CockroachDB attempts to automatically unset `schema_locked` before performing a schema change and reapply it when done. However, certain schema changes (such as `ALTER TABLE... SET LOCALITY`) cannot automatically unset it. For these cases, you must manually unlock the table with `schema_locked = false`, complete the schema change, and then lock the table again with `schema_locked = true`. The changefeed will run as normal while `schema_locked` is unset, but it will not benefit from the performance optimization.
+
+```sql
+ALTER TABLE watched_table SET (schema_locked = false);
+```
+
+## See also
+
+For details on tuning changefeeds for throughput, durability, and improving latency, refer to the [Advanced Changefeed Configuration](/docs/v26.1/advanced-changefeed-configuration) page.

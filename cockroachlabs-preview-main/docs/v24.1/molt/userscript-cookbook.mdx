@@ -1,0 +1,20 @@
+---
+title: "Userscript Cookbook"
+old_description: "Learn how to use MOLT userscripts through detailed examples that you can copy and paste."
+---
+
+import UserscriptCookbook from "/snippets/molt/userscript-cookbook.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<UserscriptCookbook />

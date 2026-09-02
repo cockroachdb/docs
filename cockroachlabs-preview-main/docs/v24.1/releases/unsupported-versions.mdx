@@ -1,0 +1,20 @@
+---
+title: "Unsupported Versions"
+old_description: "Versions of CockroachDB that are no longer supported"
+---
+
+import UnsupportedVersions from "/snippets/releases/unsupported-versions.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<UnsupportedVersions />

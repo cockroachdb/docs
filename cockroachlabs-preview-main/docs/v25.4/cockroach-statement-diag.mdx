@@ -1,0 +1,137 @@
+---
+title: "cockroach statement-diag"
+old_description: "Use statement-diag to manage and download statement diagnostics bundles."
+---
+
+Use the `cockroach statement-diag` [command](/docs/v25.4/cockroach-commands) to manage and download statement diagnostics bundles generated from the [DB Console](/docs/v25.4/ui-statements-page#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](/docs/v25.4/explain-analyze#explain-analyze-debug).
+
+## Required privileges
+
+Only members of the `admin` role and users with the `VIEWSYSTEMTABLE` [system privilege](/docs/v25.4/security-reference/authorization#privileges), which provides read-only access to system tables, can run `cockroach statement-diag`. By default, the `root` user belongs to the `admin` role.
+
+## Subcommands
+
+<table><thead><tr><th>Subcommand</th><th>Usage</th></tr></thead><tbody><tr><td><code>list</code></td><td>List available statement diagnostics bundles and outstanding activation requests.</td></tr><tr><td><code>download</code></td><td>Download a specified diagnostics bundle into a <code>.zip</code> file.</td></tr><tr><td><code>delete</code></td><td>Delete a statement diagnostics bundle(s).</td></tr><tr><td><code>cancel</code></td><td>Cancel an outstanding activation request(s).</td></tr></tbody></table>
+
+## Synopsis
+
+List available statement diagnostics bundles and outstanding activation requests:
+
+```shell
+$ cockroach statement-diag list <flags>
+```
+
+Download a specified diagnostics bundle into a `.zip` file:
+
+```shell
+$ cockroach statement-diag download <diagnostics ID> [<bundle filename>] <flags>
+```
+
+Delete a statement diagnostics bundle:
+
+```shell
+$ cockroach statement-diag delete <diagnostics ID> <flags>
+```
+
+Delete all statement diagnostics bundles:
+
+```shell
+$ cockroach statement-diag delete --all <flags>
+```
+
+Cancel an outstanding activation request:
+
+```shell
+$ cockroach statement-diag cancel <diagnostics ID> <flags>
+```
+
+Cancel all outstanding activation requests:
+
+```shell
+$ cockroach statement-diag cancel --all <flags>
+```
+
+## Flags
+
+- The `delete` and `cancel` subcommands support one [general-use](#general) flag.
+- All `statement-diag` subcommands support several [client connection](#client-connection) and [logging](#logging) flags.
+
+### General
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--all</code></td><td>Apply to all bundles or activation requests.</td></tr></tbody></table>
+
+### Client connection
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a></a><code>--url</code></td><td>A <a href="/docs/v25.4/connection-parameters#connect-using-a-url">connection URL</a> to use instead of the other arguments. To convert a connection URL to the syntax that works with your client driver, run <a href="/docs/v25.4/connection-parameters#convert-a-url-for-different-drivers"><code>cockroach convert-url</code></a>.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;URL</code><br/><strong>Default:</strong> no URL</td></tr><tr><td><code>--host</code></td><td>The server host and port number to connect to. This can be the address of any node in the cluster.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;HOST</code><br/><strong>Default:</strong><code>localhost:26257</code></td></tr><tr><td><code>--port</code><br/><br/><code>-p</code></td><td>The server port to connect to. Note: The port number can also be specified via <code>--host</code>.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;PORT</code><br/><strong>Default:</strong><code>26257</code></td></tr><tr><td><code>--user</code><br/><br/><code>-u</code></td><td>The <a href="/docs/v25.4/create-user">SQL user</a> that will own the client session.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;USER</code><br/><strong>Default:</strong><code>root</code></td></tr><tr><td><code>--insecure</code></td><td>Use an insecure connection.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;INSECURE</code><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--cert-principal-map</code></td><td>A comma-separated list of <code>&lt;cert-principal&gt;:&lt;db-principal&gt;</code> mappings. This allows mapping the principal in a cert to a DB principal such as <code>node</code> or <code>root</code> or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the <code>Subject.CommonName</code> or <code>SubjectAlternateName</code> fields in the certificate (e.g., disallowing a <code>CommonName</code> like <code>node</code> or <code>root</code>). If multiple mappings are provided for the same <code>&lt;cert-principal&gt;</code>, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A cert is allowed to authenticate a DB principal if the DB principal name is contained in the mapped <code>CommonName</code> or DNS-type <code>SubjectAlternateName</code> fields.</td></tr><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v25.4/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr></tbody></table>
+
+See [Client Connection Parameters](/docs/v25.4/connection-parameters) for more details.
+
+### Logging
+
+By default, this command logs messages to `stderr`. This includes events with `WARNING` [severity](/docs/v25.4/logging#logging-levels-severities) and higher.
+
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior](/docs/v25.4/configure-logs).
+
+## Examples
+
+### Setup
+
+These examples assume you are running [an insecure cluster](/docs/v25.4/start-a-local-cluster) and have requested and/or generated statement diagnostics bundles using the [DB Console](/docs/v25.4/ui-statements-page#diagnostics) or [`EXPLAIN ANALYZE (DEBUG)`](/docs/v25.4/explain-analyze#explain-analyze-debug).
+
+### Download a statement diagnostics bundle
+
+List statement diagnostics bundles and/or activation requests:
+
+```shell
+$ cockroach statement-diag list --insecure
+```
+
+```text
+Statement diagnostics bundles:
+  ID                  Collection time          Statement
+  603820372518502401  2020-11-02 18:29:13 UTC  CREATE DATABASE bank
+
+Outstanding activation requests:
+  ID                  Activation time          Statement
+  603811900498804737  2020-11-02 17:46:08 UTC  SELECT * FROM bank.accounts
+```
+
+Download a statement diagnostics bundle to `bundle.zip`:
+
+```shell
+$ cockroach statement-diag download 603820372518502401 bundle.zip --insecure
+```
+
+### Delete all statement diagnostics bundles
+
+Delete all statement diagnostics bundles:
+
+```shell
+$ cockroach statement-diag delete --all --insecure
+```
+
+### Cancel an activation request
+
+List statement diagnostics bundles and/or activation requests:
+
+```shell
+$ cockroach statement-diag list --insecure
+```
+
+```text
+Outstanding activation requests:
+  ID                  Activation time          Statement
+  603811900498804737  2020-11-02 17:46:08 UTC  SELECT * FROM bank.accounts
+```
+
+### Delete an activation request
+
+```shell
+$ cockroach statement-diag cancel 603811900498804737 --insecure
+```
+
+## See also
+
+- [DB Console statement diagnostics](/docs/v25.4/ui-statements-page#diagnostics)
+- [`EXPLAIN ANALYZE (DEBUG)`](/docs/v25.4/explain-analyze#explain-analyze-debug)
+- [`cockroach` Commands Overview](/docs/v25.4/cockroach-commands)

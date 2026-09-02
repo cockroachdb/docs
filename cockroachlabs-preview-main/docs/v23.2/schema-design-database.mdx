@@ -1,0 +1,99 @@
+---
+title: "Create a Database"
+old_description: "Best practices for creating databases in CockroachDB."
+---
+
+This page provides best-practice guidance on creating databases, with a couple examples based on Cockroach Labs's fictional vehicle-sharing company, [MovR](/docs/v23.2/movr).
+
+<Tip>
+For reference documentation on the `CREATE DATABASE` statement, including additional examples, see the [`CREATE DATABASE` syntax page](/docs/v23.2/create-database).
+</Tip>
+
+## Before you begin
+
+Before reading this page, do the following:
+
+- [Create a CockroachDB Standard cluster](/docs/cockroachcloud/quickstart) or [start a local cluster](/docs/v23.2/start-a-local-cluster).
+- [Review the database schema objects](/docs/v23.2/schema-design-overview).
+
+## Create a database
+
+Database objects make up the first level of the [CockroachDB naming hierarchy](/docs/v23.2/sql-name-resolution#naming-hierarchy).
+
+To create a database, use a [`CREATE DATABASE` statement](/docs/v23.2/create-database), following [the database best practices](#database-best-practices). After reviewing the best practices, see the examples we provide [below](#example).
+
+<Note>
+Cockroach Labs recommends against starting a database name with the string `cluster:`. Refer to [Database Best Practices](#database-best-practices) for more information.
+</Note>
+
+### Database best practices
+
+Here are some best practices to follow when creating and using databases:
+
+- Do not use the preloaded `defaultdb` database. Instead, create your own database with a `CREATE DATABASE` statement, and change it to the SQL session's [current database](/docs/v23.2/sql-name-resolution#current-database) by executing a `USE {databasename};` statement, by passing the `--database={databasename}` flag to the [`cockroach sql` command](/docs/v23.2/cockroach-sql#general), or by specifying the `database` parameter in the [connection string](/docs/v23.2/connection-parameters#connect-using-a-url) passed to your database schema migration tool.
+- Do not begin your database name with the string `cluster:`. If your database name begins with this string, you must append the following to the URI connection string to [connect to the cluster](/docs/v23.2/connect-to-the-database): `&options=-ccluster=system`
+- Create databases and [user-defined schemas](/docs/v23.2/schema-design-schema) as a member of [the `admin` role](/docs/v23.2/security-reference/authorization#admin-role) (e.g., as the [`root` user](/docs/v23.2/security-reference/authorization#root-user)), and create all other lower-level objects as a [different user](/docs/v23.2/schema-design-overview#control-access-to-objects), with fewer privileges, following [authorization best practices](/docs/v23.2/security-reference/authorization#authorization-best-practices).
+- Limit the number of databases you create. If you need to create multiple tables with the same name in your cluster, do so in different [user-defined schemas](/docs/v23.2/schema-design-schema), in the same database.
+- Use a [database schema migration tool](/docs/v23.2/third-party-database-tools#schema-migration-tools) or the [CockroachDB SQL client](/docs/v23.2/cockroach-sql) instead of a [client library](/docs/v23.2/third-party-database-tools#drivers) to execute [database schema changes](/docs/v23.2/online-schema-changes).
+
+### Example
+
+Create an empty file with the `.sql` file extension at the end of the filename. This file will initialize the database that will store all of the data for the MovR application.
+
+For example:
+
+```shell
+$ touch dbinit.sql
+```
+
+Open `dbinit.sql` in a text editor, and, at the top of the file, add a `CREATE DATABASE` statement:
+
+```sql
+CREATE DATABASE IF NOT EXISTS movr;
+```
+
+This statement will create a database named `movr`, if one does not already exist.
+
+To execute the statement in the `dbinit.sql` file as the `root` user, run the following command:
+
+```shell
+$ cockroach sql \
+--certs-dir={certs-directory} \
+--user=root \
+-f dbinit.sql
+```
+
+To view the database in the cluster, execute a [`SHOW DATABASES`](/docs/v23.2/show-databases) statement from the command line:
+
+```shell
+$ cockroach sql \
+--certs-dir={certs-directory} \
+--user=root \
+--execute="SHOW DATABASES;"
+```
+
+```text
+  database_name | owner | primary_region | regions | survival_goal
+----------------+-------+----------------+---------+----------------
+  defaultdb     | root  | NULL           | {}      | NULL
+  movr          | root  | NULL           | {}      | NULL
+  postgres      | root  | NULL           | {}      | NULL
+  system        | node  | NULL           | {}      | NULL
+(4 rows)
+```
+
+You're now ready to start adding user-defined schemas to the `movr` database.
+
+For guidance on creating user-defined schemas, see [Create a User-defined Schema](/docs/v23.2/schema-design-schema).
+
+## What's next?
+
+- [Create a User-defined Schema](/docs/v23.2/schema-design-schema)
+- [Create a Table](/docs/v23.2/schema-design-table)
+
+You might also be interested in the following pages:
+
+- [`CREATE DATABASE`](/docs/v23.2/create-database)
+- [Schema Design Overview](/docs/v23.2/schema-design-overview)
+- [`cockroach` Commands Overview](/docs/v23.2/cockroach-commands)
+- [CockroachDB naming hierarchy](/docs/v23.2/sql-name-resolution#naming-hierarchy)

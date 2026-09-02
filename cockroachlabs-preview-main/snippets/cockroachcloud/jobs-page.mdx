@@ -1,0 +1,69 @@
+---
+title: "Jobs Page"
+old_description: "The Jobs page provides details of all jobs in the cluster."
+---
+
+The **Jobs** page of the CockroachDB Cloud Console provides details of all jobs in the cluster.
+
+Viewing jobs requires the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-monitor" data-versioned="true">Cluster Monitor</a>, <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-operator" data-versioned="true">Cluster Operator</a>, or <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-admin" data-versioned="true">Cluster Admin</a> role. To view this page, select a cluster from the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-management#view-clusters-page" data-versioned="true">**Clusters** page</a>, and click **Jobs** in the **Monitoring** section of the left side navigation.
+
+<Note>
+By default, jobs are deleted every 14 days. You can change this interval using the `jobs.retention_time` <a href="/docs/VERSION_PLACEHOLDER/cluster-settings" data-versioned="true">cluster setting</a>.
+
+The Jobs list is designed for you to manage pending work. It is not intended to display the canonical record of all jobs that have run. If you need a historical record of all jobs you have run, you should log this information externally.
+</Note>
+
+## Jobs table
+
+Use the **Jobs** table to see recently created and completed jobs.
+
+<Frame>
+  ![DB Console Jobs Page](/images/v25.4/ui-jobs-page.png)
+</Frame>
+
+### Filter jobs
+
+Use the controls to filter jobs:
+
+- **Status**: filter jobs by [job status](#job-status).
+- **Type**: filter jobs by type. <a href="/docs/VERSION_PLACEHOLDER/cost-based-optimizer#table-statistics" data-versioned="true">Automatic table statistics</a> jobs are not displayed even when the **Type** menu is set to **All**. To view these jobs, set **Type** to **Auto-Statistics Creation**.
+- **Show**: toggle between showing the latest 50 jobs or all jobs.
+
+The status line after the filters shows the number of jobs displayed and a message indicating the oldest time (in UTC) that jobs are shown for. The oldest time is calculated as `now -` the duration of the `jobs.retention_time` <a href="/docs/VERSION_PLACEHOLDER/cluster-settings" data-versioned="true">cluster setting</a>, set to 28 days by default.
+
+The table is paginated with 20 jobs per page. Click the page controls following the table to traverse pages.
+
+The following columns are available for each job. Click **Columns** to select the columns to display in the table.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Description</td><td>SQL statement that created the job.</td></tr><tr><td>Status</td><td>Current <a href="#job-status">job status</a> or completion progress.</td></tr><tr><td>Job ID</td><td>Unique job ID. This value is used to <a href="/docs/v25.4/pause-job">pause</a>, <a href="/docs/v25.4/resume-job">resume</a>, or <a href="/docs/v25.4/cancel-job">cancel</a> jobs.</td></tr><tr><td>User Name</td><td>User that created the job.</td></tr><tr><td>Creation Time (UTC)</td><td>Date and time the job was created.</td></tr><tr><td>Last Modified Time (UTC)</td><td>Date and time the job was last modified.</td></tr><tr><td>Completed Time (UTC)</td><td>Date and time the job was completed.</td></tr></tbody></table>
+
+To view [job details](#job-details), click the job description.
+
+### Job status
+
+<table><thead><tr><th>Status</th><th>Description</th></tr></thead><tbody><tr><td><code>PENDING</code></td><td>Job is created but has not started running.</td></tr><tr><td><code>PAUSED</code></td><td>Job is <a href="/docs/v25.4/pause-job">paused</a>.</td></tr><tr><td><code>PAUSE-REQUESTED</code></td><td>A request has been issued to pause the job. The status will move to <code>PAUSED</code> when the node running the job registers the request.</td></tr><tr><td><code>FAILED</code></td><td>Job failed to complete.</td></tr><tr><td><code>SUCCEEDED</code></td><td>Job successfully completed.</td></tr><tr><td><code>CANCELED</code></td><td>Job was <a href="/docs/v25.4/cancel-job">canceled</a>.</td></tr><tr><td><code>CANCEL-REQUESTED</code></td><td>A request has been issued to cancel the job. The status will move to <code>CANCELED</code> when the node running the job registers the request.</td></tr><tr><td><code>RUNNING</code></td><td>Job is running. A job that is running will be displayed with its percent completion and time remaining, rather than the <code>RUNNING</code> status.</td></tr><tr><td><code>REVERTING</code></td><td>Job failed or was canceled and its changes are being reverted.</td></tr><tr><td><code>REVERT-FAILED</code></td><td>Job encountered a non-retryable error when reverting the changes. It is necessary to manually clean up a job with this status.</td></tr><tr><td><code>RETRYING</code></td><td>Job is retrying another job that failed.</td></tr></tbody></table>
+
+## Job details
+
+The details show:
+
+- **Job ID**
+- **Status**
+- **Creation Time**
+- **Last Modified Time**
+- **Completed Time**
+- **Last Execution Time**
+- **Execution Count**
+- **User Name**
+- error messages (if any)
+
+<Frame>
+  ![DB Console Jobs Page](/images/v25.4/ui_jobs_page_details.png)
+</Frame>
+
+## See also
+
+- <a href="/docs/VERSION_PLACEHOLDER/show-jobs" data-versioned="true">`SHOW JOBS`</a>
+- <a href="/docs/VERSION_PLACEHOLDER/troubleshooting-overview" data-versioned="true">Troubleshooting Overview</a>
+- <a href="/docs/VERSION_PLACEHOLDER/support-resources" data-versioned="true">Support Resources</a>
+- <a href="/docs/VERSION_PLACEHOLDER/monitoring-and-alerting#raw-status-endpoints" data-versioned="true">Raw Status Endpoints</a>

@@ -1,0 +1,166 @@
+---
+title: "CREATE SCHEDULE FOR CHANGEFEED"
+old_description: "The CREATE SCHEDULE FOR CHANGEFEED statement creates a schedule for periodic changefeeds."
+---
+
+import { CreateScheduleForChangefeed3 } from "/snippets/syntax-diagrams/CreateScheduleForChangefeed3.jsx";
+
+`CREATE SCHEDULE FOR CHANGEFEED` allows you to create a scheduled changefeed to export data out of CockroachDB. Scheduled changefeeds have the scale, observability, and endpoint sink options that changefeed jobs include, with the convenience of setting a regular schedule. A changefeed job created with `CREATE SCHEDULE FOR CHANGEFEED` performs a one-time table scan using the [initial scan](/docs/v24.1/create-changefeed#initial-scan) functionality to create an export of your table data.
+
+For more detail on using changefeeds to create an export of your table data, see [Export Data with Changefeeds](/docs/v24.1/export-data-with-changefeeds).
+
+## Required privileges
+
+You can [grant](/docs/v24.1/grant#grant-privileges-on-specific-tables-in-a-database) a user the `CHANGEFEED` privilege to allow them to create changefeeds on a specific table:
+
+```sql
+GRANT CHANGEFEED ON TABLE example_table TO user;
+```
+
+When you grant a user the `CHANGEFEED` privilege on a set of tables, they can:
+
+- Create changefeeds on the target tables even if the user does **not** have the [`CONTROLCHANGEFEED` role option](/docs/v24.1/alter-role#role-options) or the `SELECT` privilege on the tables.
+- Manage the changefeed jobs running on the tables using the [`SHOW CHANGEFEED JOB`](/docs/v24.1/show-jobs#show-changefeed-jobs), [`PAUSE JOB`](/docs/v24.1/pause-job), [`RESUME JOB`](/docs/v24.1/resume-job), and [`CANCEL JOB`](/docs/v24.1/cancel-job) commands.
+
+These users will be able to create changefeeds, but they will not be able to run a `SELECT` query on that data directly. However, they could still read this data indirectly if they have read access to the [sink](/docs/v24.1/changefeed-sinks).
+
+To restrict a user's access to changefeed data and sink credentials, enable the `changefeed.permissions.require_external_connection_sink.enabled` cluster setting. When you enable this setting, users with the [`CHANGEFEED` privilege](/docs/v24.1/create-changefeed#required-privileges) on a set of tables can only create changefeeds into [external connections](/docs/v24.1/create-external-connection).
+
+You can add `CHANGEFEED` to the user or role's [default privileges](/docs/v24.1/security-reference/authorization#default-privileges) with [`ALTER DEFAULT PRIVILEGES`](/docs/v24.1/alter-default-privileges#grant-default-privileges-to-a-specific-role):
+
+```sql
+ALTER DEFAULT PRIVILEGES GRANT CHANGEFEED ON TABLES TO user;
+```
+
+### Privilege model
+
+<Tip>
+For fine-grained access control, we recommend using the system-level privileges `CHANGEFEED` and `CONTROLJOB` / `VIEWJOB`.
+</Tip>
+
+The following summarizes the operations users can run when they have changefeed privileges on a table:
+
+<table><thead><tr><th>Granted privileges</th><th>Usage</th></tr></thead><tbody><tr><td><code>CHANGEFEED</code></td><td>Create changefeeds on tables.<br/>View and manage changefeed jobs on tables.</td></tr><tr><td><code>CHANGEFEED</code> + <a href="/docs/v24.1/create-external-connection#required-privileges"><code>USAGE</code></a> on external connection</td><td>Create changefeeds on tables to an external connection URI.<br/>Manage changefeed jobs on tables.<br/><strong>Note:</strong> If you need to manage access to changefeed sink URIs, set the <code>changefeed.permissions.require&#95;external&#95;connection&#95;sink.enabled=true</code> cluster setting. This will mean that users with these privileges can <strong>only</strong> create changefeeds on external connections.</td></tr><tr><td><code>SELECT</code></td><td>Create a sinkless changefeed that emits messages to a SQL client.</td></tr><tr><td><strong>Deprecated</strong><code>CONTROLCHANGEFEED</code> role option + <code>SELECT</code></td><td>Create changefeeds on tables. Users with the <code>CONTROLCHANGEFEED</code> role option must have <code>SELECT</code> on each table, even if they are also granted the <code>CHANGEFEED</code> privilege.<br/><br/>The <code>CONTROLCHANGEFEED</code> role option will be removed in a future release. We recommend using the <a href="/docs/v24.1/security-reference/authorization#supported-privileges">system-level privileges</a><code>CHANGEFEED</code> and <code>CONTROLJOB</code>/ <code>VIEWJOB</code> for fine-grained access control.</td></tr><tr><td><code>admin</code></td><td>Create, view, and manage changefeed jobs.</td></tr></tbody></table>
+
+## Synopsis
+
+<CreateScheduleForChangefeed3 />
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF NOT EXISTS</code></td><td>A scheduled changefeed should not be created if the <code>schedule&#95;label</code> already exists. You will receive an error if the schedule label already exists, or if <code>schedule&#95;label</code> is not defined when using <code>IF NOT EXISTS</code>.</td></tr><tr><td><code>schedule&#95;label</code></td><td>The name for the scheduled changefeed. This is optional and does not need to be unique. If you do not define a name, the label will default to <code>CHANGEFEED</code> with the timestamp of when you created the schedule.</td></tr><tr><td><code>changefeed&#95;targets</code></td><td>The tables to target with the changefeed. For example, <code>movr.users, movr.rides</code>.</td></tr><tr><td><code>changefeed&#95;sink</code></td><td>The <a href="/docs/v24.1/changefeed-sinks">changefeed sink URI</a>.</td></tr><tr><td><code>changefeed&#95;option</code></td><td>The <a href="/docs/v24.1/create-changefeed#options">options</a> to control the behavior of your changefeed. For example, <code>WITH format = csv, full&#95;table&#95;name</code>. See <a href="#changefeed-options">Changefeed options</a> for a list of available options.</td></tr><tr><td><code>target&#95;list</code></td><td>The columns to emit data from if you're using a <a href="/docs/v24.1/cdc-queries">CDC query</a> expression.</td></tr><tr><td><code>insert&#95;target</code></td><td>The target tables for the changefeed if you're using a <a href="/docs/v24.1/cdc-queries">CDC query</a> expression.</td></tr><tr><td><code>where&#95;clause</code></td><td>An optional <code>WHERE</code> clause to apply filters to the table if you're using a <a href="/docs/v24.1/cdc-queries">CDC query</a> expression.</td></tr><tr><td><code>crontab</code></td><td>The frequency of the changefeed. The schedule is specified as a <code>STRING</code> in <a href="https://wikipedia.org/wiki/Cron">crontab format</a>. All times in UTC. For example, <code>'@daily'</code>, <code>'@hourly'</code>, <code>'1 0 &#42; &#42; &#42;'</code>.</td></tr><tr><td><code>schedule&#95;option</code></td><td>The schedule options to control the schedule's behavior. For example, <code>first&#95;run = now</code>. See <a href="#schedule-options">Schedule options</a>.</td></tr></tbody></table>
+
+## Changefeed options
+
+You can include the changefeed options listed on the [`CREATE CHANGEFEED`](/docs/v24.1/create-changefeed#options) page to modify the behavior of your changefeed. The following options are **not** compatible with scheduled changefeeds:
+
+- `diff`
+- `end_time`
+- `mvcc_timestamp`
+- `resolved`
+- `updated`
+
+Scheduled changefeeds have the [`initial_scan = 'only'`](/docs/v24.1/create-changefeed#initial-scan) option included implicitly. You cannot specify `initial_scan` as `'yes'` or `'no'`.
+
+## Schedule options
+
+<table><thead><tr><th>Option</th><th>Value</th><th>Description</th></tr></thead><tbody><tr><td><code>first&#95;run</code></td><td><a href="/docs/v24.1/timestamp"><code>TIMESTAMP</code></a> / <code>now</code></td><td>Execute the first run of the schedule at this time. If you do not specify <code>first&#95;run</code>, the schedule will execute based on the next <code>RECURRING</code> time set by the crontab.</td></tr><tr><td><code>on&#95;execution&#95;failure</code></td><td><code>retry</code> / <code>reschedule</code> / <code>pause</code></td><td>Determine how the schedule handles an error.<br/><br/><code>retry</code>: Retry the changefeed immediately.<br/><br/><code>reschedule</code>: Reschedule the changefeed based on the <code>RECURRING</code> expression.<br/><br/><code>pause</code>: Pause the schedule. This requires that you <a href="/docs/v24.1/resume-schedules">resume the schedule</a> manually.<br/><br/><strong>Default:</strong><code>reschedule</code></td></tr><tr><td><code>on&#95;previous&#95;running</code></td><td><code>start</code> / <code>skip</code> / <code>wait</code></td><td>Control whether the changefeed schedule should start a changefeed if the previous scheduled changefeed is still running.<br/><br/><code>start</code>: Start the new changefeed anyway, even if the previous one is running.<br/><br/><code>skip</code>: Skip the new changefeed and run the next changefeed based on the <code>RECURRING</code> expression.<br/><br/><code>wait</code>: Wait for the previous changefeed to complete.<br/><br/><strong>Default:</strong><code>wait</code></td></tr></tbody></table>
+
+## Examples
+
+Before running any of the examples in this section, it is necessary to enable the `kv.rangefeed.enabled` cluster setting. If you are working on a CockroachDB Standard or Basic cluster, this cluster setting is enabled by default.
+
+The [Changefeed Sinks](/docs/v24.1/changefeed-sinks) page provides detail on the available sinks for your change data messages and connection URIs. We recommend using [external connections](/docs/v24.1/create-external-connection) to interact with external sinks. The examples in this section use an external connection URI for the changefeed sink.
+
+### Create a scheduled changefeed
+
+The following statement sets up a scheduled changefeed named `users_rides_nightly` that will send changefeed messages in `CSV` format 1 minute past midnight every night. As soon as the statement is run, the first changefeed run will execute immediately:
+
+```sql
+CREATE SCHEDULE users_rides_nightly FOR CHANGEFEED users, rides INTO 'external://kafka-sink' WITH format=csv RECURRING '1 0 * * *' WITH SCHEDULE OPTIONS first_run=now, on_execution_failure=retry, on_previous_running=skip;
+```
+
+The [schedule options](/docs/v24.1/create-schedule-for-changefeed#schedule-options) control the schedule's behavior:
+
+- If it runs into an error, `on_execution_failure=retry` will ensure that the schedule retries the changefeed immediately.
+- If the previous scheduled changefeed is still running, `on_previous_running=skip` will skip a new changefeed at the next scheduled time.
+
+The output will confirm that the changefeed has added the `initial_scan = 'only'` option implicitly:
+
+```text
+     schedule_id     |     label     | status |           first_run           | schedule  |                                                      changefeed_stmt
+---------------------+---------------+--------+-------------------------------+-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------
+  947257854259855361 | users_nightly | ACTIVE | 2024-02-28 20:02:35.716699+00 | 1 0 * * * | CREATE CHANGEFEED FOR TABLE movr.public.users, TABLE movr.public.rides INTO 'external://kafka-sink' WITH OPTIONS (format = 'csv', initial_scan = 'only')
+(1 row)
+
+NOTICE: added missing initial_scan='only' option to schedule changefeed
+```
+
+### Create a scheduled changefeed with CDC queries
+
+You can use CDC queries with scheduled changefeeds to define expression syntax that selects columns and applies filters to further restrict or transform the data in your changefeed messages. When you add this expression syntax to your changefeed statement, you can only target one table.
+
+For guidance on syntax and more example use cases, see [Change Data Capture Queries](/docs/v24.1/cdc-queries).
+
+This scheduled changefeed filters for the usage of promotion codes in the [`movr`](/docs/v24.1/movr) database and sends the changefeed messages on a daily basis:
+
+```sql
+CREATE SCHEDULE promo_code FOR CHANGEFEED INTO 'external://kafka-sink' AS SELECT user_id, usage_count FROM movr.user_promo_codes WHERE usage_count > 1 RECURRING '@daily' WITH SCHEDULE OPTIONS first_run=now, on_execution_failure=reschedule, on_previous_running=skip;
+```
+
+### View scheduled changefeed details
+
+To [show](/docs/v24.1/show-schedules) all scheduled changefeeds:
+
+```sql
+SHOW SCHEDULES FOR CHANGEFEED;
+```
+
+To view the details of only running scheduled changefeeds:
+
+```sql
+SHOW RUNNING SCHEDULES FOR CHANGEFEED;
+```
+
+To view the details of only paused scheduled changefeeds:
+
+```sql
+SHOW PAUSED SCHEDULES FOR CHANGEFEED;
+```
+
+To view the details of a specific scheduled changefeed:
+
+```sql
+SHOW SCHEDULE {schedule ID};
+```
+
+To [pause](/docs/v24.1/pause-schedules) a scheduled changefeed:
+
+```sql
+PAUSE SCHEDULE {schedule ID};
+```
+
+To [resume](/docs/v24.1/resume-schedules) a scheduled changefeed:
+
+```sql
+RESUME SCHEDULE {schedule ID};
+```
+
+To [delete](/docs/v24.1/drop-schedules) a scheduled changefeed:
+
+```sql
+DROP SCHEDULE {schedule ID};
+```
+
+To see the full [`CREATE SCHEDULE` statement](/docs/v24.1/show-create-schedule) for the scheduled changefeed:
+
+```sql
+SHOW CREATE SCHEDULE {schedule ID};
+```
+
+## See also
+
+- [`CREATE CHANGEFEED`](/docs/v24.1/create-changefeed)
+- [Change Data Capture Queries](/docs/v24.1/cdc-queries)
+- [Export Data with Changefeeds](/docs/v24.1/export-data-with-changefeeds)
+- [Changefeed Sinks](/docs/v24.1/changefeed-sinks)

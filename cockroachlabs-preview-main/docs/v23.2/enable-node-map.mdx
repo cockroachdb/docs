@@ -1,0 +1,191 @@
+---
+title: "Enable the Node Map"
+old_description: "Learn how to enable the node map in the DB Console."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+
+The **Node Map** is useful for:
+
+- Visualizing the geographic configuration of a multi-region cluster on a world map.
+- Viewing real-time cluster metrics.
+- Drilling down to individual nodes for monitoring health and performance.
+
+This page guides you through the process of setting up and enabling the Node Map.
+
+<Frame>
+  ![DB Console](/images/v23.2/ui-node-map-navigation3.png)
+</Frame>
+
+## Set up and enable the Node Map
+
+To enable the Node Map, you need to start the cluster with the correct [`--locality`](/docs/v23.2/cockroach-start#locality) flags and assign the latitude and longitude for each locality.
+
+<Note>
+The Node Map will not be displayed until *all* nodes are started with the correct `--locality` flags and all localities are assigned the corresponding latitude and longitude.
+</Note>
+
+Consider a four-node geo-distributed cluster with the following configuration:
+
+<table><thead><tr><th>Node</th><th>Region</th><th>Datacenter</th></tr></thead><tbody><tr><td>Node1</td><td>us-east-1</td><td>us-east-1a</td></tr><tr><td>Node2</td><td>us-east-1</td><td>us-east-1b</td></tr><tr><td>Node3</td><td>us-west-1</td><td>us-west-1a</td></tr><tr><td>Node4</td><td>eu-west-1</td><td>eu-west-1a</td></tr></tbody></table>
+
+### Step 1. Start the nodes with the correct `--locality` flags
+
+To start a new cluster with the correct `--locality` flags:
+
+1. Start Node 1:
+
+    ```text
+    $ cockroach start \
+    --insecure \
+    --locality=region=us-east-1,datacenter=us-east-1a  \
+    --advertise-addr=<node1 address> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
+    --join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
+    ```
+2. Start Node 2:
+
+    ```text
+    $ cockroach start \
+    --insecure \
+    --locality=region=us-east-1,datacenter=us-east-1b \
+    --advertise-addr=<node2 address> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
+    --join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
+    ```
+3. Start Node 3:
+
+    ```text
+    $ cockroach start \
+    --insecure \
+    --locality=region=us-west-1,datacenter=us-west-1a \
+    --advertise-addr=<node3 address> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
+    --join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
+    ```
+4. Start Node 4:
+
+    ```text
+    $ cockroach start \
+    --insecure \
+    --locality=region=eu-west-1,datacenter=eu-west-1a \
+    --advertise-addr=<node4 address> \
+    --cache=.25 \
+    --max-sql-memory=.25 \
+    --join=<node1 address>,<node2 address>,<node3 address>,<node4 address>
+    ```
+5. Use the [`cockroach init`](/docs/v23.2/cockroach-init) command to perform a one-time initialization of the cluster:
+
+    ```shell
+    $ cockroach init --insecure --host=<address of any node>
+    ```
+6. [Access the DB Console](/docs/v23.2/ui-overview#db-console-access).
+7. If the node list displays, click the selector <InlineImage alt="Node map selector" src="/images/v23.2/node-map.png" /> and select **Node Map**.
+
+The following page is displayed:
+
+<Frame>
+  ![DB Console](/images/v23.2/ui-node-map-before-license.png)
+</Frame>
+
+### Step 2. Set the Enterprise license and refresh the DB Console
+
+The Node Map should now be displaying the highest-level localities you defined:
+
+<Frame>
+  ![DB Console](/images/v23.2/ui-node-map-after-license.png)
+</Frame>
+
+<Note>
+To be displayed on the world map, localities must be assigned a corresponding latitude and longitude.
+</Note>
+
+### Step 3. Set the latitudes and longitudes for the localities
+
+1. Launch the built-in SQL client:
+
+    ```shell
+    $ cockroach sql --insecure --host=<address of any node>
+    ```
+2. Insert the approximate latitude and longitude of each region into the `system.locations` table:
+
+    ```sql
+    > INSERT INTO system.locations VALUES
+      ('region', 'us-east-1', 37.478397, -76.453077),
+      ('region', 'us-west-1', 38.837522, -120.895824),
+      ('region', 'eu-west-1', 53.142367, -7.692054);
+    ```
+
+For the latitudes and longitudes of AWS, Azure, and Google Cloud regions, see [Location Coordinates for Reference](#location-coordinates).
+
+### Step 4. Refresh the Node Map
+
+Refresh the DB Console to see the updated Node Map:
+
+<Frame>
+  ![DB Console](/images/v23.2/ui-node-map-complete.png)
+</Frame>
+
+### Step 5. Navigate the Node Map
+
+To navigate to Node 2, which is in datacenter `us-east-1a` in the `us-east-1` region:
+
+1. Click the map component marked as **region=us-east-1** on the Node Map. The [locality component](/docs/v23.2/ui-cluster-overview-page#locality-component) for the datacenter is displayed.
+
+    <Frame>
+      ![DB Console](/images/v23.2/ui-node-map-navigation1.png)
+    </Frame>
+2. Click the datacenter component marked as **datacenter=us-east-1a**. The individual [node components](/docs/v23.2/ui-cluster-overview-page#node-component) are displayed.
+
+    <Frame>
+      ![DB Console](/images/v23.2/ui-node-map-navigation2.png)
+    </Frame>
+3. To navigate back to the cluster view, either click **Cluster** in the breadcrumb trail at the top of the Node Map, or click **Up to REGION=US-EAST-1** and then click **Up to CLUSTER** in the lower left-hand side of the Node Map.
+
+## Troubleshoot the Node Map
+
+### Node Map not displayed
+
+- All nodes in the cluster must be assigned [localities](/docs/v23.2/cockroach-start#locality).
+- Localities must be [assigned a corresponding latitude and longitude](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
+
+To verify all requirements, navigate to the [**Localities**](/docs/v23.2/ui-debug-pages#configuration) debug page in the DB Console.
+
+<Frame>
+  ![DB Console](/images/v23.2/ui-localities-debug.png)
+</Frame>
+
+The **Localities** debug page displays the following:
+
+- Localities configuration that you set up while starting the nodes with the `--locality` flags.
+- Nodes corresponding to each locality.
+- Latitude and longitude coordinates for each locality.
+
+### World Map not displayed for all locality levels
+
+The world map is displayed only when [localities are assigned latitude and longitude coordinates](#step-3-set-the-latitudes-and-longitudes-for-the-localities).
+
+If a locality (e.g., region) is not assigned latitude and longitude coordinates, it is displayed using the latitude and longitude of any lower-level localities it contains (e.g., datacenter). If no coordinates are available, localities are plotted in a circular layout.
+
+### Displayed Used Capacity value is more than configured Capacity
+
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v23.2/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v23.2/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+
+## Location coordinates
+
+This section lists the latitudes and longitudes of AWS, Azure, and Google Cloud regions.
+
+### AWS locations
+
+<table><thead><tr><th>Location</th><th>SQL Statement</th></tr></thead><tbody><tr><td>US East (N. Virginia)</td><td><code>INSERT into system.locations VALUES ('region', 'us-east-1', 37.478397, -76.453077)</code></td></tr><tr><td>US East (Ohio)</td><td><code>INSERT into system.locations VALUES ('region', 'us-east-2', 40.417287, -76.453077)</code></td></tr><tr><td>US West (N. California)</td><td><code>INSERT into system.locations VALUES ('region', 'us-west-1', 38.837522, -120.895824)</code></td></tr><tr><td>US West (Oregon)</td><td><code>INSERT into system.locations VALUES ('region', 'us-west-2', 43.804133, -120.554201)</code></td></tr><tr><td>Canada (Central)</td><td><code>INSERT into system.locations VALUES ('region', 'ca-central-1', 56.130366, -106.346771)</code></td></tr><tr><td>EU (Frankfurt)</td><td><code>INSERT into system.locations VALUES ('region', 'eu-central-1', 50.110922, 8.682127)</code></td></tr><tr><td>EU (Ireland)</td><td><code>INSERT into system.locations VALUES ('region', 'eu-west-1', 53.142367, -7.692054)</code></td></tr><tr><td>EU (London)</td><td><code>INSERT into system.locations VALUES ('region', 'eu-west-2', 51.507351, -0.127758)</code></td></tr><tr><td>EU (Paris)</td><td><code>INSERT into system.locations VALUES ('region', 'eu-west-3', 48.856614, 2.352222)</code></td></tr><tr><td>Asia Pacific (Tokyo)</td><td><code>INSERT into system.locations VALUES ('region', 'ap-northeast-1', 35.689487, 139.691706)</code></td></tr><tr><td>Asia Pacific (Seoul)</td><td><code>INSERT into system.locations VALUES ('region', 'ap-northeast-2', 37.566535, 126.977969)</code></td></tr><tr><td>Asia Pacific (Osaka-Local)</td><td><code>INSERT into system.locations VALUES ('region', 'ap-northeast-3', 34.693738, 135.502165)</code></td></tr><tr><td>Asia Pacific (Singapore)</td><td><code>INSERT into system.locations VALUES ('region', 'ap-southeast-1', 1.352083, 103.819836)</code></td></tr><tr><td>Asia Pacific (Sydney)</td><td><code>INSERT into system.locations VALUES ('region', 'ap-southeast-2', -33.86882, 151.209296)</code></td></tr><tr><td>Asia Pacific (Mumbai)</td><td><code>INSERT into system.locations VALUES ('region', 'ap-south-1', 19.075984, 72.877656)</code></td></tr><tr><td>South America (São Paulo)</td><td><code>INSERT into system.locations VALUES ('region', 'sa-east-1', -23.55052, -46.633309)</code></td></tr></tbody></table>
+
+### Azure locations
+
+<table><thead><tr><th>Location</th><th>SQL Statement</th></tr></thead><tbody><tr><td>eastasia (East Asia)</td><td><code>INSERT into system.locations VALUES ('region', 'eastasia', 22.267, 114.188)</code></td></tr><tr><td>southeastasia (Southeast Asia)</td><td><code>INSERT into system.locations VALUES ('region', 'southeastasia', 1.283, 103.833)</code></td></tr><tr><td>centralus (Central US)</td><td><code>INSERT into system.locations VALUES ('region', 'centralus', 41.5908, -93.6208)</code></td></tr><tr><td>eastus (East US)</td><td><code>INSERT into system.locations VALUES ('region', 'eastus', 37.3719, -79.8164)</code></td></tr><tr><td>eastus2 (East US 2)</td><td><code>INSERT into system.locations VALUES ('region', 'eastus2', 36.6681, -78.3889)</code></td></tr><tr><td>westus (West US)</td><td><code>INSERT into system.locations VALUES ('region', 'westus', 37.783, -122.417)</code></td></tr><tr><td>northcentralus (North Central US)</td><td><code>INSERT into system.locations VALUES ('region', 'northcentralus', 41.8819, -87.6278)</code></td></tr><tr><td>southcentralus (South Central US)</td><td><code>INSERT into system.locations VALUES ('region', 'southcentralus', 29.4167, -98.5)</code></td></tr><tr><td>northeurope (North Europe)</td><td><code>INSERT into system.locations VALUES ('region', 'northeurope', 53.3478, -6.2597)</code></td></tr><tr><td>westeurope (West Europe)</td><td><code>INSERT into system.locations VALUES ('region', 'westeurope', 52.3667, 4.9)</code></td></tr><tr><td>japanwest (Japan West)</td><td><code>INSERT into system.locations VALUES ('region', 'japanwest', 34.6939, 135.5022)</code></td></tr><tr><td>japaneast (Japan East)</td><td><code>INSERT into system.locations VALUES ('region', 'japaneast', 35.68, 139.77)</code></td></tr><tr><td>australiaeast (Australia East)</td><td><code>INSERT into system.locations VALUES ('region', 'australiaeast', -33.86, 151.2094)</code></td></tr><tr><td>australiasoutheast (Australia Southeast)</td><td><code>INSERT into system.locations VALUES ('region', 'australiasoutheast', -37.8136, 144.9631)</code></td></tr><tr><td>southindia (South India)</td><td><code>INSERT into system.locations VALUES ('region', 'southindia', 12.9822, 80.1636)</code></td></tr><tr><td>centralindia (Central India)</td><td><code>INSERT into system.locations VALUES ('region', 'centralindia', 18.5822, 73.9197)</code></td></tr><tr><td>westindia (West India)</td><td><code>INSERT into system.locations VALUES ('region', 'westindia', 19.088, 72.868)</code></td></tr><tr><td>canadacentral (Canada Central)</td><td><code>INSERT into system.locations VALUES ('region', 'canadacentral', 43.653, -79.383)</code></td></tr><tr><td>canadaeast (Canada East)</td><td><code>INSERT into system.locations VALUES ('region', 'canadaeast', 46.817, -71.217)</code></td></tr><tr><td>uksouth (UK South)</td><td><code>INSERT into system.locations VALUES ('region', 'uksouth', 50.941, -0.799)</code></td></tr><tr><td>ukwest (UK West)</td><td><code>INSERT into system.locations VALUES ('region', 'ukwest', 53.427, -3.084)</code></td></tr><tr><td>westcentralus (West Central US)</td><td><code>INSERT into system.locations VALUES ('region', 'westcentralus', 40.890, -110.234)</code></td></tr><tr><td>westus2 (West US 2)</td><td><code>INSERT into system.locations VALUES ('region', 'westus2', 47.233, -119.852)</code></td></tr><tr><td>koreacentral (Korea Central)</td><td><code>INSERT into system.locations VALUES ('region', 'koreacentral', 37.5665, 126.9780)</code></td></tr><tr><td>koreasouth (Korea South)</td><td><code>INSERT into system.locations VALUES ('region', 'koreasouth', 35.1796, 129.0756)</code></td></tr><tr><td>francecentral (France Central)</td><td><code>INSERT into system.locations VALUES ('region', 'francecentral', 46.3772, 2.3730)</code></td></tr><tr><td>francesouth (France South)</td><td><code>INSERT into system.locations VALUES ('region', 'francesouth', 43.8345, 2.1972)</code></td></tr></tbody></table>
+
+### Google Cloud locations
+
+<table><thead><tr><th>Location</th><th>SQL Statement</th></tr></thead><tbody><tr><td>us-east1 (South Carolina)</td><td><code>INSERT into system.locations VALUES ('region', 'us-east1', 33.836082, -81.163727)</code></td></tr><tr><td>us-east4 (N. Virginia)</td><td><code>INSERT into system.locations VALUES ('region', 'us-east4', 37.478397, -76.453077)</code></td></tr><tr><td>us-central1 (Iowa)</td><td><code>INSERT into system.locations VALUES ('region', 'us-central1', 42.032974, -93.581543)</code></td></tr><tr><td>us-west1 (Oregon)</td><td><code>INSERT into system.locations VALUES ('region', 'us-west1', 43.804133, -120.554201)</code></td></tr><tr><td>northamerica-northeast1 (Montreal)</td><td><code>INSERT into system.locations VALUES ('region', 'northamerica-northeast1', 56.130366, -106.346771)</code></td></tr><tr><td>europe-west1 (Belgium)</td><td><code>INSERT into system.locations VALUES ('region', 'europe-west1', 50.44816, 3.81886)</code></td></tr><tr><td>europe-west2 (London)</td><td><code>INSERT into system.locations VALUES ('region', 'europe-west2', 51.507351, -0.127758)</code></td></tr><tr><td>europe-west3 (Frankfurt)</td><td><code>INSERT into system.locations VALUES ('region', 'europe-west3', 50.110922, 8.682127)</code></td></tr><tr><td>europe-west4 (Netherlands)</td><td><code>INSERT into system.locations VALUES ('region', 'europe-west4', 53.4386, 6.8355)</code></td></tr><tr><td>europe-west6 (Zürich)</td><td><code>INSERT into system.locations VALUES ('region', 'europe-west6', 47.3769, 8.5417)</code></td></tr><tr><td>asia-east1 (Taiwan)</td><td><code>INSERT into system.locations VALUES ('region', 'asia-east1', 24.0717, 120.5624)</code></td></tr><tr><td>asia-northeast1 (Tokyo)</td><td><code>INSERT into system.locations VALUES ('region', 'asia-northeast1', 35.689487, 139.691706)</code></td></tr><tr><td>asia-southeast1 (Singapore)</td><td><code>INSERT into system.locations VALUES ('region', 'asia-southeast1', 1.352083, 103.819836)</code></td></tr><tr><td>australia-southeast1 (Sydney)</td><td><code>INSERT into system.locations VALUES ('region', 'australia-southeast1', -33.86882, 151.209296)</code></td></tr><tr><td>asia-south1 (Mumbai)</td><td><code>INSERT into system.locations VALUES ('region', 'asia-south1', 19.075984, 72.877656)</code></td></tr><tr><td>southamerica-east1 (São Paulo)</td><td><code>INSERT into system.locations VALUES ('region', 'southamerica-east1', -23.55052, -46.633309)</code></td></tr></tbody></table>

@@ -1,0 +1,291 @@
+---
+title: "Secondary Indexes"
+old_description: "How and when to create secondary indexes in CockroachDB."
+---
+
+An [*index*](/docs/v23.2/indexes) is a [logical object](/docs/v23.2/schema-design-overview#database-schema-objects) that helps [CockroachDB queries](/docs/v23.2/query-data) find data more efficiently. When you create an index, CockroachDB creates a copy of the columns selected for the index, and then sorts the rows of data by indexed column values, without sorting the values in the table itself.
+
+CockroachDB automatically creates an index on the table's [primary key](/docs/v23.2/primary-key) columns. This index is called the *primary index*. The primary index helps CockroachDB more efficiently scan rows, as sorted by the table's primary key columns, but it does not help find values as identified by any other columns.
+
+*Secondary indexes* (i.e., all indexes that are not the primary index) improve the performance of queries that identify rows with columns that are not in a table's primary key. CockroachDB automatically creates secondary indexes for columns with a [`UNIQUE` constraint](/docs/v23.2/unique).
+
+This page provides best-practice guidance on creating secondary indexes, with a simple example based on Cockroach Labs's fictional vehicle-sharing company, [MovR](/docs/v23.2/movr).
+
+## Before you begin
+
+Before reading this page, do the following:
+
+- [Create a CockroachDB Standard cluster](/docs/cockroachcloud/quickstart) or [start a local cluster](/docs/cockroachcloud/quickstart?filters=local).
+- [Review the database schema objects](/docs/v23.2/schema-design-overview).
+- [Create a database](/docs/v23.2/schema-design-database).
+- [Create a user-defined schema](/docs/v23.2/schema-design-schema).
+- [Create a table](/docs/v23.2/schema-design-table).
+- Review the [best practices](#best-practices).
+
+## Create a secondary index
+
+To add a secondary index to a table do one of the following:
+
+- Add an `INDEX` clause to the end of a [`CREATE TABLE`](/docs/v23.2/create-table#create-a-table-with-secondary-and-gin-indexes) statement.
+
+    `INDEX` clauses generally take the following form:
+
+    ```text
+    INDEX {index_name} ({column_names});
+    ```
+
+    <table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;index&#95;name&#125;</code></td><td>The name of the index.</td></tr><tr><td><code>&#123;column&#95;names&#125;</code></td><td>The name of the column to index, or a comma-separated list of names of the columns to index.</td></tr></tbody></table>
+- Use a [`CREATE INDEX`](/docs/v23.2/create-index) statement.
+
+    `CREATE INDEX` statements generally take the following form:
+
+    ```text
+    CREATE INDEX {index_name} ON {table_name} ({column_names});
+    ```
+
+    <table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;index&#95;name&#125;</code></td><td>The name of the index.</td></tr><tr><td><code>&#123;table&#95;name&#125;</code></td><td>The name of the table.</td></tr><tr><td><code>&#123;column&#95;names&#125;</code></td><td>The name of the column to index, or a comma-separated list of names of the columns to index.</td></tr></tbody></table>
+
+For an example, see [Example](#example).
+
+<Note>
+- If you do not specify a name for an index, CockroachDB will generate a name.
+- The notation for referring to an index is `{table_name}@{index_name}`.
+</Note>
+
+## Best practices
+
+Here are some best practices for creating and using secondary indexes.
+
+<Tip>
+The [`EXPLAIN`](/docs/v23.2/explain#success-responses) command provides index recommendations, including index actions and SQL statements to perform the actions.
+</Tip>
+
+### Index contents
+
+- Index all columns that you plan to use for [sorting](/docs/v23.2/order-by) or [filtering](/docs/v23.2/select-clause#filter-rows) data.
+
+    An index that stores all the columns needed by a query is also known as a *covering index* for that query. When a query has a covering index, CockroachDB can use that index directly instead of doing an "index join" with the primary index, which is likely to be slower.
+
+    CockroachDB [pushes filters](/docs/v23.2/indexes#how-do-indexes-work) (i.e., values listed in a [`WHERE` clause](/docs/v23.2/select-clause#parameters)) into an index, which allows it to perform a finite number of sequential scans. In a `WHERE` clause with `n` constrained columns you can filter the first `n-1` columns either on a single constant value using the operator `=` or a list of constant values using the operator `IN`. You can filter column `n` against a range of values using any of the operators `!=`, `<`, `>`, or `NOT IN`.
+
+    Columns with a higher cardinality (higher number of distinct values) should be placed in the index before columns with a lower cardinality. If the cardinality of the columns you wish to add to the index are similar, test multiple column arrangements in a non-production environment to determine the most performant arrangement.
+- If you need to index the result of a function applied to one or more columns of a single table, use the function to create a [computed column](/docs/v23.2/computed-columns) and index the column.
+- Avoid indexing on sequential keys (e.g., [`TIMESTAMP`/`TIMESTAMPTZ`](/docs/v23.2/timestamp) columns). Writes to indexes with sequential keys can result in range [hot spots](/docs/v23.2/performance-best-practices-overview#hot-spots) that negatively affect performance. Instead, use [randomly generated unique IDs](/docs/v23.2/performance-best-practices-overview#unique-id-best-practices) or [multi-column keys](/docs/v23.2/performance-best-practices-overview#use-multi-column-primary-keys).
+
+    If you are working with a table that **must** be indexed on sequential keys, use [hash-sharded indexes](/docs/v23.2/hash-sharded-indexes). For details about the mechanics and performance improvements of hash-sharded indexes in CockroachDB, see our [Hash Sharded Indexes Unlock Linear Scaling for Sequential Workloads](https://www.cockroachlabs.com/blog/hash-sharded-indexes-unlock-linear-scaling-for-sequential-workloads) blog post.
+
+- Use a [`STORING` clause](/docs/v23.2/create-index#parameters) to store columns of data that you want returned by common queries, but that you do not plan to use in query filters.
+
+    The `STORING` clause specifies columns that are not part of the index key but should be stored in the index. If a column is specified in a query, and the column is neither indexed nor stored in an index, CockroachDB may either perform a full scan or perform an [index join](/docs/v23.2/indexes#example) if a suitable secondary index exists. However, if the optimizer determines that the index join is too expensive, then CockroachDB will perform a full table scan. For an example, see [Example](#example).
+- Review the [specialized indexes](/docs/v23.2/schema-design-overview#specialized-indexes), such as partial and inverted indexes, and decide if you need to create a specialized index instead of a standard index.
+- Avoid creating secondary indexes that you do not need.
+    - Queries can benefit from an index even if they only filter a prefix of its columns. For example, if you create an index of columns `(A, B, C)`, queries filtering `(A)` or `(A, B)` can use the index, so you don't need to also index `(A)`.
+    - If you need to [change a primary key](/docs/v23.2/constraints#change-constraints), and you do not plan to filter queries on the existing primary key column(s), do not use [`ALTER PRIMARY KEY`](/docs/v23.2/alter-table#alter-primary-key) because it creates a secondary index from an existing primary key. Instead, use [`DROP CONSTRAINT... PRIMARY KEY`/`ADD CONSTRAINT... PRIMARY KEY`](/docs/v23.2/alter-table#changing-primary-keys-with-add-constraint-primary-key), which does not create a secondary index.
+
+<Warning>
+We **strongly recommend** adding size limits to all [indexed columns](/docs/v23.2/indexes), which includes columns in [primary keys](/docs/v23.2/primary-key).
+
+Values exceeding 1 MiB can lead to [storage layer write amplification](/docs/v23.2/architecture/storage-layer#write-amplification) and cause significant performance degradation or even [crashes due to OOMs (out of memory errors)](/docs/v23.2/cluster-setup-troubleshooting#out-of-memory-oom-crash).
+
+To add a size limit using [`CREATE TABLE`](/docs/v23.2/create-table):
+
+```sql
+CREATE TABLE name (first STRING(100), last STRING(100));
+```
+
+To add a size limit using [`ALTER TABLE... ALTER COLUMN`](/docs/v23.2/alter-table#alter-column):
+
+```sql
+SET enable_experimental_alter_column_type_general = true;
+```
+
+```sql
+ALTER TABLE name ALTER first TYPE STRING(99);
+```
+</Warning>
+
+### Index management
+
+- Limit creation and deletion of secondary indexes to off-peak hours. Performance impacts are likely if done during peak business hours.
+- Do not create indexes as the `root` user. Instead, create indexes as a [different user](/docs/v23.2/schema-design-overview#control-access-to-objects), with fewer privileges, following [authorization best practices](/docs/v23.2/security-reference/authorization#authorization-best-practices). This will likely be the same user that created the table to which the index belongs.
+- Drop unused indexes whenever possible.
+    - In the DB Console, visit the [**Databases** page](/docs/v23.2/ui-databases-page) and check databases and tables for [**Index Recommendations**](/docs/v23.2/ui-databases-page#index-recommendations) to drop unused indexes.
+    - To understand usage statistics for an index, query the [`crdb_internal.index_usage_statistics`](/docs/v23.2/crdb-internal#index_usage_statistics) table.
+
+        ```sql
+        SELECT * FROM crdb_internal.index_usage_statistics;
+        ```
+
+        To get more detailed information about the table and index names, run a join query against `crdb_internal.index_usage_statistics` and `crdb_internal.table_indexes`. For an example, see [Fix slow writes](/docs/v23.2/performance-recipes#fix-slow-writes).
+- Use a [database schema migration tool](/docs/v23.2/third-party-database-tools#schema-migration-tools) or the [CockroachDB SQL client](/docs/v23.2/cockroach-sql) instead of a [client library](/docs/v23.2/third-party-database-tools#drivers) to execute [database schema changes](/docs/v23.2/online-schema-changes).
+- Review the [limitations of online schema changes](/docs/v23.2/online-schema-changes#limitations). CockroachDB [doesn't guarantee the atomicity of schema changes within transactions with multiple statements](/docs/v23.2/online-schema-changes#schema-changes-within-transactions).
+
+    Cockroach Labs recommends that you perform schema changes outside explicit transactions. When a database [schema management tool](/docs/v23.2/third-party-database-tools#schema-migration-tools) manages transactions on your behalf, include one schema change operation per transaction.
+
+## Example
+
+Suppose you want the MovR application to display all of the bikes available to the users of the MovR platform.
+
+Recall that the `vehicles` table that you created in [Create a Table](/docs/v23.2/schema-design-table) stores rows of data for each vehicle registered with MovR. Your application will need to read any data about vehicles into the application's persistence layer from this table. To display available bikes, the reads will need to filter on the `available` and `type` columns.
+
+Open `max_init.sql`, and, under the `CREATE TABLE` statement for the `vehicles` table, add a `CREATE INDEX` statement for an index on the `type` and `available` columns of the `vehicles` table:
+
+```sql
+CREATE INDEX type_available_idx ON movr.vehicles (type, available);
+```
+
+This statement creates a secondary index named `type_available_idx`, on the `vehicles` table.
+
+The MovR app might also need to display the vehicle's location and ID, but the app will not be filtering or sorting on those values. If any of the columns referenced in or returned by a query are not in a primary or secondary index key, CockroachDB will need to perform [a full scan of the table](/docs/v23.2/sql-tuning-with-explain#issue-full-table-scans) to find the value. Full table scans can be costly, and should be avoided whenever possible.
+
+To help avoid unnecessary full table scans, add a `STORING` clause to the index:
+
+```sql
+CREATE INDEX type_available_idx ON movr.vehicles (type, available) STORING (last_location);
+```
+
+The index will now store the values in `last_location`, which will improve the performance of reads from the `vehicles` table that return `type`, `available`, `id`, and `last_location` values and do not filter or sort on the `last_location` column.
+
+The `max_init.sql` file should now look similar to the following:
+
+```sql
+CREATE TABLE movr.max_schema.users (
+    first_name STRING,
+    last_name STRING,
+    email STRING UNIQUE,
+    CONSTRAINT "primary" PRIMARY KEY (first_name, last_name)
+  );
+
+CREATE TYPE movr.max_schema.vtype AS ENUM ('bike', 'scooter', 'skateboard');
+
+CREATE TABLE movr.max_schema.vehicles (
+      id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+      type movr.max_schema.vtype,
+      creation_time TIMESTAMPTZ DEFAULT now(),
+      available BOOL,
+      last_location STRING
+  );
+
+CREATE INDEX type_available_idx ON movr.max_schema.vehicles (type, available) STORING (last_location);
+
+CREATE TABLE movr.max_schema.rides (
+      id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+      vehicle_id UUID REFERENCES movr.max_schema.vehicles(id),
+      start_address STRING,
+      end_address STRING,
+      start_time TIMESTAMPTZ DEFAULT now(),
+      end_time TIMESTAMPTZ
+  );
+```
+
+If you executed this file when following the [Create a Table](/docs/v23.2/schema-design-table) example, then all of these objects already exist. To clear the database and re-initialize the schemas, first execute the statements in the `dbinit.sql` file as the `root` user:
+
+```shell
+$ cockroach sql \
+--certs-dir={certs-directory} \
+--user=root \
+-f dbinit.sql
+```
+
+Then, execute the statements in the `max_init.sql` and `abbey_init.sql` files:
+
+```shell
+$ cockroach sql \
+--certs-dir={certs-directory} \
+--user=max \
+--database=movr \
+-f max_init.sql
+```
+
+```shell
+$ cockroach sql \
+--certs-dir={certs-directory} \
+--user=abbey \
+--database=movr \
+-f abbey_init.sql
+```
+
+After the statements have been executed, you can see the new index in the [CockroachDB SQL shell](/docs/v23.2/cockroach-sql#sql-shell).
+
+Open the SQL shell to your cluster:
+
+```shell
+$ cockroach sql \
+--certs-dir={certs-directory} \
+--user=max \
+--database=movr
+```
+
+To view the indexes in the `vehicles` table, issue a [`SHOW INDEXES`](/docs/v23.2/show-index) statement:
+
+```sql
+> SHOW INDEXES FROM movr.max_schema.vehicles;
+```
+
+```text
+  table_name |     index_name     | non_unique | seq_in_index |  column_name  | direction | storing | implicit | visible
+-------------+--------------------+------------+--------------+---------------+-----------+---------+----------+----------
+  vehicles   | type_available_idx |     t      |            1 | type          | ASC       |    f    |    f     |    t
+  vehicles   | type_available_idx |     t      |            2 | available     | ASC       |    f    |    f     |    t
+  vehicles   | type_available_idx |     t      |            3 | last_location | N/A       |    t    |    f     |    t
+  vehicles   | type_available_idx |     t      |            4 | id            | ASC       |    f    |    t     |    t
+  vehicles   | vehicles_pkey      |     f      |            1 | id            | ASC       |    f    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            2 | type          | N/A       |    t    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            3 | creation_time | N/A       |    t    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            4 | available     | N/A       |    t    |    f     |    t
+  vehicles   | vehicles_pkey      |     f      |            5 | last_location | N/A       |    t    |    f     |    t
+(9 rows)
+```
+
+The output from this `SHOW` statement displays the names and columns of the two indexes on the table (i.e., `vehicles_pkey` and `type_available_idx`).
+
+The `last_location` column's `storing` value is `true` in the `type_available_idx` index, and is therefore not sorted. The primary key column `id` is implicit in the index, meaning the `id` column is implicitly indexed in `type_available_idx`.
+
+To see an index definition, use a [`SHOW CREATE`](/docs/v23.2/show-create) statement on the table that contains the index:
+
+```sql
+> SHOW CREATE TABLE movr.max_schema.vehicles;
+```
+
+```text
+         table_name        |                                create_statement
+---------------------------+---------------------------------------------------------------------------------
+  movr.max_schema.vehicles | CREATE TABLE max_schema.vehicles (
+                           |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+                           |     type max_schema.vtype NULL,
+                           |     creation_time TIMESTAMPTZ NULL DEFAULT now():::TIMESTAMPTZ,
+                           |     available BOOL NULL,
+                           |     last_location STRING NULL,
+                           |     CONSTRAINT vehicles_pkey PRIMARY KEY (id ASC),
+                           |     INDEX type_available_idx (type ASC, available ASC) STORING (last_location)
+                           | )
+(1 row)
+```
+
+After creating a database, a user-defined schema, some tables, and secondary indexes, the database schema should be ready for your application to [write](/docs/v23.2/insert-data) and [read data](/docs/v23.2/query-data).
+
+It's likely that you will need to update your database schema at some point. For an overview on how to update a database schema, see [Change and Remove Objects in a Database Schema](/docs/v23.2/schema-design-update). We also recommend reading about [how online schema changes work in CockroachDB](/docs/v23.2/online-schema-changes).
+
+## What's next?
+
+- [Change and Remove Objects in a Database Schema](/docs/v23.2/schema-design-update)
+- [Online Schema Changes](/docs/v23.2/online-schema-changes)
+- [Insert Data](/docs/v23.2/insert-data)
+- [Query Data](/docs/v23.2/query-data)
+
+You might also be interested in the following pages:
+
+- [`CREATE INDEX`](/docs/v23.2/create-index)
+- [Indexes](/docs/v23.2/indexes)
+- [Index a Subset of Rows with Partial Indexes](/docs/v23.2/partial-indexes)
+- [Index Sequential Keys with Hash-Sharded Indexes](/docs/v23.2/hash-sharded-indexes)
+- [Index JSON and Array Data with Generalized Inverted Indexes](/docs/v23.2/inverted-indexes)
+- [Index Spatial Data](/docs/v23.2/spatial-indexes)
+- [Cockroach Commands](/docs/v23.2/cockroach-commands)
+- [Create a User-defined Schema](/docs/v23.2/schema-design-schema)
+- [`cockroach` Commands Overview](/docs/v23.2/cockroach-commands)
+- [Database Schemas](/docs/v23.2/schema-design-schema)
+- [Create a Database](/docs/v23.2/schema-design-database)
+- [Schema Design Overview](/docs/v23.2/schema-design-overview)
+- [Create a Table](/docs/v23.2/schema-design-table)
+- [CockroachDB naming hierarchy](/docs/v23.2/sql-name-resolution#naming-hierarchy)

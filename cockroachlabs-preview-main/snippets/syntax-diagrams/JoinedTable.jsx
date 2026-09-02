@@ -1,0 +1,96 @@
+export const JoinedTable = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="233" width="797" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="26" x="51" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="49" y="1"></rect>
+<text class="terminal" x="59" y="21">(</text><a xlink:href="#joined_table" xlink:title="joined_table">
+<rect height="32" width="100" x="97" y="3"></rect>
+<rect class="nonterminal" height="32" width="100" x="95" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="76" font-size="10" class="nonterminal" x="107" y="21">joined_table</text></a><rect height="32" rx="10" width="26" x="217" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="215" y="1"></rect>
+<text class="terminal" x="225" y="21">)</text><a xlink:href="#table_ref" xlink:title="table_ref">
+<rect height="32" width="78" x="51" y="47"></rect>
+<rect class="nonterminal" height="32" width="78" x="49" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="54" font-size="10" class="nonterminal" x="61" y="65">table_ref</text></a><rect height="32" rx="10" width="66" x="189" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="187" y="45"></rect>
+<text class="terminal" x="197" y="65">CROSS</text><a xlink:href="#opt_join_hint" xlink:title="opt_join_hint">
+<rect height="32" width="104" x="275" y="47"></rect>
+<rect class="nonterminal" height="32" width="104" x="273" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="80" font-size="10" class="nonterminal" x="285" y="65">opt_join_hint</text></a><rect height="32" rx="10" width="84" x="189" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="187" y="89"></rect>
+<text class="terminal" x="197" y="109">NATURAL</text><a xlink:href="#join_type" xlink:title="join_type">
+<rect height="32" width="80" x="313" y="123"></rect>
+<rect class="nonterminal" height="32" width="80" x="311" y="121"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="56" font-size="10" class="nonterminal" x="323" y="141">join_type</text></a><a xlink:href="#opt_join_hint" xlink:title="opt_join_hint">
+<rect height="32" width="104" x="413" y="123"></rect>
+<rect class="nonterminal" height="32" width="104" x="411" y="121"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="80" font-size="10" class="nonterminal" x="423" y="141">opt_join_hint</text></a><rect height="32" rx="10" width="54" x="577" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="575" y="45"></rect>
+<text class="terminal" x="585" y="65">JOIN</text><a xlink:href="#table_ref" xlink:title="table_ref">
+<rect height="32" width="78" x="651" y="47"></rect>
+<rect class="nonterminal" height="32" width="78" x="649" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="54" font-size="10" class="nonterminal" x="661" y="65">table_ref</text></a><a xlink:href="#join_type" xlink:title="join_type">
+<rect height="32" width="80" x="189" y="199"></rect>
+<rect class="nonterminal" height="32" width="80" x="187" y="197"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="56" font-size="10" class="nonterminal" x="199" y="217">join_type</text></a><a xlink:href="#opt_join_hint" xlink:title="opt_join_hint">
+<rect height="32" width="104" x="289" y="199"></rect>
+<rect class="nonterminal" height="32" width="104" x="287" y="197"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="80" font-size="10" class="nonterminal" x="299" y="217">opt_join_hint</text></a><rect height="32" rx="10" width="54" x="433" y="167"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="431" y="165"></rect>
+<text class="terminal" x="441" y="185">JOIN</text><a xlink:href="#table_ref" xlink:title="table_ref">
+<rect height="32" width="78" x="507" y="167"></rect>
+<rect class="nonterminal" height="32" width="78" x="505" y="165"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="54" font-size="10" class="nonterminal" x="517" y="185">table_ref</text></a><a xlink:href="#join_qual" xlink:title="join_qual">
+<rect height="32" width="78" x="605" y="167"></rect>
+<rect class="nonterminal" height="32" width="78" x="603" y="165"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="54" font-size="10" class="nonterminal" x="615" y="185">join_qual</text></a><path class="line" d="m17 17 h2 m20 0 h10 m26 0 h10 m0 0 h10 m100 0 h10 m0 0 h10 m26 0 h10 m0 0 h506 m-738 0 h20 m718 0 h20 m-758 0 q10 0 10 10 m738 0 q0 -10 10 -10 m-748 10 v24 m738 0 v-24 m-738 24 q0 10 10 10 m718 0 q10 0 10 -10 m-728 10 h10 m78 0 h10 m40 0 h10 m66 0 h10 m0 0 h10 m104 0 h10 m0 0 h158 m-388 0 h20 m368 0 h20 m-408 0 q10 0 10 10 m388 0 q0 -10 10 -10 m-398 10 v24 m388 0 v-24 m-388 24 q0 10 10 10 m368 0 q10 0 10 -10 m-378 10 h10 m84 0 h10 m20 0 h10 m0 0 h214 m-244 0 h20 m224 0 h20 m-264 0 q10 0 10 10 m244 0 q0 -10 10 -10 m-254 10 v12 m244 0 v-12 m-244 12 q0 10 10 10 m224 0 q10 0 10 -10 m-234 10 h10 m80 0 h10 m0 0 h10 m104 0 h10 m40 -76 h10 m54 0 h10 m0 0 h10 m78 0 h10 m-600 0 h20 m580 0 h20 m-620 0 q10 0 10 10 m600 0 q0 -10 10 -10 m-610 10 v100 m600 0 v-100 m-600 100 q0 10 10 10 m580 0 q10 0 10 -10 m-570 10 h10 m0 0 h214 m-244 0 h20 m224 0 h20 m-264 0 q10 0 10 10 m244 0 q0 -10 10 -10 m-254 10 v12 m244 0 v-12 m-244 12 q0 10 10 10 m224 0 q10 0 10 -10 m-234 10 h10 m80 0 h10 m0 0 h10 m104 0 h10 m20 -32 h10 m54 0 h10 m0 0 h10 m78 0 h10 m0 0 h10 m78 0 h10 m0 0 h46 m43 -164 h-3"></path>
+<polygon points="787 17 795 13 795 21"></polygon>
+<polygon points="787 17 779 13 779 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

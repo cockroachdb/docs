@@ -1,0 +1,557 @@
+---
+title: "Resource Management"
+old_description: "Allocate CPU, memory, and storage resources for a secure 3-node CockroachDB cluster on Kubernetes."
+---
+
+This page explains how to configure Kubernetes cluster resources such as memory, CPU, and storage.
+
+This page is for Kubernetes deployments that are not using the CockroachDB operator. For guidance specific to the CockroachDB operator, read [Resource management with the CockroachDB operator](/docs/v26.1/configure-cockroachdb-operator).
+
+<Warning>
+New deployments of CockroachDB on Kubernetes are recommended to use the newer, fully-featured CockroachDB operator that's easier to deploy and supports scaling of multi-region clusters. To migrate an existing deployment to use the CockroachDB operator, read the [Helm](/docs/v26.1/migrate-cockroachdb-kubernetes-helm) and [Public operator](/docs/v26.1/migrate-cockroachdb-kubernetes-operator) migration guides.
+</Warning>
+
+These settings override the defaults used when [deploying CockroachDB on Kubernetes](/docs/v26.1/deploy-cockroachdb-with-kubernetes).
+
+<Tabs>
+<Tab title="Public operator">
+
+<Note>
+All `kubectl` steps should be performed in the [namespace where you installed the operator](/docs/v26.1/deploy-cockroachdb-with-kubernetes#install-the-operator). By default, this is `cockroach-operator-system`.
+</Note>
+
+<Tip>
+If you [deployed CockroachDB on Red Hat OpenShift](/docs/v26.1/deploy-cockroachdb-with-kubernetes-openshift), substitute `kubectl` with `oc` in the following commands.
+</Tip>
+
+On a production cluster, the resources you allocate to CockroachDB should be proportionate to your machine types and workload. We recommend that you determine and set these values before deploying the cluster, but you can also update the values on a running cluster.
+
+<Tip>
+Run `kubectl describe nodes` to see the available resources on the instances that you have provisioned.
+</Tip>
+
+## Memory and CPU
+
+You can set the CPU and memory resources allocated to the CockroachDB container on each pod.
+
+<Note>
+1 CPU in Kubernetes is equivalent to 1 vCPU or 1 hyperthread. For best practices on provisioning CPU and memory for CockroachDB, see the [Production Checklist](/docs/v26.1/recommended-production-settings#hardware).
+</Note>
+
+Specify CPU and memory values in `resources.requests` and `resources.limits` in the Public operator's custom resource, which is used to [deploy the cluster](/docs/v26.1/deploy-cockroachdb-with-kubernetes#initialize-the-cluster):
+
+```yaml
+spec:
+  resources:
+    requests:
+      cpu: "4"
+      memory: "16Gi"
+    limits:
+      cpu: "4"
+      memory: "16Gi"
+```
+
+Apply the new settings to the cluster:
+
+```shell
+$ kubectl apply -f example.yaml
+```
+
+We recommend using identical values for `resources.requests` and `resources.limits`. When setting the new values, note that not all of a pod's resources will be available to the CockroachDB container. This is because a fraction of the CPU and memory is reserved for Kubernetes.
+
+<Note>
+If no resource limits are specified, the pods will be able to consume the maximum available CPUs and memory. However, to avoid overallocating resources when another memory-intensive workload is on the same instance, always set resource requests and limits explicitly.
+</Note>
+
+For more information on how Kubernetes handles resources, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container).
+
+## Cache and SQL memory size
+
+Each CockroachDB node reserves a portion of its available memory for its cache and for storing temporary data for SQL queries. For more information on these settings, see the [Production Checklist](/docs/v26.1/recommended-production-settings#cache-and-sql-memory-size).
+
+Our Kubernetes manifests dynamically set cache size and SQL memory size each to 1/4 (the recommended fraction) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. If you want to customize these values, set them explicitly.
+
+Specify `cache` and `maxSQLMemory` in the Public operator's custom resource, which is used to [deploy the cluster](/docs/v26.1/deploy-cockroachdb-with-kubernetes#initialize-the-cluster):
+
+```yaml
+spec:
+  cache: "4Gi"
+  maxSQLMemory: "4Gi"
+```
+
+Apply the new settings to the cluster:
+
+```shell
+$ kubectl apply -f example.yaml
+```
+
+<Note>
+Specifying these values is equivalent to using the `--cache` and `--max-sql-memory` flags with [`cockroach start`](/docs/v26.1/cockroach-start#flags).
+</Note>
+
+## Persistent storage
+
+When you start your cluster, Kubernetes dynamically provisions and mounts a persistent volume into each pod. For more information on persistent volumes, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes).
+
+The storage capacity of each volume is set in `pvc.spec.resources` in the Public operator's custom resource, which is used to [deploy the cluster](/docs/v26.1/deploy-cockroachdb-with-kubernetes#initialize-the-cluster):
+
+```yaml
+spec:
+  dataStore:
+    pvc:
+      spec:
+        resources:
+          limits:
+            storage: "60Gi"
+          requests:
+            storage: "60Gi"
+```
+
+You should provision an appropriate amount of disk storage for your workload. For recommendations on this, see the [Production Checklist](/docs/v26.1/recommended-production-settings#storage).
+
+### Expand disk size
+
+If you discover that you need more capacity, you can expand the persistent volumes on a running cluster. Increasing disk size is often [beneficial for CockroachDB performance](/docs/v26.1/kubernetes-performance#disk-size).
+
+Specify a new volume size in `resources.requests` and `resources.limits` in the Public operator's custom resource, which is used to [deploy the cluster](/docs/v26.1/deploy-cockroachdb-with-kubernetes#initialize-the-cluster):
+
+```yaml
+spec:
+  dataStore:
+    pvc:
+      spec:
+        resources:
+          limits:
+            storage: "100Gi"
+          requests:
+            storage: "100Gi"
+```
+
+Apply the new settings to the cluster:
+
+```shell
+$ kubectl apply -f example.yaml
+```
+
+The Public operator updates the StatefulSet and triggers a rolling restart of the pods with the new storage capacity.
+
+To verify that the storage capacity has been updated, run `kubectl get pvc` to view the persistent volume claims (PVCs). It will take a few minutes before the PVCs are completely updated.
+
+## Network ports
+
+The Public operator separates network traffic into three ports:
+
+<table><thead><tr><th>Protocol</th><th>Default</th><th>Description</th><th>Custom Resource Field</th></tr></thead><tbody><tr><td>gRPC</td><td>26258</td><td>Used for node connections</td><td><code>grpcPort</code></td></tr><tr><td>HTTP</td><td>8080</td><td>Used to <a href="/docs/v26.1/ui-overview#db-console-access">access the DB Console</a></td><td><code>httpPort</code></td></tr><tr><td>SQL</td><td>26257</td><td>Used for SQL shell access</td><td><code>sqlPort</code></td></tr></tbody></table>
+
+Specify alternate port numbers in the Public operator's [custom resource](/docs/v26.1/deploy-cockroachdb-with-kubernetes#initialize-the-cluster) (for example, to match the default port `5432` on PostgreSQL):
+
+```yaml
+spec:
+  sqlPort: 5432
+```
+
+Apply the new settings to the cluster:
+
+```shell
+$ kubectl apply -f example.yaml
+```
+
+The Public operator updates the StatefulSet and triggers a rolling restart of the pods with the new port settings.
+
+<Warning>
+Currently, only the pods are updated with new ports. To connect to the cluster, you need to ensure that the `public` service is also updated to use the new port. You can do this by deleting the service with `kubectl delete service {cluster-name}-public`. When service is recreated by the operator, it will use the new port. This is a known limitation.
+</Warning>
+
+## Ingress
+
+You can configure an [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress) object to expose an internal HTTP or SQL [`ClusterIP` service](https://kubernetes.io/docs/concepts/services-networking/service#publishing-services-service-types) through a hostname.
+
+In order to use the Ingress resource, your cluster must be running an [Ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers) for load balancing. This is **not** handled by the Public operator and must be deployed separately.
+
+Specify Ingress objects in `ingress.ui` (HTTP) or `ingress.sql` (SQL) in the Public operator's custom resource, which is used to [deploy the cluster](/docs/v26.1/deploy-cockroachdb-with-kubernetes#initialize-the-cluster):
+
+```yaml
+spec:
+  ingress:
+    ui:
+      ingressClassName: nginx
+      annotations:
+        key: value
+      host: ui.example.com
+    sql:
+      ingressClassName: nginx
+      annotations:
+        key: value
+      host: sql.example.com
+```
+
+- `ingressClassName` specifies the [`IngressClass`](https://kubernetes.io/docs/concepts/services-networking/ingress#ingress-class) of the Ingress controller. This example uses the [nginx](https://kubernetes.github.io/ingress-nginx) controller.
+- The `host` must be made publicly accessible. For example, create a route in [Amazon Route 53](https://aws.amazon.com/route53), or add an entry to `/etc/hosts` that maps the IP address of the Ingress controller to the hostname.
+
+    <Note>
+    Multiple hosts can be mapped to the same Ingress controller IP.
+    </Note>
+- TCP connections for SQL clients must be enabled for the Ingress controller. For an example, see the [nginx documentation](https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services).
+
+    <Note>
+    Changing the SQL Ingress `host` on a running deployment will cause a rolling restart of the cluster, due to new node certificates being generated for the SQL host.
+    </Note>
+
+The [custom resource definition](https://github.com/cockroachdb/cockroach-operator/blob/v2.18.3/config/crd/bases/crdb.cockroachlabs.com_crdbclusters.yaml) details the fields supported by the operator.
+
+</Tab>
+<Tab title="Manual configs">
+
+On a production cluster, the resources you allocate to CockroachDB should be proportionate to your machine types and workload. We recommend that you determine and set these values before deploying the cluster, but you can also update the values on a running cluster.
+
+<Tip>
+Run `kubectl describe nodes` to see the available resources on the instances that you have provisioned.
+</Tip>
+
+## Memory and CPU
+
+You can set the CPU and memory resources allocated to the CockroachDB container on each pod.
+
+<Note>
+1 CPU in Kubernetes is equivalent to 1 vCPU or 1 hyperthread. For best practices on provisioning CPU and memory for CockroachDB, see the [Production Checklist](/docs/v26.1/recommended-production-settings#hardware).
+</Note>
+
+Specify CPU and memory values in `resources.requests` and `resources.limits` in the StatefulSet manifest you used to [deploy the cluster](/docs/v26.1/deploy-cockroachdb-with-kubernetes?filters=manual#configure-the-cluster):
+
+```yaml
+spec:
+  template:
+    containers:
+    - name: cockroachdb
+      resources:
+        requests:
+          cpu: "4"
+          memory: "16Gi"
+        limits:
+          cpu: "4"
+          memory: "16Gi"
+```
+
+Apply the new settings to the cluster:
+
+```shell
+$ kubectl apply -f {statefulset-manifest}.yaml
+```
+
+We recommend using identical values for `resources.requests` and `resources.limits`. When setting the new values, note that not all of a pod's resources will be available to the CockroachDB container. This is because a fraction of the CPU and memory is reserved for Kubernetes.
+
+<Note>
+If no resource limits are specified, the pods will be able to consume the maximum available CPUs and memory. However, to avoid overallocating resources when another memory-intensive workload is on the same instance, always set resource requests and limits explicitly.
+</Note>
+
+For more information on how Kubernetes handles resources, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container).
+
+## Persistent storage
+
+When you start your cluster, Kubernetes dynamically provisions and mounts a persistent volume into each pod. For more information on persistent volumes, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes).
+
+The storage capacity of each volume is initially set in `volumeClaimTemplates.spec.resources` in the StatefulSet manifest you used to [deploy the cluster](/docs/v26.1/deploy-cockroachdb-with-kubernetes?filters=manual#configure-the-cluster):
+
+```yaml
+volumeClaimTemplates:
+  spec:
+    resources:
+      requests:
+        storage: 100Gi
+```
+
+You should provision an appropriate amount of disk storage for your workload. For recommendations on this, see the [Production Checklist](/docs/v26.1/recommended-production-settings#storage).
+
+### Expand disk size
+
+If you discover that you need more capacity, you can expand the persistent volumes on a running cluster. Increasing disk size is often [beneficial for CockroachDB performance](/docs/v26.1/kubernetes-performance#disk-size).
+
+You can expand certain [types of persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes#types-of-persistent-volumes) (including GCE Persistent Disk and Amazon Elastic Block Store) by editing their persistent volume claims.
+
+<Note>
+These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](/docs/v26.1/deploy-cockroachdb-with-kubernetes?filters=manual).
+</Note>
+
+1. Get the persistent volume claims for the volumes:
+
+    ```shell
+    $ kubectl get pvc
+    ```
+
+    ```text
+    NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-cockroachdb-1   Bound    pvc-75e143ca-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-cockroachdb-2   Bound    pvc-75ef409a-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    ```
+2. In order to expand a persistent volume claim, `AllowVolumeExpansion` in its storage class must be `true`. Examine the storage class:
+
+    ```shell
+    $ kubectl describe storageclass standard
+    ```
+
+    ```text
+    Name:                  standard
+    IsDefaultClass:        Yes
+    Annotations:           storageclass.kubernetes.io/is-default-class=true
+    Provisioner:           kubernetes.io/gce-pd
+    Parameters:            type=pd-standard
+    AllowVolumeExpansion:  False
+    MountOptions:          <none>
+    ReclaimPolicy:         Delete
+    VolumeBindingMode:     Immediate
+    Events:                <none>
+    ```
+
+    If necessary, edit the storage class:
+
+    ```shell
+    $ kubectl patch storageclass standard -p '{"allowVolumeExpansion": true}'
+    ```
+
+    ```text
+    storageclass.storage.k8s.io/standard patched
+    ```
+3. Edit one of the persistent volume claims to request more space:
+
+    <Note>
+    The requested `storage` value must be larger than the previous value. You cannot use this method to decrease the disk size.
+    </Note>
+
+    ```shell
+    $ kubectl patch pvc datadir-cockroachdb-0 -p '{"spec": {"resources": {"requests": {"storage": "200Gi"}}}}'
+    ```
+
+    ```text
+    persistentvolumeclaim/datadir-cockroachdb-0 patched
+    ```
+4. Check the capacity of the persistent volume claim:
+
+    ```shell
+    $ kubectl get pvc datadir-cockroachdb-0
+    ```
+
+    ```text
+    NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       18m
+    ```
+
+    If the PVC capacity has not changed, this may be because `AllowVolumeExpansion` was initially set to `false` or because the [volume has a file system](https://kubernetes.io/docs/concepts/storage/persistent-volumes#resizing-an-in-use-persistentvolumeclaim) that has to be expanded. You will need to start or restart a pod in order to have it reflect the new capacity.
+
+    <Tip>
+    Running `kubectl get pv` will display the persistent volumes with their *requested* capacity and not their actual capacity. This can be misleading, so it's best to use `kubectl get pvc`.
+    </Tip>
+5. Examine the persistent volume claim. If the volume has a file system, you will see a `FileSystemResizePending` condition with an accompanying message:
+
+    ```shell
+    $ kubectl describe pvc datadir-cockroachdb-0
+    ```
+
+    ```text
+    Waiting for user to (re-)start a pod to finish file system resize of volume on node.
+    ```
+6. Delete the corresponding pod to restart it:
+
+    ```shell
+    $ kubectl delete pod cockroachdb-0
+    ```
+
+    The `FileSystemResizePending` condition and message will be removed.
+7. View the updated persistent volume claim:
+
+    ```shell
+    $ kubectl get pvc datadir-cockroachdb-0
+    ```
+
+    ```text
+    NAME                    STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   200Gi      RWO            standard       20m
+    ```
+8. The CockroachDB cluster needs to be expanded one node at a time. Repeat steps 3 - 6 to increase the capacities of the remaining volumes by the same amount.
+
+</Tab>
+<Tab title="Helm">
+
+On a production cluster, the resources you allocate to CockroachDB should be proportionate to your machine types and workload. We recommend that you determine and set these values before deploying the cluster, but you can also update the values on a running cluster.
+
+<Tip>
+Run `kubectl describe nodes` to see the available resources on the instances that you have provisioned.
+</Tip>
+
+## Memory and CPU
+
+You can set the CPU and memory resources allocated to the CockroachDB container on each pod.
+
+<Note>
+1 CPU in Kubernetes is equivalent to 1 vCPU or 1 hyperthread. For best practices on provisioning CPU and memory for CockroachDB, see the [Production Checklist](/docs/v26.1/recommended-production-settings#hardware).
+</Note>
+
+Specify CPU and memory values in `resources.requests` and `resources.limits` in the custom values file you created when [deploying the cluster](/docs/v26.1/deploy-cockroachdb-with-kubernetes?filters=helm#step-2-start-cockroachdb):
+
+```yaml
+statefulset:
+  resources:
+    limits:
+      cpu: "4"
+      memory: "16Gi"
+    requests:
+      cpu: "4"
+      memory: "16Gi"
+```
+
+Apply the custom values to override the default Helm chart [values](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml):
+
+```shell
+$ helm upgrade {release-name} --values {custom-values}.yaml cockroachdb/cockroachdb
+```
+
+We recommend using identical values for `resources.requests` and `resources.limits`. When setting the new values, note that not all of a pod's resources will be available to the CockroachDB container. This is because a fraction of the CPU and memory is reserved for Kubernetes.
+
+<Note>
+If no resource limits are specified, the pods will be able to consume the maximum available CPUs and memory. However, to avoid overallocating resources when another memory-intensive workload is on the same instance, always set resource requests and limits explicitly.
+</Note>
+
+For more information on how Kubernetes handles resources, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container).
+
+## Cache and SQL memory size
+
+Each CockroachDB node reserves a portion of its available memory for its cache and for storing temporary data for SQL queries. For more information on these settings, see the [Production Checklist](/docs/v26.1/recommended-production-settings#cache-and-sql-memory-size).
+
+Our Kubernetes manifests dynamically set cache size and SQL memory size each to 1/4 (the recommended fraction) of the available memory, which depends on the memory request and limit you [specified](#memory-and-cpu) for your configuration. If you want to customize these values, set them explicitly.
+
+Specify `cache` and `maxSQLMemory` in the custom values file you created when [deploying the cluster](/docs/v26.1/deploy-cockroachdb-with-kubernetes?filters=helm#step-2-start-cockroachdb):
+
+```yaml
+conf:
+  cache: "4Gi"
+  max-sql-memory: "4Gi"
+```
+
+Apply the custom values to override the default Helm chart [values](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml):
+
+```shell
+$ helm upgrade {release-name} --values {custom-values}.yaml cockroachdb/cockroachdb
+```
+
+## Persistent storage
+
+When you start your cluster, Kubernetes dynamically provisions and mounts a persistent volume into each pod. For more information on persistent volumes, see the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/persistent-volumes).
+
+The storage capacity of each volume is initially set in the Helm chart's [values file](https://github.com/cockroachdb/helm-charts/blob/master/cockroachdb/values.yaml):
+
+```yaml
+persistentVolume:
+  size: 100Gi
+```
+
+You should provision an appropriate amount of disk storage for your workload. For recommendations on this, see the [Production Checklist](/docs/v26.1/recommended-production-settings#storage).
+
+### Expand disk size
+
+If you discover that you need more capacity, you can expand the persistent volumes on a running cluster. Increasing disk size is often [beneficial for CockroachDB performance](/docs/v26.1/kubernetes-performance#disk-size).
+
+You can expand certain [types of persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes#types-of-persistent-volumes) (including GCE Persistent Disk and Amazon Elastic Block Store) by editing their persistent volume claims.
+
+<Note>
+These steps assume you followed the tutorial [Deploy CockroachDB on Kubernetes](/docs/v26.1/deploy-cockroachdb-with-kubernetes?filters=helm).
+</Note>
+
+1. Get the persistent volume claims for the volumes:
+
+    ```shell
+    $ kubectl get pvc
+    ```
+
+    ```text
+    NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-my-release-cockroachdb-1   Bound    pvc-75e143ca-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    datadir-my-release-cockroachdb-2   Bound    pvc-75ef409a-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       17m
+    ```
+2. In order to expand a persistent volume claim, `AllowVolumeExpansion` in its storage class must be `true`. Examine the storage class:
+
+    ```shell
+    $ kubectl describe storageclass standard
+    ```
+
+    ```text
+    Name:                  standard
+    IsDefaultClass:        Yes
+    Annotations:           storageclass.kubernetes.io/is-default-class=true
+    Provisioner:           kubernetes.io/gce-pd
+    Parameters:            type=pd-standard
+    AllowVolumeExpansion:  False
+    MountOptions:          <none>
+    ReclaimPolicy:         Delete
+    VolumeBindingMode:     Immediate
+    Events:                <none>
+    ```
+
+    If necessary, edit the storage class:
+
+    ```shell
+    $ kubectl patch storageclass standard -p '{"allowVolumeExpansion": true}'
+    ```
+
+    ```text
+    storageclass.storage.k8s.io/standard patched
+    ```
+3. Edit one of the persistent volume claims to request more space:
+
+    <Note>
+    The requested `storage` value must be larger than the previous value. You cannot use this method to decrease the disk size.
+    </Note>
+
+    ```shell
+    $ kubectl patch pvc datadir-my-release-cockroachdb-0 -p '{"spec": {"resources": {"requests": {"storage": "200Gi"}}}}'
+    ```
+
+    ```text
+    persistentvolumeclaim/datadir-my-release-cockroachdb-0 patched
+    ```
+4. Check the capacity of the persistent volume claim:
+
+    ```shell
+    $ kubectl get pvc datadir-my-release-cockroachdb-0
+    ```
+
+    ```text
+    NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   100Gi      RWO            standard       18m
+    ```
+
+    If the PVC capacity has not changed, this may be because `AllowVolumeExpansion` was initially set to `false` or because the [volume has a file system](https://kubernetes.io/docs/concepts/storage/persistent-volumes#resizing-an-in-use-persistentvolumeclaim) that has to be expanded. You will need to start or restart a pod in order to have it reflect the new capacity.
+
+    <Tip>
+    Running `kubectl get pv` will display the persistent volumes with their *requested* capacity and not their actual capacity. This can be misleading, so it's best to use `kubectl get pvc`.
+    </Tip>
+5. Examine the persistent volume claim. If the volume has a file system, you will see a `FileSystemResizePending` condition with an accompanying message:
+
+    ```shell
+    $ kubectl describe pvc datadir-my-release-cockroachdb-0
+    ```
+
+    ```text
+    Waiting for user to (re-)start a pod to finish file system resize of volume on node.
+    ```
+6. Delete the corresponding pod to restart it:
+
+    ```shell
+    $ kubectl delete pod my-release-cockroachdb-0
+    ```
+
+    The `FileSystemResizePending` condition and message will be removed.
+7. View the updated persistent volume claim:
+
+    ```shell
+    $ kubectl get pvc datadir-my-release-cockroachdb-0
+    ```
+
+    ```text
+    NAME                               STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+    datadir-my-release-cockroachdb-0   Bound    pvc-75dadd4c-01a1-11ea-b065-42010a8e00cb   200Gi      RWO            standard       20m
+    ```
+8. The CockroachDB cluster needs to be expanded one node at a time. Repeat steps 3 - 6 to increase the capacities of the remaining volumes by the same amount.
+
+</Tab>
+</Tabs>

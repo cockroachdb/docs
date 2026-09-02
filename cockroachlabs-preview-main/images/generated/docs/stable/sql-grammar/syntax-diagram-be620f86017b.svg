@@ -1,0 +1,91 @@
+<svg height="377" width="575" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="44" x="51" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="49" y="1"></rect>
+<text class="terminal" x="59" y="21">SET</text>
+<rect height="32" rx="10" width="62" x="135" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="133" y="1"></rect>
+<text class="terminal" x="143" y="21">LABEL</text><a xlink:href="#string_or_placeholder" xlink:title="string_or_placeholder">
+<rect height="32" width="158" x="217" y="3"></rect>
+<rect class="nonterminal" height="32" width="158" x="215" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="134" font-size="10" class="nonterminal" x="227" y="21">string_or_placeholder</text></a><rect height="32" rx="10" width="56" x="135" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="133" y="45"></rect>
+<text class="terminal" x="143" y="65">INTO</text><a xlink:href="#string_or_placeholder_opt_list" xlink:title="string_or_placeholder_opt_list">
+<rect height="32" width="214" x="211" y="47"></rect>
+<rect class="nonterminal" height="32" width="214" x="209" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="190" font-size="10" class="nonterminal" x="221" y="65">string_or_placeholder_opt_list</text></a><rect height="32" rx="10" width="58" x="135" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="133" y="89"></rect>
+<text class="terminal" x="143" y="109">WITH</text><a xlink:href="#backup_options" xlink:title="backup_options">
+<rect height="32" width="120" x="213" y="91"></rect>
+<rect class="nonterminal" height="32" width="120" x="211" y="89"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="96" font-size="11" class="nonterminal" x="223" y="109">backup_options</text></a><a xlink:href="#cron_expr" xlink:title="cron_expr">
+<rect height="32" width="84" x="135" y="135"></rect>
+<rect class="nonterminal" height="32" width="84" x="133" y="133"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="60" font-size="10" class="nonterminal" x="145" y="153">cron_expr</text></a><rect height="32" rx="10" width="54" x="135" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="133" y="177"></rect>
+<text class="terminal" x="143" y="197">FULL</text>
+<rect height="32" rx="10" width="74" x="209" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="207" y="177"></rect>
+<text class="terminal" x="217" y="197">BACKUP</text>
+<rect height="32" rx="10" width="78" x="323" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="321" y="177"></rect>
+<text class="terminal" x="331" y="197">ALWAYS</text><a xlink:href="#sconst_or_placeholder" xlink:title="sconst_or_placeholder">
+<rect height="32" width="164" x="323" y="223"></rect>
+<rect class="nonterminal" height="32" width="164" x="321" y="221"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="140" font-size="10" class="nonterminal" x="333" y="241">sconst_or_placeholder</text></a><rect height="32" rx="10" width="92" x="135" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="133" y="265"></rect>
+<text class="terminal" x="143" y="285">SCHEDULE</text>
+<rect height="32" rx="10" width="76" x="247" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="245" y="265"></rect>
+<text class="terminal" x="255" y="285">OPTION</text><a xlink:href="#kv_option" xlink:title="kv_option">
+<rect height="32" width="82" x="343" y="267"></rect>
+<rect class="nonterminal" height="32" width="82" x="341" y="265"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="353" y="285">kv_option</text></a><rect height="32" rx="10" width="80" x="51" y="311"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="49" y="309"></rect>
+<text class="terminal" x="59" y="329">EXECUTE</text>
+<rect height="32" rx="10" width="54" x="171" y="343"></rect>
+<rect class="terminal" height="32" rx="10" width="54" x="169" y="341"></rect>
+<text class="terminal" x="179" y="361">FULL</text>
+<rect height="32" rx="10" width="116" x="265" y="311"></rect>
+<rect class="terminal" height="32" rx="10" width="116" x="263" y="309"></rect>
+<text class="terminal" x="273" y="329">IMMEDIATELY</text>
+<path class="line" d="m17 17 h2 m20 0 h10 m44 0 h10 m20 0 h10 m62 0 h10 m0 0 h10 m158 0 h10 m0 0 h132 m-412 0 h20 m392 0 h20 m-432 0 q10 0 10 10 m412 0 q0 -10 10 -10 m-422 10 v24 m412 0 v-24 m-412 24 q0 10 10 10 m392 0 q10 0 10 -10 m-402 10 h10 m56 0 h10 m0 0 h10 m214 0 h10 m0 0 h82 m-402 -10 v20 m412 0 v-20 m-412 20 v24 m412 0 v-24 m-412 24 q0 10 10 10 m392 0 q10 0 10 -10 m-402 10 h10 m58 0 h10 m0 0 h10 m120 0 h10 m0 0 h174 m-402 -10 v20 m412 0 v-20 m-412 20 v24 m412 0 v-24 m-412 24 q0 10 10 10 m392 0 q10 0 10 -10 m-402 10 h10 m84 0 h10 m0 0 h288 m-402 -10 v20 m412 0 v-20 m-412 20 v24 m412 0 v-24 m-412 24 q0 10 10 10 m392 0 q10 0 10 -10 m-402 10 h10 m54 0 h10 m0 0 h10 m74 0 h10 m20 0 h10 m78 0 h10 m0 0 h86 m-204 0 h20 m184 0 h20 m-224 0 q10 0 10 10 m204 0 q0 -10 10 -10 m-214 10 v24 m204 0 v-24 m-204 24 q0 10 10 10 m184 0 q10 0 10 -10 m-194 10 h10 m164 0 h10 m-382 -54 v20 m412 0 v-20 m-412 20 v68 m412 0 v-68 m-412 68 q0 10 10 10 m392 0 q10 0 10 -10 m-402 10 h10 m92 0 h10 m0 0 h10 m76 0 h10 m0 0 h10 m82 0 h10 m0 0 h82 m-496 -264 h20 m496 0 h20 m-536 0 q10 0 10 10 m516 0 q0 -10 10 -10 m-526 10 v288 m516 0 v-288 m-516 288 q0 10 10 10 m496 0 q10 0 10 -10 m-506 10 h10 m80 0 h10 m20 0 h10 m0 0 h64 m-94 0 h20 m74 0 h20 m-114 0 q10 0 10 10 m94 0 q0 -10 10 -10 m-104 10 v12 m94 0 v-12 m-94 12 q0 10 10 10 m74 0 q10 0 10 -10 m-84 10 h10 m54 0 h10 m20 -32 h10 m116 0 h10 m0 0 h146 m23 -308 h-3"></path>
+<polygon points="565 17 573 13 573 21"></polygon>
+<polygon points="565 17 557 13 557 21"></polygon></svg>

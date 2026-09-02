@@ -1,0 +1,485 @@
+---
+title: "Generalized Inverted Indexes"
+old_description: "Generalized inverted indexes (GIN) improve your database's performance and usefulness by helping SQL locate data in JSONB or ARRAY columns."
+---
+
+Generalized inverted indexes, or GIN indexes, store mappings from values within a container column (such as a [`JSONB`](/docs/v25.2/jsonb) document) to the row that holds that value. They are used to speed up containment searches, e.g., "show me all of the rows from this table which have a JSON column that contains the key-value pair `{"location":"NYC"}`". GIN indexes are commonly used in [document retrieval systems](https://wikipedia.org/wiki/Document_retrieval).
+
+CockroachDB stores the contents of the following data types in GIN indexes:
+
+- [`JSONB`](/docs/v25.2/jsonb)
+- [`ARRAY`](/docs/v25.2/array)
+- [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)](/docs/v25.2/spatial-indexes)
+- [`TSVECTOR` (for full-text search)](/docs/v25.2/tsvector)
+- [`STRING` (using trigram indexes)](/docs/v25.2/trigram-indexes)
+
+<Tip>
+  For a hands-on demonstration of using GIN indexes to improve query performance on a `JSONB` column, see the [JSON
+  tutorial](/docs/v25.2/demo-json-support).
+</Tip>
+
+## How do GIN indexes work?
+
+Standard [indexes](/docs/v25.2/indexes) work well for searches based on prefixes of sorted data. However, data types like [`JSONB`](/docs/v25.2/jsonb) or [arrays](/docs/v25.2/array) cannot be queried without a full table scan, since they do not adhere to ordinary value prefix comparison operators. `JSONB` in particular needs to be indexed in a more detailed way than what a standard index provides. This is where GIN indexes prove useful.
+
+GIN indexes filter on components of tokenizable data. The `JSONB` data type is built on two structures that can be tokenized:
+
+- **Objects** - Collections of key-value pairs where each key-value pair is a token.
+- **Arrays** - Ordered lists of values where every value in the array is a token.
+
+For example, take the following `JSONB` value in column `person`:
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "age": 25,
+  "address": {
+    "state": "NY",
+    "postalCode": "10021"
+  },
+  "cars": ["Subaru", "Honda"]
+}
+```
+
+A GIN index for this object would have an entry per component, mapping it back to the original object:
+
+```text
+"firstName": "John"
+"lastName": "Smith"
+"age": 25
+"address": "state": "NY"
+"address": "postalCode": "10021"
+"cars" : "Subaru"
+"cars" : "Honda"
+```
+
+This lets you search based on subcomponents.
+
+### Creation
+
+You can use GIN indexes to improve the performance of queries using [`JSONB`](/docs/v25.2/jsonb), [`ARRAY`](/docs/v25.2/array), [`TSVECTOR`](/docs/v25.2/tsvector) columns (for [full-text searches](/docs/v25.2/full-text-search)), or [`STRING`](/docs/v25.2/string) (for [fuzzy searches using trigrams](/docs/v25.2/trigram-indexes)). You can create them:
+
+- Using the PostgreSQL-compatible syntax [`CREATE INDEX... USING GIN`](/docs/v25.2/create-index):
+
+  ```sql
+  CREATE INDEX {optional name} ON {table} USING GIN ({column});
+  ```
+
+  Also specify an opclass when [creating a trigram index](/docs/v25.2/trigram-indexes#creation):
+
+  ```sql
+  CREATE INDEX {optional name} ON {table} USING GIN ({column} {opclass});
+  ```
+
+  <Tip>
+    You can also use the preceding syntax to specify the `jsonb_ops` or `array_ops` opclass (for `JSONB` and `ARRAY`
+    columns, respectively).
+  </Tip>
+
+- While creating the table, using the syntax [`CREATE INVERTED INDEX`](/docs/v25.2/create-table#create-a-table-with-secondary-and-gin-indexes):
+
+  ```sql
+  CREATE INVERTED INDEX {optional name} ON {table} ({column});
+  ```
+
+  Also specify an opclass when [creating a trigram index](/docs/v25.2/trigram-indexes#creation):
+
+  ```sql
+  CREATE INVERTED INDEX {optional name} ON {table} ({column} {opclass});
+  ```
+
+### Selection
+
+If a query contains a filter against an indexed `JSONB` or `ARRAY` column that uses any of the [supported operators](#comparisons), the GIN index is added to the set of index candidates.
+
+In most cases CockroachDB selects the index it calculates will scan the fewest rows (i.e., the fastest). Cases where CockroachDB will use multiple indexes include certain queries that use disjunctions (i.e., predicates with `OR`), as well as [zigzag joins](/docs/v25.2/cost-based-optimizer#zigzag-joins) for some other queries. To learn how to use the [`EXPLAIN`](/docs/v25.2/explain) statement for your query to see which index is being used, see [Index Selection in CockroachDB](https://www.cockroachlabs.com/blog/index-selection-cockroachdb-2).
+
+To override CockroachDB's index selection, you can use an index hint to force a query to use [a specific index](/docs/v25.2/table-expressions#force-index-selection), including [inverted indexes](/docs/v25.2/table-expressions#force-inverted-index-scan) and [partial GIN indexes](/docs/v25.2/table-expressions#force-partial-gin-index-scan); or use [an inverted join hint](/docs/v25.2/cost-based-optimizer#supported-join-algorithms).
+
+### Storage
+
+CockroachDB stores indexes directly in your key-value store. You can find more information in our blog post [Mapping Table Data to Key-Value Storage](https://www.cockroachlabs.com/blog/sql-in-cockroachdb-mapping-table-data-to-key-value-storage).
+
+### Locking
+
+Tables are not locked during index creation due to CockroachDB's [schema change procedure](https://www.cockroachlabs.com/blog/how-online-schema-changes-are-possible-in-cockroachdb).
+
+### Performance
+
+Indexes create a trade-off: they greatly improve the speed of queries, but slightly slow down writes (because new values have to be copied and sorted). The first index you create has the largest impact, but additional indexes introduce only marginal overhead.
+
+### Comparisons
+
+This section describes how to perform comparisons on `JSONB` and `ARRAY` columns.
+
+#### JSONB
+
+GIN indexes on `JSONB` columns support the following comparison operators:
+
+- **is contained by**: [`<@`](/docs/v25.2/functions-and-operators#operators)
+- **contains**: [`@>`](/docs/v25.2/functions-and-operators#operators)
+- **equals**: [`=`](/docs/v25.2/functions-and-operators#operators). To use `=`, you must also reach into the JSON document with the [`->`](/docs/v25.2/functions-and-operators#supported-operations) operator. For example:
+
+  ```sql
+  > SELECT * FROM a WHERE j ->'foo' = '"1"';
+  ```
+
+  This is equivalent to using `@>`:
+
+  ```sql
+  > SELECT * FROM a WHERE j @> '{"foo": "1"}';
+  ```
+
+If you require comparisons using [`<`](/docs/v25.2/functions-and-operators#operators), [`<=`](/docs/v25.2/functions-and-operators#operators), etc., you can create an index on a [computed column](/docs/v25.2/computed-columns) using your JSON payload, and then create a standard index on that. To write a query where the value of `foo` is greater than three:
+
+1. Create a table with a computed column:
+
+   ```sql
+   > CREATE TABLE test (
+       id INT,
+       data JSONB,
+       foo INT AS ((data->>'foo')::INT) STORED
+       );
+   ```
+
+2. Create an index on the computed column:
+
+   ```sql
+   > CREATE INDEX test_idx ON test (foo);
+   ```
+
+3. Execute the query with the comparison:
+
+   ```sql
+   > SELECT * FROM test where foo > 3;
+   ```
+
+#### Arrays
+
+GIN indexes on [`ARRAY`](/docs/v25.2/array) columns support the following comparison operators:
+
+- **is contained by**: [`<@`](/docs/v25.2/functions-and-operators#operators)
+- **contains**: [`@>`](/docs/v25.2/functions-and-operators#operators)
+
+## Partial GIN indexes
+
+You can create a [partial](/docs/v25.2/partial-indexes) GIN index, a GIN index on a subset of `JSON`, `ARRAY`, or geospatial container column data. Just like partial indexes that use non-container data types, you create a partial GIN index by including a clause, like a `WHERE` clause, that evaluates to `true` on a boolean predicate.
+
+```sql
+CREATE TABLE test (
+  id INT,
+  data JSONB,
+  INVERTED INDEX idx_data(data) WHERE id > 10
+);
+```
+
+## GIN indexes on `REGIONAL BY ROW` tables in multi-region databases
+
+In [multi-region deployments](/docs/v25.2/multiregion-overview), most users should use [`REGIONAL BY ROW` tables](/docs/v25.2/table-localities#regional-by-row-tables) instead of explicit index [partitioning](/docs/v25.2/partitioning). When you add an index to a `REGIONAL BY ROW` table, it is automatically partitioned on the [`crdb_region` column](/docs/v25.2/alter-table#crdb_region). Explicit index partitioning is not required.
+
+While CockroachDB process an [`ADD REGION`](/docs/v25.2/alter-database#add-region) or [`DROP REGION`](/docs/v25.2/alter-database#drop-region) statement on a particular database, creating or modifying an index will throw an error. Similarly, all [`ADD REGION`](/docs/v25.2/alter-database#add-region) and [`DROP REGION`](/docs/v25.2/alter-database#drop-region) statements will be blocked while an index is being modified on a `REGIONAL BY ROW` table within the same database.
+
+For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](/docs/v25.2/alter-table#add-a-unique-index-to-a-regional-by-row-table).
+
+## Multi-column GIN indexes
+
+You can create a GIN index with multiple columns. The last indexed column must be one of the inverted types such as `JSON`, `ARRAY`, `GEOMETRY`, and `GEOGRAPHY`. All preceding columns must have types that are indexable. These indexes may be used for queries that constrain all index columns.
+
+```sql
+CREATE TABLE users (
+  profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_type STRING,
+  user_profile JSONB,
+  INVERTED INDEX (user_type, user_profile)
+);
+```
+
+## Examples
+
+### Create a table with GIN index on a `JSONB` column
+
+In this example, let's create a table with a `JSONB` column and a GIN index:
+
+```sql
+> CREATE TABLE users (
+    profile_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    last_updated TIMESTAMP DEFAULT now(),
+    user_profile JSONB,
+    INVERTED INDEX user_details (user_profile)
+  );
+```
+
+Then, insert a few rows of data:
+
+```sql
+> INSERT INTO users (user_profile) VALUES
+    ('{"first_name": "Lola", "last_name": "Dog", "location": "NYC", "online" : true, "friends" : 547}'),
+    ('{"first_name": "Ernie", "status": "Looking for treats", "location" : "Brooklyn"}'),
+    ('{"first_name": "Carl", "last_name": "Kimball", "location": "NYC", "breed": "Boston Terrier"}'
+  );
+```
+
+```sql
+> SELECT *, jsonb_pretty(user_profile) FROM users;
+```
+
+```text
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+------------------------------------+
+|              profile_id              |           last_updated           |                               user_profile                               |            jsonb_pretty            |
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+------------------------------------+
+| 81330a51-80b2-44aa-b793-1b8d84ba69c9 | 2018-03-13 18:26:24.521541+00:00 | {"breed": "Boston Terrier", "first_name": "Carl", "last_name":           | {                                  |
+|                                      |                                  | "Kimball", "location": "NYC"}                                            |                                    |
+|                                      |                                  |                                                                          |     "breed": "Boston Terrier",     |
+|                                      |                                  |                                                                          |     "first_name": "Carl",          |
+|                                      |                                  |                                                                          |     "last_name": "Kimball",        |
+|                                      |                                  |                                                                          |     "location": "NYC"              |
+|                                      |                                  |                                                                          | }                                  |
+| 81c87adc-a49c-4bed-a59c-3ac417756d09 | 2018-03-13 18:26:24.521541+00:00 | {"first_name": "Ernie", "location": "Brooklyn", "status": "Looking for   | {                                  |
+|                                      |                                  | treats"}                                                                 |                                    |
+|                                      |                                  |                                                                          |     "first_name": "Ernie",         |
+|                                      |                                  |                                                                          |     "location": "Brooklyn",        |
+|                                      |                                  |                                                                          |     "status": "Looking for treats" |
+|                                      |                                  |                                                                          | }                                  |
+| ec0a4942-b0aa-4a04-80ae-591b3f57721e | 2018-03-13 18:26:24.521541+00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location":   | {                                  |
+|                                      |                                  | "NYC", "online": true}                                                   |                                    |
+|                                      |                                  |                                                                          |     "first_name": "Lola",          |
+|                                      |                                  |                                                                          |     "friends": 547,                |
+|                                      |                                  |                                                                          |     "last_name": "Dog",            |
+|                                      |                                  |                                                                          |     "location": "NYC",             |
+|                                      |                                  |                                                                          |     "online": true                 |
+|                                      |                                  |                                                                          | }                                  |
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+------------------------------------+
+(3 rows)
+```
+
+Now, run a query that filters on the `JSONB` column:
+
+```sql
+> SELECT * FROM users where user_profile @> '{"location":"NYC"}';
+```
+
+```text
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
+|              profile_id              |           last_updated           |                               user_profile                               |
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
+| 81330a51-80b2-44aa-b793-1b8d84ba69c9 | 2018-03-13 18:26:24.521541+00:00 | {"breed": "Boston Terrier", "first_name": "Carl", "last_name":           |
+|                                      |                                  | "Kimball", "location": "NYC"}                                            |
+| ec0a4942-b0aa-4a04-80ae-591b3f57721e | 2018-03-13 18:26:24.521541+00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location":   |
+|                                      |                                  | "NYC", "online": true}                                                   |
++--------------------------------------+----------------------------------+--------------------------------------------------------------------------+
+(2 rows)
+```
+
+### Add a GIN index to a table with an `ARRAY` column
+
+In this example, let's create a table with an `ARRAY` column first, and add the GIN index later:
+
+```sql
+> CREATE TABLE students (
+    student_id  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    marks INT ARRAY
+  );
+```
+
+Insert a few rows of data:
+
+```sql
+> INSERT INTO students (marks) VALUES
+    (ARRAY[10,20,50]),
+    (ARRAY[20,40,100]),
+    (ARRAY[100,20,70]
+  );
+```
+
+```sql
+> SELECT * FROM students;
+```
+
+```text
++--------------------------------------+--------------+
+|              student_id              |    marks     |
++--------------------------------------+--------------+
+| 11cdc77c-2f12-48d4-8bb4-ddee7c705e00 | {10,20,50}   |
+|                                      |              |
+| 2526c746-0b32-4f6b-a2b4-7ce6d411c1c2 | {20,40,100}  |
+|                                      |              |
+| eefdc32e-4485-45ca-9df1-80c0f42d73c0 | {100,20,70}  |
+|                                      |              |
++--------------------------------------+--------------+
+(3 rows)
+```
+
+Now, let’s add a GIN index to the table and run a query that filters on the `ARRAY`:
+
+```sql
+> CREATE INVERTED INDEX student_marks ON students (marks);
+```
+
+```sql
+> SELECT * FROM students where marks @> ARRAY[100];
+```
+
+```text
++--------------------------------------+--------------+
+|              student_id              |    marks     |
++--------------------------------------+--------------+
+| 2526c746-0b32-4f6b-a2b4-7ce6d411c1c2 | {20,40,100}  |
+|                                      |              |
+| eefdc32e-4485-45ca-9df1-80c0f42d73c0 | {100,20,70}  |
+|                                      |              |
++--------------------------------------+--------------+
+(2 rows)
+```
+
+### Create a table with a partial GIN index on a `JSONB` column
+
+In the same `users` table from [Create a table with GIN index on a JSONB column](#create-a-table-with-gin-index-on-a-jsonb-column), create a partial GIN index for online users.
+
+```sql
+CREATE INVERTED INDEX idx_online_users ON users(user_profile) WHERE user_profile -> 'online' = 'true';
+```
+
+```sql
+SELECT * FROM users WHERE user_profile -> 'online' = 'true';
+```
+
+```text
+               profile_id              |            last_updated             |                                         user_profile
+---------------------------------------+-------------------------------------+------------------------------------------------------------------------------------------------
+  b6df0cae-d619-4a08-ab4f-2815da7b981f | 2021-04-13 20:54:35.660734+00:00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location": "NYC", "online": true}
+(1 row)
+```
+
+Now, use index hinting with the partial GIN index.
+
+```sql
+SELECT * FROM users@idx_online_users WHERE user_profile->'online' = 'true' AND user_profile->'location' = '"NYC"';
+```
+
+```text
+               profile_id              |            last_updated             |                                         user_profile
+---------------------------------------+-------------------------------------+------------------------------------------------------------------------------------------------
+  ea1db57e-51c3-449d-b928-adab11191085 | 2021-04-14 20:45:39.960443+00:00:00 | {"first_name": "Lola", "friends": 547, "last_name": "Dog", "location": "NYC", "online": true}
+(1 row)
+```
+
+### Create a trigram index on a `STRING` column
+
+For an example showing how to create a trigram index on a [`STRING`](/docs/v25.2/string) column, see [Trigram Indexes](/docs/v25.2/trigram-indexes#examples).
+
+### Create a full-text index on a `TSVECTOR` column
+
+For an example showing how to create a full-text index on a [`TSVECTOR`](/docs/v25.2/tsvector) column, see [Full-Text Search](/docs/v25.2/full-text-search#examples).
+
+### Inverted join examples
+
+To run these examples, initialize a demo cluster with the MovR workload.
+
+Start the [MovR database](/docs/v25.2/movr) on a 3-node CockroachDB demo cluster with a larger data set.
+
+```shell
+cockroach demo movr --num-histories 250000 --num-promo-codes 250000 --num-rides 125000 --num-users 12500 --num-vehicles 3750 --nodes 3
+```
+
+Create a GIN index on the `vehicles` table's `ext` column.
+
+```sql
+CREATE INVERTED INDEX idx_vehicle_details ON vehicles(ext);
+```
+
+Check the statement plan for a `SELECT` statement that uses an inner inverted join.
+
+```sql
+EXPLAIN SELECT * FROM vehicles@vehicles_pkey AS v2 INNER INVERTED JOIN vehicles@idx_vehicle_details AS v1 ON v1.ext @> v2.ext;
+```
+
+```text
+                    info
+---------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • lookup join
+  │ table: vehicles@vehicles_pkey
+  │ equality: (city, id) = (city,id)
+  │ equality cols are key
+  │ pred: ext @> ext
+  │
+  └── • inverted join
+      │ table: vehicles@idx_vehicle_details
+      │
+      └── • scan
+            estimated row count: 3,750 (100% of the table; stats collected 1 hour ago)
+            table: vehicles@vehicles_pkey
+            spans: FULL SCAN
+(16 rows)
+```
+
+You can omit the `INNER INVERTED JOIN` statement by putting `v1.ext` on the left side of a `@>` join condition in a `WHERE` clause and using an [index hint](/docs/v25.2/table-expressions#force-index-selection) for the GIN index.
+
+```sql
+EXPLAIN SELECT * FROM vehicles@idx_vehicle_details AS v1, vehicles AS v2 WHERE v1.ext @> v2.ext;
+```
+
+```text
+                                            info
+--------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • lookup join
+  │ table: vehicles@vehicles_pkey
+  │ equality: (city, id) = (city,id)
+  │ equality cols are key
+  │ pred: ext @> ext
+  │
+  └── • inverted join
+      │ table: vehicles@idx_vehicle_details
+      │
+      └── • scan
+            estimated row count: 3,750 (100% of the table; stats collected 1 hour ago)
+            table: vehicles@vehicles_pkey
+            spans: FULL SCAN
+(16 rows)
+```
+
+Use the `LEFT INVERTED JOIN` hint to perform a left inverted join.
+
+```sql
+EXPLAIN SELECT * FROM vehicles AS v2 LEFT INVERTED JOIN vehicles AS v1 ON v1.ext @> v2.ext;
+```
+
+```text
+                                           info
+------------------------------------------------------------------------------------------
+  distribution: full
+  vectorized: true
+
+  • lookup join (left outer)
+  │ table: vehicles@vehicles_pkey
+  │ equality: (city, id) = (city,id)
+  │ equality cols are key
+  │ pred: ext @> ext
+  │
+  └── • inverted join (left outer)
+      │ table: vehicles@idx_vehicle_details
+      │
+      └── • scan
+            estimated row count: 3,750 (100% of the table; stats collected 1 hour ago)
+            table: vehicles@vehicles_pkey
+            spans: FULL SCAN
+(16 rows)
+```
+
+## See also
+
+- [Indexes](/docs/v25.2/indexes)
+- [Trigram Indexes](/docs/v25.2/trigram-indexes)
+- [`JSONB`](/docs/v25.2/jsonb)
+- [Arrays](/docs/v25.2/array)
+- [Spatial data (`GEOMETRY` and `GEOGRAPHY` types)](/docs/v25.2/spatial-indexes)
+- [`STRING`](/docs/v25.2/string)
+- [`CREATE INDEX`](/docs/v25.2/create-index)
+- [Computed Columns](/docs/v25.2/computed-columns)
+- [SQL Statements](/docs/v25.2/sql-statements)

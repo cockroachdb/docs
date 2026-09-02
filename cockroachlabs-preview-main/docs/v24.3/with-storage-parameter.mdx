@@ -1,0 +1,89 @@
+---
+title: "WITH (storage parameter)"
+old_description: "WITH (storage parameter) applies a storage parameter to a table or an index at creation time."
+---
+
+import { WithStorageParameter7 } from "/snippets/syntax-diagrams/WithStorageParameter7.jsx";
+import { WithStorageParameter8 } from "/snippets/syntax-diagrams/WithStorageParameter8.jsx";
+
+The `WITH (storage parameter)` [statement](/docs/v24.3/sql-statements) sets a storage parameter on a table.
+
+## Syntax
+
+**create_index_with_storage_param::=**
+
+<WithStorageParameter7 />
+
+**create_table_with_storage_param::=**
+
+<WithStorageParameter8 />
+
+## Command parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table</code></td><td>The table to which you are setting the parameter.</td></tr><tr><td><code>index</code></td><td>The index to which you are setting the parameter.</td></tr><tr><td><code>parameter&#95;name</code></td><td>The name of the storage parameter. See <a href="#storage-parameters">Storage parameters</a> for a list of available parameters.</td></tr></tbody></table>
+
+## Storage parameters
+
+### Index parameters
+
+<table><thead><tr><th>Parameter name</th><th>Description</th><th>Data type</th><th>Default value</th></tr></thead><tbody><tr><td><code>bucket&#95;count</code></td><td>The number of buckets into which a <a href="/docs/v24.3/hash-sharded-indexes">hash-sharded index</a> will split.</td><td>Integer</td><td>The value of the <code>sql.defaults.default&#95;hash&#95;sharded&#95;index&#95;bucket&#95;count</code><a href="/docs/v24.3/cluster-settings">cluster setting</a>.</td></tr><tr><td><code>geometry&#95;max&#95;x</code></td><td>The maximum X-value of the <a href="/docs/v24.3/architecture/glossary#spatial-reference-system">spatial reference system</a> for the object(s) being covered. This only needs to be set if you are using a custom <a href="/docs/v24.3/architecture/glossary#srid">SRID</a>.</td><td></td><td>Derived from SRID bounds, else <code>(1 &lt;&lt; 31) -1</code>.</td></tr><tr><td><code>geometry&#95;max&#95;y</code></td><td>The maximum Y-value of the <a href="/docs/v24.3/architecture/glossary#spatial-reference-system">spatial reference system</a> for the object(s) being covered. This only needs to be set if you are using a custom <a href="/docs/v24.3/architecture/glossary#srid">SRID</a>.</td><td></td><td>Derived from SRID bounds, else <code>(1 &lt;&lt; 31) -1</code>.</td></tr><tr><td><code>geometry&#95;min&#95;x</code></td><td>The minimum X-value of the <a href="/docs/v24.3/architecture/glossary#spatial-reference-system">spatial reference system</a> for the object(s) being covered. This only needs to be set if the default bounds of the SRID are too large/small for the given data, or SRID = 0 and you wish to use a smaller range (unfortunately this is currently not exposed, but is viewable on <a href="https://epsg.io/3857">https://epsg.io/3857</a>). By default, SRID = 0 assumes <code>&#91;-min int32, max int32&#93;</code> ranges.</td><td></td><td>Derived from SRID bounds, else <code>-(1 &lt;&lt; 31)</code>.</td></tr><tr><td><code>geometry&#95;min&#95;y</code></td><td>The minimum Y-value of the <a href="/docs/v24.3/architecture/glossary#spatial-reference-system">spatial reference system</a> for the object(s) being covered. This only needs to be set if you are using a custom <a href="/docs/v24.3/architecture/glossary#srid">SRID</a>.</td><td></td><td>Derived from SRID bounds, else <code>-(1 &lt;&lt; 31)</code>.</td></tr><tr><td><code>s2&#95;level&#95;mod</code></td><td><code>s2&#95;max&#95;level</code> must be divisible by <code>s2&#95;level&#95;mod</code>. <code>s2&#95;level&#95;mod</code> must be between <code>1</code> and <code>3</code>.</td><td>Integer</td><td><code>1</code></td></tr><tr><td><code>s2&#95;max&#95;cells</code></td><td>The maximum number of S2 cells used in the covering. Provides a limit on how much work is done exploring the possible coverings. Allowed values: <code>1-30</code>. You may want to use higher values for odd-shaped regions such as skinny rectangles. Used in <a href="/docs/v24.3/spatial-indexes">spatial indexes</a>.</td><td>Integer</td><td><code>4</code></td></tr><tr><td><code>s2&#95;max&#95;level</code></td><td>The maximum level of S2 cell used in the covering. Allowed values: <code>1-30</code>. Setting it to less than the default means that CockroachDB will be forced to generate coverings using larger cells. Used in <a href="/docs/v24.3/spatial-indexes">spatial indexes</a>.</td><td>Integer</td><td><code>30</code></td></tr></tbody></table>
+
+The following parameters are included for PostgreSQL compatibility and do not affect how CockroachDB runs:
+
+- `fillfactor`
+
+### Table parameters
+
+<table><thead><tr><th>Parameter name</th><th>Description</th><th>Data type</th><th>Default value</th></tr></thead><tbody><tr><td><code>exclude&#95;data&#95;from&#95;backup</code></td><td>Exclude the data in this table from any future backups.</td><td>Boolean</td><td><code>false</code></td></tr><tr><td><code>schema&#95;locked</code></td><td>Disallow <a href="/docs/v24.3/online-schema-changes">schema changes</a> on this table. Enabling <code>schema&#95;locked</code> can help <a href="/docs/v24.3/create-changefeed#disallow-schema-changes-on-tables-to-improve-changefeed-performance">improve performance of changefeeds</a> running on this table.</td><td>Boolean</td><td><code>false</code></td></tr><tr><td><code>sql&#95;stats&#95;automatic&#95;collection&#95;enabled</code></td><td>Enable automatic collection of <a href="/docs/v24.3/cost-based-optimizer#full-statistics">full statistics</a> for this table.</td><td>Boolean</td><td><code>true</code></td></tr><tr><td><code>sql&#95;stats&#95;automatic&#95;collection&#95;min&#95;stale&#95;rows</code></td><td>Minimum number of stale rows in this table that will trigger a statistics refresh.</td><td>Integer</td><td>500</td></tr><tr><td><code>sql&#95;stats&#95;automatic&#95;collection&#95;fraction&#95;stale&#95;rows</code></td><td>Fraction of stale rows in this table that will trigger a statistics refresh.</td><td>Float</td><td>0.2</td></tr><tr><td><code>sql&#95;stats&#95;forecasts&#95;enabled</code></td><td>Enable <a href="/docs/v24.3/show-statistics#display-forecasted-statistics">forecasted statistics</a> collection for this table.</td><td>Boolean</td><td><code>true</code></td></tr></tbody></table>
+
+The following parameters are included for PostgreSQL compatibility and do not affect how CockroachDB runs:
+
+- `autovacuum_enabled`
+- `fillfactor`
+
+For the list of storage parameters that affect how [Row-Level TTL](/docs/v24.3/row-level-ttl) works, see the list of [TTL storage parameters](/docs/v24.3/row-level-ttl#ttl-storage-parameters).
+
+## Required privileges
+
+The user must be a member of the [`admin`](/docs/v24.3/security-reference/authorization#roles) or [owner](/docs/v24.3/security-reference/authorization#object-ownership) roles, or have the [`CREATE` privilege](/docs/v24.3/security-reference/authorization#supported-privileges) on the table.
+
+## Examples
+
+### Create a table with row-level TTL enabled
+
+```sql
+CREATE TABLE ttl_test (
+  id UUID PRIMARY KEY default gen_random_uuid(),
+  description TEXT,
+  inserted_at TIMESTAMP default current_timestamp()
+) WITH (ttl_expire_after = '3 months');
+```
+
+```sql
+SHOW CREATE TABLE ttl_test;
+```
+
+```text
+  table_name |                                                                                         create_statement
+-------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  ttl_test   | CREATE TABLE public.ttl_test (
+             |     id UUID NOT NULL DEFAULT gen_random_uuid(),
+             |     description STRING NULL,
+             |     inserted_at TIMESTAMP NULL DEFAULT current_timestamp():::TIMESTAMP,
+             |     crdb_internal_expiration TIMESTAMPTZ NOT VISIBLE NOT NULL DEFAULT current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL ON UPDATE current_timestamp():::TIMESTAMPTZ + '3 mons':::INTERVAL,
+             |     CONSTRAINT ttl_test_pkey PRIMARY KEY (id ASC)
+             | ) WITH (ttl = 'on', ttl_expire_after = '3 mons':::INTERVAL, ttl_job_cron = '@hourly')
+(1 row)
+```
+
+In this case, CockroachDB implicitly added the `ttl` and `ttl_job_cron` [TTL storage parameters](/docs/v24.3/row-level-ttl#ttl-storage-parameters).
+
+## See also
+
+- [`CREATE TABLE`](/docs/v24.3/create-table)
+- [Take Full and Incremental Backups](/docs/v24.3/take-full-and-incremental-backups)
+- [`BACKUP`](/docs/v24.3/backup)
+- [`RESTORE`](/docs/v24.3/restore)
+- [`SET` (storage parameter)](/docs/v24.3/alter-table#set-storage-parameter)
+- [`RESET` (storage parameter)](/docs/v24.3/alter-table#reset-storage-parameter)
+- [Batch Delete Expired Data with Row-Level TTL](/docs/v24.3/row-level-ttl)

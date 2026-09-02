@@ -1,0 +1,120 @@
+---
+title: "Table Localities"
+old_description: "Learn how to use table localities in a CockroachDB multi-region cluster."
+---
+
+_Table locality_ determines how CockroachDB optimizes access to the table's data. Every table in a multi-region database has a "table locality setting" that configures one or more _home regions_ at the table or row level. A table or row's home region is where the [leaseholder](/docs/v24.3/architecture/replication-layer#leases) of its ranges is placed, along with a number of voting replicas determined by the [survival goal](/docs/v24.3/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals) of the database.
+
+By default, all tables in a multi-region database are _regional_ tables—that is, CockroachDB optimizes access to the table's data from a single home region (by default, the database's primary region).
+
+For information about the table localities CockroachDB supports, see the sections:
+
+- [Regional tables](#regional-tables) provide low-latency reads and writes for an entire table from **a single region**.
+- [Regional by row tables](#regional-by-row-tables) provide low-latency reads and writes for one or more rows of a table from **a single region**. Different rows in the table can be optimized for access from **different regions**.
+- [Global tables](#global-tables) are optimized for low-latency reads from **all regions**.
+
+<Note>
+  Table locality settings are used for optimizing latency under different read and write patterns. If you are optimizing
+  for read and write access to all of your tables from a single region (the primary region), there is nothing else you
+  need to do once you set your [database's primary region](/docs/v24.3/multiregion-overview#database-regions).
+</Note>
+
+## Regional tables
+
+In a _regional_ table, access to the table will be fast in the table's home region and slower in other regions. In other words, CockroachDB optimizes access to data in a regional table from a single region. By default, a regional table's home region is the [database's primary region](/docs/v24.3/multiregion-overview#database-regions), but that can be changed to use any region in the database. Regional tables work well when your application requires low-latency reads and writes for an entire table from a single region.
+
+For instructions showing how to set a table's locality to `REGIONAL BY TABLE` and configure its home region, see [`ALTER TABLE... SET LOCALITY`](/docs/v24.3/alter-table#regional-by-table).
+
+By default, all tables in a multi-region database are _regional_ tables that use the database's primary region. Unless you know your application needs different performance characteristics than regional tables provide, there is no need to change this setting.
+
+## Regional by row tables
+
+In a _regional by row_ table, individual rows are optimized for access from different home regions. Each row's home region is specified in a hidden [`crdb_region` column](/docs/v24.3/alter-table#crdb_region), and is by default the region of the [gateway node](/docs/v24.3/architecture/life-of-a-distributed-transaction#gateway) from which the row is inserted. The `REGIONAL BY ROW` setting automatically divides a table and all of [its indexes](/docs/v24.3/table-localities#indexes-on-regional-by-row-tables) into [partitions](/docs/v24.3/partitioning) that use `crdb_region` as the prefix.
+
+Use regional by row tables when your application requires low-latency reads and writes at a row level where individual rows are primarily accessed from a single region. For an example of a table in a multi-region cluster that can benefit from the `REGIONAL BY ROW` setting, see the `users` table from the [MovR application](/docs/v24.3/movr), which could store users' data in specific regions for better performance.
+
+To take advantage of regional by row tables:
+
+- Use unique key lookups or queries with [`LIMIT`](/docs/v24.3/limit-offset) clauses to enable [locality optimized searches](/docs/v24.3/cost-based-optimizer#locality-optimized-search-in-multi-region-clusters) that prioritize rows in the gateway node's region. If there is a possibility that the results of the query all live in local rows, CockroachDB will first search for rows in the gateway node's region. The search only continues in remote regions if rows in the local region did not satisfy the query.
+- Use [foreign keys](/docs/v24.3/foreign-key#rules-for-creating-foreign-keys) that reference the [`crdb_region` column](/docs/v24.3/alter-table#crdb_region) in [`REGIONAL BY ROW`](/docs/v24.3/table-localities#regional-by-row-tables) tables, unless [auto-rehoming is enabled](/docs/v24.3/alter-table#turn-on-auto-rehoming-for-regional-by-row-tables) for those tables.
+- [Turn on auto-rehoming for regional by row tables](/docs/v24.3/alter-table#turn-on-auto-rehoming-for-regional-by-row-tables). A row's home region will be automatically set to the gateway region of any [`UPDATE`](/docs/v24.3/update) or [`UPSERT`](/docs/v24.3/upsert) statements that write to those rows.
+
+For instructions showing how to set a table's locality to `REGIONAL BY ROW` and configure the home regions of its rows, see [`ALTER TABLE... SET LOCALITY`](/docs/v24.3/alter-table#crdb_region).
+
+For more information on regional by row tables, see the [Cockroach Labs blog post](https://www.cockroachlabs.com/blog/regional-by-row).
+
+<Warning>
+[Secondary regions](/docs/v24.3/multiregion-overview#secondary-regions) are not compatible with databases containing [`REGIONAL BY ROW`](/docs/v24.3/table-localities#regional-by-row-tables) tables. CockroachDB does not prevent you from defining secondary regions on databases with regional by row tables, but the interaction of these features is not supported.
+
+Therefore, Cockroach Labs recommends that you avoid defining secondary regions on databases that use regional by row table configurations.
+
+</Warning>
+
+### Indexes on `REGIONAL BY ROW` tables
+
+In [multi-region deployments](/docs/v24.3/multiregion-overview), most users should use [`REGIONAL BY ROW` tables](/docs/v24.3/table-localities#regional-by-row-tables) instead of explicit index [partitioning](/docs/v24.3/partitioning). When you add an index to a `REGIONAL BY ROW` table, it is automatically partitioned on the [`crdb_region` column](/docs/v24.3/alter-table#crdb_region). Explicit index partitioning is not required.
+
+While CockroachDB process an [`ADD REGION`](/docs/v24.3/alter-database#add-region) or [`DROP REGION`](/docs/v24.3/alter-database#drop-region) statement on a particular database, creating or modifying an index will throw an error. Similarly, all [`ADD REGION`](/docs/v24.3/alter-database#add-region) and [`DROP REGION`](/docs/v24.3/alter-database#drop-region) statements will be blocked while an index is being modified on a `REGIONAL BY ROW` table within the same database.
+
+This behavior also applies to [GIN indexes](/docs/v24.3/inverted-indexes).
+
+For an example that uses unique indexes but applies to all indexes on `REGIONAL BY ROW` tables, see [Add a unique index to a `REGIONAL BY ROW` table](/docs/v24.3/alter-table#add-a-unique-index-to-a-regional-by-row-table).
+
+Regional by row tables can take advantage of [hash-sharded indexes](/docs/v24.3/hash-sharded-indexes) provided the `crdb_region` column is not part of the columns in the hash-sharded index.
+
+## Global tables
+
+A _global_ table is optimized for low-latency reads from every region in the database. This means that any region can effectively act as the home region of the table. The tradeoff is that writes will incur higher latencies from any given region, since writes have to be replicated across every region to make the global low-latency reads possible. Use global tables when your application has a "read-mostly" table of reference data that is rarely updated, and needs to be available to all regions.
+
+For an example of a table that can benefit from the _global_ table locality setting in a multi-region deployment, see the `promo_codes` table from the [MovR application](/docs/v24.3/movr).
+
+For instructions showing how to set a table's locality to `GLOBAL`, see [`ALTER TABLE... SET LOCALITY`](/docs/v24.3/alter-table#global).
+
+For more information about global tables, including troubleshooting information, see [Global Tables](/docs/v24.3/global-tables).
+
+## When to use regional vs. global tables
+
+Use a [`REGIONAL` table locality](/docs/v24.3/table-localities#regional-by-row-tables) if:
+
+- Your application requires low-latency reads and writes from a single region (either at the [row level](/docs/v24.3/table-localities#regional-by-row-tables) or the [table level](/docs/v24.3/table-localities#regional-tables) ).
+- Access to the table's data can be slower (higher latency) from other regions.
+
+Use a [`GLOBAL` table locality](/docs/v24.3/table-localities#global-tables) if:
+
+- Your application has a "read-mostly" table of reference data that is rarely updated, and that needs to be available to all regions.
+- You can accept that writes to the table will incur higher latencies from any given region, since writes use a novel [non-blocking transaction protocol](/docs/v24.3/architecture/transaction-layer#non-blocking-transactions) that uses a timestamp "in the future". Note that the observed write latency is dependent on the [`--max-offset`](/docs/v24.3/cockroach-start#flags-max-offset) setting.
+
+<Tip>
+  For new clusters using the [multi-region SQL abstractions](/docs/v24.3/multiregion-overview), Cockroach Labs
+  recommends lowering the [`--max-offset`](/docs/v24.3/cockroach-start#flags-max-offset) setting to `250ms`. This
+  setting is especially helpful for lowering the write latency of [global
+  tables](/docs/v24.3/table-localities#global-tables). Nodes can run with different values for `--max-offset`, but only
+  for the purpose of updating the setting across the cluster using a rolling upgrade.
+</Tip>
+
+## See also
+
+- [Multi-Region Capabilities Overview](/docs/v24.3/multiregion-overview)
+- [How to Choose a Multi-Region Configuration](/docs/v24.3/choosing-a-multi-region-configuration)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](/docs/v24.3/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.3/demo-low-latency-multi-region-deployment)
+- [Topology Patterns](/docs/v24.3/topology-patterns)
+- [Disaster Recovery](/docs/v24.3/disaster-recovery-planning)
+- [Migrate to Multi-Region SQL](/docs/v24.3/migrate-to-multiregion-sql)
+- [Secondary regions](/docs/v24.3/multiregion-overview#secondary-regions)
+- [`SET SECONDARY REGION`](/docs/v24.3/alter-database#set-secondary-region)
+- [`DROP SECONDARY REGION`](/docs/v24.3/alter-database#drop-secondary-region)
+
+For an in-depth data placement support comparison and a demonstration of how the [Federal Wire Act (1961)](https://en.wikipedia.org/wiki/Federal_Wire_Act) can only be satisfied with CockroachDB, watch the following video:
+
+<Frame>
+  <iframe
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    frameborder="0"
+    height="315"
+    src="https://www.youtube.com/embed/3p9VcZOf1Y4"
+    title="YouTube video player"
+    width="560"
+  ></iframe>
+</Frame>

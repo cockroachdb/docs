@@ -1,0 +1,113 @@
+---
+title: "Alerts Page"
+old_description: "The Alerts page allows you to toggle CockroachDB Cloud alerts and view alert history."
+---
+
+The **Alerts** page allows you to enable email alerts, send test alerts, and view the email recipients and alert history for your CockroachDB Cloud organization. To view the Alerts page, [log in](https://cockroachlabs.cloud/) and click **Alerts**.
+
+<Note>
+The **Alerts** page is applicable for CockroachDB Advanced clusters in your CockroachDB Cloud organization. For CockroachDB Standard and Basic clusters in your organization, all [Organization Admins](/docs/cockroachcloud/authorization#organization-admin) automatically receive email alerts when your cluster reaches 50%, 75%, and 100% of your [resource limits](/docs/v25.4/architecture/glossary#resource-limits).
+</Note>
+
+## Automatic alerts
+
+### Cluster Maintenance
+
+[Organization Admins](/docs/cockroachcloud/authorization#organization-admin) receive email alerts when:
+
+- A cluster is scheduled for an automatic [patch version upgrade](/docs/cockroachcloud/upgrade-policy#patch-version-upgrades) and again after the upgrade is complete.
+- When a cluster is scheduled for [maintenance](/docs/cockroachcloud/advanced-cluster-management#set-a-maintenance-window) that could temporarily impact the cluster's performance.
+- When a cluster's CockroachDB version is nearing [unsupported](/docs/releases/release-support-policy#support-phases) and must be upgraded to maintain support.
+
+### CMEK
+
+The [Customer-Managed Encryption Keys (CMEK)](/docs/cockroachcloud/cmek) alert is triggered when the cluster node is unable to start due to CMEK key access failure.
+
+If you receive the alert repeatedly, verify the following:
+
+- The key is still enabled in their cloud provider KMS.
+- The role or account used to access the key still has valid permissions.
+- The credentials or access key are still valid, and generate new credentials if needed.
+
+## Opt-in alerts
+
+Even with CockroachDB's various [built-in safeguards](/docs/v25.4/frequently-asked-questions#how-does-cockroachdb-survive-failures) against failure, it is critical to [enable](#configure-alerts) alerts and actively monitor the overall health and performance of a cluster running in production.
+
+<Note>
+CockroachDB Advanced clusters do not auto-scale and upgrade cluster capacity in response to utilization alerts. If you receive an alert repeatedly, you may need to [optimize your workload](/docs/v25.4/make-queries-fast) or [scale your CockroachDB Cloud cluster](/docs/cockroachcloud/advanced-cluster-management#scale-your-cluster).
+</Note>
+
+If alerts are enabled, CockroachDB Cloud sends alerts to [specified email recipients](#configure-alerts) when the following usage metrics are detected:
+
+### Storage Utilization
+
+Storage utilization alerts are triggered when:
+
+- Cluster-wide available disk capacity is **20% or less**.
+- Node-level available disk capacity is **10% or less**.
+
+If the condition triggering an alert does not change, the alert will repeat every 60 minutes.
+
+If you receive an alert repeatedly:
+
+- Consider [increasing storage per node](/docs/cockroachcloud/advanced-cluster-management#scale-your-cluster).
+- Consider [truncating](/docs/v25.4/truncate) or [dropping unused tables](/docs/v25.4/drop-table).
+
+### CPU Utilization
+
+CPU utilization alerts are triggered when:
+
+- Cluster-wide CPU usage is **80% or greater** on *average* for at least 60 minutes.
+- Node-level CPU usage is **90% or greater** on *average* for at least 90 minutes.
+
+If the condition triggering an alert does not change, the cluster-wide alert will repeat every 60 minutes and the node-level alert will repeat every 90 minutes.
+
+If you receive an alert repeatedly:
+
+- Identify unoptimized queries and [optimize your workload](/docs/v25.4/make-queries-fast).
+- Add one or more [indexes](/docs/v25.4/create-index) to improve query performance.
+- Consider [increasing the capacity](/docs/cockroachcloud/advanced-cluster-management#scale-your-cluster) of the nodes or [add more nodes](/docs/cockroachcloud/advanced-cluster-management#scale-your-cluster) to reduce the load per node.
+
+### Memory Utilization
+
+Memory utilization alerts are triggered when:
+
+- Cluster-wide available memory is **20% or less** on *average* for at least 60 minutes.
+- Node-level available memory is **10% or less** on *average* for at least 90 minutes.
+
+If the condition triggering an alert does not change, the cluster-wide alert will repeat every 60 minutes and the node-level alert will repeat every 90 minutes.
+
+If you receive an alert repeatedly:
+
+- Identify unoptimized queries and [optimize your workload](/docs/v25.4/make-queries-fast).
+- Add one or more [indexes](/docs/v25.4/create-index) to improve query performance.
+- Consider [increasing the capacity](/docs/cockroachcloud/advanced-cluster-management#scale-your-cluster) of the nodes or [add more nodes](/docs/cockroachcloud/advanced-cluster-management#scale-your-cluster) to reduce the load per node.
+
+### Maintenance Window
+
+For clusters with [maintenance windows](/docs/cockroachcloud/advanced-cluster-management#set-a-maintenance-window) configured, users who have [signed up for alerts](#configure-alerts) will receive email notifications.
+
+## Configure alerts
+
+Managing alerts requires the [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) role.
+
+To enable alerts:
+
+1. Under **Configure CockroachDB Cloud alerts**, toggle the **Alerts are on** switch.
+2. Under **Add Email Recipients**, add at least one email address and click **Add**.
+
+Alerts are enabled for all CockroachDB Advanced clusters in your Organization.
+
+<Tip>
+You can use an email alias to send alerts to a monitoring tool such as [Alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager) or [PagerDuty](https://www.pagerduty.com/).
+</Tip>
+
+## Send a test alert
+
+Sending test alerts requires the [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) or [Cluster Operator](/docs/cockroachcloud/authorization#cluster-operator) role.
+
+To send a test alert:
+
+1. Under **Send test email**, select a cluster and an alert type.
+2. Add at least one email address and click **Add**.
+3. Click **Send test email**.

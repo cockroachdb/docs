@@ -1,0 +1,132 @@
+---
+title: "Simulate a Multi-Region Cluster on localhost (Insecure)"
+old_description: "Run a simulated multi-region CockroachDB cluster locally using cockroach demo."
+---
+
+Once you've [installed CockroachDB](/docs/v26.1/install-cockroachdb), you can simulate multi-region cluster on your local machine using [`cockroach demo`](/docs/v26.1/cockroach-demo)to learn about CockroachDB's [multi-region abstractions](/docs/v26.1/multiregion-overview).
+
+<Note>
+[`cockroach demo`](/docs/v26.1/cockroach-demo) is not suitable for production deployments. Additionally, simulating multiple geographically distributed nodes on a single host is not representative of the [performance you should expect](/docs/v26.1/frequently-asked-questions#single-row-perf) in a production deployment. To learn more about production multi-region deployments, refer to [Orchestrate CockroachDB Across Multiple Kubernetes Clusters](/docs/v26.1/orchestrate-cockroachdb-with-kubernetes-multi-cluster) and review the [Production Checklist](/docs/v26.1/recommended-production-settings).
+</Note>
+
+## Before you begin
+
+[Download](/docs/releases) and [Install CockroachDB](/docs/v26.1/install-cockroachdb).
+
+## Step 1. Start the cluster
+
+Use the following [`cockroach demo`](/docs/v26.1/cockroach-demo) command to start the cluster. This particular combination of flags results in a demo cluster of 9 nodes, with 3 nodes in each region. It sets the appropriate [node localities](/docs/v26.1/cockroach-start#locality) and also simulates the network latency that would occur between nodes in these localities. For more information about each flag, see the [`cockroach demo`](/docs/v26.1/cockroach-demo#flags) documentation, especially for [`--global`](/docs/v26.1/cockroach-demo#global-flag).
+
+```shell
+$ cockroach demo --global --nodes 9 --no-example-database --insecure
+```
+
+When the cluster starts, you'll see a message like the one shown below, followed by a SQL prompt. Note the URLs for:
+
+- Viewing the [DB Console](/docs/v26.1/ui-overview): `http://127.0.0.1:8080`.
+- Connecting to the database from a [SQL shell](/docs/v26.1/cockroach-sql) or a [programming language](/docs/v26.1/connect-to-the-database): `postgres://root@127.0.0.1:26257?sslmode=disable`.
+
+```text
+#
+# Welcome to the CockroachDB demo database!
+#
+# You are connected to a temporary, in-memory CockroachDB cluster of 9 nodes.
+#
+# This demo session will attempt to enable enterprise features
+# by acquiring a temporary license from Cockroach Labs in the background.
+# To disable this behavior, set the environment variable
+# COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=true.
+#
+# Reminder: your changes to data stored in the demo session will not be saved!
+#
+# Connection parameters:
+#   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+#   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+#   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+#
+# To display connection parameters for other nodes, use \demo ls.
+#
+# The user "demo" with password "demo76950" has been created. Use it to access the Web UI!
+#
+# Server version: CockroachDB CCL v21.1.2 (x86_64-apple-darwin19, built 2021/06/07 18:13:04, go1.15.11) (same version as client)
+# Cluster ID: bfd9fc91-69bd-4417-a2f7-66e556bf2cfd
+# Organization: Cockroach Demo
+#
+# Enter \? for a brief introduction.
+#
+```
+
+## Step 2. Enter SQL statements at the prompt
+
+Now that your simulated multi-region cluster is running, you are presented with a SQL prompt:
+
+```text
+root@127.0.0.1:26257/defaultdb>
+```
+
+You can run some basic [CockroachDB SQL statements](/docs/v26.1/learn-cockroachdb-sql):
+
+```sql
+> CREATE DATABASE bank;
+```
+
+```sql
+> USE bank;
+```
+
+```sql
+> CREATE TABLE bank.accounts (id INT PRIMARY KEY, balance DECIMAL);
+```
+
+```sql
+> INSERT INTO bank.accounts VALUES (1, 1000.50);
+```
+
+```sql
+> SELECT * FROM bank.accounts;
+```
+
+```text
+  id | balance
++----+---------+
+   1 | 1000.50
+(1 row)
+```
+
+## Step 3. View cluster health and performance in the DB Console
+
+The [DB Console](/docs/v26.1/ui-overview) gives you insight into the overall health of your cluster, as well as the performance of any [client workloads](/docs/v26.1/cockroach-workload).
+
+To verify that the 9 nodes you specified are up and running as expected, go to the [**Cluster Overview**](/docs/v26.1/ui-cluster-overview-page) at [http://localhost:8080/#/overview/list](http://localhost:8080/#/overview/list).
+
+<Note>
+Capacity metrics can be incorrect when running multiple nodes on a single machine. For more details, refer to [Capacity metrics](/docs/v26.1/ui-cluster-overview-page#capacity-metrics).
+</Note>
+
+To see which nodes are located in which regions, and to see the simulated latencies between them, go to the [**Network Diagnostics**](/docs/v26.1/ui-network-latency-page) page at [http://localhost:8080/#/reports/network/region](http://localhost:8080/#/reports/network/region)
+
+To access a variety of time series charts, including graphs of [SQL queries](/docs/v26.1/ui-sql-dashboard#sql-queries-per-second) and [SQL service latency](/docs/v26.1/ui-sql-dashboard#service-latency-sql-99th-percentile), go to the [**Metrics**](/docs/v26.1/ui-overview-dashboard) page at [http://localhost:8080/#/metrics](http://localhost:8080/#/metrics)
+
+You may also find the following pages useful:
+
+- The [**Databases**](/docs/v26.1/ui-databases-page) page at [http://localhost:8080/#/databases](http://localhost:8080/#/databases) shows details about your databases and tables.
+- The [**Statements**](/docs/v26.1/ui-statements-page) page at [http://localhost:8080/#/statements](http://localhost:8080/#/statements) is used to assess the performance of specific queries.
+- The [**Jobs**](/docs/v26.1/ui-jobs-page) page at [http://localhost:8080/#/jobs](http://localhost:8080/#/jobs) is used to monitor the status of long-running operations like [schema changes](/docs/v26.1/online-schema-changes).
+
+## Step 4. Wipe the cluster
+
+When you're done with your demo cluster, you can wipe the cluster by typing the command shown below at the SQL prompt. Note that because this is a temporary, in-memory cluster, this will wipe any data you have added to the cluster. For more information, see the [`cockroach demo`](/docs/v26.1/cockroach-demo) documentation.
+
+```sql
+\quit
+```
+
+## What's next?
+
+- [Install the client driver](/docs/v26.1/install-client-drivers) for your preferred language
+- Learn more about [CockroachDB SQL](/docs/v26.1/learn-cockroachdb-sql) and the [built-in SQL client](/docs/v26.1/cockroach-sql)
+- Further explore CockroachDB capabilities like:
+    - [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v26.1/demo-low-latency-multi-region-deployment)
+    - [Fault tolerance and automated repair](/docs/v26.1/demo-cockroachdb-resilience)
+    - [Serializable transactions](/docs/v26.1/demo-serializable)
+    - [JSON support](/docs/v26.1/demo-json-support)

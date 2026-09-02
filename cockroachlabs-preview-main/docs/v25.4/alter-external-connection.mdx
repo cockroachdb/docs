@@ -1,0 +1,59 @@
+---
+title: "ALTER EXTERNAL CONNECTION"
+old_description: "Use the ALTER EXTERNAL CONNECTION statement to update an external connection's URI."
+---
+
+The `ALTER EXTERNAL CONNECTION` [statement](/docs/v25.4/sql-statements) allows you to change the [storage/sink](#supported-external-storage-and-sinks) URI that an external connection references.
+
+You can use external connections to specify and interact with resources that are external to CockroachDB. When creating an external connection, you must define a name for the external connection while passing the provider URI and query parameters.
+
+You can use `ALTER EXTERNAL CONNECTION` to update the connection string for an external connection to use a new authentication token. This allows you to rotate your auth token before the old token expires.
+
+You can also use the following SQL statements to work with external connections:
+
+- [`CREATE EXTERNAL CONNECTION`](/docs/v25.4/create-external-connection)
+- [`SHOW EXTERNAL CONNECTION`](/docs/v25.4/show-external-connection)
+- [`SHOW CREATE EXTERNAL CONNECTION`](/docs/v25.4/show-create-external-connection)
+- [`DROP EXTERNAL CONNECTION`](/docs/v25.4/drop-external-connection)
+
+## Required privileges
+
+To update an external connection, a user must have the `UPDATE` privilege on that connection.
+
+For example:
+
+```sql
+GRANT UPDATE ON EXTERNAL CONNECTION backup_bucket TO user;
+```
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v25.4/alter-external-connection/syntax-diagram-f3dfd5868f5d.svg)
+</Frame>
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>connection&#95;name</code></td><td>The name of the existing external connection.</td></tr><tr><td><code>connection&#95;uri</code></td><td>The new <a href="#supported-external-storage-and-sinks">storage/sink</a> URI that the external connection will be updated to reference.</td></tr></tbody></table>
+
+## Supported external storage and sinks
+
+<table><thead><tr><th>Storage or sink</th><th>Operation support</th></tr></thead><tbody><tr><td><a href="/docs/v25.4/changefeed-sinks#amazon-msk">Amazon MSK</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v25.4/use-cloud-storage">Amazon S3</a></td><td>Backups, restores, imports, exports, changefeeds</td></tr><tr><td><a href="/docs/v25.4/take-and-restore-encrypted-backups#aws-kms-uri-format">Amazon S3 KMS</a></td><td>Encrypted backups</td></tr><tr><td><a href="/docs/v25.4/use-cloud-storage">Azure Storage</a></td><td>Backups, restores, imports, exports, changefeeds</td></tr><tr><td><a href="/docs/v25.4/changefeed-sinks#confluent-cloud">Confluent Cloud</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v25.4/create-changefeed#confluent-schema-registry">Confluent Schema Registry</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v25.4/changefeed-sinks#google-cloud-pub-sub">Google Cloud Pub/Sub</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v25.4/use-cloud-storage">Google Cloud Storage</a></td><td>Backups, restores, imports, exports, changefeeds</td></tr><tr><td><a href="/docs/v25.4/take-and-restore-encrypted-backups#google-cloud-kms-uri-format">Google Cloud Storage KMS</a></td><td>Encrypted backups</td></tr><tr><td><a href="/docs/v25.4/changefeed-sinks">HTTP(S)</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v25.4/changefeed-sinks#kafka">Kafka</a></td><td>Changefeeds</td></tr><tr><td><a href="/docs/v25.4/use-cloud-storage">Nodelocal</a></td><td>Backups, restores, imports, exports, changefeeds</td></tr><tr><td><a href="/docs/v25.4/set-up-physical-cluster-replication#connection-reference">PostgreSQL</a> connections</td><td>Physical cluster replication</td></tr><tr><td><a href="/docs/v25.4/use-userfile-storage">Userfile</a></td><td>Backups, restores, imports, exports, changefeeds</td></tr><tr><td><a href="/docs/v25.4/changefeed-sinks#webhook-sink">Webhook</a></td><td>Changefeeds</td></tr></tbody></table>
+
+For more information on authentication and forming the URI that an external connection will represent, refer to the storage or sink pages linked in the table.
+
+## Examples
+
+### Update the URI of an external connection
+
+In this example, you update the `backup_bucket` external connection to a new Amazon S3 URI to rotate your auth token.
+
+```sql
+ALTER EXTERNAL CONNECTION backup_bucket AS 's3://bucket name?AWS_ACCESS_KEY_ID={new access key}&AWS_SECRET_ACCESS_KEY={new secret access key}';
+```
+
+## See also
+
+- [`CREATE EXTERNAL CONNECTION`](/docs/v25.4/create-external-connection)
+- [`DROP EXTERNAL CONNECTION`](/docs/v25.4/drop-external-connection)
+- [`SHOW CREATE EXTERNAL CONNECTION`](/docs/v25.4/show-create-external-connection)

@@ -1,0 +1,156 @@
+---
+title: "PAUSE JOB"
+old_description: "The PAUSE JOB statement lets you temporarily halt the process of potentially long-running jobs."
+---
+
+import { PauseJob5 } from "/snippets/syntax-diagrams/PauseJob5.jsx";
+
+The `PAUSE JOB` [statement](/docs/v24.3/sql-statements) lets you pause the following types of jobs:
+
+- [`IMPORT`](/docs/v24.3/import-into) jobs
+- [`BACKUP`](/docs/v24.3/backup) and [`RESTORE`](/docs/v24.3/restore) jobs
+- [User-created table statistics](/docs/v24.3/create-statistics) jobs
+- [Automatic table statistics](/docs/v24.3/cost-based-optimizer#table-statistics) jobs
+- [Changefeeds](/docs/v24.3/create-changefeed)
+- [Schema change](/docs/v24.3/online-schema-changes) jobs
+- [Scheduled backup](/docs/v24.3/manage-a-backup-schedule) jobs
+
+After pausing jobs, you can resume them with [`RESUME JOB`](/docs/v24.3/resume-job).
+
+<Note>
+If a schema change job is paused, any jobs waiting on that schema change will stop waiting and return an error.
+</Note>
+
+## Required privileges
+
+To pause a job, the user must be a member of the `admin` role or must have the [`CONTROLJOB`](/docs/v24.3/create-user#create-a-user-that-can-pause-resume-and-cancel-non-admin-jobs) [role option](/docs/v24.3/security-reference/authorization#role-options) set. Non-admin users cannot pause admin users' jobs.
+
+For changefeeds, users with the [`CHANGEFEED`](/docs/v24.3/create-changefeed#required-privileges) privilege on a set of tables can pause changefeed jobs running on those tables.
+
+## Synopsis
+
+<PauseJob5 />
+
+### Pause all jobs by type
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v24.3/pause-job/syntax-diagram-03605f8ad337.svg)
+</Frame>
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>job&#95;id</code></td><td>The ID of the job you want to pause, which can be found with <a href="/docs/v24.3/show-jobs"><code>SHOW JOBS</code></a>.</td></tr><tr><td><code>select&#95;stmt</code></td><td>A <a href="/docs/v24.3/selection-queries">selection query</a> that returns <code>job&#95;id</code>(s) to pause.</td></tr><tr><td><code>for&#95;schedules&#95;clause</code></td><td>The schedule you want to pause jobs for. You can pause jobs for a specific schedule (<code>FOR SCHEDULE id</code>) or pause jobs for multiple schedules by nesting a <a href="/docs/v24.3/select-clause"><code>SELECT</code> clause</a> in the statement (<code>FOR SCHEDULES &lt;select&#95;clause&gt;</code>). See the <a href="#pause-jobs-for-a-schedule">examples</a> below.</td></tr><tr><td><code>WITH REASON = ...</code></td><td>The reason to pause the job. CockroachDB stores the reason in the job's metadata, but there is no way to display it.</td></tr><tr><td><code>BACKUP</code>, <code>CHANGEFEED</code>, <code>RESTORE</code>, <code>IMPORT</code></td><td>The job type to pause.</td></tr></tbody></table>
+
+## Monitoring paused jobs
+
+We recommend monitoring paused jobs. Jobs that are paused for a long period of time can start to affect the cluster in the following ways:
+
+- A paused [backup](/docs/v24.3/backup), [restore](/docs/v24.3/restore), or index backfill job ( [schema change](/docs/v24.3/online-schema-changes) ) will continue to hold a [protected timestamp](/docs/v24.3/architecture/storage-layer#protected-timestamps) record on the data the job is operating on. This could result in data accumulation as the older versions of the keys cannot be [garbage collected](/docs/v24.3/architecture/storage-layer#garbage-collection). In turn, this may cause increased disk usage and degraded performance for some workloads. See [Protected timestamps and scheduled backups](/docs/v24.3/create-schedule-for-backup#protected-timestamps-and-scheduled-backups) for more detail.
+- A paused [changefeed](/docs/v24.3/create-changefeed) job, if [`protect_data_from_gc_on_pause`](/docs/v24.3/create-changefeed#protect-data-from-gc-on-pause) is set, will also hold a protected timestamp record on the data the job is operating on. Depending on the value of [`gc_protect_expires_after`](/docs/v24.3/create-changefeed#gc-protect-expires-after), this can lead to data accumulation. Once `gc_protect_expires_after` elapses, the protected timestamp record will be released and the changefeed job will be canceled. See [Garbage collection and changefeeds](/docs/v24.3/protect-changefeed-data) for more detail.
+
+To avoid these issues, use the `jobs.{job_type}.currently_paused` metric to track the number of jobs (for each job type) that are currently considered paused.
+
+You can monitor protected timestamps relating to particular CockroachDB jobs with the following metrics:
+
+- `jobs.{job_type}.protected_age_sec` tracks the oldest protected timestamp record protecting `{job_type}` jobs. As this metric increases, garbage accumulation increases. Garbage collection will not progress on a table, database, or cluster if the protected timestamp record is present.
+- `jobs.{job_type}.protected_record_count` tracks the number of protected timestamp records held by `{job_type}` jobs.
+
+For a full list of the available job types, access your cluster's [`/_status/vars`](/docs/v24.3/monitoring-and-alerting#prometheus-endpoint) endpoint.
+
+See the following pages for details on metrics:
+
+- [Monitor and Debug Changefeeds](/docs/v24.3/monitor-and-debug-changefeeds)
+- [Backup and Restore Monitoring](/docs/v24.3/backup-and-restore-monitoring)
+- [Metrics](/docs/v24.3/metrics)
+
+## Examples
+
+### Pause a single job
+
+```sql
+> SHOW JOBS;
+```
+
+```text
+      job_id     |  job_type |               description                      |...
+-----------------+-----------+------------------------------------------------+...
+  27536791415282 |  RESTORE  | RESTORE db.* FROM 'azure-blob://backup/db/tbl' |...
+```
+
+```sql
+> PAUSE JOB 27536791415282;
+```
+
+### Pause multiple jobs
+
+To pause multiple jobs, nest a [`SELECT` clause](/docs/v24.3/select-clause) that retrieves `job_id`(s) inside the `PAUSE JOBS` statement:
+
+```sql
+> PAUSE JOBS (WITH x AS (SHOW JOBS) SELECT job_id FROM x
+      WHERE user_name = 'maxroach');
+```
+
+All jobs created by `maxroach` will be paused.
+
+### Pause by job type
+
+To pause all jobs by the type of job, use the `PAUSE ALL {job} JOBS` statement. You can pause all `BACKUP`, `RESTORE`, `CHANGEFEED`, `IMPORT` jobs using this statement, for example:
+
+```sql
+PAUSE ALL BACKUP JOBS;
+```
+
+### Pause automatic table statistics jobs
+
+```sql
+> SHOW AUTOMATIC JOBS;
+```
+
+```text
+        job_id       |       job_type      |                    description                      |...
+---------------------+---------------------+-----------------------------------------------------+...
+  438235476849557505 |  AUTO CREATE STATS  | Table statistics refresh for defaultdb.public.users |...
+(1 row)
+```
+
+```sql
+> PAUSE JOB 438235476849557505;
+```
+
+To permanently disable automatic table statistics jobs, disable the `sql.stats.automatic_collection.enabled` [cluster setting](/docs/v24.3/cluster-settings):
+
+```sql
+> SET CLUSTER SETTING sql.stats.automatic_collection.enabled = false;
+```
+
+### Pause jobs for a schedule
+
+To pause jobs for a specific [backup schedule](/docs/v24.3/create-schedule-for-backup), use the schedule's `id`:
+
+```sql
+> PAUSE JOBS FOR SCHEDULE 590204387299262465;
+```
+
+```text
+PAUSE JOBS FOR SCHEDULES 1
+```
+
+You can also pause multiple schedules by nesting a [`SELECT` clause](/docs/v24.3/select-clause) that retrieves `id`(s) inside the `PAUSE JOBS` statement:
+
+```sql
+> PAUSE JOBS FOR SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'test_schedule';
+```
+
+```text
+PAUSE JOBS FOR SCHEDULES 2
+```
+
+## See also
+
+- [`RESUME JOB`](/docs/v24.3/resume-job)
+- [`SHOW JOBS`](/docs/v24.3/show-jobs)
+- [`CANCEL JOB`](/docs/v24.3/cancel-job)
+- [`BACKUP`](/docs/v24.3/backup)
+- [`RESTORE`](/docs/v24.3/restore)
+- [`IMPORT INTO`](/docs/v24.3/import-into)
+- [`CREATE CHANGEFEED`](/docs/v24.3/create-changefeed)

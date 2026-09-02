@@ -1,0 +1,87 @@
+---
+title: "CANCEL SESSION"
+old_description: "The CANCEL SESSION statement stops long-running sessions."
+---
+
+import { CancelSession5 } from "/snippets/syntax-diagrams/CancelSession5.jsx";
+
+The `CANCEL SESSION` [statement](/docs/v25.2/sql-statements) lets you stop long-running sessions. `CANCEL SESSION` will attempt to cancel the currently active query and end the session.
+
+## Required privileges
+
+To view and cancel a session, the user must be a member of the `admin` role or must have the `VIEWACTIVITY` [system privilege](/docs/v25.2/security-reference/authorization#supported-privileges) (or the legacy [`VIEWACTIVITY`](/docs/v25.2/create-user#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](/docs/v25.2/security-reference/authorization#role-options)) and the `CANCELQUERY` [system privilege](/docs/v25.2/security-reference/authorization#supported-privileges) (or the legacy [`CANCELQUERY`](/docs/v25.2/create-user#create-a-user-that-can-see-and-cancel-non-admin-queries-and-sessions) [role option](/docs/v25.2/security-reference/authorization#role-options)) defined. Non-admin users cannot cancel admin users' sessions.
+
+## Synopsis
+
+<CancelSession5 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>session&#95;id</code></td><td>The ID of the session you want to cancel, which can be found with <a href="/docs/v25.2/show-sessions"><code>SHOW SESSIONS</code></a>.<br/><br/><code>CANCEL SESSION</code> accepts a single session ID. If a subquery is used and returns multiple IDs, the <code>CANCEL SESSION</code> statement will fail. To cancel multiple sessions, use <code>CANCEL SESSIONS</code>.</td></tr><tr><td><code>select&#95;stmt</code></td><td>A <a href="/docs/v25.2/selection-queries">selection query</a> that returns <code>session&#95;id</code>(s) to cancel.</td></tr></tbody></table>
+
+## Example
+
+### Cancel a single session
+
+In this example, we use the [`SHOW SESSIONS`](/docs/v25.2/show-sessions) statement to get the ID of a session and then pass the ID into the `CANCEL SESSION` statement:
+
+```sql
+> SHOW SESSIONS;
+```
+
+```text
++---------+----------------------------------+-----------+...
+| node_id |            session_id            | user_name |...
++---------+----------------------------------+-----------+...
+|       1 | 1530c309b1d8d5f00000000000000001 | root      |...
++---------+----------------------------------+-----------+...
+|       1 | 1530fe0e46d2692e0000000000000001 | maxroach  |...
++---------+----------------------------------+-----------+...
+```
+
+```sql
+> CANCEL SESSION '1530fe0e46d2692e0000000000000001';
+```
+
+You can also cancel a session using a subquery that returns a single session ID:
+
+```sql
+> CANCEL SESSIONS (WITH x AS (SHOW SESSIONS) SELECT session_id FROM x
+      WHERE user_name = 'root');
+```
+
+### Cancel multiple sessions
+
+Use the [`SHOW SESSIONS`](/docs/v25.2/show-sessions) statement to view all active sessions:
+
+```sql
+> SHOW SESSIONS;
+```
+
+```text
++---------+----------------------------------+-----------+...
+| node_id |            session_id            | user_name |...
++---------+----------------------------------+-----------+...
+|       1 | 1530c309b1d8d5f00000000000000001 | root      |...
++---------+----------------------------------+-----------+...
+|       1 | 1530fe0e46d2692e0000000000000001 | maxroach  |...
++---------+----------------------------------+-----------+...
+|       1 | 15310cc79671fc6a0000000000000001 | maxroach  |...
++---------+----------------------------------+-----------+...
+```
+
+To cancel multiple sessions, nest a [`SELECT` clause](/docs/v25.2/select-clause) that retrieves `session_id`(s) inside the `CANCEL SESSIONS` statement:
+
+```sql
+> CANCEL SESSIONS (WITH x AS (SHOW SESSIONS) SELECT session_id FROM x
+      WHERE user_name = 'maxroach');
+```
+
+All sessions created by `maxroach` will be cancelled.
+
+## See also
+
+- [`SHOW SESSIONS`](/docs/v25.2/show-sessions)
+- [`SET {session variable}`](/docs/v25.2/set-vars)
+- [`SHOW {session variable}`](/docs/v25.2/show-vars)
+- [SQL Statements](/docs/v25.2/sql-statements)

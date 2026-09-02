@@ -1,0 +1,312 @@
+---
+title: "ALTER ROLE"
+old_description: "The ALTER ROLE statement can be used to add or change a role's password."
+---
+
+import { AlterRole5 } from "/snippets/syntax-diagrams/AlterRole5.jsx";
+
+Use the `ALTER ROLE` [statement](/docs/v25.2/sql-statements) to add, change, or remove a [role's](/docs/v25.2/create-role) password, change the role options for a role, and set default [session variable](/docs/v25.2/set-vars) values for a role.
+
+You can use the keywords `ROLE` and `USER` interchangeably. [`ALTER USER`](/docs/v25.2/alter-user) is an alias for `ALTER ROLE`.
+
+## Considerations
+
+### Password management
+
+Password creation and alteration is supported only in secure clusters.
+
+### Session variable precedence
+
+When a [session](/docs/v25.2/show-sessions) starts, CockroachDB determines the initial value of each [session variable](/docs/v25.2/session-variables) by evaluating the settings in the following order (items earlier in the list take precedence over later items):
+
+1. [Connection string parameters](/docs/v25.2/connection-parameters): A value supplied as a query parameter in the connection URL (for example, `.../movr?sslmode=disable&timezone=UTC` ).
+2. [Per-role, per-database defaults](/docs/v25.2/alter-role#set-default-session-variable-values-for-a-role-in-a-specific-database): A value set by `ALTER ROLE {role_name} IN DATABASE {db_name} SET {var}={value}`.
+3. [Per-role, all-database defaults](/docs/v25.2/alter-role#set-default-session-variable-values-for-a-role): A value set by `ALTER ROLE {role_name} SET {var}={value}`.
+4. [All-role, per-database defaults](/docs/v25.2/alter-role#set-default-session-variable-values-for-a-specific-database): A value set by `ALTER ROLE ALL IN DATABASE {db_name} SET {var}={value}` or equivalently by `ALTER DATABASE {db_name} SET {var}={value}`.
+5. [Cluster-wide defaults for all roles and all databases](/docs/v25.2/alter-role#set-default-session-variable-values-for-all-users): A value set by `ALTER ROLE ALL SET {var}={value}`.
+
+If a session variable is not modified using any of the preceding methods, the built-in system default value is used. Note that the [`root` user](/docs/v25.2/security-reference/authorization#root-user) is exempt from settings 3–5. The `root` user is only affected by values specified in the connection string.
+
+You can also set session variables for the duration of a single transaction by using [`SET LOCAL {var}={value}`](/docs/v25.2/set-vars#set-a-variable-for-the-duration-of-a-single-transaction).
+
+<Note>
+Changes to defaults using the preceding methods only apply to **future** sessions. This is because session variable resolution happens at session start time. To change a default value in an existing open session, set the variable explicitly with [`SET`](/docs/v25.2/set-vars).
+</Note>
+
+## Required privileges
+
+- To alter an [`admin` role](/docs/v25.2/security-reference/authorization#admin-role), the user must be a member of the `admin` role.
+- To alter other roles, the user must be a member of the `admin` role or have the [`CREATEROLE`](/docs/v25.2/create-role#create-a-role-that-can-create-other-roles-and-manage-authentication-methods-for-the-new-roles) [role option](#role-options).
+
+## Synopsis
+
+<AlterRole5 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>role&#95;name</code></td><td>The name of the role to alter.</td></tr><tr><td><code>WITH role&#95;option</code></td><td>Apply a <a href="#role-options">role option</a> to the role.</td></tr><tr><td><code>SET &#123;session variable&#125;</code></td><td>Set default <a href="/docs/v25.2/set-vars">session variable</a> values for a role.</td></tr><tr><td><code>RESET &#123;session variable&#125;</code><br/><code>RESET ALL</code><a></a></td><td>Reset one session variable or all session variables to the default value.</td></tr><tr><td><code>IN DATABASE database&#95;name</code></td><td>Specify a database for which to apply session variable defaults.<br/>When <code>IN DATABASE</code> is not specified, the default session variable values apply for a role in all databases.<br/>In order for a session to initialize session variable values to database defaults, the database must be specified as a <a href="/docs/v25.2/connection-parameters">connection parameter</a>. Database default values will not appear if the database is set after connection with <code>USE &lt;dbname&gt;</code>/<code>SET database=&lt;dbname&gt;</code>.</td></tr><tr><td><code>ROLE ALL ...</code>/<code>USER ALL ...</code></td><td>Apply session variable settings to all roles.<br/>Exception: The <code>root</code> user is exempt from session variable settings. This is a failsafe; if you make a mistake with a session variable setting, you can still log in as <code>root</code> and be unaffected.</td></tr></tbody></table>
+
+### Role options
+
+<table><thead><tr><th>Role option</th><th>Description</th></tr></thead><tbody><tr><td><a></a><code>BYPASSRLS</code>/<code>NOBYPASSRLS</code></td><td><strong>New in v25.2</strong>: Allow or disallow a role to bypass <a href="/docs/v25.2/row-level-security">row-level security (RLS)</a> policies on a table. This option controls the access from an RLS perspective only; the user also needs sufficient <a href="/docs/v25.2/grant"><code>GRANT</code></a> privileges to read or write to the table.</td></tr><tr><td><code>CANCELQUERY</code>/<code>NOCANCELQUERY</code></td><td><strong>Deprecated in v22.2: Use the <code>CANCELQUERY</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to cancel <a href="/docs/v25.2/cancel-query">queries</a> and <a href="/docs/v25.2/cancel-session">sessions</a> of other roles. Without this role option, roles can only cancel their own queries and sessions. Even with the <code>CANCELQUERY</code> role option, non-<code>admin</code> roles cannot cancel <code>admin</code> queries or sessions. This option should usually be combined with <code>VIEWACTIVITY</code> so that the role can view other roles' query and session information.<br/><br/>By default, the role option is set to <code>NOCANCELQUERY</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CONTROLCHANGEFEED</code>/<code>NOCONTROLCHANGEFEED</code></td><td><strong>Deprecated in v23.1: Use the <code>CHANGEFEED</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">privilege</a>.</strong> Allow or disallow a role to run <a href="/docs/v25.2/create-changefeed"><code>CREATE CHANGEFEED</code></a> on tables they have <code>SELECT</code> privileges on.<br/><br/>By default, the role option is set to <code>NOCONTROLCHANGEFEED</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CONTROLJOB</code>/<code>NOCONTROLJOB</code></td><td>Allow or disallow a role to <a href="/docs/v25.2/pause-job">pause</a>, <a href="/docs/v25.2/resume-job">resume</a>, and <a href="/docs/v25.2/cancel-job">cancel</a> jobs. Non-<code>admin</code> roles cannot control jobs created by <code>admin</code> roles.<br/><br/>By default, the role option is set to <code>NOCONTROLJOB</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CREATEDB</code>/<code>NOCREATEDB</code></td><td>Allow or disallow a role to <a href="/docs/v25.2/create-database">create</a> or <a href="/docs/v25.2/alter-database#rename-to">rename</a> a database. The role is assigned as the owner of the database.<br/><br/>By default, the role option is set to <code>NOCREATEDB</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CREATELOGIN</code>/<code>NOCREATELOGIN</code></td><td>Allow or disallow a role to manage authentication using the <code>WITH PASSWORD</code>, <code>VALID UNTIL</code>, and <code>LOGIN/NOLOGIN</code> role options.<br/><br/>By default, the role option is set to <code>NOCREATELOGIN</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>CREATEROLE</code>/<code>NOCREATEROLE</code></td><td>Allow or disallow the new role to <a href="/docs/v25.2/create-role">create</a>, alter, and <a href="/docs/v25.2/drop-role">drop</a> other non-<code>admin</code> roles.<br/><br/>By default, the role option is set to <code>NOCREATEROLE</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>LOGIN</code>/<code>NOLOGIN</code></td><td>Allow or disallow a role to log in with one of the <a href="/docs/v25.2/authentication#client-authentication">client authentication methods</a>. Setting the role option to <code>NOLOGIN</code> prevents the role from logging in using any authentication method.</td></tr><tr><td><code>MODIFYCLUSTERSETTING</code>/<code>NOMODIFYCLUSTERSETTING</code></td><td>Allow or disallow a role to modify the <a href="/docs/v25.2/cluster-settings">cluster settings</a> with the <code>sql.defaults</code> prefix.<br/><br/>By default, the role option is set to <code>NOMODIFYCLUSTERSETTING</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>PASSWORD password</code>/<code>PASSWORD NULL</code></td><td>The credential the role uses to <a href="/docs/v25.2/authentication#client-authentication">authenticate their access to a secure cluster</a>. A password should be entered as a <a href="/docs/v25.2/sql-constants#string-literals">string literal</a>. For compatibility with PostgreSQL, a password can also be entered as an identifier.<br/><br/>To prevent a role from using <a href="/docs/v25.2/authentication#client-authentication">password authentication</a> and to mandate <a href="/docs/v25.2/authentication#client-authentication">certificate-based client authentication</a>, <a href="/docs/v25.2/create-role#prevent-a-role-from-using-password-authentication">set the password as <code>NULL</code></a>.</td></tr><tr><td><code>SQLLOGIN</code>/<code>NOSQLLOGIN</code></td><td><strong>Deprecated in v22.2: Use the <code>NOSQLLOGIN</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to log in using the SQL CLI with one of the <a href="/docs/v25.2/authentication#client-authentication">client authentication methods</a>. The role option to <code>NOSQLLOGIN</code> prevents the role from logging in using the SQL CLI with any authentication method while retaining the ability to log in to DB Console. It is possible to have both <code>NOSQLLOGIN</code> and <code>LOGIN</code> set for a role and <code>NOSQLLOGIN</code> takes precedence on restrictions.<br/><br/>Without any role options all login behavior is permitted.</td></tr><tr><td><code>VALID UNTIL</code></td><td>The date and time (in the <a href="/docs/v25.2/timestamp"><code>timestamp</code></a> format) after which the <a href="#parameters">password</a> is not valid.</td></tr><tr><td><code>VIEWACTIVITY</code>/<code>NOVIEWACTIVITY</code></td><td><strong>Deprecated in v22.2: Use the <code>VIEWACTIVITY</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to see other roles' <a href="/docs/v25.2/show-statements">queries</a> and <a href="/docs/v25.2/show-sessions">sessions</a> using <code>SHOW STATEMENTS</code>, <code>SHOW SESSIONS</code>, and the <a href="/docs/v25.2/ui-statements-page"><strong>Statements</strong></a> and <a href="/docs/v25.2/ui-transactions-page"><strong>Transactions</strong></a> pages in the DB Console. <code>VIEWACTIVITY</code> also permits visibility of node hostnames and IP addresses in the DB Console. With <code>NOVIEWACTIVITY</code>, the <code>SHOW</code> commands show only the role's own data, and DB Console pages redact node hostnames and IP addresses.<br/><br/>By default, the role option is set to <code>NOVIEWACTIVITY</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>VIEWCLUSTERSETTING</code> / <code>NOVIEWCLUSTERSETTING</code></td><td><strong>Deprecated in v22.2: Use the <code>VIEWCLUSTERSETTING</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to view the <a href="/docs/v25.2/cluster-settings">cluster settings</a> with <code>SHOW CLUSTER SETTING</code> or to access the <a href="/docs/v25.2/ui-debug-pages"><strong>Cluster Settings</strong></a> page in the DB Console.<br/><br/>By default, the role option is set to <code>NOVIEWCLUSTERSETTING</code> for all non-<code>admin</code> roles.</td></tr><tr><td><code>VIEWACTIVITYREDACTED</code>/<code>NOVIEWACTIVITYREDACTED</code></td><td><strong>Deprecated in v22.2: Use the <code>VIEWACTIVITYREDACTED</code><a href="/docs/v25.2/security-reference/authorization#supported-privileges">system privilege</a>.</strong> Allow or disallow a role to see other roles' queries and sessions using <code>SHOW STATEMENTS</code>, <code>SHOW SESSIONS</code>, and the Statements and Transactions pages in the DB Console. With <code>VIEWACTIVITYREDACTED</code>, a user will not have access to the usage of statements diagnostics bundle (which can contain PII information) in the DB Console, and will not be able to list queries containing <a href="/docs/v25.2/sql-constants">constants</a> for other users when using the <code>listSessions</code> endpoint through the <a href="/docs/v25.2/cluster-api">Cluster API</a>. It is possible to have both <code>VIEWACTIVITY</code> and <code>VIEWACTIVITYREDACTED</code>, and <code>VIEWACTIVITYREDACTED</code> takes precedence on restrictions. If the user has <code>VIEWACTIVITY</code> but doesn't have <code>VIEWACTIVITYREDACTED</code>, they will be able to see DB Console pages and have access to the statements diagnostics bundle.<br/><br/>By default, the role option is set to <code>NOVIEWACTIVITYREDACTED</code> for all non-<code>admin</code> roles.</td></tr></tbody></table>
+
+## Examples
+
+<Note>
+The following statements are run by the `root` user that is a member of the `admin` role and has `ALL` privileges.
+</Note>
+
+### Allow a role to log in to the database using a password
+
+The following example allows a role to log in to the database with a [password](/docs/v25.2/authentication#client-authentication):
+
+```sql
+CREATE ROLE carl;
+```
+
+```sql
+ALTER ROLE carl WITH LOGIN PASSWORD 'An0ther$tr0nGpassW0rD' VALID UNTIL '2021-10-10';
+```
+
+### Prevent a role from using password authentication
+
+The following statement prevents the user from using password authentication and mandates certificate-based [client authentication](/docs/v25.2/authentication#client-authentication):
+
+```sql
+ALTER ROLE carl WITH PASSWORD NULL;
+```
+
+### Allow a role to create other roles and manage authentication methods for the new roles
+
+The following example allows the role to [create other roles](/docs/v25.2/create-role) and [manage authentication methods](/docs/v25.2/authentication#client-authentication) for them:
+
+```sql
+ALTER ROLE carl WITH CREATEROLE CREATELOGIN;
+```
+
+### Allow a role to create and rename databases
+
+The following example allows the role to [create](/docs/v25.2/create-database) or [rename](/docs/v25.2/alter-database#rename-to) databases:
+
+```sql
+ALTER ROLE carl WITH CREATEDB;
+```
+
+### Allow a role to pause, resume, and cancel non-admin jobs
+
+The following example allows the role to [pause](/docs/v25.2/pause-job), [resume](/docs/v25.2/resume-job), and [cancel](/docs/v25.2/cancel-job) jobs:
+
+```sql
+ALTER ROLE carl WITH CONTROLJOB;
+```
+
+### Allow a role to see and cancel non-admin queries and sessions
+
+The following example allows the role to cancel [queries](/docs/v25.2/cancel-query) and [sessions](/docs/v25.2/cancel-session) for other non-`admin` roles:
+
+```sql
+ALTER ROLE carl WITH CANCELQUERY VIEWACTIVITY;
+```
+
+### Allow a role to control changefeeds
+
+The following example allows the role to run [`CREATE CHANGEFEED`](/docs/v25.2/create-changefeed):
+
+```sql
+ALTER ROLE carl WITH CONTROLCHANGEFEED;
+```
+
+### Allow a role to modify cluster settings
+
+The following example allows the role to modify [cluster settings](/docs/v25.2/cluster-settings):
+
+```sql
+ALTER ROLE carl WITH MODIFYCLUSTERSETTING;
+```
+
+### Allow a role to bypass row-level security (RLS)
+
+To allow a [role](/docs/v25.2/security-reference/authorization#users-and-roles) to bypass [row-level security](/docs/v25.2/row-level-security), execute the following statement to grant the [`BYPASSRLS`](/docs/v25.2/security-reference/authorization#bypassrls) privilege:
+
+```sql
+ALTER ROLE carl WITH BYPASSRLS;
+```
+
+To disable the role's ability to bypass RLS, execute the following statement:
+
+```sql
+ALTER ROLE carl WITH NOBYPASSRLS;
+```
+
+### Set default session variable values for a role
+
+In the following example, the `root` user creates a role named `max`, and sets the default value of the `timezone` [session variable](/docs/v25.2/set-vars#supported-variables) for the `max` role.
+
+```sql
+CREATE ROLE max WITH LOGIN;
+```
+
+```sql
+ALTER ROLE max SET timezone = 'America/New_York';
+```
+
+This statement does not affect the default `timezone` value for any role other than `max`:
+
+```sql
+SHOW timezone;
+```
+
+```text
+  timezone
+------------
+  UTC
+(1 row)
+```
+
+To see the default `timezone` value for the `max` role, run the `SHOW` statement as a member of the `max` role:
+
+```sql
+SHOW timezone;
+```
+
+```text
+      timezone
+--------------------
+  America/New_York
+(1 row)
+```
+
+For a list of the session variables that have been updated from default values, see [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`](/docs/v25.2/show-default-session-variables-for-role).
+
+### Set default session variable values for a role in a specific database
+
+In the following example, the `root` user creates a role named `max` and a database named `movr`, and sets the default value of the `statement_timeout` [session variable](/docs/v25.2/set-vars#supported-variables) for the `max` role in the `movr` database.
+
+```sql
+CREATE DATABASE IF NOT EXISTS movr;
+```
+
+```sql
+CREATE ROLE IF NOT EXISTS max WITH LOGIN;
+```
+
+```sql
+ALTER ROLE max IN DATABASE movr SET statement_timeout = '10s';
+```
+
+This statement does not affect the default `statement_timeout` value for any role other than `max`, or in any database other than `movr`.
+
+```sql
+SHOW statement_timeout;
+```
+
+```text
+  statement_timeout
+---------------------
+  0
+(1 row)
+```
+
+To see the new default `statement_timeout` value for the `max` role, run the `SHOW` statement as a member of the `max` role that has connected to the cluster, with the database `movr` specified in the connection string.
+
+```shell
+cockroach sql --url 'postgresql://max@localhost:26257/movr?sslmode=disable'
+```
+
+```sql
+SHOW statement_timeout;
+```
+
+```text
+  statement_timeout
+---------------------
+  10000
+(1 row)
+```
+
+For a list of the session variables that have been updated from default values, see [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`](/docs/v25.2/show-default-session-variables-for-role).
+
+### Set default session variable values for a specific database
+
+In the following example, the `root` user creates a database named `movr`, and sets the default value of the `timezone` [session variable](/docs/v25.2/set-vars#supported-variables) for all roles in that database.
+
+```sql
+CREATE DATABASE IF NOT EXISTS movr;
+```
+
+```sql
+ALTER ROLE ALL IN DATABASE movr SET timezone = 'America/New_York';
+```
+
+<Note>
+This statement is identical to [`ALTER DATABASE movr SET timezone = 'America/New_York';`](/docs/v25.2/alter-database).
+</Note>
+
+This statement does not affect the default `timezone` value for any database other than `movr`:
+
+```sql
+SHOW timezone;
+```
+
+```text
+  timezone
+------------
+  UTC
+(1 row)
+```
+
+To see the default `timezone` value for the `max` role, run the `SHOW` statement as a member of the `max` role:
+
+```sql
+SHOW timezone;
+```
+
+```text
+      timezone
+--------------------
+  America/New_York
+(1 row)
+```
+
+For a list of the session variables that have been updated from default values, see [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`](/docs/v25.2/show-default-session-variables-for-role).
+
+### Set default session variable values for all users
+
+To set a default value for all users for any [session variable](/docs/v25.2/set-vars) that applies during login, issue a statement like the following:
+
+```sql
+ALTER ROLE ALL SET sql.spatial.experimental_box2d_comparison_operators.enabled = "on";
+```
+
+```text
+ALTER ROLE
+```
+
+The `root` user is exempt from session variable settings changes. This is a failsafe; if you make a mistake with a session variable setting, you can still log in as `root` and be unaffected.
+
+<Note>
+Use [`ALTER ROLE ALL SET {sessionvar} = {val}`](/docs/v25.2/alter-role#set-default-session-variable-values-for-all-users) instead of the `sql.defaults.*` [cluster settings](/docs/v25.2/cluster-settings). This allows you to set a default value for all users for any [session variable](/docs/v25.2/set-vars) that applies during login, making the `sql.defaults.*` cluster settings redundant.
+</Note>
+
+For a list of the session variables that have been updated from default values, see [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`](/docs/v25.2/show-default-session-variables-for-role).
+
+### Set the `SUBJECT` role option for certificate based authentication
+
+You can associate an [X.509](https://en.wikipedia.org/wiki/X.509) certificate's Subject with a [role](/docs/v25.2/security-reference/authorization#roles) as shown below. Note that the Subject fields in the certificate have to be an exact match with what you pass in via the SQL statement. By exact match, we mean that the order of attributes passed in via the SQL statement must match the order of attributes in the certificate.
+
+```sql
+ALTER ROLE max WITH SUBJECT 'CN=myName2,OU=myOrgUnit2,O=myOrg2,L=myLocality2,ST=myState2,C=myCountry2' LOGIN;
+```
+
+If you manage your own Certificate Authority (CA) infrastructure, CockroachDB supports mapping between the Subject field of your [X.509 certificates](https://en.wikipedia.org/wiki/X.509) and SQL [roles](/docs/v25.2/security-reference/authorization#roles). For more information, see [Certificate-based authentication using multiple values from the X.509 Subject field](/docs/v25.2/certificate-based-authentication-using-the-x509-subject-field).
+
+## See also
+
+- [`DROP ROLE`](/docs/v25.2/drop-role)
+- [`SHOW ROLES`](/docs/v25.2/show-roles)
+- [`GRANT`](/docs/v25.2/grant)
+- [`SHOW GRANTS`](/docs/v25.2/show-grants)
+- [`cockroach cert`](/docs/v25.2/cockroach-cert)
+- [SQL Statements](/docs/v25.2/sql-statements)
+- [Authorization Best Practices](/docs/v25.2/security-reference/authorization#authorization-best-practices)
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`](/docs/v25.2/show-default-session-variables-for-role)

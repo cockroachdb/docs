@@ -1,0 +1,20 @@
+---
+title: "Resume Replication"
+old_description: "Resume replication after an interruption."
+---
+
+import MigrateResumeReplication from "/snippets/molt/migrate-resume-replication.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MigrateResumeReplication />

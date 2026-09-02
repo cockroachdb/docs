@@ -1,0 +1,57 @@
+---
+title: "SHOW USERS"
+old_description: "The SHOW USERS statement lists the users for all databases."
+---
+
+The `SHOW USERS` [statement](/docs/v24.3/sql-statements) lists the users for all databases.
+
+<Note>
+Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `SHOW USERS` is now an alias for [`SHOW ROLES`](/docs/v24.3/show-roles).
+</Note>
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v24.3/show-users/syntax-diagram-19c65e822d89.svg)
+</Frame>
+
+## Required privileges
+
+The user must have the [`SELECT`](/docs/v24.3/select-clause) [privilege](/docs/v24.3/security-reference/authorization#managing-privileges) on the `system.users` and `system.role_members` tables.
+
+## Example
+
+```sql
+> SHOW USERS;
+```
+
+```text
+  username |  options   | member_of
+-----------+------------+------------
+  admin    | CREATEROLE | {}
+  carl     | NOLOGIN    | {}
+  petee    |            | {}
+  root     | CREATEROLE | {admin}
+(4 rows)
+```
+
+Alternatively, within the built-in SQL shell, you can use the `\du` [shell command](/docs/v24.3/cockroach-sql#commands):
+
+```sql
+> \du
+```
+
+```text
+  username |  options   | member_of
+-----------+------------+------------
+  admin    | CREATEROLE | {}
+  carl     | NOLOGIN    | {}
+  petee    |            | {}
+  root     | CREATEROLE | {admin}
+(4 rows)
+```
+
+## See also
+
+- [`CREATE USER`](/docs/v24.3/create-user)
+- [Manage Users](/docs/v24.3/security-reference/authorization#create-and-manage-users)

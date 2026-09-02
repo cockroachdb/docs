@@ -1,0 +1,102 @@
+---
+title: "SHOW TRANSACTIONS"
+old_description: "The SHOW TRANSACTIONS statement lists all currently active transactions across the cluster or on the gateway node."
+---
+
+The `SHOW TRANSACTIONS` [statement](/docs/v24.3/sql-statements) lists details about currently active transactions, including:
+
+- The node running the transaction
+- The application that initiated the transaction
+- The number of statements that have been executed on the transaction
+- The number of times the transaction was retried (both manually and by the SQL executor)
+
+These details let you monitor the overall state of transactions and identify those that may need further investigation or adjustment.
+
+## Required privileges
+
+No [privileges](/docs/v24.3/security-reference/authorization#managing-privileges) are required to execute this statement. However, note that non-`admin` users see only their own currently active transactions, whereas the `admin` users see all users' currently active transactions.
+
+## Syntax
+
+```text
+SHOW [ALL] [CLUSTER | LOCAL] TRANSACTIONS
+```
+
+- To list the active transactions across all nodes of the cluster, use `SHOW TRANSACTIONS` or `SHOW CLUSTER TRANSACTIONS`.
+- To list the active transactions just on the gateway node, use `SHOW LOCAL TRANSACTIONS`.
+- To list internal transactions (that are issued by the database itself), use `SHOW ALL.. TRANSACTIONS`.
+
+## Response
+
+The following fields are returned for each transaction:
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>node&#95;id</code></td><td>The ID of the node running the transaction.</td></tr><tr><td><code>txn&#95;id</code></td><td>The ID of the transaction.</td></tr><tr><td><code>application&#95;name</code></td><td>The <a href="/docs/v24.3/set-vars#supported-variables">application name</a> specified by the client, if any. For transactions from the <a href="/docs/v24.3/cockroach-sql">built-in SQL client</a>, this will be <code>&#36; cockroach sql</code>.</td></tr><tr><td><code>num&#95;stmts</code></td><td>The number of statements that have been executed on the transaction.</td></tr><tr><td><code>num&#95;retries</code></td><td>The number of times that the transaction was retried.</td></tr><tr><td><code>num&#95;auto&#95;retries</code></td><td>The number of times that the transaction was automatically retried by the SQL executor.</td></tr></tbody></table>
+
+## Examples
+
+### List active transactions across the cluster
+
+```sql
+> SHOW CLUSTER TRANSACTIONS;
+```
+
+```text
+  node_id |                txn_id                | application_name | num_stmts | num_retries | num_auto_retries
+----------+--------------------------------------+------------------+-----------+-------------+-------------------
+        1 | 1f02ca1c-46c8-491b-8048-daa6b38fc587 | $ cockroach sql  |         1 |           0 |                0
+        2 | 3af3f2e3-d0ed-4fd4-886b-1f5fc67b397d | movr             |         1 |           0 |                0
+(2 rows)
+```
+
+Alternatively, you can use `SHOW TRANSACTIONS` to receive the same response.
+
+### List active transactions on the gateway node
+
+```sql
+> SHOW LOCAL TRANSACTIONS;
+```
+
+```text
+  node_id |                txn_id                | application_name | num_stmts | num_retries | num_auto_retries
+----------+--------------------------------------+------------------+-----------+-------------+-------------------
+        1 | 1f02ca1c-46c8-491b-8048-daa6b38fc587 | $ cockroach sql  |         1 |           0 |                0
+(1 row)
+```
+
+### Filter for specific transactions
+
+You can use a [`SELECT`](/docs/v24.3/select-clause) statement to filter the list of currently active transactions by one or more of the [response fields](#response).
+
+#### Show transactions associated with a specific application
+
+```sql
+> WITH x as (SHOW CLUSTER TRANSACTIONS) SELECT * FROM x WHERE application_name = 'movr';
+```
+
+```text
+  node_id |                txn_id                | application_name | num_stmts | num_retries | num_auto_retries
+----------+--------------------------------------+------------------+-----------+-------------+-------------------
+        1 | 59891000-260a-44f6-abf9-59c94fefc081 | movr             |         1 |           0 |                0
+(1 row)
+```
+
+#### Exclude transactions from the built-in SQL client
+
+To exclude transactions from the [built-in SQL client](/docs/v24.3/cockroach-sql), filter for transactions that do not show `$ cockroach sql` as the `application_name`:
+
+```sql
+> WITH x AS (SHOW CLUSTER TRANSACTIONS) SELECT * FROM x
+      WHERE application_name != '$ cockroach sql';
+```
+
+```text
+  node_id |                txn_id                | application_name | num_stmts | num_retries | num_auto_retries
+----------+--------------------------------------+------------------+-----------+-------------+-------------------
+        1 | 8851060b-5e7c-4402-a8cd-487baa63e02e | movr             |         1 |           0 |                0
+(1 row)
+```
+
+## See also
+
+- [Transactions](/docs/v24.3/transactions)
+- [SQL Statements](/docs/v24.3/sql-statements)

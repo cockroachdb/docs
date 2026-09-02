@@ -1,0 +1,980 @@
+---
+title: "Migration Failback"
+old_description: "Learn how to fail back from a CockroachDB cluster to a PostgreSQL, MySQL, or Oracle database."
+---
+
+<Note>
+These instructions assume you have already [installed MOLT and completed the prerequisites](/docs/molt/migrate-load-replicate#before-you-begin) for your source dialect.
+</Note>
+
+<Tabs>
+<Tab title="PostgreSQL">
+
+## Prepare the CockroachDB cluster
+
+<Tip>
+For details on enabling CockroachDB changefeeds, refer to [Create and Configure Changefeeds](/docs/v25.4/create-and-configure-changefeeds).
+</Tip>
+
+If you are migrating to a CockroachDB self-hosted cluster, [enable rangefeeds](/docs/v25.4/create-and-configure-changefeeds#enable-rangefeeds) on the cluster:
+
+```sql
+SET CLUSTER SETTING kv.rangefeed.enabled = true;
+```
+
+Use the following optional settings to increase changefeed throughput.
+
+<Warning>
+The following settings can impact source cluster performance and stability, especially SQL foreground latency during writes. For details, refer to [Advanced Changefeed Configuration](/docs/v25.4/advanced-changefeed-configuration).
+</Warning>
+
+To lower changefeed emission latency, but increase SQL foreground latency:
+
+```sql
+SET CLUSTER SETTING kv.rangefeed.closed_timestamp_refresh_interval = '250ms';
+```
+
+To lower the [closed timestamp](/docs/v25.4/architecture/transaction-layer#closed-timestamps) lag duration:
+
+```sql
+SET CLUSTER SETTING kv.closed_timestamp.target_duration = '1s';
+```
+
+To improve catchup speeds but increase cluster CPU usage:
+
+```sql
+SET CLUSTER SETTING kv.rangefeed.concurrent_catchup_iterators = 64;
+```
+
+## Grant target database user permissions
+
+You should have already created a migration user on the target database (your **original source database**) with the necessary privileges. Refer to [Create migration user on source database](/docs/molt/migrate-load-replicate#create-migration-user-on-source-database).
+
+For failback replication, grant the user additional privileges to write data back to the target database:
+
+```sql
+-- Grant INSERT and UPDATE on tables to fail back to
+GRANT INSERT, UPDATE ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT INSERT, UPDATE ON TABLES TO migration_user;
+```
+
+## Configure Replicator
+
+When you run `replicator`, you can configure the following options for replication:
+
+- [Connection strings](#connection-strings): Specify URL‑encoded source and target connections.
+- [TLS certificate and key](#tls-certificate-and-key): Configure secure TLS connections.
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
+- [Tuning parameters](#tuning-parameters): Optimize failback performance and resource usage.
+- [Replicator metrics](#replicator-metrics): Monitor failback replication performance.
+
+</Tab>
+<Tab title="MySQL">
+
+## Prepare the CockroachDB cluster
+
+<Tip>
+For details on enabling CockroachDB changefeeds, refer to [Create and Configure Changefeeds](/docs/v25.4/create-and-configure-changefeeds).
+</Tip>
+
+If you are migrating to a CockroachDB self-hosted cluster, [enable rangefeeds](/docs/v25.4/create-and-configure-changefeeds#enable-rangefeeds) on the cluster:
+
+```sql
+SET CLUSTER SETTING kv.rangefeed.enabled = true;
+```
+
+Use the following optional settings to increase changefeed throughput.
+
+<Warning>
+The following settings can impact source cluster performance and stability, especially SQL foreground latency during writes. For details, refer to [Advanced Changefeed Configuration](/docs/v25.4/advanced-changefeed-configuration).
+</Warning>
+
+To lower changefeed emission latency, but increase SQL foreground latency:
+
+```sql
+SET CLUSTER SETTING kv.rangefeed.closed_timestamp_refresh_interval = '250ms';
+```
+
+To lower the [closed timestamp](/docs/v25.4/architecture/transaction-layer#closed-timestamps) lag duration:
+
+```sql
+SET CLUSTER SETTING kv.closed_timestamp.target_duration = '1s';
+```
+
+To improve catchup speeds but increase cluster CPU usage:
+
+```sql
+SET CLUSTER SETTING kv.rangefeed.concurrent_catchup_iterators = 64;
+```
+
+## Grant target database user permissions
+
+You should have already created a migration user on the target database (your **original source database**) with the necessary privileges. Refer to [Create migration user on source database](/docs/molt/migrate-load-replicate#create-migration-user-on-source-database).
+
+For failback replication, grant the user additional privileges to write data back to the target database:
+
+```sql
+-- Grant INSERT and UPDATE on tables to fail back to
+GRANT SELECT, INSERT, UPDATE ON migration_db.* TO 'migration_user'@'%';
+FLUSH PRIVILEGES;
+```
+
+## Configure Replicator
+
+When you run `replicator`, you can configure the following options for replication:
+
+- [Connection strings](#connection-strings): Specify URL‑encoded source and target connections.
+- [TLS certificate and key](#tls-certificate-and-key): Configure secure TLS connections.
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
+- [Tuning parameters](#tuning-parameters): Optimize failback performance and resource usage.
+- [Replicator metrics](#replicator-metrics): Monitor failback replication performance.
+
+</Tab>
+<Tab title="Oracle">
+
+## Prepare the CockroachDB cluster
+
+<Tip>
+For details on enabling CockroachDB changefeeds, refer to [Create and Configure Changefeeds](/docs/v25.4/create-and-configure-changefeeds).
+</Tip>
+
+If you are migrating to a CockroachDB self-hosted cluster, [enable rangefeeds](/docs/v25.4/create-and-configure-changefeeds#enable-rangefeeds) on the cluster:
+
+```sql
+SET CLUSTER SETTING kv.rangefeed.enabled = true;
+```
+
+Use the following optional settings to increase changefeed throughput.
+
+<Warning>
+The following settings can impact source cluster performance and stability, especially SQL foreground latency during writes. For details, refer to [Advanced Changefeed Configuration](/docs/v25.4/advanced-changefeed-configuration).
+</Warning>
+
+To lower changefeed emission latency, but increase SQL foreground latency:
+
+```sql
+SET CLUSTER SETTING kv.rangefeed.closed_timestamp_refresh_interval = '250ms';
+```
+
+To lower the [closed timestamp](/docs/v25.4/architecture/transaction-layer#closed-timestamps) lag duration:
+
+```sql
+SET CLUSTER SETTING kv.closed_timestamp.target_duration = '1s';
+```
+
+To improve catchup speeds but increase cluster CPU usage:
+
+```sql
+SET CLUSTER SETTING kv.rangefeed.concurrent_catchup_iterators = 64;
+```
+
+## Grant target database user permissions
+
+You should have already created a migration user on the target database (your **original source database**) with the necessary privileges. Refer to [Create migration user on source database](/docs/molt/migrate-load-replicate#create-migration-user-on-source-database).
+
+For failback replication, grant the user additional privileges to write data back to the target database:
+
+```sql
+-- Grant INSERT, UPDATE, and FLASHBACK on tables to fail back to
+GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.employees TO MIGRATION_USER;
+GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.payments TO MIGRATION_USER;
+GRANT SELECT, INSERT, UPDATE, FLASHBACK ON migration_schema.orders TO MIGRATION_USER;
+```
+
+## Configure Replicator
+
+When you run `replicator`, you can configure the following options for replication:
+
+- [Connection strings](#connection-strings): Specify URL‑encoded source and target connections.
+- [TLS certificate and key](#tls-certificate-and-key): Configure secure TLS connections.
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
+- [Tuning parameters](#tuning-parameters): Optimize failback performance and resource usage.
+- [Replicator metrics](#replicator-metrics): Monitor failback replication performance.
+
+</Tab>
+</Tabs>
+
+<Tabs>
+<Tab title="PostgreSQL">
+
+### Connection strings
+
+For failback, MOLT Replicator uses `--targetConn` to specify the destination database where you want to replicate CockroachDB changes, and `--stagingConn` for the CockroachDB staging database.
+
+`--targetConn` is the connection string of the database you want to replicate changes to (the database you originally migrated from).
+
+For example:
+
+```text
+--targetConn 'postgres://postgres:postgres@localhost:5432/molt?sslmode=verify-full'
+```
+
+`--stagingConn` is the CockroachDB connection string for staging operations:
+
+```text
+--stagingConn 'postgres://crdb_user@localhost:26257/defaultdb?sslmode=verify-full'
+```
+
+#### Secure connections
+
+- To keep your database credentials out of shell history and logs, follow these best practices when specifying your source and target connection strings:
+    - Avoid plaintext connection strings.
+    - Provide your connection strings as environment variables. For example:
+
+        ```shell
+        export SOURCE="postgres://migration_user:a%2452%26@localhost:5432/migration_db?sslmode=verify-full"
+        export TARGET="postgres://root@localhost:26257/defaultdb?sslmode=verify-full"
+        ```
+
+        Afterward, reference the environment variables in MOLT commands:
+
+        ```text
+        --source $SOURCE
+        --target $TARGET
+        ```
+    - If possible, use an external secrets manager to load the environment variables from stored secrets.
+- Use TLS-enabled connection strings to encrypt data in transit from MOLT to the database. When using TLS certificates, ensure certificate files are accessible to the MOLT binary on the same machine.
+
+    For example, a PostgreSQL connection string with TLS certificates:
+
+    ```text
+    postgresql://migration_user@db.example.com:5432/appdb?sslmode=verify-full&sslrootcert=/etc/migration_db/certs/ca.pem&sslcert=/etc/migration_db/certs/client.crt&sslkey=/etc/migration_db/certs/client.key
+    ```
+- URL-encode connection strings for the source database and [CockroachDB](/docs/v25.4/connect-to-the-database) so special characters in passwords are handled correctly.
+    - Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:
+
+        ```shell
+        molt escape-password --password 'a$52&'
+        ```
+
+        Use the encoded password in your connection string. For example:
+
+        ```text
+        postgres://migration_user:a%2452%26@localhost:5432/migration_db
+        ```
+- Remove `sslmode=disable` from production connection strings.
+
+### TLS certificate and key
+
+Always use **secure TLS connections** for failback replication to protect data in transit. Do **not** use insecure configurations in production: avoid the `--disableAuthentication` and `--tlsSelfSigned` Replicator flags and `insecure_tls_skip_verify=true` query parameter in the changefeed webhook URI.
+
+Generate self-signed TLS certificates or certificates from an external CA. Ensure the TLS server certificate and key are accessible on the MOLT Replicator host machine via a relative or absolute file path. When you [start failback with Replicator](#start-replicator), specify the paths with `--tlsCertificate` and `--tlsPrivateKey`. For example:
+
+```shell
+replicator start \
+... \
+--tlsCertificate ./certs/server.crt \
+--tlsPrivateKey ./certs/server.key
+```
+
+The client certificates defined in the changefeed webhook URI must correspond to the server certificates specified in the `replicator` command. This ensures proper TLS handshake between the changefeed and MOLT Replicator. To include client certificates in the changefeed webhook URL, encode them with `base64` and then URL-encode the output with `jq`:
+
+```shell
+base64 -i ./client.crt | jq -R -r '@uri'
+base64 -i ./client.key | jq -R -r '@uri'
+base64 -i ./ca.crt | jq -R -r '@uri'
+```
+
+When you [create the changefeed](#create-the-cockroachdb-changefeed), pass the encoded certificates in the changefeed URL, where `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters](/docs/v25.4/changefeed-sinks#webhook-parameters):
+
+```sql
+CREATE CHANGEFEED FOR TABLE table1, table2
+INTO 'webhook-https://host:port/database/schema?client_cert={base64_and_url_encoded_cert}&client_key={base64_and_url_encoded_key}&ca_cert={base64_and_url_encoded_ca}'
+WITH ...;
+```
+
+For additional details on the webhook sink URI, refer to [Webhook sink](/docs/v25.4/changefeed-sinks#webhook-sink).
+
+### Replicator flags
+
+Configure the following [MOLT Replicator](/docs/molt/molt-replicator) flags for continuous replication. For details on all available flags, refer to [Replicator Flags](/docs/molt/replicator-flags).
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/molt/replicator-flags#staging-schema"><code>--stagingSchema</code></a></td><td><strong>Required.</strong> Staging schema name on CockroachDB for the changefeed checkpoint table. Schema name must be fully qualified in the format <code>database.schema</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#bind-addr"><code>--bindAddr</code></a></td><td><strong>Required.</strong> Network address to bind the webhook sink for the changefeed. For example, <code>:30004</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#tls-certificate"><code>--tlsCertificate</code></a></td><td>Path to the server TLS certificate for the webhook sink. Refer to <a href="#tls-certificate-and-key">TLS certificate and key</a>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#tls-private-key"><code>--tlsPrivateKey</code></a></td><td>Path to the server TLS private key for the webhook sink. Refer to <a href="#tls-certificate-and-key">TLS certificate and key</a>.Q</td></tr><tr><td><a href="/docs/molt/replicator-flags#metrics-addr"><code>--metricsAddr</code></a></td><td>Enable Prometheus metrics at a specified <code>&#123;host&#125;:&#123;port&#125;</code>. Metrics are served at <code>http://&#123;host&#125;:&#123;port&#125;/&#95;/varz</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#userscript"><code>--userscript</code></a></td><td>Path to a <a href="/docs/molt/userscript-overview">userscript</a> that enables data filtering, routing, or transformations. For examples, refer to <a href="/docs/molt/userscript-cookbook">Userscript Cookbook</a>.</td></tr></tbody></table>
+
+- The staging schema is first created during [initial replication setup](/docs/molt/migrate-load-replicate#start-replicator) with [`--stagingCreateSchema`](/docs/molt/replicator-flags#staging-create-schema).
+- When configuring a [secure changefeed](#tls-certificate-and-key) for failback, you **must** include [`--tlsCertificate`](/docs/molt/replicator-flags#tls-certificate) and [`--tlsPrivateKey`](/docs/molt/replicator-flags#tls-private-key), which specify the paths to the server certificate and private key for the webhook sink connection.
+
+### Tuning parameters
+
+Configure the following [`replicator` flags](/docs/molt/replicator-flags) to optimize replication throughput and resource usage. Test different combinations in a pre-production environment to find the optimal balance of stability and performance for your workload.
+
+<Note>
+The following parameters apply to PostgreSQL, Oracle, and CockroachDB (failback) sources.
+</Note>
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a></td><td>Control the maximum number of concurrent target transactions. Higher values increase throughput but require more target connections. Start with a conservative value and increase based on target database capacity.</td></tr><tr><td><a href="/docs/molt/replicator-flags#flush-size"><code>--flushSize</code></a></td><td>Balance throughput and latency. Controls how many mutations are batched into each query to the target. Increase for higher throughput at the cost of higher latency.</td></tr><tr><td><a href="/docs/molt/replicator-flags#target-apply-queue-size"><code>--targetApplyQueueSize</code></a></td><td>Control memory usage during operation. Increase to allow higher throughput at the expense of memory; decrease to apply backpressure and limit memory consumption.</td></tr><tr><td><a href="/docs/molt/replicator-flags#target-max-pool-size"><code>--targetMaxPoolSize</code></a></td><td>Set larger than <a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a> by a safety factor to avoid exhausting target pool connections. Replicator enforces setting parallelism to 80% of this value.</td></tr><tr><td><a href="/docs/molt/replicator-flags#collapse-mutations"><code>--collapseMutations</code></a></td><td>Reduce the number of queries to the target by combining multiple mutations on the same primary key within each batch. Disable only if exact mutation order matters more than end state.</td></tr><tr><td><a href="/docs/molt/replicator-flags#enable-parallel-applies"><code>--enableParallelApplies</code></a></td><td>Improve apply throughput for independent tables and table groups that share foreign key dependencies. Increases memory and target connection usage, so ensure you increase <a href="/docs/molt/replicator-flags#target-max-pool-size"><code>--targetMaxPoolSize</code></a> or reduce <a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#flush-period"><code>--flushPeriod</code></a></td><td>Set to the maximum allowable time between flushes (for example, <code>10s</code> if data must be applied within 10 seconds). Works with <a href="/docs/molt/replicator-flags#flush-size"><code>--flushSize</code></a> to control when buffered mutations are committed to the target.</td></tr><tr><td><a href="/docs/molt/replicator-flags#quiescent-period"><code>--quiescentPeriod</code></a></td><td>Lower this value if constraint violations resolve quickly on your workload to make retries more frequent and reduce latency. Do not lower if constraint violations take time to resolve.</td></tr><tr><td><a href="/docs/molt/replicator-flags#scan-size"><code>--scanSize</code></a></td><td>Applies to <a href="/docs/molt/migrate-failback">failback</a> (<code>replicator start</code>) scenarios <strong>only</strong>. Balance memory usage and throughput. Increase to read more rows at once from the CockroachDB staging cluster for higher throughput, at the cost of memory pressure. Decrease to reduce memory pressure and increase stability.</td></tr></tbody></table>
+
+### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+```text
+--metricsAddr :30005
+```
+
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics](/docs/molt/replicator-metrics?filters=cockroachdb).
+
+## Stop forward replication
+
+1. Wait for replication to drain, which means that all transactions that occurred on the source database have been fully processed and replicated to CockroachDB. There are two ways to determine that replication has fully drained:
+    - When replication is caught up, you will not see new `upserted rows` logs.
+    - If you set up the replication metrics endpoint with [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) in the preceding steps, metrics are available at:
+
+        ```text
+        http://{host}:{port}/_/varz
+        ```
+
+        Use the following Prometheus alert expression to observe when the combined rate of upserts and deletes is `0` for each schema:
+
+        ```text
+        sum by (schema) (rate(apply_upserts_total[$__rate_interval]) + rate(apply_deletes_total[$__rate_interval]))
+        ```
+2. Cancel replication to CockroachDB by entering `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`.
+
+## Start Replicator
+
+1. Run the [MOLT Replicator](/docs/molt/molt-replicator) `start` command to begin failback replication from CockroachDB to your source database. In this example, `--metricsAddr:30005` enables a Prometheus endpoint for monitoring replication metrics, and `--bindAddr:30004` sets up the webhook endpoint for the changefeed.
+
+    `--stagingSchema` specifies the staging database name (`defaultdb._replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication](/docs/molt/migrate-load-replicate#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
+
+    ```shell
+    replicator start \
+    --targetConn $TARGET \
+    --stagingConn $STAGING \
+    --stagingSchema defaultdb._replicator \
+    --metricsAddr :30005 \
+    --bindAddr :30004 \
+    --tlsCertificate ./certs/server.crt \
+    --tlsPrivateKey ./certs/server.key \
+    -v
+    ```
+
+## Create the CockroachDB changefeed
+
+Create a CockroachDB changefeed to send changes to MOLT Replicator.
+
+1. Get the current logical timestamp from CockroachDB, after [ensuring that forward replication has fully drained](#stop-forward-replication):
+
+    ```sql
+    SELECT cluster_logical_timestamp();
+    ```
+
+    ```text
+        cluster_logical_timestamp
+    ----------------------------------
+      1759246920563173000.0000000000
+    ```
+2. Create the CockroachDB changefeed pointing to the MOLT Replicator webhook endpoint. Use `cursor` to specify the logical timestamp from the preceding step. For details on the webhook sink URI, refer to [Webhook sink](/docs/v25.4/changefeed-sinks#webhook-sink).
+
+    <Note>
+    Explicitly set a default `10s` [`webhook_client_timeout`](/docs/v25.4/create-changefeed#options) value in the `CREATE CHANGEFEED` statement. This value ensures that the webhook can report failures in inconsistent networking situations and make crash loops more visible.
+    </Note>
+
+    The target schema is specified in the webhook URL path in the fully-qualified format `/database/schema`. The path specifies the database and schema on the target PostgreSQL database. For example, `/migration_db/migration_schema` routes changes to the `migration_schema` schema in the `migration_db` database.
+
+    ```sql
+    CREATE CHANGEFEED FOR TABLE employees, payments, orders \
+    INTO 'webhook-https://replicator-host:30004/migration_db/migration_schema?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
+    ```
+
+    The output shows the job ID:
+
+    ```text
+            job_id
+    -----------------------
+      1101234051444375553
+    ```
+
+    <Tip>
+    Ensure that only **one** changefeed points to MOLT Replicator at a time to avoid mixing streams of incoming data.
+    </Tip>
+3. Monitor the changefeed status, specifying the job ID:
+
+    ```sql
+    SHOW CHANGEFEED JOB 1101234051444375553;
+    ```
+
+    ```text
+            job_id        | ... | status  |              running_status               | ...
+    ----------------------+-----+---------+-------------------------------------------+----
+      1101234051444375553 | ... | running | running: resolved=1759246920563173000,0 | ...
+    ```
+
+    To confirm the changefeed is active and replicating changes to the target database, check that `status` is `running` and `running_status` shows `running: resolved={timestamp}`.
+
+    <Warning>
+    `running: resolved` may be reported even if data isn't being sent properly. This typically indicates incorrect host/port configuration or network connectivity issues.
+    </Warning>
+4. Verify that Replicator is reporting incoming HTTP requests from the changefeed. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see periodic HTTP request successes:
+
+    ```text
+    DEBUG  [Aug 25 11:52:47]  httpRequest="&{0x14000b068c0 45 200 3 9.770958ms   false false}"
+    DEBUG  [Aug 25 11:52:48]  httpRequest="&{0x14000d1a000 45 200 3 13.438125ms   false false}"
+    ```
+
+    These debug messages confirm successful changefeed connections to MOLT Replicator. You can disable verbose logging after verifying the connection.
+
+## Troubleshooting
+
+### Failback issues
+
+If the changefeed shows connection errors in `SHOW CHANGEFEED JOB`:
+
+##### Connection refused
+
+```text
+transient error: Post "https://replicator-host:30004/migration_db/migration_schema": dial tcp [::1]:30004: connect: connection refused
+```
+
+This indicates that Replicator is down, the webhook URL is incorrect, or the port is misconfigured.
+
+**Resolution:** Verify that MOLT Replicator is running on the port specified in the changefeed `INTO` configuration. Confirm the host and port are correct.
+
+##### Incorrect schema path errors
+
+This error occurs when the [CockroachDB changefeed](/docs/v25.4/create-and-configure-changefeeds) webhook URL path does not match the target database schema naming convention:
+
+```text
+transient error: 400 Bad Request: unknown schema:
+```
+
+The webhook URL path is specified in the `INTO` clause when you [create the changefeed](/docs/molt/migrate-failback#create-the-cockroachdb-changefeed). For example: `webhook-https://replicator-host:30004/database/schema`.
+
+**Resolution:** Verify the webhook path format matches your target database type:
+
+- PostgreSQL targets should use `/database/schema` format. For example, `webhook-https://replicator-host:30004/migration_db/migration_schema`.
+
+</Tab>
+<Tab title="MySQL">
+
+### Connection strings
+
+For failback, MOLT Replicator uses `--targetConn` to specify the destination database where you want to replicate CockroachDB changes, and `--stagingConn` for the CockroachDB staging database.
+
+`--targetConn` is the connection string of the database you want to replicate changes to (the database you originally migrated from).
+
+For example:
+
+```text
+--targetConn 'mysql://user:password@localhost/molt?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt'
+```
+
+`--stagingConn` is the CockroachDB connection string for staging operations:
+
+```text
+--stagingConn 'postgres://crdb_user@localhost:26257/defaultdb?sslmode=verify-full'
+```
+
+#### Secure connections
+
+- To keep your database credentials out of shell history and logs, follow these best practices when specifying your source and target connection strings:
+    - Avoid plaintext connection strings.
+    - Provide your connection strings as environment variables. For example:
+
+        ```shell
+        export SOURCE="postgres://migration_user:a%2452%26@localhost:5432/migration_db?sslmode=verify-full"
+        export TARGET="postgres://root@localhost:26257/defaultdb?sslmode=verify-full"
+        ```
+
+        Afterward, reference the environment variables in MOLT commands:
+
+        ```text
+        --source $SOURCE
+        --target $TARGET
+        ```
+    - If possible, use an external secrets manager to load the environment variables from stored secrets.
+- Use TLS-enabled connection strings to encrypt data in transit from MOLT to the database. When using TLS certificates, ensure certificate files are accessible to the MOLT binary on the same machine.
+
+    For example, a PostgreSQL connection string with TLS certificates:
+
+    ```text
+    postgresql://migration_user@db.example.com:5432/appdb?sslmode=verify-full&sslrootcert=/etc/migration_db/certs/ca.pem&sslcert=/etc/migration_db/certs/client.crt&sslkey=/etc/migration_db/certs/client.key
+    ```
+- URL-encode connection strings for the source database and [CockroachDB](/docs/v25.4/connect-to-the-database) so special characters in passwords are handled correctly.
+    - Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:
+
+        ```shell
+        molt escape-password --password 'a$52&'
+        ```
+
+        Use the encoded password in your connection string. For example:
+
+        ```text
+        postgres://migration_user:a%2452%26@localhost:5432/migration_db
+        ```
+- Remove `sslmode=disable` from production connection strings.
+
+### TLS certificate and key
+
+Always use **secure TLS connections** for failback replication to protect data in transit. Do **not** use insecure configurations in production: avoid the `--disableAuthentication` and `--tlsSelfSigned` Replicator flags and `insecure_tls_skip_verify=true` query parameter in the changefeed webhook URI.
+
+Generate self-signed TLS certificates or certificates from an external CA. Ensure the TLS server certificate and key are accessible on the MOLT Replicator host machine via a relative or absolute file path. When you [start failback with Replicator](#start-replicator), specify the paths with `--tlsCertificate` and `--tlsPrivateKey`. For example:
+
+```shell
+replicator start \
+... \
+--tlsCertificate ./certs/server.crt \
+--tlsPrivateKey ./certs/server.key
+```
+
+The client certificates defined in the changefeed webhook URI must correspond to the server certificates specified in the `replicator` command. This ensures proper TLS handshake between the changefeed and MOLT Replicator. To include client certificates in the changefeed webhook URL, encode them with `base64` and then URL-encode the output with `jq`:
+
+```shell
+base64 -i ./client.crt | jq -R -r '@uri'
+base64 -i ./client.key | jq -R -r '@uri'
+base64 -i ./ca.crt | jq -R -r '@uri'
+```
+
+When you [create the changefeed](#create-the-cockroachdb-changefeed), pass the encoded certificates in the changefeed URL, where `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters](/docs/v25.4/changefeed-sinks#webhook-parameters):
+
+```sql
+CREATE CHANGEFEED FOR TABLE table1, table2
+INTO 'webhook-https://host:port/database/schema?client_cert={base64_and_url_encoded_cert}&client_key={base64_and_url_encoded_key}&ca_cert={base64_and_url_encoded_ca}'
+WITH ...;
+```
+
+For additional details on the webhook sink URI, refer to [Webhook sink](/docs/v25.4/changefeed-sinks#webhook-sink).
+
+### Replicator flags
+
+Configure the following [MOLT Replicator](/docs/molt/molt-replicator) flags for continuous replication. For details on all available flags, refer to [Replicator Flags](/docs/molt/replicator-flags).
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/molt/replicator-flags#staging-schema"><code>--stagingSchema</code></a></td><td><strong>Required.</strong> Staging schema name on CockroachDB for the changefeed checkpoint table. Schema name must be fully qualified in the format <code>database.schema</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#bind-addr"><code>--bindAddr</code></a></td><td><strong>Required.</strong> Network address to bind the webhook sink for the changefeed. For example, <code>:30004</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#tls-certificate"><code>--tlsCertificate</code></a></td><td>Path to the server TLS certificate for the webhook sink. Refer to <a href="#tls-certificate-and-key">TLS certificate and key</a>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#tls-private-key"><code>--tlsPrivateKey</code></a></td><td>Path to the server TLS private key for the webhook sink. Refer to <a href="#tls-certificate-and-key">TLS certificate and key</a>.Q</td></tr><tr><td><a href="/docs/molt/replicator-flags#metrics-addr"><code>--metricsAddr</code></a></td><td>Enable Prometheus metrics at a specified <code>&#123;host&#125;:&#123;port&#125;</code>. Metrics are served at <code>http://&#123;host&#125;:&#123;port&#125;/&#95;/varz</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#userscript"><code>--userscript</code></a></td><td>Path to a <a href="/docs/molt/userscript-overview">userscript</a> that enables data filtering, routing, or transformations. For examples, refer to <a href="/docs/molt/userscript-cookbook">Userscript Cookbook</a>.</td></tr></tbody></table>
+
+- The staging schema is first created during [initial replication setup](/docs/molt/migrate-load-replicate#start-replicator) with [`--stagingCreateSchema`](/docs/molt/replicator-flags#staging-create-schema).
+- When configuring a [secure changefeed](#tls-certificate-and-key) for failback, you **must** include [`--tlsCertificate`](/docs/molt/replicator-flags#tls-certificate) and [`--tlsPrivateKey`](/docs/molt/replicator-flags#tls-private-key), which specify the paths to the server certificate and private key for the webhook sink connection.
+
+### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+```text
+--metricsAddr :30005
+```
+
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics](/docs/molt/replicator-metrics?filters=cockroachdb).
+
+## Stop forward replication
+
+1. Wait for replication to drain, which means that all transactions that occurred on the source database have been fully processed and replicated to CockroachDB. There are two ways to determine that replication has fully drained:
+    - When replication is caught up, you will not see new `upserted rows` logs.
+    - If you set up the replication metrics endpoint with [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) in the preceding steps, metrics are available at:
+
+        ```text
+        http://{host}:{port}/_/varz
+        ```
+
+        Use the following Prometheus alert expression to observe when the combined rate of upserts and deletes is `0` for each schema:
+
+        ```text
+        sum by (schema) (rate(apply_upserts_total[$__rate_interval]) + rate(apply_deletes_total[$__rate_interval]))
+        ```
+2. Cancel replication to CockroachDB by entering `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`.
+
+## Start Replicator
+
+1. Run the [MOLT Replicator](/docs/molt/molt-replicator) `start` command to begin failback replication from CockroachDB to your source database. In this example, `--metricsAddr:30005` enables a Prometheus endpoint for monitoring replication metrics, and `--bindAddr:30004` sets up the webhook endpoint for the changefeed.
+
+    `--stagingSchema` specifies the staging database name (`defaultdb._replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication](/docs/molt/migrate-load-replicate#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
+
+    ```shell
+    replicator start \
+    --targetConn $TARGET \
+    --stagingConn $STAGING \
+    --stagingSchema defaultdb._replicator \
+    --metricsAddr :30005 \
+    --bindAddr :30004 \
+    --tlsCertificate ./certs/server.crt \
+    --tlsPrivateKey ./certs/server.key \
+    -v
+    ```
+
+## Create the CockroachDB changefeed
+
+Create a CockroachDB changefeed to send changes to MOLT Replicator.
+
+1. Get the current logical timestamp from CockroachDB, after [ensuring that forward replication has fully drained](#stop-forward-replication):
+
+    ```sql
+    SELECT cluster_logical_timestamp();
+    ```
+
+    ```text
+        cluster_logical_timestamp
+    ----------------------------------
+      1759246920563173000.0000000000
+    ```
+2. Create the CockroachDB changefeed pointing to the MOLT Replicator webhook endpoint. Use `cursor` to specify the logical timestamp from the preceding step. For details on the webhook sink URI, refer to [Webhook sink](/docs/v25.4/changefeed-sinks#webhook-sink).
+
+    <Note>
+    Explicitly set a default `10s` [`webhook_client_timeout`](/docs/v25.4/create-changefeed#options) value in the `CREATE CHANGEFEED` statement. This value ensures that the webhook can report failures in inconsistent networking situations and make crash loops more visible.
+    </Note>
+
+    MySQL tables belong directly to the database, not to a separate schema. The webhook URL path specifies the database name on the target MySQL database. For example, `/migration_db` routes changes to the `migration_db` database.
+
+    ```sql
+    CREATE CHANGEFEED FOR TABLE employees, payments, orders \
+    INTO 'webhook-https://replicator-host:30004/migration_db?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
+    ```
+
+    The output shows the job ID:
+
+    ```text
+            job_id
+    -----------------------
+      1101234051444375553
+    ```
+
+    <Tip>
+    Ensure that only **one** changefeed points to MOLT Replicator at a time to avoid mixing streams of incoming data.
+    </Tip>
+3. Monitor the changefeed status, specifying the job ID:
+
+    ```sql
+    SHOW CHANGEFEED JOB 1101234051444375553;
+    ```
+
+    ```text
+            job_id        | ... | status  |              running_status               | ...
+    ----------------------+-----+---------+-------------------------------------------+----
+      1101234051444375553 | ... | running | running: resolved=1759246920563173000,0 | ...
+    ```
+
+    To confirm the changefeed is active and replicating changes to the target database, check that `status` is `running` and `running_status` shows `running: resolved={timestamp}`.
+
+    <Warning>
+    `running: resolved` may be reported even if data isn't being sent properly. This typically indicates incorrect host/port configuration or network connectivity issues.
+    </Warning>
+4. Verify that Replicator is reporting incoming HTTP requests from the changefeed. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see periodic HTTP request successes:
+
+    ```text
+    DEBUG  [Aug 25 11:52:47]  httpRequest="&{0x14000b068c0 45 200 3 9.770958ms   false false}"
+    DEBUG  [Aug 25 11:52:48]  httpRequest="&{0x14000d1a000 45 200 3 13.438125ms   false false}"
+    ```
+
+    These debug messages confirm successful changefeed connections to MOLT Replicator. You can disable verbose logging after verifying the connection.
+
+## Troubleshooting
+
+### Failback issues
+
+If the changefeed shows connection errors in `SHOW CHANGEFEED JOB`:
+
+##### Connection refused
+
+```text
+transient error: Post "https://replicator-host:30004/migration_db/migration_schema": dial tcp [::1]:30004: connect: connection refused
+```
+
+This indicates that Replicator is down, the webhook URL is incorrect, or the port is misconfigured.
+
+**Resolution:** Verify that MOLT Replicator is running on the port specified in the changefeed `INTO` configuration. Confirm the host and port are correct.
+
+##### Incorrect schema path errors
+
+This error occurs when the [CockroachDB changefeed](/docs/v25.4/create-and-configure-changefeeds) webhook URL path does not match the target database schema naming convention:
+
+```text
+transient error: 400 Bad Request: unknown schema:
+```
+
+The webhook URL path is specified in the `INTO` clause when you [create the changefeed](/docs/molt/migrate-failback#create-the-cockroachdb-changefeed). For example: `webhook-https://replicator-host:30004/database/schema`.
+
+**Resolution:** Verify the webhook path format matches your target database type:
+
+- MySQL targets should use `/database` format. For example, `webhook-https://replicator-host:30004/migration_db`.
+
+</Tab>
+<Tab title="Oracle">
+
+### Connection strings
+
+For failback, MOLT Replicator uses `--targetConn` to specify the destination database where you want to replicate CockroachDB changes, and `--stagingConn` for the CockroachDB staging database.
+
+`--targetConn` is the connection string of the database you want to replicate changes to (the database you originally migrated from).
+
+For example:
+
+```text
+--targetConn 'oracle://C%23%23MIGRATION_USER:password@host:1521/ORCLPDB1'
+```
+
+`--stagingConn` is the CockroachDB connection string for staging operations:
+
+```text
+--stagingConn 'postgres://crdb_user@localhost:26257/defaultdb?sslmode=verify-full'
+```
+
+#### Secure connections
+
+- To keep your database credentials out of shell history and logs, follow these best practices when specifying your source and target connection strings:
+    - Avoid plaintext connection strings.
+    - Provide your connection strings as environment variables. For example:
+
+        ```shell
+        export SOURCE="postgres://migration_user:a%2452%26@localhost:5432/migration_db?sslmode=verify-full"
+        export TARGET="postgres://root@localhost:26257/defaultdb?sslmode=verify-full"
+        ```
+
+        Afterward, reference the environment variables in MOLT commands:
+
+        ```text
+        --source $SOURCE
+        --target $TARGET
+        ```
+    - If possible, use an external secrets manager to load the environment variables from stored secrets.
+- Use TLS-enabled connection strings to encrypt data in transit from MOLT to the database. When using TLS certificates, ensure certificate files are accessible to the MOLT binary on the same machine.
+
+    For example, a PostgreSQL connection string with TLS certificates:
+
+    ```text
+    postgresql://migration_user@db.example.com:5432/appdb?sslmode=verify-full&sslrootcert=/etc/migration_db/certs/ca.pem&sslcert=/etc/migration_db/certs/client.crt&sslkey=/etc/migration_db/certs/client.key
+    ```
+- URL-encode connection strings for the source database and [CockroachDB](/docs/v25.4/connect-to-the-database) so special characters in passwords are handled correctly.
+    - Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:
+
+        ```shell
+        molt escape-password --password 'a$52&'
+        ```
+
+        Use the encoded password in your connection string. For example:
+
+        ```text
+        postgres://migration_user:a%2452%26@localhost:5432/migration_db
+        ```
+- Remove `sslmode=disable` from production connection strings.
+
+### TLS certificate and key
+
+Always use **secure TLS connections** for failback replication to protect data in transit. Do **not** use insecure configurations in production: avoid the `--disableAuthentication` and `--tlsSelfSigned` Replicator flags and `insecure_tls_skip_verify=true` query parameter in the changefeed webhook URI.
+
+Generate self-signed TLS certificates or certificates from an external CA. Ensure the TLS server certificate and key are accessible on the MOLT Replicator host machine via a relative or absolute file path. When you [start failback with Replicator](#start-replicator), specify the paths with `--tlsCertificate` and `--tlsPrivateKey`. For example:
+
+```shell
+replicator start \
+... \
+--tlsCertificate ./certs/server.crt \
+--tlsPrivateKey ./certs/server.key
+```
+
+The client certificates defined in the changefeed webhook URI must correspond to the server certificates specified in the `replicator` command. This ensures proper TLS handshake between the changefeed and MOLT Replicator. To include client certificates in the changefeed webhook URL, encode them with `base64` and then URL-encode the output with `jq`:
+
+```shell
+base64 -i ./client.crt | jq -R -r '@uri'
+base64 -i ./client.key | jq -R -r '@uri'
+base64 -i ./ca.crt | jq -R -r '@uri'
+```
+
+When you [create the changefeed](#create-the-cockroachdb-changefeed), pass the encoded certificates in the changefeed URL, where `client_cert`, `client_key`, and `ca_cert` are [webhook sink parameters](/docs/v25.4/changefeed-sinks#webhook-parameters):
+
+```sql
+CREATE CHANGEFEED FOR TABLE table1, table2
+INTO 'webhook-https://host:port/database/schema?client_cert={base64_and_url_encoded_cert}&client_key={base64_and_url_encoded_key}&ca_cert={base64_and_url_encoded_ca}'
+WITH ...;
+```
+
+For additional details on the webhook sink URI, refer to [Webhook sink](/docs/v25.4/changefeed-sinks#webhook-sink).
+
+### Replicator flags
+
+Configure the following [MOLT Replicator](/docs/molt/molt-replicator) flags for continuous replication. For details on all available flags, refer to [Replicator Flags](/docs/molt/replicator-flags).
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/molt/replicator-flags#staging-schema"><code>--stagingSchema</code></a></td><td><strong>Required.</strong> Staging schema name on CockroachDB for the changefeed checkpoint table. Schema name must be fully qualified in the format <code>database.schema</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#bind-addr"><code>--bindAddr</code></a></td><td><strong>Required.</strong> Network address to bind the webhook sink for the changefeed. For example, <code>:30004</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#tls-certificate"><code>--tlsCertificate</code></a></td><td>Path to the server TLS certificate for the webhook sink. Refer to <a href="#tls-certificate-and-key">TLS certificate and key</a>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#tls-private-key"><code>--tlsPrivateKey</code></a></td><td>Path to the server TLS private key for the webhook sink. Refer to <a href="#tls-certificate-and-key">TLS certificate and key</a>.Q</td></tr><tr><td><a href="/docs/molt/replicator-flags#metrics-addr"><code>--metricsAddr</code></a></td><td>Enable Prometheus metrics at a specified <code>&#123;host&#125;:&#123;port&#125;</code>. Metrics are served at <code>http://&#123;host&#125;:&#123;port&#125;/&#95;/varz</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#userscript"><code>--userscript</code></a></td><td>Path to a <a href="/docs/molt/userscript-overview">userscript</a> that enables data filtering, routing, or transformations. For examples, refer to <a href="/docs/molt/userscript-cookbook">Userscript Cookbook</a>.</td></tr></tbody></table>
+
+- The staging schema is first created during [initial replication setup](/docs/molt/migrate-load-replicate#start-replicator) with [`--stagingCreateSchema`](/docs/molt/replicator-flags#staging-create-schema).
+- When configuring a [secure changefeed](#tls-certificate-and-key) for failback, you **must** include [`--tlsCertificate`](/docs/molt/replicator-flags#tls-certificate) and [`--tlsPrivateKey`](/docs/molt/replicator-flags#tls-private-key), which specify the paths to the server certificate and private key for the webhook sink connection.
+
+### Tuning parameters
+
+Configure the following [`replicator` flags](/docs/molt/replicator-flags) to optimize replication throughput and resource usage. Test different combinations in a pre-production environment to find the optimal balance of stability and performance for your workload.
+
+<Note>
+The following parameters apply to PostgreSQL, Oracle, and CockroachDB (failback) sources.
+</Note>
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a></td><td>Control the maximum number of concurrent target transactions. Higher values increase throughput but require more target connections. Start with a conservative value and increase based on target database capacity.</td></tr><tr><td><a href="/docs/molt/replicator-flags#flush-size"><code>--flushSize</code></a></td><td>Balance throughput and latency. Controls how many mutations are batched into each query to the target. Increase for higher throughput at the cost of higher latency.</td></tr><tr><td><a href="/docs/molt/replicator-flags#target-apply-queue-size"><code>--targetApplyQueueSize</code></a></td><td>Control memory usage during operation. Increase to allow higher throughput at the expense of memory; decrease to apply backpressure and limit memory consumption.</td></tr><tr><td><a href="/docs/molt/replicator-flags#target-max-pool-size"><code>--targetMaxPoolSize</code></a></td><td>Set larger than <a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a> by a safety factor to avoid exhausting target pool connections. Replicator enforces setting parallelism to 80% of this value.</td></tr><tr><td><a href="/docs/molt/replicator-flags#collapse-mutations"><code>--collapseMutations</code></a></td><td>Reduce the number of queries to the target by combining multiple mutations on the same primary key within each batch. Disable only if exact mutation order matters more than end state.</td></tr><tr><td><a href="/docs/molt/replicator-flags#enable-parallel-applies"><code>--enableParallelApplies</code></a></td><td>Improve apply throughput for independent tables and table groups that share foreign key dependencies. Increases memory and target connection usage, so ensure you increase <a href="/docs/molt/replicator-flags#target-max-pool-size"><code>--targetMaxPoolSize</code></a> or reduce <a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#flush-period"><code>--flushPeriod</code></a></td><td>Set to the maximum allowable time between flushes (for example, <code>10s</code> if data must be applied within 10 seconds). Works with <a href="/docs/molt/replicator-flags#flush-size"><code>--flushSize</code></a> to control when buffered mutations are committed to the target.</td></tr><tr><td><a href="/docs/molt/replicator-flags#quiescent-period"><code>--quiescentPeriod</code></a></td><td>Lower this value if constraint violations resolve quickly on your workload to make retries more frequent and reduce latency. Do not lower if constraint violations take time to resolve.</td></tr><tr><td><a href="/docs/molt/replicator-flags#scan-size"><code>--scanSize</code></a></td><td>Applies to <a href="/docs/molt/migrate-failback">failback</a> (<code>replicator start</code>) scenarios <strong>only</strong>. Balance memory usage and throughput. Increase to read more rows at once from the CockroachDB staging cluster for higher throughput, at the cost of memory pressure. Decrease to reduce memory pressure and increase stability.</td></tr></tbody></table>
+
+### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+```text
+--metricsAddr :30005
+```
+
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics](/docs/molt/replicator-metrics?filters=cockroachdb).
+
+## Stop forward replication
+
+1. Wait for replication to drain, which means that all transactions that occurred on the source database have been fully processed and replicated to CockroachDB. There are two ways to determine that replication has fully drained:
+    - When replication is caught up, you will not see new `upserted rows` logs.
+    - If you set up the replication metrics endpoint with [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) in the preceding steps, metrics are available at:
+
+        ```text
+        http://{host}:{port}/_/varz
+        ```
+
+        Use the following Prometheus alert expression to observe when the combined rate of upserts and deletes is `0` for each schema:
+
+        ```text
+        sum by (schema) (rate(apply_upserts_total[$__rate_interval]) + rate(apply_deletes_total[$__rate_interval]))
+        ```
+2. Cancel replication to CockroachDB by entering `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`.
+
+## Start Replicator
+
+1. Run the [MOLT Replicator](/docs/molt/molt-replicator) `start` command to begin failback replication from CockroachDB to your source database. In this example, `--metricsAddr:30005` enables a Prometheus endpoint for monitoring replication metrics, and `--bindAddr:30004` sets up the webhook endpoint for the changefeed.
+
+    `--stagingSchema` specifies the staging database name (`defaultdb._replicator` in this example) used for replication checkpoints and metadata. This staging database was created during [initial forward replication](/docs/molt/migrate-load-replicate#start-replicator) when you first ran MOLT Replicator with `--stagingCreateSchema`.
+
+    ```shell
+    replicator start \
+    --targetConn $TARGET \
+    --stagingConn $STAGING \
+    --stagingSchema defaultdb._replicator \
+    --metricsAddr :30005 \
+    --bindAddr :30004 \
+    --tlsCertificate ./certs/server.crt \
+    --tlsPrivateKey ./certs/server.key \
+    -v
+    ```
+
+## Create the CockroachDB changefeed
+
+Create a CockroachDB changefeed to send changes to MOLT Replicator.
+
+1. Get the current logical timestamp from CockroachDB, after [ensuring that forward replication has fully drained](#stop-forward-replication):
+
+    ```sql
+    SELECT cluster_logical_timestamp();
+    ```
+
+    ```text
+        cluster_logical_timestamp
+    ----------------------------------
+      1759246920563173000.0000000000
+    ```
+2. Create the CockroachDB changefeed pointing to the MOLT Replicator webhook endpoint. Use `cursor` to specify the logical timestamp from the preceding step. For details on the webhook sink URI, refer to [Webhook sink](/docs/v25.4/changefeed-sinks#webhook-sink).
+
+    <Note>
+    Explicitly set a default `10s` [`webhook_client_timeout`](/docs/v25.4/create-changefeed#options) value in the `CREATE CHANGEFEED` statement. This value ensures that the webhook can report failures in inconsistent networking situations and make crash loops more visible.
+    </Note>
+
+    The webhook URL path specifies the schema name on the target Oracle database. Oracle capitalizes identifiers by default. For example, `/MIGRATION_SCHEMA` routes changes to the `MIGRATION_SCHEMA` schema.
+
+    ```sql
+    CREATE CHANGEFEED FOR TABLE employees, payments, orders \
+    INTO 'webhook-https://replicator-host:30004/MIGRATION_SCHEMA?client_cert={base64_encoded_cert}&client_key={base64_encoded_key}&ca_cert={base64_encoded_ca}' \
+    WITH updated, resolved = '250ms', min_checkpoint_frequency = '250ms', initial_scan = 'no', cursor = '1759246920563173000.0000000000', webhook_sink_config = '{"Flush":{"Bytes":1048576,"Frequency":"1s"}}', webhook_client_timeout = '10s';
+    ```
+
+    The output shows the job ID:
+
+    ```text
+            job_id
+    -----------------------
+      1101234051444375553
+    ```
+
+    <Tip>
+    Ensure that only **one** changefeed points to MOLT Replicator at a time to avoid mixing streams of incoming data.
+    </Tip>
+3. Monitor the changefeed status, specifying the job ID:
+
+    ```sql
+    SHOW CHANGEFEED JOB 1101234051444375553;
+    ```
+
+    ```text
+            job_id        | ... | status  |              running_status               | ...
+    ----------------------+-----+---------+-------------------------------------------+----
+      1101234051444375553 | ... | running | running: resolved=1759246920563173000,0 | ...
+    ```
+
+    To confirm the changefeed is active and replicating changes to the target database, check that `status` is `running` and `running_status` shows `running: resolved={timestamp}`.
+
+    <Warning>
+    `running: resolved` may be reported even if data isn't being sent properly. This typically indicates incorrect host/port configuration or network connectivity issues.
+    </Warning>
+4. Verify that Replicator is reporting incoming HTTP requests from the changefeed. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see periodic HTTP request successes:
+
+    ```text
+    DEBUG  [Aug 25 11:52:47]  httpRequest="&{0x14000b068c0 45 200 3 9.770958ms   false false}"
+    DEBUG  [Aug 25 11:52:48]  httpRequest="&{0x14000d1a000 45 200 3 13.438125ms   false false}"
+    ```
+
+    These debug messages confirm successful changefeed connections to MOLT Replicator. You can disable verbose logging after verifying the connection.
+
+## Troubleshooting
+
+### Failback issues
+
+If the changefeed shows connection errors in `SHOW CHANGEFEED JOB`:
+
+##### Connection refused
+
+```text
+transient error: Post "https://replicator-host:30004/migration_db/migration_schema": dial tcp [::1]:30004: connect: connection refused
+```
+
+This indicates that Replicator is down, the webhook URL is incorrect, or the port is misconfigured.
+
+**Resolution:** Verify that MOLT Replicator is running on the port specified in the changefeed `INTO` configuration. Confirm the host and port are correct.
+
+##### Incorrect schema path errors
+
+This error occurs when the [CockroachDB changefeed](/docs/v25.4/create-and-configure-changefeeds) webhook URL path does not match the target database schema naming convention:
+
+```text
+transient error: 400 Bad Request: unknown schema:
+```
+
+The webhook URL path is specified in the `INTO` clause when you [create the changefeed](/docs/molt/migrate-failback#create-the-cockroachdb-changefeed). For example: `webhook-https://replicator-host:30004/database/schema`.
+
+**Resolution:** Verify the webhook path format matches your target database type:
+
+- Oracle targets should use `/SCHEMA` format in uppercase. For example, `webhook-https://replicator-host:30004/MIGRATION_SCHEMA`.
+
+</Tab>
+</Tabs>
+
+For details on configuring the webhook sink URI, refer to [Webhook sink](/docs/v25.4/changefeed-sinks#webhook-sink).
+
+##### GC threshold error
+
+```text
+batch timestamp * must be after replica GC threshold
+```
+
+This indicates starting from an invalid cursor that has been garbage collected.
+
+**Resolution:** Double-check the cursor to ensure it represents a valid range that has not been garbage collected, or extend the GC TTL on the source CockroachDB cluster:
+
+```sql
+ALTER DATABASE defaultdb CONFIGURE ZONE USING gc.ttlseconds = {gc_ttl_in_seconds};
+```
+
+##### Duplicated data re-application
+
+This occurs when resuming a changefeed from a cursor causes excessive data duplication.
+
+**Resolution:** Clear the staging database to prevent duplication. **This deletes all checkpoints and buffered data**, so use with caution:
+
+```sql
+DROP DATABASE _replicator;
+```
+
+For more targeted cleanup, delete mutations from specific staging tables:
+
+```sql
+DELETE FROM _replicator.employees WHERE true;
+```
+
+## See also
+
+- [MOLT Replicator](/docs/molt/molt-replicator)
+- [Migration Overview](/docs/molt/migration-overview)
+- [Migration Strategy](/docs/molt/migration-strategy)
+- [MOLT Fetch](/docs/molt/molt-fetch)

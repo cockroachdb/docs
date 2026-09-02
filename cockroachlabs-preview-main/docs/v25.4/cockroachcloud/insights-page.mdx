@@ -1,0 +1,20 @@
+---
+title: "Insights Page"
+old_description: "The Insights page exposes problems that CockroachDB has detected in your workloads and schemas."
+---
+
+import InsightsPage from "/snippets/cockroachcloud/insights-page.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<InsightsPage />

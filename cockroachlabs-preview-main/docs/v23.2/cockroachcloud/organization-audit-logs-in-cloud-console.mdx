@@ -1,0 +1,23 @@
+---
+title: "View Organization Audit Logs in the Cloud Console"
+permalink: "https://www.cockroachlabs.com/docs/cockroachcloud/organization-audit-logs-in-cloud-console"
+og:title: "View Organization Audit Logs in the Cloud Console"
+og:description: "Learn how to view CockroachDB Cloud organization audit logs in the Cloud Console."
+og:image: "https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress"
+---
+
+import OrganizationAuditLogsInCloudConsole from "/snippets/cockroachcloud/organization-audit-logs-in-cloud-console.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<OrganizationAuditLogsInCloudConsole />

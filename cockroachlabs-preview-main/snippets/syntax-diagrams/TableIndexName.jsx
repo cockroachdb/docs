@@ -1,0 +1,64 @@
+export const TableIndexName = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="81" width="365" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="51" y="3"></rect>
+<rect class="nonterminal" height="32" width="96" x="49" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="61" y="21">table_name</text></a><rect height="32" rx="10" width="32" x="167" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="32" x="165" y="1"></rect>
+<text class="terminal" x="175" y="21">@</text><a xlink:href="#index_name" xlink:title="index_name">
+<rect height="32" width="98" x="219" y="3"></rect>
+<rect class="nonterminal" height="32" width="98" x="217" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="74" font-size="11" class="nonterminal" x="229" y="21">index_name</text></a><a xlink:href="#standalone_index_name" xlink:title="standalone_index_name">
+<rect height="32" width="176" x="51" y="47"></rect>
+<rect class="nonterminal" height="32" width="176" x="49" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="152" font-size="11" class="nonterminal" x="61" y="65">standalone_index_name</text></a><path class="line" d="m17 17 h2 m20 0 h10 m96 0 h10 m0 0 h10 m32 0 h10 m0 0 h10 m98 0 h10 m-306 0 h20 m286 0 h20 m-326 0 q10 0 10 10 m306 0 q0 -10 10 -10 m-316 10 v24 m306 0 v-24 m-306 24 q0 10 10 10 m286 0 q10 0 10 -10 m-296 10 h10 m176 0 h10 m0 0 h90 m23 -44 h-3"></path>
+<polygon points="355 17 363 13 363 21"></polygon>
+<polygon points="355 17 347 13 347 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

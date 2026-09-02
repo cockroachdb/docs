@@ -1,0 +1,548 @@
+---
+title: "Data Domiciling with CockroachDB"
+old_description: "Learn how to use CockroachDB's multi-region SQL capabilities and the ALTER DATABASE ... ADD SUPER REGION statement as part of your data domiciling approach"
+---
+
+As you scale your usage of [multi-region clusters](/docs/v26.1/multiregion-overview), you may need to keep certain subsets of data in specific localities. Keeping specific data on servers in specific geographic locations is also known as *data domiciling*.
+
+CockroachDB has basic support for data domiciling in multi-region clusters using the [`ALTER DATABASE... ADD SUPER REGION`](/docs/v26.1/alter-database#add-super-region) statement.
+
+<Warning>
+Using CockroachDB as part of your approach to data domiciling has several limitations. For more information, see [Known limitations](#known-limitations).
+</Warning>
+
+## Overview
+
+This page has instructions for data domiciling in [multi-region clusters](/docs/v26.1/multiregion-overview). At a high level, this process involves:
+
+1. Controlling the placement of specific row or table data using regional tables with the [`REGIONAL BY ROW`](/docs/v26.1/table-localities#regional-by-row-tables) and [`REGIONAL BY TABLE`](/docs/v26.1/table-localities#regional-tables) clauses.
+2. Further restricting where the data in those regional tables is stored using the [`ALTER DATABASE... ADD SUPER REGION`](/docs/v26.1/alter-database#add-super-region), which creates a set of [database regions](/docs/v26.1/multiregion-overview#database-regions) such that [regional tables](/docs/v26.1/table-localities#regional-tables) and [regional by row tables](/docs/v26.1/table-localities#regional-by-row-tables) whose [home regions](/docs/v26.1/table-localities) are in the super region will have all of their [replicas](/docs/v26.1/architecture/overview#architecture-replica) stored *only* in regions that are members of the super region. For more information, see [Super regions](/docs/v26.1/multiregion-overview#super-regions).
+
+<Note>
+An alternative method to the [`ALTER DATABASE... ADD SUPER REGION`](/docs/v26.1/alter-database#add-super-region) statement is to use the [`ALTER DATABASE... PLACEMENT RESTRICTED`](/docs/v26.1/alter-database#placement) statement.
+
+**`PLACEMENT RESTRICTED` is not recommended, and is documented for backwards compatibility. Most users should use `ADD SUPER REGION`, which allows for region survival as well as providing data placement.**
+</Note>
+
+## Before you begin
+
+This page assumes you are already familiar with:
+
+- CockroachDB's [multi-region SQL abstractions](/docs/v26.1/multiregion-overview). If you are not using them, the instructions on this page will not apply.
+- The fact that CockroachDB stores your data in [a distributed key-value store, which is split into chunks called ranges](/docs/v26.1/architecture/distribution-layer#overview).
+
+## Example
+
+In the following example, you will go through the process of configuring the [MovR](/docs/v26.1/movr) data set using [multi-region SQL statements](/docs/v26.1/multiregion-overview).
+
+Then, as part of implementing a data domiciling strategy, you will apply restricted replica settings in [Step 4](#step-4-apply-stricter-replica-placement-settings) using the [`ALTER DATABASE... ADD SUPER REGION`](/docs/v26.1/alter-database#add-super-region): It works with databases with [zone survival goals](/docs/v26.1/multiregion-survival-goals#survive-zone-failures) or [region survival goals](/docs/v26.1/multiregion-survival-goals#survive-region-failures). If you need region survival goals, you must use [super regions](/docs/v26.1/multiregion-overview#super-regions).
+
+Finally, you will verify that the resulting replica placements are as expected using the [critical nodes status endpoint](/docs/v26.1/monitoring-and-alerting#critical-nodes-endpoint).
+
+For the purposes of this example, the data domiciling requirement is to configure a multi-region deployment of the [MovR database](/docs/v26.1/movr) such that data for EU-based users, vehicles, etc. is being stored on CockroachDB nodes running in EU localities.
+
+### Step 1. Start a simulated multi-region cluster
+
+Use the following [`cockroach demo`](/docs/v26.1/cockroach-demo) command to start the cluster. This particular combination of flags results in a demo cluster of 9 nodes, with 3 nodes in each region. It sets the appropriate [node localities](/docs/v26.1/cockroach-start#locality) and also simulates the network latency that would occur between nodes in these localities. For more information about each flag, see the [`cockroach demo`](/docs/v26.1/cockroach-demo#flags) documentation, especially for [`--global`](/docs/v26.1/cockroach-demo#global-flag).
+
+```shell
+$ cockroach demo --global --nodes 9
+```
+
+When the cluster starts, you'll see a message like the one shown below, followed by a SQL prompt. Note the URLs for:
+
+- Viewing the [DB Console](/docs/v26.1/ui-overview): `http://127.0.0.1:8080/demologin?password=demo30570&username=demo`.
+- Connecting to the database from a [SQL shell](/docs/v26.1/cockroach-sql) or a [programming language](/docs/v26.1/connect-to-the-database): `postgresql://demo:demo30570@127.0.0.1:26257/movr?sslmode=require&sslrootcert=%2FUsers%2Frloveland%2F.cockroach-demo%2Fca.crt`.
+
+```text
+# Welcome to the CockroachDB demo database!
+#
+# You are connected to a temporary, in-memory CockroachDB cluster of 9 nodes.
+# Communication between nodes will simulate real world latencies.
+#
+# WARNING: the use of --global is experimental. Some features may not work as expected.
+#
+# This demo session will send telemetry to Cockroach Labs in the background.
+# To disable this behavior, set the environment variable
+# COCKROACH_SKIP_ENABLING_DIAGNOSTIC_REPORTING=true.
+#
+# Beginning initialization of the movr dataset, please wait...
+#
+# The cluster has been preloaded with the "movr" dataset
+# (MovR is a fictional vehicle sharing company).
+#
+# Reminder: your changes to data stored in the demo session will not be saved!
+#
+# If you wish to access this demo cluster using another tool, you will need
+# the following details:
+#
+#   - Connection parameters:
+#      (webui)    http://127.0.0.1:8080/demologin?password=demo30570&username=demo
+#      (cli)      cockroach sql --certs-dir=/Users/rloveland/.cockroach-demo -u demo -d movr
+#      (sql)      postgresql://demo:demo30570@127.0.0.1:26257/movr?sslmode=require&sslrootcert=%2FUsers%2Frloveland%2F.cockroach-demo%2Fca.crt
+#
+#   To display connection parameters for other nodes, use \demo ls.
+#   - Username: "demo", password: "demo30570"
+#   - Directory with certificate files (for certain SQL drivers/tools): /Users/rloveland/.cockroach-demo
+#
+# You can enter \info to print these details again.
+#
+# Server version: CockroachDB CCL v23.1.2 (x86_64-apple-darwin19, built 2023/05/25 16:10:39, go1.19.4) (same version as client)
+# Cluster ID: 21c6756f-7e7e-4990-863a-cbd99e6f737a
+# Organization: Cockroach Demo
+#
+# Enter \? for a brief introduction.
+```
+
+You now have a cluster running across 9 nodes, with 3 nodes each in the following regions:
+
+- `us-east1`
+- `us-west1`
+- `europe-west1`
+
+You can verify this using the [`SHOW REGIONS`](/docs/v26.1/show-regions) statement:
+
+```sql
+SHOW REGIONS;
+```
+
+```text
+     region    |  zones  | database_names | primary_region_of | secondary_region_of
+---------------+---------+----------------+-------------------+----------------------
+  europe-west1 | {b,c,d} | {}             | {}                | {}
+  us-east1     | {b,c,d} | {}             | {}                | {}
+  us-west1     | {a,b,c} | {}             | {}                | {}
+(3 rows)
+```
+
+### Step 2. Apply multi-region SQL abstractions
+
+Execute the following statements to set the [database regions](/docs/v26.1/multiregion-overview#database-regions). This information is necessary so that CockroachDB can later move data around to optimize access to particular data from particular regions.
+
+```sql
+ALTER DATABASE movr PRIMARY REGION "europe-west1";
+ALTER DATABASE movr ADD REGION "us-east1";
+ALTER DATABASE movr ADD REGION "us-west1";
+```
+
+Because the data in `promo_codes` is not updated frequently (a.k.a., "read-mostly"), and needs to be available from any region, the right table locality is [`GLOBAL`](/docs/v26.1/table-localities#global-tables).
+
+```sql
+ALTER TABLE promo_codes SET locality GLOBAL;
+```
+
+Next, alter the `user_promo_codes` table to have a foreign key into the global `promo_codes` table. This will enable fast reads of the `promo_codes.code` column from any region in the cluster.
+
+```sql
+ALTER TABLE user_promo_codes
+  ADD CONSTRAINT user_promo_codes_code_fk
+    FOREIGN KEY (code)
+    REFERENCES promo_codes (code)
+    ON UPDATE CASCADE;
+```
+
+All of the tables except `promo_codes` contain rows which are partitioned by region, and updated very frequently. For these tables, the right table locality for optimizing access to their data is [`REGIONAL BY ROW`](/docs/v26.1/table-localities#regional-by-row-tables).
+
+Apply this table locality to the remaining tables. These statements use a `CASE` statement to put data for a given city in the right region and can take around 1 minute to complete for each table.
+
+- `rides`
+
+    ```sql
+    ALTER TABLE rides ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
+      END
+    ) STORED;
+    ALTER TABLE rides ALTER COLUMN REGION SET NOT NULL;
+    ALTER TABLE rides SET LOCALITY REGIONAL BY ROW AS "region";
+    ```
+- `user_promo_codes`
+
+    ```sql
+    ALTER TABLE user_promo_codes ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
+      END
+    ) STORED;
+    ALTER TABLE user_promo_codes ALTER COLUMN REGION SET NOT NULL;
+    ALTER TABLE user_promo_codes SET LOCALITY REGIONAL BY ROW AS "region";
+    ```
+- `users`
+
+    ```sql
+    ALTER TABLE users ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
+      END
+    ) STORED;
+    ALTER TABLE users ALTER COLUMN REGION SET NOT NULL;
+    ALTER TABLE users SET LOCALITY REGIONAL BY ROW AS "region";
+    ```
+- `vehicle_location_histories`
+
+    ```sql
+    ALTER TABLE vehicle_location_histories ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
+      END
+    ) STORED;
+    ALTER TABLE vehicle_location_histories ALTER COLUMN REGION SET NOT NULL;
+    ALTER TABLE vehicle_location_histories SET LOCALITY REGIONAL BY ROW AS "region";
+    ```
+- `vehicles`
+
+    ```sql
+    ALTER TABLE vehicles ADD COLUMN region crdb_internal_region AS (
+      CASE WHEN city = 'amsterdam' THEN 'europe-west1'
+           WHEN city = 'paris' THEN 'europe-west1'
+           WHEN city = 'rome' THEN 'europe-west1'
+           WHEN city = 'new york' THEN 'us-east1'
+           WHEN city = 'boston' THEN 'us-east1'
+           WHEN city = 'washington dc' THEN 'us-east1'
+           WHEN city = 'san francisco' THEN 'us-west1'
+           WHEN city = 'seattle' THEN 'us-west1'
+           WHEN city = 'los angeles' THEN 'us-west1'
+      END
+    ) STORED;
+    ALTER TABLE vehicles ALTER COLUMN REGION SET NOT NULL;
+    ALTER TABLE vehicles SET LOCALITY REGIONAL BY ROW AS "region";
+    ```
+
+### Step 3. View noncompliant replicas
+
+Next, check the [critical nodes status endpoint](/docs/v26.1/monitoring-and-alerting#critical-nodes-endpoint) to see which ranges are still not in compliance with your desired domiciling: that data on EU-based entities (users, etc.) does not leave EU-based nodes.
+
+On a small demo cluster like this one, the data movement from the previous step should finish quickly; on larger clusters, the rebalancing process may take longer. For more information about the performance considerations of rebalancing data in multi-region clusters, see [Performance considerations](/docs/v26.1/migrate-to-multiregion-sql#performance-considerations).
+
+With the default settings, you should expect some replicas in the cluster to be violating this constraint. Those replicas will appear in the `violatingConstraints` field of the output.
+
+This is because [non-voting replicas](/docs/v26.1/architecture/replication-layer#non-voting-replicas) are enabled by default in [multi-region clusters](/docs/v26.1/multiregion-overview) to enable stale reads of data in [regional tables](/docs/v26.1/regional-tables) from outside those tables' [home regions](/docs/v26.1/multiregion-overview#table-localities). For many use cases, this is preferred, but it keeps you from meeting the domiciling requirements for this example.
+
+In order to check the critical nodes status endpoint you first need to get an authentication cookie. To get an authentication cookie, run the [`cockroach auth-session login`](/docs/v26.1/cockroach-auth-session#log-in-to-the-http-interface) command:
+
+```shell
+cockroach auth-session login demo --certs-dir=/Users/rloveland/.cockroach-demo
+```
+
+It should return output like the following:
+
+```text
+  username |     session ID     |                       authentication cookie
+-----------+--------------------+---------------------------------------------------------------------
+  demo     | 893413786777878529 | session=CIGA9sfJ5Yy0DBIQ4mlvKAxivkm9bq0or4h3AQ==; Path=/; HttpOnly
+(1 row)
+#
+# Example uses:
+#
+#     curl [-k] --cookie 'session=CIGA9sfJ5Yy0DBIQ4mlvKAxivkm9bq0or4h3AQ==; Path=/; HttpOnly' https://...
+#
+#     wget [--no-check-certificate] --header='Cookie: session=CIGA9sfJ5Yy0DBIQ4mlvKAxivkm9bq0or4h3AQ==; Path=/; HttpOnly' https://...
+#
+```
+
+Using the output above, we can craft a `curl` invocation to call the critical nodes status endpoint:
+
+```shell
+curl -X POST --cookie 'session=CIGA9sfJ5Yy0DBIQ4mlvKAxivkm9bq0or4h3AQ==; Path=/; HttpOnly' http://localhost:8080/_status/critical_nodes
+```
+
+```json
+{
+  "criticalNodes": [
+  ],
+  "report": {
+    "underReplicated": [
+    ],
+    "overReplicated": [
+    ],
+    "violatingConstraints": [
+      {
+        "rangeDescriptor": {
+          "rangeId": "93",
+          "startKey": "840SwAAB",
+          "endKey": "840SwAAC",
+          "internalReplicas": [
+            {
+              "nodeId": 8,
+              "storeId": 8,
+              "replicaId": 1,
+              "type": 0
+            },
+            {
+              "nodeId": 7,
+              "storeId": 7,
+              "replicaId": 2,
+              "type": 0
+            },
+            {
+              "nodeId": 1,
+              "storeId": 1,
+              "replicaId": 6,
+              "type": 0
+            },
+            {
+              "nodeId": 3,
+              "storeId": 3,
+              "replicaId": 4,
+              "type": 5
+            },
+            {
+              "nodeId": 6,
+              "storeId": 6,
+              "replicaId": 5,
+              "type": 5
+            }
+          ],
+          "nextReplicaId": 7,
+          "generation": "60",
+          "stickyBit": {
+            "wallTime": "0",
+            "logical": 0,
+            "synthetic": false
+          }
+        },
+        "config": {
+          "rangeMinBytes": "134217728",
+          "rangeMaxBytes": "536870912",
+          "gcPolicy": {
+            "ttlSeconds": 14400,
+            "protectionPolicies": [
+            ],
+            "ignoreStrictEnforcement": false
+          },
+          "globalReads": false,
+          "numReplicas": 5,
+          "numVoters": 3,
+          "constraints": [
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "europe-west1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            },
+            {
+              "numReplicas": 1,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-west1"
+                }
+              ]
+            }
+          ],
+          "voterConstraints": [
+            {
+              "numReplicas": 0,
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            }
+          ],
+          "leasePreferences": [
+            {
+              "constraints": [
+                {
+                  "type": 0,
+                  "key": "region",
+                  "value": "us-east1"
+                }
+              ]
+            }
+          ],
+          "rangefeedEnabled": false,
+          "excludeDataFromBackup": false
+        }
+      },
+    ...
+    ],
+    "unavailable": [
+    ],
+    "unavailableNodeIds": [
+    ]
+  }
+}
+```
+
+Based on this output, you can see that several replicas are out of compliance for the reason described above: the presence of non-voting replicas in other regions to enable fast stale reads from those regions.
+
+To get more information about the ranges that are out of compliance, you can use a [`SHOW RANGES`](/docs/v26.1/show-ranges) SQL statement like the one below.
+
+```sql
+SELECT * FROM [SHOW RANGES FROM DATABASE movr] WHERE range_id = 93;
+```
+
+```text
+       start_key      |            end_key            | range_id |  replicas   |                                                      replica_localities                                                      | voting_replicas | non_voting_replicas | learner_replicas | split_enforced_until
+----------------------+-------------------------------+----------+-------------+------------------------------------------------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------
+  /Table/107/5/"\xc0" | /Table/107/5/"\xc0"/PrefixEnd |       93 | {1,3,6,7,8} | {"region=us-east1,az=b","region=us-east1,az=d","region=us-west1,az=c","region=europe-west1,az=b","region=europe-west1,az=c"} | {8,7,1}         | {3,6}               | {}               | NULL
+(1 row)
+```
+
+### Step 4. Apply stricter replica placement settings
+
+<Tabs>
+<Tab title="(Recommended) Use ADD SUPER REGION">
+
+To ensure that data on EU-based users, vehicles, etc. from [`REGIONAL BY ROW` tables](/docs/v26.1/regional-tables#regional-by-row-tables) is stored only on EU-based nodes in the cluster, you can use [Super regions](/docs/v26.1/multiregion-overview#super-regions). This will ensure that [regional tables](/docs/v26.1/table-localities#regional-tables) and [regional by row tables](/docs/v26.1/table-localities#regional-by-row-tables) whose [home regions](/docs/v26.1/table-localities) are in the super region will have all of their [replicas](/docs/v26.1/architecture/overview#architecture-replica) stored *only* in regions that are members of the super region.
+
+To use this statement, you must set the `enable_super_regions` [session setting](/docs/v26.1/set-vars):
+
+```sql
+ALTER ROLE ALL SET enable_super_regions = on;
+```
+
+Next, use the [`ALTER DATABASE... ADD SUPER REGION`](/docs/v26.1/alter-database#add-super-region) statement:
+
+```sql
+ALTER DATABASE movr ADD SUPER REGION "europe" VALUES "europe-west1";
+```
+
+You have now created a super region with only one region. The updated replica placement settings should start to apply immediately.
+
+<Note>
+[`ALTER DATABASE... ADD SUPER REGION`](/docs/v26.1/alter-database#add-super-region) does not affect the replica placement for [global tables](/docs/v26.1/global-tables), which are designed to provide fast, up-to-date reads from all [database regions](/docs/v26.1/multiregion-overview#database-regions).
+</Note>
+
+</Tab>
+<Tab title="(Not recommended) Use PLACEMENT RESTRICTED">
+
+**This method is not recommended, and is documented for backwards compatibility. Most users should use `ALTER DATABASE... ADD SUPER REGION` which allows for region survival as well as providing data placement.**
+
+To ensure that data on EU-based users, vehicles, etc. from [`REGIONAL BY ROW` tables](/docs/v26.1/regional-tables#regional-by-row-tables) is stored only on EU-based nodes in the cluster, you must disable the use of [non-voting replicas](/docs/v26.1/architecture/replication-layer#non-voting-replicas) on all of the [regional tables](/docs/v26.1/regional-tables) in this database. You can do this using the [`ALTER DATABASE... PLACEMENT RESTRICTED`](/docs/v26.1/alter-database#placement) statement.
+
+To use this statement, you must set the `enable_multiregion_placement_policy` [session setting](/docs/v26.1/set-vars) or the `sql.defaults.multiregion_placement_policy.enabled` [cluster setting](/docs/v26.1/cluster-settings):
+
+```sql
+SET enable_multiregion_placement_policy=on;
+```
+
+Next, use the [`ALTER DATABASE... PLACEMENT RESTRICTED`](/docs/v26.1/alter-database#placement) statement to disable non-voting replicas for regional tables:
+
+```sql
+ALTER DATABASE movr PLACEMENT RESTRICTED;
+```
+
+The restricted replica placement settings should start to apply immediately.
+
+If you want to do data domiciling for databases with [region survival goals](/docs/v26.1/multiregion-survival-goals#survive-region-failures) using the higher-level [multi-region abstractions](/docs/v26.1/multiregion-overview), you must use [super regions](/docs/v26.1/multiregion-overview#super-regions). Using [`ALTER DATABASE... PLACEMENT RESTRICTED`](/docs/v26.1/alter-database#placement) will not work for databases that are set up with region survival goals.
+
+<Note>
+[`ALTER DATABASE... PLACEMENT RESTRICTED`](/docs/v26.1/alter-database#placement) does not affect the replica placement for [global tables](/docs/v26.1/global-tables), which are designed to provide fast, up-to-date reads from all [database regions](/docs/v26.1/multiregion-overview#database-regions).
+</Note>
+
+<Note>
+Use [`ALTER ROLE ALL SET {sessionvar} = {val}`](/docs/v26.1/alter-role#set-default-session-variable-values-for-all-users) instead of the `sql.defaults.*` [cluster settings](/docs/v26.1/cluster-settings). This allows you to set a default value for all users for any [session variable](/docs/v26.1/set-vars) that applies during login, making the `sql.defaults.*` cluster settings redundant.
+</Note>
+
+</Tab>
+</Tabs>
+
+### Step 5. Verify updated replica placement
+
+Now that you have restricted the placement of non-voting replicas for all [regional tables](/docs/v26.1/regional-tables), you can check the [critical nodes status endpoint](/docs/v26.1/monitoring-and-alerting#critical-nodes-endpoint) to see the effects. In a few seconds, you should see that the `violatingConstraints` key in the JSON response shows that there are no longer any replicas violating their constraints:
+
+```shell
+curl -X POST http://localhost:8080/_status/critical_nodes
+```
+
+```json
+{
+  "criticalNodes": [
+  ],
+  "report": {
+    "underReplicated": [
+    ],
+    "overReplicated": [
+    ],
+    "violatingConstraints": [
+    ],
+    "unavailable": [
+    ],
+    "unavailableNodeIds": [
+    ]
+  }
+}
+```
+
+The output above shows that there are no replicas that do not meet the data domiciling goal. As described above, [`ALTER DATABASE... PLACEMENT RESTRICTED`](/docs/v26.1/alter-database#placement) does not affect the replica placement for [`GLOBAL` tables](/docs/v26.1/global-tables), so these replicas are considered to be in compliance.
+
+Now that you have verified that the system is configured to meet the domiciling requirement, it's a good idea to check the [critical nodes status endpoint](/docs/v26.1/monitoring-and-alerting#critical-nodes-endpoint) on a regular basis (via automation of some kind) to ensure that the requirement continues to be met.
+
+<Note>
+The steps above are necessary but not sufficient to accomplish a data domiciling solution using CockroachDB. Be sure to review the [limitations of CockroachDB for data domiciling](#known-limitations) and design your total solution with those limitations in mind.
+</Note>
+
+## Known limitations
+
+Using CockroachDB as part of your approach to data domiciling has several limitations:
+
+- When using the `infer_rbr_region_col_using_constraint` option, inserting rows with `DEFAULT` for the region column uses the database's primary region instead of inferring the region from the parent table via foreign-key constraint. [#150783](https://github.com/cockroachdb/cockroach/issues/150783)
+- When columns are [indexed](/docs/v26.1/indexes), a subset of data from the indexed columns may appear in [meta ranges](/docs/v26.1/architecture/distribution-layer#meta-ranges) or other system tables. CockroachDB synchronizes these system ranges and system tables across nodes. This synchronization does not respect any multi-region settings applied via either the [multi-region SQL statements](/docs/v26.1/multiregion-overview), or the low-level [zone configs](/docs/v26.1/configure-replication-zones) mechanism.
+- [Zone configs](/docs/v26.1/configure-replication-zones) can be used for data placement but these features were historically built for performance, not for domiciling. The replication system's top priority is to prevent the loss of data and it may override the zone configurations if necessary to ensure data durability. For more information, see [Replication Controls](/docs/v26.1/configure-replication-zones#types-of-constraints).
+- If your [log files](/docs/v26.1/logging-overview) are kept in the region where they were generated, there is some cross-region leakage (like the system tables described previously), but the majority of user data that makes it into the logs is going to be homed in that region. If that's not strong enough, you can use the [log redaction functionality](/docs/v26.1/configure-logs#redact-logs) to strip all raw data from the logs. You can also limit your log retention entirely.
+- If you start a node with a [`--locality`](/docs/v26.1/cockroach-start#locality) flag that says the node is in region *A*, but the node is actually running in some region *B*, data domiciling based on the inferred node placement will not work. A CockroachDB node only knows its locality based on the text supplied to the `--locality` flag; it can not ensure that it is actually running in that physical location.
+- [Secondary regions](/docs/v26.1/multiregion-overview#secondary-regions) are not compatible with databases containing [`REGIONAL BY ROW`](/docs/v26.1/table-localities#regional-by-row-tables) tables. CockroachDB does not prevent you from defining secondary regions on databases with regional by row tables, but the interaction of these features is not supported. Therefore, Cockroach Labs recommends that you avoid defining secondary regions on databases that use regional by row table configurations.
+- With `enforce_home_region` enabled, CockroachDB currently validates home-region access during plan build. This can falsely reject queries (e.g., lookup joins) that would only read local data at execution time, returning a `Query has no home region` error. [#148375](https://github.com/cockroachdb/cockroach/issues/148375)
+
+## See also
+
+- [How to Choose a Multi-region Configuration](/docs/v26.1/choosing-a-multi-region-configuration)
+- [Migrate to Multi-Region SQL](/docs/v26.1/migrate-to-multiregion-sql)
+- [Multi-Region Overview](/docs/v26.1/multiregion-overview)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v26.1/demo-low-latency-multi-region-deployment)
+- [Multi-Region Capabilities Overview](/docs/v26.1/multiregion-overview)
+- [Reads and Writes in CockroachDB](/docs/v26.1/architecture/reads-and-writes-overview)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](/docs/v26.1/table-localities#when-to-use-regional-vs-global-tables)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](/docs/v26.1/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals)
+- [`ADD REGION`](/docs/v26.1/alter-database#add-region)
+- [Secondary regions](/docs/v26.1/multiregion-overview#secondary-regions)
+- [Zone Config Extensions](/docs/v26.1/zone-config-extensions)
+- [`ALTER DATABASE... SET SECONDARY REGION`](/docs/v26.1/alter-database#set-secondary-region)
+- [`ALTER DATABASE... DROP SECONDARY REGION`](/docs/v26.1/alter-database#drop-secondary-region)

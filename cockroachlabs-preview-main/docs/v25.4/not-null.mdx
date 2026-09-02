@@ -1,0 +1,69 @@
+---
+title: "NOT NULL constraint"
+old_description: "The NOT NULL constraint specifies the column may not contain NULL values."
+---
+
+import { NotNull6 } from "/snippets/syntax-diagrams/NotNull6.jsx";
+
+The `NOT NULL` [constraint](/docs/v25.4/constraints) specifies a column may not contain [`NULL`](/docs/v25.4/null-handling) values.
+
+## Details
+
+- `INSERT` or `UPDATE` statements containing `NULL` values are rejected. This includes `INSERT` statements that do not include values for any columns that do not have a [`DEFAULT` value constraint](/docs/v25.4/default-value).
+
+For example, if the table `foo` has columns `a` and `b` (and `b` *does not* have a `DEFAULT VALUE`), when you run the following command:
+
+```sql
+  > INSERT INTO foo (a) VALUES (1);
+```
+
+CockroachDB tries to write a `NULL` value into column `b`. If that column has the `NOT NULL` constraint, the `INSERT` statement is rejected.
+
+- To add the `NOT NULL` constraint to an existing table column, use the [`ALTER COLUMN`](/docs/v25.4/alter-table#set-not-null-constraint) statement.
+- For more information about `NULL`, see [NULL handling](/docs/v25.4/null-handling).
+
+## Syntax
+
+You can only apply the `NOT NULL` constraint to individual columns.
+
+<NotNull6 />
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table you're creating.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the constrained column.</td></tr><tr><td><code>column&#95;type</code></td><td>The constrained column's <a href="/docs/v25.4/data-types">data type</a>.</td></tr><tr><td><code>column&#95;constraints</code></td><td>Any other column-level <a href="/docs/v25.4/constraints">constraints</a> you want to apply to this column.</td></tr><tr><td><code>column&#95;def</code></td><td>Definitions for any other columns in the table.</td></tr><tr><td><code>table&#95;constraints</code></td><td>Any table-level <a href="/docs/v25.4/constraints">constraints</a> you want to apply.</td></tr></tbody></table>
+
+## Usage example
+
+```sql
+> CREATE TABLE IF NOT EXISTS customers (
+    customer_id INT         PRIMARY KEY,
+    cust_name   STRING(30)  NULL,
+    cust_email  STRING(100) NOT NULL
+  );
+```
+
+```sql
+> INSERT INTO customers (customer_id, cust_name, cust_email) VALUES (1, 'Smith', NULL);
+```
+
+```text
+pq: null value in column "cust_email" violates not-null constraint
+```
+
+```sql
+> INSERT INTO customers (customer_id, cust_name) VALUES (1, 'Smith');
+```
+
+```text
+pq: null value in column "cust_email" violates not-null constraint
+```
+
+## See also
+
+- [Constraints](/docs/v25.4/constraints)
+- [`DROP CONSTRAINT`](/docs/v25.4/alter-table#drop-constraint)
+- [`CHECK` constraint](/docs/v25.4/check)
+- [`DEFAULT` constraint](/docs/v25.4/default-value)
+- [`REFERENCES` constraint (Foreign Key)](/docs/v25.4/foreign-key)
+- [`PRIMARY KEY` constraint](/docs/v25.4/primary-key)
+- [`UNIQUE` constraint](/docs/v25.4/unique)
+- [`SHOW CONSTRAINTS`](/docs/v25.4/show-constraints)
+- [`NULL HANDLING`](/docs/v25.4/null-handling)

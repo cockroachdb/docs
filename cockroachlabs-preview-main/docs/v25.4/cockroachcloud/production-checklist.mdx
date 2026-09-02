@@ -1,0 +1,20 @@
+---
+title: "Production Checklist"
+old_description: "Learn how to move from testing to production on your CockroachDB Cloud cluster."
+---
+
+import ProductionChecklist from "/snippets/cockroachcloud/production-checklist.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ProductionChecklist />

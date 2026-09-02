@@ -1,0 +1,48 @@
+---
+title: "System Catalogs"
+old_description: "CockroachDB includes several virtual schemas that enable you to interface with CockroachDB."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+
+CockroachDB includes a set of system catalogs that provide non-stored data to client applications.
+
+The following system catalogs are available as schemas preloaded to every database:
+
+- [`information_schema`](/docs/v25.4/information-schema), a schema provided for compatibility with the SQL standard.
+- [`crdb_internal`](/docs/v25.4/crdb-internal), a schema with information about CockroachDB internals.
+- [`pg_catalog`](/docs/v25.4/pg-catalog), a schema provided for compatibility with PostgreSQL.
+- [`pg_extension`](/docs/v25.4/pg-extension), a schema catalog with information about CockroachDB extensions.
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v25.4: Access to the `crdb_internal` schema and to tables and built-in functions in the `system` database is controlled by the [`allow_unsafe_internals` session variable](/docs/v25.4/session-variables#allow-unsafe-internals). For more information, see [`crdb_internal` access control](/docs/v25.4/crdb-internal#access-control). The `system` and `crdb_internal` schemas are intended for advanced support scenarios only, and should be accessed under the guidance of Cockroach Labs.
+
+<Warning>
+In a future major release, the `allow_unsafe_internals` session variable will default to `off`. To prepare for this change and [assess potential downstream impacts](/docs/v25.4/logging-use-cases#unsafe-internals-disabled) on your setup, set `allow_unsafe_internals` to `off` in a non-production environment.
+</Warning>
+
+<Warning>
+Tables in the system catalogs have varying levels of stability. Not all system catalog tables are meant for programmatic purposes. For more information, see [API Support Policy](/docs/v25.4/api-support-policy).
+</Warning>
+
+To see all of the system catalogs for the [current database](/docs/v25.4/sql-name-resolution#current-database), you can use a [`SHOW SCHEMAS`](/docs/v25.4/show-schemas) statement:
+
+```sql
+> SHOW SCHEMAS;
+```
+
+```text
+     schema_name     | owner
+---------------------+--------
+  crdb_internal      | NULL
+  information_schema | NULL
+  pg_catalog         | NULL
+  pg_extension       | NULL
+  public             | admin
+(5 rows)
+```
+
+## See also
+
+- [`SHOW`](/docs/v25.4/show-vars)
+- [`SHOW SCHEMAS`](/docs/v25.4/show-schemas)
+- [SQL Name Resolution](/docs/v25.4/sql-name-resolution)

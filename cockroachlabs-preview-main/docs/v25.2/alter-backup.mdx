@@ -1,0 +1,106 @@
+---
+title: "ALTER BACKUP"
+old_description: "Use the ALTER BACKUP statement to add new KMS encryption keys to backups."
+---
+
+The `ALTER BACKUP` statement allows for new KMS encryption keys to be applied to an existing chain of encrypted backups ([full](/docs/v25.2/take-full-and-incremental-backups#full-backups) and [incremental](/docs/v25.2/take-full-and-incremental-backups#incremental-backups)). Each `ALTER BACKUP` statement must include the new KMS encryption key with `NEW_KMS`, and use `WITH OLD_KMS` to refer to at least one of the KMS URIs that were originally used to encrypt the backup.
+
+After an `ALTER BACKUP` statement successfully completes, subsequent [`BACKUP`](/docs/v25.2/backup), [`RESTORE`](/docs/v25.2/restore), and [`SHOW BACKUP`](/docs/v25.2/show-backup) statements can use any of the existing or new KMS URIs to decrypt the backup.
+
+CockroachDB supports AWS, Azure, and Google Cloud KMS keys. For more detail on encrypted backups and restores, see [Take and Restore Encrypted Backups](/docs/v25.2/take-and-restore-encrypted-backups).
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v25.2/alter-backup/syntax-diagram-82c422f03c6a.svg)
+</Frame>
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>subdirectory</code></td><td>The subdirectory containing the target <strong>full</strong> backup at the given <code>collectionURI</code>.</td></tr><tr><td><code>LATEST</code></td><td>The most recent backup at the given <code>collectionURI</code>.</td></tr><tr><td><code>collectionURI</code></td><td>The URI that holds the backup collection.</td></tr><tr><td><code>ADD NEW&#95;KMS</code></td><td>Apply the new KMS encryption key to the target backup.</td></tr><tr><td><code>WITH OLD&#95;KMS</code></td><td>Reference one of the existing KMS URI(s) originally used to encrypt the backup.</td></tr><tr><td><code>kmsURI</code></td><td>The <a href="/docs/v25.2/take-and-restore-encrypted-backups#uri-formats">URI</a> for the KMS key.</td></tr></tbody></table>
+
+## Required privileges
+
+- `ALTER BACKUP` can only be run by members of the [`admin` role](/docs/v25.2/security-reference/authorization#admin-role). By default, the `root` user belongs to the `admin` role.
+- `ALTER BACKUP` requires full read and write permissions to the target cloud storage bucket.
+
+The backup collection's URI does **not** require the [`admin` role](/docs/v25.2/security-reference/authorization#admin-role) when using `s3`, `azure`, or `gs` with [`specified`](/docs/v25.2/cloud-storage-authentication) credentials. The backup collection's URI **does** require the [`admin` role](/docs/v25.2/security-reference/authorization#admin-role) when using `s3`, `azure`, or `gs` with [`implicit`](/docs/v25.2/cloud-storage-authentication) credentials.
+
+We recommend using [cloud storage](/docs/v25.2/use-cloud-storage).
+
+## Examples
+
+`ALTER BACKUP` will apply the new encryption information to the entire chain of backups ([full](/docs/v25.2/take-full-and-incremental-backups#full-backups) and [incremental](/docs/v25.2/take-full-and-incremental-backups#incremental-backups)).
+
+<Note>
+When running `ALTER BACKUP` with a subdirectory, the statement must point to a [full backup](/docs/v25.2/take-full-and-incremental-backups#full-backups) in the backup collection.
+</Note>
+
+See [Cloud Storage Authentication](/docs/v25.2/cloud-storage-authentication) for more detail on authenticating to your cloud storage bucket.
+
+### Add an AWS KMS key to an encrypted backup
+
+To add a new KMS key to the most recent backup:
+
+```sql
+ALTER BACKUP LATEST IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+    ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}'
+    WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}';
+```
+
+To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
+
+```sql
+ALTER BACKUP '2022/03/23-213101.37' IN 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}'
+    ADD NEW_KMS = 'aws:///{new-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}'
+    WITH OLD_KMS = 'aws:///{old-key}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&REGION={location}';
+```
+
+To list backup directories at a collection's URI, see [`SHOW BACKUP`](/docs/v25.2/show-backup).
+
+### Add an Azure KMS key to an encrypted backup
+
+To add a new KMS key to the most recent backup:
+
+```sql
+ALTER BACKUP LATEST IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+    ADD NEW_KMS = 'azure-kms:///{new key}/{new key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
+    WITH OLD_KMS = 'azure-kms:///{old key}/{old key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
+```
+
+To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
+
+```sql
+ALTER BACKUP '2023/03/14-203808.29' IN 'azure-blob://{container name}?AUTH=specified&AZURE_ACCOUNT_NAME={account name}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_TENANT_ID={tenant ID}'
+    ADD NEW_KMS = 'azure-kms:///{new key}/{new key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}'
+    WITH OLD_KMS = 'azure-kms:///{old key}/{old key version}?AZURE_TENANT_ID={tenant ID}&AZURE_CLIENT_ID={client ID}&AZURE_CLIENT_SECRET={client secret}&AZURE_VAULT_NAME={key vault name}';
+```
+
+To list backup directories at a collection's URI, see [`SHOW BACKUP`](/docs/v25.2/show-backup).
+
+### Add a Google Cloud KMS key to an encrypted backup
+
+To add a new KMS key to the most recent backup:
+
+```sql
+ALTER BACKUP LATEST IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+    ADD NEW_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{new key}?AUTH=specified&CREDENTIALS={encoded key}'
+    WITH OLD_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
+```
+
+To add a new KMS key to a specific backup, issue an `ALTER BACKUP` statement that points to the full backup:
+
+```sql
+ALTER BACKUP '2022/03/23-213101.37' IN 'gs://{BUCKET NAME}?AUTH=specified&CREDENTIALS={ENCODED KEY}'
+    ADD NEW_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{new key}?AUTH=specified&CREDENTIALS={encoded key}'
+    WITH OLD_KMS = 'gs:///projects/{project name}/locations/{location}/keyRings/{key ring name}/cryptoKeys/{old key}?AUTH=specified&CREDENTIALS={encoded key}';
+```
+
+To list backup directories at a collection's URI, see [`SHOW BACKUP`](/docs/v25.2/show-backup).
+
+## See also
+
+- [Take and Restore Encrypted Backups](/docs/v25.2/take-and-restore-encrypted-backups)
+- [`BACKUP`](/docs/v25.2/backup)
+- [`RESTORE`](/docs/v25.2/restore)
+- [Use Cloud Storage](/docs/v25.2/use-cloud-storage)

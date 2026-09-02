@@ -1,0 +1,94 @@
+---
+title: "SHOW INSPECT ERRORS"
+old_description: "The SHOW INSPECT ERRORS statement lists issues detected by the INSPECT data consistency checker."
+---
+
+import { ShowInspectErrors } from "/snippets/syntax-diagrams/ShowInspectErrors.jsx";
+
+The `SHOW INSPECT ERRORS` [statement](/docs/v26.1/sql-statements) displays errors recorded by an [`INSPECT`](/docs/v26.1/inspect) job.
+
+`SHOW INSPECT ERRORS` shows results for a single `INSPECT` job at a time; it does not aggregate results across jobs. By default, it returns errors from the most recent completed, successful `INSPECT` job for the specified table. To view errors from a specific job, use `SHOW INSPECT ERRORS FOR JOB {job_id}`.
+
+## Required privileges
+
+To run `SHOW INSPECT ERRORS`, the user must have:
+
+- The `INSPECT` system-level [privilege](/docs/v26.1/security-reference/authorization#supported-privileges), which is required to run the [`INSPECT` statement](/docs/v26.1/inspect).
+
+## Synopsis
+
+<ShowInspectErrors />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Syntax</th><th>Description</th></tr></thead><tbody><tr><td><code>opt&#95;for&#95;table&#95;clause</code></td><td><code>FOR TABLE &#123;table&#95;name&#125;</code></td><td>Optional. Show errors for the specified <a href="/docs/v26.1/create-table">table</a>.</td></tr><tr><td><code>opt&#95;for&#95;job&#95;clause</code></td><td><code>FOR JOB &#123;job&#95;id&#125;</code></td><td>Optional. Show errors produced by the job ID returned by the <a href="/docs/v26.1/inspect"><code>INSPECT</code> statement</a>.</td></tr><tr><td><code>opt&#95;with&#95;details</code></td><td><code>WITH DETAILS</code></td><td>Optional. Include structured error metadata from the <code>details</code> column (<a href="/docs/v26.1/jsonb">JSON</a>) in the results.</td></tr></tbody></table>
+
+## Response
+
+`SHOW INSPECT ERRORS` returns the following columns, with one row per issue detected.
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>job&#95;id</code></td><td>The ID of the <a href="/docs/v26.1/inspect"><code>INSPECT</code></a> job that detected the issue.</td></tr><tr><td><code>error&#95;type</code></td><td>The type of inconsistency detected. For more information, see <a href="#error-types">Error types</a>.</td></tr><tr><td><code>aost</code></td><td>The <a href="/docs/v26.1/as-of-system-time"><code>AS OF SYSTEM TIME</code></a> timestamp used by the validation <a href="/docs/v26.1/show-jobs">job</a> (if any).</td></tr><tr><td><code>database&#95;name</code></td><td>The <a href="/docs/v26.1/create-database">database</a> containing the schema object with an issue.</td></tr><tr><td><code>schema&#95;name</code></td><td>The <a href="/docs/v26.1/schema-design-overview">schema</a> containing the object with an issue.</td></tr><tr><td><code>object&#95;name</code></td><td>The <a href="/docs/v26.1/create-table">table</a> or <a href="/docs/v26.1/indexes">index</a> with an issue.</td></tr><tr><td><code>primary&#95;key</code></td><td>The <a href="/docs/v26.1/primary-key">primary key</a> of the row involved in the issue, if applicable.</td></tr><tr><td><code>details</code></td><td>This column is present only if <code>WITH DETAILS</code> is specified. It contains structured metadata (<a href="/docs/v26.1/jsonb">JSON</a>) describing the issue.</td></tr></tbody></table>
+
+### Error types
+
+The `INSPECT` implementation reports the following `error_type` values:
+
+<table><thead><tr><th>Error type</th><th>Meaning</th></tr></thead><tbody><tr><td><code>missing&#95;secondary&#95;index&#95;entry</code></td><td>A row in the <a href="/docs/v26.1/primary-key">primary index</a> is missing a corresponding entry in a <a href="/docs/v26.1/indexes">secondary index</a>. If you see this error, <a href="/docs/v26.1/support-resources">contact Support</a>.</td></tr><tr><td><code>dangling&#95;secondary&#95;index&#95;entry</code></td><td>A <a href="/docs/v26.1/indexes">secondary index</a> entry exists, but the referenced <a href="/docs/v26.1/primary-key">primary index</a> row does not. If you see this error, <a href="/docs/v26.1/support-resources">contact Support</a>.</td></tr><tr><td><code>internal&#95;error</code></td><td>An error occurred while <code>INSPECT</code> was running its validation queries (for example, an <a href="/docs/v26.1/ui-queues-dashboard#mvcc-gc-queue">MVCC GC timeout</a>). The cause of this error type is usually not related to data validity. Investigate the underlying job error details and cluster logs to determine the cause before deciding whether to <a href="/docs/v26.1/support-resources">contact Support</a>.</td></tr></tbody></table>
+
+## Examples
+
+### Show the latest errors for a table
+
+To see the errors found by the most recent `INSPECT` job, issue the following statement:
+
+```sql
+SHOW INSPECT ERRORS FOR TABLE movr.public.users;
+```
+
+### Show errors for a specific inspection job
+
+When you issue the [`INSPECT` statement](/docs/v26.1/inspect), a `NOTICE` message is returned to the client showing the job ID, e.g.,
+
+```sql
+INSPECT TABLE movr.public.users AS OF SYSTEM TIME '-10s';
+```
+
+```text
+NOTICE:  waiting for INSPECT job to complete: 1141477013029322753
+If the statement is canceled, the job will continue in the background.
+```
+
+To show errors for a job, issue the following statement:
+
+```sql
+SHOW INSPECT ERRORS FOR JOB 1141477013029322753;
+```
+
+If there are no errors associated with that job ID, the output is:
+
+```text
+SHOW INSPECT ERRORS 0
+```
+
+Note that if you issue a job ID for a nonexistent job, you will see the same output as for a job with no errors:
+
+```sql
+SHOW INSPECT ERRORS FOR JOB 0;
+```
+
+```text
+SHOW INSPECT ERRORS 0
+```
+
+### Show errors with details
+
+```sql
+SHOW INSPECT ERRORS FOR TABLE movr.public.users WITH DETAILS;
+```
+
+## See also
+
+- [`INSPECT`](/docs/v26.1/inspect)
+- [`SHOW JOBS`](/docs/v26.1/show-jobs)
+- [Jobs page in DB Console](/docs/v26.1/ui-jobs-page)
+- [Authorization](/docs/v26.1/security-reference/authorization#supported-privileges)

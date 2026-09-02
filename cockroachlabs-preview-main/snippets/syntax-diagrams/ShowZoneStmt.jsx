@@ -1,0 +1,119 @@
+export const ShowZoneStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="411" width="1063" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="64" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">SHOW</text>
+<rect height="32" rx="10" width="58" x="45" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="43" y="67"></rect>
+<text class="terminal" x="53" y="87">ZONE</text>
+<rect height="32" rx="10" width="138" x="143" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="138" x="141" y="67"></rect>
+<text class="terminal" x="151" y="87">CONFIGURATION</text>
+<rect height="32" rx="10" width="60" x="301" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="299" y="67"></rect>
+<text class="terminal" x="309" y="87">FROM</text>
+<rect height="32" rx="10" width="66" x="401" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="66" x="399" y="67"></rect>
+<text class="terminal" x="409" y="87">RANGE</text><a xlink:href="#zone_name" xlink:title="zone_name">
+<rect height="32" width="94" x="487" y="69"></rect>
+<rect class="nonterminal" height="32" width="94" x="485" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="12" class="nonterminal" x="497" y="87">zone_name</text></a><rect height="32" rx="10" width="92" x="401" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="399" y="111"></rect>
+<text class="terminal" x="409" y="131">DATABASE</text><a xlink:href="#database_name" xlink:title="database_name">
+<rect height="32" width="124" x="513" y="113"></rect>
+<rect class="nonterminal" height="32" width="124" x="511" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="100" font-size="12" class="nonterminal" x="523" y="131">database_name</text></a><rect height="32" rx="10" width="62" x="421" y="157"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="419" y="155"></rect>
+<text class="terminal" x="429" y="175">TABLE</text><a xlink:href="#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="503" y="157"></rect>
+<rect class="nonterminal" height="32" width="96" x="501" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="513" y="175">table_name</text></a><rect height="32" rx="10" width="64" x="421" y="201"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="419" y="199"></rect>
+<text class="terminal" x="429" y="219">INDEX</text><a xlink:href="#table_index_name" xlink:title="table_index_name">
+<rect height="32" width="138" x="505" y="201"></rect>
+<rect class="nonterminal" height="32" width="138" x="503" y="199"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="114" font-size="11" class="nonterminal" x="515" y="219">table_index_name</text></a><a xlink:href="#opt_partition" xlink:title="opt_partition">
+<rect height="32" width="102" x="683" y="157"></rect>
+<rect class="nonterminal" height="32" width="102" x="681" y="155"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="78" font-size="10" class="nonterminal" x="693" y="175">opt_partition</text></a><rect height="32" rx="10" width="98" x="401" y="245"></rect>
+<rect class="terminal" height="32" rx="10" width="98" x="399" y="243"></rect>
+<text class="terminal" x="409" y="263">PARTITION</text><a xlink:href="#partition_name" xlink:title="partition_name">
+<rect height="32" width="116" x="519" y="245"></rect>
+<rect class="nonterminal" height="32" width="116" x="517" y="243"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="92" font-size="10" class="nonterminal" x="529" y="263">partition_name</text></a><rect height="32" rx="10" width="38" x="655" y="245"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="653" y="243"></rect>
+<text class="terminal" x="663" y="263">OF</text>
+<rect height="32" rx="10" width="62" x="733" y="245"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="731" y="243"></rect>
+<text class="terminal" x="741" y="263">TABLE</text><a xlink:href="#table_name" xlink:title="table_name">
+<rect height="32" width="96" x="815" y="245"></rect>
+<rect class="nonterminal" height="32" width="96" x="813" y="243"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="11" class="nonterminal" x="825" y="263">table_name</text></a><rect height="32" rx="10" width="64" x="733" y="289"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="731" y="287"></rect>
+<text class="terminal" x="741" y="307">INDEX</text><a xlink:href="#table_index_name" xlink:title="table_index_name">
+<rect height="32" width="138" x="817" y="289"></rect>
+<rect class="nonterminal" height="32" width="138" x="815" y="287"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="114" font-size="11" class="nonterminal" x="827" y="307">table_index_name</text></a><rect height="32" rx="10" width="148" x="143" y="333"></rect>
+<rect class="terminal" height="32" rx="10" width="148" x="141" y="331"></rect>
+<text class="terminal" x="151" y="351">CONFIGURATIONS</text>
+<rect height="32" rx="10" width="44" x="45" y="377"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="43" y="375"></rect>
+<text class="terminal" x="53" y="395">ALL</text>
+<rect height="32" rx="10" width="58" x="109" y="377"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="107" y="375"></rect>
+<text class="terminal" x="117" y="395">ZONE</text>
+<rect height="32" rx="10" width="148" x="187" y="377"></rect>
+<rect class="terminal" height="32" rx="10" width="148" x="185" y="375"></rect>
+<text class="terminal" x="195" y="395">CONFIGURATIONS</text>
+<path class="line" d="m19 17 h2 m0 0 h10 m64 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-116 66 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m58 0 h10 m20 0 h10 m138 0 h10 m0 0 h10 m60 0 h10 m20 0 h10 m66 0 h10 m0 0 h10 m94 0 h10 m0 0 h394 m-614 0 h20 m594 0 h20 m-634 0 q10 0 10 10 m614 0 q0 -10 10 -10 m-624 10 v24 m614 0 v-24 m-614 24 q0 10 10 10 m594 0 q10 0 10 -10 m-604 10 h10 m92 0 h10 m0 0 h10 m124 0 h10 m0 0 h338 m-604 -10 v20 m614 0 v-20 m-614 20 v24 m614 0 v-24 m-614 24 q0 10 10 10 m594 0 q10 0 10 -10 m-584 10 h10 m62 0 h10 m0 0 h10 m96 0 h10 m0 0 h44 m-262 0 h20 m242 0 h20 m-282 0 q10 0 10 10 m262 0 q0 -10 10 -10 m-272 10 v24 m262 0 v-24 m-262 24 q0 10 10 10 m242 0 q10 0 10 -10 m-252 10 h10 m64 0 h10 m0 0 h10 m138 0 h10 m20 -44 h10 m102 0 h10 m0 0 h190 m-604 -10 v20 m614 0 v-20 m-614 20 v68 m614 0 v-68 m-614 68 q0 10 10 10 m594 0 q10 0 10 -10 m-604 10 h10 m98 0 h10 m0 0 h10 m116 0 h10 m0 0 h10 m38 0 h10 m20 0 h10 m62 0 h10 m0 0 h10 m96 0 h10 m0 0 h44 m-262 0 h20 m242 0 h20 m-282 0 q10 0 10 10 m262 0 q0 -10 10 -10 m-272 10 v24 m262 0 v-24 m-262 24 q0 10 10 10 m242 0 q10 0 10 -10 m-252 10 h10 m64 0 h10 m0 0 h10 m138 0 h10 m-852 -220 h20 m872 0 h20 m-912 0 q10 0 10 10 m892 0 q0 -10 10 -10 m-902 10 v244 m892 0 v-244 m-892 244 q0 10 10 10 m872 0 q10 0 10 -10 m-882 10 h10 m148 0 h10 m0 0 h704 m-990 -264 h20 m990 0 h20 m-1030 0 q10 0 10 10 m1010 0 q0 -10 10 -10 m-1020 10 v288 m1010 0 v-288 m-1010 288 q0 10 10 10 m990 0 q10 0 10 -10 m-1000 10 h10 m44 0 h10 m0 0 h10 m58 0 h10 m0 0 h10 m148 0 h10 m0 0 h680 m23 -308 h-3"></path>
+<polygon points="1053 83 1061 79 1061 87"></polygon>
+<polygon points="1053 83 1045 79 1045 87"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

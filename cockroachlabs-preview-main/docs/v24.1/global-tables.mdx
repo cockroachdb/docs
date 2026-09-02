@@ -1,0 +1,193 @@
+---
+title: "Global Tables"
+old_description: "Guidance on using global table locality in a multi-region deployment."
+---
+
+In a [multi-region deployment](/docs/v24.1/multiregion-overview), [`GLOBAL` table locality](/docs/v24.1/table-localities#global-tables) is a good choice for tables with the following requirements:
+
+- Read latency must be low, but write latency can be much higher.
+- Reads must be up-to-date for business reasons or because the table is referenced by [foreign keys](/docs/v24.1/foreign-key).
+- Rows in the table, and all latency-sensitive reads, **cannot** be tied to specific regions.
+
+In general, this pattern is suited well for reference tables that are rarely updated.
+
+Tables with the `GLOBAL` locality can survive zone or region failures, depending on the database-level [survival goal](/docs/v24.1/multiregion-overview#survival-goals) setting.
+
+<Tip>
+For new clusters using the [multi-region SQL abstractions](/docs/v24.1/multiregion-overview), Cockroach Labs recommends lowering the [`--max-offset`](/docs/v24.1/cockroach-start#flags-max-offset) setting to `250ms`. This setting is especially helpful for lowering the write latency of [global tables](/docs/v24.1/table-localities#global-tables). Nodes can run with different values for `--max-offset`, but only for the purpose of updating the setting across the cluster using a rolling upgrade.
+</Tip>
+
+## Before you begin
+
+### Fundamentals
+
+Multi-region patterns require thinking about the following questions:
+
+- What are your [survival goals](/docs/v24.1/multiregion-overview#survival-goals)? Do you need to survive a [zone failure](/docs/v24.1/multiregion-survival-goals#survive-zone-failures)? Do you need to survive a [region failure](/docs/v24.1/multiregion-survival-goals#survive-region-failures)?
+- What are the [table localities](/docs/v24.1/multiregion-overview#table-locality) that will provide the performance characteristics you need for each table's data?
+    - Do you need low-latency reads and writes from a single region? Do you need that single region to be configurable at the [row level](/docs/v24.1/table-localities#regional-by-row-tables)? Or will [a single optimized region for the entire table](/docs/v24.1/table-localities#regional-tables) suffice?
+    - Do you have a "read-mostly" [table of reference data that is rarely updated](/docs/v24.1/table-localities#global-tables), but that must be read with low latency from all regions?
+
+For more information about CockroachDB multi-region capabilities, review the following pages:
+
+- [Multi-Region Capabilities Overview](/docs/v24.1/multiregion-overview)
+- [How to Choose a Multi-Region Configuration](/docs/v24.1/choosing-a-multi-region-configuration)
+- [When to use `ZONE` vs. `REGION` Survival Goals](/docs/v24.1/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals)
+- [When to use `REGIONAL` vs. `GLOBAL` Tables](/docs/v24.1/table-localities#when-to-use-regional-vs-global-tables)
+
+In addition, reviewing the following information will be helpful:
+
+- The concept of [locality](/docs/v24.1/cockroach-start#locality), which CockroachDB uses to place and balance data based on how you define survival goal and table locality settings.
+- The recommendations in our [Production Checklist](/docs/v24.1/recommended-production-settings), including our [hardware recommendations](/docs/v24.1/recommended-production-settings#hardware). Afterwards, perform a proof of concept to size hardware for your use case.
+- [SQL Performance Best Practices](/docs/v24.1/performance-best-practices-overview)
+
+### Cluster setup
+
+Each [multi-region pattern](/docs/v24.1/topology-patterns#multi-region) assumes the following setup:
+
+<Frame>
+  ![Multi-region hardware setup](/images/v24.1/topology-patterns/topology_multi-region_hardware.png)
+</Frame>
+
+#### Hardware
+
+- 3 regions
+- Per region, 3+ AZs with 3+ VMs evenly distributed across them
+- Region-specific app instances and load balancers
+    - Each load balancer redirects to CockroachDB nodes in its region.
+    - When CockroachDB nodes are unavailable in a region, the load balancer redirects to nodes in other regions.
+
+#### Cluster startup
+
+Start each node with the [`--locality`](/docs/v24.1/cockroach-start#locality) flag specifying its region and AZ combination. For example, the following command starts a node in the `west1` AZ of the `us-west` region:
+
+```shell
+$ cockroach start \
+--locality=region=us-west,zone=west1 \
+--certs-dir=certs \
+--advertise-addr=<node1 internal address> \
+--join=<node1 internal address>:26257,<node2 internal address>:26257,<node3 internal address>:26257 \
+--cache=.25 \
+--max-sql-memory=.25 \
+--background
+```
+
+## Configuration
+
+### Summary
+
+To use this pattern, set the [table locality](/docs/v24.1/multiregion-overview#table-locality) to `GLOBAL`.
+
+A *global* table is optimized for low-latency reads from every region in the database. This means that any region can effectively act as the home region of the table. The tradeoff is that writes will incur higher latencies from any given region, since writes have to be replicated across every region to make the global low-latency reads possible. Use global tables when your application has a "read-mostly" table of reference data that is rarely updated, and needs to be available to all regions.
+
+For an example of a table that can benefit from the *global* table locality setting in a multi-region deployment, see the `promo_codes` table from the [MovR application](/docs/v24.1/movr).
+
+For instructions showing how to set a table's locality to `GLOBAL`, see [`ALTER TABLE... SET LOCALITY`](/docs/v24.1/alter-table#global).
+
+For more information about global tables, including troubleshooting information, see [Global Tables](/docs/v24.1/global-tables).
+
+### Steps
+
+1. Create a database and set it as the default database:
+
+    ```sql
+    CREATE DATABASE test;
+    ```
+
+    ```sql
+    USE test;
+    ```
+
+    [This cluster is already deployed across three regions](#cluster-setup). Therefore, to make this database a "multi-region database", issue the following SQL statement to [set the primary region](/docs/v24.1/alter-database#set-the-primary-region):
+
+    ```sql
+    ALTER DATABASE test PRIMARY REGION "us-east";
+    ```
+
+    <Note>
+    Every multi-region database must have a primary region. For more information, see [Database regions](/docs/v24.1/multiregion-overview#database-regions).
+    </Note>
+2. Issue the following [`ADD REGION`](/docs/v24.1/alter-database#add-region) statements to add the remaining regions to the database:
+
+    ```sql
+    ALTER DATABASE test ADD REGION "us-west";
+    ```
+
+    ```sql
+    ALTER DATABASE test ADD REGION "us-central";
+    ```
+3. Create a [`GLOBAL` table](/docs/v24.1/table-localities#global-tables) by issuing the following statement:
+
+    ```sql
+    CREATE TABLE postal_codes (
+      id INT PRIMARY KEY,
+      code STRING
+    ) LOCALITY GLOBAL;
+    ```
+
+    Alternatively, you can set an existing table's locality to `GLOBAL` using [`ALTER TABLE... SET LOCALITY`](/docs/v24.1/alter-table#set-locality):
+
+    ```sql
+    > ALTER TABLE postal_codes SET LOCALITY GLOBAL;
+    ```
+
+<Tip>
+A good way to check that your [table locality settings](/docs/v24.1/multiregion-overview#table-locality) are having the expected effect is by monitoring how the performance metrics of a workload change as the settings are applied to a running cluster. For a tutorial showing how table localities can improve performance metrics across a multi-region cluster, see [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.1/demo-low-latency-multi-region-deployment).
+</Tip>
+
+## Characteristics
+
+### Latency
+
+Global tables support low-latency, global reads of read-mostly data using an extension to CockroachDB's standard transaction protocol called [non-blocking transactions](/docs/v24.1/architecture/transaction-layer#non-blocking-transactions).
+
+#### Reads
+
+Thanks to the [non-blocking transaction](/docs/v24.1/architecture/transaction-layer#non-blocking-transactions) protocol extension, reads against `GLOBAL` tables access a consistent local replica and therefore never leave the region. This keeps read latency low.
+
+#### Writes
+
+Writes incur higher latencies than reads, since they require a "commit-wait" step to ensure consistency. For more information about how this works, see [non-blocking transactions](/docs/v24.1/architecture/transaction-layer#non-blocking-transactions).
+
+### Resiliency
+
+Because the `test` database does not specify a [survival goal](/docs/v24.1/multiregion-overview#survival-goals), it uses the default [`ZONE` survival goal](/docs/v24.1/multiregion-survival-goals#survive-zone-failures). With the default settings, an entire zone can fail without interrupting access to the database.
+
+For more information about how to choose a database survival goal, see [When to Use `ZONE` vs. `REGION` Survival Goals](/docs/v24.1/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals).
+
+## Troubleshooting
+
+### High follower read latency on global tables
+
+Reads on multi-region global tables can experience sporadic high latency on [follower reads](/docs/v24.1/follower-reads) if the round trip time between cluster nodes is higher than 150ms. To work around this issue, consider setting the `kv.closed_timestamp.lead_for_global_reads_override` [cluster setting](/docs/v24.1/cluster-settings) to a value greater than 800ms.
+
+The value of `kv.closed_timestamp.lead_for_global_reads_override` will impact write latency to global tables, so you should proceed in 100ms increments until the high read latency no longer occurs. If you've increased the setting to 1500ms and the problem persists, you should [contact support](/docs/v24.1/support-resources).
+
+## Alternatives
+
+- If rows in the table, and all latency-sensitive queries, can be tied to specific geographies, consider the [`REGIONAL` Table Locality Pattern](/docs/v24.1/regional-tables) pattern.
+
+## Tutorial
+
+For a step-by-step demonstration showing how CockroachDB's multi-region capabilities (including `GLOBAL` and `REGIONAL` tables) give you low-latency reads in a distributed cluster, see the tutorial on [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.1/demo-low-latency-multi-region-deployment).
+
+## See also
+
+- [Multi-Region Capabilities Overview](/docs/v24.1/multiregion-overview)
+- [How to Choose a Multi-Region Configuration](/docs/v24.1/choosing-a-multi-region-configuration)
+- [When to Use `ZONE` vs. `REGION` Survival Goals](/docs/v24.1/multiregion-survival-goals#when-to-use-zone-vs-region-survival-goals)
+- [When to Use `REGIONAL` vs. `GLOBAL` Tables](/docs/v24.1/table-localities#when-to-use-regional-vs-global-tables)
+- [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.1/demo-low-latency-multi-region-deployment)
+- [Migrate to Multi-Region SQL](/docs/v24.1/migrate-to-multiregion-sql)
+- [Secondary regions](/docs/v24.1/multiregion-overview#secondary-regions)
+- [`ALTER DATABASE... SET SECONDARY REGION`](/docs/v24.1/alter-database#set-secondary-region)
+- [`ALTER DATABASE... DROP SECONDARY REGION`](/docs/v24.1/alter-database#drop-secondary-region)
+- [Topology Patterns Overview](/docs/v24.1/topology-patterns)
+    - Single-region patterns
+        - [Development](/docs/v24.1/topology-development)
+        - [Basic Production](/docs/v24.1/topology-basic-production)
+    - Multi-region patterns
+        - [`REGIONAL` Tables](/docs/v24.1/regional-tables)
+        - [`GLOBAL` Tables](/docs/v24.1/global-tables)
+        - [Follower Reads](/docs/v24.1/topology-follower-reads)
+        - [Follow-the-Workload](/docs/v24.1/topology-follow-the-workload)

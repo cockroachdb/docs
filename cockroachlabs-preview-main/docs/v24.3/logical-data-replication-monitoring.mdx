@@ -1,0 +1,144 @@
+---
+title: "Logical Data Replication Monitoring"
+old_description: "Monitor and observe LDR jobs between a source and destination table."
+---
+
+<Note>
+**This feature is in [preview](/docs/v24.3/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+
+Logical data replication is only supported in CockroachDB self-hosted clusters.
+</Note>
+
+You can monitor [**logical data replication (LDR)**](/docs/v24.3/logical-data-replication-overview) using:
+
+- [`SHOW LOGICAL REPLICATION JOBS`](#sql-shell) in the SQL shell to view a list of LDR jobs on the cluster.
+- The [**Logical Data Replication** dashboard](/docs/v24.3/ui-logical-data-replication-dashboard) on the [DB Console](#db-console) to view metrics at the cluster level.
+- [Prometheus and Alertmanager](#prometheus) to track and alert on LDR metrics.
+- Metrics export with [Datadog](#datadog).
+- [Metrics labels](#metrics-labels) to view metrics at the job level.
+
+<Note>
+There are some tradeoffs between enabling one table per LDR job versus multiple tables in one LDR job. Multiple tables in one LDR job can be easier to operate. For example, if you pause and resume the single job, LDR will stop and resume for all the tables. However, the most granular level observability will be at the job level. One table in one LDR job will allow for table-level observability.
+</Note>
+
+When you start an LDR stream, one job is created on each cluster:
+
+- The *history retention job* on the source cluster, which runs while the LDR job is active to protect changes in the table from [garbage collection](/docs/v24.3/architecture/storage-layer#garbage-collection) until they have been applied to the destination cluster. The history retention job is viewable in the [DB Console](#db-console) or with [`SHOW JOBS`](/docs/v24.3/show-jobs). Any manual changes to the history retention job could disrupt the LDR job.
+- The `logical replication` job on the destination cluster. You can view the status of this job in the SQL shell with `SHOW LOGICAL REPLICATION JOBS` and the DB Console [**Jobs** page](#jobs-page).
+
+## SQL Shell
+
+In the destination cluster's SQL shell, you can query `SHOW LOGICAL REPLICATION JOBS` to view the LDR jobs running on the cluster:
+
+```sql
+SHOW LOGICAL REPLICATION JOBS;
+```
+
+```text
+        job_id        | status  |          targets          | replicated_time
+----------------------+---------+---------------------------+------------------
+1012877040439033857   | running | {database.public.table}   | NULL
+(1 row)
+```
+
+For additional detail on each LDR job, use the `WITH details` option:
+
+```sql
+SHOW LOGICAL REPLICATION JOBS WITH details;
+```
+
+```text
+        job_id        |  status  |            targets             |        replicated_time        |    replication_start_time     | conflict_resolution_type |                                      description
+----------------------+----------+--------------------------------+-------------------------------+-------------------------------+--------------------------+-----------------------------------------------------------------------------------------
+  1010959260799270913 | running  | {movr.public.promo_codes}      | 2024-10-24 17:50:05+00        | 2024-10-10 20:04:42.196982+00 | LWW                      | LOGICAL REPLICATION STREAM into movr.public.promo_codes from external://cluster_a
+  1014047902397333505 | canceled | {defaultdb.public.office_dogs} | 2024-10-24 17:30:25+00        | 2024-10-21 17:54:20.797643+00 | LWW                      | LOGICAL REPLICATION STREAM into defaultdb.public.office_dogs from external://cluster_a
+```
+
+You can also use [`SHOW JOBS`](/docs/v24.3/show-jobs) for general job details.
+
+### Responses
+
+<table><thead><tr><th>Field</th><th>Response</th></tr></thead><tbody><tr><td><code>job&#95;id</code></td><td>The job's ID. Use with <a href="/docs/v24.3/cancel-job"><code>CANCEL JOB</code></a>, <a href="/docs/v24.3/pause-job"><code>PAUSE JOB</code></a>, <a href="/docs/v24.3/resume-job"><code>RESUME JOB</code></a>, <a href="/docs/v24.3/show-jobs"><code>SHOW JOB</code></a>.</td></tr><tr><td><code>status</code></td><td>The job's current state. Possible values: <code>pending</code>, <code>paused</code>, <code>pause-requested</code>, <code>failed</code>, <code>succeeded</code>, <code>canceled</code>, <code>cancel-requested</code>, <code>running</code>, <code>retry-running</code>, <code>retry-reverting</code>, <code>reverting</code>, <code>revert-failed</code>.<br/><br/>Refer to <a href="/docs/v24.3/show-jobs#job-status">Jobs status</a> for a description of each status.</td></tr><tr><td><code>targets</code></td><td>The fully qualified name of the table(s) that are part of the LDR job.</td></tr><tr><td><code>replicated&#95;time</code></td><td>The latest <a href="/docs/v24.3/timestamp">timestamp</a> at which the destination cluster has consistent data. This time advances automatically as long as the LDR job proceeds without error. <code>replicated&#95;time</code> is updated periodically (every 30s).</td></tr><tr><td><code>replication&#95;start&#95;time</code></td><td>The start time of the LDR job.</td></tr><tr><td><code>conflict&#95;resolution&#95;type</code></td><td>The type of <a href="/docs/v24.3/manage-logical-data-replication#conflict-resolution">conflict resolution</a>: <code>LWW</code> last write wins.</td></tr><tr><td><code>description</code></td><td>Description of the job including the replicating table(s) and the source cluster connection.</td></tr></tbody></table>
+
+## Recommended LDR metrics to track
+
+- Replication latency: The commit-to-commit replication latency, which is tracked from when a row is committed on the source cluster, to when it is applied on the destination cluster. An LDR *commit* is when the job either applies a row successfully to the destination cluster or adds a row to the [dead letter queue (DLQ)](/docs/v24.3/manage-logical-data-replication#dead-letter-queue-dlq).
+    - `logical_replication.commit_latency-p50`
+    - `logical_replication.commit_latency-p99`
+- Replication lag: How far behind the source cluster is from the destination cluster at a specific point in time. The replication lag is equivalent to [RPO](/docs/v24.3/disaster-recovery-overview) during a disaster. Calculate the replication lag with this metric. For example, `time.now() - replicated_time_seconds`.
+    - `logical_replication.replicated_time_seconds`
+- Row updates applied: These metrics indicate whether the destination cluster is actively receiving and applying data from the source cluster.
+    - `logical_replication.events_ingested`
+    - `logical_replication.events_dlqed`
+
+## DB Console
+
+In the DB Console, you can use:
+
+- The [**Metrics** dashboard](/docs/v24.3/ui-logical-data-replication-dashboard) for LDR to view metrics for the job on the destination cluster.
+- The [**Jobs** page](/docs/v24.3/ui-jobs-page) to view the history retention job on the source cluster and the LDR job on the destination cluster
+
+The metrics for LDR in the DB Console metrics are at the **cluster** level. This means that if there are multiple LDR jobs running on a cluster the DB Console will show the average metrics across jobs.
+
+### Metrics dashboard
+
+You can use the [**Logical Data Replication** dashboard](/docs/v24.3/ui-logical-data-replication-dashboard) of the destination cluster to monitor the following metric graphs at the **cluster** level:
+
+- Replication latency
+- Replication lag
+- Row updates applied
+- Logical bytes received
+- Batch application processing time: 50th percentile
+- Batch application processing time: 99th percentile
+- DLQ causes
+- Retry queue size
+
+To track replicated time, ingested events, and events added to the DLQ at the **job** level, refer to [Metrics labels](#metrics-labels).
+
+### Jobs page
+
+On the [**Jobs** page](/docs/v24.3/ui-jobs-page), select:
+
+- The **Replication Producer** in the source cluster's DB Console to view the *history retention job*.
+- The **Logical Replication Ingestion** job in the destination cluster's DB Console. When you start LDR, the **Logical Replication Ingestion** job will show a bar that tracks the initial scan progress of the source table's existing data.
+
+## Monitoring and alerting
+
+### Prometheus
+
+You can use Prometheus and Alertmanager to track and alert on LDR metrics. Refer to the [Monitor CockroachDB with Prometheus](/docs/v24.3/monitor-cockroachdb-with-prometheus) tutorial for steps to set up Prometheus.
+
+#### Metrics labels
+
+To view metrics at the job level, you can use the `label` option when you start LDR to add a metrics label to the LDR job. This enables [child metric](/docs/v24.3/child-metrics) export, which are Prometheus time series with extra labels. You can track the following metrics for an LDR job with labels:
+
+- `logical_replication.catchup_ranges_by_label`
+- `logical_replication.events_dlqed_by_label`
+- `logical_replication.events_ingested_by_label`
+- `logical_replication.replicated_time_by_label`
+- `logical_replication.scanning_ranges_by_label`
+
+To use metrics labels, ensure you have enabled the child metrics cluster setting:
+
+```sql
+SET CLUSTER SETTING server.child_metrics.enabled = true;
+```
+
+When you start LDR, include the `label` option:
+
+```sql
+CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} 
+ON 'external://{source_external_connection}' 
+INTO TABLE {database.public.table_name} WITH label=ldr_job;
+```
+
+For a full reference on tracking metrics with labels, refer to the [Child Metrics](/docs/v24.3/child-metrics#clusters-with-logical-data-replication-jobs) page.
+
+### Datadog
+
+You can export metrics to Datadog for LDR jobs. For steps to set up metrics export, refer to the [Monitor CockroachDB Self-Hosted with Datadog](/docs/v24.3/datadog).
+
+## See also
+
+- [Set Up Logical Data Replication](/docs/v24.3/set-up-logical-data-replication)
+- [Manage Logical Data Replcation](/docs/v24.3/manage-logical-data-replication)

@@ -1,0 +1,76 @@
+---
+title: "cockroach userfile get"
+old_description: "Fetch files stored in the user-scoped file storage."
+---
+
+The `cockroach userfile get` [command](/docs/v25.2/cockroach-commands) fetches the files stored in the [user-scoped file storage](/docs/v25.2/use-userfile-storage) which match the provided pattern, using a SQL connection. If no pattern is provided, all files in the specified (or default, if unspecified) user-scoped file storage will be fetched.
+
+## Required privileges
+
+The user must have `CONNECT` [privileges](/docs/v25.2/security-reference/authorization#managing-privileges) on the target database.
+
+A user can only fetch files from their own user-scoped storage, which is accessed through the [userfile URI](/docs/v25.2/cockroach-userfile-upload#file-destination) used during the upload. CockroachDB will revoke all access from every other user in the cluster except users in the `admin` role and users explicitly granted access.
+
+<Note>
+If this is your first interaction with user-scoped file storage, you may see an error indicating that you need `CREATE` privileges on the database. You must first [upload a file](/docs/v25.2/cockroach-userfile-upload) or run a [`BACKUP`](/docs/v25.2/backup) to `userfile` before attempting to `get` a file.
+</Note>
+
+## Synopsis
+
+Fetch a file:
+
+```shell
+$ cockroach userfile get <file> [flags]
+```
+
+View help:
+
+```shell
+$ cockroach userfile get --help
+```
+
+## Flags
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--cert-principal-map</code></td><td>A comma-separated list of <code>&lt;cert-principal&gt;:&lt;db-principal&gt;</code> mappings. This allows mapping the principal in a cert to a DB principal such as <code>node</code> or <code>root</code> or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the <code>Subject.CommonName</code> or <code>SubjectAlternateName</code> fields in the certificate (e.g., disallowing a <code>CommonName</code> like <code>node</code> or <code>root</code>). If multiple mappings are provided for the same <code>&lt;cert-principal&gt;</code>, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A cert is allowed to authenticate a DB principal if the DB principal name is contained in the mapped <code>CommonName</code> or DNS-type <code>SubjectAlternateName</code> fields.</td></tr><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v25.2/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr><tr><td><code>--echo-sql</code></td><td>Reveal the SQL statements sent implicitly by the command-line utility.</td></tr><tr><td><code>--url</code></td><td>A <a href="/docs/v25.2/connection-parameters#connect-using-a-url">connection URL</a> to use instead of the other arguments.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;URL</code><br/><strong>Default:</strong> no URL</td></tr><tr><td><code>--user</code><br/><code>-u</code></td><td>The <a href="/docs/v25.2/create-user">SQL user</a> that will own the client session.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;USER</code><br/><strong>Default:</strong><code>root</code></td></tr></tbody></table>
+
+## Examples
+
+### Get a specific file
+
+To get the file named test-data.csv from the default user-scoped storage location for the current user:
+
+```shell
+$ cockroach userfile get test-data.csv --certs-dir=certs
+```
+
+### Get a file saved to an explicit local file name
+
+To get a file named test-data.csv from a local directory:
+
+```shell
+$ cockroach userfile get test-data.csv /Users/maxroach/Desktop/test-data.csv --certs-dir=certs
+```
+
+### Get a file from a non-default userfile URI
+
+If you [uploaded a file to a non-default userfile URI](/docs/v25.2/cockroach-userfile-upload#upload-a-file-to-a-non-default-userfile-uri) (e.g., `userfile://testdb.public.uploads`), use the same URI to fetch it:
+
+```shell
+cockroach userfile get userfile://testdb.public.uploads/test-data.csv --certs-dir=certs
+```
+
+### Get files that match the provided pattern
+
+To get all files that match a pattern, use *:
+
+```shell
+$ cockroach userfile get '*.csv' --certs-dir=certs
+```
+
+## See also
+
+- [`cockroach userfile upload`](/docs/v25.2/cockroach-userfile-upload)
+- [`cockroach userfile delete`](/docs/v25.2/cockroach-userfile-delete)
+- [`cockroach userfile list`](/docs/v25.2/cockroach-userfile-list)
+- [Use `userfile` storage](/docs/v25.2/use-userfile-storage)
+- [`cockroach` Commands Overview](/docs/v25.2/cockroach-commands)

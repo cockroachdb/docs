@@ -1,0 +1,140 @@
+---
+title: "cockroach sqlfmt"
+old_description: "Use cockroach sqlfmt to enhance the text layout of a SQL query."
+---
+
+The `cockroach sqlfmt` [command](/docs/v24.3/cockroach-commands) changes the textual formatting of one or more SQL queries. It recognizes all SQL extensions supported by CockroachDB.
+
+A [web interface to this feature](https://sqlfum.pt/) is also available.
+
+<Note>
+**This feature is in [preview](/docs/v24.3/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+## Synopsis
+
+Use the query formatter interactively:
+
+```shell
+$ cockroach sqlfmt <flags>
+<sql stmt>
+CTRL+D
+```
+
+Reformat a SQL query given on the command line:
+
+```shell
+$ cockroach sqlfmt <flags> -e "<sql stmt>"
+```
+
+Reformat a SQL query already stored in a file:
+
+```shell
+$ cat query.sql | cockroach sqlfmt <flags>
+```
+
+## Flags
+
+The `sqlfmt` command supports the following flags.
+
+<table><thead><tr><th>Flag</th><th>Description</th><th>Default value</th></tr></thead><tbody><tr><td><code>--execute</code><br/><code>-e</code></td><td>Reformat the given SQL query, without reading from standard input.</td><td>N/A</td></tr><tr><td><code>--print-width</code></td><td>Desired column width of the output.</td><td>80</td></tr><tr><td><code>--tab-width</code></td><td>Number of spaces occupied by a tab character on the final display device.</td><td>4</td></tr><tr><td><code>--use-spaces</code></td><td>Always use space characters for formatting; avoid tab characters.</td><td>Use tabs.</td></tr><tr><td><code>--align</code></td><td>Use vertical alignment during formatting.</td><td>Do not align vertically.</td></tr><tr><td><code>--no-simplify</code></td><td>Avoid removing optional grouping parentheses during formatting.</td><td>Remove unnecessary grouping parentheses.</td></tr></tbody></table>
+
+## Examples
+
+### Reformat a query with constrained column width
+
+Using the interactive query formatter, output with the default column width (80 columns):
+
+1. Start the interactive query formatter:
+
+    ```shell
+    $ cockroach sqlfmt
+    ```
+2. Press **Enter**.
+3. Run the query:
+
+    ```sql
+    > CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
+    ```
+4. Press **CTRL+D**.
+
+    ```sql
+    CREATE TABLE animals (
+            id INT PRIMARY KEY DEFAULT unique_rowid(),
+            name STRING
+    )
+    ```
+
+Using the command line, output with the column width set to `40`:
+
+```shell
+$ cockroach sqlfmt --print-width 40 -e "CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);"
+```
+
+```sql
+CREATE TABLE animals (
+        id
+                INT
+                PRIMARY KEY
+                DEFAULT unique_rowid(),
+        name STRING
+)
+```
+
+### Reformat a query with vertical alignment
+
+Output with the default vertical alignment:
+
+```shell
+$ cockroach sqlfmt -e "SELECT winner, round(length / (60 * 5)) AS counter FROM players WHERE build = $1 AND (hero = $2 OR region = $3);"
+```
+
+```sql
+SELECT
+winner, round(length / (60 * 5)) AS counter
+FROM
+players
+WHERE
+build = $1 AND (hero = $2 OR region = $3)
+```
+
+Output with vertical alignment:
+
+```shell
+$ cockroach sqlfmt --align -e "SELECT winner, round(length / (60 * 5)) AS counter FROM players WHERE build = $1 AND (hero = $2 OR region = $3);"
+```
+
+```sql
+SELECT winner, round(length / (60 * 5)) AS counter
+  FROM players
+ WHERE build = $1 AND (hero = $2 OR region = $3);
+```
+
+### Reformat a query with simplification of parentheses
+
+Output with the default simplification of parentheses:
+
+```shell
+$ cockroach sqlfmt -e "SELECT (1 * 2) + 3, (1 + 2) * 3;"
+```
+
+```sql
+SELECT 1 * 2 + 3, (1 + 2) * 3
+```
+
+Output with no simplification of parentheses:
+
+```shell
+$ cockroach sqlfmt --no-simplify -e "SELECT (1 * 2) + 3, (1 + 2) * 3;"
+```
+
+```sql
+SELECT (1 * 2) + 3, (1 + 2) * 3
+```
+
+## See also
+
+- [Sequel Fumpt](https://sqlfum.pt/)
+- [`cockroach demo`](/docs/v24.3/cockroach-demo)
+- [`cockroach sql`](/docs/v24.3/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v24.3/cockroach-commands)

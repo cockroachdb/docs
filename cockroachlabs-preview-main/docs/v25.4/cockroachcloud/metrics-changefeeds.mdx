@@ -1,0 +1,20 @@
+---
+title: "Changefeed metrics"
+old_description: "The Changefeed metrics let you monitor the performance of your changefeeds."
+---
+
+import MetricsChangefeeds from "/snippets/cockroachcloud/metrics-changefeeds.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MetricsChangefeeds />

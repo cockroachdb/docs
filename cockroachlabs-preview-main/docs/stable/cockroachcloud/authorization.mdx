@@ -1,0 +1,20 @@
+---
+title: "CockroachDB Cloud Access Management (Authorization) Overview"
+old_description: "Learn about CockroachDB Cloud authorization features and concepts"
+---
+
+import Authorization from "/snippets/cockroachcloud/authorization.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "stable");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<Authorization />

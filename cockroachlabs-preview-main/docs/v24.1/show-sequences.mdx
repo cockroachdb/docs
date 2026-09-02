@@ -1,0 +1,43 @@
+---
+title: "SHOW SEQUENCES"
+old_description: "The SHOW SEQUENCES statement lists the sequences in a database."
+---
+
+import { ShowSequences3 } from "/snippets/syntax-diagrams/ShowSequences3.jsx";
+
+The `SHOW SEQUENCES` [statement](/docs/v24.1/sql-statements) lists all sequences in a database.
+
+## Required privileges
+
+No [privileges](/docs/v24.1/security-reference/authorization#managing-privileges) are required to list the sequences in a database.
+
+## Synopsis
+
+<ShowSequences3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td>The name of the database for which to list sequences. When omitted, the sequences in the <a href="/docs/v24.1/sql-name-resolution#current-database">current database</a> are listed.</td></tr></tbody></table>
+
+## Example
+
+```sql
+> CREATE SEQUENCE sequence_test;
+```
+
+```sql
+> SHOW SEQUENCES;
+```
+
+```text
+  sequence_schema | sequence_name
+------------------+----------------
+  public          | sequence_test
+(1 row)
+```
+
+## See also
+
+- [`CREATE SEQUENCE`](/docs/v24.1/create-sequence)
+- [`DROP SEQUENCE`](/docs/v24.1/drop-sequence)
+- [`ALTER SEQUENCE`](/docs/v24.1/alter-sequence)

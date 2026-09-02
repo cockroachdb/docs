@@ -1,0 +1,123 @@
+---
+title: "Export Spatial Data"
+old_description: "Learn how to export spatial data from CockroachDB into various formats."
+---
+
+CockroachDB supports efficiently storing and querying spatial data.
+
+This page has instructions for exporting spatial data from CockroachDB and converting it to other spatial formats using the [`ogr2ogr`](https://gdal.org/programs/ogr2ogr) command.
+
+<Note>
+An `ogr2ogr` version of 3.1.0 or higher is required to generate data that can be imported into CockroachDB.
+</Note>
+
+## Step 1. Export data to CSV
+
+First, use the [`EXPORT`](/docs/v24.1/export) statement to export your data to a CSV file.
+
+In the example statement below, we export the tornadoes database used in [Query Spatial Data](/docs/v24.1/query-spatial-data#use-a-sample-shapefile-dataset).
+
+The statement will place the CSV file in the node's [store directory](/docs/v24.1/cockroach-start#store), in a subdirectory named `extern/tornadoes`. The file's name is automatically generated, and will be displayed as output in the [SQL shell](/docs/v24.1/cockroach-sql).
+
+```sql
+EXPORT INTO CSV 'nodelocal://self/tornadoes' WITH nullas = '' FROM SELECT * from "1950-2018-torn-initpoint";
+```
+
+```text
+                     filename                     | rows  |  bytes
+--------------------------------------------------+-------+-----------
+  export16467a35d30d25700000000000000001-n1.0.csv | 63645 | 16557064
+(1 row)
+```
+
+<Note>
+This example uses local file storage. For more information about other locations where you can export your data (such as cloud storage), see [`EXPORT`](/docs/v24.1/export).
+</Note>
+
+## Step 2. Combine multiple CSV files into one, as needed
+
+You should now have one or more CSV files in the `extern/tornadoes` subdirectory of your node's [store directory](/docs/v24.1/cockroach-start#store). Depending on the size of the data set, there may be more than one CSV file.
+
+To combine multiple CSVs into one file:
+
+1. Open the CSV file where you will be storing the combined output in a text editor. You will need to manually add the CSV header columns to that file so that the `ogr2ogr` output we generate below will have the proper column names. Start by running the statement below on the table you are exporting to get the necessary column names:
+
+    ```sql
+    WITH x AS (SHOW COLUMNS FROM "1950-2018-torn-initpoint") SELECT string_agg(column_name, ',') FROM x;
+    ```
+
+    ```text
+                                                  string_agg
+    ------------------------------------------------------------------------------------------------------
+      gid,om,yr,mo,dy,date,time,tz,st,stf,stn,mag,inj,fat,loss,closs,slat,slon,elat,elon,len,wid,fc,geom
+    ```
+2. Add the column names output above to your target output CSV file (e.g., `tornadoes.csv`) as header columns. For the tornadoes database, they should look like the following:
+
+    ```text
+    gid, om, yr, mo, dy, date, time, tz, st, stf, stn, mag, inj, fat, loss, closs, slat, slon, elat, elon, len, wid, fc, geom
+    ```
+3. Concatenate the non-header data from all of the exported CSV files, and append the output to the target CSV file as shown below. The node's store directory on this machine is `/tmp/node0`.
+
+    ```shell
+    cat /tmp/node0/extern/tornadoes/*.csv >> tornadoes.csv
+    ```
+
+## Step 3. Convert CSV to other formats using `ogr2ogr`
+
+Now that you have your data in CSV format, you can convert it to other spatial formats using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr).
+
+For example, to convert the data to SQL, run the following command:
+
+```shell
+ogr2ogr -f PGDUMP tornadoes.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF -oo GEOM_POSSIBLE_NAMES=geom -oo KEEP_GEOM_COLUMNS=off tornadoes.csv
+```
+
+Note that the options `-oo GEOM_POSSIBLE_NAMES=<geom_column_name> -oo KEEP_GEOM_COLUMNS=off` are required no matter what output format you are converting into.
+
+For more information about the formats supported by `ogr2ogr`, see the [`ogr2ogr` documentation](https://gdal.org/programs/ogr2ogr).
+
+<Note>
+An `ogr2ogr` version of 3.1.0 or higher is required to generate data that can be imported into CockroachDB.
+</Note>
+
+Finally, note that SQL type information is lost in the conversion to CSV, such that the `tornadoes.sql` file output by the `ogr2ogr` command above lists every non-geometry field as a [`VARCHAR`](/docs/v24.1/string).
+
+This can be addressed in one of the following ways:
+
+- Modify the data definitions in the SQL output file to use the correct types.
+- Run [`ALTER TYPE`](/docs/v24.1/alter-type) statements to restore the data's SQL types after loading this data into another database (including another CockroachDB instance).
+
+## See also
+
+- [`EXPORT`](/docs/v24.1/export)
+- [Migrate from Shapefiles](/docs/v24.1/migrate-from-shapefiles)
+- [Migrate from GeoJSON](/docs/v24.1/migrate-from-geojson)
+- [Migrate from GeoPackage](/docs/v24.1/migrate-from-geopackage)
+- [Migrate from OpenStreetMap](/docs/v24.1/migrate-from-openstreetmap)
+- [Spatial Data Overview](/docs/v24.1/spatial-data-overview)
+- [Spatial indexes](/docs/v24.1/spatial-indexes)
+- [Spatial and GIS Glossary of Terms](/docs/v24.1/architecture/glossary)
+- [Known Limitations](/docs/v24.1/known-limitations#spatial-support-limitations)
+- [Spatial functions](/docs/v24.1/functions-and-operators#spatial-functions)
+- [POINT](/docs/v24.1/point)
+- [LINESTRING](/docs/v24.1/linestring)
+- [POLYGON](/docs/v24.1/polygon)
+- [MULTIPOINT](/docs/v24.1/multipoint)
+- [MULTILINESTRING](/docs/v24.1/multilinestring)
+- [MULTIPOLYGON](/docs/v24.1/multipolygon)
+- [GEOMETRYCOLLECTION](/docs/v24.1/geometrycollection)
+- [Well known text](/docs/v24.1/well-known-text)
+- [Well known binary](/docs/v24.1/well-known-binary)
+- [GeoJSON](/docs/v24.1/geojson)
+- [SRID 4326 - longitude and latitude](/docs/v24.1/srid-4326)
+- [`ST_Contains`](/docs/v24.1/st_contains)
+- [`ST_ConvexHull`](/docs/v24.1/st_convexhull)
+- [`ST_CoveredBy`](/docs/v24.1/st_coveredby)
+- [`ST_Covers`](/docs/v24.1/st_covers)
+- [`ST_Disjoint`](/docs/v24.1/st_disjoint)
+- [`ST_Equals`](/docs/v24.1/st_equals)
+- [`ST_Intersects`](/docs/v24.1/st_intersects)
+- [`ST_Overlaps`](/docs/v24.1/st_overlaps)
+- [`ST_Touches`](/docs/v24.1/st_touches)
+- [`ST_Union`](/docs/v24.1/st_union)
+- [`ST_Within`](/docs/v24.1/st_within)

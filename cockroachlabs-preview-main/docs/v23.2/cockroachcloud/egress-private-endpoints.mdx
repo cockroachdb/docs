@@ -1,0 +1,20 @@
+---
+title: "Configure Egress Private Endpoints"
+old_description: "Learn how to configure egress private endpoints for enhanced network security on a CockroachDB Cloud cluster."
+---
+
+import EgressPrivateEndpoints from "/snippets/cockroachcloud/egress-private-endpoints.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<EgressPrivateEndpoints />

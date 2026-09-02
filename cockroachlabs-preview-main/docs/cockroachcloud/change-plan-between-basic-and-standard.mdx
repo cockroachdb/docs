@@ -1,0 +1,113 @@
+---
+title: "Change a Cluster's Plan Between Basic and Standard"
+old_description: "Learn how to change a cluster's plan between a CockroachDB Basic cluster and a CockroachDB Standard cluster."
+---
+
+<Note>
+CockroachDB Standard is currently in [Preview](/docs/v25.4/cockroachdb-feature-availability).
+</Note>
+
+This page describes how to change a cluster [plan](/docs/cockroachcloud#plans) between CockroachDB Basic and CockroachDB Standard using the [Cloud Console](https://cockroachlabs.cloud/).
+
+To use the CockroachDB Cloud API to change your cluster's plan, refer to [Use the CockroachDB Cloud API](/docs/cockroachcloud/cloud-api#change-a-clusters-plan).
+
+## Before you begin
+
+You'll need the [Cluster Admin](/docs/cockroachcloud/authorization#cluster-admin) or [Cluster Operator](/docs/cockroachcloud/authorization#cluster-operator) role on the running Standard or Basic cluster in order to change the cluster's [plan](/docs/cockroachcloud#plans).
+
+For changing plans from Standard to Basic, you must disable Standard-only features before starting the plan change.
+
+### Considerations
+
+- If the option to Change Plan Type is unavailable, hovering your mouse on this option may display a note that the cluster was created on a legacy architecture that does not support multi-region features or private connections on any plan. To use these features, follow the procedure to [migrate to a new Standard cluster](#migrate-to-a-new-standard-cluster). Alternatively, to change the plan for your current cluster despite these feature limitations, you can use the [Cloud API](/docs/cockroachcloud/cloud-api#change-a-clusters-plan).
+- The plan change will take up to 5 minutes.
+- The cluster will remain operational under the current plan during the switching period.
+- You can change back the plan if needed. However, when you change from Standard to Basic, you will need to wait 48 hours before being able to change back to Standard.
+
+## Change a cluster's plan
+
+<Note>
+When you change from Standard to Basic, you will not be able to change the plan back to Standard for 48 hours.
+</Note>
+
+1. On the [**Clusters** page](/docs/cockroachcloud/cluster-management#view-clusters-page), select the cluster that requires a plan change.
+2. On the [**Cluster Overview** page](/docs/cockroachcloud/cluster-overview-page), select the **Action** dropdown in the top-right corner, and then **Change plan type**. If this option is unavailable, refer to [Considerations](#considerations).
+3. Choose a [plan](/docs/cockroachcloud#plans) from Standard or Basic to change to. The current plan of the cluster will be labeled, while the other plan type will be highlighted. Select **Next: Capacity**.
+4. For capacity:
+    - If you are changing to a Standard plan, choose the amount of [provisioned capacity](/docs/cockroachcloud/plan-your-cluster#provisioned-capacity) you want for your cluster. The Cloud Console provides a suggestion for provisioned vCPU, we recommend monitoring CPU utilization and adjusting the cluster's compute capacity as necessary. For additional information, refer to [Recommended provisioned capacity when changing cluster plan](/docs/cockroachcloud/plan-your-cluster#recommended-provisioned-capacity-when-changing-cluster-plan). Select **Next: Finalize**.
+    - If you are changing to a [Basic plan](/docs/cockroachcloud/create-a-basic-cluster#step-4-configure-cluster-capacity), choose whether the cluster should have **Unlimited** capacity to scale, or **Set a monthly limit**. Select **Next: Finalize**.
+5. Review the changes and then **Update cluster**.
+
+## Migrate to a new Standard cluster
+
+You can move an existing CockroachDB Cloud cluster's contents to a new cluster by creating a self-managed backup and restoring the backup in the new cluster.
+
+<Warning>
+This method of migration requires a period of downtime during which application traffic to the cluster must be stopped. If minimal downtime on the cluster is a requirement, contact the [Cockroach Labs Support team](/docs/v25.4/support-resources).
+</Warning>
+
+To move to a new Standard cluster, follow these steps:
+
+1. Create a [full backup](/docs/cockroachcloud/take-and-restore-self-managed-backups#full-backup) of the source cluster if a self-managed backup of the cluster does not already exist. If the backup storage is in AWS S3 or Google Cloud GCS, append `?AUTH=specified` to the storage URL.
+2. Provision the [new Standard cluster](/docs/cockroachcloud/create-your-cluster).
+3. Stop application traffic to the source cluster.
+4. Perform a [final backup](/docs/cockroachcloud/take-and-restore-self-managed-backups) to include any last-minute changes to data on the cluster.
+5. [Connect to the new cluster](/docs/cockroachcloud/connect-to-your-cluster):
+
+    <CodeGroup>
+    
+    ```shell Mac
+    cockroach sql --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
+    ```
+
+    
+    ```shell Linux
+    cockroach sql --url 'postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert='$HOME'/Library/CockroachCloud/certs/<cluster-name>-ca.crt'
+    ```
+
+    
+    ```shell Windows
+    cockroach sql --url "postgresql://<user>@<cluster-name>-<short-id>.<region>.cockroachlabs.cloud:26257/<database>?sslmode=verify-full&sslrootcert=$env:appdata\CockroachCloud\certs\$<cluster-name>-ca.crt"
+    ```
+
+    </CodeGroup>
+
+    Where:
+
+    - `<user>` is the SQL user. By default, this is your CockroachDB Cloud account username.
+    - `<cluster-name>-<short-id>` is the short name of your cluster plus the short ID. For example, `funny-skunk-3ab`.
+    - `<cluster-id>` is a unique string used to identify your cluster when downloading the CA certificate. For example, `12a3bcde-4fa5-6789-1234-56bc7890d123`.
+    - `<region>` is the region in which your cluster is running. If you have a multi-region cluster, you can choose any of the regions in which your cluster is running. For example, `aws-us-east-1`.
+    - `<database>` is the name for your database. For example, `defaultdb`.
+
+        You can find these settings in the **Connection parameters** tab of the **Connection info** dialog.
+6. [Restore](/docs/v25.4/restore) the latest backup to the new cluster:
+
+    a. Use `SHOW BACKUPS` with your external location to find the backup's subdirectory:
+
+    ```sql
+      SHOW BACKUPS IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ```
+
+    ```text
+              path
+      ------------------------
+      2021/03/23-213101.37
+      2021/03/24-172553.85
+      2021/03/24-210532.53
+      (3 rows)
+    ```
+
+    b. Use the subdirectory to specify the backup to restore:
+
+    ```sql
+      RESTORE DATABASE example_database FROM '2021/03/23-213101.37' IN 'gs://{bucket name}/{path/to/backup}?AUTH=specified&CREDENTIALS={encoded key}';
+    ```
+7. Update application connection strings to use the new cluster.
+8. Resume application traffic and monitor performance on the new cluster.
+9. [Decommission the source cluster](/docs/cockroachcloud/basic-cluster-management#delete-cluster).
+
+## See more
+
+- [CockroachDB Cloud Documentation](/docs/cockroachcloud)
+- [Use the CockroachDB Cloud API](/docs/cockroachcloud/cloud-api)

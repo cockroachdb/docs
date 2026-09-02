@@ -1,0 +1,83 @@
+---
+title: "CockroachDB Releases Overview"
+old_description: "Information about CockroachDB releases with an index of available releases and their release notes and binaries."
+---
+
+This page describes how CockroachDB handles releases and links to the release notes for all CockroachDB [releases](#supported-releases).
+
+## Release schedule
+
+A new [major version](#major-versions) of CockroachDB is released quarterly. After a series of testing releases, each major version receives an initial production (GA) release, followed by [patch releases](#patch-releases). New versions first roll out to select CockroachDB Cloud organizations, and binaries are made available for CockroachDB self-hosted afterward:
+
+- Initial production release (x.y.0 GA): Approximately 2 weeks after Cloud availability.
+- Patch releases (x.y.1+): Approximately 1 week after Cloud availability.
+
+Releases are named in the format `vYY.R.PP`, where `YY` indicates the year, `R` indicates the major version number starting with `1` each year, and `PP` indicates the patch version number.
+
+For example, the `v25.4.6` production release is the latest patch release of major version <a href="/docs/VERSION_PLACEHOLDER/releases/v25.4" data-versioned="true">`v25.4`</a>.
+
+### Major versions
+
+Major versions of CockroachDB alternate between **Regular** and **Innovation** releases:
+
+- **Regular releases** offer extended support windows for long-term stability and security. This support window is further extended after a patch release is nominated to an <a href="/docs/VERSION_PLACEHOLDER/releases/release-support-policy#support-types" data-versioned="true">**LTS** (long-term support)</a> release.
+- **Innovation releases** offer shorter support windows but include all of the latest features.
+
+For details on how LTS impacts support in CockroachDB self-hosted, refer to <a href="/docs/VERSION_PLACEHOLDER/releases/release-support-policy" data-versioned="true">Release Support Policy</a>. For details on support per release type in CockroachDB Cloud, refer to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/upgrade-policy" data-versioned="true">CockroachDB Cloud Support and Upgrade Policy</a>.
+
+### Patch releases
+
+All major versions of CockroachDB receive patch releases that update functionality and fix issues. Patch releases after a major version's initial production release (`vYY.R.0`) are qualified for production environments.
+
+The type and duration of support for a production release varies depending on the major release type, according to the <a href="/docs/VERSION_PLACEHOLDER/releases/release-support-policy" data-versioned="true">release support policy</a>.
+
+Prior to its initial production release, development releases are made available for testing and experimentation. These pre-production patch releases are sequenced in alpha (`vYY.R.0-alpha.1+`), followed by beta (`vYY.R.0-beta.1+`), followed by release candidate (`vYY.R.0-rc.1+`) versions. These releases are not supported for production environments.
+
+<Warning>
+A cluster that is upgraded to an alpha binary of CockroachDB or a binary that was manually built from the `master` branch cannot subsequently be upgraded to a production release.
+</Warning>
+
+### CockroachDB Cloud releases
+
+CockroachDB Cloud is a managed product that handles CockroachDB upgrades on your behalf, but still offers some flexibility over when to perform upgrades and which version to use. Version and upgrade support varies depending on the Cloud plan:
+
+- CockroachDB Basic only supports **Regular releases**. Clusters are automatically upgraded to the next regular GA release, and receive regular patch updates.
+- CockroachDB Standard only supports **Regular releases**. By default, clusters are automatically upgraded to the next regular GA release, with the option to handle the upgrade timing manually. Clusters receive regular patch updates.
+- CockroachDB Advanced supports both **Regular** and **Innovation** releases.
+
+For more information, read the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/upgrade-policy" data-versioned="true">CockroachDB Cloud upgrade policy</a>.
+
+## Supported releases
+
+<table><thead><tr><th>Version</th><th>Release Type</th><th>GA date</th></tr></thead><tbody><tr><td><a href="/docs/releases/v26.1">v26.1</a></td><td>Innovation</td><td>2026-02-02</td></tr><tr><td><a href="/docs/releases/v25.4">v25.4</a></td><td>Regular</td><td>2025-11-03</td></tr><tr><td><a href="/docs/releases/v25.2">v25.2</a></td><td>Regular</td><td>2025-05-12</td></tr><tr><td><a href="/docs/releases/v24.3">v24.3</a></td><td>Regular</td><td>2024-11-18</td></tr><tr><td><a href="/docs/releases/v24.1">v24.1</a></td><td>Regular</td><td>2024-05-20</td></tr><tr><td><a href="/docs/releases/v23.2">v23.2</a></td><td>Regular</td><td>2024-02-05</td></tr></tbody></table>
+
+## Upcoming releases
+
+The following releases and their descriptions represent proposed plans that are subject to change. Please contact your account representative with any questions.
+
+<table><thead><tr><th>Version</th><th>Release Type</th><th>Expected GA date</th></tr></thead><tbody><tr><td>v26.2</td><td>Regular</td><td>2026 Q2</td></tr></tbody></table>
+
+## Unsupported versions
+
+A full archive of CockroachDB major versions that are no longer supported is available on the <a href="/docs/VERSION_PLACEHOLDER/releases/unsupported-versions" data-versioned="true">Unsupported Versions</a> page.
+
+## Licenses
+
+All CockroachDB binaries released on or after the day 24.3.0 is released onward, including patch fixes for versions 23.1-24.2, are made available under the [CockroachDB Software License](https://www.cockroachlabs.com/cockroachdb-software-license).
+
+All CockroachDB binaries released prior to the release date of 24.3.0 are variously licensed under the Business Source License 1.1 (BSL), the CockroachDB Community License (CCL), and other licenses specified in the source code.
+
+To review the CCL, refer to the [CockroachDB Community License](https://www.cockroachlabs.com/cockroachdb-community-license) page. You can find the applicable Business Source License or third party licenses by reviewing these in the `licenses` folder for the applicable version of CockroachDB in the GitHub repository [cockroachdb/cockroach](https://github.com/cockroachdb/cockroach). See individual files for details.
+
+In late 2024, Cockroach Labs retired its Core offering to consolidate on a single CockroachDB Enterprise offering under the CockroachDB Software License. This license is available at no charge for individual users and small businesses, and offers all users, free and paid, the full breadth of CockroachDB capabilities. For details, refer to the [CockroachDB licensing update](https://www.cockroachlabs.com/enterprise-license-update) and <a href="/docs/VERSION_PLACEHOLDER/licensing-faqs" data-versioned="true">Licensing FAQs</a>.
+
+## Next steps
+
+After choosing a version of CockroachDB, learn how to:
+
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/create-your-cluster" data-versioned="true">Create a cluster in CockroachDB Cloud</a>.
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/upgrade-cockroach-version" data-versioned="true">Upgrade a cluster in CockroachDB Cloud</a>.
+- <a href="/docs/VERSION_PLACEHOLDER/install-cockroachdb" data-versioned="true">Install CockroachDB self-hosted</a>
+- <a href="/docs/VERSION_PLACEHOLDER/upgrade-cockroach-version" data-versioned="true">Upgrade a Self-Hosted cluster</a>.
+
+Be sure to review Cockroach Labs' <a href="/docs/VERSION_PLACEHOLDER/releases/release-support-policy" data-versioned="true">Release Support Policy</a> and review information about applicable [software licenses](#licenses).

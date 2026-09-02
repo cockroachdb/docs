@@ -1,0 +1,631 @@
+---
+title: "cockroach start"
+old_description: "Start a new multi-node cluster or add nodes to an existing multi-node cluster."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+
+This page explains the `cockroach start` [command](/docs/v24.1/cockroach-commands), which you use to start a new multi-node cluster or add nodes to an existing cluster.
+
+<Tip>
+If you need a simple single-node backend for app development, use [`cockroach start-single-node`](/docs/v24.1/cockroach-start-single-node) instead, and follow the best practices for local testing described in [Test Your Application](/docs/v24.1/local-testing).
+
+For quick SQL testing, consider using [`cockroach demo`](/docs/v24.1/cockroach-demo) to start a temporary, in-memory cluster with immediate access to an interactive SQL shell.
+</Tip>
+
+<Note>
+Node-level settings are defined by [flags](#flags) passed to the `cockroach start` command and cannot be changed without stopping and restarting the node. In contrast, some cluster-wide settings are defined via SQL statements and can be updated anytime after a cluster has been started. For more details, see [Cluster Settings](/docs/v24.1/cluster-settings).
+</Note>
+
+## Synopsis
+
+Start a node to be part of a new multi-node cluster:
+
+```shell
+$ cockroach start <flags, including --join>
+```
+
+Initialize a new multi-node cluster:
+
+```shell
+$ cockroach init <flags>
+```
+
+Add a node to an existing cluster:
+
+```shell
+$ cockroach start <flags, including --join>
+```
+
+View help:
+
+```shell
+$ cockroach start --help
+```
+
+## Flags
+
+The `cockroach start` command supports the following [general-use](#general), [networking](#networking), [security](#security), and [logging](#logging) flags.
+
+Many flags have useful defaults that can be overridden by specifying the flags explicitly. If you specify flags explicitly, however, be sure to do so each time the node is restarted, as they will not be remembered. The one exception is the `--join` flag, which is stored in a node's data directory. We still recommend specifying the `--join` flag every time, as this will allow nodes to rejoin the cluster even if their data directory was destroyed.
+
+### General
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--attrs</code></td><td>Arbitrary strings, separated by colons, specifying node capability, which might include specialized hardware or number of cores, for example:<br/><br/><code>--attrs=ram:64gb</code><br/><br/>These can be used to influence the location of data replicas. See <a href="/docs/v24.1/configure-replication-zones#replication-constraints">Replication Controls</a> for full details.</td></tr><tr><td><code>--background</code></td><td>Runs the node in the background. Control is returned to the shell only once the node is ready to accept requests, so this is recommended over appending <code>&amp;</code> to the command. This flag is <strong>not</strong> available in Windows environments.<br/><br/><strong>Note:</strong><code>--background</code> is suitable for writing automated test suites or maintenance procedures that need a temporary server process running in the background. It is not intended to be used to start a long-running server, because it does not fully detach from the controlling terminal. Consider using a service manager or a tool like <a href="https://www.freebsd.org/cgi/man.cgi?query=daemon&amp;sektion=8">daemon(8)</a> instead. If you use <code>--background</code>, using <code>--pid-file</code> is also recommended. To gracefully stop the <code>cockroach</code> process, send the <code>SIGTERM</code> signal to the process ID in the PID file. To gracefully restart the process, send the <code>SIGHUP</code> signal.</td></tr><tr><td><code>--cache</code></td><td>The total size for the <a href="/docs/v24.1/architecture/storage-layer#pebble">Pebble storage engine</a> block cache, shared evenly if there are multiple storage devices. This can be a percentage (notated as a decimal or with <code>%</code>) or any bytes-based unit, for example:<br/><br/><code>--cache=.25</code><br/><code>--cache=25%</code><br/><code>--cache=1000000000 ----&gt; 1000000000 bytes</code><br/><code>--cache=1GB ----&gt; 1000000000 bytes</code><br/><code>--cache=1GiB ----&gt; 1073741824 bytes</code><br/><br/><strong>Note:</strong> If you use the <code>%</code> notation, you might need to escape the <code>%</code> sign when configuring CockroachDB through <code>systemd</code> service files. For this reason, it's recommended to use the decimal notation instead.<br/><br/><strong>Note:</strong> The sum of <code>--cache</code>, <code>--max-sql-memory</code>, and <code>--max-tsdb-memory</code> should not exceed 75% of the memory available to the <code>cockroach</code> process.<br/><br/><strong>Default:</strong><code>128 MiB</code><br/><br/>The default cache size is reasonable for local development clusters. For production deployments, set this to 25% or higher. Increasing the cache size generally improves the node's read performance.<br/><br/>The block cache holds uncompressed blocks of persisted <a href="/docs/v24.1/architecture/distribution-layer#overview">key-value data</a> in memory. If a read misses within the block cache, the storage engine reads the file via the operating system's page cache, which may hold the relevant block in-memory in its compressed form. Otherwise, the read is served from the storage device. The block cache fills to the configured size and is then recycled using a least-recently-used (LRU) policy.<br/><br/>Refer to <a href="/docs/v24.1/recommended-production-settings#cache-and-sql-memory-size">Recommended Production Settings</a> for more details. Production systems should always configure this setting.</td></tr><tr><td><code>--clock-device</code></td><td>Enable CockroachDB to use a <a href="https://www.kernel.org/doc/html/latest/driver-api/ptp">PTP hardware clock</a> when querying the current time. The value is a string that specifies the clock device to use. For example: <code>--clock-device=/dev/ptp0</code><br/><br/><strong>Note:</strong> This is supported on Linux only and may be needed in cases where the host clock is unreliable or prone to large jumps (e.g., when using vMotion).</td></tr><tr><td><code>--cluster-name</code></td><td><a></a> A string that specifies a cluster name. This is used together with <code>--join</code> to ensure that all newly created nodes join the intended cluster when you are running multiple clusters.<br/><br/><strong>Note:</strong> If this is set, <a href="/docs/v24.1/cockroach-init"><code>cockroach init</code></a>, <a href="/docs/v24.1/cockroach-node"><code>cockroach node decommission</code></a>, <a href="/docs/v24.1/cockroach-node"><code>cockroach node recommission</code></a>, and the <code>cockroach debug</code> commands must specify either <code>--cluster-name</code> or <code>--disable-cluster-name-verification</code> in order to work.</td></tr><tr><td><code>--disable-cluster-name-verification</code></td><td>On clusters for which a cluster name has been set, this flag paired with <code>--cluster-name</code> disables the cluster name check for the command. This is necessary on existing clusters, when setting a cluster name or changing the cluster name: Perform a rolling restart of all nodes and include both the new <code>--cluster-name</code> value and <code>--disable-cluster-name-verification</code>, then a second rolling restart with <code>--cluster-name</code> and without <code>--disable-cluster-name-verification</code>.</td></tr><tr><td><a></a><code>--external-io-dir</code></td><td>The path of the external IO directory with which the local file access paths are prefixed while performing backup and restore operations using local node directories or NFS drives. If set to <code>disabled</code>, backups and restores using local node directories and NFS drives, as well as <a href="/docs/v24.1/cockroach-nodelocal-upload"><code>cockroach nodelocal upload</code></a>, are disabled.<br/><br/><strong>Default:</strong><code>extern</code> subdirectory of the first configured <a href="#store"><code>store</code></a>.<br/><br/>To set the <code>--external-io-dir</code> flag to the locations you want to use without needing to restart nodes, create symlinks to the desired locations from within the <code>extern</code> directory.</td></tr><tr><td><code>--listening-url-file</code></td><td>The file to which the node's SQL connection URL will be written as soon as the node is ready to accept connections, in addition to being printed to the <a href="#standard-output">standard output</a>. When <code>--background</code> is used, this happens before the process detaches from the terminal.<br/><br/>This is particularly helpful in identifying the node's port when an unused port is assigned automatically (<code>--port=0</code>).</td></tr><tr><td><code>--locality</code></td><td>Arbitrary key-value pairs that describe the location of the node. Locality might include country, region, availability zone, etc. A <code>region</code> tier must be included in order to enable <a href="/docs/v24.1/multiregion-overview">multi-region capabilities</a>. For more details, see <a href="#locality">Locality</a> below.</td></tr><tr><td><code>--max-disk-temp-storage</code></td><td>The maximum on-disk storage capacity available to store temporary data for SQL queries that exceed the memory budget (see <code>--max-sql-memory</code>). This ensures that JOINs, sorts, and other memory-intensive SQL operations are able to spill intermediate results to disk. This can be a percentage (notated as a decimal or with <code>%</code>) or any bytes-based unit (e.g., <code>.25</code>, <code>25%</code>, <code>500GB</code>, <code>1TB</code>, <code>1TiB</code>).<br/><br/><strong>Note:</strong> If you use the <code>%</code> notation, you might need to escape the <code>%</code> sign, for instance, while configuring CockroachDB through <code>systemd</code> service files. For this reason, it's recommended to use the decimal notation instead. Also, if expressed as a percentage, this value is interpreted relative to the size of the first store. However, the temporary space usage is never counted towards any store usage; therefore, when setting this value, it's important to ensure that the size of this temporary storage plus the size of the first store doesn't exceed the capacity of the storage device.<br/><br/>The temporary files are located in the path specified by the <code>--temp-dir</code> flag, or in the subdirectory of the first store (see <code>--store</code>) by default.<br/><br/><strong>Default:</strong><code>32GiB</code></td></tr><tr><td><code>--max-go-memory</code></td><td>The maximum soft memory limit for the Go runtime, which influences the behavior of Go's garbage collection. Defaults to <code>--max-sql-memory x 2.25</code>, but cannot exceed 90% of the node's available RAM. To disable the soft memory limit, set <code>--max-go-memory</code> to <code>0</code> (not recommended).</td></tr><tr><td><a></a><code>--max-offset</code></td><td>The maximum allowed clock offset for the cluster. If observed clock offsets exceed this limit, servers will crash to minimize the likelihood of reading inconsistent data. Increasing this value will increase the time to recovery of failures as well as the frequency of uncertainty-based read restarts.<br/><br/>Nodes can run with different values for <code>--max-offset</code>, but only for the purpose of updating the setting across the cluster using a rolling upgrade.<br/><br/><strong>Default:</strong><code>500ms</code></td></tr><tr><td><code>--max-sql-memory</code></td><td>The maximum in-memory storage capacity available to store temporary data for SQL queries, including prepared queries and intermediate data rows during query execution. This can be a percentage (notated as a decimal or with <code>%</code>) or any bytes-based unit; for example:<br/><br/><code>--max-sql-memory=.25</code><br/><code>--max-sql-memory=25%</code><br/><code>--max-sql-memory=10000000000 ----&gt; 1000000000 bytes</code><br/><code>--max-sql-memory=1GB ----&gt; 1000000000 bytes</code><br/><code>--max-sql-memory=1GiB ----&gt; 1073741824 bytes</code><br/><br/>The temporary files are located in the path specified by the <code>--temp-dir</code> flag, or in the subdirectory of the first store (see <code>--store</code>) by default.<br/><br/><strong>Note:</strong> If you use the <code>%</code> notation, you might need to escape the <code>%</code> sign (for instance, while configuring CockroachDB through <code>systemd</code> service files). For this reason, it's recommended to use the decimal notation instead.<br/><br/><strong>Note:</strong> The sum of <code>--cache</code>, <code>--max-sql-memory</code>, and <code>--max-tsdb-memory</code> should not exceed 75% of the memory available to the <code>cockroach</code> process.<br/><br/><strong>Default:</strong><code>25%</code><br/><br/>The default SQL memory size is suitable for production deployments but can be raised to increase the number of simultaneous client connections the node allows as well as the node's capacity for in-memory processing of rows when using <code>ORDER BY</code>, <code>GROUP BY</code>, <code>DISTINCT</code>, joins, and window functions. For local development clusters with memory-intensive workloads, reduce this value to, for example, <code>128MiB</code> to prevent <a href="/docs/v24.1/cluster-setup-troubleshooting#out-of-memory-oom-crash">out-of-memory errors</a>.</td></tr><tr><td><a></a><code>--max-tsdb-memory</code></td><td>Maximum memory capacity available to store temporary data for use by the time-series database to display metrics in the <a href="/docs/v24.1/ui-overview">DB Console</a>. Consider raising this value if your cluster is comprised of a large number of nodes where individual nodes have very limited memory available (e.g., under <code>8 GiB</code>). Insufficient memory capacity for the time-series database can constrain the ability of the DB Console to process the time-series queries used to render metrics for the entire cluster. This capacity constraint does not affect SQL query execution. This flag accepts numbers interpreted as bytes, size suffixes (e.g., <code>1GB</code> and <code>1GiB</code>) or a percentage of physical memory (e.g., <code>0.01</code>).<br/><br/><strong>Note:</strong> The sum of <code>--cache</code>, <code>--max-sql-memory</code>, and <code>--max-tsdb-memory</code> should not exceed 75% of the memory available to the <code>cockroach</code> process.<br/><br/><strong>Default:</strong><code>0.01</code> (i.e., 1%) of physical memory or <code>64 MiB</code>, whichever is greater.</td></tr><tr><td><code>--pid-file</code></td><td>The file to which the node's process ID will be written as soon as the node is ready to accept connections. When <code>--background</code> is used, this happens before the process detaches from the terminal. When this flag is not set, the process ID is not written to file.</td></tr><tr><td><a></a><code>--store</code><br/><code>-s</code></td><td>The file path to a storage device and, optionally, store attributes and maximum size. When using multiple storage devices for a node, this flag must be specified separately for each device, for example:<br/><br/><code>--store=/mnt/ssd01 --store=/mnt/ssd02</code><br/><br/>For more details, see <a href="#store">Store</a> below.</td></tr><tr><td><code>--wal-failover</code><a></a></td><td>Used to configure <a href="#write-ahead-log-wal-failover">WAL failover</a> on <a href="/docs/v24.1/architecture/overview#node">nodes</a> with <a href="#store">multiple stores</a>. To enable WAL failover, pass <code>--wal-failover=among-stores</code>. To disable, pass <code>--wal-failover=disabled</code> on <a href="/docs/v24.1/node-shutdown#stop-and-restart-a-node">node restart</a>. This feature is in <a href="/docs/v24.1/cockroachdb-feature-availability#features-in-preview">preview</a>.</td></tr><tr><td><a></a><code>--spatial-libs</code></td><td>The location on disk where CockroachDB looks for <a href="/docs/v24.1/spatial-data-overview">spatial</a> libraries.<br/><br/><strong>Defaults:</strong><br/><br/>- <code>/usr/local/lib/cockroach</code><br/><br/>- A <code>lib</code> subdirectory of the CockroachDB binary's current directory.</td></tr><tr><td><code>--temp-dir</code><a></a></td><td>The path of the node's temporary store directory. On node start up, the location for the temporary files is printed to the standard output.<br/><br/><strong>Default:</strong> Subdirectory of the first <a href="#store">store</a></td></tr></tbody></table>
+
+### Networking
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--experimental-dns-srv</code></td><td>When this flag is included, the node will first attempt to fetch SRV records from DNS for every name specified with <code>--join</code>. If a valid SRV record is found, that information is used instead of regular DNS A/AAAA lookups. This feature is experimental and may be removed or modified in a later version.</td></tr><tr><td><code>--listen-addr</code></td><td>The IP address/hostname and port to listen on for connections from other nodes and clients. For IPv6, use the notation <code>&#91;...&#93;</code>, e.g., <code>&#91;::1&#93;</code> or <code>&#91;fe80::f6f2:::&#93;</code>.<br/><br/>This flag's effect depends on how it is used in combination with <code>--advertise-addr</code>. For example, the node will also advertise itself to other nodes using this value if <code>--advertise-addr</code> is not specified. For more details, see <a href="/docs/v24.1/recommended-production-settings#networking">Networking</a>.<br/><br/><strong>Default:</strong> Listen on all IP addresses on port <code>26257</code>; if <code>--advertise-addr</code> is not specified, also advertise the node's canonical hostname to other nodes</td></tr><tr><td><code>--advertise-addr</code></td><td><a></a> The IP address/hostname and port to tell other nodes to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation <code>&#91;...&#93;</code>, e.g., <code>&#91;::1&#93;</code> or <code>&#91;fe80::f6f2:::&#93;</code>.<br/><br/>This flag's effect depends on how it is used in combination with <code>--listen-addr</code>. For example, if the port number is different than the one used in <code>--listen-addr</code>, port forwarding is required. For more details, see <a href="/docs/v24.1/recommended-production-settings#networking">Networking</a>.<br/><br/><strong>Default:</strong> The value of <code>--listen-addr</code>; if <code>--listen-addr</code> is not specified, advertises the node's canonical hostname and port <code>26257</code></td></tr><tr><td><code>--advertise-http-addr</code></td><td>The IP address/hostname and port to advertise for DB Console HTTP requests when <a href="/docs/v24.1/ui-overview#proxy-db-console">proxying connections to the DB Console</a>. If omitted, the hostname is inherited from the operating system hostname or the hostname from <code>--advertise-addr</code>. If the port is omitted, it defaults to <code>8080</code> and is never inherited from <code>--advertise-addr</code>.</td></tr><tr><td><code>--http-addr</code></td><td><a></a> The IP address/hostname and port on which to listen for DB Console HTTP requests. For IPv6, use the notation <code>&#91;...&#93;</code>, e.g., <code>&#91;::1&#93;:8080</code> or <code>&#91;fe80::f6f2:::&#93;:8080</code>.<br/><br/><strong>Default:</strong> Listen on the address specified in <code>--listen-addr</code> and on port <code>8080</code></td></tr><tr><td><code>--locality-advertise-addr</code></td><td>The IP address/hostname and port to tell other nodes in specific localities to use to connect to this node. This flag is useful when running a cluster across multiple networks, where nodes in a given network have access to a private or local interface while nodes outside the network do not. In this case, you can use <code>--locality-advertise-addr</code> to tell nodes within the same network to prefer the private or local address to improve performance and use <code>--advertise-addr</code> to tell nodes outside the network to use another address that is reachable from them. However, <strong>do not</strong> include addresses or hostnames that do not resolve to this node, because this will cause connection failures when other nodes attempt to connect to this node.<br/><br/>This flag relies on nodes being started with the <a href="#locality"><code>--locality</code></a> flag and uses the <code>locality@address</code> notation, for example:<br/><br/><code>--locality-advertise-addr=region=us-west@10.0.0.0:26257</code><br/><br/>For more details, refer to the <a href="#start-a-multi-node-cluster-across-private-networks">Start a multi-node cluster across private networks</a> example.</td></tr><tr><td><code>--sql-addr</code></td><td><a></a> The IP address/hostname and port on which to listen for SQL connections from clients. For IPv6, use the notation <code>&#91;...&#93;</code>, e.g., <code>&#91;::1&#93;</code> or <code>&#91;fe80::f6f2:::&#93;</code>.<br/><br/>This flag's effect depends on how it is used in combination with <code>--advertise-sql-addr</code>. For example, the node will also advertise itself to clients using this value if <code>--advertise-sql-addr</code> is not specified.<br/><br/><strong>Default:</strong> The value of <code>--listen-addr</code>; if <code>--listen-addr</code> is not specified, advertises the node's canonical hostname and port <code>26257</code><br/><br/>For an example, see <a href="#start-a-cluster-with-separate-rpc-and-sql-networks">Start a cluster with separate RPC and SQL networks</a></td></tr><tr><td><code>--advertise-sql-addr</code></td><td>The IP address/hostname and port to tell clients to use. If using a hostname, it must be resolvable from all nodes. If using an IP address, it must be routable from all nodes; for IPv6, use the notation <code>&#91;...&#93;</code>, e.g., <code>&#91;::1&#93;</code> or <code>&#91;fe80::f6f2:::&#93;</code>.<br/><br/>This flag's effect depends on how it is used in combination with <code>--sql-addr</code>. For example, if the port number is different than the one used in <code>--sql-addr</code>, port forwarding is required.<br/><br/><strong>Default:</strong> The value of <code>--sql-addr</code>; if <code>--sql-addr</code> is not specified, advertises the value of <code>--listen-addr</code></td></tr><tr><td><code>--join</code><br/><code>-j</code></td><td>The host addresses that connect nodes to the cluster and distribute the rest of the node addresses. These can be IP addresses or DNS aliases of nodes.<br/><br/>When starting a cluster in a single region, specify the addresses of 3-5 initial nodes. When starting a cluster in multiple regions, specify more than 1 address per region, and select nodes that are spread across failure domains. Then run the <a href="/docs/v24.1/cockroach-init"><code>cockroach init</code></a> command against any of these nodes to complete cluster startup. See the <a href="#start-a-multi-node-cluster">example</a> below for more details.<br/><br/>Use the same <code>--join</code> list for all nodes to ensure that the cluster can stabilize. Do not list every node in the cluster, because this increases the time for a new cluster to stabilize. Note that these are best practices; it is not required to restart an existing node to update its <code>--join</code> flag.<br/><br/><code>cockroach start</code> must be run with the <code>--join</code> flag. To start a single-node cluster, use <code>cockroach start-single-node</code> instead.</td></tr><tr><td><code>--socket-dir</code></td><td>The directory path on which to listen for <a href="https://wikipedia.org/wiki/Unix_domain_socket">Unix domain socket</a> connections from clients installed on the same Unix-based machine. For an example, see <a href="/docs/v24.1/cockroach-sql#connect-to-a-cluster-listening-for-unix-domain-socket-connections">Connect to a cluster listening for Unix domain socket connections</a>.</td></tr><tr><td><code>--advertise-host</code></td><td><strong>Deprecated.</strong> Use <code>--advertise-addr</code> instead.</td></tr><tr><td><code>--host</code></td><td><strong>Deprecated.</strong> Use <code>--listen-addr</code> instead.</td></tr><tr><td><code>--port</code><br/><code>-p</code></td><td><strong>Deprecated.</strong> Specify port in <code>--advertise-addr</code> and/or <code>--listen-addr</code> instead.</td></tr><tr><td><code>--http-host</code></td><td><strong>Deprecated.</strong> Use <code>--http-addr</code> instead.</td></tr><tr><td><code>--http-port</code></td><td><strong>Deprecated.</strong> Specify port in <code>--http-addr</code> instead.</td></tr></tbody></table>
+
+### Security
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v24.1/cockroach-cert">certificate directory</a>. The directory must contain valid certificates if running in secure mode.<br/><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr><tr><td><code>--insecure</code></td><td><strong>Note:</strong> The <code>--insecure</code> flag is intended for <strong>non-production testing only</strong>.<br/><br/>Run in insecure mode, skipping all TLS encryption and authentication. If this flag is not set, the <code>--certs-dir</code> flag must point to valid certificates.<br/><br/><strong>Note the following risks:</strong> An insecure cluster is open to any client that can access any node's IP addresses; client connections must also be made insecurely; any user, even <code>root</code>, can log in without providing a password; any user, connecting as <code>root</code>, can read or write any data in your cluster; there is no network encryption or authentication, and thus no confidentiality.<br/><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--accept-sql-without-tls</code></td><td>This flag (in <a href="/docs/v24.1/cockroachdb-feature-availability">preview</a>) allows you to connect to the cluster using a SQL user's password without <a href="/docs/v24.1/authentication#client-authentication">validating the client's certificate</a>. When connecting using the built-in SQL client, <a href="/docs/v24.1/cockroach-sql#client-connection">use the <code>--insecure</code> flag with the <code>cockroach sql</code> command</a>.</td></tr><tr><td><code>--cert-principal-map</code><a></a></td><td>A comma-separated list of <code>cert-principal:db-principal</code> mappings used to map the certificate principals to IP addresses, DNS names, and SQL users. This allows the use of certificates generated by Certificate Authorities that place restrictions on the contents of the <code>commonName</code> field. For usage information, see <a href="/docs/v24.1/create-security-certificates-openssl#examples">Create Security Certificates using Openssl</a>.</td></tr><tr><td><code>--enterprise-encryption</code></td><td>This optional flag specifies the encryption options for one of the stores on the node. If multiple stores exist, the flag must be specified for each store.<br/><br/>This flag takes a number of options. For a complete list of options, and usage instructions, see <a href="/docs/v24.1/encryption">Encryption at Rest</a>.</td></tr><tr><td><a></a><code>--external-io-disable-http</code></td><td>This optional flag disables external HTTP(S) access (as well as custom HTTP(S) endpoints) when performing bulk operations (e.g, <a href="/docs/v24.1/backup"><code>BACKUP</code></a>). This can be used in environments where you cannot run a full proxy server.<br/><br/>If you want to run a proxy server, you can start CockroachDB while specifying the <code>HTTP(S)&#95;PROXY</code> environment variable.</td></tr><tr><td><code>--external-io-disable-implicit-credentials</code></td><td>This optional flag disables the use of implicit credentials when accessing external cloud storage services for bulk operations (e.g, <a href="/docs/v24.1/backup"><code>BACKUP</code></a>).</td></tr><tr><td><code>--node-cert-distinguished-name</code><a></a></td><td>A string with a comma separated list of distinguished name (DN) mappings in <code>&#123;attribute-type&#125;=&#123;attribute-value&#125;</code> format in accordance with <a href="https://www.rfc-editor.org/rfc/rfc4514">RFC4514</a> for the <a href="/docs/v24.1/security-reference/authorization#node-user"><code>node</code> user</a>. If this flag is set, this needs to be an exact match with the DN subject in the client certificate provided for the <code>node</code> user. By exact match, we mean that the order of attributes in the argument to this flag must match the order of attributes in the DN subject in the certificate. For more information, see <a href="/docs/v24.1/certificate-based-authentication-using-the-x509-subject-field">Certificate-based authentication using multiple values from the X.509 Subject field</a>.</td></tr><tr><td><code>--root-cert-distinguished-name</code><a></a></td><td>A string with a comma separated list of distinguished name (DN) mappings in <code>&#123;attribute-type&#125;=&#123;attribute-value&#125;</code> format in accordance with <a href="https://www.rfc-editor.org/rfc/rfc4514">RFC4514</a> for the <a href="/docs/v24.1/security-reference/authorization#root-user"><code>root</code> user</a>. If this flag is set, this needs to be an exact match with the DN subject in the client certificate provided for the <code>root</code> user. By exact match, we mean that the order of attributes in the argument to this flag must match the order of attributes in the DN subject in the certificate. For more information, see <a href="/docs/v24.1/certificate-based-authentication-using-the-x509-subject-field">Certificate-based authentication using multiple values from the X.509 Subject field</a>.</td></tr></tbody></table>
+
+### Locality
+
+The `--locality` flag accepts arbitrary key-value pairs that describe the location of the node. Locality should include a `region` key-value if you are using CockroachDB's [Multi-region SQL capabilities](/docs/v24.1/multiregion-overview).
+
+Depending on your deployment you can also specify country, availability zone, etc. The key-value pairs should be ordered into *locality tiers* from most inclusive to least inclusive (e.g., region before availability zone as in `region=eu-west-1,zone=eu-west-1a`), and the keys and order of key-value pairs must be the same on all nodes. It's typically better to include more pairs than fewer.
+
+- Specifying a region with a `region` tier is required in order to enable CockroachDB's [multi-region capabilities](/docs/v24.1/multiregion-overview).
+- CockroachDB spreads the replicas of each piece of data across as diverse a set of localities as possible, with the order determining the priority. Locality can also be used to influence the location of data replicas in various ways using high-level [multi-region SQL capabilities](/docs/v24.1/multiregion-overview) or low-level [replication zones](/docs/v24.1/configure-replication-zones#replication-constraints).
+- When there is high latency between nodes (e.g., cross-availability zone deployments), CockroachDB uses locality to move range leases closer to the current workload, reducing network round trips and improving read performance, also known as ["follow-the-workload"](/docs/v24.1/topology-follow-the-workload). In a deployment across more than 3 availability zones, however, to ensure that all data benefits from "follow-the-workload", you must increase your replication factor to match the total number of availability zones.
+- Locality is also a prerequisite for using the [Multi-region SQL abstractions](/docs/v24.1/multiregion-overview), [table partitioning](/docs/v24.1/partitioning), and [**Node Map**](/docs/v24.1/enable-node-map) Enterprise features.
+
+#### Example
+
+The following shell commands use the `--locality` flag to start 9 nodes to run across 3 regions: `us-east-1`, `us-west-1`, and `europe-west-1`. Each region's nodes are further spread across different availability zones within that region.
+
+<Note>
+This example follows the conventions required to use CockroachDB's [multi-region capabilities](/docs/v24.1/multiregion-overview).
+</Note>
+
+Nodes in `us-east-1`:
+
+```shell
+cockroach start --locality=region=us-east-1,zone=us-east-1a # ... other required flags go here
+```
+
+```shell
+cockroach start --locality=region=us-east-1,zone=us-east-1b # ... other required flags go here
+```
+
+```shell
+cockroach start --locality=region=us-east-1,zone=us-east-1c # ... other required flags go here
+```
+
+Nodes in `us-west-1`:
+
+```shell
+cockroach start --locality=region=us-west-1,zone=us-west-1a # ... other required flags go here
+```
+
+```shell
+cockroach start --locality=region=us-west-1,zone=us-west-1b # ... other required flags go here
+```
+
+```shell
+cockroach start --locality=region=us-west-1,zone=us-west-1c # ... other required flags go here
+```
+
+Nodes in `europe-west-1`:
+
+```shell
+cockroach start --locality=region=europe-west-1,zone=europe-west-1a # ... other required flags go here
+```
+
+```shell
+cockroach start --locality=region=europe-west-1,zone=europe-west-1b # ... other required flags go here
+```
+
+```shell
+cockroach start --locality=region=europe-west-1,zone=europe-west-1c # ... other required flags go here
+```
+
+For another multi-region example, see [Start a multi-region cluster](#start-a-multi-region-cluster).
+
+For more information about how to use CockroachDB's multi-region capabilities, see the [Multi-Region Capabilities Overview](/docs/v24.1/multiregion-overview).
+
+### Storage
+
+- [Storage engine](#storage-engine)
+- [Store](#store)
+- [Write Ahead Log (WAL) Failover](#write-ahead-log-wal-failover)
+
+#### Storage engine
+
+The `--storage-engine` flag is used to choose the storage engine used by the node. Note that this setting applies to all [stores](#store) on the node, including the [temp store](#temp-dir).
+
+As of v21.1 and later, CockroachDB always uses the [Pebble storage engine](/docs/v24.1/architecture/storage-layer#pebble). As such, `pebble` is the default and only option for the `--storage-engine` flag.
+
+#### Store
+
+The `--store` flag allows you to specify details about a node's storage.
+
+To start a node with multiple disks or SSDs, provide a separate `--store` flag for each disk when starting the `cockroach` process on the node. For more details about stores, see [Start a Node](/docs/v24.1/cockroach-start#store).
+
+<Warning>
+If you start a node with multiple `--store` flags, it is not possible to scale back down to only using a single store on the node. Instead, you must decommission the node and start a new node with the updated `--store`.
+</Warning>
+
+The `--store` flag supports the following fields. Note that commas are used to separate fields, and so are forbidden in all field values.
+
+<Note>
+In-memory storage is not suitable for production deployments at this time.
+</Note>
+
+<Tip>
+Use dedicated volumes for the CockroachDB [store](/docs/v24.1/cockroach-start#store). Do not share the store volume with any other I/O activity.
+</Tip>
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>type</code></td><td>For in-memory storage, set this field to <code>mem</code>; otherwise, leave this field out. The <code>path</code> field must not be set when <code>type=mem</code>.</td></tr><tr><td><code>path</code></td><td>The file path to the storage device. When not setting <code>attr</code>, <code>size</code>, or <code>ballast-size</code>, the <code>path</code> field label can be left out:<br/><br/><code>--store=/mnt/ssd01</code><br/><br/>When either of those fields are set, however, the <code>path</code> field label must be used:<br/><br/><code>--store=path=/mnt/ssd01,size=20GB</code><br/><br/><strong>Default:</strong><code>cockroach-data</code></td></tr><tr><td><code>attrs</code></td><td>Arbitrary strings, separated by colons, specifying disk type or capability. These can be used to influence the location of data replicas. See <a href="/docs/v24.1/configure-replication-zones#replication-constraints">Replication Controls</a> for full details.<br/><br/>In most cases, node-level <code>--locality</code> or <code>--attrs</code> are preferable to store-level attributes, but this field can be used to match capabilities for storage of individual databases or tables. For example, an OLTP database would probably want to allocate space for its tables only on solid state devices, whereas append-only time series might prefer cheaper spinning drives. Typical attributes include whether the store is flash (<code>ssd</code>) or spinny disk (<code>hdd</code>), as well as speeds and other specs, for example:<br/><br/><code>--store=path=/mnt/hda1,attrs=hdd:7200rpm</code></td></tr><tr><td><a></a><code>size</code></td><td>The maximum size allocated to the node. When this size is reached, CockroachDB attempts to rebalance data to other nodes with available capacity. When no other nodes have available capacity, this limit will be exceeded. Data may also be written to the node faster than the cluster can rebalance it away; as long as capacity is available elsewhere, CockroachDB will gradually rebalance data down to the store limit.<br/><br/>The <code>size</code> can be specified either in a bytes-based unit or as a percentage of hard drive space (notated as a decimal or with <code>%</code>), for example:<br/><br/><code>--store=path=/mnt/ssd01,size=10000000000 ----&gt; 10000000000 bytes</code><br/><code>--store=path=/mnt/ssd01,size=20GB ----&gt; 20000000000 bytes</code><br/><code>--store=path=/mnt/ssd01,size=20GiB ----&gt; 21474836480 bytes</code><br/><code>--store=path=/mnt/ssd01,size=0.02TiB ----&gt; 21474836480 bytes</code><br/><code>--store=path=/mnt/ssd01,size=20% ----&gt; 20% of available space</code><br/><code>--store=path=/mnt/ssd01,size=0.2 ----&gt; 20% of available space</code><br/><code>--store=path=/mnt/ssd01,size=.2 ----&gt; 20% of available space</code><br/><br/><strong>Default:</strong> 100%<br/><br/>For an in-memory store, the <code>size</code> field is required and must be set to the true maximum bytes or percentage of available memory, for example:<br/><br/><code>--store=type=mem,size=20GB</code><br/><code>--store=type=mem,size=90%</code><br/><br/><strong>Note:</strong> If you use the <code>%</code> notation, you might need to escape the <code>%</code> sign, for instance, while configuring CockroachDB through <code>systemd</code> service files. For this reason, it's recommended to use the decimal notation instead.</td></tr><tr><td><a></a><code>ballast-size</code></td><td>Configure the size of the automatically created emergency ballast file. Accepts the same value formats as the <a href="#store-size"><code>size</code> field</a>. For more details, see <a href="/docs/v24.1/cluster-setup-troubleshooting#automatic-ballast-files">Automatic ballast files</a>.<br/><br/>To disable automatic ballast file creation, set the value to <code>0</code>:<br/><br/><code>--store=path=/mnt/ssd01,ballast-size=0</code></td></tr><tr><td><a></a><code>provisioned-rate</code></td><td>A mapping of a store name to a bandwidth limit, expressed in bytes per second. This constrains the bandwidth used for <a href="/docs/v24.1/admission-control">admission control</a> for operations on the store. The disk name is separated from the bandwidth value by a colon (<code>:</code>). A value of <code>0</code> (the default) represents unlimited bandwidth. For example:<br/><br/><code>--store=provisioned-rate=disk-name=/mnt/ssd01:200</code><br/><br/><strong>Default:</strong> 0<br/><br/>If the bandwidth value is omitted, bandwidth is limited to the value of the <a href="/docs/v24.1/cluster-settings#settings"><code>kv.store.admission.provisioned&#95;bandwidth</code> cluster setting</a>. <strong>Modify this setting only in consultation with your <a href="https://support.cockroachlabs.com/hc">support team</a>.</strong></td></tr></tbody></table>
+
+#### Write Ahead Log (WAL) Failover
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v24.1: On a CockroachDB [node](/docs/v24.1/architecture/overview#node) with [multiple stores](/docs/v24.1/cockroach-start#store), you can mitigate some effects of [disk stalls](/docs/v24.1/cluster-setup-troubleshooting#disk-stalls) by configuring the node to failover each store's [write-ahead log (WAL)](/docs/v24.1/architecture/storage-layer#memtable-and-write-ahead-log) to another store's data directory using the `--wal-failover` flag to [`cockroach start`](/docs/v24.1/cockroach-start#enable-wal-failover) or the `COCKROACH_WAL_FAILOVER` environment variable.
+
+Failing over the WAL may allow some operations against a store to continue to complete despite temporary unavailability of the underlying storage. For example, if the node's primary store is stalled, and the node can't read from or write to it, the node can still write to the WAL on another store. This can allow the node to continue to service requests during momentary unavailability of the underlying storage device.
+
+When WAL failover is enabled, CockroachDB does the following:
+
+- Pairs each primary store with a secondary failover store at node startup.
+- Monitors latency of all write operations against the primary WAL. If any operation exceeds the duration of [`storage.wal_failover.unhealthy_op_threshold`](/docs/v24.1/cluster-settings#setting-storage-wal-failover-unhealthy-op-threshold), the node redirects new WAL writes to the secondary store.
+- Checks the primary store while failed over by performing a set of filesystem operations against a small internal "probe file" on its volume. This file contains no user data and exists only when WAL failover is enabled.
+- Switches back to the primary store once the set of filesystem operations against the probe file on its volume starts consuming less than a latency threshold (order of tens of milliseconds). If a probe `fsync` blocks longer than [`COCKROACH_ENGINE_MAX_SYNC_DURATION_DEFAULT`](/docs/v24.1/wal-failover#important-environment-variables), CockroachDB emits a log like: `disk stall detected: sync on file probe-file has been ongoing for 40.0s` and, if the stall persists, the node exits (fatals) to [shed leases](/docs/v24.1/architecture/replication-layer#how-leases-are-transferred-from-a-dead-node) and allow recovery elsewhere.
+- Exposes status at [`/_status/stores`](/docs/v24.1/monitoring-and-alerting#store-status-endpoint) so you can monitor each store's health and failover state.
+
+<Note>
+- WAL failover only relocates the WAL. Data files remain on the primary volume. Reads that miss the Pebble block cache and the OS page cache can still stall if the primary disk is stalled. Caches typically limit blast radius, but some reads may see elevated latency.
+</Note>
+
+<Note>
+**This feature is in [preview](/docs/v24.1/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+This page has basic instructions on how to enable WAL failover, disable WAL failover, and monitor WAL failover.
+
+For more detailed instructions showing how to use, test, and monitor WAL failover, as well as descriptions of how WAL failover works in multi-store configurations, see [WAL Failover](/docs/v24.1/wal-failover).
+
+##### Enable WAL failover
+
+To enable WAL failover, you must take one of the following actions:
+
+- Pass [`--wal-failover=among-stores`](#flag-wal-failover) to `cockroach start`, or
+- Set the environment variable `COCKROACH_WAL_FAILOVER=among-stores` before starting the node.
+
+[Writing log files to local disk](/docs/v24.1/configure-logs#output-to-files) using the default configuration can lead to cluster instability in the event of a [disk stall](/docs/v24.1/cluster-setup-troubleshooting#disk-stalls). It's not enough to failover your WAL writes to another disk: you must also write your log files in such a way that the forward progress of your cluster is not stalled due to disk unavailability.
+
+Therefore, if you enable WAL failover and log to local disks, you must also update your [logging](/docs/v24.1/logging-overview) configuration as follows:
+
+1. Disable [audit logging](/docs/v24.1/sql-audit-logging). File-based audit logging cannot coexist with the WAL failover feature. File-based audit logging provides guarantees that every log message makes it to disk, or CockroachDB must be shut down. For this reason, resuming operations in the face of disk unavailability is not compatible with audit logging.
+2. Enable asynchronous buffering of [`file-groups` log sinks](/docs/v24.1/configure-logs#output-to-files) using the `buffering` configuration option. The `buffering` configuration can be applied to [`file-defaults`](/docs/v24.1/configure-logs#configure-logging-defaults) or individual `file-groups` as needed. Note that enabling asynchronous buffering of `file-groups` log sinks is in [preview](/docs/v24.1/cockroachdb-feature-availability#features-in-preview).
+3. Set `max-staleness: 1s` and `flush-trigger-size: 256KiB`.
+4. When `buffering` is enabled, `buffered-writes` must be explicitly disabled as shown in the following example. This is necessary because `buffered-writes` does not provide true asynchronous disk access, but rather a small buffer. If the small buffer fills up, it can cause internal routines performing logging operations to hang. This will in turn cause internal routines doing other important work to hang, potentially affecting cluster stability.
+5. The recommended logging configuration for using file-based logging with WAL failover is as follows:
+
+```yaml
+file-defaults:
+ buffered-writes: false
+ auditable: false
+ buffering:
+   max-staleness: 1s
+   flush-trigger-size: 256KiB
+   max-buffer-size: 50MiB
+```
+
+As an alternative to logging to local disks, you can configure [remote log sinks](/docs/v24.1/logging-use-cases#network-logging) that are not correlated with the availability of your cluster's local disks. However, this will make troubleshooting using [`cockroach debug zip`](/docs/v24.1/cockroach-debug-zip) more difficult, since the output of that command will not include the (remotely stored) log files.
+
+##### Disable WAL failover
+
+To disable WAL failover, you must [restart the node](/docs/v24.1/node-shutdown#stop-and-restart-a-node) and either:
+
+- Pass the [`--wal-failover=disabled`](#flag-wal-failover) flag to `cockroach start`, or
+- Set the environment variable `COCKROACH_WAL_FAILOVER=disabled` before restarting the node.
+
+##### Monitor WAL failover
+
+You can monitor WAL failover occurrences using the following metrics:
+
+- `storage.wal.failover.secondary.duration`: Cumulative time spent (in nanoseconds) writing to the secondary WAL directory. Only populated when WAL failover is configured.
+- `storage.wal.failover.primary.duration`: Cumulative time spent (in nanoseconds) writing to the primary WAL directory. Only populated when WAL failover is configured.
+- `storage.wal.failover.switch.count`: Count of the number of times WAL writing has switched from primary to secondary store, and vice versa.
+- `storage.wal.fsync.latency` monitors the latencies of WAL files. If you have WAL failover enabled and are failing over, `storage.wal.fsync.latency` will include the latency of the stalled primary.
+- `storage.wal.failover.write_and_sync.latency`: When WAL failover is configured in a cluster, the operator should monitor this metric which shows the effective latency observed by the higher layer writing to the WAL. This metric is expected to stay low in a healthy system, regardless of whether WAL files are being written to the primary or secondary.
+
+The `storage.wal.failover.secondary.duration` is the primary metric to monitor. You should expect this metric to be `0` unless a WAL failover occurs. If a WAL failover occurs, the rate at which it increases provides an indication of the health of the primary store.
+
+You can access these metrics via the following methods:
+
+- The [**Custom Chart** debug page](/docs/v24.1/ui-custom-chart-debug-page) in [DB Console](/docs/v24.1/ui-custom-chart-debug-page).
+- By [monitoring CockroachDB with Prometheus](/docs/v24.1/monitor-cockroachdb-with-prometheus).
+
+For more information, refer to [Essential storage metrics](/docs/v24.1/essential-metrics-self-hosted#storage)
+
+### Logging
+
+By [default](/docs/v24.1/configure-logs#default-logging-configuration), `cockroach start` writes all messages to log files, and prints nothing to `stderr`. This includes events with `INFO` [severity](/docs/v24.1/logging#logging-levels-severities) and higher. However, you can [customize the logging behavior](/docs/v24.1/configure-logs) of this command by using the `--log` flag:
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--log</code></td><td>Configure logging parameters by specifying a YAML payload. For details, see <a href="/docs/v24.1/configure-logs#flag">Configure logs</a>. If a YAML configuration is not specified, the <a href="/docs/v24.1/configure-logs#default-logging-configuration">default configuration</a> is used.<br/><br/><code>--log-config-file</code> can also be used.<br/><br/><strong>Note:</strong> The logging flags below cannot be combined with <code>--log</code>, but can be defined instead in the YAML payload.</td></tr><tr><td><code>--log-config-file</code></td><td>Configure logging parameters by specifying a path to a YAML file. For details, see <a href="/docs/v24.1/configure-logs#flag">Configure logs</a>. If a YAML configuration is not specified, the <a href="/docs/v24.1/configure-logs#default-logging-configuration">default configuration</a> is used.<br/><br/><code>--log</code> can also be used.<br/><br/><strong>Note:</strong> The logging flags below cannot be combined with <code>--log-config-file</code>, but can be defined instead in the YAML file.</td></tr><tr><td><code>--log-dir</code></td><td>An alias for the <a href="/docs/v24.1/configure-logs#flag"><code>--log</code></a> flag, for configuring the log directory where log files are stored and written to. Specifically, <code>--log-dir=XXX</code> is an alias for <code>--log='file-defaults: &#123;dir: XXX&#125;'</code>.<br/><br/>Setting <code>--log-dir</code> to a blank directory (<code>--log-dir=</code>) disables logging to files. Do not use <code>--log-dir=""</code>; this creates a new directory named <code>""</code> and stores log files in that directory.</td></tr><tr><td><code>--log-group-max-size</code></td><td>An alias for the <a href="/docs/v24.1/configure-logs#flag"><code>--log</code></a> flag, for configuring the maximum size for a logging group (for example, <code>cockroach</code>, <code>cockroach-sql-audit</code>, <code>cockroach-auth</code>, <code>cockroach-sql-exec</code>, <code>cockroach-pebble</code>), after which the oldest log file is deleted. <code>--log-group-max-size=XXX</code> is an alias for <code>--log='file-defaults: &#123;max-group-size: XXX&#125;'</code>. Accepts a valid file size, such as <code>--log-group-max-size=1GiB</code>.<br/><br/><strong>Default:</strong><code>100MiB</code></td></tr><tr><td><code>--log-file-max-size</code></td><td>An alias for <a href="/docs/v24.1/configure-logs#flag"><code>--log</code></a>, used to specify the maximum size that a log file can grow before a new log file is created. <code>--log-file-max-size=XXX</code> is an alias for <code>--log='file-defaults: &#123;max-file-size: XXX&#125;'</code>. Accepts a valid file size, such as <code>--log-file-max-size=2MiB</code>. <strong>Requires</strong> logging to files.<br/><br/><strong>Default:</strong><code>10MiB</code></td></tr><tr><td><code>--log-file-verbosity</code></td><td>An alias for <a href="/docs/v24.1/configure-logs#flag"><code>--log</code></a>, used to specify the minimum <a href="/docs/v24.1/logging#logging-levels-severities">severity level</a> of messages that are logged. <code>--log-file-verbosity=XXX</code> is an alias for <code>--log='file-defaults: &#123;filter: XXX&#125;'</code>. When a severity is specified, such as <code>--log-file-verbosity=WARNING</code>, log messages that are below the specified severity level are not written to the target log file. <strong>Requires</strong> logging to files.<br/><br/><strong>Default:</strong><code>INFO</code></td></tr><tr><td><code>--logtostderr</code></td><td>An alias for <a href="/docs/v24.1/configure-logs#flag"><code>--log</code></a>, to optionally output log messages at or above the configured <a href="/docs/v24.1/logging#logging-levels-severities">severity level</a> to the <code>stderr</code> sink. <code>--logtostderr=XXX</code> is an alias for <code>--log='sinks: &#123;stderr: &#123;filter: XXX&#125;&#125;'</code>. Accepts a valid <a href="/docs/v24.1/logging#logging-levels-severities">severity level</a>. If no value is specified, by default messages related to server commands are logged to <code>stderr</code> at <code>INFO</code> severity and above, and messages related to client commands are logged to <code>stderr</code> at <code>WARNING</code> severity and above.<br/><br/>Setting <code>--logtostderr=NONE</code> disables logging to <code>stderr</code>.<br/><br/><strong>Default:</strong><code>UNKNOWN</code></td></tr><tr><td><code>--no-color</code></td><td>An alias for <a href="/docs/v24.1/configure-logs#flag"><code>--log</code></a> flag, used to control whether log output to the <code>stderr</code> sinc is colorized. <code>--no-color=XXX</code> is an alias for <code>--log='sinks: &#123;stderr: &#123;no-color: XXX&#125;&#125;'</code>. Accepts either <code>true</code> or <code>false</code>.<br/><br/>When set to <code>false</code>, messages logged to <code>stderr</code> are colorized based on <a href="/docs/v24.1/logging#logging-levels-severities">severity level</a>.<br/><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--redactable-logs</code></td><td>An alias for <a href="/docs/v24.1/configure-logs#flag"><code>--log</code></a> flag, used to whether <a href="/docs/v24.1/configure-logs#redact-logs">redaction markers</a> are used in place of secret or sensitive information in log messages. <code>--redactable-logs=XXX</code> is an alias for <code>--log='file-defaults: &#123;redactable: XXX&#125;'</code>. Accepts <code>true</code> or <code>false</code>.<br/><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--sql-audit-dir</code></td><td>An alias for <a href="/docs/v24.1/configure-logs#flag"><code>--log</code></a>, used to optionally confine log output of the <code>SENSITIVE&#95;ACCESS</code><a href="/docs/v24.1/logging-overview#logging-channels">logging channel</a> to a separate directory. <code>--sql-audit-dir=XXX</code> is an alias for <code>--log='sinks: &#123;file-groups: &#123;sql-audit: &#123;channels: SENSITIVE&#95;ACCESS, dir: ...&#125;&#125;&#125;'</code>.<br/><br/>Enabling <code>SENSITIVE&#95;ACCESS</code> logs can negatively impact performance. As a result, we recommend using the <code>SENSITIVE&#95;ACCESS</code> channel for security purposes only. For more information, refer to <a href="/docs/v24.1/logging-use-cases#security-and-audit-monitoring">Security and Audit Monitoring</a>.</td></tr></tbody></table>
+
+#### Defaults
+
+See the [default logging configuration](/docs/v24.1/configure-logs#default-logging-configuration).
+
+## Standard output
+
+When you run `cockroach start`, some helpful details are printed to the standard output:
+
+```shell
+CockroachDB node starting at 
+build:               CCL v24.1.26 @ 2026-02-19 00:00:00 (go1.12.6)
+webui:               http://localhost:8080
+sql:                 postgresql://root@localhost:26257?sslmode=disable
+sql (JDBC):          jdbc:postgresql://localhost:26257/defaultdb?sslmode=disable&user=root
+RPC client flags:    cockroach <client cmd> --host=localhost:26257 --insecure
+logs:                /Users/<username>/node1/logs
+temp dir:            /Users/<username>/node1/cockroach-temp242232154
+external I/O path:   /Users/<username>/node1/extern
+store[0]:            path=/Users/<username>/node1
+status:              initialized new cluster
+clusterID:           8a681a16-9623-4fc1-a537-77e9255daafd
+nodeID:              1
+```
+
+<Tip>
+These details are also written to the `INFO` log in the `/logs` directory. You can retrieve them with a command like `grep 'node starting' node1/logs/cockroach.log -A 11`.
+</Tip>
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>build</code></td><td>The version of CockroachDB you are running.</td></tr><tr><td><code>webui</code></td><td>The URL for accessing the DB Console.</td></tr><tr><td><code>sql</code></td><td>The connection URL for your client.</td></tr><tr><td><code>RPC client flags</code></td><td>The flags to use when connecting to the node via <a href="/docs/v24.1/cockroach-commands"><code>cockroach</code> client commands</a>.</td></tr><tr><td><code>logs</code></td><td>The directory containing debug log data.</td></tr><tr><td><code>temp dir</code></td><td>The temporary store directory of the node.</td></tr><tr><td><code>external I/O path</code></td><td>The external IO directory with which the local file access paths are prefixed while performing <a href="/docs/v24.1/backup">backup</a> and <a href="/docs/v24.1/restore">restore</a> operations using local node directories or NFS drives.</td></tr><tr><td><code>attrs</code></td><td>If node-level attributes were specified in the <code>--attrs</code> flag, they are listed in this field. These details are potentially useful for <a href="/docs/v24.1/configure-replication-zones">configuring replication zones</a>.</td></tr><tr><td><code>locality</code></td><td>If values describing the locality of the node were specified in the <code>--locality</code> field, they are listed in this field. These details are potentially useful for <a href="/docs/v24.1/configure-replication-zones">configuring replication zones</a>.</td></tr><tr><td><code>store&#91;n&#93;</code></td><td>The directory containing store data, where <code>&#91;n&#93;</code> is the index of the store, e.g., <code>store&#91;0&#93;</code> for the first store, <code>store&#91;1&#93;</code> for the second store.<br/><br/>If store-level attributes were specified in the <code>attrs</code> field of the <a href="#store"><code>--store</code></a> flag, they are listed in this field as well. These details are potentially useful for <a href="/docs/v24.1/configure-replication-zones">configuring replication zones</a>.</td></tr><tr><td><code>status</code></td><td>Whether the node is the first in the cluster (<code>initialized new cluster</code>), joined an existing cluster for the first time (<code>initialized new node, joined pre-existing cluster</code>), or rejoined an existing cluster (<code>restarted pre-existing node</code>).</td></tr><tr><td><code>clusterID</code></td><td>The ID of the cluster.<br/><br/>When trying to join a node to an existing cluster, if this ID is different than the ID of the existing cluster, the node has started a new cluster. This may be due to conflicting information in the node's data directory. For additional guidance, see the <a href="/docs/v24.1/common-errors#node-belongs-to-cluster-cluster-id-but-is-attempting-to-connect-to-a-gossip-network-for-cluster-another-cluster-id">troubleshooting</a> docs.</td></tr><tr><td><code>nodeID</code></td><td>The ID of the node.</td></tr></tbody></table>
+
+## Examples
+
+### Start a multi-node cluster
+
+<Tabs>
+<Tab title="Secure">
+
+To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addresses of the initial nodes.
+
+For a cluster in a single region, set 3-5 `--join` addresses. Each starting node will attempt to contact one of the join hosts. In case a join host cannot be reached, the node will try another address on the list until it can join the gossip network.
+
+<Note>
+When starting a multi-region cluster, set more than one `--join` address per region, and select nodes that are spread across failure domains. This ensures [high availability](/docs/v24.1/architecture/replication-layer#overview).
+</Note>
+
+<Tip>
+Before starting the cluster, use [`cockroach cert`](/docs/v24.1/cockroach-cert) to generate node and client certificates for a secure cluster connection.
+</Tip>
+
+```shell
+$ cockroach start \
+--certs-dir=certs \
+--advertise-addr=<node1 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
+--cache=.25 \
+--max-sql-memory=.25
+```
+
+```shell
+$ cockroach start \
+--certs-dir=certs \
+--advertise-addr=<node2 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
+--cache=.25 \
+--max-sql-memory=.25
+```
+
+```shell
+$ cockroach start \
+--certs-dir=certs \
+--advertise-addr=<node3 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
+--cache=.25 \
+--max-sql-memory=.25
+```
+
+Then run the [`cockroach init`](/docs/v24.1/cockroach-init) command against any node to perform a one-time cluster initialization:
+
+```shell
+$ cockroach init \
+--certs-dir=certs \
+--host=<address of any node>
+```
+
+</Tab>
+<Tab title="Insecure">
+
+To start a multi-node cluster, run the `cockroach start` command for each node, setting the `--join` flag to the addresses of the initial nodes.
+
+For a cluster in a single region, set 3-5 `--join` addresses. Each starting node will attempt to contact one of the join hosts. In case a join host cannot be reached, the node will try another address on the list until it can join the gossip network.
+
+<Note>
+When starting a multi-region cluster, set more than one `--join` address per region, and select nodes that are spread across failure domains. This ensures [high availability](/docs/v24.1/architecture/replication-layer#overview).
+</Note>
+
+```shell
+$ cockroach start \
+--insecure \
+--advertise-addr=<node1 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
+--cache=.25 \
+--max-sql-memory=.25
+```
+
+```shell
+$ cockroach start \
+--insecure \
+--advertise-addr=<node2 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
+--cache=.25 \
+--max-sql-memory=.25
+```
+
+```shell
+$ cockroach start \
+--insecure \
+--advertise-addr=<node3 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
+--cache=.25 \
+--max-sql-memory=.25
+```
+
+Then run the [`cockroach init`](/docs/v24.1/cockroach-init) command against any node to perform a one-time cluster initialization:
+
+```shell
+$ cockroach init \
+--insecure \
+--host=<address of any node>
+```
+
+</Tab>
+</Tabs>
+
+### Start a multi-region cluster
+
+In this example we will start a multi-node [local cluster](/docs/v24.1/start-a-local-cluster) with a multi-region setup that uses the same regions (passed to the [`--locality`](#locality) flag) as the [multi-region MovR demo application](/docs/v24.1/demo-low-latency-multi-region-deployment).
+
+1. Start a node in the `us-east1` region:
+
+    ```shell
+    cockroach start --locality=region=us-east1,zone=us-east-1a \
+                      --insecure --store=/tmp/node0 \
+                      --listen-addr=localhost:26257 \
+                      --http-port=8888 \
+                      --join=localhost:26257,localhost:26258,localhost:26259
+    ```
+2. Start a node in the `us-west1` region:
+
+    ```shell
+    cockroach start --locality=region=us-west1,zone=us-west-1a \
+                      --insecure \
+                      --store=/tmp/node2 \
+                      --listen-addr=localhost:26259 \
+                      --http-port=8890 \
+                      --join=localhost:26257,localhost:26258,localhost:26259
+    ```
+3. Start a node in the `europe-west1` region:
+
+    ```shell
+    cockroach start --locality=region=europe-west1,zone=europe-west-1a \
+                      --insecure \
+                      --store=/tmp/node1 \
+                      --listen-addr=localhost:26258 \
+                      --http-port=8889 \
+                      --join=localhost:26257,localhost:26258,localhost:26259
+    ```
+4. Initialize the cluster:
+
+    ```shell
+    cockroach init --insecure --host=localhost --port=26257
+    ```
+5. Connect to the cluster using [`cockroach sql`](/docs/v24.1/cockroach-sql):
+
+    ```shell
+    cockroach sql --host=localhost --port=26257 --insecure
+    ```
+6. Issue the [`SHOW REGIONS`](/docs/v24.1/show-regions) statement to verify that the list of regions is expected:
+
+    ```sql
+    SHOW REGIONS;
+    ```
+
+    ```text
+        region    | zones | database_names | primary_region_of
+    ---------------+-------+----------------+--------------------
+      europe-west1 | {}    | {}             | {}
+      us-east1     | {}    | {}             | {}
+      us-west1     | {}    | {}             | {}
+    (3 rows)
+    ```
+
+For more information about running CockroachDB multi-region, see the [Multi-region Capabilities Overview](/docs/v24.1/multiregion-overview).
+
+For a more advanced example showing how to run a simulated workload on a multi-region CockroachDB cluster on your local machine, see [Low Latency Reads and Writes in a Multi-Region Cluster](/docs/v24.1/demo-low-latency-multi-region-deployment).
+
+<Note>
+For more information about the `--locality` flag, see [Locality](#locality).
+</Note>
+
+### Start a multi-node cluster across private networks
+
+**Scenario:**
+
+- You have a cluster that spans GCE and AWS.
+- The nodes on each cloud can reach each other on public addresses, but the private addresses aren't reachable from the other cloud.
+
+**Approach:**
+
+1. Start each node on GCE with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes in on GCE, `--advertise-addr` set to advertise its public address to nodes on AWS, and `--join` set to the public addresses of 3-5 of the initial nodes:
+
+    ```shell
+    $ cockroach start \
+    --certs-dir=certs \
+    --locality=cloud=gce \
+    --locality-advertise-addr=cloud=gce@<private address of node> \
+    --advertise-addr=<public address of node> \
+    --join=<public address of node1>,<public address of node2>,<public address of node3> \
+    --cache=.25 \
+    --max-sql-memory=.25
+    ```
+2. Start each node on AWS with `--locality` set to describe its location, `--locality-advertise-addr` set to advertise its private address to other nodes on AWS, `--advertise-addr` set to advertise its public address to nodes on GCE, and `--join` set to the public addresses of 3-5 of the initial nodes:
+
+    ```shell
+    $ cockroach start \
+    --certs-dir=certs \
+    --locality=cloud=aws \
+    --locality-advertise-addr=cloud=aws@<private address of node> \
+    --advertise-addr=<public address of node> \
+    --join=<public address of node1>,<public address of node2>,<public address of node3> \
+    --cache=.25 \
+    --max-sql-memory=.25
+    ```
+3. Run the [`cockroach init`](/docs/v24.1/cockroach-init) command against any node to perform a one-time cluster initialization:
+
+    ```shell
+    $ cockroach init \
+    --certs-dir=certs \
+    --host=<address of any node>
+    ```
+
+### Add a node to a cluster
+
+<Tabs>
+<Tab title="Secure">
+
+To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the same addresses you used when [starting the cluster](#start-a-multi-node-cluster):
+
+```shell
+$ cockroach start \
+--certs-dir=certs \
+--advertise-addr=<node4 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
+--cache=.25 \
+--max-sql-memory=.25
+```
+
+</Tab>
+<Tab title="Insecure">
+
+To add a node to an existing cluster, run the `cockroach start` command, setting the `--join` flag to the same addresses you used when [starting the cluster](#start-a-multi-node-cluster):
+
+```shell
+$ cockroach start \
+--insecure \
+--advertise-addr=<node4 address> \
+--join=<node1 address>,<node2 address>,<node3 address> \
+--cache=.25 \
+--max-sql-memory=.25
+```
+
+</Tab>
+</Tabs>
+
+### Create a table with node locality information
+
+Start a three-node cluster with locality information specified in the `cockroach start` commands:
+
+```shell
+$ cockroach start --insecure --port=26257 --http-port=26258 --store=cockroach-data/1 --cache=256MiB --locality=region=eu-west-1,cloud=aws,zone=eu-west-1a
+```
+
+```shell
+$ cockroach start --insecure --port=26259 --http-port=26260 --store=cockroach-data/2 --cache=256MiB --join=localhost:26257 --locality=region=eu-west-1,cloud=aws,zone=eu-west-1b
+```
+
+```shell
+$ cockroach start --insecure --port=26261 --http-port=26262 --store=cockroach-data/3 --cache=256MiB --join=localhost:26257 --locality=region=eu-west-1,cloud=aws,zone=eu-west-1c
+```
+
+You can use the [`crdb_internal.locality_value`](/docs/v24.1/functions-and-operators#system-info-functions) built-in function to return the current node's locality information from inside a SQL shell. The example below uses the output of `crdb_internal.locality_value('zone')` as the `DEFAULT` value to use for the `zone` column of new rows. Other available locality keys for the running three-node cluster include `region` and `cloud`.
+
+```shell
+$ cockroach sql --insecure
+```
+
+```sql
+> CREATE TABLE charges (
+  zone STRING NOT NULL DEFAULT crdb_internal.locality_value('zone'),
+  id INT PRIMARY KEY NOT NULL
+);
+```
+
+```sql
+> INSERT INTO charges (id) VALUES (1);
+```
+
+```sql
+> SELECT * FROM charges WHERE id = 1;
+```
+
+```text
+     zone    | id
++------------+----+
+  eu-west-1a |  1
+(1 row)
+```
+
+The `zone` column has the zone of the node on which the row was created.
+
+In a separate terminal window, open a SQL shell to a different node on the cluster:
+
+```shell
+$ cockroach sql --insecure --port 26259
+```
+
+```sql
+> INSERT INTO charges (id) VALUES (2);
+```
+
+```sql
+> SELECT * FROM charges WHERE id = 2;
+```
+
+```text
+     zone    | id
++------------+----+
+  eu-west-1b |  2
+(1 row)
+```
+
+In a separate terminal window, open a SQL shell to the third node:
+
+```shell
+$ cockroach sql --insecure --port 26261
+```
+
+```sql
+> INSERT INTO charges (id) VALUES (3);
+```
+
+```sql
+> SELECT * FROM charges WHERE id = 3;
+```
+
+```text
+     zone    | id
++------------+----+
+  eu-west-1c |  3
+(1 row)
+```
+
+### Start a cluster with separate RPC and SQL networks
+
+Separating the network addresses used for intra-cluster RPC traffic and application SQL connections can provide an additional level of protection against security issues as a form of [defense in depth](https://wikipedia.org/wiki/Defense_in_depth_(computing)). This separation is accomplished with a combination of the [`--sql-addr` flag](#networking) and firewall rules or other network-level access control (which must be maintained outside of CockroachDB).
+
+For example, suppose you want to use port `26257` for SQL connections and `26258` for intra-cluster traffic. Set up firewall rules so that the CockroachDB nodes can reach each other on port `26258`, but other machines cannot. Start the CockroachDB processes as follows:
+
+```shell
+$ cockroach start --sql-addr=:26257 --listen-addr=:26258 --join=node1:26258,node2:26258,node3:26258 --certs-dir=~/cockroach-certs
+```
+
+Note the use of port `26258` (the value for `listen-addr`, not `sql-addr`) in the `--join` flag. Also, if your environment requires the use of the `--advertise-addr` flag, you should probably also use the `--advertise-sql-addr` flag when using a separate SQL address.
+
+Clusters using this configuration with client certificate authentication may also wish to use [split client CA certificates](/docs/v24.1/create-security-certificates-custom-ca#split-ca-certificates).
+
+## See also
+
+- [Initialize a Cluster](/docs/v24.1/cockroach-init)
+- [Manual Deployment](/docs/v24.1/manual-deployment)
+- [Kubernetes Overview](/docs/v24.1/kubernetes-overview)
+- [Local Deployment](/docs/v24.1/start-a-local-cluster)
+- [`cockroach` Commands Overview](/docs/v24.1/cockroach-commands)

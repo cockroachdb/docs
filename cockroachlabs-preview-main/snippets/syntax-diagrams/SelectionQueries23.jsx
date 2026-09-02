@@ -1,0 +1,71 @@
+export const SelectionQueries23 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="125" width="387" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 105 1 101 1 109"></polygon>
+<polygon points="17 105 9 101 9 109"></polygon>
+<rect height="32" rx="10" width="72" x="31" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="29" y="89"></rect>
+<text class="terminal" x="39" y="109">VALUES</text>
+<rect height="32" rx="10" width="26" x="143" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="141" y="89"></rect>
+<text class="terminal" x="151" y="109">(</text><a xlink:href="/docs/v25.2/sql-grammar#a_expr" xlink:title="a_expr">
+<rect height="32" width="64" x="209" y="91"></rect>
+<rect class="nonterminal" height="32" width="64" x="207" y="89"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="40" font-size="10" class="nonterminal" x="219" y="109">a_expr</text></a><rect height="32" rx="10" width="24" x="209" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="207" y="45"></rect>
+<text class="terminal" x="217" y="65">,</text>
+<rect height="32" rx="10" width="26" x="313" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="311" y="89"></rect>
+<text class="terminal" x="321" y="109">)</text>
+<rect height="32" rx="10" width="24" x="143" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="24" x="141" y="1"></rect>
+<text class="terminal" x="151" y="21">,</text>
+<path class="line" d="m17 105 h2 m0 0 h10 m72 0 h10 m20 0 h10 m26 0 h10 m20 0 h10 m64 0 h10 m-104 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -24 q0 -10 10 -10 m84 44 l20 0 m-20 0 q10 0 10 -10 l0 -24 q0 -10 -10 -10 m-84 0 h10 m24 0 h10 m0 0 h40 m20 44 h10 m26 0 h10 m-236 0 l20 0 m-1 0 q-9 0 -9 -10 l0 -68 q0 -10 10 -10 m216 88 l20 0 m-20 0 q10 0 10 -10 l0 -68 q0 -10 -10 -10 m-216 0 h10 m24 0 h10 m0 0 h172 m23 88 h-3"></path>
+<polygon points="377 105 385 101 385 109"></polygon>
+<polygon points="377 105 369 101 369 109"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

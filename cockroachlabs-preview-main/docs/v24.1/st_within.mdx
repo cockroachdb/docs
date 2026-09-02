@@ -1,0 +1,101 @@
+---
+title: "ST_Within"
+old_description: "ST_Within(A, B) returns true if no point in shape A lies outside of shape B, and at least one point in the interior of A lies in the interior of B."
+---
+
+Given two shapes *A* and *B*, the predicate function `ST_Within(A, B)` returns `true` if the following criteria are met:
+
+- No point in *A* lies outside of *B*.
+- At least one point in the interior of *A* lies in the interior of *B*.
+
+In other words, the exterior of shape *B* must not include any point in *A*, and one or more points of *A*'s interior must lie to the interior of *B*.
+
+This behavior is similar to [`ST_CoveredBy`](/docs/v24.1/st_coveredby), except that the criteria are more exacting, and therefore some pairs of shapes will be rejected by this function that would be accepted by `ST_CoveredBy`.
+
+`ST_Within` works on the following spatial data types:
+
+- [`GEOMETRY`](/docs/v24.1/architecture/glossary#geometry)
+
+<Note>
+`ST_Within` will attempt to use any available [spatial index](/docs/v24.1/spatial-indexes) to speed up its operation. Use the prefixed variant `_ST_Within` if you do not want any spatial indexes to be used.
+</Note>
+
+<Note>
+This function is the inverse of [`ST_Contains`](/docs/v24.1/st_contains).
+</Note>
+
+## Examples
+
+<Note>
+The screenshots in these examples were generated using [geojson.io](http://geojson.io/), but they are designed to showcase the shapes, not the map. Representing `GEOMETRY` data in GeoJSON can lead to unexpected results if using geometries with [SRIDs](/docs/v24.1/architecture/glossary#srid) other than 4326 (as shown below).
+</Note>
+
+### True
+
+In this example, `ST_Within` returns `true` because:
+
+- No point in Polygon *A* lies outside of Polygon *B*.
+- At least one point in the interior of Polygon *A* lies in the interior of Polygon *B*.
+
+```sql
+SELECT ST_Within(st_geomfromtext('SRID=4326;POLYGON((-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832))'), st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902))'));
+```
+
+```text
+   st_within
+---------------
+     true
+
+(1 row)
+```
+
+<Frame>
+  ![ST_Within - true](/images/v24.1/geospatial/st_within_true.png)
+</Frame>
+
+### False
+
+In this example, `ST_Within` returns `false` because:
+
+- All points in Polygon *A* lie outside of Polygon *B*.
+
+```sql
+SELECT ST_Within(st_geomfromtext('SRID=4326;POLYGON((-87.906471 43.038902, -95.992775 36.153980, -75.704722 36.076944, -87.906471 43.038902), (-87.623177 41.881832, -90.199402 38.627003, -82.446732 38.413651, -87.623177 41.881832))'), st_geomfromtext('SRID=4326;POLYGON((-87.356934 41.595161, -84.512016 39.103119, -86.529167 39.162222, -87.356934 41.595161))'));
+```
+
+```text
+   st_within
+---------------
+     false
+(1 row)
+```
+
+<Frame>
+  ![ST_Within - false](/images/v24.1/geospatial/st_within_false.png)
+</Frame>
+
+## See also
+
+- [Export Spatial Data](/docs/v24.1/export-spatial-data)
+- [Spatial tutorial](/docs/v24.1/spatial-tutorial)
+- [Spatial and GIS Glossary of Terms](/docs/v24.1/architecture/glossary)
+- [Spatial indexes](/docs/v24.1/spatial-indexes)
+- [Spatial functions](/docs/v24.1/functions-and-operators#spatial-functions)
+- [`ST_Covers`](/docs/v24.1/st_covers)
+- [`ST_CoveredBy`](/docs/v24.1/st_coveredby)
+- [`ST_Contains`](/docs/v24.1/st_contains)
+- [`ST_Intersects`](/docs/v24.1/st_intersects)
+- [`ST_CoveredBy`](/docs/v24.1/st_coveredby)
+- [`ST_Covers`](/docs/v24.1/st_covers)
+- [`ST_Disjoint`](/docs/v24.1/st_disjoint)
+- [`ST_Equals`](/docs/v24.1/st_equals)
+- [`ST_Overlaps`](/docs/v24.1/st_overlaps)
+- [`ST_Touches`](/docs/v24.1/st_touches)
+- [`ST_ConvexHull`](/docs/v24.1/st_convexhull)
+- [`ST_Union`](/docs/v24.1/st_union)
+- [Migrate from Shapefiles](/docs/v24.1/migrate-from-shapefiles)
+- [Migrate from GeoJSON](/docs/v24.1/migrate-from-geojson)
+- [Migrate from GeoPackage](/docs/v24.1/migrate-from-geopackage)
+- [Migrate from OpenStreetMap](/docs/v24.1/migrate-from-openstreetmap)
+- [Introducing Distributed Spatial Data in CockroachDB](https://www.cockroachlabs.com/blog/spatial-data) (blog post)
+- [Using GeoServer with CockroachDB](/docs/v24.1/geoserver)

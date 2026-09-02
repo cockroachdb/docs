@@ -1,0 +1,50 @@
+---
+title: "Keywords & Identifiers"
+old_description: "Learn about SQL keywords and identifiers in CockroachDB."
+---
+
+SQL statements consist of two fundamental components:
+
+- [**Keywords**](#keywords): Words with specific meaning in SQL like `CREATE`, `INDEX`, and `BOOL`
+- [**Identifiers**](#identifiers): Names for things like databases and some functions
+
+## Keywords
+
+Keywords make up SQL's vocabulary and can have specific meaning in statements. Each SQL keyword that CockroachDB supports is on one of four lists:
+
+- [Reserved Keywords](/docs/v24.3/sql-grammar#reserved_keyword)
+- [Type Function Name Keywords](/docs/v24.3/sql-grammar#type_func_name_keyword)
+- [Column Name Keywords](/docs/v24.3/sql-grammar#col_name_keyword)
+- [Unreserved Keywords](/docs/v24.3/sql-grammar#unreserved_keyword)
+
+Reserved keywords have fixed meanings and are not typically allowed as identifiers. All other types of keywords are considered non-reserved; they have special meanings in certain contexts and can be used as identifiers in other contexts.
+
+### Keyword uses
+
+Most users asking about keywords want to know more about them in terms of:
+
+- **Names of objects**, covered on this page in [Identifiers](#identifiers)
+- **Syntax**, covered in our pages [SQL Statements](/docs/v24.3/sql-statements) and [SQL Grammar](/docs/v24.3/sql-grammar)
+
+## Identifiers
+
+Identifiers are most commonly used as names of objects like databases, tables, or columns—because of this, the terms "name" and "identifier" are often used interchangeably. However, identifiers also have less-common uses, such as changing column labels with `SELECT`.
+
+### Rules for Identifiers
+
+In our [SQL grammar](/docs/v24.3/sql-grammar), all values that accept an `identifier` must:
+
+- Begin with a Unicode letter or an underscore (_). Subsequent characters can be letters, underscores, digits (0-9), or dollar signs (&#36;).
+- Not equal any [SQL keyword](#keywords) unless the keyword is accepted by the element's syntax. For example, [`name`](/docs/v24.3/sql-grammar#name) accepts Unreserved or Column Name keywords.
+
+To bypass either of these rules, simply surround the identifier with double-quotes ("). You can also use double-quotes to preserve case-sensitivity in database, table, view, and column names. However, all references to such identifiers must also include double-quotes.
+
+<Note>
+Some statements have additional requirements for identifiers. For example, each table in a database must have a unique name. These requirements are documented on [each statement's page](/docs/v24.3/sql-statements).
+</Note>
+
+## See also
+
+- [SQL Statements](/docs/v24.3/sql-statements)
+- [Full SQL Grammar](/docs/v24.3/sql-grammar)
+- [SQL Name Resolution](/docs/v24.3/sql-name-resolution)

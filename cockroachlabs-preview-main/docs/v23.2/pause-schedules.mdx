@@ -1,0 +1,69 @@
+---
+title: "PAUSE SCHEDULES"
+old_description: "The PAUSE SCHEDULES statement lets you temporarily halt the process of a backup schedule."
+---
+
+import { PauseSchedules2 } from "/snippets/syntax-diagrams/PauseSchedules2.jsx";
+
+The `PAUSE SCHEDULES` [statement](/docs/v23.2/sql-statements) can be used to pause [backup schedules](/docs/v23.2/create-schedule-for-backup) and [changefeed schedules](/docs/v23.2/create-schedule-for-changefeed).
+
+After pausing a schedule, you can resume it with [`RESUME SCHEDULES`](/docs/v23.2/resume-schedules).
+
+## Required privileges
+
+The following users can pause a schedule:
+
+- Members of the [`admin` role](/docs/v23.2/security-reference/authorization#default-roles). By default, the `root` user belongs to the `admin` role.
+- Owners of a backup schedule, i.e., the user that [created the backup schedule](/docs/v23.2/create-schedule-for-backup).
+- Owners of a changefeed schedule, i.e., the user that [created the changefeed schedule](/docs/v23.2/create-schedule-for-changefeed).
+
+## Synopsis
+
+<PauseSchedules2 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>selectclause</code></td><td>A <a href="/docs/v23.2/selection-queries">selection query</a> that returns <code>id</code>(s) to pause.</td></tr><tr><td><code>scheduleID</code></td><td>The <code>id</code> of the schedule you want to pause, which can be found with <a href="/docs/v23.2/show-schedules"><code>SHOW SCHEDULES</code></a>.</td></tr></tbody></table>
+
+## Examples
+
+### Pause a single schedule
+
+```sql
+> PAUSE SCHEDULE 589963390487363585;
+```
+
+```text
+PAUSE SCHEDULES 1
+```
+
+### Pause multiple schedules
+
+To pause multiple schedules, nest a [`SELECT` clause](/docs/v23.2/select-clause) that retrieves `id`(s) inside the `PAUSE SCHEDULES` statement:
+
+```sql
+> PAUSE SCHEDULES WITH x AS (SHOW SCHEDULES) SELECT id FROM x WHERE label = 'schedule_database';
+```
+
+```text
+PAUSE SCHEDULES 4
+```
+
+In this example, all schedules with the label `schedule_database` are paused.
+
+## See also
+
+- [Manage a Backup Schedule](/docs/v23.2/manage-a-backup-schedule)
+- [`BACKUP`](/docs/v23.2/backup)
+- [`RESTORE`](/docs/v23.2/restore)
+- [`CREATE CHANGEFEED`](/docs/v23.2/create-changefeed)
+- [`SHOW BACKUP`](/docs/v23.2/show-backup)
+- [`SHOW SCHEDULES`](/docs/v23.2/show-schedules)
+- [`RESUME SCHEDULES`](/docs/v23.2/resume-schedules)
+- [`DROP SCHEDULES`](/docs/v23.2/drop-schedules)
+- [`PAUSE JOB`](/docs/v23.2/pause-job)
+- [`RESUME JOB`](/docs/v23.2/pause-job)
+- [`CANCEL JOB`](/docs/v23.2/cancel-job)
+- [Take Full and Incremental Backups](/docs/v23.2/take-full-and-incremental-backups)
+- [Use the Built-in SQL Client](/docs/v23.2/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v23.2/cockroach-commands)

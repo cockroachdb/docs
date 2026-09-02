@@ -1,0 +1,43 @@
+---
+title: "Data Types"
+old_description: "Learn about the data types supported by CockroachDB."
+---
+
+## Supported types
+
+CockroachDB supports the following data types.
+
+<table><thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead><tbody><tr><td><a href="/docs/v25.4/array"><code>ARRAY</code></a></td><td>A 1-dimensional, 1-indexed, homogeneous array of any non-array data type.</td><td><code>&#123;"sky","road","car"&#125;</code></td></tr><tr><td><a href="/docs/v25.4/bit"><code>BIT</code></a></td><td>A string of binary digits (bits).</td><td><code>B'10010101'</code></td></tr><tr><td><a href="/docs/v25.4/bool"><code>BOOL</code></a></td><td>A Boolean value.</td><td><code>true</code></td></tr><tr><td><a href="/docs/v25.4/bytes"><code>BYTES</code></a></td><td>A string of binary characters.</td><td><code>b'\141\061\142\062\143\063'</code></td></tr><tr><td><a href="/docs/v25.4/collate"><code>COLLATE</code></a></td><td>The <code>COLLATE</code> feature lets you sort <a href="/docs/v25.4/string"><code>STRING</code></a> values according to language- and country-specific rules, known as collations.</td><td><code>'a1b2c3' COLLATE en</code></td></tr><tr><td><a href="/docs/v25.4/citext"><code>CITEXT</code></a></td><td>Case-insensitive text.</td><td><code>'Roach'</code></td></tr><tr><td><a href="/docs/v25.4/date"><code>DATE</code></a></td><td>A date.</td><td><code>DATE '2016-01-25'</code></td></tr><tr><td><a href="/docs/v25.4/decimal"><code>DECIMAL</code></a></td><td>An exact, fixed-point number.</td><td><code>1.2345</code></td></tr><tr><td><a href="/docs/v25.4/enum"><code>ENUM</code></a></td><td>A user-defined data type comprised of a set of static values.</td><td><code>ENUM ('club, 'diamond', 'heart', 'spade')</code></td></tr><tr><td><a href="/docs/v25.4/float"><code>FLOAT</code></a></td><td>A 64-bit, inexact, floating-point number.</td><td><code>1.2345</code></td></tr><tr><td><a href="/docs/v25.4/inet"><code>INET</code></a></td><td>An IPv4 or IPv6 address.</td><td><code>192.168.0.1</code></td></tr><tr><td><a href="/docs/v25.4/int"><code>INT</code></a></td><td>A signed integer, up to 64 bits.</td><td><code>12345</code></td></tr><tr><td><a href="/docs/v25.4/interval"><code>INTERVAL</code></a></td><td>A span of time.</td><td><code>INTERVAL '2h30m30s'</code></td></tr><tr><td><a href="/docs/v25.4/jsonb"><code>JSONB</code></a></td><td>JSON (JavaScript Object Notation) data.</td><td><code>'&#123;"first&#95;name": "Lola", "last&#95;name": "Dog", "location": "NYC", "online" : true, "friends" : 547&#125;'</code></td></tr><tr><td><a href="/docs/v25.4/ltree"><code>LTREE</code></a></td><td>A label path representing a hierarchical tree-like structure.</td><td><code>'Top.Countries.Europe.France'</code></td></tr><tr><td><a href="/docs/v25.4/null-handling"><code>NULL</code></a></td><td>The undefined value.</td><td><code>NULL</code></td></tr><tr><td><a href="/docs/v25.4/oid"><code>OID</code></a></td><td>An unsigned 32-bit integer.</td><td><code>4294967295</code></td></tr><tr><td><a href="/docs/v25.4/serial"><code>SERIAL</code></a></td><td>A pseudo-type that combines an <a href="/docs/v25.4/int">integer type</a> with a <a href="/docs/v25.4/default-value"><code>DEFAULT</code> expression</a>.</td><td><code>148591304110702593</code></td></tr><tr><td><a href="/docs/v25.4/string"><code>STRING</code></a></td><td>A string of Unicode characters.</td><td><code>'a1b2c3'</code></td></tr><tr><td><a href="/docs/v25.4/time"><code>TIME</code><br/><code>TIMETZ</code></a></td><td><code>TIME</code> stores a time of day in UTC.<br/><code>TIMETZ</code> converts <code>TIME</code> values with a specified time zone offset from UTC.</td><td><code>TIME '01:23:45.123456'</code><br/><code>TIMETZ '01:23:45.123456-5:00'</code></td></tr><tr><td><a href="/docs/v25.4/timestamp"><code>TIMESTAMP</code><br/><code>TIMESTAMPTZ</code></a></td><td><code>TIMESTAMP</code> stores a date and time pairing in UTC.<br/><code>TIMESTAMPTZ</code> converts <code>TIMESTAMP</code> values with a specified time zone offset from UTC.</td><td><code>TIMESTAMP '2016-01-25 10:10:10'</code><br/><code>TIMESTAMPTZ '2016-01-25 10:10:10-05:00'</code></td></tr><tr><td><a href="/docs/v25.4/tsquery"><code>TSQUERY</code></a></td><td>A list of lexemes and operators used in <a href="/docs/v25.4/full-text-search">full-text search</a>.</td><td><code>'list' &amp; 'lexem' &amp; 'oper' &amp; 'use' &amp; 'full' &amp; 'text' &amp; 'search'</code></td></tr><tr><td><a href="/docs/v25.4/tsvector"><code>TSVECTOR</code></a></td><td>A list of lexemes with optional integer positions and weights used in <a href="/docs/v25.4/full-text-search">full-text search</a>.</td><td><code>'full':13 'integ':7 'lexem':4 'list':2 'option':6 'posit':8 'search':15 'text':14 'use':11 'weight':10</code></td></tr><tr><td><a href="/docs/v25.4/uuid"><code>UUID</code></a></td><td>A 128-bit hexadecimal value.</td><td><code>7f9c24e8-3b12-4fef-91e0-56a2d5a246ec</code></td></tr><tr><td><a href="/docs/v25.4/vector"><code>VECTOR</code></a></td><td>A fixed-length array of floating-point numbers.</td><td><code>&#91;1.0, 0.0, 0.0&#93;</code></td></tr></tbody></table>
+
+## Data type conversions and casts
+
+CockroachDB supports explicit type conversions using the following methods:
+
+- `<type> 'string literal'`, to convert from the literal representation of a value to a value of that type. For example: `DATE '2008-12-21'`, `INT '123'`, or `BOOL 'true'`.
+- `<value>::<data type>`, or its equivalent longer form `CAST(<value> AS <data type>)`, which converts an arbitrary expression of one built-in type to another (this is also known as type coercion or "casting"). For example: `NOW()::DECIMAL`, `VARIANCE(a+2)::INT`.
+
+    <Tip>
+    To create constant values, consider using a [type annotation](/docs/v25.4/scalar-expressions#explicitly-typed-expressions) instead of a cast, as it provides more predictable results.
+    </Tip>
+- Other [built-in conversion functions](/docs/v25.4/functions-and-operators) when the type is not a SQL type, for example `from_ip()`, `to_ip()` to convert IP addresses between `STRING` and `BYTES` values.
+
+CockroachDB also supports implicit casting from string literals to arrays of all data types except the following:
+
+- [`BYTES`](/docs/v25.4/bytes)
+- [`ENUM`](/docs/v25.4/enum)
+- [`JSONB`](/docs/v25.4/jsonb)
+- [`SERIAL`](/docs/v25.4/serial)
+- `Box2D` [(spatial type)](/docs/v25.4/architecture/glossary#data-types)
+- `GEOGRAPHY` [(spatial type)](/docs/v25.4/architecture/glossary#data-types)
+- `GEOMETRY` [(spatial type)](/docs/v25.4/architecture/glossary#data-types)
+
+For an example, see [Implicit casting to `ARRAY`s](/docs/v25.4/array#implicit-casting).
+
+You can find each data type's supported conversion and casting on its respective page in its section **Supported casting &amp; conversion**.
+
+## See also
+
+- [`CREATE TYPE`](/docs/v25.4/create-type)
+- [`ALTER TYPE`](/docs/v25.4/alter-type)
+- [`DROP TYPE`](/docs/v25.4/drop-type)
+- [`SHOW TYPES`](/docs/v25.4/show-types)

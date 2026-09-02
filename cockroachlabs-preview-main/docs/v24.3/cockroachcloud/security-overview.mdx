@@ -1,0 +1,20 @@
+---
+title: "CockroachDB Cloud Security Overview"
+old_description: "Learn about the authentication, encryption, authorization, and audit log features for CockroachDB Cloud clusters."
+---
+
+import SecurityOverview from "/snippets/cockroachcloud/security-overview.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<SecurityOverview />

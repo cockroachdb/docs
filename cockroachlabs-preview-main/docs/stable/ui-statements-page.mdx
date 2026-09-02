@@ -1,0 +1,415 @@
+---
+title: "Statements Page"
+old_description: "The Statements page helps you identify frequently executed or high latency SQL statements, view statement details, and download statement diagnostics."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+
+<Note>
+On a [secure cluster](/docs/v26.1/secure-a-cluster), you must be an [`admin` user](/docs/v26.1/security-reference/authorization#admin-role) or a SQL user with the [`VIEWACTIVITY`](/docs/v26.1/security-reference/authorization#viewactivity) or [`VIEWACTIVITYREDACTED`](/docs/v26.1/security-reference/authorization#viewactivityredacted) [system privilege](/docs/v26.1/security-reference/authorization#supported-privileges) (or the legacy `VIEWACTIVITY` [role option](/docs/v26.1/security-reference/authorization#role-options)) to access this area of the DB Console. Refer to [DB Console security](/docs/v26.1/ui-overview#db-console-security-considerations).
+</Note>
+
+The **Statements** page provides information about the execution of SQL statements in your cluster, using data in the cluster's [`crdb_internal` system catalog](/docs/v26.1/monitoring-and-alerting#crdb_internal-system-catalog). To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. The **Statements** tab is selected.
+
+It offers two views:
+
+- **Statement Fingerprints** show information about completed SQL statements.
+- **Active Executions** show information about SQL statements which are currently executing.
+
+Choose a view by selecting the **Statement Fingerprints** or **Active Executions** radio button. The selection is retained when you switch between the **Statements** and **Transactions** tabs on the **SQL Activity** page.
+
+<Tip>
+If you haven't yet executed any queries in the cluster as a user, this page will be blank.
+</Tip>
+
+## Statement Fingerprints view
+
+The **Statements Fingerprints** view helps you:
+
+- Identify frequently executed or high latency [SQL statements](/docs/v26.1/sql-statements).
+- View SQL statement fingerprint [details](#statement-fingerprint-page).
+- Download SQL statement [diagnostics](#diagnostics) for troubleshooting.
+
+<Note>
+The **Statements** page displays all SQL statements, including those executed within [user-defined functions](/docs/v26.1/user-defined-functions#statement-statistics) and [stored procedures](/docs/v26.1/stored-procedures#statement-statistics). This allows you to monitor the performance of individual statements within your routines.
+</Note>
+
+To view this page, click **SQL Activity** in the left-hand navigation of the DB Console. The **Statements** tab is selected. The **Statement Fingerprints** radio button is selected and the [Statements table](#statements-table) displays.
+
+The following screenshot shows the statement fingerprint for `SELECT city, id FROM vehicles WHERE city = $1` while running the [`movr` workload](/docs/v26.1/cockroach-workload#run-the-movr-workload):
+
+<Frame>
+  ![Statement fingerprint](/images/v26.1/statement-fingerprint.png)
+</Frame>
+
+If you click the statement fingerprint in the **Statements** column, the [**Statement Fingerprint** page](#statement-fingerprint-page) displays.
+
+<Frame>
+  ![Statement details](/images/v26.1/statement-details.png)
+</Frame>
+
+## Active Executions view
+
+The **Active Executions** view helps you:
+
+- Understand and tune workload performance, particularly for long-running statements.
+
+To display this view, click **SQL Activity** in the left-hand navigation of the DB Console. The **Statements** tab is selected. Click the **Active Executions** radio button. The [Active Executions table](#active-executions-table) displays.
+
+<Note>
+When Auto [Refresh](#refresh) is On, active executions are polled every 10 seconds. Faster-running executions will potentially disappear upon each refresh.
+</Note>
+
+The following screenshot shows the active statement execution for `INSERT INTO users VALUES ($1, $2, $3, $4, $5)` while running the [`movr` workload](/docs/v26.1/cockroach-workload#run-the-movr-workload):
+
+<Frame>
+  ![Statement execution](/images/v26.1/statement-execution.png)
+</Frame>
+
+If you click the execution ID in the **Statement Execution ID** column, the [**Statement Execution** details page](#statement-execution-details-page) displays.
+
+<Frame>
+  ![Statement execution details](/images/v26.1/statement-execution-details.png)
+</Frame>
+
+### Refresh
+
+To control refresh of the data on the Active Executions views of the SQL Activity Statements and Transactions pages, the following controls have been added:
+
+- An **Active Statements|Transactions As Of** timestamp: Indicates when the last refresh was performed.
+- A manual **Refresh** button: When clicked, refreshes data immediately.
+- An **Auto Refresh** toggle: When toggled **On** (default), refreshes data immediately and then automatically every 10 seconds. When toggled **Off**, stops automatic data refresh. The toggle setting is shared by both the Statements and the Transactions pages. Changing the setting on one page changes it on the other page.
+
+<Frame>
+  ![Active executions view refresh](/images/v26.1/active-executions-view-refresh.png)
+</Frame>
+
+If **Auto Refresh** is toggled **On**, navigating to the Active Executions view on either the Statements page or Transactions page refreshes the data.
+
+If **Auto Refresh** is toggled **Off** and the data has not been refreshed in over 10 minutes, there will be an alert under the controls similar to: `Your active statements|transactions data is 11 minutes old. Consider refreshing for the latest information.`
+
+## Statement Fingerprints results
+
+The statement fingerprints returned are determined by the selected **Search Criteria**.
+
+### Search Criteria
+
+By default, the **Top** `100` statement fingerprints **By** [`% of All Runtime`](#percent-of-all-runtime) for the `Past Hour` are returned.
+
+1. To change the number of results returned, select `25`, `50`, `100`, or `500` from the **Top** dropdown. To return a larger number, select `More` and choose an option: `1000`, `5000`, `10000`.
+2. To change the sort column, from the **By** dropdown, select a commonly sorted column: `% of All Runtime`, `SQL CPU Time`, `Contention Time`, `Execution Count`, `P99 Latency`, `Statement Time`. To sort by other columns, select `More` from the dropdown and choose an option: `Last Execution Time`, `Max Latency`, `Max Memory`, `Min Latency`, `Network`, `P50 Latency`, `P90 Latency`, `Retries`, `Rows Processed`.
+
+    <Note>
+    The `More` options may increase the page loading time and are not generally recommended.
+    </Note>
+3. Select the [**Time Range**](#time-interval).
+4. Click **Apply**.
+
+    The list of statements that satisfy the search criteria is displayed. The results can be further [searched and filtered](#search-and-filter).
+
+<Warning>
+Results are not automatically refreshed.
+
+The actual time range of the statistics is displayed at the top right of the results, for example, `Showing aggregated stats from 20:00 to 21:59 (UTC)`. If you select a preset time interval, such as `Past Hour`, be aware that since the statistics displayed are not automatically refreshed, they may become stale. To see the latest statistics, update the **Search Criteria** and apply.
+
+However, it may take up to 10 minutes for the most recent statistics to be included in the aggregated statistics. 10 minutes is the default for the [`sql.stats.flush.interval` cluster setting](#statement-statistics). For in-memory statistics, directly query the following in-memory table: `crdb_internal.cluster_statement_statistics`. Alternatively, use the [**Active Executions** view](#active-executions-view).
+</Warning>
+
+### Time interval
+
+To view [statement fingerprints](#sql-statement-fingerprints) within a specific time interval, select a time interval from the selector at the top of the tab. The time interval field supports preset time intervals (1 Hour, 6 Hours, 1 Day, etc.) and custom time intervals. To select a custom time interval, click the time interval field and select **Custom time interval**. In the **Start (UTC)** and **End (UTC)** fields select or type a date and time.
+
+Use the arrow buttons to cycle through previous and next time intervals. To select the most recent interval, click **Now**. When you select a time interval, the same interval is selected in the [Metrics](/docs/v26.1/ui-overview#metrics) page.
+
+CockroachDB persists statement statistics up to 1 million rows before the oldest row is deleted. The retention period of statistics is reduced the more active a workload is and the more distinct statement fingerprints there are.
+
+<Note>
+It's possible to select an interval for which no statement statistics exist.
+</Note>
+
+## Search and filter
+
+By default, the **Statements** page shows SQL statements from all applications and databases running on the cluster.
+
+<Note>
+For the **Statement Fingerprints** view, the search and filter are applied **after** results are returned based on the [**Search Criteria**](#search-criteria).
+</Note>
+
+### Search results
+
+To search using the search field:
+
+1. Enter a string in the search box at the top of the tab. To search for exact terms in order, wrap the search string in quotes.
+2. Press `Enter`.
+
+    The list of statements is filtered by the string.
+
+### Filter
+
+To filter the statements:
+
+1. Click the **Filters** field.
+    - To filter by [application](/docs/v26.1/connection-parameters#additional-connection-parameters), select **App** and select one or more applications.
+        - Queries from the SQL shell are displayed under the `$ cockroach` app.
+        - If you haven't set `application_name` in a client connection string, it appears as `unset`.
+    - To filter by one or more databases (**Database**), SQL statement types (**Statement Type**), or nodes on which the statement ran (**Node**), click the field and select one or more checkboxes.
+
+        The **Statement Type** values map to the CockroachDB statement types [data definition language (DDL)](/docs/v26.1/sql-statements#data-definition-statements), [data manipulation language (DML)](/docs/v26.1/sql-statements#data-manipulation-statements), [data control language (DCL)](/docs/v26.1/sql-statements#data-control-statements), and [transaction control language (TCL)](/docs/v26.1/sql-statements#transaction-control-statements).
+    - To display only statement fingerprints that take longer than a specified time to run, specify the time and units.
+    - To display only statement fingerprints with queries that cause full table scans, click **Only show statements that contain queries with full table scans**.
+2. Click **Apply**.
+
+The following screenshot shows the statements that contain the string `rides` for the `movr` application filtered by `Statement Type: DML`:
+
+<Frame>
+  ![Movr rides statements](/images/v26.1/movr-statements-rides.png)
+</Frame>
+
+## Statement statistics
+
+Statistics aggregation is controlled by the `sql.stats.aggregation.interval` [cluster setting](/docs/v26.1/cluster-settings), set to 1 hour by default.
+
+Aggregated statistics are flushed from memory to statistics tables in the [`crdb_internal`](/docs/v26.1/crdb-internal) system catalog every 10 minutes. The flushing interval is controlled by the `sql.stats.flush.interval` cluster setting.
+
+The default retention period of the statistics tables is based on the number of rows up to 1 million records. When this threshold is reached, the oldest records are deleted. The `diagnostics.forced_sql_stat_reset.interval` [cluster setting](/docs/v26.1/cluster-settings) controls when persisted statistics are deleted only if the internal cleanup service experiences a failure.
+
+If desired, [admin users](/docs/v26.1/security-reference/authorization#admin-role) may reset SQL statistics in the DB Console UI and `crdb_internal` system catalog by clicking **reset SQL stats**. This link does not appear for non-admin users.
+
+### Example
+
+See [View historical statement statistics and the sampled logical plan per fingerprint](/docs/v26.1/crdb-internal#view-historical-statement-statistics-and-the-sampled-logical-plan-per-fingerprint).
+
+## SQL statement fingerprints
+
+The **Statements** page displays SQL statement fingerprints.
+
+A *statement fingerprint* represents one or more SQL statements by replacing literal values (e.g., numbers and strings) and placeholders with underscores (`_`). Lists with only literals or placeholders and similar expressions are shortened to their first item followed by `__more__`.
+
+Fingerprints can help you quickly identify frequently executed SQL statements and their latencies.
+
+For multiple SQL statements to be represented by a fingerprint, they must be identical aside from their literal values and placeholders.
+
+These SQL statements:
+
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (380, 11, 11098)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (192, 891, 20)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (784, 452, 78)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, 11098)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, 300)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, 11, 11098)`
+- `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES ($1, $2, $3)`
+
+have the fingerprint `INSERT INTO new_order(product_id, customer_id, transaction_id) VALUES (_, __more__)`
+
+The following statements are not represented by the preceding fingerprint:
+
+- `INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (380, 11, 11098, 1)`;
+- `INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (192, 891, 20, 2)`;
+- `INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (784, 452, 78, 3)`;
+
+Instead, they have the fingerprint `INSERT INTO new_order(product_id, customer_id, transaction_id, item_count) VALUES (_, __more__)`
+
+It is possible to see the same fingerprint listed multiple times when statements with this fingerprint were executed by more than one [`application_name`](/docs/v26.1/show-vars#supported-variables).
+
+## Statements table
+
+Click **Columns** to select the columns to display in the table.
+
+The Statements table gives details for each SQL statement fingerprint:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Statements</td><td>SQL statement <a href="#sql-statement-fingerprints">fingerprint</a>. To view additional details, click the SQL statement fingerprint to open its <a href="/docs/v26.1/ui-statements-page#statement-fingerprint-page">Statement Fingerprint page</a>.<br/><br/>Statement fingerprints are displayed per application rather than grouped into a single fingerprint. This may result in multiple rows for the same statement fingerprint, one per application name.</td></tr><tr><td>Execution Count</td><td>Cumulative number of executions of statements with this fingerprint within the <a href="#time-interval">time interval</a>.<br/><br/>The bar indicates the ratio of runtime success (gray) to <a href="/docs/v26.1/transactions#transaction-retries">retries</a> (red) for the SQL statement fingerprint.</td></tr><tr><td>Database</td><td>The database in which the statement was executed.</td></tr><tr><td>Application Name</td><td>The name specified by the <a href="/docs/v26.1/show-vars#supported-variables"><code>application&#95;name</code></a> session setting.</td></tr><tr><td>Statement Time</td><td>Average <a href="/docs/v26.1/architecture/sql-layer#sql-parser-planner-executor">planning and execution time</a> of statements with this statement fingerprint within the time interval.<br/><br/>The gray bar indicates the mean latency. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.</td></tr><tr><td><a></a>% of All Runtime</td><td>The percentage of execution time taken by this statement fingerprint compared to all other statements executed within the time period, including those not displayed. Runtime is calculated as the mean execution latency multiplied by the execution count.<br/><br/><b>Note:</b> The sum of the values in this column may not equal 100%. Each fingerprint's percentage is calculated by dividing the fingerprint's runtime by the sum of the runtimes for all statement fingerprints in the time interval. "All statement fingerprints" means all user statement fingerprints (not only those displayed by the <a href="#search-criteria">search criteria</a>), as well as internal statement fingerprints that are never included in the displayed result set. The search criteria are applied after the <code>% of All Runtime</code> calculation.</td></tr><tr><td>Contention Time</td><td>Average time statements with this fingerprint were <a href="/docs/v26.1/performance-best-practices-overview#understanding-and-avoiding-transaction-contention">in contention</a> with other transactions within the time interval.<br/><br/>The gray bar indicates mean contention time. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.</td></tr><tr><td>SQL CPU Time</td><td>Average SQL CPU time spent executing within the specified time interval. The SQL CPU time includes time spent in the <a href="/docs/v26.1/architecture/sql-layer">SQL layer</a>. It does not include SQL planning time, KV execution time, or time spent in the <a href="/docs/v26.1/architecture/storage-layer">storage layer</a>. The gray bar indicates mean SQL CPU time. The blue bar indicates one standard deviation from the mean.</td></tr><tr><td>KV CPU Time</td><td>Average KV CPU time spent executing within the specified time interval. This represents <a href="/docs/v26.1/architecture/overview#layers">KV</a> work that is on the critical path of serving the query. It excludes time spent on asynchronous replication and in the <a href="/docs/v26.1/architecture/storage-layer">storage layer</a>. The gray bar indicates mean KV CPU time. The blue bar indicates one standard deviation from the mean.</td></tr><tr><td>Admission Wait Time</td><td>Average time spent waiting in <a href="/docs/v26.1/admission-control">admission control</a> queues within the specified time interval. The gray bar indicates mean admission wait time. The blue bar indicates one standard deviation from the mean.</td></tr><tr><td>Min Latency</td><td>The lowest latency value for all statement executions with this fingerprint.</td></tr><tr><td>Max Latency</td><td>The highest latency value for all statement executions with this fingerprint.</td></tr><tr><td>Rows Processed</td><td>Average number of rows read and written while executing statements with this fingerprint within the time interval.</td></tr><tr><td>Bytes Read</td><td>Aggregation of all bytes <a href="/docs/v26.1/architecture/life-of-a-distributed-transaction#reads-from-the-storage-layer">read from disk</a> across all operators for statements with this fingerprint within the time interval.<br/><br/>The gray bar indicates the mean number of bytes read from disk. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.</td></tr><tr><td>Max Memory</td><td>Maximum memory used by a statement with this fingerprint at any time during its execution within the time interval.<br/><br/>The gray bar indicates the average max memory usage. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.</td></tr><tr><td>Network</td><td>Amount of <a href="/docs/v26.1/architecture/reads-and-writes-overview">data transferred over the network</a> for statements with this fingerprint within the time interval. If this value is 0, the statement was executed on a single node.<br/><br/>The gray bar indicates the mean number of bytes sent over the network. The blue bar indicates one standard deviation from the mean. Hover over the bar to display exact values.</td></tr><tr><td>Retries</td><td>Cumulative number of automatic (internal) <a href="/docs/v26.1/transactions#transaction-retries">retries</a> by CockroachDB of statements with this fingerprint within the time interval.</td></tr><tr><td>Regions/Nodes</td><td>The regions and nodes on which statements with this fingerprint executed.<br/><br/>Nodes are not visible for CockroachDB Basic clusters or for clusters that are not multi-region.</td></tr><tr><td>Last Execution Time (UTC)</td><td>The timestamp when the statement was last executed.</td></tr><tr><td>Statement Fingerprint ID</td><td>The ID of the statement fingerprint.</td></tr><tr><td>Diagnostics</td><td>Activate and download <a href="#diagnostics">diagnostics</a> for this fingerprint. To activate, click the <strong>Activate</strong> button. The <a href="#activate-diagnostics-collection-and-download-bundles">Activate statement diagnostics</a> dialog displays. After you complete the dialog, the column displays the status of diagnostics collection (<strong>WAITING</strong>, <strong>READY</strong>, or <strong>ERROR</strong>). Click <InlineImage alt="Vertical ellipsis" src="/images/common/ui-ellipsis-button.png" /> and select a bundle to download or select <strong>Cancel request</strong> to cancel diagnostics bundle collection.<br/><br/>Statements are periodically cleared from the Statements page based on the start time. To access the full history of diagnostics for the fingerprint, see the <a href="#diagnostics">Diagnostics</a> tab of the Statement Details page.</td></tr></tbody></table>
+
+<Note>
+To obtain the execution statistics, CockroachDB samples a percentage of the executions. If you see `no samples` displayed in the **Contention**, **Max Memory**, or **Network** columns, there are two possibilities: - Your statement executed successfully but wasn't sampled because there were too few executions of the statement. - Your statement has failed (the most likely case). You can confirm by clicking the statement and viewing the value for **Failure Count**.
+</Note>
+
+To view statement details, click a SQL statement fingerprint in the **Statements** column to open the **Statement Fingerprint** page.
+
+## Statement Fingerprint page
+
+The details displayed on the **Statement Fingerprint** page reflect the [time interval](#time-interval) selected on the **Statements** page and the application name and database specified in the selected row of the [Statements table](#statements-table).
+
+### Overview
+
+The **Overview** section displays the SQL statement fingerprint and execution attributes:
+
+<table><thead><tr><th>Attribute</th><th>Description</th></tr></thead><tbody><tr><td><strong>Nodes</strong></td><td>The nodes on which the statements executed. Click a node ID to view node statistics. <strong>Nodes</strong> are not displayed for CockroachDB Standard clusters.</td></tr><tr><td><strong>Regions</strong></td><td>The regions on which the statements executed. <strong>Regions</strong> are not displayed for CockroachDB Standard clusters.</td></tr><tr><td><strong>Database</strong></td><td>The database on which the statements executed.</td></tr><tr><td><strong>Application Name</strong></td><td>The name specified by the <a href="/docs/v26.1/show-vars#supported-variables"><code>application&#95;name</code></a> session setting. Click the name to view all statements run by that application.</td></tr><tr><td><strong>Fingerprint ID</strong></td><td>The ID of the statement fingerprint in hexadecimal format. It may be used to query the <a href="/docs/v26.1/crdb-internal#fingerprint_id-column"><code>crdb&#95;internal.statement&#95;statistics</code></a> table.</td></tr><tr><td><strong>Failure Count</strong></td><td>The total number of failed executions of this statement fingerprint.</td></tr><tr><td><strong>Full scan?</strong></td><td>Whether the execution performed a full scan of the table.</td></tr><tr><td><strong>Vectorized execution?</strong></td><td>Whether the execution used the <a href="/docs/v26.1/vectorized-execution">vectorized execution engine</a>.</td></tr><tr><td><strong>Transaction type</strong></td><td>The type of transaction (<a href="/docs/v26.1/transactions#individual-statements">implicit</a> or <a href="/docs/v26.1/transactions#sql-statements">explicit</a>).</td></tr><tr><td><strong>Last execution time</strong></td><td>The timestamp when the statement was last executed.</td></tr></tbody></table>
+
+The **Overview** section also displays the SQL statement fingerprint statistics that correspond to the [charts](#charts) below:
+
+<table><thead><tr><th>Statistic</th><th>Description</th></tr></thead><tbody><tr><td><strong>Statement Time</strong></td><td>The time taken by the <a href="/docs/v26.1/architecture/sql-layer#sql-parser-planner-executor">planner</a> to create an execution plan and for CockroachDB to execute statements.</td></tr><tr><td><strong>Rows Processed</strong></td><td>The total number of rows read and written.</td></tr><tr><td><strong>Execution Retries</strong></td><td>The number of <a href="/docs/v26.1/transactions#transaction-retries">retries</a>.</td></tr><tr><td><strong>Execution Count</strong></td><td>The total number of executions. It is calculated as the sum of first attempts and retries.</td></tr><tr><td><strong>Contention Time</strong></td><td>The amount of time spent waiting for resources. For more information about contention, see <a href="/docs/v26.1/performance-best-practices-overview#understanding-and-avoiding-transaction-contention">Understanding and avoiding transaction contention</a>.</td></tr><tr><td><strong>SQL CPU Time</strong></td><td>The amount of SQL CPU time spent executing the statement. The SQL CPU time represents the time spent and work done within SQL execution operators. It does not include SQL planning time or KV execution time.</td></tr><tr><td><strong>KV CPU Time</strong></td><td>The average KV CPU time spent executing the statement within the specified time interval. This represents <a href="/docs/v26.1/architecture/overview#layers">KV</a> work that is on the critical path of serving the query. It excludes time spent on asynchronous replication and in the <a href="/docs/v26.1/architecture/storage-layer">storage layer</a>.</td></tr><tr><td><strong>Admission Wait Time</strong></td><td>Average time spent waiting in <a href="/docs/v26.1/admission-control">admission control</a> queues within the specified time interval.</td></tr><tr><td><strong>Client Wait Time</strong></td><td>The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and <a href="/docs/v26.1/transactions#batched-statements">batch your statements</a>.</td></tr></tbody></table>
+
+The following screenshot shows the statement fingerprint of the query described in [Use the right index](/docs/v26.1/apply-statement-performance-rules#rule-2-use-the-right-index):
+
+<Frame>
+  ![Statement fingerprint overview](/images/v26.1/ui_statement_fingerprint_overview.png)
+</Frame>
+
+#### Insights
+
+The **Insights** table is displayed when CockroachDB has detected a problem with the statement fingerprint.
+
+- **Insights**: Provides the [Workload Insight type](/docs/v26.1/ui-insights-page#workload-insight-types).
+- **Details**: Provides a description and possible recommendation.
+- **Latest Execution ID**: The ID of the latest statement execution. To display the details of the [statement execution](/docs/v26.1/ui-insights-page#statement-execution-details), click the ID.
+
+The following screenshot shows the insights of the statement fingerprint illustrated in [Overview](#overview):
+
+<Frame>
+  ![Statement fingerprint overview](/images/v26.1/ui_statement_fingerprint_insights.png)
+</Frame>
+
+#### Charts
+
+Charts following the execution attributes display statement fingerprint statistics:
+
+<table><thead><tr><th>Statistic</th><th>Description</th></tr></thead><tbody><tr><td><strong>Statement Time</strong></td><td>The time taken by the <a href="/docs/v26.1/architecture/sql-layer#sql-parser-planner-executor">planner</a> to create an execution plan and for CockroachDB to execute statements.</td></tr><tr><td><strong>Rows Processed</strong></td><td>The total number of rows read and written.</td></tr><tr><td><strong>Execution Retries</strong></td><td>The number of <a href="/docs/v26.1/transactions#transaction-retries">retries</a>.</td></tr><tr><td><strong>Execution Count</strong></td><td>The total number of executions. It is calculated as the sum of first attempts and retries.</td></tr><tr><td><strong>Admission Wait Time</strong></td><td>The time spent waiting in admission control queues. The gray bar indicates mean admission wait time. The blue bar indicates one standard deviation from the mean.</td></tr><tr><td><strong>Contention Time</strong></td><td>The amount of time spent waiting for resources. For more information about contention, see <a href="/docs/v26.1/performance-best-practices-overview#understanding-and-avoiding-transaction-contention">Understanding and avoiding transaction contention</a>.</td></tr><tr><td><strong>KV CPU Time</strong></td><td>The KV CPU time spent executing within the specified time interval. This can be thought of as KV work that is on the critical path of serving the query. It does not include any asynchronous replication related work. The gray bar indicates mean KV CPU time. The blue bar indicates one standard deviation from the mean.</td></tr><tr><td><strong>SQL CPU Time</strong></td><td>The amount of SQL CPU time spent executing the statement. The SQL CPU time represents the time spent and work done within SQL execution operators. It does not include SQL planning time or KV execution time.</td></tr><tr><td><strong>Client Wait Time</strong></td><td>The time spent waiting for the client to send the statement while holding the transaction open. A high wait time indicates that you should revisit the entire transaction and <a href="/docs/v26.1/transactions#batched-statements">batch your statements</a>.</td></tr></tbody></table>
+
+The following charts summarize the executions of the statement fingerprint illustrated in [Overview](#overview):
+
+<Frame>
+  ![Statement fingerprint charts](/images/v26.1/ui_statement_fingerprint_charts.png)
+</Frame>
+
+### Explain Plans
+
+The **Explain Plans** tab displays statement plans for an [explainable statement](/docs/v26.1/sql-grammar#preparable_stmt) in the selected [time interval](#time-interval). You can use this information to optimize the query. For more information about plans, see [`EXPLAIN`](/docs/v26.1/explain).
+
+The following screenshot shows an execution of the query discussed in [Overview](#overview):
+
+<Frame>
+  ![Plan table](/images/v26.1/ui_plan_table.png)
+</Frame>
+
+The plan table shows the following details:
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Plan Gist</td><td>A sequence of bytes representing the flattened tree of operators and operator-specific metadata of the statement plan.</td></tr><tr><td>Used Indexes</td><td>The table <a href="/docs/v26.1/indexes">indexes</a> used by the plan. To see <a href="/docs/v26.1/ui-databases-page#table-details-page">table details</a>, click on the table name. To see <a href="/docs/v26.1/ui-databases-page#index-details-page">index details</a>, click on the index name.</td></tr><tr><td>Insights</td><td>The number of <a href="#insights">insights</a> for the plan. To configure when to trigger insights, see <a href="/docs/v26.1/ui-insights-page#schema-insights-settings">Schema insights settings</a>.</td></tr><tr><td>Last Execution Time</td><td>The timestamp when the statement was last executed.</td></tr><tr><td>Average Execution Time</td><td>The average execution time for all the executions of the plan.</td></tr><tr><td>Execution Count</td><td>The number of times the plan was executed.</td></tr><tr><td>Average Rows Read</td><td>The average number of rows read when the plan was executed.</td></tr><tr><td>Full Scan</td><td>Whether the execution performed a full scan of the table.</td></tr><tr><td>Min Latency</td><td>The lowest latency value for all statement executions with this Explain Plan.</td></tr><tr><td>Max Latency</td><td>The highest latency value for all statement executions with this Explain Plan.</td></tr><tr><td>Distributed</td><td>Whether the execution was distributed.</td></tr><tr><td>Vectorized</td><td>Whether the execution used the <a href="/docs/v26.1/vectorized-execution">vectorized execution engine</a>.</td></tr></tbody></table>
+
+To display the plan that was executed, click the plan gist. For the plan gist `AgHUAQIABQAAAAHYAQIAiA...`, the following plan displays:
+
+<Frame>
+  ![Plan table](/images/v26.1/ui_statement_plan.png)
+</Frame>
+
+#### Insights
+
+The plan table displays the number of insights related to the plan. If a plan has at least 1 insight, when you click the plan gist, a table of insights that describe how to improve the performance will follow the plan.
+
+The following screenshot shows 1 insight found after running the query discussed in [Overview](#overview) 6 or more times:
+
+<Frame>
+  ![Plan with insight](/images/v26.1/plan_with_insight.png)
+</Frame>
+
+<Note>
+CockroachDB uses the threshold of 6 executions before offering an insight because it assumes that you are no longer merely experimenting with a query at that point.
+</Note>
+
+In this case the insight is recommending that you create an index on the `start_time` column of the `rides` table and storing the `rider_id`.
+
+If you click **Create Index**, a confirmation dialog displays a warning about the cost of [online schema changes](/docs/v26.1/online-schema-changes) and a button to copy the SQL statement for later execution in a SQL client.
+
+If you click **Apply** to create the index and then execute the statement again, the **Explain Plans** tab will show that the second execution (in this case at `19:40`), which uses the index and has no insight, takes less time than the first 6 executions.
+
+<Frame>
+  ![Plan table after index](/images/v26.1/ui_statement_plan_2.png)
+</Frame>
+
+### Diagnostics
+
+The **Diagnostics** tab allows you to activate and download diagnostics for a SQL statement fingerprint.
+
+<Note>
+The **Diagnostics** tab is only visible to [`admin` users](/docs/v26.1/security-reference/authorization#admin-role) or SQL users with the [`VIEWACTIVITY` system privilege](/docs/v26.1/security-reference/authorization#viewactivity). The tab is not visible for roles with the [`VIEWACTIVITYREDACTED` system privilege](/docs/v26.1/security-reference/authorization#viewactivityredacted) (or the legacy `VIEWACTIVITYREDACTED` [role option](/docs/v26.1/security-reference/authorization#role-options)) defined.
+</Note>
+
+When you activate diagnostics for a fingerprint, CockroachDB waits for the next SQL query that matches this fingerprint to be run on any node. On the next match, information about the SQL statement is written to a diagnostics bundle that you can download. This bundle consists of [statement traces](/docs/v26.1/show-trace) in various formats (including a JSON file that can be [imported to Jaeger](/docs/v26.1/query-behavior-troubleshooting#visualize-statement-traces-in-jaeger)), a physical query plan, execution statistics, and other information about the query. The bundle contents are identical to those produced by [`EXPLAIN ANALYZE (DEBUG)`](/docs/v26.1/explain-analyze#debug-option). You can use the information collected in the bundle to diagnose problematic SQL statements, such as [slow queries](/docs/v26.1/query-behavior-troubleshooting#query-is-always-slow). We recommend that you share the diagnostics bundle with our [support team](/docs/v26.1/support-resources), which can help you interpret the results.
+
+<Tip>
+Diagnostics will be collected a maximum of *N* times for a given activated fingerprint where *N* is the number of nodes in your cluster.
+</Tip>
+
+<Warning>
+Statement bundles can contain unredacted user data including histograms and placeholders that contain real data samples, statements that have real data which can contain PII information, and database schema that could be sensitive. Be careful when generating and sharing statement bundles. In CockroachDB v24.3.1 and later, `admin` users or SQL users with the `VIEWACTIVITY` system privilege can choose to redact user data from the [**Activate statement diagnostics**](/docs/v26.1/ui-statements-page#activate-diagnostics-collection-and-download-bundles) dialog. To allow or disallow a role from seeing [statements diagnostics bundles](/docs/v26.1/ui-statements-page#diagnostics), set the `VIEWACTIVITYREDACTED` [role option](/docs/v26.1/create-role#role-options). In CockroachDB v21.2.x, v22.1.0 to v22.1.16, v22.2.0 to v22.2.6, non-admin SQL users with an authenticated HTTP session could download statement diagnostic bundles given a bundle URL from the DB Console or the `EXPLAIN ANALYZE (DEBUG)` statement with a valid HTTP session cookie. This has been resolved in v22.1.17 and v22.2.7. For more information, see the [Technical Advisory A99049](/docs/advisories/a99049).
+</Warning>
+
+#### Activate diagnostics collection and download bundles
+
+<Frame>
+  ![Activate statement diagnostics](/images/v26.1/ui_activate_diagnostics.png)
+</Frame>
+
+<Warning>
+Collecting diagnostics has an impact on performance. All executions of the statement fingerprint will run slower until diagnostics are collected.
+</Warning>
+
+To activate diagnostics collection:
+
+1. Click the **Activate diagnostics** button. The **Activate statement diagnostics** dialog displays.
+2. Choose whether to:
+    1. trace and collect diagnostics at the default sampled rate of 1% (or specify a different rate) when the statement execution latency exceeds the default time of 100 milliseconds (or specify a different time), or
+    2. trace and collect diagnostics on the next statement execution.
+3. Choose whether to collect diagnostics:
+    1. For all plan gists, or
+    2. For a particular plan gist (select one from the dropdown list).
+4. Choose whether the request should expire after 15 minutes, or after a different time, or disable automatic expiration by deselecting the checkbox. Executions of the same statement fingerprint will run slower while diagnostics are activated, so it is recommended to set an expiration time if collecting according to a latency threshold.
+5. Choose to **Redact** sensitive user data, such as histograms, placeholders, statements, and traces that have real data which can contain PII information.
+6. Click **Activate**.
+
+When the statement fingerprint is executed according to the statement diagnostic options selected, a row with the activation time and collection status is added to the **Statement diagnostics** table.
+
+<Frame>
+  ![Statement diagnostics table](/images/v26.1/ui_statement_diagnostics.png)
+</Frame>
+
+The collection status values are:
+
+- **READY**: indicates that the diagnostics have been collected. To download the diagnostics bundle, click <InlineImage alt="Down arrow" src="/images/v26.1/ui-download-button.png" /> **Bundle (.zip)**.
+- **WAITING**: indicates that a SQL statement matching the fingerprint has not yet been recorded. To cancel diagnostics collection, click the **Cancel request** button.
+- **ERROR**: indicates that the attempt at diagnostics collection failed.
+
+#### View and download diagnostic bundles for all statement fingerprints
+
+Although fingerprints are periodically cleared from the Statements page, all diagnostics bundles are preserved. To view and download diagnostic bundles for all statement fingerprints, do one of the following:
+
+- On the **Diagnostics** tab for a statement fingerprint, click the **All statement diagnostics** link.
+- Click **Advanced Debug** in the left-hand navigation and click [Statement Diagnostics History](/docs/v26.1/ui-debug-pages#reports).
+
+Click <InlineImage alt="Down arrow" src="/images/v26.1/ui-download-button.png" /> **Bundle (.zip)** to download any diagnostics bundle.
+
+## Active Executions table
+
+Click **Columns** to select the columns to display in the table.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Statement Execution ID</td><td>The execution ID of the statement execution.</td></tr><tr><td>Statement Execution</td><td>The SQL statement that was executed.</td></tr><tr><td>Status</td><td>The status of the execution: <code>Preparing</code>, <code>Waiting</code>, or <code>Executing</code>.</td></tr><tr><td>Start Time (UTC)</td><td>The timestamp when the execution started.</td></tr><tr><td>Time Spent Waiting</td><td>The time the execution spent waiting and experiencing <a href="/docs/v26.1/performance-best-practices-overview#understanding-and-avoiding-transaction-contention">lock contention</a>.</td></tr><tr><td>Isolation Level</td><td>The <a href="/docs/v26.1/transactions#isolation-levels">isolation level</a> used for the statement execution.</td></tr><tr><td>Application</td><td>The name specified by the <a href="/docs/v26.1/show-vars#supported-variables"><code>application&#95;name</code></a> session setting.</td></tr></tbody></table>
+
+To view details of an active statement execution, click an execution ID in the **Statement Execution ID** column to open the [**Statement Execution** details page](#statement-execution-details-page).
+
+## Statement execution details page
+
+The statement execution details page provides the following details on the statement execution.
+
+- **Start Time (UTC)**: The timestamp when the execution started.
+- **Elapsed Time**: The time elapsed since the execution started.
+- **Status**: The status of the execution: `Preparing`, `Waiting`, or `Executing`.
+- **Full Scan**: Whether the execution performed a full scan of the table.
+- **Application Name**: The name specified by the [`application_name`](/docs/v26.1/show-vars#supported-variables) session setting.
+- **User Name**: The name of the user running the statement.
+- **Client Address**: The IP address and port of the client that opened the session in which the statement is running.
+- **Session ID**: Link to the [session](/docs/v26.1/ui-sessions-page) in which the transaction is running.
+- **Transaction Execution ID**: Link to the ID of the [transaction](/docs/v26.1/ui-transactions-page#active-executions-table) in which the statement is executing.
+
+If a statement execution is waiting, the statement execution details are followed by Contention Insights and details of the statement execution on which the blocked statement execution is waiting. For more information about contention, see [Understanding and avoiding transaction contention](/docs/v26.1/performance-best-practices-overview#understanding-and-avoiding-transaction-contention).
+
+<Frame>
+  ![Movr rides transactions](/images/v26.1/waiting-statement.png)
+</Frame>
+
+## See also
+
+- [Troubleshoot Query Behavior](/docs/v26.1/query-behavior-troubleshooting)
+- [Transaction retries](/docs/v26.1/transactions#transaction-retries)
+- [Optimize Statement Performance](/docs/v26.1/make-queries-fast)
+- [Support Resources](/docs/v26.1/support-resources)
+- [Raw Status Endpoints](/docs/v26.1/monitoring-and-alerting#raw-status-endpoints)
+- [Transactions Page](/docs/v26.1/ui-transactions-page)

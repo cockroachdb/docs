@@ -1,0 +1,125 @@
+---
+title: "Migrate from GeoJSON"
+old_description: "Learn how to migrate data from GeoJSON into a CockroachDB cluster."
+---
+
+CockroachDB supports efficiently storing and querying [spatial data](/docs/v26.1/export-spatial-data).
+
+This page has instructions for migrating data from the [GeoJSON](https://wikipedia.org/wiki/GeoJSON) format into CockroachDB using [`ogr2ogr`](https://gdal.org/programs/ogr2ogr) and [`IMPORT INTO`](/docs/v26.1/import-into).
+
+In the following example, you will import a data set with [the locations of underground storage tanks in the state of Vermont (USA)](https://anrweb.vt.gov/DEC/ERT/UST.aspx?ustfacilityid=96).
+
+## Before you begin
+
+To follow along with the example below, you will need the following prerequisites:
+
+- CockroachDB [installed](/docs/v26.1/install-cockroachdb) and [running](/docs/v26.1/start-a-local-cluster)
+- [`ogr2ogr`](https://gdal.org/programs/ogr2ogr)
+
+    <Note>
+    An `ogr2ogr` version of 3.1.0 or higher is required to generate data that can be imported into CockroachDB.
+    </Note>
+- [Python 3](https://www.python.org/)
+- The storage tank GeoJSON data:
+
+    ```shell
+    curl -o tanks.geojson https://geodata.vermont.gov/datasets/986155613c5743239e7b1980b45bbf36_162.geojson
+    ```
+
+## Step 1. Convert the GeoJSON data to CSV
+
+Convert the GeoJSON data to CSV using the following `ogr2ogr` command:
+
+```shell
+ogr2ogr -f CSV tanks.csv -lco GEOMETRY=AS_WKT tanks.geojson
+```
+
+You will import the CSV data into a CockroachDB table.
+
+## Step 2. Host the file where the cluster can access it
+
+Each node in the CockroachDB cluster needs to have access to the files being imported. There are several ways for the cluster to access the data; for a complete list of the types of storage [`IMPORT INTO`](/docs/v26.1/import-into) can pull from, see [Import file location](/docs/v26.1/import-into#import-file-location).
+
+For local testing, you can [start a local file server](/docs/v26.1/use-a-local-file-server). The following command will start a local file server listening on port 3000:
+
+```shell
+python3 -m http.server 3000
+```
+
+## Step 3. Prepare the CockroachDB database
+
+Create a database to hold the storage tank data:
+
+```shell
+cockroach sql --insecure
+```
+
+```sql
+CREATE DATABASE IF NOT EXISTS tanks;
+USE tanks;
+```
+
+## Step 4. Create a CockroachDB table
+
+To import the CSV data, you need to create a table with the necessary columns and data types.
+
+Convert the GeoJSON data to SQL using the following `ogr2ogr` command:
+
+```shell
+ogr2ogr -f PGDUMP tanks.sql -lco LAUNDER=NO -lco DROP_TABLE=OFF tanks.geojson
+```
+
+Create a CockroachDB table that corresponds to the DDL statements in `tanks.sql`:
+
+```sql
+CREATE TABLE underground_storage_tank (
+  wkb_geometry GEOMETRY(POINT) NULL,
+  "TankID" INT8 NULL,
+  "FacilityID" INT8 NULL,
+  "Name" VARCHAR NULL,
+  "TankStatus" VARCHAR NULL,
+  "TankCapacity" INT8 NULL,
+  "YearInstalled" VARCHAR NULL,
+  "LastInspDate" TIMESTAMPTZ NULL,
+  "Address" VARCHAR NULL,
+  "Town" VARCHAR NULL,
+  "State" VARCHAR NULL,
+  "Zip" VARCHAR NULL,
+  "DecLat" FLOAT8 NULL,
+  "DecLong" FLOAT8 NULL,
+  "DocLink" VARCHAR NULL,
+  "ActorName" VARCHAR NULL,
+  "PermitExpires" TIMESTAMPTZ NULL
+);
+```
+
+## Step 5. Import the CSV
+
+Since the file is being served from a local server and is formatted as CSV, you can import the data using the following [`IMPORT INTO`](/docs/v26.1/import-into) statement:
+
+```sql
+IMPORT INTO underground_storage_tank CSV DATA ('http://localhost:3000/tanks.csv') WITH skip = '1';
+```
+
+```text
+        job_id       |  status   | fraction_completed | rows | index_entries | bytes
+---------------------+-----------+--------------------+------+---------------+---------
+  980386389822701569 | succeeded |                  1 | 3256 |             0 | 904102
+```
+
+## See also
+
+- [`IMPORT INTO`](/docs/v26.1/import-into)
+- [Export Spatial Data](/docs/v26.1/export-spatial-data)
+- [Spatial tutorial](/docs/v26.1/spatial-tutorial)
+- [Migrate from OpenStreetMap](/docs/v26.1/migrate-from-openstreetmap)
+- [Migrate from Shapefiles](/docs/v26.1/migrate-from-shapefiles)
+- [Migrate from GeoPackage](/docs/v26.1/migrate-from-geopackage)
+- [Spatial indexes](/docs/v26.1/spatial-indexes)
+- [Migration Overview](/docs/stable/molt/migration-overview)
+- [Migrate from MySQL](/docs/stable/molt/migrate-to-cockroachdb?filters=mysql)
+- [Migrate from PostgreSQL](/docs/stable/molt/migrate-to-cockroachdb)
+- [Back Up and Restore Data](/docs/v26.1/take-full-and-incremental-backups)
+- [Use the Built-in SQL Client](/docs/v26.1/cockroach-sql)
+- [`cockroach` Commands Overview](/docs/v26.1/cockroach-commands)
+- [Using GeoServer with CockroachDB](/docs/v26.1/geoserver)

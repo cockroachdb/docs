@@ -1,0 +1,38 @@
+---
+title: "DROP PROCEDURE"
+old_description: "The DROP PROCEDURE statement drops a stored procedure."
+---
+
+import { DropProcedure } from "/snippets/syntax-diagrams/DropProcedure.jsx";
+
+The `DROP PROCEDURE` [statement](/docs/v26.1/sql-statements) drops a [stored procedure](/docs/v26.1/stored-procedures).
+
+## Required privileges
+
+To drop a procedure, a user must have the `DROP` [privilege](/docs/v26.1/security-reference/authorization#managing-privileges) on the procedure.
+
+## Synopsis
+
+<DropProcedure />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>proc&#95;name</code></td><td>The name of one of more procedures to drop.</td></tr><tr><td><code>routine&#95;param</code></td><td>An optional list of the procedure parameters.</td></tr></tbody></table>
+
+## Examples
+
+### Drop a stored procedure
+
+The following statement drops the [`delete_earliest_histories` example procedure](/docs/v26.1/stored-procedures#create-a-stored-procedure-using-pl-pgsql):
+
+```sql
+DROP PROCEDURE delete_earliest_histories;
+```
+
+## See also
+
+- [Stored Procedures](/docs/v26.1/stored-procedures)
+- [PL/pgSQL](/docs/v26.1/plpgsql)
+- [`CREATE PROCEDURE`](/docs/v26.1/create-procedure)
+- [`CALL`](/docs/v26.1/call)
+- [`ALTER PROCEDURE`](/docs/v26.1/alter-procedure)

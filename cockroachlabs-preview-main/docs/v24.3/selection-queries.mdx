@@ -1,0 +1,413 @@
+---
+title: "Selection Queries"
+old_description: "Selection queries can read and process data in CockroachDB."
+---
+
+import { SelectionQueries16 } from "/snippets/syntax-diagrams/SelectionQueries16.jsx";
+import { SelectionQueries17 } from "/snippets/syntax-diagrams/SelectionQueries17.jsx";
+import { SelectionQueries18 } from "/snippets/syntax-diagrams/SelectionQueries18.jsx";
+import { SelectionQueries19 } from "/snippets/syntax-diagrams/SelectionQueries19.jsx";
+import { SelectionQueries20 } from "/snippets/syntax-diagrams/SelectionQueries20.jsx";
+
+Selection queries read and process data in CockroachDB. They are more general than [simple `SELECT` clauses](/docs/v24.3/select-clause): they can group one or more [selection clauses](#selection-clauses) with [set operations](#set-operations) and can request a [specific ordering](/docs/v24.3/order-by) or [row limit](/docs/v24.3/limit-offset).
+
+Selection queries can occur:
+
+- At the top level of a query, like other [SQL statements](/docs/v24.3/sql-statements).
+- Between parentheses as a [subquery](/docs/v24.3/table-expressions#use-a-subquery).
+- As [operand to other statements](#use-selection-queries-with-other-statements) that take tabular data as input, for example [`INSERT`](/docs/v24.3/insert), [`UPSERT`](/docs/v24.3/upsert), [`CREATE TABLE AS`](/docs/v24.3/create-table-as), or [`ALTER... SPLIT AT`](/docs/v24.3/alter-table#split-at).
+
+## Synopsis
+
+<SelectionQueries16 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>common&#95;table&#95;expr</code></td><td>See <a href="/docs/v24.3/common-table-expressions">Common Table Expressions</a>.</td></tr><tr><td><code>select&#95;clause</code></td><td>A valid <a href="#selection-clauses">selection clause</a>, either simple or using <a href="#set-operations">set operations</a>.</td></tr><tr><td><code>sort&#95;clause</code></td><td>An optional <code>ORDER BY</code> clause. See <a href="/docs/v24.3/order-by">Ordering Query Results</a> for details.</td></tr><tr><td><code>limit&#95;clause</code></td><td>An optional <code>LIMIT</code> clause. See <a href="/docs/v24.3/limit-offset">Limit Query Results</a> for details.</td></tr><tr><td><code>offset&#95;clause</code></td><td>An optional <code>OFFSET</code> clause. See <a href="/docs/v24.3/limit-offset">Limit Query Results</a> for details.</td></tr><tr><td><code>for&#95;locking&#95;clause</code></td><td>The <code>FOR UPDATE</code> and <code>FOR SHARE</code> clauses are used to lock <code>SELECT</code> statements. For more information, see <a href="/docs/v24.3/select-for-update"><code>FOR UPDATE</code> and <code>FOR SHARE</code></a>.</td></tr></tbody></table>
+
+The optional `LIMIT` and `OFFSET` clauses can appear in any order, but if also present, must appear **after** `ORDER BY`.
+
+<Note>
+Because the `WITH`, `ORDER BY`, `LIMIT`, and `OFFSET` sub-clauses are all optional, any simple [selection clause](#selection-clauses) is also a valid selection query.
+</Note>
+
+## Selection clauses
+
+A *selection clause* is the main component of a selection query. A selection clause defines tabular data. There are four specific syntax forms:
+
+<table><thead><tr><th>Form</th><th>Usage</th></tr></thead><tbody><tr><td><a href="#select-clause"><code>SELECT</code></a></td><td>Load or compute tabular data from various sources. This is the most common selection clause.</td></tr><tr><td><a href="#values-clause"><code>VALUES</code></a></td><td>List tabular data by the client.</td></tr><tr><td><a href="#table-clause"><code>TABLE</code></a></td><td>Load tabular data from the database.</td></tr><tr><td><a href="#set-operations">Set operations</a></td><td>Combine tabular data from two or more selection clauses.</td></tr></tbody></table>
+
+<Note>
+To perform joins or other relational operations over selection clauses, use a [table expression](/docs/v24.3/table-expressions) and [convert it back](#composability) into a selection clause with [`TABLE`](#table-clause) or [`SELECT`](#select-clause).
+</Note>
+
+### Synopsis
+
+<SelectionQueries17 />
+
+### `VALUES` clause
+
+#### Syntax
+
+<SelectionQueries18 />
+
+A `VALUES` clause defines tabular data defined by the expressions listed within parentheses. Each parenthesis group defines a single row in the resulting table.
+
+The columns of the resulting table data have automatically generated names. When the `VALUES` clause is used as a [subquery](/docs/v24.3/subqueries), you can modify these names with [`AS`](/docs/v24.3/table-expressions#aliased-table-expressions).
+
+#### Example
+
+```sql
+> VALUES (1, 2, 3), (4, 5, 6);
+```
+
+```text
++---------+---------+---------+
+| column1 | column2 | column3 |
++---------+---------+---------+
+|       1 |       2 |       3 |
+|       4 |       5 |       6 |
++---------+---------+---------+
+```
+
+### `TABLE` clause
+
+#### Syntax
+
+<SelectionQueries19 />
+
+A `TABLE` clause reads tabular data from a specified table. The columns of the resulting table data are named after the schema of the table.
+
+`TABLE x` is equivalent to `SELECT * FROM x`.
+
+<Note>
+Any [table expression](/docs/v24.3/table-expressions) between parentheses is a valid operand for `TABLE`, not just [simple table or view names](/docs/v24.3/table-expressions#table-and-view-names).
+</Note>
+
+#### Example
+
+```sql
+> CREATE TABLE employee_copy AS TABLE employee;
+```
+
+This statement copies the content from table `employee` into a new table. However, the `TABLE` clause does not preserve the indexing, foreign key, or constraint and default information from the schema of the table it reads from, so in this example, the new table `employee_copy` will likely have a simpler schema than `employee`.
+
+Other examples:
+
+```sql
+> TABLE employee;
+```
+
+```sql
+> INSERT INTO employee_copy TABLE employee;
+```
+
+### `SELECT` clause
+
+See [Simple `SELECT` Clause](/docs/v24.3/select-clause) for more details.
+
+## Set operations
+
+Set operations combine data from two [selection clauses](#selection-clauses). They are valid as operand to other set operations or as main component in a selection query.
+
+### Synopsis
+
+<SelectionQueries20 />
+
+### Set operators
+
+SQL lets you compare the results of multiple [selection clauses](#selection-clauses). You can think of each of the set operators as representing a Boolean operator:
+
+- `UNION` = `OR`
+- `INTERSECT` = `AND`
+- `EXCEPT` = `NOT`
+
+By default, each of these comparisons displays only one copy of each value (similar to `SELECT DISTINCT`). However, to display duplicate values, you can add an `ALL` to the clause.
+
+### `UNION`: Combine two queries
+
+`UNION` combines the results of two queries into one result.
+
+```sql
+> SELECT name
+FROM accounts
+WHERE state_opened IN ('AZ', 'NY')
+UNION
+SELECT name
+FROM mortgages
+WHERE state_opened IN ('AZ', 'NY');
+```
+
+```text
++-----------------+
+|      name       |
++-----------------+
+| Naseem Joossens |
+| Ricarda Caron   |
+| Carola Dahl     |
+| Aygün Sanna     |
++-----------------+
+```
+
+To show duplicate rows, you can use `ALL`.
+
+```sql
+> SELECT name
+FROM accounts
+WHERE state_opened IN ('AZ', 'NY')
+UNION ALL
+SELECT name
+FROM mortgages
+WHERE state_opened IN ('AZ', 'NY');
+```
+
+```text
++-----------------+
+|      name       |
++-----------------+
+| Naseem Joossens |
+| Ricarda Caron   |
+| Carola Dahl     |
+| Naseem Joossens |
+| Aygün Sanna     |
+| Carola Dahl     |
++-----------------+
+```
+
+### `INTERSECT`: Retrieve intersection of two queries
+
+`INTERSECT` selects only values that are present in both query operands.
+
+```sql
+> SELECT name
+FROM accounts
+WHERE state_opened IN ('NJ', 'VA')
+INTERSECT
+SELECT name
+FROM mortgages;
+```
+
+```text
++-----------------+
+|      name       |
++-----------------+
+| Danijel Whinery |
+| Agar Archer     |
++-----------------+
+```
+
+### `EXCEPT`: Exclude one query's results from another
+
+`EXCEPT` selects values that are present in the first query operand but not the second.
+
+```sql
+> SELECT name
+FROM mortgages
+EXCEPT
+SELECT name
+FROM accounts;
+```
+
+```text
++------------------+
+|       name       |
++------------------+
+| Günay García     |
+| Karla Goddard    |
+| Cybele Seaver    |
++------------------+
+```
+
+## Order results
+
+The following sections provide examples. For more details, see [`ORDER BY`](/docs/v24.3/order-by).
+
+### Order retrieved rows by one column
+
+```sql
+> SELECT *
+FROM accounts
+WHERE balance BETWEEN 350 AND 500
+ORDER BY balance DESC;
+```
+
+```text
++----+--------------------+---------+----------+--------------+
+| id |        name        | balance |   type   | state_opened |
++----+--------------------+---------+----------+--------------+
+| 12 | Raniya Žitnik      |     500 | savings  | CT           |
+| 59 | Annibale Karga     |     500 | savings  | ND           |
+| 27 | Adelbert Ventura   |     500 | checking | IA           |
+| 86 | Theresa Slaski     |     500 | checking | WY           |
+| 73 | Ruadh Draganov     |     500 | checking | TN           |
+| 16 | Virginia Ruan      |     400 | checking | HI           |
+| 43 | Tahirih Malinowski |     400 | checking | MS           |
+| 50 | Dusan Mallory      |     350 | savings  | NV           |
++----+--------------------+---------+----------+--------------+
+```
+
+### Order retrieved rows by multiple columns
+
+Columns are sorted in the order you list them in `sortby_list`. For example, `ORDER BY a, b` sorts the rows by column `a` and then sorts rows with the same `a` value by their column `b` values.
+
+```sql
+> SELECT *
+FROM accounts
+WHERE balance BETWEEN 350 AND 500
+ORDER BY balance DESC, name ASC;
+```
+
+```text
++----+--------------------+---------+----------+--------------+
+| id |        name        | balance |   type   | state_opened |
++----+--------------------+---------+----------+--------------+
+| 27 | Adelbert Ventura   |     500 | checking | IA           |
+| 59 | Annibale Karga     |     500 | savings  | ND           |
+| 12 | Raniya Žitnik      |     500 | savings  | CT           |
+| 73 | Ruadh Draganov     |     500 | checking | TN           |
+| 86 | Theresa Slaski     |     500 | checking | WY           |
+| 43 | Tahirih Malinowski |     400 | checking | MS           |
+| 16 | Virginia Ruan      |     400 | checking | HI           |
+| 50 | Dusan Mallory      |     350 | savings  | NV           |
++----+--------------------+---------+----------+--------------+
+```
+
+## Limit row count
+
+You can reduce the number of results with `LIMIT`.
+
+```sql
+> SELECT id, name
+FROM accounts
+LIMIT 5;
+```
+
+```text
++----+------------------+
+| id |       name       |
++----+------------------+
+|  1 | Bjorn Fairclough |
+|  2 | Bjorn Fairclough |
+|  3 | Arturo Nevin     |
+|  4 | Arturo Nevin     |
+|  5 | Naseem Joossens  |
++----+------------------+
+```
+
+## Row-level locking for concurrency control with `SELECT FOR UPDATE`
+
+`SELECT... FOR UPDATE` exclusively locks the rows returned by a [selection query](/docs/v24.3/selection-queries), such that other transactions trying to access those rows must wait for the transaction that locked the rows to commit or rollback.
+
+`SELECT... FOR UPDATE` can be used to:
+
+- Strengthen the isolation of a [`READ COMMITTED`](/docs/v24.3/read-committed) transaction. If you need to read and later update a row within a transaction, use `SELECT... FOR UPDATE` to acquire an exclusive lock on the row. This guarantees data integrity between the transaction's read and write operations. For details, see [Locking reads](/docs/v24.3/read-committed#locking-reads).
+- Order [`SERIALIZABLE`](/docs/v24.3/demo-serializable) transactions by controlling concurrent access to one or more rows of a table. These other transactions are placed into a queue based on when they tried to read the values of the locked rows.
+
+    Because this queueing happens during the read operation, the [thrashing](https://wikipedia.org/wiki/Thrashing_(computer_science)) that would otherwise occur if multiple concurrently executing transactions attempt to `SELECT` the same data and then `UPDATE` the results of that selection is prevented. By preventing thrashing, `SELECT... FOR UPDATE` also prevents [transaction retries](/docs/v24.3/transactions#transaction-retries) that would otherwise occur due to [contention](/docs/v24.3/performance-best-practices-overview#transaction-contention).
+
+    As a result, using `SELECT... FOR UPDATE` leads to increased throughput and decreased tail latency for contended operations.
+
+Note that using `SELECT... FOR UPDATE` does not completely eliminate the chance of [serialization errors](/docs/v24.3/transaction-retry-error-reference). These errors can also arise due to [time uncertainty](/docs/v24.3/architecture/transaction-layer#transaction-conflicts). To eliminate the need for application-level retry logic, in addition to `SELECT FOR UPDATE` your application also needs to use a [driver that implements automatic retry handling](/docs/v24.3/transaction-retry-error-reference#client-side-retry-handling).
+
+<Note>
+By default, CockroachDB uses the `SELECT... FOR UPDATE` locking mechanism during the initial row scan performed in [`UPDATE`](/docs/v24.3/update) and [`UPSERT`](/docs/v24.3/upsert) statement execution. To turn off implicit `SELECT... FOR UPDATE` locking for `UPDATE` and `UPSERT` statements, set the `enable_implicit_select_for_update` [session variable](/docs/v24.3/set-vars) to `false`.
+</Note>
+
+For an example, see [`FOR UPDATE` and `FOR SHARE`](/docs/v24.3/select-for-update).
+
+## Composability
+
+[Selection clauses](#selection-clauses) are defined in the context of selection queries. [Table expressions](/docs/v24.3/table-expressions) are defined in the context of the `FROM` sub-clause of [`SELECT`](/docs/v24.3/select-clause). Nevertheless, you can integrate them with one another to form more complex queries or statements.
+
+### Use a selection clause as a selection query
+
+You can use a [selection clause](#selection-clauses) as a selection query with no change.
+
+For example, the construct [`SELECT * FROM accounts`](/docs/v24.3/select-clause) is a selection clause. It is also a valid selection query, and thus can be used as a stand-alone statement by appending a semicolon:
+
+```sql
+> SELECT * FROM accounts;
+```
+
+```text
++----+-----------------------+---------+----------+--------------+
+| id |         name          | balance |   type   | state_opened |
++----+-----------------------+---------+----------+--------------+
+|  1 | Bjorn Fairclough      |    1200 | checking | AL           |
+|  2 | Bjorn Fairclough      |    2500 | savings  | AL           |
+|  3 | Arturo Nevin          |     250 | checking | AK           |
+[ truncated ]
++----+-----------------------+---------+----------+--------------+
+```
+
+Likewise, the construct [`VALUES (1), (2), (3)`](#values-clause) is also a selection clause and thus can also be used as a selection query on its own:
+
+```sql
+> VALUES (1), (2), (3);
+```
+
+```text
++---------+
+| column1 |
++---------+
+|       1 |
+|       2 |
+|       3 |
++---------+
+(3 rows)
+```
+
+### Use a table expression as selection clause
+
+You can use a [table expression](/docs/v24.3/table-expressions) as a selection clause (and thus also a selection query) by prefixing it with `TABLE` or by using it as an operand to `SELECT * FROM`.
+
+For example, the [simple table name](/docs/v24.3/table-expressions#table-and-view-names) `customers` is a table expression, which designates all rows in that table. The expressions [`TABLE accounts`](/docs/v24.3/selection-queries#table-clause) and [`SELECT * FROM accounts`](/docs/v24.3/select-clause) are valid selection clauses.
+
+Likewise, the [SQL join expression](/docs/v24.3/joins) `customers c JOIN orders o ON c.id = o.customer_id` is a table expression. You can turn it into a valid selection clause, and thus a valid selection query as follows:
+
+```sql
+> TABLE (customers c JOIN orders o ON c.id = o.customer_id);
+```
+
+```sql
+> SELECT * FROM customers c JOIN orders o ON c.id = o.customer_id;
+```
+
+### Use a selection query as table expression
+
+You can use a selection query (or [selection clause](#selection-clauses)) as a [table expression](/docs/v24.3/table-expressions) by enclosing it between parentheses, which forms a [subquery](/docs/v24.3/table-expressions#use-a-subquery).
+
+For example, the following construct is a selection query, but is not a valid table expression:
+
+```sql
+> SELECT * FROM customers ORDER BY name LIMIT 5
+```
+
+To make it valid as operand to `FROM` or another table expression, you can enclose it between parentheses as follows:
+
+```sql
+> SELECT id FROM (SELECT * FROM customers ORDER BY name LIMIT 5);
+```
+
+```sql
+> SELECT o.id
+    FROM orders o
+    JOIN (SELECT * FROM customers ORDER BY name LIMIT 5) AS c
+      ON o.customer_id = c.id;
+```
+
+### Use selection queries with other statements
+
+Selection queries are also valid as operand in contexts that require tabular data.
+
+For example:
+
+<table><thead><tr><th>Statement</th><th>Example using <code>SELECT</code></th><th>Example using <code>VALUES</code></th><th>Example using <code>TABLE</code></th></tr></thead><tbody><tr><td><a href="/docs/v24.3/insert"><code>INSERT</code></a></td><td><code>INSERT INTO foo SELECT &#42; FROM bar</code></td><td><code>INSERT INTO foo VALUES (1), (2), (3)</code></td><td><code>INSERT INTO foo TABLE bar</code></td></tr><tr><td><a href="/docs/v24.3/upsert"><code>UPSERT</code></a></td><td><code>UPSERT INTO foo SELECT &#42; FROM bar</code></td><td><code>UPSERT INTO foo VALUES (1), (2), (3)</code></td><td><code>UPSERT INTO foo TABLE bar</code></td></tr><tr><td><a href="/docs/v24.3/create-table-as"><code>CREATE TABLE AS</code></a></td><td><code>CREATE TABLE foo AS SELECT &#42; FROM bar</code><code>CREATE TABLE foo AS VALUES (1),(2),(3)</code></td><td><code>CREATE TABLE foo AS TABLE bar</code></td><td></td></tr><tr><td><a href="/docs/v24.3/alter-table#split-at"><code>ALTER ... SPLIT AT</code></a></td><td><code>ALTER TABLE foo SPLIT AT SELECT &#42; FROM bar</code><code>ALTER TABLE foo SPLIT AT VALUES (1),(2),(3)</code></td><td><code>ALTER TABLE foo SPLIT AT TABLE bar</code></td><td></td></tr><tr><td>Subquery in a <a href="/docs/v24.3/table-expressions">table expression</a></td><td><code>SELECT &#42; FROM (SELECT &#42; FROM bar)</code></td><td><code>SELECT &#42; FROM (VALUES (1),(2),(3))</code></td><td><code>SELECT &#42; FROM (TABLE bar)</code></td></tr><tr><td>Subquery in a <a href="/docs/v24.3/scalar-expressions">scalar expression</a></td><td><code>SELECT &#42; FROM foo WHERE x IN (SELECT &#42; FROM bar)</code></td><td><code>SELECT &#42; FROM foo WHERE x IN (VALUES (1),(2),(3))</code></td><td><code>SELECT &#42; FROM foo WHERE x IN (TABLE bar)</code></td></tr></tbody></table>
+
+## See also
+
+- [Simple `SELECT` Clause](/docs/v24.3/select-clause)
+- [`SELECT FOR UPDATE`](/docs/v24.3/select-for-update)
+- [Table Expressions](/docs/v24.3/table-expressions)
+- [Ordering Query Results](/docs/v24.3/order-by)
+- [Limit Query Results](/docs/v24.3/limit-offset)

@@ -1,0 +1,132 @@
+---
+title: "Cluster Overview Page"
+old_description: "The Cluster Overview page of the DB Console displays key metrics about your cluster and individual nodes."
+---
+
+The **Cluster Overview** page of the DB Console displays key metrics about your cluster and individual nodes. These include:
+
+- Liveness status
+- Replication status
+- Uptime
+- Hardware usage
+
+Enable the [Node Map](#node-map) view for a visual representation of your cluster's geographic layout.
+
+## Cluster Overview panel
+
+Use the **Cluster Overview** panel to quickly assess the capacity and health of your cluster.
+
+<Frame>
+  ![DB Console cluster overview](/images/v24.1/ui-cluster-overview-panel.png)
+</Frame>
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Capacity Usage</td><td>- Used: The total disk space in use by CockroachDB data across all nodes. This excludes the disk space used by the Cockroach binary, operating system, and other system files.<br/><br/>- Usable: The total disk space usable by CockroachDB data across all nodes. This cannot exceed the store size, if one has been set using <a href="/docs/v24.1/cockroach-start#store"><code>--store</code></a>.<br/><br/>See <a href="#capacity-metrics">Capacity metrics</a> for details on how these values are calculated.</td></tr><tr><td>Node Status</td><td>- The number of <code>LIVE</code> nodes in the cluster.<br/><br/>- The number of <code>SUSPECT</code> nodes in the cluster. A node is considered suspect if its <a href="/docs/v24.1/cluster-setup-troubleshooting#node-liveness-issues">liveness status is unavailable</a> or the node is in the process of <a href="#decommissioned-nodes">decommissioning</a> or draining.<br/><br/>- The number of <code>DEAD</code> nodes in the cluster.</td></tr><tr><td>Replication Status</td><td><a></a><br/><br/>- The total number of <a href="/docs/v24.1/architecture/glossary#architecture-range">ranges</a> in the cluster.<br/><br/>- The number of <a href="/docs/v24.1/ui-replication-dashboard#review-of-cockroachdb-terminology">under-replicated ranges</a> in the cluster. A non-zero number indicates an unstable cluster.<br/><br/>- The number of <a href="/docs/v24.1/ui-replication-dashboard#review-of-cockroachdb-terminology">unavailable ranges</a> in the cluster. A non-zero number indicates an unstable cluster.</td></tr></tbody></table>
+
+### Capacity metrics
+
+The [Cluster Overview](#cluster-overview-panel), [Node List](#node-list), and [Node Map](#node-map) display **Capacity Usage** by the CockroachDB [store](/docs/v24.1/architecture/storage-layer) (the directory on each node where CockroachDB reads and writes its data) as a percentage of the disk space that is **usable** on the cluster, locality, or node.
+
+Usable disk space is constrained by the following:
+
+- The maximum store size, which may be specified using the [`--store`](/docs/v24.1/cockroach-start#store) flag when starting nodes. If no store size has been explicitly set, the actual disk capacity is used as the limit. This value is displayed on the Capacity graph in the [Storage dashboard](/docs/v24.1/ui-storage-dashboard#capacity).
+- Any disk space occupied by non-CockroachDB data. This may include the operating system and other system files, as well as the Cockroach binary itself.
+
+The DB Console thus calculates **usable** disk space as the sum of empty disk space, up to the value of the maximum store size, and disk space that is already being **used** by CockroachDB data.
+
+If a node is currently unavailable, the last-known capacity usage will be shown, and noted as stale.
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v24.1/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v24.1/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+For instructions on how to free up disk space as quickly as possible after dropping a table, see [How can I free up disk space that was used by a dropped table?](/docs/v24.1/operational-faqs#how-can-i-free-up-disk-space-when-dropping-a-table)
+
+## Node List
+
+The **Node List** groups nodes by locality. The lowest-level locality tier is used to organize the Node List. Hover over a locality to see all localities for the group of nodes.
+
+<Tip>
+We recommend [defining `--locality` flags when starting nodes](/docs/v24.1/cockroach-start#locality). CockroachDB uses locality to distribute replicas and mitigate [network latency](/docs/v24.1/ui-network-latency-page). Locality is also a prerequisite for enabling the [Node Map](#node-map).
+</Tip>
+
+### Node status
+
+Each locality and node is displayed with its current operational status.
+
+<table><thead><tr><th>Locality Status</th><th>Description</th></tr></thead><tbody><tr><td><code>LIVE</code></td><td>All nodes in the locality are live.</td></tr><tr><td><code>WARNING</code></td><td>Locality has 1 or more <code>SUSPECT</code>, <code>DECOMMISSIONING</code>, or <code>DEAD</code> nodes (red indicates a dead node).</td></tr></tbody></table>
+
+<table><thead><tr><th>Node Status</th><th>Description</th></tr></thead><tbody><tr><td><code>LIVE</code></td><td>Node is online and updating its liveness record.</td></tr><tr><td><code>SUSPECT</code></td><td>Node has an <a href="/docs/v24.1/cluster-setup-troubleshooting#node-liveness-issues">unavailable liveness status</a>.</td></tr><tr><td><code>DRAINING</code></td><td>Node is in the <a href="/docs/v24.1/node-shutdown#draining">process of draining</a> or has been drained.</td></tr><tr><td><code>DECOMMISSIONING</code></td><td>Node is in the <a href="/docs/v24.1/node-shutdown?filters=decommission#decommissioning">process of decommissioning</a>.</td></tr><tr><td><code>DEAD</code></td><td>Node has not <a href="/docs/v24.1/cluster-setup-troubleshooting#node-liveness-issues">updated its liveness record</a> for 5 minutes.</td></tr></tbody></table>
+
+<Note>
+Nodes are considered dead once they have not [updated their liveness record](/docs/v24.1/cluster-setup-troubleshooting#node-liveness-issues) for the duration of the `server.time_until_store_dead` [cluster setting](/docs/v24.1/cluster-settings) (5 minutes by default). At this point, CockroachDB begins to rebalance replicas from dead nodes to live nodes, using the unaffected replicas as sources.
+</Note>
+
+### Node details
+
+The following details are also shown.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Node Count</td><td>Number of nodes in the locality. <a href="/docs/v24.1/node-shutdown?filters=decommission">Decommissioned nodes</a> are not included in this count.</td></tr><tr><td>Nodes</td><td>Nodes are grouped by locality and displayed with their address and node ID (the ID is the number that is prepended by <code>n</code>). Click the address to view node statistics. Hover over a row and click <strong>Logs</strong> to see the node's log.</td></tr><tr><td>Uptime</td><td>Amount of time the node has been running.</td></tr><tr><td>Replicas</td><td>Number of replicas on the node or in the locality.</td></tr><tr><td>Capacity Usage</td><td>Percentage of usable disk space occupied by CockroachDB data on the node or in the locality. See <a href="#capacity-metrics">Capacity metrics</a>.</td></tr><tr><td>Memory Usage</td><td>Memory used by CockroachDB as a percentage of the total memory on the node or in the locality.</td></tr><tr><td>vCPUs</td><td>Number of vCPUs on the machine.</td></tr><tr><td>Version</td><td>Build tag of the CockroachDB version installed on the node.</td></tr></tbody></table>
+
+### Decommissioned nodes
+
+Nodes that have [completed decommissioning](/docs/v24.1/node-shutdown?filters=decommission#status-change) are listed in the table of **Recently Decommissioned Nodes**, indicating that they are removed from the cluster.
+
+<table><thead><tr><th>Node Status</th><th>Description</th></tr></thead><tbody><tr><td><code>NODE&#95;STATUS&#95;UNAVAILABLE</code></td><td>Node has been recently decommissioned.</td></tr><tr><td><code>NODE&#95;STATUS&#95;DECOMMISSIONED</code></td><td>Node has been decommissioned for the duration set by the <code>server.time&#95;until&#95;store&#95;dead</code><a href="/docs/v24.1/cluster-settings">cluster setting</a> (5 minutes by default).</td></tr></tbody></table>
+
+You can see the full history of decommissioned nodes by clicking **View all decommissioned nodes**.
+
+<Note>
+For details about the decommissioning process, see [Node Shutdown](/docs/v24.1/node-shutdown?filters=decommission#node-shutdown-sequence).
+</Note>
+
+## Node Map
+
+The **Node Map** visualizes the geographical configuration of your cluster. It requires that [`--locality` flags have been defined](/docs/v24.1/cockroach-start#locality) for your nodes.
+
+For guidance on enabling and configuring the node map, see [Enable the Node Map](/docs/v24.1/enable-node-map).
+
+<Frame>
+  ![DB Console Summary Panel](/images/v24.1/ui-node-map.png)
+</Frame>
+
+The Node Map uses the longitude and latitude of each locality to position the components on the map. The map is populated with [**locality components**](#locality-component) and [**node components**](#node-component).
+
+### Locality component
+
+A locality component represents capacity, CPU, and QPS metrics for a given locality.
+
+The map shows the components for the highest-level locality tier (e.g., region). You can click on the **Node Count** of a locality component to view any lower-level localities (e.g., availability zone).
+
+For details on how **Capacity Usage** is calculated, see [Capacity metrics](#capacity-metrics).
+
+<Frame>
+  ![DB Console Summary Panel](/images/v24.1/ui-region-component.png)
+</Frame>
+
+<Note>
+On multi-core systems, the displayed CPU usage can be greater than 100%. Full utilization of 1 core is considered as 100% CPU usage. If you have *n* cores, then CPU usage can range from 0% (indicating an idle system) to (*n* * 100)% (indicating full utilization).
+</Note>
+
+### Node component
+
+A node component represents capacity, CPU, and QPS metrics for a given node.
+
+Node components are accessed by clicking on the **Node Count** of the lowest-level [locality component](#locality-component).
+
+For details on how **Capacity Usage** is calculated, see [Capacity metrics](#capacity-metrics).
+
+<Frame>
+  ![DB Console Summary Panel](/images/v24.1/ui-node-components.png)
+</Frame>
+
+<Note>
+On multi-core systems, the displayed CPU usage can be greater than 100%. Full utilization of 1 core is considered as 100% CPU usage. If you have *n* cores, then CPU usage can range from 0% (indicating an idle system) to (*n* * 100)% (indicating full utilization).
+</Note>
+
+## See also
+
+- [Production Checklist](/docs/v24.1/recommended-production-settings)
+- [Locality](/docs/v24.1/cockroach-start#locality)
+- [Troubleshooting Overview](/docs/v24.1/troubleshooting-overview)
+- [Support Resources](/docs/v24.1/support-resources)
+- [Raw Status Endpoints](/docs/v24.1/monitoring-and-alerting#raw-status-endpoints)

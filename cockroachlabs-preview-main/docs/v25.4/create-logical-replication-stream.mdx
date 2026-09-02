@@ -1,0 +1,96 @@
+---
+title: "CREATE LOGICAL REPLICATION STREAM"
+old_description: "The CREATE LOGICAL REPLICATION STREAM statement starts a new LDR stream."
+---
+
+<Note>
+Logical data replication is only supported in CockroachDB self-hosted clusters.
+</Note>
+
+The `CREATE LOGICAL REPLICATION STREAM` statement starts [**logical data replication (LDR)**](/docs/v25.4/logical-data-replication-overview) that runs between a source and destination cluster in an active-active setup.
+
+This page is a reference for the `CREATE LOGICAL REPLICATION STREAM` SQL statement, which includes information on its parameters and possible options. For a step-by-step guide to set up LDR, refer to the [Set Up Logical Data Replication](/docs/v25.4/set-up-logical-data-replication) page.
+
+<Tip>
+If the table you're replicating does not contain [user-defined types](/docs/v25.4/enum), we recommend using the [`CREATE LOGICALLY REPLICATED`](/docs/v25.4/create-logically-replicated) syntax that provides a fast, offline initial scan and automatic table setup on the destination cluster.
+</Tip>
+
+## Required privileges
+
+`CREATE LOGICAL REPLICATION STREAM` creates a one-way LDR stream only. To achieve bidirectional replication, you must manually create two separate streams, one in each direction, with the required privileges set on both clusters.
+
+LDR from cluster A to B represents a one-way stream from a source to a destination cluster. LDR from cluster B to A is the reverse stream for a bidirectional setup.
+
+To run the `CREATE LOGICAL REPLICATION STREAM` statement to create an LDR stream, the following privileges are required:
+
+<table><thead><tr><th>LDR direction</th><th>Cluster</th><th>User role</th><th>Required privilege</th></tr></thead><tbody><tr><td>A ➔ B</td><td>A</td><td>User in the LDR connection string.</td><td><code>REPLICATIONSOURCE</code></td></tr><tr><td>A ➔ B</td><td>B</td><td>User running the command.</td><td><code>REPLICATIONDEST</code></td></tr><tr><td>B ➔ A</td><td>B</td><td>User in the LDR connection string.</td><td><code>REPLICATIONSOURCE</code></td></tr><tr><td>B ➔ A</td><td>A</td><td>User running the command.</td><td><code>REPLICATIONDEST</code></td></tr></tbody></table>
+
+Grant the privilege at the table or [system level](/docs/v25.4/grant#grant-system-level-privileges-on-the-entire-cluster) with the [`GRANT`](/docs/v25.4/grant) statement to a [user or a role](/docs/v25.4/security-reference/authorization#users-and-roles):
+
+```sql
+GRANT REPLICATIONSOURCE ON TABLE database.public.tablename TO user/role;
+```
+
+<Note>
+As of v25.2, the [`REPLICATION` system privilege](/docs/v25.4/security-reference/authorization#privileges) is **deprecated** and will be removed in a future release. Use `REPLICATIONSOURCE` and `REPLICATIONDEST` for authorization at the table level.
+</Note>
+
+## Synopsis
+
+xml version="1.0" encoding="UTF-8"?
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v25.4/create-logical-replication-stream/syntax-diagram-49e004da8960.svg)
+</Frame>
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>db&#95;object&#95;name</code></td><td>The fully qualified name of the table on the source or destination cluster. Refer to <a href="#examples">Examples</a>.</td></tr><tr><td><code>logical&#95;replication&#95;resources&#95;list</code></td><td>A list of the fully qualified table names on the source or destination cluster to include in the LDR stream. Refer to the <a href="#multiple-tables">LDR with multiple tables</a> example.</td></tr><tr><td><code>source&#95;connection&#95;string</code></td><td>The connection string to the source cluster. Use an <a href="/docs/v25.4/create-external-connection">external connection</a> to store the source cluster's connection URI. To start LDR, you run <code>CREATE LOGICAL REPLICATION STREAM</code> from the destination cluster.</td></tr><tr><td><code>logical&#95;replication&#95;options</code></td><td>Options to modify the behavior of the LDR stream.</td></tr></tbody></table>
+
+## Options
+
+<table><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td><code>cursor</code></td><td>Emits any changes after the specified timestamp. LDR will not perform an initial backfill with the <code>cursor</code> option, it will stream any changes after the specified timestamp. The LDR job will encounter an error if you specify a <code>cursor</code> timestamp that is before the configured <a href="/docs/v25.4/architecture/storage-layer#garbage-collection">garbage collection</a> window for that table. <strong>Warning:</strong> Apply the <code>cursor</code> option carefully to LDR streams. Using a timestamp in error could cause data loss.</td></tr><tr><td><a></a><code>discard</code></td><td>(<a href="/docs/v25.4/logical-data-replication-overview#use-cases"><strong>Unidirectional LDR only</strong></a>) Ignore <a href="/docs/v25.4/row-level-ttl">TTL deletes</a> in an LDR stream with <code>discard = ttl-deletes</code>. <strong>Note</strong>: To ignore row-level TTL deletes in an LDR stream, it is necessary to set the <a href="/docs/v25.4/row-level-ttl#ttl-storage-parameters"><code>ttl&#95;disable&#95;changefeed&#95;replication</code></a> storage parameter on the source table. Refer to the <a href="#ignore-row-level-ttl-deletes">Ignore row-level TTL deletes</a> example.</td></tr><tr><td><code>label</code></td><td>Tracks LDR metrics at the job level. Add a user-specified string with <code>label</code>. Refer to <a href="/docs/v25.4/logical-data-replication-monitoring#metrics-labels">Metrics labels</a>.</td></tr></tbody></table>
+
+## Bidirectional LDR
+
+*Bidirectional* LDR consists of two clusters with two LDR jobs running in opposite directions between the clusters. If you're setting up [bidirectional LDR](/docs/v25.4/logical-data-replication-overview#use-cases), both clusters will act as a source and a destination in the respective LDR jobs.
+
+LDR supports starting with two empty tables, or one non-empty table. LDR does **not** support starting with two non-empty tables. When you set up bidirectional LDR, if you're starting with one non-empty table, start the first LDR job from empty to non-empty table. Therefore, you would run `CREATE LOGICAL REPLICATION STREAM` from the destination cluster where the non-empty table exists.
+
+## Examples
+
+To start LDR, you must run the `CREATE LOGICAL REPLICATION STREAM` statement from the **destination** cluster. Use the [fully qualified table name(s)](/docs/v25.4/sql-name-resolution#how-name-resolution-works). The following examples show statement usage with different options and use cases.
+
+### Start an LDR stream
+
+There are some tradeoffs between enabling one table per LDR job versus multiple tables in one LDR job. Multiple tables in one LDR job can be easier to operate. For example, if you pause and resume the single job, LDR will stop and resume for all the tables. However, the most granular level observability will be at the job level. One table in one LDR job will allow for table-level observability.
+
+#### Single table
+
+```sql
+CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name};
+```
+
+#### Multiple tables
+
+```sql
+CREATE LOGICAL REPLICATION STREAM FROM TABLES ({database.public.table_name},{database.public.table_name},...)  ON 'external://{source_external_connection}' INTO TABLES ({database.public.table_name},{database.public.table_name},...);
+```
+
+### Ignore row-level TTL deletes
+
+If you would like to ignore [row-level TTL](/docs/v25.4/row-level-ttl) deletes in a **unidirectional** LDR stream, set the [`ttl_disable_changefeed_replication` storage parameter](/docs/v25.4/row-level-ttl#ttl-storage-parameters) on the table. On the **source** cluster, alter the table to set the table storage parameter:
+
+```sql
+ALTER TABLE {table_name} SET (ttl_disable_changefeed_replication = 'true');
+```
+
+When you start LDR on the **destination cluster**, include the [`discard = ttl-deletes` option](#discard-ttl-deletes-option) in the statement:
+
+```sql
+CREATE LOGICAL REPLICATION STREAM FROM TABLE {database.public.table_name} ON 'external://{source_external_connection}' INTO TABLE {database.public.table_name} WITH discard = ttl-deletes;
+```
+
+## See also
+
+- [`SHOW LOGICAL REPLICATION JOBS`](/docs/v25.4/show-logical-replication-jobs)

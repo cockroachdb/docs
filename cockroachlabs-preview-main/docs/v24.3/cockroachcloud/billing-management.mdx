@@ -1,0 +1,20 @@
+---
+title: "Billing Management"
+old_description: "Manage billing for your organization"
+---
+
+import BillingManagement from "/snippets/cockroachcloud/billing-management.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<BillingManagement />

@@ -1,0 +1,651 @@
+---
+title: "Build a Simple CRUD Node.js App with CockroachDB and the node-postgres Driver"
+old_description: "Learn how to use CockroachDB from a simple CRUD application that uses the node-postgres driver."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v25.2/build-a-nodejs-app-with-cockroachdb"
+  items={[
+    {
+      title: "Use node-postgres",
+      href: "/docs/v25.2/build-a-nodejs-app-with-cockroachdb",
+    },
+    {
+      title: "Use Sequelize",
+      href: "/docs/v25.2/build-a-nodejs-app-with-cockroachdb-sequelize",
+    },
+    {
+      title: "Use Knex.js",
+      href: "/docs/v25.2/build-a-nodejs-app-with-cockroachdb-knexjs",
+    },
+    {
+      title: "Use Prisma",
+      href: "/docs/v25.2/build-a-nodejs-app-with-cockroachdb-prisma",
+    },
+    {
+      title: "Use TypeORM",
+      href: "/docs/v25.2/build-a-typescript-app-with-cockroachdb",
+    },
+  ]}
+/>
+
+This tutorial shows you how build a simple Node.js application with CockroachDB and the [node-postgres driver](https://node-postgres.com/).
+
+<Note>
+This tutorial assumes you are running under [`SERIALIZABLE`](/docs/v25.2/demo-serializable) isolation, which requires client-side retry handling for [serialization errors](/docs/v25.2/transaction-retry-error-reference).
+</Note>
+
+## Step 1. Start CockroachDB
+
+<Tabs>
+<Tab title="Use CockroachDB Basic">
+
+### Choose your installation method
+
+You can install a CockroachDB Basic cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or `ccloud`, a command-line interface (CLI) tool.
+
+<Tabs>
+<Tab title="Use the Cloud Console (GUI)">
+
+### Create a free cluster
+
+<Note>
+Organizations without billing information on file can only create one CockroachDB Basic cluster.
+</Note>
+
+1. If you haven't already, [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?referralId=docs_node_postgres).
+2. [Log in](https://cockroachlabs.cloud/) to your CockroachDB Cloud account.
+3. On the **Clusters** page, click **Create cluster**.
+4. On the **Select a plan** page, select **Basic**.
+5. On the **Cloud &amp; Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section.
+6. In the **Regions** section, select a region for the cluster. Refer to [CockroachDB Cloud Regions](/docs/cockroachcloud/regions) for the regions where CockroachDB Basic clusters can be deployed. To create a multi-region cluster, click **Add region** and select additional regions.
+7. Click **Next: Capacity**.
+8. On the **Capacity** page, select **Start for free**. Click **Next: Finalize**.
+9. On the **Finalize** page, click **Create cluster**.
+
+    Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.
+
+### Create a SQL user
+
+The **Create SQL user** dialog allows you to create a new SQL user and password.
+
+1. Enter a username in the **SQL user** field or use the one provided by default.
+2. Click **Generate &amp; save password**.
+3. Copy the generated password and save it in a secure location.
+4. Click **Next**.
+
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Manage SQL users on a cluster](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster).
+
+### Get the connection string
+
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **General connection string** from the **Select option** dropdown.
+2. Open the **General connection string** section, then copy the connection string provided and save it in a secure location.
+
+    The sample application used in this tutorial uses system CA certificates for server certificate verification, so you can skip the **Download CA Cert** instructions.
+
+    <Note>
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
+    </Note>
+
+</Tab>
+<Tab title="Use ccloud (CLI)">
+
+Follow these steps to create a CockroachDB Basic cluster using the `ccloud` CLI tool.
+
+<Note>
+The `ccloud` CLI tool is in Preview.
+</Note>
+
+### Install `ccloud`
+
+Choose your OS:
+
+<Tabs>
+<Tab title="Mac">
+
+You can install `ccloud` using either Homebrew or by downloading the binary.
+
+### Use Homebrew
+
+1. [Install Homebrew](http://brew.sh/).
+2. Install using the `ccloud` tap:
+
+    ```shell
+    brew install cockroachdb/tap/ccloud
+    ```
+
+### Download the binary
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-amd64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+Use the ARM 64 binary if you have an M-series Mac:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-arm64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Linux">
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.6.12.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Windows">
+
+In a PowerShell window, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud/ccloud_windows-amd64_0.6.12.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force ccloud/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
+```
+
+</Tab>
+</Tabs>
+
+### Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrieve the connection string.
+
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB Basic cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+
+```shell
+ccloud quickstart
+```
+
+The `ccloud quickstart` command will open a browser window to log you in to CockroachDB Cloud. If you are new to CockroachDB Cloud, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
+
+The `ccloud quickstart` command will prompt you for the cluster name, cloud provider, and cloud provider region, then ask if you want to connect to the cluster. Each prompt has default values that you can select, or change if you want a different option.
+
+Select **General connection string**, then copy the connection string displayed and save it in a secure location. The connection string is the line starting `postgresql://`.
+
+```text
+? How would you like to connect? General connection string
+Retrieving cluster info: succeeded
+ Downloading cluster cert to /Users/maxroach/.postgresql/root.crt: succeeded
+postgresql://maxroach:ThisIsNotAGoodPassword@blue-dog-147.6wr.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=%2FUsers%2Fmaxroach%2F.postgresql%2Froot.crt
+```
+
+</Tab>
+</Tabs>
+
+## Step 2. Get the code
+
+Clone the code's GitHub repo:
+
+```shell
+$ git clone https://github.com/cockroachlabs/example-app-node-postgres
+```
+
+The project has the following directory structure:
+
+```text
+├── README.md
+├── app.js
+├── dbinit.sql
+└── package.json
+```
+
+The `dbinit.sql` file initializes the database schema that the application uses:
+
+```sql
+CREATE TABLE accounts (
+    id UUID PRIMARY KEY,
+    balance INT8
+);
+```
+
+The `app.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations:
+
+```js
+const { Pool } = require("pg");
+const { v4: uuidv4 } = require("uuid");
+
+var accountValues = Array(3);
+
+// Wrapper for a transaction.  This automatically re-calls the operation with
+// the client as an argument as long as the database server asks for
+// the transaction to be retried.
+async function retryTxn(n, max, client, operation, callback) {
+  const backoffInterval = 100; // millis
+  const maxTries = 5;
+  let tries = 0;
+
+  while (true) {
+    await client.query('BEGIN;');
+
+    tries++;
+
+    try {
+      const result = await operation(client, callback);
+      await client.query('COMMIT;');
+      return result;
+    } catch (err) {
+      await client.query('ROLLBACK;');
+
+      if (err.code !== '40001' || tries == maxTries) {
+        throw err;
+      } else {
+        console.log('Transaction failed. Retrying.');
+        console.log(err.message);
+        await new Promise(r => setTimeout(r, tries * backoffInterval));
+      }
+    }
+  }
+}
+
+// This function is called within the first transaction. It inserts some initial values into the "accounts" table.
+async function initTable(client, callback) {
+  let i = 0;
+  while (i < accountValues.length) {
+    accountValues[i] = await uuidv4();
+    i++;
+  }
+
+  const insertStatement =
+    "INSERT INTO accounts (id, balance) VALUES ($1, 1000), ($2, 250), ($3, 0);";
+  await client.query(insertStatement, accountValues, callback);
+
+  const selectBalanceStatement = "SELECT id, balance FROM accounts;";
+  await client.query(selectBalanceStatement, callback);
+}
+
+// This function updates the values of two rows, simulating a "transfer" of funds.
+async function transferFunds(client, callback) {
+  const from = accountValues[0];
+  const to = accountValues[1];
+  const amount = 100;
+  const selectFromBalanceStatement =
+    "SELECT balance FROM accounts WHERE id = $1;";
+  const selectFromValues = [from];
+  await client.query(
+    selectFromBalanceStatement,
+    selectFromValues,
+    (err, res) => {
+      if (err) {
+        return callback(err);
+      } else if (res.rows.length === 0) {
+        console.log("account not found in table");
+        return callback(err);
+      }
+      var acctBal = res.rows[0].balance;
+      if (acctBal < amount) {
+        return callback(new Error("insufficient funds"));
+      }
+    }
+  );
+
+  const updateFromBalanceStatement =
+    "UPDATE accounts SET balance = balance - $1 WHERE id = $2;";
+  const updateFromValues = [amount, from];
+  await client.query(updateFromBalanceStatement, updateFromValues, callback);
+
+  const updateToBalanceStatement =
+    "UPDATE accounts SET balance = balance + $1 WHERE id = $2;";
+  const updateToValues = [amount, to];
+  await client.query(updateToBalanceStatement, updateToValues, callback);
+
+  const selectBalanceStatement = "SELECT id, balance FROM accounts;";
+  await client.query(selectBalanceStatement, callback);
+}
+
+// This function deletes the third row in the accounts table.
+async function deleteAccounts(client, callback) {
+  const deleteStatement = "DELETE FROM accounts WHERE id = $1;";
+  await client.query(deleteStatement, [accountValues[2]], callback);
+
+  const selectBalanceStatement = "SELECT id, balance FROM accounts;";
+  await client.query(selectBalanceStatement, callback);
+}
+
+// Run the transactions in the connection pool
+(async () => {
+  const connectionString = process.env.DATABASE_URL;
+  const pool = new Pool({
+    connectionString,
+    application_name: "$ docs_simplecrud_node-postgres",
+  });
+
+  // Connect to database
+  const client = await pool.connect();
+
+  // Callback
+  function cb(err, res) {
+    if (err) throw err;
+
+    if (res.rows.length > 0) {
+      console.log("New account balances:");
+      res.rows.forEach((row) => {
+        console.log(row);
+      });
+    }
+  }
+
+  // Initialize table in transaction retry wrapper
+  console.log("Initializing accounts table...");
+  await retryTxn(0, 15, client, initTable, cb);
+
+  // Transfer funds in transaction retry wrapper
+  console.log("Transferring funds...");
+  await retryTxn(0, 15, client, transferFunds, cb);
+
+  // Delete a row in transaction retry wrapper
+  console.log("Deleting a row...");
+  await retryTxn(0, 15, client, deleteAccounts, cb);
+
+  // Exit program
+  process.exit();
+})().catch((err) => console.log(err.stack));
+```
+
+All of the database operations are wrapped in a helper function named `retryTxn`. This function attempts to commit statements in the context of an explicit transaction. If a [retry error](/docs/v25.2/transaction-retry-error-reference) is thrown, the wrapper will retry committing the transaction, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
+
+## Step 3. Initialize the database
+
+1. Navigate to the `example-app-node-postgres` directory:
+
+    ```shell
+    $ cd example-app-node-postgres
+    ```
+2. Set the `DATABASE_URL` environment variable to the connection string for your cluster:
+
+    ```shell
+    export DATABASE_URL="{connection-string}"
+    ```
+
+    Where `{connection-string}` is the connection string you copied earlier.
+3. To initialize the example database, use the [`cockroach sql`](/docs/v25.2/cockroach-sql) command to execute the SQL statements in the `dbinit.sql` file:
+
+    ```shell
+    cat dbinit.sql | cockroach sql --url $DATABASE_URL
+    ```
+
+    The SQL statement in the initialization file should execute:
+
+    ```text
+    CREATE TABLE
+
+    Time: 102ms
+    ```
+
+</Tab>
+<Tab title="Use a Local Cluster">
+
+1. If you haven't already, [download the CockroachDB binary](/docs/v25.2/install-cockroachdb).
+2. Run the [`cockroach start-single-node`](/docs/v25.2/cockroach-start-single-node) command:
+
+    ```shell
+    $ cockroach start-single-node --advertise-addr 'localhost' --insecure
+    ```
+
+    This starts an insecure, single-node cluster.
+3. Take note of the following connection information in the SQL shell welcome text:
+
+    ```text
+    CockroachDB node starting at 2021-08-30 17:25:30.06524 +0000 UTC (took 4.3s)
+    build:               CCL v21.1.6 @ 2021/07/20 15:33:43 (go1.15.11)
+    webui:               http://localhost:8080
+    sql:                 postgresql://root@localhost:26257?sslmode=disable
+    ```
+
+    You'll use the `sql` connection string to connect to the cluster later in this tutorial.
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+## Step 2. Get the code
+
+Clone the code's GitHub repo:
+
+```shell
+$ git clone https://github.com/cockroachlabs/example-app-node-postgres
+```
+
+The project has the following directory structure:
+
+```text
+├── README.md
+├── app.js
+├── dbinit.sql
+└── package.json
+```
+
+The `dbinit.sql` file initializes the database schema that the application uses:
+
+```sql
+CREATE TABLE accounts (
+    id UUID PRIMARY KEY,
+    balance INT8
+);
+```
+
+The `app.js` file contains the code for `INSERT`, `SELECT`, `UPDATE`, and `DELETE` SQL operations:
+
+```js
+const { Pool } = require("pg");
+const { v4: uuidv4 } = require("uuid");
+
+var accountValues = Array(3);
+
+// Wrapper for a transaction.  This automatically re-calls the operation with
+// the client as an argument as long as the database server asks for
+// the transaction to be retried.
+async function retryTxn(n, max, client, operation, callback) {
+  const backoffInterval = 100; // millis
+  const maxTries = 5;
+  let tries = 0;
+
+  while (true) {
+    await client.query('BEGIN;');
+
+    tries++;
+
+    try {
+      const result = await operation(client, callback);
+      await client.query('COMMIT;');
+      return result;
+    } catch (err) {
+      await client.query('ROLLBACK;');
+
+      if (err.code !== '40001' || tries == maxTries) {
+        throw err;
+      } else {
+        console.log('Transaction failed. Retrying.');
+        console.log(err.message);
+        await new Promise(r => setTimeout(r, tries * backoffInterval));
+      }
+    }
+  }
+}
+
+// This function is called within the first transaction. It inserts some initial values into the "accounts" table.
+async function initTable(client, callback) {
+  let i = 0;
+  while (i < accountValues.length) {
+    accountValues[i] = await uuidv4();
+    i++;
+  }
+
+  const insertStatement =
+    "INSERT INTO accounts (id, balance) VALUES ($1, 1000), ($2, 250), ($3, 0);";
+  await client.query(insertStatement, accountValues, callback);
+
+  const selectBalanceStatement = "SELECT id, balance FROM accounts;";
+  await client.query(selectBalanceStatement, callback);
+}
+
+// This function updates the values of two rows, simulating a "transfer" of funds.
+async function transferFunds(client, callback) {
+  const from = accountValues[0];
+  const to = accountValues[1];
+  const amount = 100;
+  const selectFromBalanceStatement =
+    "SELECT balance FROM accounts WHERE id = $1;";
+  const selectFromValues = [from];
+  await client.query(
+    selectFromBalanceStatement,
+    selectFromValues,
+    (err, res) => {
+      if (err) {
+        return callback(err);
+      } else if (res.rows.length === 0) {
+        console.log("account not found in table");
+        return callback(err);
+      }
+      var acctBal = res.rows[0].balance;
+      if (acctBal < amount) {
+        return callback(new Error("insufficient funds"));
+      }
+    }
+  );
+
+  const updateFromBalanceStatement =
+    "UPDATE accounts SET balance = balance - $1 WHERE id = $2;";
+  const updateFromValues = [amount, from];
+  await client.query(updateFromBalanceStatement, updateFromValues, callback);
+
+  const updateToBalanceStatement =
+    "UPDATE accounts SET balance = balance + $1 WHERE id = $2;";
+  const updateToValues = [amount, to];
+  await client.query(updateToBalanceStatement, updateToValues, callback);
+
+  const selectBalanceStatement = "SELECT id, balance FROM accounts;";
+  await client.query(selectBalanceStatement, callback);
+}
+
+// This function deletes the third row in the accounts table.
+async function deleteAccounts(client, callback) {
+  const deleteStatement = "DELETE FROM accounts WHERE id = $1;";
+  await client.query(deleteStatement, [accountValues[2]], callback);
+
+  const selectBalanceStatement = "SELECT id, balance FROM accounts;";
+  await client.query(selectBalanceStatement, callback);
+}
+
+// Run the transactions in the connection pool
+(async () => {
+  const connectionString = process.env.DATABASE_URL;
+  const pool = new Pool({
+    connectionString,
+    application_name: "$ docs_simplecrud_node-postgres",
+  });
+
+  // Connect to database
+  const client = await pool.connect();
+
+  // Callback
+  function cb(err, res) {
+    if (err) throw err;
+
+    if (res.rows.length > 0) {
+      console.log("New account balances:");
+      res.rows.forEach((row) => {
+        console.log(row);
+      });
+    }
+  }
+
+  // Initialize table in transaction retry wrapper
+  console.log("Initializing accounts table...");
+  await retryTxn(0, 15, client, initTable, cb);
+
+  // Transfer funds in transaction retry wrapper
+  console.log("Transferring funds...");
+  await retryTxn(0, 15, client, transferFunds, cb);
+
+  // Delete a row in transaction retry wrapper
+  console.log("Deleting a row...");
+  await retryTxn(0, 15, client, deleteAccounts, cb);
+
+  // Exit program
+  process.exit();
+})().catch((err) => console.log(err.stack));
+```
+
+All of the database operations are wrapped in a helper function named `retryTxn`. This function attempts to commit statements in the context of an explicit transaction. If a [retry error](/docs/v25.2/transaction-retry-error-reference) is thrown, the wrapper will retry committing the transaction, with [exponential backoff](https://wikipedia.org/wiki/Exponential_backoff), until the maximum number of retries is reached (by default, 15).
+
+## Step 3. Initialize the database
+
+1. Navigate to the `example-app-node-postgres` directory:
+
+    ```shell
+    $ cd example-app-node-postgres
+    ```
+2. Set the `DATABASE_URL` environment variable to the connection string for your cluster:
+
+    ```shell
+    export DATABASE_URL="postgresql://root@localhost:26257?sslmode=disable"
+    ```
+3. To initialize the example database, use the [`cockroach sql`](/docs/v25.2/cockroach-sql) command to execute the SQL statements in the `dbinit.sql` file:
+
+    ```shell
+    cat dbinit.sql | cockroach sql --url $DATABASE_URL
+    ```
+
+    The SQL statement in the initialization file should execute:
+
+    ```text
+    CREATE TABLE
+
+    Time: 102ms
+    ```
+
+</Tab>
+</Tabs>
+
+## Step 4. Run the code
+
+1. Install the app requirements:
+
+    ```shell
+    $ npm install
+    ```
+2. Run the app:
+
+    ```shell
+    $ node app.js
+    ```
+
+    The app uses the connection string saved to the `DATABASE_URL` environment variable to connect to your cluster and execute the code.
+
+    The output should look like this:
+
+    ```text
+    Initializing accounts table...
+    New account balances:
+    { id: 'aa0e9b22-0c23-469b-a9e1-b2ace079f44c', balance: '1000' }
+    { id: 'bf8b96da-2c38-4d55-89a0-b2b6ed63ff9e', balance: '0' }
+    { id: 'e43d76d6-388e-4ee6-8b73-a063a63a2138', balance: '250' }
+    Transferring funds...
+    New account balances:
+    { id: 'aa0e9b22-0c23-469b-a9e1-b2ace079f44c', balance: '900' }
+    { id: 'bf8b96da-2c38-4d55-89a0-b2b6ed63ff9e', balance: '0' }
+    { id: 'e43d76d6-388e-4ee6-8b73-a063a63a2138', balance: '350' }
+    Deleting a row...
+    New account balances:
+    { id: 'aa0e9b22-0c23-469b-a9e1-b2ace079f44c', balance: '900' }
+    { id: 'e43d76d6-388e-4ee6-8b73-a063a63a2138', balance: '350' }
+    ```
+
+## What's next?
+
+Read more about using the [node-postgres driver](https://www.npmjs.com/package/pg).
+
+You might also be interested in the following pages:
+
+- [Client Connection Parameters](/docs/v25.2/connection-parameters)
+- [Connection Pooling](/docs/v25.2/connection-pooling)
+- [Data Replication](/docs/v25.2/demo-replication-and-rebalancing)
+- [CockroachDB Resilience](/docs/v25.2/demo-cockroachdb-resilience)
+- [Replication &amp; Rebalancing](/docs/v25.2/demo-replication-and-rebalancing)
+- [Cross-Cloud Migration](/docs/v25.2/demo-automatic-cloud-migration)
+- [Automated Operations](/docs/v25.2/orchestrate-a-local-cluster-with-kubernetes-insecure)

@@ -1,0 +1,47 @@
+---
+title: "Schedules Page"
+old_description: "The Schedules page of the DB Console provides details about scheduled tasks performed by your cluster."
+---
+
+The **Schedules** page of the DB Console provides details about the scheduled tasks performed by your cluster. These can include:
+
+- [Scheduled backups](/docs/v26.1/manage-a-backup-schedule)
+- [Scheduled auto statistics compaction](/docs/v26.1/cost-based-optimizer#table-statistics)
+- [Row-level TTL](/docs/v26.1/row-level-ttl)
+
+To view these details, [access the DB console](/docs/v26.1/ui-overview#db-console-access) and click **Schedules** in the left-hand navigation.
+
+## Filter schedules
+
+- Use the **Status** menu to filter schedules by schedule status, displaying all schedules, only active schedules, or only paused schedules.
+- Use the **Show** menu to toggle displaying the latest 50 schedules or all schedules on the cluster.
+
+## Schedules list
+
+Use the **Schedules** list to see your active and paused schedules.
+
+- To view schedule details click the schedule ID.
+- If you drop a schedule, it will no longer be listed.
+
+The following screenshot shows a list of backups and automated statistics compaction schedules:
+
+<Frame>
+  ![Schedules Page UI in the DB Console showing a list of schedules](/images/v26.1/schedules-page.png)
+</Frame>
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td>Schedule ID</td><td>The unique ID for the schedule. This is used to <a href="/docs/v26.1/pause-schedules">pause</a>, <a href="/docs/v26.1/resume-schedules">resume</a>, and <a href="/docs/v26.1/drop-schedules">drop</a> schedules.</td></tr><tr><td>Label</td><td>The label given to the schedule on creation.</td></tr><tr><td>Status</td><td>The current status of the schedule, <strong>Active</strong> or <strong>Paused</strong>.</td></tr><tr><td>Next Execution Time (UTC)</td><td>The next time at which the scheduled task will run.</td></tr><tr><td>Recurrence</td><td>How often the schedule will run.</td></tr><tr><td>Jobs Running</td><td>The number of jobs currently running for that schedule.</td></tr><tr><td>Owner</td><td>The user that created the schedule.</td></tr><tr><td>Creation Time (UTC)</td><td>The time at which the user originally created the schedule.</td></tr></tbody></table>
+
+## Schedule details
+
+Click on a schedule ID to view the full SQL statement that the schedule runs. For example, the following screenshot shows the resulting [`BACKUP`](/docs/v26.1/backup) statement for a full cluster backup recurring every day:
+
+<Frame>
+  ![UI for each individual schedule ID displaying the CREATE SCHEDULE SQL statement](/images/v26.1/schedule-id-screen.png)
+</Frame>
+
+You may also view a `protected_timestamp_record` on this page. This indicates that the schedule is actively managing its own [protected timestamp](/docs/v26.1/architecture/storage-layer#protected-timestamps) records independently of [GC TTL](/docs/v26.1/configure-replication-zones#gc-ttlseconds). See [Protected timestamps and scheduled backups](/docs/v26.1/create-schedule-for-backup#protected-timestamps-and-scheduled-backups) for more detail.
+
+## See also
+
+- [`CREATE SCHEDULE FOR BACKUP`](/docs/v26.1/create-schedule-for-backup)
+- [Take Full and Incremental Backups](/docs/v26.1/take-full-and-incremental-backups)

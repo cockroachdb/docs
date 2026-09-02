@@ -1,0 +1,198 @@
+---
+title: "Changefeeds Dashboard"
+old_description: "The Changefeeds dashboard lets you monitor the changefeeds created across your cluster."
+---
+
+The **Changefeeds** dashboard in the DB Console lets you monitor the [changefeeds](/docs/v25.2/change-data-capture-overview) created across your cluster.
+
+To view this dashboard, [access the DB Console](/docs/v25.2/ui-overview#db-console-access), click **Metrics** on the left-hand navigation bar, and then select **Dashboard** &gt; **Changefeeds**.
+
+<Tip>
+For more general recommendations on metrics and tooling options for change data capture monitoring, refer to the [Monitor and Debug Changefeeds](/docs/v25.2/monitor-and-debug-changefeeds) page.
+</Tip>
+
+## Dashboard navigation
+
+Use the **Graph** menu to display metrics for your entire cluster or for a specific node.
+
+To the right of the Graph and Dashboard menus, a time interval selector allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected in the [SQL Activity](/docs/v25.2/ui-overview#sql-activity) pages. However, if you select 10 or 30 minutes, the interval defaults to 1 hour in SQL Activity pages.
+
+Hovering your mouse pointer over the graph title will display a tooltip with a description and the [metrics](/docs/v25.2/essential-metrics-self-hosted) used to create the graph.
+
+When hovering on graphs, crosshair lines will appear at your mouse pointer. The series' values corresponding to the given time in the cross hairs are displayed in the legend under the graph. Hovering the mouse pointer on a given series displays the corresponding value near the mouse pointer and highlights the series line (graying out other series lines). Click anywhere within the graph to freeze the values in place. Click anywhere within the graph again to cause the values to change with your mouse movements once more.
+
+In the legend, click on an individual series to isolate it on the graph. The other series will be hidden, while the hover will still work. Click the individual series again to make the other series visible. If there are many series, a scrollbar may appear on the right of the legend. This is to limit the size of the legend so that it does not get endlessly large, particularly on clusters with many nodes.
+
+The **Changefeeds** dashboard displays the following time series graphs:
+
+## Changefeed Status
+
+This graph displays the status of all running changefeeds.
+
+<Frame>
+  ![DB Console Changefeed Status graph showing running, paused, and failed changefeeds.](/images/v24.2/ui-changefeed-status.png)
+</Frame>
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Running</strong></td><td>The number of changefeeds running.</td></tr><tr><td><strong>Paused</strong></td><td>The number of <a href="/docs/v25.2/pause-job">paused</a> changefeeds.</td></tr><tr><td><strong>Failed</strong></td><td>The number of changefeeds that have failed.</td></tr></tbody></table>
+
+Refer to [`RESUME JOB`](/docs/v25.2/resume-job) and [`PAUSE JOB`](/docs/v25.2/pause-job) to manage a changefeed.
+
+In the case of a failed changefeed, you may want to use the [`cursor`](/docs/v25.2/create-changefeed#cursor) option to restart the changefeed. Refer to the [Start a new changefeed where the previous failed](/docs/v25.2/create-changefeed#start-a-new-changefeed-where-another-ended) example.
+
+## Commit Latency
+
+This graph displays the 99th, 90th, and 50th percentile of commit latency for running changefeeds. This is the difference between an event's MVCC timestamp and the time it was acknowledged as received by the [downstream sink](/docs/v25.2/changefeed-sinks).
+
+<Frame>
+  ![DB Console Commit Latency graph showing the 99th, 90th, and 50th percentile of commit latency.](/images/v24.2/ui-commit-latency.png)
+</Frame>
+
+If the sink batches events, then the difference between the oldest event in the batch and acknowledgement is recorded. Latency during backfill is excluded.
+
+## Emitted Bytes
+
+This graph shows the number of bytes emitted by CockroachDB into the changefeed's [downstream sink](/docs/v25.2/changefeed-sinks).
+
+<Note>
+In v23.1 and earlier, the **Emitted Bytes** graph was named **Sink Byte Traffic**. If you want to customize charts, including how metrics are named, use the [**Custom Chart** debug page](/docs/v25.2/ui-custom-chart-debug-page).
+</Note>
+
+<Frame>
+  ![DB Console Emitted Bytes Graph showing the time and emitted bites](/images/v24.2/ui-emitted-bytes.png)
+</Frame>
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Emitted Bytes</strong></td><td>The number of bytes emitted by CockroachDB into the configured changefeed sinks.</td></tr></tbody></table>
+
+## Sink Counts
+
+This graph displays data relating to the number of messages and flushes at the changefeed sink.
+
+- The number of messages that CockroachDB sent to the sink.
+- The number of flushes that the sink performed for changefeeds.
+
+<Frame>
+  ![DB Console Sink Counts graph](/images/v24.2/ui-sink-counts.png)
+</Frame>
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Messages</strong></td><td>The number of messages that CockroachDB sent to the downstream sink.</td></tr><tr><td><strong>Flushes</strong></td><td>The total number of flushes to the sink.</td></tr></tbody></table>
+
+## Max Checkpoint Latency
+
+This graph displays the most any changefeed's persisted [checkpoint](/docs/v25.2/how-does-a-changefeed-work) is behind the present time. Larger values indicate issues with successfully ingesting or emitting changes. If errors cause a changefeed to restart, or the changefeed is [paused](/docs/v25.2/pause-job) and unpaused, emitted data up to the last checkpoint may be re-emitted.
+
+<Note>
+In v23.1 and earlier, the **Max Checkpoint Latency** graph was named **Max Changefeed Latency**. If you want to customize charts, including how metrics are named, use the [**Custom Chart** debug page](/docs/v25.2/ui-custom-chart-debug-page).
+</Note>
+
+<Frame>
+  ![DB Console Max Checkpoint Latency graph](/images/v24.2/ui-max-checkpoint-latency.png)
+</Frame>
+
+<Note>
+The maximum checkpoint latency is distinct from, and slower than, the commit latency for individual change messages. For more information about resolved timestamps, refer to the [Changefeed Messages](/docs/v25.2/changefeed-messages#resolved-messages) page.
+</Note>
+
+## Changefeed Restarts
+
+This graph displays the number of times changefeeds restarted due to [retryable errors](/docs/v25.2/monitor-and-debug-changefeeds#changefeed-retry-errors).
+
+<Frame>
+  ![DB Console Changefeed Restarts graph](/images/v24.2/ui-changefeed-restarts.png)
+</Frame>
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Retryable Errors</strong></td><td>The number of retryable errors that changefeeds are encountering. That is, an error the changefeed will automatically retry.</td></tr></tbody></table>
+
+## Oldest Protected Timestamp
+
+This graph displays the oldest [protected timestamp](/docs/v25.2/architecture/storage-layer#protected-timestamps) of any running changefeed on the cluster.
+
+<Frame>
+  ![DB Console Oldest Protected Timestamp graph](/images/v24.2/ui-oldest-protected-timestamp.png)
+</Frame>
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Protected Timestamp Age</strong></td><td>The age of the oldest protected timestamp (of any changefeed) that is protecting data from being <a href="/docs/v25.2/architecture/storage-layer#garbage-collection">garbage collected</a>.</td></tr></tbody></table>
+
+## Backfill Pending Ranges
+
+This graph displays the number of ranges being backfilled that are yet to enter the changefeed pipeline. An [initial scan](/docs/v25.2/create-changefeed#initial-scan) or [schema change](/docs/v25.2/online-schema-changes) can cause a backfill.
+
+<Frame>
+  ![DB Console Backfill Pending Ranges graph](/images/v24.2/ui-backfill-pending-ranges.png)
+</Frame>
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Backfill Pending Ranges</strong></td><td>The number of ranges in the backfill process that have not yet entered the changefeed stream.</td></tr></tbody></table>
+
+## Schema Registry Registrations
+
+This graph displays the rate of schema registration requests made by CockroachDB nodes to a configured schema registry endpoint. For example, a [Kafka sink](/docs/v25.2/changefeed-sinks#kafka) pointing to a [Confluent Schema Registry](/docs/v25.2/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster).
+
+<Frame>
+  ![DB Console Schema Registry Registrations graph](/images/v24.2/ui-schema-registry-registrations.png)
+</Frame>
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Schema Registry Registrations</strong></td><td>The number of registrations to a downstream schema registry.</td></tr></tbody></table>
+
+## Ranges in catchup mode
+
+This graph displays the total number of ranges with an active [rangefeed](/docs/v25.2/create-and-configure-changefeeds#enable-rangefeeds) that is performing a catchup scan.
+
+<Frame>
+  ![DB Console Ranges in Catchup Mode graph](/images/v24.2/ui-ranges-in-catchup-mode.png)
+</Frame>
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>Ranges</strong></td><td>The number of ranges that are performing a catchup scan.</td></tr></tbody></table>
+
+## Rangefeed Catchup Scans Duration
+
+This graph displays the duration of catchup scans that changefeeds are performing.
+
+<Frame>
+  ![DB Console Rangefeed Catchup Scans Duration graph](/images/v24.2/ui-rangefeed-catchup-scans-duration.png)
+</Frame>
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td><strong>(Node Hostname)</strong></td><td>The duration of the catchup scan displayed per node.</td></tr></tbody></table>
+
+## Summary and events
+
+### Summary panel
+
+A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Total Nodes</td><td>The total number of nodes in the cluster. <a href="/docs/v25.2/node-shutdown?filters=decommission">Decommissioned nodes</a> are not included in this count.</td></tr><tr><td>Capacity Used</td><td>The storage capacity used as a percentage of <a href="/docs/v25.2/ui-cluster-overview-page#capacity-metrics">usable capacity</a> allocated across all nodes.</td></tr><tr><td>Unavailable Ranges</td><td>The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.</td></tr><tr><td>Queries per second</td><td>The total number of <code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, and <code>DELETE</code> queries executed per second across the cluster.</td></tr><tr><td>P99 Latency</td><td>The 99th percentile of service latency.</td></tr></tbody></table>
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v25.2/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v25.2/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+### Events panel
+
+Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
+
+<Frame>
+  ![DB Console Events](/images/v24.2/ui_events.png)
+</Frame>
+
+The following types of events are listed:
+
+- Database created
+- Database dropped
+- Table created
+- Table dropped
+- Table altered
+- Index created
+- Index dropped
+- View created
+- View dropped
+- Schema change reversed
+- Schema change finished
+- Node joined
+- Node decommissioned
+- Node restarted
+- Cluster setting changed
+
+## See also
+
+- [Change Data Capture Overview](/docs/v25.2/change-data-capture-overview)
+- [Troubleshooting Overview](/docs/v25.2/troubleshooting-overview)
+- [Support Resources](/docs/v25.2/support-resources)
+- [Raw Status Endpoints](/docs/v25.2/monitoring-and-alerting#raw-status-endpoints)

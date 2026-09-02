@@ -1,0 +1,109 @@
+export const OptDescendant = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="345" width="705" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="#relation_expr" xlink:title="relation_expr">
+<rect height="32" width="104" x="71" y="3"></rect>
+<rect class="nonterminal" height="32" width="104" x="69" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="80" font-size="10" class="nonterminal" x="81" y="21">relation_expr</text></a><a xlink:href="#opt_index_flags" xlink:title="opt_index_flags">
+<rect height="32" width="122" x="195" y="3"></rect>
+<rect class="nonterminal" height="32" width="122" x="193" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="98" font-size="10" class="nonterminal" x="205" y="21">opt_index_flags</text></a><a xlink:href="#select_with_parens" xlink:title="select_with_parens">
+<rect height="32" width="144" x="71" y="47"></rect>
+<rect class="nonterminal" height="32" width="144" x="69" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="120" font-size="10" class="nonterminal" x="81" y="65">select_with_parens</text></a><rect height="32" rx="10" width="26" x="71" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="69" y="89"></rect>
+<text class="terminal" x="79" y="109">[</text><a xlink:href="#row_source_extension_stmt" xlink:title="row_source_extension_stmt">
+<rect height="32" width="200" x="117" y="91"></rect>
+<rect class="nonterminal" height="32" width="200" x="115" y="89"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="176" font-size="11" class="nonterminal" x="127" y="109">row_source_extension_stmt</text></a><rect height="32" rx="10" width="26" x="337" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="335" y="89"></rect>
+<text class="terminal" x="345" y="109">]</text>
+<rect height="32" rx="10" width="80" x="71" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="69" y="133"></rect>
+<text class="terminal" x="79" y="153">LATERAL</text><a xlink:href="#select_with_parens" xlink:title="select_with_parens">
+<rect height="32" width="144" x="191" y="135"></rect>
+<rect class="nonterminal" height="32" width="144" x="189" y="133"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="120" font-size="10" class="nonterminal" x="201" y="153">select_with_parens</text></a><a xlink:href="#func_table" xlink:title="func_table">
+<rect height="32" width="86" x="191" y="179"></rect>
+<rect class="nonterminal" height="32" width="86" x="189" y="177"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="62" font-size="10" class="nonterminal" x="201" y="197">func_table</text></a><a xlink:href="#opt_ordinality" xlink:title="opt_ordinality">
+<rect height="32" width="108" x="403" y="3"></rect>
+<rect class="nonterminal" height="32" width="108" x="401" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="413" y="21">opt_ordinality</text></a><a xlink:href="#opt_alias_clause" xlink:title="opt_alias_clause">
+<rect height="32" width="126" x="531" y="3"></rect>
+<rect class="nonterminal" height="32" width="126" x="529" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="102" font-size="10" class="nonterminal" x="541" y="21">opt_alias_clause</text></a><a xlink:href="#joined_table" xlink:title="joined_table">
+<rect height="32" width="100" x="51" y="223"></rect>
+<rect class="nonterminal" height="32" width="100" x="49" y="221"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="76" font-size="10" class="nonterminal" x="61" y="241">joined_table</text></a><rect height="32" rx="10" width="26" x="51" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="49" y="265"></rect>
+<text class="terminal" x="59" y="285">(</text><a xlink:href="#joined_table" xlink:title="joined_table">
+<rect height="32" width="100" x="97" y="267"></rect>
+<rect class="nonterminal" height="32" width="100" x="95" y="265"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="76" font-size="10" class="nonterminal" x="107" y="285">joined_table</text></a><rect height="32" rx="10" width="26" x="217" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="215" y="265"></rect>
+<text class="terminal" x="225" y="285">)</text><a xlink:href="#opt_ordinality" xlink:title="opt_ordinality">
+<rect height="32" width="108" x="263" y="267"></rect>
+<rect class="nonterminal" height="32" width="108" x="261" y="265"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="273" y="285">opt_ordinality</text></a><a xlink:href="#alias_clause" xlink:title="alias_clause">
+<rect height="32" width="98" x="391" y="267"></rect>
+<rect class="nonterminal" height="32" width="98" x="389" y="265"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="74" font-size="10" class="nonterminal" x="401" y="285">alias_clause</text></a><a xlink:href="#func_table" xlink:title="func_table">
+<rect height="32" width="86" x="51" y="311"></rect>
+<rect class="nonterminal" height="32" width="86" x="49" y="309"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="62" font-size="10" class="nonterminal" x="61" y="329">func_table</text></a><a xlink:href="#opt_ordinality" xlink:title="opt_ordinality">
+<rect height="32" width="108" x="157" y="311"></rect>
+<rect class="nonterminal" height="32" width="108" x="155" y="309"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="84" font-size="10" class="nonterminal" x="167" y="329">opt_ordinality</text></a><a xlink:href="#opt_func_alias_clause" xlink:title="opt_func_alias_clause">
+<rect height="32" width="162" x="285" y="311"></rect>
+<rect class="nonterminal" height="32" width="162" x="283" y="309"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="138" font-size="10" class="nonterminal" x="295" y="329">opt_func_alias_clause</text></a><path class="line" d="m17 17 h2 m40 0 h10 m104 0 h10 m0 0 h10 m122 0 h10 m0 0 h46 m-332 0 h20 m312 0 h20 m-352 0 q10 0 10 10 m332 0 q0 -10 10 -10 m-342 10 v24 m332 0 v-24 m-332 24 q0 10 10 10 m312 0 q10 0 10 -10 m-322 10 h10 m144 0 h10 m0 0 h148 m-322 -10 v20 m332 0 v-20 m-332 20 v24 m332 0 v-24 m-332 24 q0 10 10 10 m312 0 q10 0 10 -10 m-322 10 h10 m26 0 h10 m0 0 h10 m200 0 h10 m0 0 h10 m26 0 h10 m-322 -10 v20 m332 0 v-20 m-332 20 v24 m332 0 v-24 m-332 24 q0 10 10 10 m312 0 q10 0 10 -10 m-322 10 h10 m80 0 h10 m20 0 h10 m144 0 h10 m-184 0 h20 m164 0 h20 m-204 0 q10 0 10 10 m184 0 q0 -10 10 -10 m-194 10 v24 m184 0 v-24 m-184 24 q0 10 10 10 m164 0 q10 0 10 -10 m-174 10 h10 m86 0 h10 m0 0 h58 m20 -44 h8 m20 -132 h10 m108 0 h10 m0 0 h10 m126 0 h10 m-646 0 h20 m626 0 h20 m-666 0 q10 0 10 10 m646 0 q0 -10 10 -10 m-656 10 v200 m646 0 v-200 m-646 200 q0 10 10 10 m626 0 q10 0 10 -10 m-636 10 h10 m100 0 h10 m0 0 h506 m-636 -10 v20 m646 0 v-20 m-646 20 v24 m646 0 v-24 m-646 24 q0 10 10 10 m626 0 q10 0 10 -10 m-636 10 h10 m26 0 h10 m0 0 h10 m100 0 h10 m0 0 h10 m26 0 h10 m0 0 h10 m108 0 h10 m0 0 h10 m98 0 h10 m0 0 h168 m-636 -10 v20 m646 0 v-20 m-646 20 v24 m646 0 v-24 m-646 24 q0 10 10 10 m626 0 q10 0 10 -10 m-636 10 h10 m86 0 h10 m0 0 h10 m108 0 h10 m0 0 h10 m162 0 h10 m0 0 h210 m23 -308 h-3"></path>
+<polygon points="695 17 703 13 703 21"></polygon>
+<polygon points="695 17 687 13 687 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,153 @@
+---
+title: "Billing Management"
+old_description: "Manage billing for your organization"
+---
+
+The **Billing** page contains an overview of your charges and the payment details on file for your CockroachDB Cloud organization.
+
+## View billing for an organization
+
+Users with the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#billing-coordinator" data-versioned="true">Billing Coordinator</a> or <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#billing-viewer" data-versioned="true">Billing Viewer</a> role can view billing details, invoices, and usage for the organization. To view the **Billing** page, [log in](https://cockroachlabs.cloud/) and click **Billing**.
+
+## Set up billing for an organization
+
+Users with the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#billing-coordinator" data-versioned="true">Billing Coordinator</a> role can manage billing for the organization.
+
+You can pay for CockroachDB Cloud by using a credit card, or you can set up billing through [AWS Marketplace](https://aws.amazon.com/marketplace) or [Google Cloud Marketplace](https://cloud.google.com/marketplace).
+
+<Tabs>
+<Tab title="Credit card">
+
+## Add a credit card
+
+1. On the **Billing** page, select the **Payment details** tab.
+2. Click **Add a credit card** in the **Payment method** field.
+3. In the **Edit payment method** dialog, enter the credit card details.
+4. Click **Save card**.
+5. Click **Add a billing email** in the **Billing contact info** section.
+6. In **Edit billing email** enter the email address at which you want to receive invoices for the organization.
+7. Click **Submit**.
+8. Click **Add a billing address** in the **Billing contact info** section.
+9. Enter the address associated with your payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
+10. Click **Submit**.
+
+## Change the billing email address
+
+1. On the **Billing** page, select the **Payment details** tab.
+2. Click the pencil icon for the **Email** field under **Billing contact info**.
+3. Enter the new email address at which you want to receive invoices for the organization.
+4. Click **Submit**.
+
+## Change the payment method
+
+1. On the **Billing** page, select the **Payment details** tab.
+2. Click the pencil icon for the **Payment method** field.
+3. In the **Edit payment method** dialog, enter the credit card details.
+4. Click **Save card**.
+5. In the **Billing contact info** section, click the pencil icon for the **Billing address** field.
+6. Enter the address associated with your new payment method. This address appears on your monthly invoice and should be the legal address of your home or business.
+7. Click **Submit**.
+
+## Delete your credit card information
+
+We keep a card on file after the associated organization is deleted so we can process pending charges. You can [contact Support](https://support.cockroachlabs.com/) to remove your card once your charges are settled.
+
+</Tab>
+<Tab title="AWS Marketplace">
+
+## Subscribe through AWS Marketplace
+
+To subscribe to CockroachDB Cloud through the AWS Marketplace:
+
+1. From the [AWS Marketplace page for CockroachDB (pay-as-you-go)](https://aws.amazon.com/marketplace/pp/prodview-n3xpypxea63du), click **View purchase options** to open the **Subscribe to CockroachDB Cloud** page
+2. Click **Subscribe**, then click **Set up your account**. You will be redirected to the CockroachDB Cloud console.
+3. <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/create-an-account#register-a-new-account" data-versioned="true">Register</a> a new CockroachDB Cloud account or sign in to your existing account.
+4. If you have access to multiple CockroachDB Cloud organizations, select an organization to update its billing configuration.
+
+    <Note>
+    Organizations that are configured for invoice billing or are already linked to a cloud marketplace are not listed.
+    </Note>
+5. Click **Subscribe to AWS Marketplace**.
+
+## Unsubscribe from AWS Marketplace
+
+<Warning>
+After you unsubscribe your CockroachDB Cloud from AWS Marketplace billing, clusters will be deleted and applications may be disrupted unless you add an alternate payment method within 6 hours after you unsubscribe from AWS Marketplace billing.
+</Warning>
+
+To unsubscribe from CockroachDB Cloud:
+
+1. From [AWS Marketplace](https://aws.amazon.com/marketplace), click **Manage Subscriptions**.
+2. In the list of subscriptions, click **CockroachDB (pay-as-you-go)**.
+3. In the **Agreement** section, click **Actions**, then click **Cancel Subscription**.
+4. Review the details in the confirmation dialog, then click **Accept** to unsubscribe your organization from billing through AWS Marketplace.
+
+</Tab>
+<Tab title="Google Cloud Marketplace">
+
+## Subscribe through Google Cloud Marketplace
+
+To subscribe to CockroachDB Cloud through the Google Cloud Marketplace:
+
+1. From the [Google Cloud Marketplace page for CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go), click **Subscribe** to open the **Order Summary** page
+2. **Select a billing account** and agree to **Additional Terms**, then click **Subscribe**.
+3. Click **Go to Product Page**. You will be redirected to the [Google Cloud Marketplace page for CockroachDB (pay-as-you-go)](https://console.cloud.google.com/marketplace/product/cockroachlabs/cockroachdb-pay-as-you-go).
+4. From the product page, click **Sign up with Cockroach Labs**. You will be redirected to the CockroachDB Cloud console.
+5. <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/create-an-account#register-a-new-account" data-versioned="true">Register</a> a new CockroachDB Cloud account or sign in to your existing account.
+6. If you have access to multiple CockroachDB Cloud organizations, select an organization to update its billing configuration.
+
+    <Note>
+    Organizations that are configured for invoice billing or are already linked to a cloud marketplace are not listed.
+    </Note>
+7. Click **Subscribe to Google Cloud Marketplace**.
+
+    <Note>
+    If your Google Account was previously subscribed to CockroachDB (pay-as-you-go) through the Google Cloud Marketplace and you are unable to re-subscribe, please contact our [support team](https://support.cockroachlabs.com/) for assistance.
+    </Note>
+
+## Unsubscribe from Google Cloud Marketplace
+
+<Warning>
+After you unsubscribe your CockroachDB Cloud from Google Cloud Marketplace billing, clusters will be deleted and applications may be disrupted unless you add an alternate payment method within 6 hours after you unsubscribe.
+</Warning>
+
+To unsubscribe from CockroachDB Cloud:
+
+1. On the [Google Cloud Marketplace orders](https://console.cloud.google.com/marketplace/orders) page, **Select a billing account** from the dropdown.
+2. In the list of subscriptions, find **CockroachDB (pay-as-you-go)**.
+3. Click **Cancel Order** from the actions menu.
+4. Follow the instructions in the Cancel Order dialog, then click **Cancel Order** to unsubscribe your organization from billing through Google Cloud Marketplace.
+
+</Tab>
+</Tabs>
+
+## View Credits balance
+
+If your organization has an annual contract with CockroachDB Cloud, the **Overview** tab of the **Billing** page displays the amount of available CockroachDB Cloud Credits you have remaining and the average number of Credits your organization consumes per day. At the end of each billing period, invoice payments are deducted from your organization's Credits.
+
+Under the **Credits** section, you can see more information about each of your organization's contracts. Contracts are listed in the order in which they will be used.
+
+The **Current billing period** section displays a table listing your organization's clusters and the Credits they have accrued. The table also includes the cluster type and associated <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/labels" data-versioned="true">labels</a>.
+
+## View invoices
+
+You can review an in-progress invoice for the current billing period on the **Overview** tab of the **Billing** page. You can view all of your organization's past invoices on the **Invoices** tab of the **Billing** page. Click any invoice to view the details of your charges for a billing period.
+
+If you're using <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/folders" data-versioned="true">folders</a> to organize your clusters, billing is grouped by folder. Click any folder to view invoices for individual clusters in the folder or its descendants. Within a folder, click any subfolder to view its details.
+
+You can also use the Cloud API to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api#get-invoices-for-an-organization" data-versioned="true">get invoices for an organization</a>.
+
+### Export invoices
+
+You can export invoice data in CSV or PDF format. From the **Invoices** tab, on the row of any billing period, click the **...** button under the **Download** column and select **Export CSV** or **Export PDF**.
+
+- The CSV file includes line items for all clusters in your organization for the selected billing period. It includes the same information that is available when viewing invoices within the Console.
+- The PDF renders invoice information from the Console into a traditional invoice format. This format includes the high level information from the Console, a summary of total usage, the organization's billing address, and a CockroachDB letterhead.
+
+If you're using <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/folders" data-versioned="true">folders</a> to organize your clusters, the full path for each cluster is provided under the **Cluster path** column.
+
+## Non-payment
+
+If a Cloud organization with billing configured lapses in payment, non-payment reminders are sent the **Billing contact info** designated in the Cloud Console under **Billing** &gt; **Settings**. By default this billing contact is set to the original Organization Admin of the Cloud organization.
+
+After sending multiple payment failure reminders with no acknowledgement or change in billing, all clusters in the organization are deleted including data. Deleted clusters cannot be restored.

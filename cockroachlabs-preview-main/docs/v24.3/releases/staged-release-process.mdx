@@ -1,0 +1,20 @@
+---
+title: "Staged Release Process"
+old_description: "Learn about Cockroach Labs' staged release process for CockroachDB Cloud and Self-Hosted releases."
+---
+
+import StagedReleaseProcess from "/snippets/releases/staged-release-process.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<StagedReleaseProcess />

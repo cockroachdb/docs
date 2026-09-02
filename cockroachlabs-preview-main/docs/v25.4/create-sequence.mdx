@@ -1,0 +1,318 @@
+---
+title: "CREATE SEQUENCE"
+old_description: "The CREATE SEQUENCE statement creates a new sequence in a database. Use a sequence to auto-increment integers in a table."
+---
+
+import { CreateSequence6 } from "/snippets/syntax-diagrams/CreateSequence6.jsx";
+
+The `CREATE SEQUENCE` [statement](/docs/v25.4/sql-statements) creates a new sequence in a database. Use a sequence to auto-increment integers in a table.
+
+<Note>
+The `CREATE SEQUENCE` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.4/online-schema-changes).
+</Note>
+
+## Considerations
+
+- Using a sequence is slower than [auto-generating unique IDs with the `gen_random_uuid()`, `uuid_v4()`, or `unique_rowid()` built-in functions](/docs/v25.4/sql-faqs#how-do-i-auto-generate-unique-row-ids-in-cockroachdb) and is likely to cause performance problems due to [hotspots](/docs/v25.4/understand-hotspots). Incrementing a sequence requires a write to persistent storage. In CockroachDB, all writes are [replicated and must reach a write quorum](/docs/v25.4/architecture/replication-layer). In [multi-region deployments](/docs/v25.4/multiregion-overview), replicated writes can add cross-region latency (for example, in a [region survival](/docs/v25.4/multiregion-survival-goals) configuration) and become a throughput bottleneck for write-heavy workloads. [Cached sequences](#cache-sequence-values-in-memory-per-node) can reduce the frequency of these writes, though gaps in sequence values may occur if cached values are lost. Auto-generating a unique ID does not require a replicated write. Therefore, use auto-generated unique IDs unless an incremental sequence is preferred or required. For more information, refer to [Unique ID best practices](/docs/v25.4/performance-best-practices-overview#unique-id-best-practices).
+- A column that uses a sequence can have a gap in the sequence values if a transaction advances the sequence and is then rolled back. Sequence updates are committed immediately and aren't rolled back along with their containing transaction. This is done to avoid blocking concurrent transactions that use the same sequence.
+- We [discourage indexing on sequential keys](/docs/v25.4/schema-design-indexes#best-practices). If a table **must** be indexed on sequential keys, use [hash-sharded indexes](/docs/v25.4/hash-sharded-indexes). Hash-sharded indexes distribute sequential traffic uniformly across ranges, eliminating single-range [hotspots](/docs/v25.4/understand-hotspots) and improving write performance on sequentially-keyed indexes at a small cost to read performance.
+- By default, you cannot create sequences that are [owned by](/docs/v25.4/security-reference/authorization#object-ownership) columns in tables in other databases. You can enable such sequence creation by setting the `sql.cross_db_sequence_owners.enabled` [cluster setting](/docs/v25.4/cluster-settings) to `true`.
+
+## Required privileges
+
+The user must have the `CREATE` [privilege](/docs/v25.4/security-reference/authorization#managing-privileges) on the parent database.
+
+## Synopsis
+
+<CreateSequence6 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>seq&#95;name</code></td><td>The name of the sequence to be created, which must be unique within its database and follow the <a href="/docs/v25.4/keywords-and-identifiers#identifiers">identifier rules</a>. When the parent database is not set as the default, the name must be formatted as <code>database.seq&#95;name</code>.</td></tr><tr><td><code>INCREMENT</code></td><td>The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.<br/><br/><strong>Default:</strong><code>1</code></td></tr><tr><td><code>MINVALUE</code></td><td>The minimum value of the sequence. Default values apply if not specified or if you enter <code>NO MINVALUE</code>.<br/><br/><strong>Default for ascending:</strong><code>1</code><br/><br/><strong>Default for descending:</strong><code>MININT</code></td></tr><tr><td><code>MAXVALUE</code></td><td>The maximum value of the sequence. Default values apply if not specified or if you enter <code>NO MAXVALUE</code>.<br/><br/><strong>Default for ascending:</strong><code>MAXINT</code><br/><br/><strong>Default for descending:</strong><code>-1</code></td></tr><tr><td><code>START &#91;WITH&#93;</code></td><td>The first value of the sequence.<br/><br/><strong>Default for ascending:</strong><code>1</code><br/><br/><strong>Default for descending:</strong><code>-1</code></td></tr><tr><td><code>RESTART &#91;WITH&#93;</code></td><td>Sets <code>nextval</code> to the specified number, or back to the original <code>START</code> value.</td></tr><tr><td><code>NO CYCLE</code></td><td>All sequences are set to <code>NO CYCLE</code> and the sequence will not wrap.</td></tr><tr><td><code>CACHE</code><a></a></td><td>The number of sequence values to cache in memory at the <a href="/docs/v25.4/architecture/overview#node">node</a> level. All sessions on the node share the same cache, which can be concurrently accessed, and which reduces the chance of creating large gaps between generated IDs. A cache size of <code>1</code> means that there is no cache, and cache sizes of less than <code>1</code> are not valid.<br/><br/><strong>Default:</strong><code>1</code> (sequences are not cached by default). While this parameter caches sequences per node, to cache sequence values per session, use <a href="#per-session-cache"><code>PER SESSION CACHE</code></a> explicitly.</td></tr><tr><td><code>PER NODE CACHE</code><a></a></td><td>The number of sequence values to cache in memory at the node level. All sessions on the node share the same cache, which can be concurrently accessed, and which reduces the chance of creating large gaps between generated IDs. A cache size of <code>1</code> means that there is no cache, and cache sizes of less than <code>1</code> are not valid. This is the default caching strategy, and is equivalent to specifying <code>CACHE</code>.</td></tr><tr><td><code>PER SESSION CACHE</code><a></a></td><td>The number of sequence values to cache in memory for reuse within a single <a href="/docs/v25.4/show-sessions">session</a>. A cache size of <code>1</code> means that there is no cache, and cache sizes of less than <code>1</code> are not valid.</td></tr><tr><td><code>OWNED BY column&#95;name</code><a></a></td><td>Associates the sequence to a particular column. If that column or its parent table is dropped, the sequence will also be dropped.<br/>Specifying an owner column with <code>OWNED BY</code> replaces any existing owner column on the sequence. To remove existing column ownership on the sequence and make the column free-standing, specify <code>OWNED BY NONE</code>.<br/><br/><strong>Default:</strong><code>NONE</code></td></tr><tr><td><code>opt&#95;temp</code></td><td>Defines the sequence as a session-scoped temporary sequence. For more information, see <a href="#temporary-sequences">Temporary sequences</a>.</td></tr></tbody></table>
+
+## Sequence functions
+
+CockroachDB supports the following [SQL sequence functions](/docs/v25.4/functions-and-operators):
+
+- `nextval('seq_name')`
+- `currval('seq_name')`
+- `lastval()`
+- `setval('seq_name', value, is_called)`
+
+## Temporary sequences
+
+CockroachDB supports session-scoped temporary sequences. Unlike persistent sequences, temporary sequences can only be accessed from the session in which they were created, and they are dropped at the end of the session. You can create temporary sequences on both persistent tables and [temporary tables](/docs/v25.4/temporary-tables).
+
+<Note>
+**This feature is in [preview](/docs/v25.4/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us). For details, see the tracking issue [cockroachdb/cockroach#46260](https://github.com/cockroachdb/cockroach/issues/46260).
+</Note>
+
+<Note>
+Temporary tables must be enabled in order to use temporary sequences. By default, temporary tables are disabled in CockroachDB. To enable temporary tables, set the `experimental_enable_temp_tables` [session variable](/docs/v25.4/set-vars) to `on`.
+</Note>
+
+### Details
+
+- Temporary sequences are automatically dropped at the end of the session.
+- A temporary sequence can only be accessed from the session in which it was created.
+- Temporary sequences persist across transactions in the same session.
+- Temporary sequences cannot be converted to persistent sequences.
+
+<Note>
+Like [temporary tables](/docs/v25.4/temporary-tables), temporary sequences are not in the `public` schema. Instead, when you create the first temporary table, view, or sequence for a session, CockroachDB generates a single temporary schema (`pg_temp_<id>`) for all of the temporary objects in the current session for a database.
+</Note>
+
+### Usage
+
+To create a temporary sequence, add [`TEMP`/`TEMPORARY`](/docs/v25.4/sql-grammar#opt_temp) to a `CREATE SEQUENCE` statement.
+
+For example:
+
+```sql
+> SET experimental_enable_temp_tables=on;
+```
+
+```sql
+> CREATE TEMP SEQUENCE temp_seq START 1 INCREMENT 1;
+```
+
+```sql
+> SHOW CREATE temp_seq;
+```
+
+```text
+  table_name |                                     create_statement
+-------------+--------------------------------------------------------------------------------------------
+  temp_seq   | CREATE TEMP SEQUENCE temp_seq MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1
+(1 row)
+```
+
+## Examples
+
+### Create a sequence with default settings
+
+In this example, we create a sequence with default settings.
+
+```sql
+> CREATE SEQUENCE customer_seq;
+```
+
+```sql
+> SHOW CREATE customer_seq;
+```
+
+```text
+   table_name  |                                     create_statement
+---------------+-------------------------------------------------------------------------------------------
+  customer_seq | CREATE SEQUENCE customer_seq MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1
+(1 row)
+```
+
+### Use a sequence when creating a table
+
+In this example, we [create a table](/docs/v25.4/create-table), using the [`nextval()` function](/docs/v25.4/functions-and-operators#sequence-functions) for a [default value](/docs/v25.4/default-value), with the `customer_seq` sequence as its input:
+
+```sql
+CREATE TABLE customers (
+    uid UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    rownum INT DEFAULT nextval('customer_seq'),
+    name STRING
+);
+```
+
+Inserting into this table with an `INSERT` statement that relies on default values will call `nextval`, which increments the sequence.
+
+```sql
+> INSERT INTO customers (name) VALUES ('Max'), ('Alice');
+```
+
+```sql
+> SELECT * FROM customers;
+```
+
+```text
+                  uid                  | rownum | name
+---------------------------------------+--------+--------
+  1c7f5b79-88c4-49ec-b40b-6098d28bb822 |      2 | Alice
+  7ce844af-6a3f-4c52-ba07-25623f345804 |      1 | Max
+(2 rows)
+```
+
+### View the current value of a sequence
+
+To view the current value without incrementing the sequence, use:
+
+```sql
+> SELECT * FROM customer_seq;
+```
+
+```text
+  last_value | log_cnt | is_called
+-------------+---------+------------
+           2 |       0 |   true
+(1 row)
+```
+
+<Note>
+The `log_cnt` and `is_called` columns are returned only for PostgreSQL compatibility; they are not stored in the database.
+</Note>
+
+If a value has been obtained from the sequence in the current session, you can also use the `currval('seq_name')` function to get that most recently obtained value:
+
+```sql
+> SELECT currval('customer_seq');
+```
+
+```text
+  currval
+-----------
+        2
+(1 row)
+```
+
+### Set the next value of a sequence
+
+In this example, we're going to change the next value of `customer_seq` using the [`setval()` function](/docs/v25.4/functions-and-operators#sequence-functions). Currently, the next value will be `3` (i.e., `2` + `INCREMENT 1`). We will change the next value to `5`.
+
+<Note>
+You cannot set a value outside the `MAXVALUE` or `MINVALUE` of the sequence.
+</Note>
+
+```sql
+> SELECT setval('customer_seq', 5, false);
+```
+
+```text
+  setval
+----------
+       5
+(1 row)
+```
+
+<Note>
+The `setval('seq_name', value, is_called)` function in CockroachDB SQL mimics the `setval()` function in PostgreSQL, but it does not store the `is_called` flag. Instead, it sets the value to `val - increment` for `false` or `val` for `true`.
+</Note>
+
+Let's add another record to the table to check that the new record adheres to the new next value.
+
+```sql
+> INSERT INTO customers (name) VALUES ('Sam');
+```
+
+```sql
+> SELECT * FROM customers;
+```
+
+```text
+                  uid                  | rownum | name
+---------------------------------------+--------+--------
+  19ffe03d-5eac-4a2f-8aa8-1569b998aa44 |      5 | Sam
+  1c7f5b79-88c4-49ec-b40b-6098d28bb822 |      2 | Alice
+  7ce844af-6a3f-4c52-ba07-25623f345804 |      1 | Max
+(3 rows)
+```
+
+### Create a sequence with user-defined settings
+
+In this example, we create a sequence that starts at -1 and descends in increments of 2.
+
+```sql
+> CREATE SEQUENCE desc_customer_list START -1 INCREMENT -2;
+```
+
+```sql
+> SHOW CREATE desc_customer_list;
+```
+
+```text
+      table_name     |                                          create_statement
+---------------------+-----------------------------------------------------------------------------------------------------
+  desc_customer_list | CREATE SEQUENCE desc_customer_list MINVALUE -9223372036854775808 MAXVALUE -1 INCREMENT -2 START -1
+(1 row)
+```
+
+### List all sequences
+
+```sql
+> SHOW SEQUENCES;
+```
+
+```text
+         sequence_schema        |   sequence_name
+--------------------------------+---------------------
+  public                        | customer_seq
+  public                        | desc_customer_list
+  pg_temp_1603124728816183000_1 | temp_seq
+(3 rows)
+```
+
+### Cache sequence values in memory (per node)
+
+For improved performance, use the [`CACHE`](#cache) keyword to cache sequence values in memory at the node level. By default, all sessions on a node share the same cache. If you want sequence values to be cached per session, see [Cache sequence values per session](#cache-sequence-values-per-session).
+
+For example, to cache 10 sequence values in memory per node:
+
+```sql
+CREATE SEQUENCE customer_seq_cached CACHE 10;
+```
+
+```sql
+SHOW CREATE customer_seq_cached;
+```
+
+```text
+      table_name      |                                                create_statement
+----------------------+------------------------------------------------------------------------------------------------------------------
+  customer_seq_cached | CREATE SEQUENCE public.customer_seq_cached MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1 CACHE 10
+(1 row)
+```
+
+You can also use the [`PER NODE CACHE` clause](#per-node-cache) to explicitly cache sequence values in memory at the node level. Since this is the default strategy, it is equivalent to using [`CACHE`](#cache).
+
+For example, to cache 10 sequence values per node:
+
+```sql
+CREATE SEQUENCE customer_seq_node_cached PER NODE CACHE 10;
+```
+
+```sql
+SHOW CREATE customer_seq_node_cached;
+```
+
+```text
+      table_name      |                                                create_statement
+----------------------+------------------------------------------------------------------------------------------------------------------
+  customer_seq_node_cached | CREATE SEQUENCE public.customer_seq_node_cached MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1 PER NODE CACHE 10
+(1 row)
+```
+
+### Cache sequence values per session
+
+To cache sequence values within a single session, use the [`PER SESSION CACHE` clause](#per-session-cache).
+
+For example, to cache 10 sequence values per session:
+
+```sql
+CREATE SEQUENCE customer_seq_session_cached PER SESSION CACHE 10;
+```
+
+```sql
+SHOW CREATE customer_seq_session_cached;
+```
+
+```text
+      table_name               |                                                create_statement
+-------------------------------+------------------------------------------------------------------------------------------------------------------
+  customer_seq_session_cached  | CREATE SEQUENCE public.customer_seq_session_cached MINVALUE 1 MAXVALUE 9223372036854775807 INCREMENT 1 START 1 PER SESSION CACHE 10
+(1 row)
+```
+
+## See also
+
+- [`ALTER SEQUENCE`](/docs/v25.4/alter-sequence)
+- [`DROP SEQUENCE`](/docs/v25.4/drop-sequence)
+- [`SHOW CREATE`](/docs/v25.4/show-create)
+- [`SHOW SEQUENCES`](/docs/v25.4/show-sequences)
+- [Functions and Operators](/docs/v25.4/functions-and-operators)
+- [SQL Statements](/docs/v25.4/sql-statements)
+- [Online Schema Changes](/docs/v25.4/online-schema-changes)

@@ -1,0 +1,92 @@
+<svg height="213" width="1053" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="72" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">CREATE</text>
+<rect height="32" rx="10" width="92" x="123" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="121" y="1"></rect>
+<text class="terminal" x="131" y="21">SCHEDULE</text><a xlink:href="#schedule_label_spec" xlink:title="schedule_label_spec">
+<rect height="32" width="152" x="235" y="3"></rect>
+<rect class="nonterminal" height="32" width="152" x="233" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="128" font-size="10" class="nonterminal" x="245" y="21">schedule_label_spec</text></a><rect height="32" rx="10" width="48" x="407" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="405" y="1"></rect>
+<text class="terminal" x="415" y="21">FOR</text>
+<rect height="32" rx="10" width="110" x="475" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="110" x="473" y="1"></rect>
+<text class="terminal" x="483" y="21">CHANGEFEED</text><a xlink:href="#changefeed_table_targets" xlink:title="changefeed_table_targets">
+<rect height="32" width="188" x="45" y="69"></rect>
+<rect class="nonterminal" height="32" width="188" x="43" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="164" font-size="11" class="nonterminal" x="55" y="87">changefeed_table_targets</text></a><a xlink:href="#changefeed_sink" xlink:title="changefeed_sink">
+<rect height="32" width="128" x="253" y="69"></rect>
+<rect class="nonterminal" height="32" width="128" x="251" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="11" class="nonterminal" x="263" y="87">changefeed_sink</text></a><a xlink:href="#opt_with_options" xlink:title="opt_with_options">
+<rect height="32" width="130" x="401" y="69"></rect>
+<rect class="nonterminal" height="32" width="130" x="399" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="106" font-size="10" class="nonterminal" x="411" y="87">opt_with_options</text></a><a xlink:href="#changefeed_sink" xlink:title="changefeed_sink">
+<rect height="32" width="128" x="45" y="113"></rect>
+<rect class="nonterminal" height="32" width="128" x="43" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="104" font-size="11" class="nonterminal" x="55" y="131">changefeed_sink</text></a><a xlink:href="#opt_with_options" xlink:title="opt_with_options">
+<rect height="32" width="130" x="193" y="113"></rect>
+<rect class="nonterminal" height="32" width="130" x="191" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="106" font-size="10" class="nonterminal" x="203" y="131">opt_with_options</text></a><rect height="32" rx="10" width="38" x="343" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="341" y="111"></rect>
+<text class="terminal" x="351" y="131">AS</text>
+<rect height="32" rx="10" width="70" x="401" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="399" y="111"></rect>
+<text class="terminal" x="409" y="131">SELECT</text><a xlink:href="#target_list" xlink:title="target_list">
+<rect height="32" width="86" x="491" y="113"></rect>
+<rect class="nonterminal" height="32" width="86" x="489" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="62" font-size="10" class="nonterminal" x="501" y="131">target_list</text></a><rect height="32" rx="10" width="60" x="597" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="595" y="111"></rect>
+<text class="terminal" x="605" y="131">FROM</text><a xlink:href="#changefeed_target_expr" xlink:title="changefeed_target_expr">
+<rect height="32" width="178" x="677" y="113"></rect>
+<rect class="nonterminal" height="32" width="178" x="675" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="154" font-size="11" class="nonterminal" x="687" y="131">changefeed_target_expr</text></a><a xlink:href="#opt_where_clause" xlink:title="opt_where_clause">
+<rect height="32" width="136" x="875" y="113"></rect>
+<rect class="nonterminal" height="32" width="136" x="873" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="112" font-size="11" class="nonterminal" x="885" y="131">opt_where_clause</text></a><a xlink:href="#cron_expr" xlink:title="cron_expr">
+<rect height="32" width="84" x="727" y="179"></rect>
+<rect class="nonterminal" height="32" width="84" x="725" y="177"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="60" font-size="10" class="nonterminal" x="737" y="197">cron_expr</text></a><a xlink:href="#opt_with_schedule_options" xlink:title="opt_with_schedule_options">
+<rect height="32" width="194" x="831" y="179"></rect>
+<rect class="nonterminal" height="32" width="194" x="829" y="177"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="170" font-size="10" class="nonterminal" x="841" y="197">opt_with_schedule_options</text></a><path class="line" d="m17 17 h2 m0 0 h10 m72 0 h10 m0 0 h10 m92 0 h10 m0 0 h10 m152 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m110 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-604 66 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m188 0 h10 m0 0 h10 m128 0 h10 m0 0 h10 m130 0 h10 m0 0 h480 m-1006 0 h20 m986 0 h20 m-1026 0 q10 0 10 10 m1006 0 q0 -10 10 -10 m-1016 10 v24 m1006 0 v-24 m-1006 24 q0 10 10 10 m986 0 q10 0 10 -10 m-996 10 h10 m128 0 h10 m0 0 h10 m130 0 h10 m0 0 h10 m38 0 h10 m0 0 h10 m70 0 h10 m0 0 h10 m86 0 h10 m0 0 h10 m60 0 h10 m0 0 h10 m178 0 h10 m0 0 h10 m136 0 h10 m22 -44 l2 0 m2 0 l2 0 m2 0 l2 0 m-348 110 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m84 0 h10 m0 0 h10 m194 0 h10 m3 0 h-3"></path>
+<polygon points="1043 193 1051 189 1051 197"></polygon>
+<polygon points="1043 193 1035 189 1035 197"></polygon></svg>

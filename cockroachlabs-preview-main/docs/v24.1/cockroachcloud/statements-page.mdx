@@ -1,0 +1,20 @@
+---
+title: "Statements Page"
+old_description: "How to use the Statements page to view and manage SQL statements on CockroachDB Cloud."
+---
+
+import StatementsPage from "/snippets/cockroachcloud/statements-page.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<StatementsPage />

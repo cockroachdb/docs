@@ -1,0 +1,80 @@
+export const InspectOption = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="201" width="479" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="64" x="51" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="49" y="1"></rect>
+<text class="terminal" x="59" y="21">INDEX</text>
+<rect height="32" rx="10" width="44" x="155" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="44" x="153" y="1"></rect>
+<text class="terminal" x="163" y="21">ALL</text>
+<rect height="32" rx="10" width="26" x="155" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="153" y="45"></rect>
+<text class="terminal" x="163" y="65">(</text><a xlink:href="#table_index_name_list" xlink:title="table_index_name_list">
+<rect height="32" width="164" x="201" y="47"></rect>
+<rect class="nonterminal" height="32" width="164" x="199" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="140" font-size="10" class="nonterminal" x="211" y="65">table_index_name_list</text></a><rect height="32" rx="10" width="26" x="385" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="383" y="45"></rect>
+<text class="terminal" x="393" y="65">)</text>
+<rect height="32" rx="10" width="92" x="51" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="92" x="49" y="89"></rect>
+<text class="terminal" x="59" y="109">DETACHED</text>
+<rect height="32" rx="10" width="30" x="183" y="123"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="181" y="121"></rect>
+<text class="terminal" x="191" y="141">=</text>
+<rect height="32" rx="10" width="56" x="253" y="123"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="251" y="121"></rect>
+<text class="terminal" x="261" y="141">TRUE</text>
+<rect height="32" rx="10" width="62" x="253" y="167"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="251" y="165"></rect>
+<text class="terminal" x="261" y="185">FALSE</text>
+<path class="line" d="m17 17 h2 m20 0 h10 m64 0 h10 m20 0 h10 m44 0 h10 m0 0 h212 m-296 0 h20 m276 0 h20 m-316 0 q10 0 10 10 m296 0 q0 -10 10 -10 m-306 10 v24 m296 0 v-24 m-296 24 q0 10 10 10 m276 0 q10 0 10 -10 m-286 10 h10 m26 0 h10 m0 0 h10 m164 0 h10 m0 0 h10 m26 0 h10 m-400 -44 h20 m400 0 h20 m-440 0 q10 0 10 10 m420 0 q0 -10 10 -10 m-430 10 v68 m420 0 v-68 m-420 68 q0 10 10 10 m400 0 q10 0 10 -10 m-410 10 h10 m92 0 h10 m20 0 h10 m0 0 h162 m-192 0 h20 m172 0 h20 m-212 0 q10 0 10 10 m192 0 q0 -10 10 -10 m-202 10 v12 m192 0 v-12 m-192 12 q0 10 10 10 m172 0 q10 0 10 -10 m-182 10 h10 m30 0 h10 m20 0 h10 m56 0 h10 m0 0 h6 m-102 0 h20 m82 0 h20 m-122 0 q10 0 10 10 m102 0 q0 -10 10 -10 m-112 10 v24 m102 0 v-24 m-102 24 q0 10 10 10 m82 0 q10 0 10 -10 m-92 10 h10 m62 0 h10 m40 -76 h76 m23 -88 h-3"></path>
+<polygon points="469 17 477 13 477 21"></polygon>
+<polygon points="469 17 461 13 461 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

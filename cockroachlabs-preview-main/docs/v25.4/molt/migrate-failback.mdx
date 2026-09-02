@@ -1,0 +1,20 @@
+---
+title: "Migration Failback"
+old_description: "Learn how to fail back from a CockroachDB cluster to a PostgreSQL, MySQL, or Oracle database."
+---
+
+import MigrateFailback from "/snippets/molt/migrate-failback.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MigrateFailback />

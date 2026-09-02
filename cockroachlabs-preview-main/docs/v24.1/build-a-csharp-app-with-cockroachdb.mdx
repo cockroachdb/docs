@@ -1,0 +1,608 @@
+---
+title: "Build a C# App with CockroachDB and the .NET Npgsql Driver"
+old_description: "Learn how to use CockroachDB from a simple C# (.NET) application with a low-level client driver."
+---
+
+This tutorial shows you how build a simple C# application with CockroachDB and the.NET Npgsql driver.
+
+## Start CockroachDB
+
+Choose whether to run a temporary local cluster or a free CockroachDB cluster on CockroachDB Standard. The instructions below will adjust accordingly.
+
+<Tabs>
+<Tab title="Use CockroachDB Standard">
+
+### Create a free trial cluster
+
+1. [Create a CockroachDB Cloud account](/docs/cockroachcloud/create-an-account). If this is your first CockroachDB Cloud organization, it will be credited with &#36;400 in [free trial credits](/docs/cockroachcloud/free-trial) to get you started.
+2. On the **Get Started** page, click **Create cluster**.
+3. On the **Select a plan** page, select **Standard**.
+4. On the **Cloud &amp; Regions** page, select a cloud provider (GCP or AWS).
+5. In the **Regions** section, select a region for the cluster. Refer to [CockroachDB Cloud Regions](/docs/cockroachcloud/regions) for the regions where CockroachDB Standard clusters can be deployed. To create a multi-region cluster, click **Add region** and select additional regions.
+6. Click **Next: Capacity**.
+7. On the **Capacity** page, keep the [**Provisioned capacity**](/docs/cockroachcloud/plan-your-cluster) at the default value of 2 vCPUs.
+
+    Click **Next: Finalize**.
+8. On the **Finalize** page, name your cluster. If an active free trial is listed in the right pane, you will not need to add a payment method, though you will need to do this by the [end of the trial](/docs/cockroachcloud/free-trial#add-payment-methods) to maintain your organization's clusters.
+
+    Click **Create cluster**.
+
+    Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.
+
+### Set up your cluster connection
+
+The **Connection info** dialog shows information about how to connect to your cluster.
+
+1. Click the **Choose your OS** dropdown, and select the operating system of your local machine.
+2. Click the **Connection string** tab in the **Connection info** dialog.
+3. Open a new terminal on your local machine, and run the command provided in step **1** to download the CA certificate. This certificate is required by some clients connecting to CockroachDB Cloud.
+4. Copy the connection string provided in step **2** to a secure location.
+
+    <Note>
+    The connection string is pre-populated with your username, password, cluster name, and other details. Your password, in particular, will be provided *only once*. Save it in a secure place (Cockroach Labs recommends a password manager) to connect to your cluster in the future. If you forget your password, you can reset it by going to the **SQL Users** page for the cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`.
+    </Note>
+
+## Create a.NET project
+
+In your terminal, run the following commands:
+
+```shell
+dotnet new console -o cockroachdb-test-app
+```
+
+```shell
+cd cockroachdb-test-app
+```
+
+The `dotnet` command creates a new app of type `console`. The `-o` parameter creates a directory named `cockroachdb-test-app` where your app will be stored and populates it with the required files. The `cd cockroachdb-test-app` command puts you into the newly created app directory.
+
+## Install the Npgsql driver
+
+Install the latest version of the [Npgsql driver](https://www.nuget.org/packages/Npgsql) into the.NET project using the built-in nuget package manager:
+
+```shell
+dotnet add package Npgsql
+```
+
+## Create a database
+
+1. If you haven't already, [download the CockroachDB binary](/docs/v24.1/install-cockroachdb).
+2. Start the [built-in SQL shell](/docs/v24.1/cockroach-sql) using the connection string you got from the CockroachDB Cloud Console:
+
+    ```shell
+    $ cockroach sql \
+    --url='<connection-string>'
+    ```
+3. In the SQL shell, create the `bank` database that your application will use:
+
+    ```sql
+    > CREATE DATABASE bank;
+    ```
+4. Exit the SQL shell:
+
+    ```sql
+    > \q
+    ```
+
+</Tab>
+<Tab title="Use a Local Cluster">
+
+1. If you haven't already, [download the CockroachDB binary](/docs/v24.1/install-cockroachdb).
+2. Run the [`cockroach demo`](/docs/v24.1/cockroach-demo) command:
+
+    ```shell
+    $ cockroach demo \
+    --no-example-database
+    ```
+
+    This starts a temporary, in-memory cluster and opens an interactive SQL shell to the cluster. Any changes to the database will not persist after the cluster is stopped.
+
+    <Note>
+    If `cockroach demo` fails due to SSL authentication, make sure you have cleared any previously downloaded CA certificates from the directory `~/.postgresql`.
+    </Note>
+3. Take note of the `(sql)` connection string in the SQL shell welcome text:
+
+    ```text
+    # Connection parameters:
+    #   (webui)    http://127.0.0.1:8080/demologin?password=demo76950&username=demo
+    #   (sql)      postgres://demo:demo76950@127.0.0.1:26257?sslmode=require
+    #   (sql/unix) postgres://demo:demo76950@?host=%2Fvar%2Ffolders%2Fc8%2Fb_q93vjj0ybfz0fz0z8vy9zc0000gp%2FT%2Fdemo070856957&port=26257
+    ```
+
+## Create a.NET project
+
+In your terminal, run the following commands:
+
+```shell
+dotnet new console -o cockroachdb-test-app
+```
+
+```shell
+cd cockroachdb-test-app
+```
+
+The `dotnet` command creates a new app of type `console`. The `-o` parameter creates a directory named `cockroachdb-test-app` where your app will be stored and populates it with the required files. The `cd cockroachdb-test-app` command puts you into the newly created app directory.
+
+## Install the Npgsql driver
+
+Install the latest version of the [Npgsql driver](https://www.nuget.org/packages/Npgsql) into the.NET project using the built-in nuget package manager:
+
+```shell
+dotnet add package Npgsql
+```
+
+## Create a database
+
+1. In the SQL shell, create the `bank` database that your application will use:
+
+    ```sql
+    > CREATE DATABASE bank;
+    ```
+2. Create a SQL user for your app:
+
+    ```sql
+    > CREATE USER <username> WITH PASSWORD <password>;
+    ```
+
+    Take note of the username and password. You will use it in your application code later.
+3. Give the user the necessary permissions:
+
+    ```sql
+    > GRANT ALL ON DATABASE bank TO <username>;
+    ```
+
+</Tab>
+</Tabs>
+
+## Set the connection string
+
+Choose your OS:
+
+<Tabs>
+<Tab title="macOS">
+
+Set a `DATABASE_URL` environment variable to your connection string.
+
+```shell
+export DATABASE_URL="{connection string}"
+```
+
+</Tab>
+<Tab title="Linux">
+
+Set a `DATABASE_URL` environment variable to your connection string.
+
+```shell
+export DATABASE_URL="{connection string}"
+```
+
+</Tab>
+<Tab title="Windows">
+
+Set a `DATABASE_URL` environment variable to your connection string.
+
+```shell
+$env:DATABASE_URL = "{connection string}"
+```
+
+</Tab>
+</Tabs>
+
+## Run the C# code
+
+Now that you have set up your project and created a database, in this section you will:
+
+- [Create a table and insert some rows](#basic-example)
+- [Execute a batch of statements as a transaction](#transaction-example-with-retry-logic)
+
+### Basic example
+
+#### Get the code
+
+Replace the contents of the `Program.cs` file that was automatically generated in your `cockroachdb-test-app` directory with the code below:
+
+```c#
+using System;
+using System.Data;
+using System.Net.Security;
+using Npgsql;
+
+namespace Cockroach
+{
+  class MainClass
+  {
+    static void Main(string[] args)
+    {
+      var connStringBuilder = new NpgsqlConnectionStringBuilder();
+      connStringBuilder.SslMode = SslMode.VerifyFull;
+      string? databaseUrlEnv = Environment.GetEnvironmentVariable("DATABASE_URL");
+      if (databaseUrlEnv == null) {
+        connStringBuilder.Host = "localhost";
+        connStringBuilder.Port = 26257;
+        connStringBuilder.Username = "{username}";
+        connStringBuilder.Password = "{password}";
+      } else {
+        Uri databaseUrl = new Uri(databaseUrlEnv);
+        connStringBuilder.Host = databaseUrl.Host;
+        connStringBuilder.Port = databaseUrl.Port;
+        var items = databaseUrl.UserInfo.Split(new[] { ':' });
+        if (items.Length > 0) connStringBuilder.Username = items[0];
+        if (items.Length > 1) connStringBuilder.Password = items[1];
+      }
+      connStringBuilder.Database = "bank";
+      Simple(connStringBuilder.ConnectionString);
+    }
+
+    static void Simple(string connString)
+    {
+      using (var conn = new NpgsqlConnection(connString))
+      {
+        conn.Open();
+
+        // Create the "accounts" table.
+        using (var cmd = new NpgsqlCommand("CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)", conn))
+        {
+          cmd.ExecuteNonQuery();
+        }
+        // Insert two rows into the "accounts" table.
+        using (var cmd = new NpgsqlCommand())
+        {
+          cmd.Connection = conn;
+          cmd.CommandText = "UPSERT INTO accounts(id, balance) VALUES(@id1, @val1), (@id2, @val2)";
+          cmd.Parameters.AddWithValue("id1", 1);
+          cmd.Parameters.AddWithValue("val1", 1000);
+          cmd.Parameters.AddWithValue("id2", 2);
+          cmd.Parameters.AddWithValue("val2", 250);
+          cmd.ExecuteNonQuery();
+        }
+
+        // Print out the balances.
+        System.Console.WriteLine("Initial balances:");
+        using (var cmd = new NpgsqlCommand("SELECT id, balance FROM accounts", conn))
+        using (var reader = cmd.ExecuteReader())
+          while (reader.Read())
+            Console.Write("\taccount {0}: {1}\n", reader.GetValue(0), reader.GetValue(1));
+      }
+    }
+  }
+}
+```
+
+#### Run the basic example
+
+Compile and run the code:
+
+```shell
+dotnet run
+```
+
+The output should be:
+
+```text
+Initial balances:
+ account 1: 1000
+ account 2: 250
+```
+
+### Transaction example (with retry logic)
+
+#### Modify the code
+
+Open `cockroachdb-test-app/Program.cs` again and replace the contents with the code shown below.
+
+<Tabs>
+<Tab title="Use CockroachDB Standard">
+
+```c#
+using System;
+using System.Data;
+using System.Net.Security;
+using Npgsql;
+
+namespace Cockroach
+{
+  class MainClass
+  {
+    static void Main(string[] args)
+    {
+      var connStringBuilder = new NpgsqlConnectionStringBuilder();
+      connStringBuilder.Host = "{host-name}";
+      connStringBuilder.Port = 26257;
+      connStringBuilder.SslMode = SslMode.VerifyFull;
+      connStringBuilder.Username = "{username}";
+      connStringBuilder.Password = "{password}";
+      connStringBuilder.Database = "bank";
+      TxnSample(connStringBuilder.ConnectionString);
+    }
+
+    static void TransferFunds(NpgsqlConnection conn, NpgsqlTransaction tran, int from, int to, int amount)
+    {
+      int balance = 0;
+      using (var cmd = new NpgsqlCommand(String.Format("SELECT balance FROM accounts WHERE id = {0}", from), conn, tran))
+      using (var reader = cmd.ExecuteReader())
+      {
+        if (reader.Read())
+        {
+          balance = reader.GetInt32(0);
+        }
+        else
+        {
+          throw new DataException(String.Format("Account id={0} not found", from));
+        }
+      }
+      if (balance < amount)
+      {
+        throw new DataException(String.Format("Insufficient balance in account id={0}", from));
+      }
+      using (var cmd = new NpgsqlCommand(String.Format("UPDATE accounts SET balance = balance - {0} where id = {1}", amount, from), conn, tran))
+      {
+        cmd.ExecuteNonQuery();
+      }
+      using (var cmd = new NpgsqlCommand(String.Format("UPDATE accounts SET balance = balance + {0} where id = {1}", amount, to), conn, tran))
+      {
+        cmd.ExecuteNonQuery();
+      }
+    }
+
+    static void TxnSample(string connString)
+    {
+      using (var conn = new NpgsqlConnection(connString))
+      {
+        conn.Open();
+
+        // Create the "accounts" table.
+        new NpgsqlCommand("CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)", conn).ExecuteNonQuery();
+
+        // Insert two rows into the "accounts" table.
+        using (var cmd = new NpgsqlCommand())
+        {
+          cmd.Connection = conn;
+          cmd.CommandText = "UPSERT INTO accounts(id, balance) VALUES(@id1, @val1), (@id2, @val2)";
+          cmd.Parameters.AddWithValue("id1", 1);
+          cmd.Parameters.AddWithValue("val1", 1000);
+          cmd.Parameters.AddWithValue("id2", 2);
+          cmd.Parameters.AddWithValue("val2", 250);
+          cmd.ExecuteNonQuery();
+        }
+
+        // Print out the balances.
+        System.Console.WriteLine("Initial balances:");
+        using (var cmd = new NpgsqlCommand("SELECT id, balance FROM accounts", conn))
+        using (var reader = cmd.ExecuteReader())
+        while (reader.Read())
+          Console.Write("\taccount {0}: {1}\n", reader.GetValue(0), reader.GetValue(1));
+
+        try
+        {
+          using (var tran = conn.BeginTransaction())
+          {
+            tran.Save("cockroach_restart");
+            while (true)
+            {
+              try
+              {
+                TransferFunds(conn, tran, 1, 2, 100);
+                tran.Commit();
+                break;
+              }
+              catch (NpgsqlException e)
+              {
+                // Check if the error code indicates a SERIALIZATION_FAILURE.
+                if (e.ErrorCode == 40001)
+                {
+                  // Signal the database that we will attempt a retry.
+                  tran.Rollback("cockroach_restart");
+                }
+                else
+                {
+                  throw;
+                }
+              }
+            }
+          }
+        }
+        catch (DataException e)
+        {
+          Console.WriteLine(e.Message);
+        }
+
+        // Now printout the results.
+        Console.WriteLine("Final balances:");
+        using (var cmd = new NpgsqlCommand("SELECT id, balance FROM accounts", conn))
+        using (var reader = cmd.ExecuteReader())
+        while (reader.Read())
+          Console.Write("\taccount {0}: {1}\n", reader.GetValue(0), reader.GetValue(1));
+      }
+    }
+  }
+}
+```
+
+</Tab>
+<Tab title="Use a Local Cluster">
+
+```c#
+using System;
+using System.Data;
+using System.Net.Security;
+using Npgsql;
+
+namespace Cockroach
+{
+  class TransactionsClass
+  {
+    static void Main(string[] args)
+    {
+      var connStringBuilder = new NpgsqlConnectionStringBuilder();
+      connStringBuilder.SslMode = SslMode.VerifyFull;
+      // use the DATABASE_URL environment variable if it is set
+      string? databaseUrlEnv = Environment.GetEnvironmentVariable("DATABASE_URL");
+      if (databaseUrlEnv == null) {
+        connStringBuilder.Host = "localhost";
+        connStringBuilder.Port = 26257;
+        connStringBuilder.Username = "{username}";
+        connStringBuilder.Password = "{password}";
+      } else {
+        Uri databaseUrl = new Uri(databaseUrlEnv);
+        connStringBuilder.Host = databaseUrl.Host;
+        connStringBuilder.Port = databaseUrl.Port;
+        var items = databaseUrl.UserInfo.Split(new[] { ':' });
+        if (items.Length > 0) connStringBuilder.Username = items[0];
+        if (items.Length > 1) connStringBuilder.Password = items[1];
+      }
+      connStringBuilder.Database = "bank";
+      TxnSample(connStringBuilder.ConnectionString);
+    }
+
+    static void TransferFunds(NpgsqlConnection conn, NpgsqlTransaction tran, int from, int to, int amount)
+    {
+      int balance = 0;
+      using (var cmd = new NpgsqlCommand(String.Format("SELECT balance FROM accounts WHERE id = {0}", from), conn, tran))
+      using (var reader = cmd.ExecuteReader())
+      {
+        if (reader.Read())
+        {
+          balance = reader.GetInt32(0);
+        }
+        else
+        {
+          throw new DataException(String.Format("Account id={0} not found", from));
+        }
+      }
+      if (balance < amount)
+      {
+        throw new DataException(String.Format("Insufficient balance in account id={0}", from));
+      }
+      using (var cmd = new NpgsqlCommand(String.Format("UPDATE accounts SET balance = balance - {0} where id = {1}", amount, from), conn, tran))
+      {
+        cmd.ExecuteNonQuery();
+      }
+      using (var cmd = new NpgsqlCommand(String.Format("UPDATE accounts SET balance = balance + {0} where id = {1}", amount, to), conn, tran))
+      {
+        cmd.ExecuteNonQuery();
+      }
+    }
+
+    static void TxnSample(string connString)
+    {
+      using (var conn = new NpgsqlConnection(connString))
+      {
+        conn.Open();
+
+        // Create the "accounts" table.
+        new NpgsqlCommand("CREATE TABLE IF NOT EXISTS accounts (id INT PRIMARY KEY, balance INT)", conn).ExecuteNonQuery();
+
+        // Insert two rows into the "accounts" table.
+        using (var cmd = new NpgsqlCommand())
+        {
+          cmd.Connection = conn;
+          cmd.CommandText = "UPSERT INTO accounts(id, balance) VALUES(@id1, @val1), (@id2, @val2)";
+          cmd.Parameters.AddWithValue("id1", 1);
+          cmd.Parameters.AddWithValue("val1", 1000);
+          cmd.Parameters.AddWithValue("id2", 2);
+          cmd.Parameters.AddWithValue("val2", 250);
+          cmd.ExecuteNonQuery();
+        }
+
+        // Print out the balances.
+        System.Console.WriteLine("Initial balances:");
+        using (var cmd = new NpgsqlCommand("SELECT id, balance FROM accounts", conn))
+        using (var reader = cmd.ExecuteReader())
+        while (reader.Read())
+          Console.Write("\taccount {0}: {1}\n", reader.GetValue(0), reader.GetValue(1));
+
+        try
+        {
+          using (var tran = conn.BeginTransaction())
+          {
+            tran.Save("cockroach_restart");
+            while (true)
+            {
+              try
+              {
+                TransferFunds(conn, tran, 1, 2, 100);
+                tran.Commit();
+                break;
+              }
+              catch (NpgsqlException e)
+              {
+                // Check if the error code indicates a SERIALIZATION_FAILURE.
+                if (e.ErrorCode == 40001)
+                {
+                  // Signal the database that we will attempt a retry.
+                  tran.Rollback("cockroach_restart");
+                }
+                else
+                {
+                  throw;
+                }
+              }
+            }
+          }
+        }
+        catch (DataException e)
+        {
+          Console.WriteLine(e.Message);
+        }
+
+        // Now printout the results.
+        Console.WriteLine("Final balances:");
+        using (var cmd = new NpgsqlCommand("SELECT id, balance FROM accounts", conn))
+        using (var reader = cmd.ExecuteReader())
+        while (reader.Read())
+          Console.Write("\taccount {0}: {1}\n", reader.GetValue(0), reader.GetValue(1));
+      }
+    }
+  }
+}
+```
+
+</Tab>
+</Tabs>
+
+#### Run the transactions example
+
+This time, running the code will execute a batch of statements as an atomic transaction to transfer funds from one account to another, where all included statements are either committed or aborted:
+
+```shell
+dotnet run
+```
+
+The output should be:
+
+```text
+Initial balances:
+ account 1: 1000
+ account 2: 250
+Final balances:
+ account 1: 900
+ account 2: 350
+```
+
+However, if you want to verify that funds were transferred from one account to another, use the [built-in SQL client](/docs/v24.1/cockroach-sql):
+
+```sql
+SELECT id, balance FROM accounts;
+```
+
+```text
+  id | balance
++----+---------+
+   1 |     900
+   2 |     350
+(2 rows)
+```
+
+## What's next?
+
+Read more about using the [.NET Npgsql driver](http://www.npgsql.org/).
+
+You might also be interested in the following pages:
+
+- [Client Connection Parameters](/docs/v24.1/connection-parameters)
+- [Connection Pooling](/docs/v24.1/connection-pooling)
+- [Data Replication](/docs/v24.1/demo-replication-and-rebalancing)
+- [Fault Tolerance &amp; Recovery](/docs/v24.1/demo-fault-tolerance-and-recovery)
+- [Replication &amp; Rebalancing](/docs/v24.1/demo-replication-and-rebalancing)
+- [Cross-Cloud Migration](/docs/v24.1/demo-automatic-cloud-migration)
+- [Automated Operations](/docs/v24.1/orchestrate-a-local-cluster-with-kubernetes-insecure)

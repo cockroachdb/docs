@@ -1,0 +1,147 @@
+## Step 4. Select your driver or ORM
+
+<Tabs>
+  <Tab title="pgx">
+    ## Step 5. Connect to the cluster
+    
+    Set a `DATABASE_URL` environment variable to your connection string.
+
+    ```shell
+    $env:DATABASE_URL = "{connection string}"
+    ```
+
+    To connect to CockroachDB with [pgx](https://github.com/jackc/pgx), use the `pgx.Connect` function.
+
+    For example:
+
+    ```go
+    package main
+
+    import (
+        "context"
+        "log"
+
+        "github.com/jackc/pgx/v4"
+    )
+
+    func main() {
+        conn, err := pgx.Connect(context.Background(), "<connection-string>")
+        if err != nil {
+            log.Fatal(err)
+        }
+        defer conn.Close(context.Background())
+    }
+    ```
+
+    pgx accepts the following format for CockroachDB connection strings:
+
+    ```text
+    postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+    ```
+
+    <Note>
+    The connection information shown on this page uses [client certificate and key authentication](/docs/v25.4/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+    To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v25.4/authentication#using-digital-certificates-with-cockroachdb).
+
+    For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v25.4/secure-a-cluster).
+    </Note>
+
+    For more information about connecting with pgx, see the [official pgx documentation](https://pkg.go.dev/github.com/jackc/pgx).
+  </Tab>
+  <Tab title="pq">
+    ## Step 5. Connect to the cluster
+    
+    Set a `DATABASE_URL` environment variable to your connection string.
+
+    ```shell
+    $env:DATABASE_URL = "{connection string}"
+    ```
+
+    To connect to CockroachDB with [pq](https://godoc.org/github.com/lib/pq), use the [`sql.Open` function](https://go.dev/doc/tutorial/database-access).
+
+    For example:
+
+    ```go
+    package main
+
+    import (
+        "database/sql"
+        "log"
+
+        _ "github.com/lib/pq"
+    )
+
+    func main() {
+        db, err := sql.Open("postgres", "<connection-string>")
+        if err != nil {
+            log.Fatal(err)
+        }
+        defer db.Close()
+    }
+    ```
+
+    pq accepts the following format for CockroachDB connection strings:
+
+    ```text
+    postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+    ```
+
+    <Note>
+    The connection information shown on this page uses [client certificate and key authentication](/docs/v25.4/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+    To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v25.4/authentication#using-digital-certificates-with-cockroachdb).
+
+    For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v25.4/secure-a-cluster).
+    </Note>
+
+    For more information about connecting with pq, see the [official pq documentation](https://pkg.go.dev/github.com/lib/pq).
+  </Tab>
+  <Tab title="GORM">
+    ## Step 5. Connect to the cluster
+    
+    Set a `DATABASE_URL` environment variable to your connection string.
+
+    ```shell
+    $env:DATABASE_URL = "{connection string}"
+    ```
+
+    To connect to CockroachDB with [GORM](http://gorm.io/), use the `gorm.Open` function, with the GORM `postgres` driver.
+
+    For example:
+
+    ```go
+    package main
+
+    import (
+        "log"
+
+        "gorm.io/driver/postgres"
+        "gorm.io/gorm"
+    )
+
+    func main() {
+        db, err := gorm.Open(postgres.Open("<connection-string>"), &gorm.Config{})
+        if err != nil {
+            log.Fatal(err)
+        }
+    }
+    ```
+
+    GORM accepts the following format for CockroachDB connection strings:
+
+    ```text
+    postgresql://{username}@{host}:{port}/{database}?sslmode=verify-full&sslrootcert={root-cert}&sslcert={client-cert}&sslkey={client-key}
+    ```
+    
+    <Note>
+    The connection information shown on this page uses [client certificate and key authentication](/docs/v25.4/authentication#client-authentication) to connect to a secure, CockroachDB self-hosted cluster.
+
+    To connect to a CockroachDB self-hosted cluster with client certificate and key authentication, you must first [generate server and client certificates](/docs/v25.4/authentication#using-digital-certificates-with-cockroachdb).
+
+    For instructions on starting a secure cluster, see [Start a Local Cluster (Secure)](/docs/v25.4/secure-a-cluster).
+    </Note>
+
+    For more information about connecting with pq, see the [official pq documentation](https://pkg.go.dev/github.com/lib/pq).
+  </Tab>
+</Tabs>

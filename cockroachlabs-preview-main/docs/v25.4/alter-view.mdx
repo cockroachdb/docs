@@ -1,0 +1,131 @@
+---
+title: "ALTER VIEW"
+old_description: "The ALTER VIEW statement applies a schema change to a view."
+---
+
+import { AlterView6 } from "/snippets/syntax-diagrams/AlterView6.jsx";
+
+The `ALTER VIEW` [statement](/docs/v25.4/sql-statements) applies a schema change to a [view](/docs/v25.4/views).
+
+<Note>
+The `ALTER VIEW` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.4/online-schema-changes).
+</Note>
+
+## Required privileges
+
+- To alter a view, the user must have the `CREATE` [privilege](/docs/v25.4/security-reference/authorization#managing-privileges) on the parent database.
+- To change the schema of a view with `ALTER VIEW... SET SCHEMA`, or to change the name of a view with `ALTER VIEW... RENAME TO`, the user must also have the `DROP` [privilege](/docs/v25.4/security-reference/authorization#managing-privileges) on the view.
+
+## Syntax
+
+<AlterView6 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>MATERIALIZED</code></td><td>Rename a <a href="/docs/v25.4/views#materialized-views">materialized view</a>.</td></tr><tr><td><code>IF EXISTS</code></td><td>Rename the view only if a view of <code>view&#95;name</code> exists; if one does not exist, do not return an error.</td></tr><tr><td><code>view&#95;name</code></td><td>The name of the view to rename. To find existing view names, use:<br/><br/><code>SELECT &#42; FROM information&#95;schema.tables WHERE table&#95;type = 'VIEW';</code></td></tr><tr><td><code>view&#95;new&#95;name</code></td><td>The new name of the view. The name of the view must be unique to its database and follow these <a href="/docs/v25.4/keywords-and-identifiers#identifiers">identifier rules</a>. Name changes do not propagate to the table(s) using the view.</td></tr><tr><td><code>schema&#95;name</code></td><td>The name of the new schema.</td></tr><tr><td><code>role&#95;spec</code></td><td>The role to set as the owner of the view.</td></tr></tbody></table>
+
+## Known limitations
+
+`ALTER VIEW` does not currently support:
+
+- Changing the [`SELECT`](/docs/v25.4/select-clause) statement executed by a view. Instead, you must drop the existing view and create a new view.
+- Renaming a view that other views depend on. This feature may be added in the future. [#10083](https://github.com/cockroachdb/cockroach/issues/10083)
+
+## Examples
+
+### Rename a view
+
+Suppose you create a new view that you want to rename:
+
+```sql
+CREATE VIEW money_rides (id, revenue) AS SELECT id, revenue FROM rides WHERE revenue > 50;
+```
+
+```sql
+WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
+```
+
+```text
+  schema_name | table_name  | type | owner | estimated_row_count | locality
+--------------+-------------+------+-------+---------------------+-----------
+  public      | money_rides | view | demo  |                   0 | NULL
+(1 row)
+```
+
+```sql
+ALTER VIEW money_rides RENAME TO expensive_rides;
+```
+
+```text
+RENAME VIEW
+```
+
+```sql
+WITH x AS (SHOW TABLES) SELECT * FROM x WHERE type = 'view';
+```
+
+```text
+  schema_name |   table_name    | type | owner | estimated_row_count | locality
+--------------+-----------------+------+-------+---------------------+-----------
+  public      | expensive_rides | view | demo  |                   0 | NULL
+(1 row)
+```
+
+Note that `RENAME TO` can be used to move a view from one database to another, but it cannot be used to move a view from one schema to another. To change a view's schema, [use the `SET SCHEMA` clause](#change-the-schema-of-a-view). In a future release, `RENAME TO` will be limited to changing the name of a view, and will not have the ability to change a view's database.
+
+### Change the schema of a view
+
+Suppose you want to add the `expensive_rides` view to a schema called `cockroach_labs`:
+
+By default, [unqualified views](/docs/v25.4/sql-name-resolution#lookup-with-unqualified-names) created in the database belong to the `public` schema:
+
+```sql
+SHOW CREATE public.expensive_rides;
+```
+
+```text
+        table_name       |                                                 create_statement
+-------------------------+-------------------------------------------------------------------------------------------------------------------
+  public.expensive_rides | CREATE VIEW public.expensive_rides (id, revenue) AS SELECT id, revenue FROM movr.public.rides WHERE revenue > 50
+(1 row)
+```
+
+If the new schema does not already exist, [create it](/docs/v25.4/create-schema):
+
+```sql
+CREATE SCHEMA IF NOT EXISTS cockroach_labs;
+```
+
+Then, change the view's schema:
+
+```sql
+ALTER VIEW expensive_rides SET SCHEMA cockroach_labs;
+```
+
+```sql
+SHOW CREATE public.expensive_rides;
+```
+
+```text
+ERROR: relation "public.expensive_rides" does not exist
+SQLSTATE: 42P01
+```
+
+```sql
+SHOW CREATE cockroach_labs.expensive_rides;
+```
+
+```text
+            table_name           |                                                     create_statement
+---------------------------------+---------------------------------------------------------------------------------------------------------------------------
+  cockroach_labs.expensive_rides | CREATE VIEW cockroach_labs.expensive_rides (id, revenue) AS SELECT id, revenue FROM movr.public.rides WHERE revenue > 50
+(1 row)
+```
+
+## See also
+
+- [Views](/docs/v25.4/views)
+- [`CREATE VIEW`](/docs/v25.4/create-view)
+- [`SHOW CREATE`](/docs/v25.4/show-create)
+- [`DROP VIEW`](/docs/v25.4/drop-view)
+- [Online Schema Changes](/docs/v25.4/online-schema-changes)

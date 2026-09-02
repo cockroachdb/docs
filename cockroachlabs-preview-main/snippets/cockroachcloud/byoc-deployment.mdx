@@ -1,0 +1,112 @@
+---
+title: "Prepare a CockroachDB Cloud BYOC Deployment"
+old_description: "Prepare a cloud service account to self-host a CockroachDB Cloud deployment with the BYOC model"
+---
+
+CockroachDB Cloud supports a "bring your own cloud" (BYOC) deployment model, where CockroachDB Cloud Advanced is hosted in your own account rather than in an account managed by Cockroach Labs. This model allows you to take more control of security and take advantage of existing cloud service credits or discounts.
+
+<Note>
+The BYOC Cloud deployment option is currently in <a href="/docs/VERSION_PLACEHOLDER/cockroachdb-feature-availability" data-versioned="true">Preview</a>. BYOC deployments are only supported in Microsoft Azure.
+</Note>
+
+This page describes how to prepare a cloud service account to host a BYOC deployment of CockroachDB Cloud Advanced in Microsoft Azure.
+
+## Shared responsibility model for BYOC
+
+In any CockroachDB Cloud deployment, responsibility for a successful and healthy deployment is <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/production-checklist" data-versioned="true">split between you and Cockroach Labs</a>. In a BYOC deployment, all of the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster-advanced#advanced-cluster-architecture" data-versioned="true">CockroachDB Cloud infrastructure</a> except the control plane lives in an account under your control, which means that you incur additional responsibilities under the shared model.
+
+The following table describes the split of responsibilities between you and Cockroach Labs in the shared responsibility model for BYOC:
+
+<table><thead><tr><th>Area</th><th>Cockroach Labs responsibility</th><th>Customer responsibility</th></tr></thead><tbody><tr><td>Uptime</td><td>Ensure 99.999% cluster uptime</td><td>Ensure that clusters remain accessible</td></tr><tr><td>Deployments</td><td>Automate cluster provisioning and scaling, provide hardware best practices</td><td>Provision new cloud service accounts and grant IAM permissions for Cockroach Labs to create and manage clusters</td></tr><tr><td>Upgrades</td><td>Provide automatic minor/patch upgrades and major upgrade automation via Terraform, APIs, or the Cloud Console</td><td>Initiate <a href="/docs/cockroachcloud/upgrade-cockroach-version">major version upgrades</a>, <a href="/docs/cockroachcloud/advanced-cluster-management#set-a-maintenance-window">set maintenance windows</a> if applicable</td></tr><tr><td>Workload</td><td>Troubleshoot problems as they pertain to cluster availability</td><td><a href="/docs/cockroachcloud/advanced-cluster-management#scale-your-cluster">Size clusters</a> to manage workload requirements, <a href="/docs/v26.1/performance-recipes">tune performance</a>, and adjust schema designs with support from Cockroach Labs</td></tr><tr><td>Backups</td><td>Initialize a default backup schedule and write to customer-owned Cloud storage, ensure backup jobs run successfully</td><td>Configure a backup schedule as needed to meet RPO/RTO requirements</td></tr><tr><td>Support</td><td>Reactively and proactively identify and resolve availability-impacting incidents</td><td>Ensure sufficient hardware is made available and appropriate IAM permissions are maintained at all times</td></tr><tr><td>Billing</td><td>Meter vCPUs consumed, <a href="/docs/cockroachcloud/costs">charge for vCPU consumption</a> at the per-minute level</td><td>Negotiate with cloud service provider, manage infrastructure spend and discounts</td></tr></tbody></table>
+
+## Prerequisites
+
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/create-an-account" data-versioned="true">Create a CockroachDB Cloud organization</a> if you do not already have one.
+- The BYOC deployment option is not available by default and must be requested. Reach out to your account team to express interest in BYOC.
+- Cluster creation and management for BYOC deployments is handled using the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api" data-versioned="true">Cloud API</a>. Create a service account and <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/managing-access#api-access" data-versioned="true">API key</a> if you do not have one.
+- Review the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster-advanced" data-versioned="true">Plan a CockroachDB Advanced Cluster</a> documentation to plan your cluster sizing and resource allocation.
+
+## Step 1. Create a new Azure subscription
+
+Provision a new Azure subscription with no existing infrastructure, dedicated to your Cockroach Cloud deployment. The account configuration for BYOC requires you to grant Cockroach Labs permissions to access and modify resources in this subscription, so this step is necessary to isolate these permissions from non-Cockroach Cloud resources. This subscription can be reused for multiple CockroachDB clusters.
+
+## Step 2. Grant IAM permissions to Cockroach Labs
+
+When BYOC is enabled for your account, Cockroach Labs provisions a multi-tenant App Registration associated with your CockroachDB Cloud organization and provides you with a URL to grant tenant-wide admin consent to the application. Visit this URL with a user account that is [authorized to consent on behalf of your organization](https://learn.microsoft.com/entra/identity/enterprise-apps/grant-admin-consent?pivots=portal#prerequisites).
+
+Once the Cockroach Labs App Registration has been granted admin consent in the tenant, grant the following set of roles to the app:
+
+- `Role Based Access Control Administrator`
+- `Azure Kubernetes Service Cluster User Role`
+- `Azure Kubernetes Service Contributor Role`
+- `Azure Kubernetes Service RBAC Cluster Admin`
+- `Managed Identity Contributor`
+- `Network Contributor`
+- `Storage Account Contributor`
+- `Storage Blob Data Contributor`
+- `Virtual Machine Contributor`
+- A custom role, `Resource Group Manager`, with the following permissions:
+    - `Microsoft.Resources/subscriptions/resourceGroups/read`
+    - `Microsoft.Resources/subscriptions/resourceGroups/write`
+    - `Microsoft.Resources/subscriptions/resourceGroups/delete`
+    - `Microsoft.Resources/subscriptions/resourceGroups/moveResources/action`
+    - `Microsoft.Resources/subscriptions/resourceGroups/validateMoveResources/action`
+    - `Microsoft.Resources/subscriptions/resourcegroups/deployments/read`
+    - `Microsoft.Resources/subscriptions/resourcegroups/deployments/write`
+    - `Microsoft.Resources/subscriptions/resourcegroups/resources/read`
+    - `Microsoft.Resources/subscriptions/resourcegroups/deployments/operations/read`
+    - `Microsoft.Resources/subscriptions/resourcegroups/deployments/operationstatuses/read`
+
+The custom `Resource Group Manager` role is required to create and manage resource groups in the subscription. This role is used instead of requesting the more broad `Contributor` role.
+
+## Step 3. Register resource providers
+
+Register the following [resource providers](https://learn.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types) in the Azure subscription:
+
+- `Microsoft.ContainerService`
+- `Microsoft.ManagedIdentity`
+- `Microsoft.Network`
+- `Microsoft.Quota`
+- `Microsoft.Storage`
+
+## Step 4. Create the CockroachDB Cloud cluster
+
+In BYOC deployments, CockroachDB clusters are deployed with the Cloud API and must use the Advanced plan. Follow the API documentation to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api#create-an-advanced-cluster" data-versioned="true">create a CockroachDB Cloud Advanced cluster</a>.
+
+The following example request creates a 3-node Advanced cluster in the `centralus` region, specifying the `subscription-id` and `customer-tenant-id` associated with your Azure subscription:
+
+```shell
+curl --request POST \
+  --url https://cockroachlabs.cloud/api/v1/clusters \
+  --header "Authorization: Bearer {secret_key}" \
+  --json '{
+    "name":"byoc-azure-cluster-1",
+    "provider": "AZURE",
+    "plan": "ADVANCED",
+    "spec": {
+      "customer_cloud_account": {
+        "azure": {
+          "subscription_id": "{subscription-id}",
+          "tenant_id": "{customer-tenant-id}"
+        }
+      },
+      "dedicated": {
+        "hardware": {
+          "machine_spec": {
+            "num_virtual_cpus": 4
+          },
+          "storage_gib": 16
+        },
+        "region_nodes": {
+          "centralus": 3
+        }
+      }
+    }
+  }'
+```
+
+## Next steps
+
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/connect-to-an-advanced-cluster" data-versioned="true">Connect to your cluster</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api" data-versioned="true">Manage your cluster using the Cloud API</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/production-checklist" data-versioned="true">Prepare your deployment for production</a>

@@ -1,0 +1,56 @@
+---
+title: "Data Resilience"
+old_description: "An overview of how CockroachDB deployments can achieve resilience with built-in features and tooling."
+---
+
+CockroachDB provides built-in [**high availability (HA)**](#high-availability) features and [**disaster recovery (DR)**](#disaster-recovery) tooling to achieve operational resiliency in various deployment [topologies](/docs/v26.1/topology-patterns) and use cases.
+
+- HA features ensure continuous access to data without interruption even in the presence of [failures](/docs/v26.1/demo-cockroachdb-resilience) or disruptions to maximize uptime.
+- DR tools allow for recovery from major incidents to minimize downtime and data loss.
+
+<Frame>
+  ![Diagram showing how HA features and DR tools create a resilient CockroachDB deployment.](/images/v26.1/resilience.svg)
+</Frame>
+
+You can balance required SLAs and recovery objectives with the cost and management of each of these features to build a resilient deployment.
+
+- **Recovery Point Objective (RPO)**: The maximum amount of data loss (measured by time) that an organization can tolerate.
+- **Recovery Time Objective (RTO)**: The maximum length of time it should take to restore normal operations following an outage.
+
+<Tip>
+For a practical guide on how CockroachDB uses Raft to replicate, distribute, and rebalance data, refer to the [CockroachDB Resilience demo](/docs/v26.1/demo-cockroachdb-resilience).
+</Tip>
+
+## High availability
+
+- [**Multi-active availability**](/docs/v26.1/multi-active-availability): CockroachDB's built-in [Raft replication](/docs/v26.1/architecture/replication-layer) stores data safely and consistently on multiple nodes to ensure no downtime even during a temporary node outage. [Replication controls](/docs/v26.1/configure-replication-zones) allow you to configure the number and location of [replicas](/docs/v26.1/architecture/glossary#replica) to suit a deployment.
+    - For more detail on planning for single-region or multi-region recovery, refer to [Single-region survivability planning](/docs/v26.1/disaster-recovery-planning#single-region-survivability-planning) or [Multi-region survivability planning](/docs/v26.1/disaster-recovery-planning#multi-region-survivability-planning).
+- [**Advanced fault tolerance**](/docs/v26.1/demo-cockroachdb-resilience): Capabilities built in to CockroachDB to perform routine maintenance operations with minimal impact to foreground performance. For example, [online schema changes](/docs/v26.1/online-schema-changes), [write-ahead log failover](/docs/v26.1/cockroach-start#write-ahead-log-wal-failover), and [Leader leases](/docs/v26.1/architecture/replication-layer#leader-leases).
+- [**Logical data replication (LDR)**](/docs/v26.1/logical-data-replication-overview) (Preview): A cross-cluster replication tool between active CockroachDB clusters, which supports a range of topologies. LDR provides eventually consistent, table-level replication between the clusters. Individually, each active cluster uses CockroachDB multi-active availability to achieve low, single-region write latency with transactionally consistent writes using Raft replication.
+
+### Choose an HA strategy
+
+<table class="comparison-chart"><tbody><tr><th></th><th>Single-region replication (synchronous)</th><th>Multi-region replication (synchronous)</th><th>Logical data replication (asynchronous)</th></tr><tr><td class="comparison-chart__feature"><b>RPO</b></td><td>0 seconds</td><td>0 seconds</td><td>Immediate mode 0.5 seconds</td></tr><tr><td class="comparison-chart__feature"><b>RTO</b></td><td>Zero RTO<br/>Potential increased latency for 1-9 seconds</td><td>Zero RTO<br/>Potential increased latency for 1-9 seconds</td><td>Zero RTO<br/>Application traffic failover time</td></tr><tr><td class="comparison-chart__feature"><b>Write latency</b></td><td>Region-local write latency<br/>p50 latency &lt; 5ms (for multiple availability zones in us-east1)</td><td>Cross-region write latency<br/>p50 latency &gt; 50ms (for a multi-region cluster in us-east1, us-east-2, us-west-1)</td><td>Region-local latency depending on design<br/>p50 latency &lt; 5ms (for multiple availability zones in us-east1)</td></tr><tr><td class="comparison-chart__feature"><b>Recovery</b></td><td>Automatic</td><td>Automatic</td><td>Semi-automatic</td></tr><tr><td class="comparison-chart__feature"><b>Fault tolerance</b></td><td>Zero RPO node, availability zone failures within a cluster</td><td>Zero RPO node, availability zone failures, region failures within a cluster</td><td>Zero RPO node, availability zone within a cluster, region failures with loss up to RPO in a two-region (or two datacenter) setup</td></tr><tr><td class="comparison-chart__feature"><b>Minimum regions to achieve fault tolerance</b></td><td>1</td><td>3</td><td>2</td></tr></tbody></table>
+
+For details on designing your cluster topology for HA with replication, refer to the [Disaster Recovery Planning](/docs/v26.1/disaster-recovery-planning#hardware-failure) page.
+
+## Disaster recovery
+
+- [**Backup and point-in-time restore**](/docs/v26.1/take-backups-with-revision-history-and-restore-from-a-point-in-time): Point-in-time backup and restore allows you to roll back to a specific point in time. Multiple supported [cloud storage](/docs/v26.1/use-cloud-storage) providers means that you can store backups in your chosen provider. [Incremental backups](/docs/v26.1/take-full-and-incremental-backups) allow you to configure backup frequency for lower [RPO](/docs/v26.1/disaster-recovery-overview).
+- [**Physical cluster replication (PCR)**](/docs/v26.1/physical-cluster-replication-overview): A cross-cluster replication tool between an active primary CockroachDB cluster and a passive standby CockroachDB cluster. PCR provides transactionally consistent full-cluster replication.
+
+### Choose a DR strategy
+
+CockroachDB is designed to recover automatically; however, building backups or PCR into your DR plan protects against unforeseen incidents.
+
+<table class="comparison-chart"><tbody><tr><th></th><th>Point-in-time backup &amp; restore</th><th>Physical cluster replication (asynchronous)</th></tr><tr><td class="comparison-chart__feature"><b>RPO</b></td><td>&gt;=5 minutes</td><td>10s of seconds</td></tr><tr><td class="comparison-chart__feature"><b>RTO</b></td><td>Minutes to hours, depending on data size and number of nodes</td><td>Seconds to minutes, depending on cluster size, and time of failover</td></tr><tr><td class="comparison-chart__feature"><b>Write latency</b></td><td>No impact</td><td>No impact</td></tr><tr><td class="comparison-chart__feature"><b>Recovery</b></td><td>Manual restore</td><td>Manual failover</td></tr><tr><td class="comparison-chart__feature"><b>Fault tolerance</b></td><td>Not applicable</td><td>Zero RPO node, availability zone within a cluster, region failures with loss up to RPO in a two-region (or two-datacenter) setup</td></tr><tr><td class="comparison-chart__feature"><b>Minimum regions to achieve fault tolerance</b></td><td>1</td><td>2</td></tr></tbody></table>
+
+## See also
+
+- [Architecture Overview](/docs/v26.1/architecture/overview)
+- [Set Up Logical Data Replication](/docs/v26.1/set-up-logical-data-replication)
+- [Set Up Physical Cluster Replication](/docs/v26.1/set-up-physical-cluster-replication)
+- [Physical Cluster Replication Technical Overview](/docs/v26.1/physical-cluster-replication-technical-overview)
+- [Backup Architecture](/docs/v26.1/backup-architecture)
+- [Backup and Restore Overview](/docs/v26.1/backup-and-restore-overview)
+- [Managed Backups](/docs/stable/cockroachcloud/managed-backups)

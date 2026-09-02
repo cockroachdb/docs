@@ -1,0 +1,12 @@
+:root {
+  --inline-code-bg-light: rgb(var(--gray-200) / 0.92);
+  --inline-code-bg-dark: rgb(255 255 255 / 0.08);
+}
+
+.prose :not(pre) > code {
+  background-color: var(--inline-code-bg-light) !important;
+}
+
+.dark .prose :not(pre) > code {
+  background-color: var(--inline-code-bg-dark) !important;
+}

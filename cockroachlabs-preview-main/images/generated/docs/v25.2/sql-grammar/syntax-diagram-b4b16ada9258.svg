@@ -1,0 +1,72 @@
+<svg height="179" width="1105" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="64" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="64" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">SHOW</text>
+<rect height="32" rx="10" width="84" x="45" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="84" x="43" y="67"></rect>
+<text class="terminal" x="53" y="87">BACKUPS</text>
+<rect height="32" rx="10" width="36" x="149" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="36" x="147" y="67"></rect>
+<text class="terminal" x="157" y="87">IN</text><a xlink:href="#string_or_placeholder_opt_list" xlink:title="string_or_placeholder_opt_list">
+<rect height="32" width="214" x="205" y="69"></rect>
+<rect class="nonterminal" height="32" width="214" x="203" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="190" font-size="10" class="nonterminal" x="215" y="87">string_or_placeholder_opt_list</text></a><rect height="32" rx="10" width="74" x="45" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="43" y="111"></rect>
+<text class="terminal" x="53" y="131">BACKUP</text>
+<rect height="32" rx="10" width="86" x="159" y="145"></rect>
+<rect class="terminal" height="32" rx="10" width="86" x="157" y="143"></rect>
+<text class="terminal" x="167" y="163">SCHEMAS</text>
+<rect height="32" rx="10" width="60" x="265" y="145"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="263" y="143"></rect>
+<text class="terminal" x="273" y="163">FROM</text><a xlink:href="#string_or_placeholder" xlink:title="string_or_placeholder">
+<rect height="32" width="158" x="365" y="113"></rect>
+<rect class="nonterminal" height="32" width="158" x="363" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="134" font-size="10" class="nonterminal" x="375" y="131">string_or_placeholder</text></a><rect height="32" rx="10" width="36" x="543" y="113"></rect>
+<rect class="terminal" height="32" rx="10" width="36" x="541" y="111"></rect>
+<text class="terminal" x="551" y="131">IN</text><a xlink:href="#string_or_placeholder_opt_list" xlink:title="string_or_placeholder_opt_list">
+<rect height="32" width="214" x="599" y="113"></rect>
+<rect class="nonterminal" height="32" width="214" x="597" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="190" font-size="10" class="nonterminal" x="609" y="131">string_or_placeholder_opt_list</text></a><a xlink:href="#opt_with_show_backup_options" xlink:title="opt_with_show_backup_options">
+<rect height="32" width="224" x="833" y="113"></rect>
+<rect class="nonterminal" height="32" width="224" x="831" y="111"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="200" font-size="11" class="nonterminal" x="843" y="131">opt_with_show_backup_options</text></a><path class="line" d="m19 17 h2 m0 0 h10 m64 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-116 66 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m84 0 h10 m0 0 h10 m36 0 h10 m0 0 h10 m214 0 h10 m0 0 h638 m-1052 0 h20 m1032 0 h20 m-1072 0 q10 0 10 10 m1052 0 q0 -10 10 -10 m-1062 10 v24 m1052 0 v-24 m-1052 24 q0 10 10 10 m1032 0 q10 0 10 -10 m-1042 10 h10 m74 0 h10 m20 0 h10 m0 0 h176 m-206 0 h20 m186 0 h20 m-226 0 q10 0 10 10 m206 0 q0 -10 10 -10 m-216 10 v12 m206 0 v-12 m-206 12 q0 10 10 10 m186 0 q10 0 10 -10 m-196 10 h10 m86 0 h10 m0 0 h10 m60 0 h10 m20 -32 h10 m158 0 h10 m0 0 h10 m36 0 h10 m0 0 h10 m214 0 h10 m0 0 h10 m224 0 h10 m23 -44 h-3"></path>
+<polygon points="1095 83 1103 79 1103 87"></polygon>
+<polygon points="1095 83 1087 79 1087 87"></polygon></svg>

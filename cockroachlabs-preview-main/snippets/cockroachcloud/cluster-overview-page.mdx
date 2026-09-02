@@ -1,0 +1,68 @@
+---
+title: "Cluster Overview Page"
+old_description: "How to use the Cluster Overview page to view cluster details on CockroachDB Cloud."
+---
+
+The **Cluster Overview** page displays key metrics about your CockroachDB Cloud cluster. To view this page, click on a cluster from the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-management#view-clusters-page" data-versioned="true">**Clusters** page</a>.
+
+<Tabs>
+<Tab title="CockroachDB Standard / Basic">
+
+## Cluster settings
+
+The **Cluster settings** panel shows the settings selected during <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/create-a-basic-cluster" data-versioned="true">cluster creation</a>, as well as any <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/labels" data-versioned="true">labels</a> added to the cluster after its creation.
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td>Cloud</td><td>The cluster's <a href="/docs/cockroachcloud/create-a-basic-cluster#step-2-select-the-cloud-provider">cloud provider</a>.</td></tr><tr><td>Plan type</td><td>The plan type used to create the cluster.</td></tr><tr><td>Regions</td><td>The cluster's <a href="/docs/cockroachcloud/create-a-basic-cluster#step-3-select-the-regions">regions</a>.</td></tr><tr><td>Labels</td><td>The <a href="/docs/cockroachcloud/labels">labels</a> added to the cluster.</td></tr></tbody></table>
+
+## Capacity used this month
+
+The **Capacity used this month** panel displays your cluster usage statistics for the current month. You can click <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/basic-cluster-management#estimate-usage-cost" data-versioned="true">**Estimate usage cost**</a> to open a tool that estimates your monthly costs based on your workload during a selected time frame.
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td>Capacity used</td><td>The CockroachDB Standard or Basic cluster's <a href="/docs/cockroachcloud/create-a-basic-cluster#step-4-configure-cluster-capacity">configured capacity</a>. Click the <strong>edit</strong> icon to change the configured capacity.</td></tr><tr><td><a href="/docs/cockroachcloud/plan-your-cluster-basic#request-units">Request Units</a></td><td>The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your configured capacity.</td></tr><tr><td>Storage</td><td>The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your configured capacity.</td></tr></tbody></table>
+
+## Current activity panel
+
+This panel displays operational statistics for your cluster.
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td>Throughput</td><td>The cluster throughput in queries per second (QPS).</td></tr><tr><td>P99 latency</td><td>The 99th percentile of service latency. This value indicates the time within which the cluster executed 99 percent of queries over the last minute.</td></tr><tr><td>Open sessions</td><td>The number of open sessions in the cluster.</td></tr></tbody></table>
+
+## Cluster Overview metrics
+
+These time-series graphs display important cluster metrics over time.
+
+You can use the timeframe selector above the graphs to view data for a specific time period.
+
+### Request Units
+
+The **Request Units** graph displays the CPU and I/O resources being used by queries on the cluster. This is measured in Request Units per second at each timestamp. Simple queries consume few RUs, while complicated queries with many reads and writes consume more RUs.
+
+### Storage Used
+
+The **Storage Used** graph displays the amount of data being stored in the cluster over time. This is the logical number of live bytes and does not account for compression or replication.
+
+### SQL Statements
+
+The **SQL Statements** graph displays an average of the number of <a href="/docs/VERSION_PLACEHOLDER/select-clause" data-versioned="true">`SELECT`</a>, <a href="/docs/VERSION_PLACEHOLDER/insert" data-versioned="true">`INSERT`</a>, <a href="/docs/VERSION_PLACEHOLDER/update" data-versioned="true">`UPDATE`</a>, and <a href="/docs/VERSION_PLACEHOLDER/delete" data-versioned="true">`DELETE`</a> statements successfully executed per second.
+
+</Tab>
+<Tab title="CockroachDB Advanced">
+
+## Cluster configuration
+
+The **Cluster configuration** panel displays the settings you chose during <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/create-your-cluster" data-versioned="true">cluster creation</a>.
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td>Cloud</td><td>The cluster's <a href="/docs/cockroachcloud/create-an-advanced-cluster#step-2-select-the-cloud-provider">cloud provider</a>.</td></tr><tr><td>Plan type</td><td>The <a href="/docs/cockroachcloud/create-an-advanced-cluster#step-1-start-the-cluster-creation-process">plan type</a> used to create the cluster.</td></tr><tr><td>Regions</td><td>The cluster's <a href="/docs/cockroachcloud/create-an-advanced-cluster#step-3-configure-regions-and-nodes">region</a>.</td></tr><tr><td>Nodes</td><td>The <a href="/docs/cockroachcloud/create-an-advanced-cluster#step-3-configure-regions-and-nodes">number of nodes</a> the cluster has and the status of each.</td></tr><tr><td>Compute</td><td>The cluster's <a href="/docs/cockroachcloud/create-an-advanced-cluster#step-5-configure-cluster-capacity">compute power per node</a>.</td></tr><tr><td>Storage</td><td>The cluster's <a href="/docs/cockroachcloud/create-an-advanced-cluster#step-5-configure-cluster-capacity">storage per node</a>.</td></tr></tbody></table>
+
+## PCI ready (with Security add-on)
+
+CockroachDB Advanced clusters with Security add-on have a **PCI ready** panel to monitor the status of security features required for <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/pci-dss" data-versioned="true">PCI readiness</a>. Feature statuses will update from **INACTIVE** to **ACTIVE** once you configure them. Learn more about configuring these features:
+
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-org-audit-logs" data-versioned="true">CockroachDB Cloud Organization Audit logs</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/export-logs" data-versioned="true">Cluster audit log export</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/managing-cmek" data-versioned="true">Customer-Managed Encryption Keys (CMEK)</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/egress-perimeter-controls" data-versioned="true">Egress Perimeter Controls</a>
+- Single Sign-On (SSO) for your <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/configure-cloud-org-sso" data-versioned="true">CockroachDB Cloud organization</a> and your <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-sso-sql" data-versioned="true">clusters</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/network-authorization" data-versioned="true">Network security</a>
+
+</Tab>
+</Tabs>

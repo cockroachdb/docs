@@ -1,0 +1,310 @@
+---
+title: "MOLT Verify"
+old_description: "Learn how to use the MOLT Verify tool to check for data discrepancies during and after a migration."
+---
+
+<Note>
+**This feature is in <a href="/docs/VERSION_PLACEHOLDER/cockroachdb-feature-availability" data-versioned="true">preview</a>** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+MOLT Verify checks for data discrepancies between a source database and CockroachDB during a <a href="/docs/VERSION_PLACEHOLDER/molt/migration-overview" data-versioned="true">database migration</a>.
+
+The tool performs the following verifications to ensure data integrity during a migration:
+
+- **Table Verification:** Check that the structure of tables between the source database and the target database are the same.
+- **Column Definition Verification:** Check that the column names, data types, constraints, nullability, and other attributes between the source database and the target database are the same.
+- **Row Value Verification:** Check that the actual data in the tables is the same between the source database and the target database.
+
+For a demo of MOLT Verify, watch the following video:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/6mfebmCLClY" title="YouTube video player" width="560"></iframe>
+</Frame>
+
+## Supported databases
+
+The following source databases are supported:
+
+- PostgreSQL 12-16
+- MySQL 5.7, 8.0 and later
+- Oracle Database 19c (Enterprise Edition) and 21c (Express Edition)
+
+## Installation
+
+To install MOLT, download the binary that matches your architecture and source database:
+
+<table><thead><tr><th>Operating System</th><th>Architecture</th><th>PostgreSQL/MySQL</th><th>Oracle</th></tr></thead><tbody><tr><td>Windows</td><td>AMD 64-bit</td><td><a href="https://molt.cockroachdb.com/molt/cli/molt-latest.windows-amd64.tgz">Download</a></td><td>N/A</td></tr><tr><td></td><td>ARM 64-bit</td><td><a href="https://molt.cockroachdb.com/molt/cli/molt-latest.windows-arm64.tgz">Download</a></td><td>N/A</td></tr><tr><td>Linux</td><td>AMD 64-bit</td><td><a href="https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64.tgz">Download</a></td><td><a href="https://molt.cockroachdb.com/molt/cli/molt-latest.linux-amd64-oracle.tgz">Download</a></td></tr><tr><td></td><td>ARM 64-bit</td><td><a href="https://molt.cockroachdb.com/molt/cli/molt-latest.linux-arm64.tgz">Download</a></td><td>N/A</td></tr><tr><td>Mac</td><td>AMD 64-bit</td><td><a href="https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64.tgz">Download</a></td><td><a href="https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-amd64-oracle.tgz">Download</a></td></tr><tr><td></td><td>ARM 64-bit</td><td><a href="https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64.tgz">Download</a></td><td><a href="https://molt.cockroachdb.com/molt/cli/molt-latest.darwin-arm64-oracle.tgz">Download</a></td></tr></tbody></table>
+
+The download package includes the following:
+
+- `molt` binary.
+- `replicator` binary.
+- Grafana dashboard JSON files for MOLT Fetch ( `grafana_dashboard.json` ) and Replicator ( `replicator_grafana_dashboard.json` ) metrics. Each bundled dashboard is compatible with its corresponding binary version.
+    - Oracle downloads also include the Oracle-specific Replicator dashboard ( `replicator_oracle_grafana_dashboard.json` ).
+
+<Tip>
+For ease of use, keep both `molt` and `replicator` in your current working directory.
+</Tip>
+
+To display the current version of each binary, run `molt --version` and `replicator --version`.
+
+<Note>
+`molt` is bundled with the latest `replicator` version available at the time of the MOLT release. This means that the MOLT download always contains the latest released version of <a href="/docs/VERSION_PLACEHOLDER/molt/molt-replicator" data-versioned="true">MOLT Replicator</a>. To verify that the `molt` and `replicator` versions match, run `molt --version` and `replicator --version`.
+</Note>
+
+For previous binaries, refer to the [MOLT version manifest](https://molt.cockroachdb.com/molt/cli/versions). For release details, refer to the <a href="/docs/VERSION_PLACEHOLDER/releases/molt" data-versioned="true">MOLT changelog</a>.
+
+### Docker images
+
+#### MOLT Fetch
+
+[Docker multi-platform images](https://hub.docker.com/r/cockroachdb/molt/tags) containing both the AMD and ARM `molt` and `replicator` binaries are available. To pull the latest image for PostgreSQL and MySQL:
+
+```shell
+docker pull cockroachdb/molt
+```
+
+To pull a specific version (for example, `1.1.3`):
+
+```shell
+docker pull cockroachdb/molt:1.1.3
+```
+
+To pull the latest image for Oracle (note that only `linux/amd64` is supported):
+
+```shell
+docker pull cockroachdb/molt:oracle-latest
+```
+
+#### MOLT Replicator
+
+[Docker images for MOLT Replicator](https://hub.docker.com/r/cockroachdb/replicator/tags) are also available as a standalone binary:
+
+```shell
+docker pull cockroachdb/replicator
+```
+
+To pull a specific version (for example, `v1.1.1`):
+
+```shell
+docker pull cockroachdb/replicator:v1.1.1
+```
+
+# Setup
+
+Complete the following items before using MOLT Verify:
+
+- The SQL user running MOLT Verify must have the <a href="/docs/VERSION_PLACEHOLDER/grant#supported-privileges" data-versioned="true">`SELECT` privilege</a> on both the source and target CockroachDB tables.
+- Percent-encode the connection strings for the source database and <a href="/docs/VERSION_PLACEHOLDER/connect-to-the-database" data-versioned="true">CockroachDB</a>. This ensures that the MOLT tools can parse special characters in your password.
+    - Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:
+
+        ```shell
+        molt escape-password --password 'a$52&'
+        ```
+
+        ```text
+        Substitute the following encoded password in your original connection url string:
+        a%2452%26
+        ```
+    - Use the encoded password in your connection string. For example:
+
+        ```text
+        postgres://postgres:a%2452%26@localhost:5432/molt
+        ```
+
+## Flags
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--source</code></td><td>(Required) Connection string for the source database.</td></tr><tr><td><code>--target</code></td><td>(Required) Connection string for the target database.</td></tr><tr><td><code>--concurrency</code></td><td>Number of threads to process at a time when reading the tables.<br/><strong>Default:</strong> 16<br/>For faster verification, set this flag to a higher value.</td></tr><tr><td><code>--filter-path</code></td><td>Path to a JSON file that defines filter rules to verify only a subset of data in specified tables. Refer to <a href="#verify-a-subset-of-data">Verify a subset of data</a>.</td></tr><tr><td><code>--log-file</code></td><td>Write messages to the specified log filename. If no filename is provided, messages write to <code>verify-&#123;datetime&#125;.log</code>. If <code>"stdout"</code> is provided, messages write to <code>stdout</code>.</td></tr><tr><td><code>--metrics-listen-addr</code></td><td>Address of the metrics endpoint, which has the path <code>&#123;address&#125;/metrics</code>.<br/><br/><strong>Default:</strong><code>'127.0.0.1:3030'</code></td></tr><tr><td><code>--row-batch-size</code></td><td>Number of rows to get from a table at a time.<br/><strong>Default:</strong> 20000</td></tr><tr><td><code>--schema-filter</code></td><td>Verify schemas that match a specified <a href="https://wikipedia.org/wiki/Regular_expression">regular expression</a>.<br/><br/><strong>Default:</strong><code>'.&#42;'</code></td></tr><tr><td><code>--table-filter</code></td><td>Verify tables that match a specified <a href="https://wikipedia.org/wiki/Regular_expression">regular expression</a>.<br/><br/><strong>Default:</strong><code>'.&#42;'</code></td></tr><tr><td><code>--transformations-file</code></td><td>Path to a JSON file that defines transformation rules to be applied during comparison. Refer to <a href="#verify-transformed-data">Verify transformed data</a>.</td></tr></tbody></table>
+
+## Usage
+
+`molt verify` takes two SQL connection strings as `--source` and `--target` arguments.
+
+To compare a PostgreSQL database with a CockroachDB database:
+
+```shell
+molt verify \
+  --source 'postgresql://{username}:{password}@{host}:{port}/{database}' \
+  --target 'postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
+```
+
+To compare a MySQL database with a CockroachDB database:
+
+```shell
+molt verify \
+  --source 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}' \
+  --target 'postgresql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
+```
+
+<Note>
+MySQL tables belong directly to the database, not to a separate schema. MOLT Verify compares MySQL databases with the CockroachDB `public` schema.
+</Note>
+
+Use the optional [flags](#flags) to customize the verification results.
+
+When verification completes, the output displays a summary message like the following:
+
+```json
+{"level":"info","type":"summary","table_schema":"public","table_name":"common_table","num_truth_rows":6,"num_success":3,"num_conditional_success":0,"num_missing":2,"num_mismatch":1,"num_extraneous":2,"num_live_retry":0,"num_column_mismatch":0,"message":"finished row verification on public.common_table (shard 1/1)"}
+```
+
+- `num_missing` is the number of rows that are missing on the target database. You can <a href="/docs/VERSION_PLACEHOLDER/insert" data-versioned="true">add any missing data</a> to the target database and run `molt verify` again.
+- `num_mismatch` is the number of rows with mismatched values on the target database.
+- `num_extraneous` is the number of extraneous tables on the target database.
+- `num_column_mismatch` is the number of columns with mismatched types on the target database, preventing `molt verify` from comparing the column's rows. For example, if your source table uses an auto-incrementing ID, MOLT Verify will identify a mismatch with CockroachDB's <a href="/docs/VERSION_PLACEHOLDER/uuid" data-versioned="true">`UUID`</a> type. In such cases, you might fix the mismatch by <a href="/docs/VERSION_PLACEHOLDER/create-type#create-a-composite-data-type" data-versioned="true">creating a composite type</a> on CockroachDB that uses the auto-incrementing ID.
+- `num_success` is the number of rows that matched.
+- `num_conditional_success` is the number of rows that matched while having a column mismatch due to a type difference. This value indicates that all other columns that could be compared have matched successfully. You should manually review the warnings and errors in the output to determine whether the column mismatches can be ignored.
+
+### Verify a subset of data
+
+You can write filter rules to have `molt verify` compare only a subset of rows in specified tables. This allows you to verify specific data ranges or conditions without processing entire tables.
+
+Filter rules apply `WHERE` clauses to specified source tables during verification. Columns referenced in filter expressions **must** be indexed.
+
+<Note>
+Selective data verification is only supported for PostgreSQL and MySQL sources.
+</Note>
+
+#### Step 1. Create a filter rules file
+
+Create a JSON file that defines the filter rules. The following example defines filter rules on two source tables, `public.filtertbl` and `public.filtertbl2`:
+
+```json
+{
+  "filters": [
+    {
+      "resource_specifier": {
+        "schema": "public",
+        "table": "filtertbl"
+      },
+      "expr": "x < 10"
+    },
+    {
+      "resource_specifier": {
+        "schema": "public",
+        "table": "filtertbl2"
+      },
+      "source_expr": "id BETWEEN 5 AND 15",
+      "target_expr": "16 > id > 4"
+    }
+  ]
+}
+```
+
+- `resource_specifier`: Identifies which schemas and tables to filter. Schema and table names are case-insensitive.
+    - `schema`: Name of the schema containing the table.
+    - `table`: Name of the table to apply the filter to.
+- `expr`: SQL expression that applies to both source and target databases. The expression must be valid for both the source and target dialect.
+- `source_expr` and `target_expr`: SQL expressions that apply to the source and target databases, respectively. These must be defined together, and cannot be used with `expr`.
+
+#### Step 2. Run `molt verify` with the filter file
+
+Use the `--filter-path` flag to specify the filter rules file:
+
+```shell
+molt verify \
+  --source 'postgres://user:password@localhost/molt' \
+  --target 'postgres://root@localhost:26257/molt?sslmode=disable' \
+  --filter-path='./filter-rules.json'
+```
+
+When verification completes, the output displays a summary showing the number of rows verified in each filtered table:
+
+```json
+{"level":"info","message":"starting verify on public.filtertbl, shard 1/1"}
+{"level":"info","type":"summary","table_schema":"public","table_name":"filtertbl","num_truth_rows":5,"num_success":5,"num_conditional_success":0,"num_missing":0,"num_mismatch":0,"num_extraneous":0,"num_column_mismatch":0,"message":"finished row verification on public.filtertbl (shard 1/1)"}
+```
+
+### Verify transformed data
+
+If you applied <a href="/docs/VERSION_PLACEHOLDER/molt/molt-fetch#transformations" data-versioned="true">transformations with MOLT Fetch</a>, a <a href="/docs/VERSION_PLACEHOLDER/molt/userscript-cookbook#rename-tables" data-versioned="true">MOLT Replicator userscript</a>, or another tool, you can apply the same transformations with MOLT Verify to match source data with the transformed target data.
+
+#### Step 1. Create a transformation file
+
+Create a JSON file that defines the transformation rules. Each rule can rename a source schema, table, or both. MOLT Verify applies these transformations during comparison only and does not modify the source database.
+
+The following example assumes that another process renamed source table `t` to `t2` on the target, and source schema `public` to `public2` on the target. The same transformation rule is applied during verification:
+
+```json
+{
+  "transforms": [
+    {
+      "id": 1,
+      "resource_specifier": {
+        "schema": "public",
+        "table": "t"
+      },
+      "table_rename_opts": {
+        "value": "t2"
+      },
+      "schema_rename_opts": {
+        "value": "public2"
+      }
+    }
+  ]
+}
+```
+
+- `resource_specifier`: Identifies which source schemas and tables to transform. Schema and table names are case-insensitive.
+    - `schema`: Name of the source schema containing the table.
+    - `table`: Source table name to transform.
+- `table_rename_opts`: Rename the source table on the target database.
+    - `value`: The target table name to compare against.
+- `schema_rename_opts`: Rename the source schema on the target database.
+    - `value`: The target schema name to compare against.
+
+#### Step 2. Run `molt verify` with the transformation file
+
+Use the `--transformations-file` flag to specify the transformation file:
+
+```shell
+molt verify \
+  --source 'postgres://user:password@localhost/molt' \
+  --target 'postgres://root@localhost:26257/molt?sslmode=disable' \
+  --transformations-file 'transformation-rules.json'
+```
+
+When verification completes, the output displays a summary:
+
+```json
+{"level":"info","message":"starting verify on public.t, shard 1/1"}
+{"level":"info","type":"summary","table_schema":"public","table_name":"t","num_truth_rows":10,"num_success":10,"num_conditional_success":0,"num_missing":0,"num_mismatch":0,"num_extraneous":0,"num_column_mismatch":0,"message":"finished row verification on public.t (shard 1/1)"}
+```
+
+## Docker usage
+
+#### Performance
+
+MOLT Fetch, Verify, and Replicator are likely to run more slowly in a Docker container than on a local machine. To improve performance, increase the memory or compute resources, or both, on your Docker container.
+
+#### Local connection strings
+
+When testing locally, specify the host as follows:
+
+- For macOS, use `host.docker.internal`. For example:
+
+    ```text
+    --source 'postgres://postgres:postgres@host.docker.internal:5432/migration_db?sslmode=disable'
+    --target "postgres://root@host.docker.internal:26257/defaultdb?sslmode=disable"
+    ```
+- For Linux and Windows, use `172.17.0.1`. For example:
+
+    ```text
+    --source 'postgres://postgres:postgres@172.17.0.1:5432/migration_db?sslmode=disable'
+    --target "postgres://root@172.17.0.1:26257/defaultdb?sslmode=disable"
+    ```
+
+## Known limitations
+
+- MOLT Verify compares 20,000 rows at a time by default, and row values can change between batches, potentially resulting in temporary inconsistencies in data. To configure the row batch size, use the `--row_batch_size` [flag](#flags).
+- MOLT Verify checks for collation mismatches on <a href="/docs/VERSION_PLACEHOLDER/primary-key" data-versioned="true">primary key</a> columns. This may cause validation to fail when a <a href="/docs/VERSION_PLACEHOLDER/string" data-versioned="true">`STRING`</a> is used as a primary key and the source and target databases are using different <a href="/docs/VERSION_PLACEHOLDER/collate" data-versioned="true">collations</a>.
+- MOLT Verify might give an error in case of schema changes on either the source or target database.
+- <a href="/docs/VERSION_PLACEHOLDER/spatial-data-overview#spatial-objects" data-versioned="true">Geospatial types</a> cannot yet be compared.
+- Only PostgreSQL and MySQL sources are supported for [verifying a subset of data](#verify-a-subset-of-data).
+- Only table and schema renames are supported when [verifying transformed data](#verify-transformed-data).
+
+## See also
+
+- <a href="/docs/VERSION_PLACEHOLDER/molt/migration-overview" data-versioned="true">Migration Overview</a>
+- <a href="/docs/VERSION_PLACEHOLDER/molt/migration-strategy" data-versioned="true">Migration Strategy</a>
+- <a href="/docs/VERSION_PLACEHOLDER/molt/molt-fetch" data-versioned="true">MOLT Fetch</a>

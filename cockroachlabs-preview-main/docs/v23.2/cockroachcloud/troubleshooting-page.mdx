@@ -1,0 +1,20 @@
+---
+title: "Troubleshoot Cloud Setup"
+old_description: "CockroachDB Cloud errors and solutions."
+---
+
+import TroubleshootingPage from "/snippets/cockroachcloud/troubleshooting-page.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<TroubleshootingPage />

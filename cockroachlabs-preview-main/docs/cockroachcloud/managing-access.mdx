@@ -1,0 +1,376 @@
+---
+title: "Manage Users, Roles, and Service Accounts"
+old_description: "Learn how to manage the lifecycle of CockroachDB Cloud organization users and roles."
+---
+
+This page details procedures for managing CockroachDB Cloud access to CockroachDB Cloud. Before proceeding, it is recommended to review the concepts related to the two levels of CockroachDB Cloud access management model (the organization level and the SQL level in a cluster), which are detailed in [CockroachDB Cloud Access Management Overview and FAQ](/docs/cockroachcloud/authorization).
+
+Access management tasks for the organization level are performed in the CockroachDB Cloud console **Access Management** page, found at `https://cockroachlabs.cloud/access`. This page allows organization administrators to invite users to the CockroachDB Cloud organization, create service accounts, and manage the access roles assigned to both. Users with Cluster Admin role on a cluster can also manage the access role assignments on that cluster. Roles can be assigned at different scopes (levels) of the resource hierarchy.
+
+Access management tasks for SQL level in a cluster are a bit distributed. SQL users on particular clusters can be created in the console's 'SQL user' page for a specific cluster, found at `https://cockroachlabs.cloud/cluster/<CLUSTER ID>/users`, or with the `ccloud` command line utility's [`cluster user create`](/docs/cockroachcloud/ccloud-reference#create-a-sql-user) command, or with a SQL client. However, the SQL roles that govern permissions in the cluster for SQL users must be managed with a SQL client. Furthermore, SQL users created with the console or with `ccloud` utility are granted the `admin` SQL role on the cluster by default; this makes it important from a security perspective to immediately modify this user if needed, revoking the `admin` role and replacing it with a SQL role with privileges required for its task, according to the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege).
+
+See [Manage SQL users on a cluster](#manage-sql-users-on-a-cluster)
+
+## Manage your organizations
+
+An **organization** allows you to manage your clusters under a shared [billing](/docs/cockroachcloud/billing-management) account and collaborate with team members. You can belong to multiple organizations, like a personal organization, an enterprise organization for evaluating CockroachDB Cloud, and another enterprise organization with [CockroachDB Cloud credits](/docs/cockroachcloud/billing-management) to map to all application clusters.
+
+To switch to a different organization:
+
+1. Log in to the console at `https://cockroachlabs.cloud/` or your organization's custom domain.
+2. From the drop-down box in the top-right corner, select the organization you want to access.
+
+The settings and information about the organization are found on the **Information** page. The organization ID and organization label used by the `ccloud` CLI are listed on that page.
+
+## Manage an organization's users
+
+### Invite team members to an organization
+
+An [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) can invite team members to CockroachDB Cloud. To invite team members:
+
+1. If you are a member of multiple organizations, navigate to the organization to which you want to invite a team member. You can navigate to the correct organization by using the drop-down box in the top-right corner.
+2. On the **Access Management** page, under the *Members* tab, click **Invite**.
+3. In the **Email Address** field, enter the email address of the team member you want to invite. By default, a user is assigned the [Organization member](/docs/cockroachcloud/authorization#organization-member) role; this default role adds no permissions. After the user is invited, you will be able to [assign additional roles](#change-a-team-members-roles).
+4. If required, you could invite multiple users at the same time by adding a row per email address using **+ Add Member**.
+
+It is also possible to enable [autoprovisioning](/docs/cockroachcloud/cloud-org-sso#autoprovisioning) for your organization, which removes the need to invite team members.
+
+### Change a team member's roles
+
+In the CockroachDB Cloud Console, users must be assigned **roles** that allow them to perform actions.
+
+The following table describes the high level permissions given by each CockroachDB Cloud user role. Permissions are additive, so a user with multiple roles is given all permissions in each area across all assigned roles.
+
+<table><thead><tr><th></th><th><a href="/docs/cockroachcloud/authorization#organization-member">Org. Member</a></th><th><a href="/docs/cockroachcloud/authorization#organization-admin">Org. Admin</a></th><th><a href="/docs/cockroachcloud/authorization#billing-coordinator">Billing Coord.</a></th><th><a href="/docs/cockroachcloud/authorization#billing-viewer">Billing Viewer</a></th><th><a href="/docs/cockroachcloud/authorization#cluster-creator">Cluster Creator</a></th><th><a href="/docs/cockroachcloud/authorization#cluster-operator">Cluster Operator</a></th><th><a href="/docs/cockroachcloud/authorization#cluster-admin">Cluster Admin</a></th><th><a href="/docs/cockroachcloud/authorization#cluster-developer">Cluster Developer</a></th><th><a href="/docs/cockroachcloud/authorization#cluster-monitor">Cluster Monitor</a></th><th><a href="/docs/cockroachcloud/authorization#metrics-viewer">Metrics Viewer</a></th><th><a href="/docs/cockroachcloud/authorization#folder-admin">Folder Admin</a></th><th><a href="/docs/cockroachcloud/authorization#folder-mover">Folder Mover</a></th></tr></thead><tbody><tr><td><strong>User/Access Management</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Assign and revoke roles</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Assign Cloud user and service account roles</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage SQL users</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage Cloud users and service accounts</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Apply roles at the <a href="/docs/cockroachcloud/folders">folder</a> scope</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td></tr><tr><td><strong>Cluster &amp; Infrastructure</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Create cluster or <a href="/docs/cockroachcloud/private-clusters">private cluster</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Create / edit / delete cluster</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Edit / delete clusters created by this user</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Create / delete / manage <a href="/docs/cockroachcloud/folders">folders</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td></tr><tr><td>Move cluster between <a href="/docs/cockroachcloud/folders">folders</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td></tr><tr><td>Scale nodes</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Upgrade CockroachDB</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Configure <a href="/docs/cockroachcloud/advanced-cluster-management#set-a-maintenance-window">maintenance windows</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Use the <a href="/docs/cockroachcloud/provision-a-cluster-with-terraform">Cloud Terraform provider</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td><strong>Monitoring &amp; Observability</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>View cluster details</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/cloud-org-audit-logs">audit logs</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/insights-page">insights</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/jobs-page">jobs</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/statements-page">sql activity</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/metrics">metrics</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td></tr><tr><td>Send <a href="/docs/cockroachcloud/alerts-page#send-a-test-alert">test alerts</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Access <a href="/docs/cockroachcloud/network-authorization#db-console">DB console</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td><strong>Security</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Configure <a href="/docs/cockroachcloud/cloud-sso-sql">cluster SSO</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage <a href="/docs/cockroachcloud/egress-perimeter-controls">egress perimeter controls</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage <a href="/docs/cockroachcloud/network-authorization">network authorization</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View PCI status</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td><strong>Database &amp; Data</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Manage databases</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View / restore <a href="/docs/cockroachcloud/backup-and-restore-overview">backups</a></td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td><strong>Billing &amp; Licensing</strong></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>Manage <a href="/docs/cockroachcloud/billing-management">billing</a></td><td>—</td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>View <a href="/docs/cockroachcloud/billing-management">billing</a> details</td><td>—</td><td>—</td><td>✓</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage <a href="/docs/cockroachcloud/alerts-page#configure-alerts">email alerts</a></td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Manage CockroachDB <a href="/docs/v25.4/licensing-faqs#obtain-a-license">Self-Hosted cluster licenses</a></td><td>—</td><td>✓</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table>
+
+Some roles can be assigned to users at specific levels of scope to provide more granular permission control:
+
+<table><thead><tr><th><strong>Scope level</strong></th><th><strong>Description</strong></th><th><strong>Applicable roles</strong></th></tr></thead><tbody><tr><td><code>Organization</code></td><td>Applies to the entire CockroachDB Cloud organization, including all clusters and folders</td><td><code>Cluster Operator</code>, <code>Cluster Admin</code>, <code>Cluster Creator</code>, <code>Cluster Developer</code>, <code>Cluster Monitor</code>, <code>Metrics Viewer</code>, <code>Billing Coordinator</code>, <code>Billing Viewer</code>, <code>Organization Admin</code>, <code>Folder Admin</code>, <code>Folder Mover</code></td></tr><tr><td><code>Folder</code></td><td>Applies to clusters within a specific <a href="/docs/cockroachcloud/folders">folder</a>. Only available as a selectable scope if folders have been created within the organization by a user with the <code>Folder Admin</code> role</td><td><code>Cluster Operator</code>, <code>Cluster Admin</code>, <code>Cluster Creator</code>, <code>Cluster Developer</code>, <code>Cluster Monitor</code>, <code>Metrics Viewer</code>, <code>Folder Admin</code>, <code>Folder Mover</code></td></tr><tr><td><code>Cluster</code></td><td>Applies to a specific cluster</td><td><code>Cluster Operator</code>, <code>Cluster Admin</code>, <code>Cluster Developer</code>, <code>Cluster Monitor</code>, <code>Metrics Viewer</code></td></tr></tbody></table>
+
+To edit a user's role, perform the following steps:
+
+1. On the **Access Management** page, locate the team member whose role you want to change. The **Role** column lists current roles assigned to each user.
+2. In the row for the target member, click the three-dots **Action** button and select **Edit Roles**.
+3. A number of fine-grained roles can be assigned to a given user. Each role is represented by a row. Each row has a **scope**, which is one of **Organization**, the name of a particular [folder](/docs/cockroachcloud/folders), or the name of a particular cluster. If the role is Cluster Admin, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
+
+    <Note>
+    When editing roles for a group in the **Groups** tab, the fields for that group's inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the member from the parent group.
+    </Note>
+
+<Warning>
+An [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) can revoke the Organization Admin role from their own user, but cannot subsequently re-assign the administrator role to themselves.
+</Warning>
+
+### Remove a team member
+
+1. On the **Access Management** page, locate the team member you want to remove.
+2. In the **Action** column, click the three dots to view the allowed actions.
+3. Click **Remove Member** and confirm.
+
+### Revoke a pending invite
+
+1. On the **Access Management** page, locate the team member whose pending invite you want to revoke.
+2. In the **Action** column, click the three dots to view the allowed actions.
+3. Click **Revoke Invite**.
+
+### Delete an email address
+
+This is not currently available through the CockroachDB Cloud Console. To remove an email address from your account, [contact Support](https://support.cockroachlabs.com/).
+
+### Delete an organization
+
+<Warning>
+Deleting an organization will delete all clusters and user data within the organization. This action cannot be reversed. To delete a single cluster instead, see [Cluster Management](/docs/cockroachcloud/cluster-management#delete-cluster).
+</Warning>
+
+If you are sure you want to delete the organization, proceed with the following steps:
+
+1. Navigate to the **Information** page for the organization you want to delete.
+2. Click **Delete**.
+3. Enter the name of the organization.
+4. Click **Delete**.
+
+    You will be automatically logged out of your account.
+
+## Manage service accounts
+
+The access management model for service accounts is unified with the [user model](#manage-an-organizations-users). This means that service accounts may have all of the same [access roles](/docs/cockroachcloud/authorization#organization-user-roles). However, service accounts and users still differ in the actions they can perform: only users can access the console, and only service accounts can access the API. The console and API differ in functionality.
+
+### Create a service account
+
+1. On the **Access Management** page, select the **Service Accounts** tab.
+2. Click **Create**.
+3. Enter a **Account name** and **Description**.
+4. Create and export an **API key**.
+5. Confirm creation of the service account.
+
+<Note>
+Service accounts, like users, are given only the **Organization Member** role by default upon creation. This role assigns no access in the organization. After it is created, you can assign additional roles to the service account.
+</Note>
+
+### Edit roles on a service account
+
+1. On the **Access Management** page, select the **Service Accounts** tab.
+2. In the row for the target service account, click, click the three-dots **Action** button and select **Edit Roles**.
+3. A number of fine-grained roles can be assigned to a given service account. These are the same [roles that can be assigned to users](/docs/cockroachcloud/authorization#organization-user-roles). Each role is represented by a row. Each row has a **scope**, which is either **Organization** or the name of a particular cluster. If the role is Cluster Admin, Cluster Operator, or Cluster Developer, assigning it at the organization scope means that it applies to all clusters in the organization.
+
+    The fields for a group's inherited roles are read-only, because inherited roles cannot be edited directly. Instead, you must either remove the role from the parent group from which it is inherited, or remove the member from the parent group.
+
+### API access
+
+Each service account can have one or more API keys. API keys are used to authenticate and authorize service accounts when using the API. All API keys created by the account are listed under **API Access**.
+
+We recommend creating service accounts with the [principle of least privilege](https://wikipedia.org/wiki/Principle_of_least_privilege), and giving each application that accesses the API its own service account and API key. This allows fine-grained access to the cluster.
+
+#### Create API keys
+
+To create an API key:
+
+1. On the **Access Management** page, select the **Service Accounts** tab.
+2. Click the service account for which you want to create an API key to bring up the **Service Account Details** page.
+3. Click **Create API Key**.
+4. Enter the **API key name** and click **Create**. The name should identify how the API key will be used. For example, you could name your API key for the application that will use the key.
+5. Copy the **Secret key** and store it in a secure location. There is a **Copy** button to the right of the displayed secret key that will copy the secret key to your OS clipboard.
+
+    The secret key contains the API key and secret. It should never be shared or publicly accessible. Anyone with the secret key can use the API with the permissions of the service account.
+
+    <Warning>
+    The secret key will not be available after closing the **Create API key** dialog. If you have lost your secret key, you should [delete the API key](#delete-api-keys) and create a new one.
+    </Warning>
+6. Click **Done**.
+
+#### Delete API keys
+
+To delete an API key associated with a service account:
+
+1. On the **Access Management** page, select the **Service Accounts** tab.
+2. Click the service account for which you want to create an API key to bring up the **Service Account Details** page.
+3. Click the **Action** button for the API key ID in the **API Access** table.
+4. Select **Delete**.
+5. In the **Delete API key** dialog enter the name of the service account to confirm the delete operation, then click **Delete**.
+
+#### Edit API key names
+
+To change the API key name for an existing API key:
+
+1. On the **Access Management** page, select the **Service Accounts** tab.
+2. Click the service account for which you want to create an API key to bring up the **Service Account Details** page.
+3. Find the API key ID in the **API Access** table.
+4. Click the **Action** button.
+5. Select **Edit**.
+6. In the **Edit API key name** dialog modify the API key name and click **Save changes**.
+
+## Manage SQL users on a cluster
+
+- [View all SQL users in your cluster](#view-all-sql-users-in-your-cluster)
+- [Change a SQL user's password](#change-a-sql-users-password)
+- [Remove a SQL user](#remove-a-sql-user)
+
+### Create a SQL user
+
+<Warning>
+By default, a new SQL user created using the UI or Cloud API is granted the SQL `admin` role. An `admin` SQL user has full privileges for all databases and tables in the cluster, and can create additional SQL users and manage their privileges. When possible, it is best practice to limit each user's privileges to the minimum necessary for their tasks, in keeping with the [Principle of Least Privilege (PoLP)](https://wikipedia.org/wiki/Principle_of_least_privilege).
+
+Refer to: [Manage SQL users on a cluster](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster)
+</Warning>
+
+<Tabs>
+<Tab title="Use the CockroachDB Cloud Console">
+
+<Note>
+Only [Organization Admins](/docs/cockroachcloud/authorization#organization-admin) and [Cluster Admins](/docs/cockroachcloud/authorization#cluster-admin) can create SQL users using the Cloud Console or API. These SQL users default to the `Admin` role. For granular provisioning of SQL user privileges, refer to documentation on [using the cluster's SQL interface](/docs/cockroachcloud/managing-access?filters=client#create-a-sql-user).
+</Note>
+
+1. Navigate to your cluster's **SQL Users** page in the **Security** section of the left side navigation.
+2. In the left navigation bar, click **SQL Users**.
+3. Click **Add User**. The **Add User** dialog displays.
+4. Enter a username and click **Generate &amp; Save Password**.
+5. Copy the generated password to a secure location, such as a password manager.
+6. Click **Close**.
+
+    Currently, all new users are created with SQL admin privileges. For more information and to change the default settings, see [Grant privileges to a SQL user](#grant-privileges-to-a-sql-user) and [Use SQL roles to manage access](#use-sql-roles-to-manage-access).
+
+</Tab>
+<Tab title="Use the SQL client">
+
+Once you have [connected to the cluster's SQL client](/docs/cockroachcloud/connect-to-your-cluster), you can create a new user.
+
+To create a new user, use the [`CREATE USER... WITH PASSWORD`](/docs/v25.4/create-user) statement:
+
+```sql
+> CREATE USER <username> WITH PASSWORD '<password>';
+```
+
+<Note>
+Be sure to create a password for each new user. Without a password, or being enrolled in cluster single sign-on (SSO), a user cannot connect to the cluster or access the DB Console. To add or change a password for a user, use the [`ALTER USER`](/docs/v25.4/alter-user) statement.
+</Note>
+
+</Tab>
+</Tabs>
+
+### View all SQL users in your cluster
+
+<Tabs>
+<Tab title="Use the CockroachDB Cloud Console">
+
+To view a list of all of the users in your cluster, navigate to the **SQL Users** page.
+
+On the **SQL Users** page, you can do the following:
+
+- [Create a user](#create-a-sql-user)
+- [Change a user's password](#change-a-sql-users-password)
+- [Remove a user](#remove-a-sql-user)
+
+</Tab>
+<Tab title="Use the SQL client">
+
+To list all the users in your cluster, use the [`SHOW USERS`](/docs/v25.4/show-users) statement:
+
+```sql
+> SHOW USERS;
+```
+
+</Tab>
+</Tabs>
+
+### Change a SQL user's password
+
+<Tabs>
+<Tab title="Use the CockroachDB Cloud Console">
+
+<Note>
+Only users with the [Organization Admin](/docs/cockroachcloud/authorization#organization-admin), or [Cluster Admin](/docs/cockroachcloud/authorization#cluster-admin) can change a user's password. If you do not have the required permissions, ask a user with one of the required roles to change the password.
+</Note>
+
+To change a user's password:
+
+1. Navigate to the **SQL Users** page.
+2. In the row of the user whose password needs to be changed, click the **...** button.
+3. From the dropdown, select **Change Password**.
+4. Click **Generate &amp; save password**.
+5. Copy the generated password and save it in a secure location.
+
+</Tab>
+<Tab title="Use the SQL client">
+
+To change a user's password, use the [`ALTER USER`](/docs/v25.4/alter-user) statement:
+
+```sql
+> ALTER USER <user> WITH PASSWORD '<new password>';
+```
+
+</Tab>
+</Tabs>
+
+### Remove a SQL user
+
+<Tabs>
+<Tab title="Use the CockroachDB Cloud Console">
+
+To remove a user:
+
+1. Navigate to the **SQL Users** page.
+2. In the row of the user you want to remove, click the **...** button.
+3. From the dropdown, select **Delete SQL User**.
+4. Click **Delete**.
+
+</Tab>
+<Tab title="Use the SQL client">
+
+To remove a user, use the [`DROP USER`](/docs/v25.4/drop-user) statement:
+
+```sql
+> DROP USER <user>;
+```
+
+</Tab>
+</Tabs>
+
+<Note>
+All of a user's privileges must be [revoked](#revoke-a-sql-users-privileges) before the user can be dropped.
+</Note>
+
+### Grant privileges to a SQL user
+
+Access to the data in your cluster is controlled by [privileges](/docs/v25.4/security-reference/authorization#managing-privileges). When a user connects to a database, either via the CockroachDB SQL client or a PostgreSQL driver or ORM, CockroachDB checks the user's privileges for each statement executed. If the user does not have sufficient privileges for a statement, CockroachDB returns an error.
+
+To grant a user privileges for specific databases and tables in your cluster, use the [`GRANT`](/docs/v25.4/grant) statement. For example, to assign a user all privileges for all tables in a database:
+
+```sql
+> GRANT ALL ON DATABASE <database> TO <user>;
+```
+
+To assign a user more limited privileges for one table in a database:
+
+```sql
+> GRANT SELECT, INSERT ON TABLE <database>.<table> TO <user>;
+```
+
+For more details, see [Privileges](/docs/v25.4/security-reference/authorization#managing-privileges) and [`GRANT`](/docs/v25.4/grant).
+
+### View a SQL user's privileges
+
+To show privileges granted to a user, use the [`SHOW GRANTS`](/docs/v25.4/show-grants) statement:
+
+```sql
+> SHOW GRANTS ON DATABASE <database> FOR <user>;
+```
+
+### Revoke a SQL user's privileges
+
+To revoke privileges from a user, use the [`REVOKE`](/docs/v25.4/revoke) statement:
+
+```sql
+> REVOKE INSERT ON TABLE <database>.<table> FROM <user>;
+```
+
+### Use SQL roles to manage access
+
+Role-based access control lets you simplify how you manage privileges. In essence, a role is a group containing any number of other roles and users as members. You can assign privileges to a role, and all direct and indirect members of the role will inherit the privileges.
+
+Once you have [connected to the cluster](/docs/cockroachcloud/connect-to-your-cluster), you can set up roles:
+
+- To create a role, use the [`CREATE ROLE`](/docs/v25.4/create-role) statement:
+
+    ```sql
+    > CREATE ROLE <role>;
+    ```
+- To grant privileges to a role, use the [`GRANT <privilege>`](/docs/v25.4/grant) statement:
+
+    ```sql
+    > GRANT <privilege> ON DATABASE <database> TO <role>;
+    ```
+- To add a user (or another role) to a role, use the [`GRANT <role>`](/docs/v25.4/grant) statement:
+
+    ```sql
+    > GRANT <role> TO <user or role>;
+    ```
+- To revoke privileges from a role, use the [`REVOKE <privilege>`](/docs/v25.4/revoke) statement:
+
+    ```sql
+    > REVOKE INSERT ON TABLE <database>.<table> FROM <role>;
+    ```
+- To remove a user (or another role) from a role, use the [`REVOKE <role>`](/docs/v25.4/revoke) statement:
+
+    ```sql
+    > REVOKE <role> FROM <user or role>;
+    ```
+- To list all roles in your cluster, use the [`SHOW ROLES`](/docs/v25.4/show-roles) statement:
+
+    ```sql
+    > SHOW ROLES;
+    ```
+- To remove a role, use the [`DROP ROLE`](/docs/v25.4/drop-role) statement:
+
+    ```sql
+    > DROP ROLE <role>;
+    ```
+
+    <Note>
+    All of a role's privileges must be [revoked](#revoke-a-sql-users-privileges) before the role can be dropped.
+    </Note>
+
+## See also
+
+- [Client Connection Parameters](/docs/v25.4/connection-parameters)
+- [Connect to Your CockroachDB Advanced Cluster](/docs/cockroachcloud/connect-to-your-cluster)

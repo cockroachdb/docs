@@ -1,0 +1,20 @@
+---
+title: "Create Private Clusters"
+old_description: "Learn how to create a private cluster on CockroachDB Advanced. A private cluster's nodes have no public IP addresses."
+---
+
+import PrivateClusters from "/snippets/cockroachcloud/private-clusters.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<PrivateClusters />

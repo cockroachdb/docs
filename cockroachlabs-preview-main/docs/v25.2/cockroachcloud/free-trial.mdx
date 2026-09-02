@@ -1,0 +1,23 @@
+---
+title: "Try CockroachDB Cloud for free"
+permalink: "https://www.cockroachlabs.com/docs/cockroachcloud/free-trial"
+og:title: "Try CockroachDB Cloud for free"
+og:description: "Learn about free trial credits for CockroachDB Cloud"
+og:image: "https://www.cockroachlabs.com/img/crl-socialpost-default-2020-2.jpg?auto=format,compress"
+---
+
+import FreeTrial from "/snippets/cockroachcloud/free-trial.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<FreeTrial />

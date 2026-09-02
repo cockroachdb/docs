@@ -1,0 +1,68 @@
+<svg height="167" width="679" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="74" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">EXPORT</text>
+<rect height="32" rx="10" width="56" x="125" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="123" y="1"></rect>
+<text class="terminal" x="133" y="21">INTO</text><a xlink:href="/docs/v25.2/sql-grammar#import_format" xlink:title="import_format">
+<rect height="32" width="110" x="201" y="3"></rect>
+<rect class="nonterminal" height="32" width="110" x="199" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="86" font-size="10" class="nonterminal" x="211" y="21">import_format</text></a>
+<rect height="32" width="96" x="331" y="3"></rect>
+<rect class="nonterminal" height="32" width="96" x="329" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="72" font-size="10" class="nonterminal" x="341" y="21">file_location</text><a xlink:href="/docs/v25.2/sql-grammar#opt_with_options" xlink:title="opt_with_options">
+<rect height="32" width="130" x="447" y="3"></rect>
+<rect class="nonterminal" height="32" width="130" x="445" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="106" font-size="10" class="nonterminal" x="457" y="21">opt_with_options</text></a><rect height="32" rx="10" width="60" x="597" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="60" x="595" y="1"></rect>
+<text class="terminal" x="605" y="21">FROM</text>
+<rect height="32" rx="10" width="98" x="449" y="89"></rect>
+<rect class="terminal" height="32" rx="10" width="98" x="447" y="87"></rect>
+<text class="terminal" x="457" y="107">select_stmt</text>
+<rect height="32" rx="10" width="62" x="449" y="133"></rect>
+<rect class="terminal" height="32" rx="10" width="62" x="447" y="131"></rect>
+<text class="terminal" x="457" y="151">TABLE</text>
+<rect height="32" rx="10" width="100" x="531" y="133"></rect>
+<rect class="terminal" height="32" rx="10" width="100" x="529" y="131"></rect>
+<text class="terminal" x="539" y="151">table_name</text>
+<path class="line" d="m17 17 h2 m0 0 h10 m74 0 h10 m0 0 h10 m56 0 h10 m0 0 h10 m110 0 h10 m0 0 h10 m96 0 h10 m0 0 h10 m130 0 h10 m0 0 h10 m60 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-272 54 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h192 m-222 0 h20 m202 0 h20 m-242 0 q10 0 10 10 m222 0 q0 -10 10 -10 m-232 10 v12 m222 0 v-12 m-222 12 q0 10 10 10 m202 0 q10 0 10 -10 m-212 10 h10 m98 0 h10 m0 0 h84 m-212 -10 v20 m222 0 v-20 m-222 20 v24 m222 0 v-24 m-222 24 q0 10 10 10 m202 0 q10 0 10 -10 m-212 10 h10 m62 0 h10 m0 0 h10 m100 0 h10 m23 -76 h-3"></path>
+<polygon points="669 71 677 67 677 75"></polygon>
+<polygon points="669 71 661 67 661 75"></polygon></svg>

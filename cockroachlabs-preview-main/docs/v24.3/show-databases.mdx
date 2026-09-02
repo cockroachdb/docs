@@ -1,0 +1,98 @@
+---
+title: "SHOW DATABASES"
+old_description: "The SHOW DATABASES statement lists all database in the CockroachDB cluster."
+---
+
+The `SHOW DATABASES` [statement](/docs/v24.3/sql-statements) lists all databases in the CockroachDB cluster.
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/v24.3/show-databases/syntax-diagram-d61187770b72.svg)
+</Frame>
+
+## Required privileges
+
+The user must be granted the `CONNECT` [privilege](/docs/v24.3/security-reference/authorization#managing-privileges) to specific databases in order to list those databases in the CockroachDB cluster.
+
+## Example
+
+### Show databases
+
+```sql
+> SHOW DATABASES;
+```
+
+```text
+  database_name | owner | primary_region | secondary_region | regions | survival_goal
+----------------+-------+----------------+------------------+---------+----------------
+  defaultdb     | root  | NULL           | NULL             | {}      | NULL
+  movr          | demo  | NULL           | NULL             | {}      | NULL
+  postgres      | root  | NULL           | NULL             | {}      | NULL
+  system        | node  | NULL           | NULL             | {}      | NULL
+(4 rows)
+```
+
+Alternatively, within the built-in SQL shell, you can use the `\l` [shell command](/docs/v24.3/cockroach-sql#commands) to list all databases:
+
+```sql
+> \l
+```
+
+```text
+  database_name | owner | primary_region | secondary_region | regions | survival_goal
+----------------+-------+----------------+------------------+---------+----------------
+  defaultdb     | root  | NULL           | NULL             | {}      | NULL
+  movr          | demo  | NULL           | NULL             | {}      | NULL
+  postgres      | root  | NULL           | NULL             | {}      | NULL
+  system        | node  | NULL           | NULL             | {}      | NULL
+(4 rows)
+```
+
+### Show databases with comments
+
+You can use [`COMMENT ON`](/docs/v24.3/comment-on) to add comments on a database.
+
+```sql
+COMMENT ON DATABASE movr IS 'This database holds information about users, vehicles, and rides.';
+```
+
+To view a database's comments:
+
+```sql
+> SHOW DATABASES WITH COMMENT;
+```
+
+```text
+   database_name | owner | primary_region | secondary_region | regions | survival_goal |                              comment
+----------------+-------+----------------+------------------+---------+---------------+--------------------------------------------------------------------
+  defaultdb     | root  | NULL           | NULL             | {}      | NULL          | NULL
+  movr          | demo  | NULL           | NULL             | {}      | NULL          | This database holds information about users, vehicles, and rides.
+  postgres      | root  | NULL           | NULL             | {}      | NULL          | NULL
+  system        | node  | NULL           | NULL             | {}      | NULL          | NULL
+(4 rows)
+```
+
+For more information, see [`COMMENT ON`](/docs/v24.3/comment-on).
+
+## Preloaded databases
+
+New clusters and existing clusters [upgraded](/docs/v24.3/upgrade-cockroach-version) to v24.3 or later will include auto-generated databases, with the following purposes:
+
+- The empty `defaultdb` database is used if a client does not specify a database in the [connection parameters](/docs/v24.3/connection-parameters).
+- The `movr` database contains data about users, vehicles, and rides for the vehicle-sharing app [MovR](/docs/v24.3/movr) (only when the cluster is started using the [`demo` command](/docs/v24.3/cockroach-demo) ).
+- The empty `postgres` database is provided for compatibility with PostgreSQL client applications that require it.
+- The `system` database contains CockroachDB metadata and is read-only.
+
+All databases except for the `system` database can be [deleted](/docs/v24.3/drop-database) if they are not needed.
+
+<Warning>
+Do not query the `system` database directly. Instead, use objects within the [system catalogs](/docs/v24.3/system-catalogs).
+</Warning>
+
+## See also
+
+- [`COMMENT ON`](/docs/v24.3/comment-on)
+- [`SHOW SCHEMAS`](/docs/v24.3/show-schemas)
+- [Information Schema](/docs/v24.3/information-schema)
+- [SQL Statements](/docs/v24.3/sql-statements)

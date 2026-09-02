@@ -1,0 +1,834 @@
+---
+title: "cockroach sql"
+old_description: "CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line."
+---
+
+CockroachDB comes with a built-in client for executing SQL statements from an interactive shell or directly from the command line. To use this client, run the `cockroach sql` [command](/docs/v25.2/cockroach-commands) as described below.
+
+To exit the interactive shell, use **\q**, **quit**, **exit**, or **Ctrl+D**.
+
+<Tip>
+If you want to experiment with CockroachDB SQL but do not have a cluster already running, you can use the [`cockroach demo`](/docs/v25.2/cockroach-demo) command to open a shell to a temporary, in-memory cluster.
+</Tip>
+
+The output of `cockroach sql` when used non-interactively is part of a stable interface, and can be used programmatically, with the exception of informational output lines that begin with the hash symbol (`#`). Informational output can change from release to release, and should not be used programmatically.
+
+## Before you begin
+
+- The [role option of the user](/docs/v25.2/create-role#role-options) logging in must be `LOGIN` or `SQLLOGIN`, which are granted by default. If the user has been set to use the `NOLOGIN` role or the `NOSQLLOGIN` [system privilege](/docs/v25.2/security-reference/authorization#supported-privileges) (or the legacy `NOSQLLOGIN` role), the user cannot log in using the SQL CLI with any authentication method.
+- **macOS users only:** By default, macOS-based terminals do not enable handling of the Alt key modifier. This prevents access to many keyboard shortcuts in the unix shell and `cockroach sql`. See the section [macOS terminal configuration](#macos-terminal-configuration) below for details.
+
+## Synopsis
+
+Start the interactive SQL shell:
+
+```shell
+$ cockroach sql <flags>
+```
+
+Execute SQL from the command line:
+
+```shell
+$ cockroach sql --execute="<sql statement>;<sql statement>" --execute="<sql-statement>" <flags>
+```
+
+```shell
+$ echo "<sql statement>;<sql statement>" | cockroach sql <flags>
+```
+
+```shell
+$ cockroach sql <flags> --file file-containing-statements.sql
+```
+
+Exit the interactive SQL shell:
+
+```sql
+> \q
+```
+
+```sql
+> quit
+```
+
+```sql
+> exit
+```
+
+```shell
+> Ctrl+D
+```
+
+View help:
+
+```shell
+$ cockroach sql --help
+```
+
+## Flags
+
+The `sql` command supports the following types of flags:
+
+- [General Use](#general)
+- [Client Connection](#client-connection)
+- [Logging](#logging)
+
+### General
+
+- To start an interactive SQL shell, run `cockroach sql` with all appropriate connection flags or use just the [`--url` flag](#sql-flag-url), which includes [connection details](/docs/v25.2/connection-parameters#connect-using-a-url).
+- To execute SQL statements from the command line, use the [`--execute` flag](#sql-flag-execute).
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><code>--database</code><br/><br/><code>-d</code></td><td>A database name to use as <a href="/docs/v25.2/sql-name-resolution#current-database">current database</a> in the newly created session.</td></tr><tr><td><code>--embedded</code></td><td>Minimizes the SQL shell <a href="#welcome-message">welcome text</a> to be appropriate for embedding in playground-type environments. Specifically, this flag removes details that users in an embedded environment have no control over (e.g., networking information).</td></tr><tr><td><code>--echo-sql</code></td><td>Reveal the SQL statements sent implicitly by the command-line utility. For a demonstration, see the <a href="#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility">example</a> below.<br/><br/>This can also be enabled within the interactive SQL shell via the <code>\set echo</code><a href="#commands">shell command</a>.</td></tr><tr><td><a></a><code>--execute</code><br/><br/><code>-e</code></td><td>Execute SQL statements directly from the command line, without opening a shell. This flag can be set multiple times, and each instance can contain one or more statements separated by semi-colons. If an error occurs in any statement, the command exits with a non-zero status code and further statements are not executed. The results of each statement are printed to the standard output (see <code>--format</code> for formatting options).<br/><br/>For a demonstration of this and other ways to execute SQL from the command line, see the <a href="#execute-sql-statements-from-the-command-line">example</a> below.</td></tr><tr><td><code>--file &lt;filename&gt;</code><br/><br/><code>-f &lt;filename&gt;</code></td><td>Read SQL statements from <code>&lt;filename&gt;</code>.</td></tr><tr><td><a></a><code>--format</code></td><td>How to display table rows printed to the standard output. Possible values: <code>tsv</code>, <code>csv</code>, <code>table</code>, <code>raw</code>, <code>records</code>, <code>sql</code>, <code>html</code>.<br/><br/><strong>Default:</strong><code>table</code> for sessions that <a href="#session-and-output-types">output on a terminal</a>; <code>tsv</code> otherwise<br/><br/>This flag corresponds to the <code>display&#95;format</code><a href="#client-side-options">client-side option</a>.</td></tr><tr><td><code>--read-only</code></td><td>Sets the <code>default&#95;transaction&#95;read&#95;only</code><a href="/docs/v25.2/show-vars#supported-variables">session variable</a> to <code>on</code> upon connecting.</td></tr><tr><td><code>--safe-updates</code><a></a></td><td>Disallow potentially unsafe SQL statements. For the complete list of disallowed statements, refer to the documentation for the <a href="/docs/v25.2/set-vars#sql-safe-updates"><code>sql&#95;safe&#95;updates</code> session variable</a>.<br/><br/><strong>Default:</strong><code>true</code> for <a href="#session-and-output-types">interactive sessions</a>; <code>false</code> otherwise<br/><br/>Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the <a href="/docs/v25.2/set-vars#sql-safe-updates"><code>sql&#95;safe&#95;updates</code> session variable</a>.</td></tr><tr><td><code>--set</code></td><td>Set a <a href="#client-side-options">client-side option</a> before starting the SQL shell or executing SQL statements from the command line via <code>--execute</code>. This flag may be specified multiple times, once per option.<br/><br/>After starting the SQL shell, the <code>\set</code> and <code>unset</code> commands can be use to enable and disable client-side options as well.</td></tr><tr><td><code>--watch</code></td><td>Repeat the SQL statements specified with <code>--execute</code> or <code>-e</code> until a SQL error occurs or the process is terminated. <code>--watch</code> applies to all <code>--execute</code> or <code>-e</code> flags in use.<br/>You must also specify an interval at which to repeat the statement, followed by a time unit. For example, to specify an interval of 5 seconds, use <code>5s</code>.<br/><br/>Note that this flag is intended for simple monitoring scenarios during development and testing. See the <a href="#repeat-a-sql-statement">example</a> below.</td></tr></tbody></table>
+
+### Client connection
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a></a><code>--url</code></td><td>A <a href="/docs/v25.2/connection-parameters#connect-using-a-url">connection URL</a> to use instead of the other arguments. To convert a connection URL to the syntax that works with your client driver, run <a href="/docs/v25.2/connection-parameters#convert-a-url-for-different-drivers"><code>cockroach convert-url</code></a>.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;URL</code><br/><strong>Default:</strong> no URL</td></tr><tr><td><code>--host</code></td><td>The server host and port number to connect to. This can be the address of any node in the cluster.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;HOST</code><br/><strong>Default:</strong><code>localhost:26257</code></td></tr><tr><td><code>--port</code><br/><br/><code>-p</code></td><td>The server port to connect to. Note: The port number can also be specified via <code>--host</code>.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;PORT</code><br/><strong>Default:</strong><code>26257</code></td></tr><tr><td><code>--user</code><br/><br/><code>-u</code></td><td>The <a href="/docs/v25.2/create-user">SQL user</a> that will own the client session.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;USER</code><br/><strong>Default:</strong><code>root</code></td></tr><tr><td><code>--insecure</code></td><td>Use an insecure connection.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;INSECURE</code><br/><strong>Default:</strong><code>false</code></td></tr><tr><td><code>--cert-principal-map</code></td><td>A comma-separated list of <code>&lt;cert-principal&gt;:&lt;db-principal&gt;</code> mappings. This allows mapping the principal in a cert to a DB principal such as <code>node</code> or <code>root</code> or any SQL user. This is intended for use in situations where the certificate management system places restrictions on the <code>Subject.CommonName</code> or <code>SubjectAlternateName</code> fields in the certificate (e.g., disallowing a <code>CommonName</code> like <code>node</code> or <code>root</code>). If multiple mappings are provided for the same <code>&lt;cert-principal&gt;</code>, the last one specified in the list takes precedence. A principal not specified in the map is passed through as-is via the identity function. A cert is allowed to authenticate a DB principal if the DB principal name is contained in the mapped <code>CommonName</code> or DNS-type <code>SubjectAlternateName</code> fields.</td></tr><tr><td><code>--certs-dir</code></td><td>The path to the <a href="/docs/v25.2/cockroach-cert">certificate directory</a> containing the CA and client certificates and client key.<br/><br/><strong>Env Variable:</strong><code>COCKROACH&#95;CERTS&#95;DIR</code><br/><strong>Default:</strong><code>&#36;&#123;HOME&#125;/.cockroach-certs/</code></td></tr></tbody></table>
+
+See [Client Connection Parameters](/docs/v25.2/connection-parameters) for more details.
+
+### Logging
+
+By default, this command logs messages to `stderr`. This includes events with `WARNING` [severity](/docs/v25.2/logging#logging-levels-severities) and higher.
+
+If you need to troubleshoot this command's behavior, you can [customize its logging behavior](/docs/v25.2/configure-logs).
+
+## Session and output types
+
+`cockroach sql` exhibits different behaviors depending on whether or not the session is interactive and/or whether or not the session outputs on a terminal.
+
+- A session is **interactive** when `cockroach sql` is invoked without the `-e` or `-f` flag, and the input is a terminal. In such cases:
+    - The [`errexit` option](#sql-option-errexit) defaults to `false`.
+    - The [`check_syntax` option](#sql-option-check-syntax) defaults to `true` if supported by the CockroachDB server (this is checked when the shell starts up).
+    - **Ctrl+C** at the prompt will only terminate the shell if no other input was entered on the same line already.
+    - The shell will attempt to set the `safe_updates` [session variable](/docs/v25.2/set-vars) to `true` on the server.
+    - The shell continues to read input after the last command entered.
+- A session **outputs on a terminal** when output is not redirected to a file. In such cases:
+    - The [`--format` flag](#sql-flag-format) and its corresponding [`display_format` option](#sql-option-display-format) default to `table`. These default to `tsv` otherwise.
+    - The `show_times` option defaults to `true`.
+
+When a session is both interactive and outputs on a terminal, `cockroach sql` also activates the interactive prompt with a line editor that can be used to modify the current line of input. Also, command history becomes active.
+
+## SQL shell
+
+### Welcome message
+
+When the SQL shell connects (or reconnects) to a CockroachDB node, it prints a welcome text with some tips and CockroachDB version and cluster details:
+
+```shell
+#
+# Welcome to the CockroachDB SQL shell.
+# All statements must be terminated by a semicolon.
+# To exit, type: \q.
+#
+# Server version: CockroachDB CCL v25.2.15 (x86_64-apple-darwin17.7.0, built 2019/09/13 00:07:19, go1.12.6) (same version as client)
+# Cluster ID: 7fb9f5b4-a801-4851-92e9-c0db292d03f1
+#
+# Enter \? for a brief introduction.
+#
+>
+```
+
+The **Version** and **Cluster ID** details are particularly noteworthy:
+
+- When the client and server versions of CockroachDB are the same, the shell prints the `Server version` followed by `(same version as client)`.
+- When the client and server versions are different, the shell prints both the `Client version` and `Server version`. In this case, you may want to [plan an upgrade](/docs/v25.2/upgrade-cockroach-version) of older client or server versions.
+- Since every CockroachDB cluster has a unique ID, you can use the `Cluster ID` field to verify that your client is always connecting to the correct cluster.
+
+    <Note>
+    For clusters deployed in CockroachDB Cloud, do not use the cluster ID printed in the welcome message to verify the cluster your client is connected to. Instead, use the `ccloud cluster list` command to list the ID of each cluster in your CockroachDB Cloud organization to which you have access. To learn more about the `ccloud` command, refer to [Get Started with the `ccloud` CLI](/docs/cockroachcloud/ccloud-get-started).
+    </Note>
+
+### Commands
+
+The following commands can be used within the interactive SQL shell:
+
+<table><thead><tr><th>Command</th><th>Usage</th></tr></thead><tbody><tr><td><code>\?</code>,<code>help</code></td><td>View this help within the shell.</td></tr><tr><td><code>\q</code>,<code>quit</code>,<code>exit</code>,<code>ctrl-d</code></td><td>Exit the shell.<br/>When no text follows the prompt, <code>ctrl-c</code> exits the shell as well; otherwise, <code>ctrl-c</code> clears the line.</td></tr><tr><td><code>\!</code></td><td>Run an external command and print its results to <code>stdout</code>. <a href="/docs/v25.2/cockroach-sql#run-external-commands-from-the-sql-shell">See an example</a>.</td></tr><tr><td><code>\|</code></td><td>Run the output of an external command as SQL statements. <a href="/docs/v25.2/cockroach-sql#run-external-commands-from-the-sql-shell">See an example</a>.</td></tr><tr><td><code>\set &lt;option&gt;</code>,<code>\unset &lt;option&gt;</code></td><td>Enable or disable a client-side option. For more details, see <a href="#client-side-options">Client-side options</a>.<br/>You can also use the <a href="#general"><code>--set</code> flag</a> to enable or disable client-side options before starting the SQL shell.</td></tr><tr><td><code>\p</code>,<code>\show</code></td><td>During a multi-line statement or transaction, show the SQL that has been entered but not yet executed.<br/><code>\show</code> was deprecated as of v21.1. Use <code>\p</code> instead.</td></tr><tr><td><code>\h &lt;statement&gt;</code>,<code>\hf &lt;function&gt;</code></td><td>View help for specific SQL statements or functions. See <a href="#help">SQL shell help</a> for more details.</td></tr><tr><td><code>\c &lt;option&gt;</code>,<code>\connect &lt;option&gt;</code></td><td>Display or change the current <a href="/docs/v25.2/connection-parameters">connection parameters</a>. Using <code>\c</code> without an argument lists the current connection parameters.<br/>To reuse the existing connection and change the current database, use <code>\c &lt;dbname&gt;</code>. This is equivalent to <code>SET &lt;database&gt;</code> and <code>USE &lt;database&gt;</code>.<br/>To connect to a cluster using individual connection parameters, use <code>\c &lt;dbname&gt; &lt;user&gt; &lt;host&gt; &lt;port&gt;</code>. Use the dash character (<code>-</code>) to omit one parameter. To reconnect to the cluster using the current connection parameters enter <code>\c -</code>. When using individual connection parameters, the TLS settings from the original connection are reused. To use different TLS settings, connect using a connection URL.<br/>To connect to a cluster using a <a href="/docs/v25.2/connection-parameters#connect-using-a-url">connection URL</a> use <code>\c &lt;url&gt;</code></td></tr><tr><td><code>\l</code></td><td>List all databases in the CockroachDB cluster. This command is equivalent to <a href="/docs/v25.2/show-databases"><code>SHOW DATABASES</code></a>.</td></tr><tr><td><code>\d&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show details about the relations in the current database. By default this command will show all the user tables, indexes, views, materialized views, and sequences in the current database. Add the <code>S</code> modifier to also show all system objects. If you specify a relation or a <a href="#patterns">pattern</a>, it will show the details of matching relations. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\dC&#91;+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the type casts. If you specify a type or a <a href="#patterns">pattern</a>, it will show the details of matching types. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\dd&#91;S&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the objects of type <code>constraint</code> in the current database. Add the <code>S</code> modifier to also show all system objects. If you specify a type or a <a href="#patterns">pattern</a>, it will show the details of matching objects.</td></tr><tr><td><code>\df&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the <a href="/docs/v25.2/user-defined-functions">user-defined functions</a> of the current database. Add the <code>S</code> modifier to also show all <a href="/docs/v25.2/functions-and-operators">system functions</a>. If you specify a function name or a <a href="#patterns">pattern</a>, it will show the details of matching function. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\dg&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the <a href="/docs/v25.2/authorization">roles</a> of the current database. Add the <code>S</code> modifier to also show all system objects. If you specify a role name or a <a href="#patterns">pattern</a>, it will show the details of matching roles. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\di&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the indexes of the current database. Add the <code>S</code> modifier to also show all system objects. If you specify an index name or a <a href="#patterns">pattern</a>, it will show the details of matching indexes. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\dm&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the materialized views of the current database. Add the <code>S</code> modifier to also show all system objects. If you specify a materialized view name or a <a href="#patterns">pattern</a>, it will show the details of matching materialized views. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\dn&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>List all <a href="/docs/v25.2/sql-name-resolution#naming-hierarchy">schemas</a> in the current database. Add the <code>S</code> modifier to also show all system schemas. Add the <code>+</code> modifier to show the permissions of each schema. Specify a <a href="#patterns">pattern</a> to limit the output to schemas that match the pattern. These commands are equivalent to <a href="/docs/v25.2/show-schemas"><code>SHOW SCHEMAS</code></a>.</td></tr><tr><td><code>\ds&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the sequences of the current database. Add the <code>S</code> modifier to also show all system objects. If you specify a sequence name or a <a href="#patterns">pattern</a>, it will show the details of matching sequences. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\dt&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the tables of the current database. Add the <code>S</code> modifier to also show all system objects. If you specify a table name or a <a href="#patterns">pattern</a>, it will show the details of matching tables. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\dT&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the <a href="/docs/v25.2/enum">user-defined types</a> in the current database. Add the <code>S</code> modifier to also show all system objects. If you specify a type name or a <a href="#patterns">pattern</a>, it will show the details of matching types. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\du&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the <a href="/docs/v25.2/authorization">roles</a> of the current database. Add the <code>S</code> modifier to also show all system objects. If you specify a role name or a <a href="#patterns">pattern</a>, it will show the details of matching roles. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\dv&#91;S+&#93; &#91;&lt;pattern&gt;&#93;</code></td><td>Show the views of the current database. Add the <code>S</code> modifier to also show all system objects. If you specify a view name or a <a href="#patterns">pattern</a>, it will show the details of matching views. Add the <code>+</code> modifier to show additional information.</td></tr><tr><td><code>\r</code></td><td>Resets the query input buffer, clearing all SQL statements that have been entered but not yet executed.</td></tr><tr><td><code>\statement-diag list</code></td><td>List available <a href="/docs/v25.2/cockroach-statement-diag">diagnostic bundles</a>.</td></tr><tr><td><code>\statement-diag download &lt;bundle-id&gt; &#91;&lt;filename&gt;&#93;</code></td><td>Download diagnostic bundle.</td></tr><tr><td><code>\i &lt;filename&gt;</code></td><td>Reads and executes input from the file <code>&lt;filename&gt;</code>, in the current working directory.</td></tr><tr><td><code>\ir &lt;filename&gt;</code></td><td>Reads and executes input from the file <code>&lt;filename&gt;</code>.<br/>When invoked in the interactive shell, <code>\i</code> and <code>\ir</code> behave identically (i.e., CockroachDB looks for <code>&lt;filename&gt;</code> in the current working directory). When invoked from a script, CockroachDB looks for <code>&lt;filename&gt;</code> relative to the directory in which the script is located.</td></tr><tr><td><code>\echo &lt;arguments&gt;</code></td><td>Evaluate the <code>&lt;arguments&gt;</code> and print the results to the standard output.</td></tr><tr><td><code>\x &lt;boolean&gt;</code></td><td>When <code>true</code>/<code>on</code>/<code>yes</code>/<code>1</code>, <a href="/docs/v25.2/cockroach-sql#sql-flag-format">sets the display format</a> to <code>records</code>. When <code>false</code>/<code>off</code>/<code>no</code>/<code>0</code>, sets the session's format to the default (<code>table</code>/<code>tsv</code>).</td></tr></tbody></table>
+
+#### Patterns
+
+Commands use the SQL [`LIKE` syntax](/docs/v25.2/scalar-expressions#string-pattern-matching) for string pattern matching, not POSIX regular expressions.
+
+For example to list all schemas that begin with the letter "p" you'd use the following pattern:
+
+```sql
+\dn p%
+```
+
+```text
+List of schemas:
+      Name     | Owner
+---------------+--------
+  pg_catalog   | NULL
+  pg_extension | NULL
+  public       | admin
+(3 rows)
+```
+
+### Client-side options
+
+- To view option descriptions and how they are currently set, use `\set` without any options.
+- To enable or disable an option, use `\set <option> <value>` or `\unset <option> <value>`. You can also use the form `<option>=<value>`.
+- If an option accepts a boolean value:
+    - `\set <option>` without `<value>` is equivalent to `\set <option> true`, and `\unset <option>` without `<value>` is equivalent to `\set <option> false`.
+    - `on`, `yes`, and `1` are aliases for `true`, and `off`, `no`, and `0` are aliases for `false`.
+
+<table><thead><tr><th>Client Options</th><th>Description</th></tr></thead><tbody><tr><td><a></a><code>auto&#95;trace</code></td><td>For every statement executed, the shell also produces the trace for that statement in a separate result below. A trace is also produced in case the statement produces a SQL error.<br/><br/><strong>Default:</strong><code>off</code><br/><br/>To enable this option, run <code>\set auto&#95;trace on</code>.</td></tr><tr><td><a></a><code>border</code></td><td>Display a border around the output of the SQL statement when using the <code>table</code> display format. Set the level of borders using <code>border=&lt;level&gt;</code> to configure how many borders and lines are in the output, where <code>&lt;level&gt;</code> is an integer between 0 and 3. The higher the integer, the more borders and lines are in the output.<br/>A level of <code>0</code> shows the output with no outer lines and no row line separators.<br/>A level of <code>1</code> adds row line separators. A level of <code>2</code> adds an outside border and no row line separators. A level of <code>3</code> adds both an outside border and row line separators.<br/><br/><strong>Default:</strong><code>0</code><br/><br/>To change this option, run <code>\set border=&lt;level&gt;</code>. <a href="/docs/v25.2/cockroach-sql#show-borders-around-the-statement-output-within-the-sql-shell">See an example</a>.</td></tr><tr><td><a></a><code>check&#95;syntax</code></td><td>Validate SQL syntax. This ensures that a typo or mistake during user entry does not inconveniently abort an ongoing transaction previously started from the interactive shell.<br/><br/><strong>Default:</strong><code>true</code> for <a href="/docs/v25.2/cockroach-sql#session-and-output-types">interactive sessions</a>; <code>false</code> otherwise.<br/><br/>To disable this option, run <code>\unset check&#95;syntax</code>.</td></tr><tr><td><a></a><code>display&#95;format</code></td><td>How to display table rows printed within the interactive SQL shell. Possible values: <code>tsv</code>, <code>csv</code>, <code>table</code>, <code>raw</code>, <code>records</code>, <code>sql</code>, <code>html</code>.<br/><br/><strong>Default:</strong><code>table</code> for sessions that <a href="/docs/v25.2/cockroach-sql#session-and-output-types">output on a terminal</a>; <code>tsv</code> otherwise<br/><br/>To change this option, run <code>\set display&#95;format &lt;format&gt;</code>. <a href="/docs/v25.2/cockroach-sql#make-the-output-of-show-statements-selectable">See an example</a>.</td></tr><tr><td><a></a><code>echo</code></td><td>Reveal the SQL statements sent implicitly by the SQL shell.<br/><br/><strong>Default:</strong><code>false</code><br/><br/>To enable this option, run <code>\set echo</code>. <a href="/docs/v25.2/cockroach-sql#reveal-the-sql-statements-sent-implicitly-by-the-command-line-utility">See an example</a>.</td></tr><tr><td><a></a><code>errexit</code></td><td>Exit the SQL shell upon encountering an error.<br/><br/><strong>Default:</strong><code>false</code> for <a href="/docs/v25.2/cockroach-sql#session-and-output-types">interactive sessions</a>; <code>true</code> otherwise<br/><br/>To enable this option, run <code>\set errexit</code>.</td></tr><tr><td><a></a><code>prompt1</code></td><td>Customize the interactive prompt within the SQL shell. See <a href="#customizing-the-prompt">Customizing the prompt</a> for information on the available prompt variables.</td></tr><tr><td><a></a><code>show&#95;times</code></td><td>Reveal the time a query takes to complete. Possible values:<br/><br/>- <code>execution</code> time refers to the time taken by the SQL execution engine to execute the query.<br/><br/>- <code>network</code> time refers to the network latency between the server and the SQL client command.<br/><br/>- <code>other</code> time refers to all other forms of latency affecting the total query completion time, including query planning.<br/><br/><strong>Default:</strong><code>true</code><br/><br/>To disable this option, run <code>\unset show&#95;times</code>.</td></tr></tbody></table>
+
+#### Customizing the prompt
+
+The `\set prompt1` option allows you to customize the interactive prompt in the SQL shell. Use the following prompt variables to set a custom prompt.
+
+<table><thead><tr><th>Prompt variable</th><th>Description</th></tr></thead><tbody><tr><td><code>%&gt;</code></td><td>The port of the node you are connected to.</td></tr><tr><td><code>%/</code></td><td>The current database name.</td></tr><tr><td><code>%M</code></td><td>The fully qualified host name and port of the node.</td></tr><tr><td><code>%m</code></td><td>The fully qualified host name of the node.</td></tr><tr><td><code>%n</code></td><td>The username of the connected SQL user.</td></tr><tr><td><code>%x</code></td><td>The transaction status of the current statement.</td></tr></tbody></table>
+
+For example, to change the prompt to just the user, host, and database:
+
+```sql
+\set prompt1 %n@%m/%/
+```
+
+```text
+maxroach@blue-dog-595.g95.cockroachlabs.cloud/defaultdb>
+```
+
+### Help
+
+Within the SQL shell, you can get interactive help about statements and functions:
+
+<table><thead><tr><th>Command</th><th>Usage</th></tr></thead><tbody><tr><td><code>\h</code><br/><br/><code>??</code></td><td>List all available SQL statements, by category.</td></tr><tr><td><code>\hf</code></td><td>List all available SQL functions, in alphabetical order.</td></tr><tr><td><code>\h &lt;statement&gt;</code><br/><br/><code>&lt;statement&gt; ?</code></td><td>View help for a specific SQL statement.</td></tr><tr><td><code>\hf &lt;function&gt;</code><br/><br/><code>&lt;function&gt; ?</code></td><td>View help for a specific SQL function.</td></tr></tbody></table>
+
+#### Examples
+
+```sql
+> \h UPDATE
+```
+
+```text
+Command:     UPDATE
+Description: update rows of a table
+Category:    data manipulation
+Syntax:
+UPDATE <tablename> [[AS] <name>] SET ... [WHERE <expr>] [RETURNING <exprs...>]
+
+See also:
+  SHOW TABLES
+  INSERT
+  UPSERT
+  DELETE
+  https://www.cockroachlabs.com/docs/v25.2/update.html
+```
+
+```sql
+> \hf uuid_v4
+```
+
+```text
+Function:    uuid_v4
+Category:    built-in functions
+Returns a UUID.
+
+Signature          Category
+uuid_v4() -> bytes [ID Generation]
+
+See also:
+  https://www.cockroachlabs.com/docs/v25.2/functions-and-operators.html
+```
+
+### Shortcuts
+
+Note: macOS users may need to manually enable Alt-based shortcuts in their terminal configuration. See the section [macOS terminal configuration](#macos-terminal-configuration) below for details.
+
+<table><thead><tr><th>Shortcut</th><th>Description</th></tr></thead><tbody><tr><td>Tab</td><td>Use <a href="#tab-completion">context-sensitive command completion</a>.</td></tr><tr><td>Ctrl+C</td><td>Clear/cancel the input.</td></tr><tr><td>Ctrl+M, Enter</td><td>New line/enter.</td></tr><tr><td>Ctrl+O</td><td>Force a new line on the current statement, even if the statement has a semicolon.</td></tr><tr><td>Ctrl+F, Right arrow</td><td>Forward one character.</td></tr><tr><td>Ctrl+B, Left arrow</td><td>Backward one character.</td></tr><tr><td>Alt+F, Ctrl+Right arrow</td><td>Forward one word.</td></tr><tr><td>Alt+B, Ctrl+Left arrow</td><td>Backward one word.</td></tr><tr><td>Ctrl+L</td><td>Refresh the display.</td></tr><tr><td>Delete</td><td>Delete the next character.</td></tr><tr><td>Ctrl+H, Backspace</td><td>Delete the previous character.</td></tr><tr><td>Ctrl+D</td><td>Delete the next character, or terminate the input if the input is currently empty.</td></tr><tr><td>Alt+D, Alt+Delete</td><td>Delete next word.</td></tr><tr><td>Ctrl+W, Alt+Backspace</td><td>Delete previous word.</td></tr><tr><td>Ctrl+E, End</td><td>End of line.</td></tr><tr><td>Alt+&gt;, Ctrl+End</td><td>Move cursor to the end of a multi-line statement.</td></tr><tr><td>Ctrl+A, Home</td><td>Move cursor to the beginning of the current line.</td></tr><tr><td>Alt+&lt;, Ctrl+Home</td><td>Move cursor to the beginning of a multi-line statement.</td></tr><tr><td>Ctrl+T</td><td>Transpose current and next characters.</td></tr><tr><td>Ctrl+K</td><td>Delete from cursor position until end of line.</td></tr><tr><td>Ctrl+U</td><td>Delete from beginning of line to cursor position.</td></tr><tr><td>Alt+Q</td><td>Reflow/reformat the current line.</td></tr><tr><td>Alt+Shift+Q, Alt+`</td><td>Reflow/reformat the entire input.</td></tr><tr><td>Alt+L</td><td>Convert the current word to lowercase.</td></tr><tr><td>Alt+U</td><td>Convert the current word to uppercase.</td></tr><tr><td>Alt+.</td><td>Toggle the visibility of the prompt.</td></tr><tr><td>Alt+2, Alt+F2</td><td>Invoke external editor on current input.</td></tr><tr><td>Alt+P, Up arrow</td><td>Recall previous history entry.</td></tr><tr><td>Alt+N, Down arrow</td><td>Recall next history entry.</td></tr><tr><td>Ctrl+R</td><td>Start searching through input history.</td></tr></tbody></table>
+
+When searching for history entries, the following shortcuts are active:
+
+<table><thead><tr><th>Shortcut</th><th>Description</th></tr></thead><tbody><tr><td>Ctrl+C, Ctrl+G</td><td>Cancel the search, return to normal mode.</td></tr><tr><td>Ctrl+R</td><td>Recall next entry matching current search pattern.</td></tr><tr><td>Enter</td><td>Accept the current recalled entry.</td></tr><tr><td>Backspace</td><td>Delete previous character in search pattern.</td></tr><tr><td>Other</td><td>Add character to search pattern.</td></tr></tbody></table>
+
+#### Tab completion
+
+The SQL client offers context-sensitive tab completion when entering commands. Use the **Tab** key on your keyboard when entering a command to initiate the command completion interface. You can then navigate to database objects, keywords, and functions using the arrow keys. Press the **Tab** key again to select the object, function, or keyword from the command completion interface and return to the console.
+
+### macOS terminal configuration
+
+In **Apple Terminal**:
+
+1. Navigate to "Preferences", then "Profiles", then "Keyboard".
+2. Enable the checkbox "Use Option as Meta Key".
+
+<Frame>
+  ![Apple Terminal Alt key configuration](/images/v24.2/terminal-configuration.png)
+</Frame>
+
+In **iTerm2**:
+
+1. Navigate to "Preferences", then "Profiles", then "Keys".
+2. Select the radio button "Esc+" for the behavior of the Left Option Key.
+
+<Frame>
+  ![iTerm2 Alt key configuration](/images/v24.2/iterm2-configuration.png)
+</Frame>
+
+### Error messages and `SQLSTATE` codes
+
+When CockroachDB encounters a SQL error, it returns the following information to the client (whether `cockroach-sql` or another [client application](/docs/v25.2/developer-guide-overview)):
+
+1. An error message, prefixed with [the "Severity" field of the PostgreSQL wire protocol](https://www.postgresql.org/docs/current/protocol-error-fields). For example, `ERROR: insert on table "shipments" violates foreign key constraint "fk_customers"`.
+2. A [5-digit `SQLSTATE` error code](https://wikipedia.org/wiki/SQLSTATE) as defined by the SQL standard. For example, `SQLSTATE: 23503`.
+
+For example, the following query (taken from [this example of adding multiple foreign key constraints](/docs/v25.2/foreign-key#add-multiple-foreign-key-constraints-to-a-single-column)) results in a SQL error, and returns both an error message and a `SQLSTATE` code as described above.
+
+```sql
+> INSERT INTO shipments (carrier, status, customer_id) VALUES ('DHL', 'At facility', 2000);
+```
+
+```text
+ERROR: insert on table "shipments" violates foreign key constraint "fk_customers"
+SQLSTATE: 23503
+DETAIL: Key (customer_id)=(2000) is not present in table "customers".
+```
+
+The [`SQLSTATE` code](https://wikipedia.org/wiki/SQLSTATE) in particular can be helpful in the following ways:
+
+- It is a standard SQL error code that you can look up in documentation and search for on the web. For any given error state, CockroachDB tries to produce the same `SQLSTATE` code as PostgreSQL.
+- If you are developing automation that uses the CockroachDB SQL shell, it is more reliable to check for `SQLSTATE` values than for error message strings, which are likely to change.
+
+## Examples
+
+### Start a SQL shell
+
+In these examples, we connect a SQL shell to a **secure cluster**.
+
+```shell
+# Using the --url flag:
+$ cockroach-sql \
+--url="postgresql://maxroach@12.345.67.89:26257/critterdb?sslcert=certs/client.maxroach.crt&sslkey=certs/client.maxroach.key&sslmode=verify-full&sslrootcert=certs/ca.crt"
+```
+
+```shell
+# Using standard connection flags:
+$ cockroach-sql \
+--certs-dir=certs \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb
+```
+
+In these examples, we connect a SQL shell to an **insecure cluster**.
+
+```shell
+# Using the --url flag:
+$ cockroach-sql \
+--url="postgresql://maxroach@12.345.67.89:26257/critterdb?sslmode=disable"
+```
+
+```shell
+# Using standard connection flags:
+$ cockroach-sql --insecure \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb
+```
+
+### Execute SQL statement within the SQL shell
+
+This example assumes that we have already started the SQL shell (see examples above).
+
+```sql
+> CREATE TABLE animals (id INT PRIMARY KEY DEFAULT unique_rowid(), name STRING);
+```
+
+```sql
+> INSERT INTO animals (name) VALUES ('bobcat'), ('🐢 '), ('barn owl');
+```
+
+```sql
+> SELECT * FROM animals;
+```
+
+```text
+          id         |   name
+---------------------+-----------
+  710907071259213825 | bobcat
+  710907071259279361 | 🐢
+  710907071259312129 | barn owl
+(3 rows)
+```
+
+### Execute SQL statements from the command line
+
+In these examples, we use the `--execute` flag to execute statements from the command line:
+
+```shell
+# Statements with a single --execute flag:
+$ cockroach-sql --insecure \
+--execute="CREATE TABLE roaches (name STRING, country STRING); INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb
+```
+
+```text
+CREATE TABLE
+INSERT 2
+```
+
+```shell
+# Statements with multiple --execute flags:
+$ cockroach-sql --insecure \
+--execute="CREATE TABLE roaches (name STRING, country STRING)" \
+--execute="INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States')" \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb
+```
+
+```text
+CREATE TABLE
+INSERT 2
+```
+
+In this example, we use the `echo` command to execute statements from the command line:
+
+```shell
+# Statements with the echo command:
+$ echo "SHOW TABLES; SELECT * FROM roaches;" | cockroach-sql --insecure --user=maxroach --host=12.345.67.89 --database=critterdb
+```
+
+```text
+  schema_name | table_name | type  | owner | estimated_row_count | locality
+--------------+------------+-------+-------+---------------------+-----------
+  public      | animals    | table | demo  |                   0 | NULL
+  public      | roaches    | table | demo  |                   0 | NULL
+(2 rows)
+
+          name          |    country
+------------------------+----------------
+  American Cockroach    | United States
+  Brownbanded Cockroach | United States
+```
+
+### Control how table rows are printed
+
+In these examples, we show tables and special characters printed in various formats.
+
+When the standard output is a terminal, `--format` defaults to `table` and tables are printed with ASCII art and special characters are not escaped for easy human consumption:
+
+```shell
+$ cockroach-sql --insecure \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb
+```
+
+```text
+  chick | turtle
+--------+---------
+  🐥    | 🐢
+```
+
+However, you can explicitly set `--format` to another format (e.g., `tsv` or `html`):
+
+```shell
+$ cockroach-sql --insecure \
+--format=tsv \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb
+```
+
+```text
+chick   turtle
+🐥    🐢
+```
+
+```shell
+$ cockroach-sql --insecure \
+--format=html \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb
+```
+
+```text
+<table>
+<thead><tr><th>row</th><th>chick</th><th>turtle</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>🐥</td><td>🐢</td></tr>
+</tbody>
+<tfoot><tr><td colspan=3>1 row</td></tr></tfoot></table>
+```
+
+When piping output to another command or a file, `--format` defaults to `tsv`:
+
+```shell
+$ cockroach-sql --insecure \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb
+```
+
+```shell
+$ cat out.txt
+```
+
+```text
+1 row
+chick   turtle
+🐥    🐢
+```
+
+However, you can explicitly set `--format` to another format (e.g., `table`):
+
+```shell
+$ cockroach-sql --insecure \
+--format=table \
+--execute="SELECT '🐥' AS chick, '🐢' AS turtle" > out.txt \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb
+```
+
+```shell
+$ cat out.txt
+```
+
+```text
+  chick | turtle
+--------+---------
+  🐥    | 🐢
+(1 row)
+```
+
+### Show borders around the statement output within the SQL shell
+
+To display outside and inside borders in the statement output, set the `border` [SQL shell option](#client-side-options) to `3`.
+
+```sql
+\set border=3
+SELECT * FROM animals;
+```
+
+```text
++--------------------+----------+
+|         id         |   name   |
++--------------------+----------+
+| 710907071259213825 | bobcat   |
++--------------------+----------+
+| 710907071259279361 | 🐢       |
++--------------------+----------+
+| 710907071259312129 | barn owl |
++--------------------+----------+
+```
+
+### Make the output of `SHOW` statements selectable
+
+To make it possible to select from the output of `SHOW` statements, set `--format` to `raw`:
+
+```shell
+$ cockroach-sql --insecure \
+--format=raw \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb
+```
+
+```sql
+> SHOW CREATE customers;
+```
+
+```text
+# 2 columns
+# row 1
+## 14
+test.customers
+## 185
+CREATE TABLE customers (
+    id INT NOT NULL,
+    email STRING NULL,
+    CONSTRAINT "primary" PRIMARY KEY (id ASC),
+    UNIQUE INDEX customers_email_key (email ASC),
+    FAMILY "primary" (id, email)
+)
+# 1 row
+```
+
+When `--format` is not set to `raw`, you can use the `display_format` [SQL shell option](#client-side-options) to change the output format within the interactive session:
+
+```sql
+> \set display_format raw
+```
+
+```text
+# 2 columns
+# row 1
+## 14
+test.customers
+## 185
+CREATE TABLE customers (
+  id INT NOT NULL,
+  email STRING NULL,
+  CONSTRAINT "primary" PRIMARY KEY (id ASC),
+  UNIQUE INDEX customers_email_key (email ASC),
+  FAMILY "primary" (id, email)
+)
+# 1 row
+```
+
+### Execute SQL statements from a file
+
+In this example, we show and then execute the contents of a file containing SQL statements.
+
+```shell
+$ cat statements.sql
+```
+
+```text
+CREATE TABLE roaches (name STRING, country STRING);
+INSERT INTO roaches VALUES ('American Cockroach', 'United States'), ('Brownbanded Cockroach', 'United States');
+```
+
+```shell
+$ cockroach-sql --insecure \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=critterdb \
+-f statements.sql
+```
+
+```text
+CREATE TABLE
+INSERT 2
+```
+
+### Run external commands from the SQL shell
+
+In this example, we use `\!` to look at the rows in a CSV file before creating a table and then using `\|` to insert those rows into the table.
+
+<Note>
+This example works only if the values in the CSV file are numbers. For values in other formats, use an online CSV-to-SQL converter or make your own import program.
+</Note>
+
+```sql
+> \! cat test.csv
+```
+
+```text
+12, 13, 14
+10, 20, 30
+```
+
+```sql
+> CREATE TABLE csv (x INT, y INT, z INT);
+```
+
+```sql
+> \| IFS=","; while read a b c; do echo "insert into csv values ($a, $b, $c);"; done < test.csv;
+```
+
+```sql
+> SELECT * FROM csv;
+```
+
+```text
+  x  | y  | z
+-----+----+-----
+  12 | 13 | 14
+  10 | 20 | 30
+```
+
+In this example, we create a table and then use `\|` to programmatically insert values.
+
+```sql
+> CREATE TABLE for_loop (x INT);
+```
+
+```sql
+> \| for ((i=0;i<10;++i)); do echo "INSERT INTO for_loop VALUES ($i);"; done
+```
+
+```sql
+> SELECT * FROM for_loop;
+```
+
+```text
+  x
+-----
+  0
+  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+```
+
+### Allow potentially unsafe SQL statements
+
+The [`--safe-updates` flag](#flag-safe-updates) defaults to `true`. This prevents SQL statements that may have broad, undesired side effects. For example, by default, we cannot use `DELETE` without a `WHERE` clause to delete all rows from a table:
+
+```shell
+$ cockroach-sql --insecure --execute="SELECT * FROM db1.t1"
+```
+
+```text
+  id | name
+-----+-------
+   1 | a
+   2 | b
+   3 | c
+   4 | d
+   5 | e
+   6 | f
+   7 | g
+   8 | h
+   9 | i
+  10 | j
+-----+-------
+(10 rows)
+```
+
+```shell
+$ cockroach-sql --insecure --execute="DELETE FROM db1.t1"
+```
+
+```text
+Error: pq: rejected: DELETE without WHERE clause (sql_safe_updates = true)
+Failed running "sql"
+```
+
+However, to allow an "unsafe" statement, you can set `--safe-updates=false`:
+
+```shell
+$ cockroach-sql --insecure --safe-updates=false --execute="DELETE FROM db1.t1"
+```
+
+```text
+DELETE 10
+```
+
+<Note>
+Potentially unsafe SQL statements can also be allowed/disallowed for an entire session via the [`sql_safe_updates` session variable](/docs/v25.2/set-vars#sql-safe-updates). For a complete list of these statements, refer to the session variable documentation.
+</Note>
+
+### Reveal the SQL statements sent implicitly by the command-line utility
+
+In this example, we use the `--execute` flag to execute statements from the command line and the `--echo-sql` flag to reveal SQL statements sent implicitly:
+
+```shell
+$ cockroach-sql --insecure \
+--execute="CREATE TABLE t1 (id INT PRIMARY KEY, name STRING)" \
+--execute="INSERT INTO t1 VALUES (1, 'a'), (2, 'b'), (3, 'c')" \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=db1
+--echo-sql
+```
+
+```text
+# Server version: CockroachDB CCL f8f3c9317 (darwin amd64, built 2017/09/13 15:05:35, go1.8) (same version as client)
+# Cluster ID: 847a4ba5-c78a-465a-b1a0-59fae3aab520
+> SET sql_safe_updates = TRUE
+> CREATE TABLE t1 (id INT PRIMARY KEY, name STRING)
+CREATE TABLE
+> INSERT INTO t1 VALUES (1, 'a'), (2, 'b'), (3, 'c')
+INSERT 3
+```
+
+In this example, we start the interactive SQL shell and enable the `echo` shell option to reveal SQL statements sent implicitly:
+
+```shell
+$ cockroach-sql --insecure \
+--user=maxroach \
+--host=12.345.67.89 \
+--database=db1
+```
+
+```sql
+> \set echo
+```
+
+```sql
+> INSERT INTO db1.t1 VALUES (4, 'd'), (5, 'e'), (6, 'f');
+```
+
+```text
+> INSERT INTO db1.t1 VALUES (4, 'd'), (5, 'e'), (6, 'f');
+INSERT 3
+
+Time: 2.426534ms
+
+> SHOW TRANSACTION STATUS
+> SHOW DATABASE
+```
+
+### Repeat a SQL statement
+
+Repeating SQL queries on a table can be useful for monitoring purposes. With the `--watch` flag, you can repeat the statements specified with a `--execute` or `-e` flag periodically, until a SQL error occurs or the process is terminated.
+
+For example, if you want to monitor the number of queries running on the current node, you can use `cockroach-sql` with the `--watch` flag to query the node's `crdb_internal.node_statement_statistics` table for the query count:
+
+```shell
+$ cockroach-sql --insecure \
+--execute="SELECT SUM(count) FROM crdb_internal.node_statement_statistics" \
+--watch 1m
+```
+
+```text
+  sum
+-------
+  926
+(1 row)
+  sum
+--------
+  4227
+(1 row)
+^C
+```
+
+In this example, the statement is executed every minute. We let the process run for a couple minutes before terminating it with **Ctrl+C**.
+
+### Connect to a cluster listening for Unix domain socket connections
+
+To connect to a cluster that is running on the same machine as your client and is listening for [Unix domain socket](https://wikipedia.org/wiki/Unix_domain_socket) connections, [specify a Unix domain socket URI](/docs/v25.2/connection-parameters#example-uri-for-a-unix-domain-socket) with the `--url` connection parameter.
+
+For example, suppose you start a single-node cluster with the following [`cockroach start-single-node`](/docs/v25.2/cockroach-start-single-node) command:
+
+```shell
+$ cockroach start-single-node --insecure --socket-dir=/tmp
+```
+
+```text
+CockroachDB node starting at  (took 1.3s)
+build:               CCL v25.2.15 @ 2026-03-09 00:00:00
+webui:               http://Jesses-MBP-2:8080
+sql:                 postgresql://root@Jesses-MBP-2:26257?sslmode=disable
+RPC client flags:    ./cockroach <client cmd> --host=Jesses-MBP-2:26257 --insecure
+socket:              /tmp/.s.PGSQL.26257
+logs:                /Users/jesseseldess/Downloads/cockroach-.darwin-10.9-amd64/cockroach-data/logs
+temp dir:            /Users/jesseseldess/Downloads/cockroach-.darwin-10.9-amd64/cockroach-data/cockroach-temp805054895
+external I/O path:   /Users/jesseseldess/Downloads/cockroach-.darwin-10.9-amd64/cockroach-data/extern
+store[0]:            path=/Users/jesseseldess/Downloads/cockroach-.darwin-10.9-amd64/cockroach-data
+storage engine:      pebble
+status:              initialized new cluster
+clusterID:           455ad71d-21d4-424a-87ad-8097b6b5b99f
+nodeID:              1
+```
+
+To connect to this cluster with a socket:
+
+```shell
+$ cockroach-sql --url='postgres://root@?host=/tmp&port=26257'
+```
+
+## See also
+
+- [Client Connection Parameters](/docs/v25.2/connection-parameters)
+- [`cockroach demo`](/docs/v25.2/cockroach-demo)
+- [`cockroach` Commands Overview](/docs/v25.2/cockroach-commands)
+- [SQL Statements](/docs/v25.2/sql-statements)
+- [Learn CockroachDB SQL](/docs/v25.2/learn-cockroachdb-sql)

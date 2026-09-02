@@ -1,0 +1,41 @@
+---
+title: "Metrics Overview"
+old_description: "This page gives an overview of the ways you can monitor the performance of your Cloud cluster's SQL queries."
+---
+
+Depending on your CockroachDB Cloud deployment, you can monitor the performance of your CockroachDB cluster in the following ways:
+
+- For all CockroachDB Cloud deployments, you can use the [CockroachDB Cloud Console **Metrics** page](#cockroachdb-cloud-console-metrics-page).
+- For CockroachDB Standard and CockroachDB Advanced deployments, you can [export metrics](#export-metrics) to a third-party cloud sink.
+
+Viewing metrics on a cluster requires the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#metrics-viewer" data-versioned="true">Metrics Viewer</a>, <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-operator" data-versioned="true">Cluster Operator</a>, or <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization#cluster-admin" data-versioned="true">Cluster Admin</a> role.
+
+To understand how to make both practical and actionable use of the metrics in a production deployment, refer to the following documentation:
+
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/metrics-essential" data-versioned="true">Essential Metrics for CockroachDB Standard Deployments</a>
+- <a href="/docs/VERSION_PLACEHOLDER/essential-metrics-advanced" data-versioned="true">Essential Metrics for CockroachDB Advanced Deployments</a>
+
+## CockroachDB Cloud Console Metrics page
+
+To view this page, select a cluster from the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-management#view-clusters-page" data-versioned="true">**Clusters** page</a>, and click **Metrics** in the **Monitoring** section of the left side navigation.
+
+Depending on your CockroachDB Cloud deployment, the **Metrics** page will have the following tabs on which you can view time-series graphs:
+
+<table><thead><tr><th>Metrics Tab</th><th>CockroachDB Basic</th><th>CockroachDB Standard</th><th>CockroachDB Advanced</th></tr></thead><tbody><tr><td><a href="/docs/cockroachcloud/metrics-overview"><strong>Overview</strong></a></td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><a href="/docs/cockroachcloud/metrics-sql"><strong>SQL</strong></a></td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><a href="/docs/cockroachcloud/metrics-changefeeds"><strong>Changefeeds</strong></a></td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><a href="/docs/cockroachcloud/metrics-row-level-ttl"><strong>Row-Level TTL</strong></a></td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><a href="/docs/cockroachcloud/metrics-request-units"><strong>Request Units</strong></a></td><td>✔</td><td></td><td></td></tr><tr><td><a href="/docs/cockroachcloud/custom-metrics-chart-page"><strong>Custom</strong></a></td><td>✔</td><td>✔</td><td>✔</td></tr></tbody></table>
+
+### Time interval selection
+
+The time interval selector at the top of each tab allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected for all charts on the **Metrics** page.
+
+## Export Metrics
+
+CockroachDB Standard and CockroachDB Advanced users can export metrics to the following third-party cloud sinks:
+
+- Amazon CloudWatch
+- Datadog
+- Prometheus
+
+For more information, refer to:
+
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/export-metrics" data-versioned="true">Export Metrics From a CockroachDB Standard Cluster</a>
+- <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/export-metrics-advanced" data-versioned="true">Export Metrics From a CockroachDB Advanced Cluster</a>

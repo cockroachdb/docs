@@ -1,0 +1,29 @@
+import Mac from "/snippets/v25.2/connect-to-database/advanced/mac/index.mdx";
+import Linux from "/snippets/v25.2/connect-to-database/advanced/linux/index.mdx";
+import Windows from "/snippets/v25.2/connect-to-database/advanced/windows/index.mdx";
+
+To connect to a CockroachDB Cloud cluster, you need a general connection string or connection parameters, which include the username, host, database, and port. To find these, open the **Connect** dialog for your cluster in the [CockroachDB Cloud Console](https://cockroachlabs.cloud/) and select either **General connection string** or **Parameters only** as the option.
+
+## Step 2. Select your OS
+
+<Tabs>
+<Tab title="Mac">
+
+<Mac/>
+
+</Tab>
+<Tab title="Linux">
+
+<Linux/>
+
+</Tab>
+<Tab title="Windows">
+
+<Windows/>
+
+</Tab>
+</Tabs>
+
+## Connection parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;username&#125;</code></td><td>The <a href="/docs/v25.2/security-reference/authorization#sql-users">SQL user</a> connecting to the cluster.</td></tr><tr><td><code>&#123;password&#125;</code></td><td>The password for the SQL user connecting to the cluster.</td></tr><tr><td><code>&#123;host&#125;</code></td><td>The host on which the CockroachDB node is running.</td></tr><tr><td><code>&#123;port&#125;</code></td><td>The port at which the CockroachDB node is listening.</td></tr><tr><td><code>&#123;database&#125;</code></td><td>The name of the (existing) database.</td></tr><tr><td><code>&#123;root-cert&#125;</code></td><td>The path to the root certificate that you <a href="/docs/cockroachcloud/authentication#node-identity-verification">downloaded from the CockroachDB Cloud Console</a>.</td></tr></tbody></table>

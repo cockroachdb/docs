@@ -1,0 +1,754 @@
+---
+title: "Upgrade a cluster in Kubernetes"
+old_description: "How to upgrade a secure 3-node CockroachDB cluster with Kubernetes."
+---
+
+This page shows how to upgrade a CockroachDB cluster that is [deployed on a Kubernetes cluster](/docs/v24.3/deploy-cockroachdb-with-kubernetes).
+
+## Overview
+
+### Types of upgrades
+
+- **Major-version upgrades**: A [major-version upgrade](/docs/releases#major-versions), such as from v24.2 to v24.3, may include new features, updates to cluster setting defaults, and backward-incompatible changes. Performing a major-version upgrade requires an additional step to finalize the upgrade.
+
+    As of 2024, every second major version is an [Innovation release](/docs/releases/release-support-policy#innovation-releases). Innovation releases offer shorter support windows and can be skipped.
+- **Patch upgrades**: A [patch upgrade](/docs/releases#patch-releases) moves a cluster from one patch release to another within a major version, such as from v24.2.3 to v24.2.4. Patch upgrades do not introduce backward-incompatible changes.
+
+    A major version of CockroachDB has two phases of patch releases: a series of **testing releases** (beta, alpha, and RC releases) followed by a series of **production releases** (vX.Y.0, vX.Y.1, and so on). A major version’s first production release (the.0 release) is also known as its GA release.
+
+To learn more about CockroachDB major versions and patches, refer to [CockroachDB Releases Overview](/docs/releases).
+
+### Compatible versions
+
+A cluster may always be upgraded to the next major release. Every second major version is an Innovation release that can be deployed or skipped:
+
+- If your cluster is running a major version that is a Regular release, it can be upgraded to either:
+    - the next major version (an Innovation release)
+    - the release that follows the next major version (the next Regular release, once it is available, skipping the Innovation release).
+- If a cluster is running a major version that is labeled an Innovation release, it can be upgraded only to the next Regular release.
+
+<Frame>
+  ![Diagram of CockroachDB major version upgrade availability, i.e. the ability to skip innovation releases](/images/common/version-skipping-diagram.png)
+</Frame>
+
+On Kubernetes, the upgrade is a [staged update](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set#staging-an-update) in which each pod's container image for CockroachDB is updated in a rolling fashion. The cluster remains available during the upgrade.
+
+Select the cluster's deployment method to continue.
+
+<Tabs>
+<Tab title="Operator">
+
+## Before you begin
+
+<Tip>
+If you [deployed CockroachDB on Red Hat OpenShift](/docs/v24.3/deploy-cockroachdb-with-kubernetes-openshift), substitute `kubectl` with `oc` in the following commands.
+</Tip>
+
+<Note>
+All `kubectl` steps should be performed in the [namespace where you installed the Operator](/docs/v24.3/deploy-cockroachdb-with-kubernetes#install-the-operator). By default, this is `cockroach-operator-system`.
+</Note>
+
+Before beginning a major-version or patch upgrade:
+
+1. Verify the overall health of your cluster using the [DB Console](/docs/v24.3/ui-cluster-overview-page):
+    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as `SUSPECT` or `DEAD`, identify why the nodes are offline and either restart them or [decommission](/docs/v24.3/node-shutdown?filters=decommission#remove-nodes) them before beginning your upgrade. If there are `DEAD` and non-decommissioned nodes in your cluster, the upgrade cannot be finalized. If any node is not fully decommissioned, try the following:
+        1. First, reissue the [decommission command](/docs/v24.3/node-shutdown?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
+        2. If the second decommission command does not succeed, [recommission](/docs/v24.3/node-shutdown?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
+    - Under **Replication Status**, make sure there are `0` under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
+    - In the **Node List**, make sure all nodes are on the same version. Upgrade them to the cluster's current version before continuing. If any nodes are behind, this also indicates that the previous major-version upgrade may not be finalized.
+    - In the **Metrics** dashboards, make sure [CPU](/docs/v24.3/common-issues-to-monitor#cpu-usage), [memory](/docs/v24.3/common-issues-to-monitor#database-memory-usage), and [storage](/docs/v24.3/common-issues-to-monitor#storage-capacity) capacity are within acceptable values for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. If any of these metrics is above healthy limits, consider [adding nodes](/docs/v24.3/cockroach-start) to your cluster before beginning your upgrade.
+2. Make sure your cluster is behind a [load balancer](/docs/v24.3/recommended-production-settings#load-balancing), or your clients are configured to talk to multiple nodes. If your application communicates with only a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
+3. By default, the [storage engine](/docs/v24.3/architecture/storage-layer) uses a compaction concurrency of 3. If you have sufficient IOPS and CPU headroom, you can consider increasing this setting via the `COCKROACH_COMPACTION_CONCURRENCY` environment variable. This may help to reshape the LSM more quickly in [inverted LSM](/docs/v24.3/architecture/storage-layer#inverted-lsms) scenarios; and it can lead to increased overall performance for some workloads. Cockroach Labs **strongly recommends** testing your workload against non-default values of this setting.
+4. CockroachDB is designed with high fault tolerance. However, taking regular backups of your data is an operational best practice for [disaster recovery](/docs/v24.3/disaster-recovery-planning) planning. Refer to [Restoring backups across versions](/docs/v24.3/restoring-backups-across-versions#support-for-restoring-backups-into-a-newer-version).
+5. Review the [v24.3 Release Notes](/docs/releases/v24.3), as well as the release notes for any skipped major version. Pay careful attention to the sections for backward-incompatible changes, deprecations, changes to default cluster settings, and features that are not available until the upgrade is finalized.
+6. Optionally [disable auto-finalization](#disable-auto-finalization) to preserve the ability to roll back a major-version upgrade instead of finalizing it. If auto-finalization is disabled, a major-version upgrade is not complete until it is finalized.
+
+### Ensure you have a valid license key
+
+To perform major version upgrades, you must have [a valid license key](/docs/v24.3/licensing-faqs#obtain-a-license).
+
+Patch version upgrades can be performed without a valid license key, with the following limitations:
+
+- The cluster will run without limitations for a specified grace period. During that time, alerts are displayed that the cluster needs a valid license key. For more information, refer to the [Licensing FAQs](/docs/v24.3/licensing-faqs).
+- The cluster is [throttled](/docs/v24.3/licensing-faqs#throttling) at the end of the grace period if no [valid license key is added to the cluster](/docs/v24.3/licensing-faqs#set-a-license) before then.
+
+If you have an **Enterprise Free** or **Enterprise Trial** license, you must enable telemetry using the [`diagnostics.reporting.enabled`](/docs/v24.3/cluster-settings#setting-diagnostics-reporting-enabled) cluster setting, as shown below in order to finalize a major version upgrade:
+
+```sql
+SET CLUSTER SETTING diagnostics.reporting.enabled = true;
+```
+
+If a cluster with an **Enterprise Free** or **Enterprise Trial** license is upgraded across patch versions and does not meet telemetry requirements:
+
+- The cluster will run without limitations for a 7-day grace period. During that time, alerts are displayed that the cluster needs to send telemetry.
+- The cluster is [throttled](/docs/v24.3/licensing-faqs#throttling) if telemetry is not received before the end of the grace period.
+
+For more information, refer to the [Licensing FAQs](/docs/v24.3/licensing-faqs).
+
+If you want to stay on the previous version, you can roll back the upgrade before finalization.
+
+## Perform a patch upgrade
+
+To upgrade from one patch release to another within the same major version, perform the following steps on one node at a time:
+
+1. Change the container image in the custom resource:
+
+    ```text
+    image:
+      name: cockroachdb/cockroach:v24.3.29
+    ```
+2. Apply the new settings to the cluster:
+
+    ```shell
+    kubectl apply -f example.yaml
+    ```
+
+    The Operator will perform the staged update.
+3. To check the status of the rolling upgrade, run `kubectl get pods`.
+4. Verify that all pods have been upgraded:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+    You can also check the CockroachDB version of each node in the [DB Console](/docs/v24.3/ui-cluster-overview-page#node-details).
+
+### Roll back a patch upgrade
+
+To roll back a patch upgrade, repeat the steps in [Perform a patch upgrade](#perform-a-patch-upgrade), but configure the container image for the pods to the previous major version.
+
+## Perform a major-version upgrade
+
+To perform a major upgrade:
+
+1. Change the container image image in the custom resource:
+
+    ```text
+    image:
+      name: cockroachdb/cockroach:v24.3.29
+    ```
+2. Apply the new settings to the cluster:
+
+    ```shell
+    kubectl apply -f example.yaml
+    ```
+
+    The Operator will perform the staged update.
+3. To check the status of the rolling upgrade, run `kubectl get pods`.
+4. Verify that all pods have been upgraded:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+    You can also check the CockroachDB version of each node in the [DB Console](/docs/v24.3/ui-cluster-overview-page#node-details).
+5. Before beginning a major-version upgrade, the Operator disables auto-finalization by setting the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version. Before finalizing an upgrade, follow your organization's testing procedures to decide whether to [finalize](#finalize-a-major-version-upgrade-manually) or [roll back](#roll-back-a-major-version-upgrade) the upgrade. After finalization begins, you can no longer roll back to the cluster's previous major version.
+
+### Finalize a major-version upgrade manually
+
+To finalize a major-version upgrade:
+
+1. Connect to the cluster using the SQL shell:
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
+    ```
+2. Run the following command:
+
+    ```sql
+    > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
+    ```
+
+    A series of migration jobs runs to enable certain types of features and changes in the new major version that cannot be rolled back. These include changes to system schemas, indexes, and descriptors, and enabling certain types of improvements and new features. Until the upgrade is finalized, these features and functions will not be available and the command `SHOW CLUSTER SETTING version` will return the previous version&#96;.
+
+    You can monitor the process of the migration in the DB Console [Jobs page](/docs/v24.3/ui-jobs-page). Migration jobs have names in the format `24.3-{migration-id}`. If a migration job fails or stalls, Cockroach Labs can use the migration ID to help diagnose and troubleshoot the problem. Each major version has different migration jobs with different IDs.
+
+    The amount of time required for finalization depends on the amount of data in the cluster, because finalization runs various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
+
+    When all migration jobs have completed, the upgrade is complete.
+3. To confirm that finalization has completed, check the cluster version:
+
+    ```sql
+    > SHOW CLUSTER SETTING version;
+    ```
+
+    If the cluster continues to report that it is on the previous version, finalization has not completed. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes](/docs/v24.3/node-shutdown?filters=decommission#status-change) where decommission has stalled. In most cases, issuing the `decommission` command again resolves the issue. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc).
+
+### Roll back a major-version upgrade
+
+To roll back to the previous major version before an upgrade is finalized:
+
+1. Change the container image in the custom resource to use the previous major version:
+
+    ```text
+    image:
+      name: cockroachdb/cockroach:v24.3
+    ```
+2. Apply the new settings to the cluster:
+
+    ```shell
+    kubectl apply -f example.yaml
+    ```
+
+    The Operator will perform the staged rollback.
+3. To check the status of the rollback, run `kubectl get pods`.
+4. Verify that all pods have been rolled back:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+Rollbacks do not require finalization.
+
+## Disable auto-finalization
+
+For clusters managed by the Public operator, auto-finalization is disabled and cannot be enabled. A major version upgrade is not complete until it is manually [finalized](#finalize-a-major-version-upgrade-manually). The Public operator does not support the [cluster setting](/docs/v24.3/cluster-settings) `cluster.auto_upgrade.enabled`.
+
+</Tab>
+<Tab title="Manual Configs">
+
+## Before you begin
+
+<Tip>
+If you [deployed CockroachDB on Red Hat OpenShift](/docs/v24.3/deploy-cockroachdb-with-kubernetes-openshift), substitute `kubectl` with `oc` in the following commands.
+</Tip>
+
+<Note>
+All `kubectl` steps should be performed in the [namespace where you installed the Operator](/docs/v24.3/deploy-cockroachdb-with-kubernetes#install-the-operator). By default, this is `cockroach-operator-system`.
+</Note>
+
+Before beginning a major-version or patch upgrade:
+
+1. Verify the overall health of your cluster using the [DB Console](/docs/v24.3/ui-cluster-overview-page):
+    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as `SUSPECT` or `DEAD`, identify why the nodes are offline and either restart them or [decommission](/docs/v24.3/node-shutdown?filters=decommission#remove-nodes) them before beginning your upgrade. If there are `DEAD` and non-decommissioned nodes in your cluster, the upgrade cannot be finalized. If any node is not fully decommissioned, try the following:
+        1. First, reissue the [decommission command](/docs/v24.3/node-shutdown?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
+        2. If the second decommission command does not succeed, [recommission](/docs/v24.3/node-shutdown?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
+    - Under **Replication Status**, make sure there are `0` under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
+    - In the **Node List**, make sure all nodes are on the same version. Upgrade them to the cluster's current version before continuing. If any nodes are behind, this also indicates that the previous major-version upgrade may not be finalized.
+    - In the **Metrics** dashboards, make sure [CPU](/docs/v24.3/common-issues-to-monitor#cpu-usage), [memory](/docs/v24.3/common-issues-to-monitor#database-memory-usage), and [storage](/docs/v24.3/common-issues-to-monitor#storage-capacity) capacity are within acceptable values for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. If any of these metrics is above healthy limits, consider [adding nodes](/docs/v24.3/cockroach-start) to your cluster before beginning your upgrade.
+2. Make sure your cluster is behind a [load balancer](/docs/v24.3/recommended-production-settings#load-balancing), or your clients are configured to talk to multiple nodes. If your application communicates with only a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
+3. By default, the [storage engine](/docs/v24.3/architecture/storage-layer) uses a compaction concurrency of 3. If you have sufficient IOPS and CPU headroom, you can consider increasing this setting via the `COCKROACH_COMPACTION_CONCURRENCY` environment variable. This may help to reshape the LSM more quickly in [inverted LSM](/docs/v24.3/architecture/storage-layer#inverted-lsms) scenarios; and it can lead to increased overall performance for some workloads. Cockroach Labs **strongly recommends** testing your workload against non-default values of this setting.
+4. CockroachDB is designed with high fault tolerance. However, taking regular backups of your data is an operational best practice for [disaster recovery](/docs/v24.3/disaster-recovery-planning) planning. Refer to [Restoring backups across versions](/docs/v24.3/restoring-backups-across-versions#support-for-restoring-backups-into-a-newer-version).
+5. Review the [v24.3 Release Notes](/docs/releases/v24.3), as well as the release notes for any skipped major version. Pay careful attention to the sections for backward-incompatible changes, deprecations, changes to default cluster settings, and features that are not available until the upgrade is finalized.
+6. Optionally [disable auto-finalization](#disable-auto-finalization) to preserve the ability to roll back a major-version upgrade instead of finalizing it. If auto-finalization is disabled, a major-version upgrade is not complete until it is finalized.
+
+### Ensure you have a valid license key
+
+To perform major version upgrades, you must have [a valid license key](/docs/v24.3/licensing-faqs#obtain-a-license).
+
+Patch version upgrades can be performed without a valid license key, with the following limitations:
+
+- The cluster will run without limitations for a specified grace period. During that time, alerts are displayed that the cluster needs a valid license key. For more information, refer to the [Licensing FAQs](/docs/v24.3/licensing-faqs).
+- The cluster is [throttled](/docs/v24.3/licensing-faqs#throttling) at the end of the grace period if no [valid license key is added to the cluster](/docs/v24.3/licensing-faqs#set-a-license) before then.
+
+If you have an **Enterprise Free** or **Enterprise Trial** license, you must enable telemetry using the [`diagnostics.reporting.enabled`](/docs/v24.3/cluster-settings#setting-diagnostics-reporting-enabled) cluster setting, as shown below in order to finalize a major version upgrade:
+
+```sql
+SET CLUSTER SETTING diagnostics.reporting.enabled = true;
+```
+
+If a cluster with an **Enterprise Free** or **Enterprise Trial** license is upgraded across patch versions and does not meet telemetry requirements:
+
+- The cluster will run without limitations for a 7-day grace period. During that time, alerts are displayed that the cluster needs to send telemetry.
+- The cluster is [throttled](/docs/v24.3/licensing-faqs#throttling) if telemetry is not received before the end of the grace period.
+
+For more information, refer to the [Licensing FAQs](/docs/v24.3/licensing-faqs).
+
+If you want to stay on the previous version, you can roll back the upgrade before finalization.
+
+## Perform a patch upgrade
+
+1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
+
+    ```shell
+    $ kubectl patch statefulset cockroachdb \
+    -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":2}}}}'
+    ```
+
+    ```text
+    statefulset.apps/cockroachdb patched
+    ```
+2. Change the container image in the StatefulSet:
+
+    ```shell
+    $ kubectl patch statefulset cockroachdb \
+    --type='json' \
+    -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:v24.3.29"}]'
+    ```
+
+    ```text
+    statefulset.apps/cockroachdb patched
+    ```
+3. To check the status of the rolling upgrade, run `kubectl get pods`.
+4. Verify that all pods have been upgraded:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+    You can also check the CockroachDB version of each node in the [DB Console](/docs/v24.3/ui-cluster-overview-page#node-details).
+
+### Roll back a patch upgrade
+
+To roll back a patch upgrade, repeat the steps in [Perform a patch upgrade](#perform-a-patch-upgrade), but configure the container image for the pods to the previous major version.
+
+## Perform a major-version upgrade
+
+To perform a major upgrade:
+
+1. 1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
+
+```shell
+$ kubectl patch statefulset cockroachdb \
+-p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":2}}}}'
+```
+
+```text
+statefulset.apps/cockroachdb patched
+```
+
+1. Change the container image in the StatefulSet:
+
+    ```shell
+    $ kubectl patch statefulset cockroachdb \
+    --type='json' \
+    -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:v24.3.29"}]'
+    ```
+
+    ```text
+    statefulset.apps/cockroachdb patched
+    ```
+2. To check the status of the rolling upgrade, run `kubectl get pods`.
+3. After the pod has been restarted with the new image, start the CockroachDB [built-in SQL client](/docs/v24.3/cockroach-sql):
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \-- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
+    ```
+4. Run the following SQL query to verify that the number of underreplicated ranges is zero:
+
+    ```sql
+    SELECT sum((metrics->>'ranges.underreplicated')::DECIMAL)::INT AS ranges_underreplicated FROM crdb_internal.kv_store_status;
+    ```
+
+    ```text
+      ranges_underreplicated
+    --------------------------
+                           0
+    (1 row)
+    ```
+
+    This indicates that it is safe to proceed to the next pod.
+5. Exit the SQL shell:
+
+    ```sql
+    > \q
+    ```
+6. Decrement the partition value by 1 to allow the next pod in the cluster to update:
+
+    ```shell
+    $ kubectl patch statefulset cockroachdb \
+    -p='{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":1}}}}'
+    ```
+
+    ```text
+    statefulset.apps/cockroachdb patched
+    ```
+7. Repeat steps 4-8 until all pods have been restarted and are running the new image (the final partition value should be `0`).
+8. Check the image of each pod to confirm that all have been upgraded:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+    ```text
+    cockroachdb-0   cockroachdb/cockroach:v24.3.29
+    cockroachdb-1   cockroachdb/cockroach:v24.3.29
+    cockroachdb-2   cockroachdb/cockroach:v24.3.29
+    ...
+    ```
+
+    You can also check the CockroachDB version of each node in the [DB Console](/docs/v24.3/ui-cluster-overview-page#node-details).
+9. If auto-finalization is disabled, the upgrade is not complete until you [finalize the upgrade](#finalize-a-major-version-upgrade-manually).
+
+### Finalize a major-version upgrade manually
+
+To finalize a major-version upgrade:
+
+1. Connect to the cluster using the SQL shell:
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
+    ```
+2. Run the following command:
+
+    ```sql
+    > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
+    ```
+
+    A series of migration jobs runs to enable certain types of features and changes in the new major version that cannot be rolled back. These include changes to system schemas, indexes, and descriptors, and enabling certain types of improvements and new features. Until the upgrade is finalized, these features and functions will not be available and the command `SHOW CLUSTER SETTING version` will return the previous version&#96;.
+
+    You can monitor the process of the migration in the DB Console [Jobs page](/docs/v24.3/ui-jobs-page). Migration jobs have names in the format `24.3-{migration-id}`. If a migration job fails or stalls, Cockroach Labs can use the migration ID to help diagnose and troubleshoot the problem. Each major version has different migration jobs with different IDs.
+
+    The amount of time required for finalization depends on the amount of data in the cluster, because finalization runs various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
+
+    When all migration jobs have completed, the upgrade is complete.
+3. To confirm that finalization has completed, check the cluster version:
+
+    ```sql
+    > SHOW CLUSTER SETTING version;
+    ```
+
+    If the cluster continues to report that it is on the previous version, finalization has not completed. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes](/docs/v24.3/node-shutdown?filters=decommission#status-change) where decommission has stalled. In most cases, issuing the `decommission` command again resolves the issue. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc).
+
+### Roll back a major-version upgrade
+
+To roll back to the previous major version before an upgrade is finalized:
+
+1. Change the container image in the custom resource to use the previous major version:
+
+    ```text
+    image:
+      name: cockroachdb/cockroach:v24.3
+    ```
+2. Apply the new settings to the cluster:
+
+    ```shell
+    kubectl apply -f example.yaml
+    ```
+
+    The Operator will perform the staged rollback.
+3. To check the status of the rollback, run `kubectl get pods`.
+4. Verify that all pods have been rolled back:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+Rollbacks do not require finalization.
+
+## Disable auto-finalization
+
+By default, auto-finalization is enabled, and a major-version upgrade is finalized when all nodes have rejoined the cluster using the new `cockroach` binary. This means that by default, a major-version upgrade cannot be rolled back. Instead, you must [restore the cluster to the previous version](/docs/v24.3/restoring-backups-across-versions#support-for-restoring-backups-into-a-newer-version).
+
+To disable auto-finalization:
+
+1. Connect to the cluster using the SQL shell:
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
+    ```
+2. Set the [cluster setting](/docs/v24.3/cluster-settings) `cluster.auto_upgrade.enabled` to `false`.
+
+Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade-manually) or [roll it back](#roll-back-a-major-version-upgrade).
+
+<Note>
+Previously, to disable automatic finalization and preserve the ability to roll back a major-version upgrade, it was required to set the cluster setting `cluster.preserve_downgrade_option` to the cluster's current major version before beginning the major-version upgrade, and then to unset the setting to finalize the upgrade.
+
+We now recommend managing a cluster's finalization policy using the cluster setting `cluster.auto_upgrade.enabled`, which was introduced in v23.2. The setting does not need to be modified after it is initially set.
+
+Either of these settings prevents automatic finalization.
+</Note>
+
+</Tab>
+<Tab title="Helm">
+
+## Before you begin
+
+<Tip>
+If you [deployed CockroachDB on Red Hat OpenShift](/docs/v24.3/deploy-cockroachdb-with-kubernetes-openshift), substitute `kubectl` with `oc` in the following commands.
+</Tip>
+
+<Note>
+All `kubectl` steps should be performed in the [namespace where you installed the Operator](/docs/v24.3/deploy-cockroachdb-with-kubernetes#install-the-operator). By default, this is `cockroach-operator-system`.
+</Note>
+
+Before beginning a major-version or patch upgrade:
+
+1. Verify the overall health of your cluster using the [DB Console](/docs/v24.3/ui-cluster-overview-page):
+    - Under **Node Status**, make sure all nodes that should be live are listed as such. If any nodes are unexpectedly listed as `SUSPECT` or `DEAD`, identify why the nodes are offline and either restart them or [decommission](/docs/v24.3/node-shutdown?filters=decommission#remove-nodes) them before beginning your upgrade. If there are `DEAD` and non-decommissioned nodes in your cluster, the upgrade cannot be finalized. If any node is not fully decommissioned, try the following:
+        1. First, reissue the [decommission command](/docs/v24.3/node-shutdown?filters=decommission#decommission-the-node). The second command typically succeeds within a few minutes.
+        2. If the second decommission command does not succeed, [recommission](/docs/v24.3/node-shutdown?filters=decommission#recommission-nodes) and then decommission it again. Before continuing the upgrade, the node must be marked as `decommissioned`.
+    - Under **Replication Status**, make sure there are `0` under-replicated and unavailable ranges. Otherwise, performing a rolling upgrade increases the risk that ranges will lose a majority of their replicas and cause cluster unavailability. Therefore, it's important to identify and resolve the cause of range under-replication and/or unavailability before beginning your upgrade.
+    - In the **Node List**, make sure all nodes are on the same version. Upgrade them to the cluster's current version before continuing. If any nodes are behind, this also indicates that the previous major-version upgrade may not be finalized.
+    - In the **Metrics** dashboards, make sure [CPU](/docs/v24.3/common-issues-to-monitor#cpu-usage), [memory](/docs/v24.3/common-issues-to-monitor#database-memory-usage), and [storage](/docs/v24.3/common-issues-to-monitor#storage-capacity) capacity are within acceptable values for each node. Nodes must be able to tolerate some increase in case the new version uses more resources for your workload. If any of these metrics is above healthy limits, consider [adding nodes](/docs/v24.3/cockroach-start) to your cluster before beginning your upgrade.
+2. Make sure your cluster is behind a [load balancer](/docs/v24.3/recommended-production-settings#load-balancing), or your clients are configured to talk to multiple nodes. If your application communicates with only a single node, stopping that node to upgrade its CockroachDB binary will cause your application to fail.
+3. By default, the [storage engine](/docs/v24.3/architecture/storage-layer) uses a compaction concurrency of 3. If you have sufficient IOPS and CPU headroom, you can consider increasing this setting via the `COCKROACH_COMPACTION_CONCURRENCY` environment variable. This may help to reshape the LSM more quickly in [inverted LSM](/docs/v24.3/architecture/storage-layer#inverted-lsms) scenarios; and it can lead to increased overall performance for some workloads. Cockroach Labs **strongly recommends** testing your workload against non-default values of this setting.
+4. CockroachDB is designed with high fault tolerance. However, taking regular backups of your data is an operational best practice for [disaster recovery](/docs/v24.3/disaster-recovery-planning) planning. Refer to [Restoring backups across versions](/docs/v24.3/restoring-backups-across-versions#support-for-restoring-backups-into-a-newer-version).
+5. Review the [v24.3 Release Notes](/docs/releases/v24.3), as well as the release notes for any skipped major version. Pay careful attention to the sections for backward-incompatible changes, deprecations, changes to default cluster settings, and features that are not available until the upgrade is finalized.
+6. Optionally [disable auto-finalization](#disable-auto-finalization) to preserve the ability to roll back a major-version upgrade instead of finalizing it. If auto-finalization is disabled, a major-version upgrade is not complete until it is finalized.
+
+### Ensure you have a valid license key
+
+To perform major version upgrades, you must have [a valid license key](/docs/v24.3/licensing-faqs#obtain-a-license).
+
+Patch version upgrades can be performed without a valid license key, with the following limitations:
+
+- The cluster will run without limitations for a specified grace period. During that time, alerts are displayed that the cluster needs a valid license key. For more information, refer to the [Licensing FAQs](/docs/v24.3/licensing-faqs).
+- The cluster is [throttled](/docs/v24.3/licensing-faqs#throttling) at the end of the grace period if no [valid license key is added to the cluster](/docs/v24.3/licensing-faqs#set-a-license) before then.
+
+If you have an **Enterprise Free** or **Enterprise Trial** license, you must enable telemetry using the [`diagnostics.reporting.enabled`](/docs/v24.3/cluster-settings#setting-diagnostics-reporting-enabled) cluster setting, as shown below in order to finalize a major version upgrade:
+
+```sql
+SET CLUSTER SETTING diagnostics.reporting.enabled = true;
+```
+
+If a cluster with an **Enterprise Free** or **Enterprise Trial** license is upgraded across patch versions and does not meet telemetry requirements:
+
+- The cluster will run without limitations for a 7-day grace period. During that time, alerts are displayed that the cluster needs to send telemetry.
+- The cluster is [throttled](/docs/v24.3/licensing-faqs#throttling) if telemetry is not received before the end of the grace period.
+
+For more information, refer to the [Licensing FAQs](/docs/v24.3/licensing-faqs).
+
+If you want to stay on the previous version, you can roll back the upgrade before finalization.
+
+## Perform a patch upgrade
+
+1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set statefulset.updateStrategy.rollingUpdate.partition=2
+    ```
+2. Connect to the cluster using the SQL shell:
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=my-release-cockroachdb-public
+    ```
+3. Remove the cluster initialization job from when the cluster was created:
+
+    ```shell
+    $ kubectl delete job my-release-cockroachdb-init
+    ```
+4. Change the container image in the StatefulSet:
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set image.tag=v24.3.29 \
+    --reuse-values
+    ```
+5. To check the status of the rolling upgrade, run `kubectl get pods`.
+6. Verify that all pods have been upgraded:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+    You can also check the CockroachDB version of each node in the [DB Console](/docs/v24.3/ui-cluster-overview-page#node-details).
+
+### Roll back a patch upgrade
+
+To roll back a patch upgrade, repeat the steps in [Perform a patch upgrade](#perform-a-patch-upgrade), but configure the container image for the pods to the previous major version.
+
+## Perform a major-version upgrade
+
+To perform a major upgrade:
+
+1. Add a [partition](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set#staging-an-update) to the update strategy defined in the StatefulSet. Only the pods numbered greater than or equal to the partition value will be updated. For a cluster with 3 pods (e.g., `cockroachdb-0`, `cockroachdb-1`, `cockroachdb-2`) the partition value should be 2:
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set statefulset.updateStrategy.rollingUpdate.partition=2
+    ```
+2. Connect to the cluster using the SQL shell:
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=my-release-cockroachdb-public
+    ```
+3. Remove the cluster initialization job from when the cluster was created:
+
+    ```shell
+    $ kubectl delete job my-release-cockroachdb-init
+    ```
+4. Change the container image in the StatefulSet:
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set image.tag=v24.3.29 \
+    --reuse-values
+    ```
+
+    ```text
+    NAME                                READY     STATUS              RESTARTS   AGE
+    my-release-cockroachdb-0            1/1       Running             0          2m
+    my-release-cockroachdb-1            1/1       Running             0          3m
+    my-release-cockroachdb-2            0/1       ContainerCreating   0          25s
+    my-release-cockroachdb-init-nwjkh   0/1       ContainerCreating   0          6s
+    ...
+    ```
+
+    <Note>
+    Ignore the pod for cluster initialization. It is re-created as a byproduct of the StatefulSet configuration but does not impact your existing cluster.
+    </Note>
+5. After the pod has been restarted with the new image, start the CockroachDB [built-in SQL client](/docs/v24.3/cockroach-sql):
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=my-release-cockroachdb-public
+    ```
+6. Run the following SQL query to verify that the number of underreplicated ranges is zero:
+
+    ```sql
+    SELECT sum((metrics->>'ranges.underreplicated')::DECIMAL)::INT AS ranges_underreplicated FROM crdb_internal.kv_store_status;
+    ```
+
+    ```text
+      ranges_underreplicated
+    --------------------------
+                           0
+    (1 row)
+    ```
+
+    This indicates that it is safe to proceed to the next pod.
+7. Exit the SQL shell:
+
+    ```sql
+    > \q
+    ```
+8. Decrement the partition value by 1 to allow the next pod in the cluster to update:
+
+    ```shell
+    $ helm upgrade \
+    my-release \
+    cockroachdb/cockroachdb \
+    --set statefulset.updateStrategy.rollingUpdate.partition=1 \
+    ```
+9. Repeat steps 4-8 until all pods have been restarted and are running the new image (the final partition value should be `0`).
+10. Check the image of each pod to confirm that all have been upgraded:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+    ```text
+    my-release-cockroachdb-0    cockroachdb/cockroach:v24.3.29
+    my-release-cockroachdb-1    cockroachdb/cockroach:v24.3.29
+    my-release-cockroachdb-2    cockroachdb/cockroach:v24.3.29
+    ...
+    ```
+
+    You can also check the CockroachDB version of each node in the [DB Console](/docs/v24.3/ui-cluster-overview-page#node-details).
+11. If auto-finalization is disabled, the upgrade is not complete until you [finalize the upgrade](#finalize-a-major-version-upgrade-manually).
+
+### Finalize a major-version upgrade manually
+
+To finalize a major-version upgrade:
+
+1. Connect to the cluster using the SQL shell:
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
+    ```
+2. Run the following command:
+
+    ```sql
+    > RESET CLUSTER SETTING cluster.preserve_downgrade_option;
+    ```
+
+    A series of migration jobs runs to enable certain types of features and changes in the new major version that cannot be rolled back. These include changes to system schemas, indexes, and descriptors, and enabling certain types of improvements and new features. Until the upgrade is finalized, these features and functions will not be available and the command `SHOW CLUSTER SETTING version` will return the previous version&#96;.
+
+    You can monitor the process of the migration in the DB Console [Jobs page](/docs/v24.3/ui-jobs-page). Migration jobs have names in the format `24.3-{migration-id}`. If a migration job fails or stalls, Cockroach Labs can use the migration ID to help diagnose and troubleshoot the problem. Each major version has different migration jobs with different IDs.
+
+    The amount of time required for finalization depends on the amount of data in the cluster, because finalization runs various internal maintenance and migration tasks. During this time, the cluster will experience a small amount of additional load.
+
+    When all migration jobs have completed, the upgrade is complete.
+3. To confirm that finalization has completed, check the cluster version:
+
+    ```sql
+    > SHOW CLUSTER SETTING version;
+    ```
+
+    If the cluster continues to report that it is on the previous version, finalization has not completed. If auto-finalization is enabled but finalization has not completed, check for the existence of [decommissioning nodes](/docs/v24.3/node-shutdown?filters=decommission#status-change) where decommission has stalled. In most cases, issuing the `decommission` command again resolves the issue. If you have trouble upgrading, [contact Support](https://cockroachlabs.com/support/hc).
+
+### Roll back a major-version upgrade
+
+To roll back to the previous major version before an upgrade is finalized:
+
+1. Change the container image in the custom resource to use the previous major version:
+
+    ```text
+    image:
+      name: cockroachdb/cockroach:v24.3
+    ```
+2. Apply the new settings to the cluster:
+
+    ```shell
+    kubectl apply -f example.yaml
+    ```
+
+    The Operator will perform the staged rollback.
+3. To check the status of the rollback, run `kubectl get pods`.
+4. Verify that all pods have been rolled back:
+
+    ```shell
+    $ kubectl get pods \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[0].image}{"\n"}'
+    ```
+
+Rollbacks do not require finalization.
+
+## Disable auto-finalization
+
+By default, auto-finalization is enabled, and a major-version upgrade is finalized when all nodes have rejoined the cluster using the new `cockroach` binary. This means that by default, a major-version upgrade cannot be rolled back. Instead, you must [restore the cluster to the previous version](/docs/v24.3/restoring-backups-across-versions#support-for-restoring-backups-into-a-newer-version).
+
+To disable auto-finalization:
+
+1. Connect to the cluster using the SQL shell:
+
+    ```shell
+    $ kubectl exec -it cockroachdb-client-secure \
+    -- ./cockroach sql \
+    --certs-dir=/cockroach-certs \
+    --host=cockroachdb-public
+    ```
+2. Set the [cluster setting](/docs/v24.3/cluster-settings) `cluster.preserve_downgrade_option` to the cluster's current major version. The Helm chart does not yet support the [cluster setting](/docs/v24.3/cluster-settings) `cluster.auto_upgrade.enabled`.
+
+Now, to complete a major-version upgrade, you must manually [finalize it](#finalize-a-major-version-upgrade-manually) or [roll it back](#roll-back-a-major-version-upgrade).
+
+</Tab>
+</Tabs>
+
+## Troubleshooting
+
+After the upgrade has finalized (whether manually or automatically), it is no longer possible to roll back the upgrade. If you are experiencing problems, we recommend that you [open a support request](/docs/v24.3/support-resources) for assistance.
+
+In the event of catastrophic failure or corruption, it may be necessary to [restore](/docs/v24.3/restore) from a backup to a new cluster running the previous major version.
+
+## See also

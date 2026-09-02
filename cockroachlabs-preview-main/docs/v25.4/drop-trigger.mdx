@@ -1,0 +1,69 @@
+---
+title: "DROP TRIGGER"
+old_description: "The DROP TRIGGER statement drops a trigger for a specified table."
+---
+
+import { DropTrigger4 } from "/snippets/syntax-diagrams/DropTrigger4.jsx";
+
+The `DROP TRIGGER` [statement](/docs/v25.4/sql-statements) drops a [trigger](/docs/v25.4/triggers).
+
+## Required privileges
+
+To drop a trigger, a user must have the `DROP` [privilege](/docs/v25.4/security-reference/authorization#managing-privileges) on the trigger.
+
+## Synopsis
+
+<DropTrigger4 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>trigger&#95;name</code></td><td>The name of the trigger to drop.</td></tr><tr><td><code>table&#95;name</code></td><td>The name of the table associated with the trigger.</td></tr></tbody></table>
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v25.4/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v25.4/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Drop a trigger
+
+Create a sample trigger function:
+
+```sql
+CREATE FUNCTION update_timestamp() 
+RETURNS TRIGGER AS $$
+BEGIN
+  RAISE NOTICE 'Current timestamp: %', now();
+  RETURN NEW;
+END;
+$$ LANGUAGE PLpgSQL;
+```
+
+Create a sample trigger:
+
+```sql
+CREATE TRIGGER log_update_timestamp
+AFTER UPDATE ON users
+FOR EACH ROW
+EXECUTE FUNCTION update_timestamp();
+```
+
+Drop the trigger:
+
+```sql
+DROP TRIGGER log_update_timestamp ON users;
+```
+
+## Known limitations
+
+[`DROP TRIGGER`](/docs/v25.4/drop-trigger) with `CASCADE` is not supported. [#128151](https://github.com/cockroachdb/cockroach/issues/128151)
+
+## See also
+
+- [Triggers](/docs/v25.4/triggers)
+- [`CREATE TRIGGER`](/docs/v25.4/create-trigger)
+- [`CREATE FUNCTION`](/docs/v25.4/create-function)

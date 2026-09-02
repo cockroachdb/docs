@@ -1,0 +1,147 @@
+---
+title: "TRUNCATE"
+old_description: "The TRUNCATE statement deletes all rows from specified tables."
+---
+
+The `TRUNCATE` [statement](/docs/v26.1/sql-statements) removes all rows from a table. At a high level, it works by dropping the table and recreating a new table with the same name.
+
+<Note>
+The `TRUNCATE` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v26.1/online-schema-changes).
+</Note>
+
+`TRUNCATE` is a schema change, and as such is not transactional. For more information about how schema changes work, see [Online Schema Changes](/docs/v26.1/online-schema-changes).
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/stable/truncate/syntax-diagram-67a5256005c8.svg)
+</Frame>
+
+## Required privileges
+
+The user must have the `DROP` [privilege](/docs/v26.1/security-reference/authorization#managing-privileges) on the table.
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;name</code></td><td>The name of the table to truncate.</td></tr><tr><td><code>CASCADE</code></td><td>Truncate all tables with <a href="/docs/v26.1/foreign-key">Foreign Key</a> dependencies on the table being truncated.<br/><br/><code>CASCADE</code> does not list dependent tables it truncates, so should be used cautiously.</td></tr><tr><td><code>RESTRICT</code></td><td><em>(Default)</em> Do not truncate the table if any other tables have <a href="/docs/v26.1/foreign-key">Foreign Key</a> dependencies on it.</td></tr></tbody></table>
+
+## Viewing schema changes
+
+This schema change statement is registered as a job. You can view long-running jobs with [`SHOW JOBS`](/docs/v26.1/show-jobs).
+
+## Examples
+
+### Truncate a table (no foreign key dependencies)
+
+```sql
+> SELECT * FROM t1;
+```
+
+```text
++----+------+
+| id | name |
++----+------+
+|  1 | foo  |
+|  2 | bar  |
++----+------+
+(2 rows)
+```
+
+```sql
+> TRUNCATE t1;
+```
+
+```sql
+> SELECT * FROM t1;
+```
+
+```text
++----+------+
+| id | name |
++----+------+
++----+------+
+(0 rows)
+```
+
+### Truncate a table and dependent tables
+
+In these examples, the `orders` table has a [Foreign Key](/docs/v26.1/foreign-key) relationship to the `customers` table. Therefore, it's only possible to truncate the `customers` table while simultaneously truncating the dependent `orders` table, either using `CASCADE` or explicitly.
+
+#### Truncate dependent tables using `CASCADE`
+
+<Warning>
+`CASCADE` truncates *all* dependent tables without listing them, which can lead to inadvertent and difficult-to-recover losses. To avoid potential harm, we recommend truncating tables explicitly in most cases. See [Truncate Dependent Tables Explicitly](#truncate-dependent-tables-explicitly) for more details.
+</Warning>
+
+```sql
+> TRUNCATE customers;
+```
+
+```text
+pq: "customers" is referenced by foreign key from table "orders"
+```
+
+```sql
+> TRUNCATE customers CASCADE;
+```
+
+```sql
+> SELECT * FROM customers;
+```
+
+```text
++----+-------+
+| id | email |
++----+-------+
++----+-------+
+(0 rows)
+```
+
+```sql
+> SELECT * FROM orders;
+```
+
+```text
++----+----------+------------+
+| id | customer | orderTotal |
++----+----------+------------+
++----+----------+------------+
+(0 rows)
+```
+
+#### Truncate dependent tables explicitly
+
+```sql
+> TRUNCATE customers, orders;
+```
+
+```sql
+> SELECT * FROM customers;
+```
+
+```text
++----+-------+
+| id | email |
++----+-------+
++----+-------+
+(0 rows)
+```
+
+```sql
+> SELECT * FROM orders;
+```
+
+```text
++----+----------+------------+
+| id | customer | orderTotal |
++----+----------+------------+
++----+----------+------------+
+(0 rows)
+```
+
+## See also
+
+- [`DELETE`](/docs/v26.1/delete)
+- [`SHOW JOBS`](/docs/v26.1/show-jobs)
+- [Foreign Key constraint](/docs/v26.1/foreign-key)
+- [Online Schema Changes](/docs/v26.1/online-schema-changes)

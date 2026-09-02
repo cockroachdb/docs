@@ -1,0 +1,20 @@
+---
+title: "Use the CockroachDB Cloud Terraform provider"
+old_description: "Learn how to provision and manage clusters and other CockroachDB Cloud resources using the CockroachDB Cloud Terraform provider."
+---
+
+import ProvisionAClusterWithTerraform from "/snippets/cockroachcloud/provision-a-cluster-with-terraform.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ProvisionAClusterWithTerraform />

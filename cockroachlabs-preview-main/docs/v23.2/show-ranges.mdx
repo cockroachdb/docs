@@ -1,0 +1,429 @@
+---
+title: "SHOW RANGES"
+old_description: "The SHOW RANGES statement shows information about the ranges that comprise the data for a table, index, or entire database."
+---
+
+import { InlineImage } from "/snippets/InlineImage.jsx";
+import { ShowRanges2 } from "/snippets/syntax-diagrams/ShowRanges2.jsx";
+
+The `SHOW RANGES` [statement](/docs/v23.2/sql-statements) shows information about the [ranges](/docs/v23.2/architecture/overview#architecture-range) that comprise the data for a table, index, database, or the current catalog. This information is useful for verifying how SQL data maps to underlying [ranges](/docs/v23.2/architecture/overview#architecture-range), and where the [replicas](/docs/v23.2/architecture/glossary#replica) for those ranges are located.
+
+<Note>
+The statement syntax and output documented on this page use the updated `SHOW RANGES` that **is the default in CockroachDB v23.2**. To disable this syntax and output, set the [cluster setting `sql.show_ranges_deprecated_behavior.enabled`](/docs/v23.2/cluster-settings#setting-sql-show-ranges-deprecated-behavior-enabled) to `true`:
+
+```sql
+SET CLUSTER SETTING sql.show_ranges_deprecated_behavior.enabled = true;
+```
+
+The pre-v23.1 output of `SHOW RANGES` was deprecated in v23.1 and will be removed in a future release.
+
+When you use the deprecated version of the `SHOW RANGES` statement, the following message will appear, reminding you to update [the cluster setting](/docs/v23.2/cluster-settings#setting-sql-show-ranges-deprecated-behavior-enabled):
+
+```text
+NOTICE: deprecated use of SHOW RANGES or crdb_internal.ranges{,_no_leases} in combination with range coalescing - expect invalid results
+HINT: Consider enabling the new functionality by setting 'sql.show_ranges_deprecated_behavior.enabled' to 'false'.
+```
+</Note>
+
+<Tip>
+To show range information for a specific row in a table or index, use the [`SHOW RANGE... FOR ROW`](/docs/v23.2/show-range-for-row) statement.
+</Tip>
+
+## Synopsis
+
+<ShowRanges2 />
+
+## Required privileges
+
+To use the `SHOW RANGES` statement, a user must either be a member of the [`admin`](/docs/v23.2/security-reference/authorization#admin-role) role (the `root` user belongs to the `admin` role by default) or have the `ZONECONFIG` [privilege](/docs/v23.2/security-reference/authorization#managing-privileges) defined.
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/v23.2/sql-grammar#table_name"><code>table&#95;name</code></a></td><td>The name of the <a href="/docs/v23.2/show-tables">table</a> you want <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> information about.</td></tr><tr><td><a href="/docs/v23.2/sql-grammar#table_index_name"><code>table&#95;index&#95;name</code></a></td><td>The name of the <a href="/docs/v23.2/indexes">index</a> you want <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> information about.</td></tr><tr><td><a href="/docs/v23.2/sql-grammar#database_name"><code>database&#95;name</code></a></td><td>The name of the <a href="/docs/v23.2/show-databases">database</a> you want <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> information about.</td></tr><tr><td><a href="/docs/v23.2/sql-grammar#show_ranges_options"><code>opt&#95;show&#95;ranges&#95;options</code></a></td><td>The <a href="#options">options</a> used to configure what fields appear in the <a href="#response">response</a>.</td></tr></tbody></table>
+
+## Options
+
+The following [options](/docs/v23.2/sql-grammar#show_ranges_options) are available to affect the output. Multiple options can be passed at once, separated by commas.
+
+- `TABLES`: List [tables](/docs/v23.2/show-tables) contained per [range](/docs/v23.2/architecture/overview#architecture-range).
+- `INDEXES`: List [indexes](/docs/v23.2/indexes) contained per [range](/docs/v23.2/architecture/overview#architecture-range).
+- `DETAILS`: Add [range](/docs/v23.2/architecture/overview#architecture-range) size, [leaseholder](/docs/v23.2/architecture/glossary#leaseholder) and other details. Note that this incurs a large computational overhead because it needs to fetch data across nodes.
+- `KEYS`: Include binary [start and end keys](#start-key).
+
+## Response
+
+The specific fields in the response vary depending on the values passed as [options](#options). The following fields may be returned:
+
+<table><thead><tr><th>Field</th><th>Description</th><th>Emitted for option(s)</th></tr></thead><tbody><tr><td><code>start&#95;key</code></td><td><a></a> The start key for the <a href="/docs/v23.2/architecture/overview#architecture-range">range</a>.</td><td>Always emitted.</td></tr><tr><td><code>end&#95;key</code></td><td><a></a> The end key for the <a href="/docs/v23.2/architecture/overview#architecture-range">range</a>.</td><td>Always emitted.</td></tr><tr><td><code>raw&#95;start&#95;key</code></td><td>The start key for the <a href="/docs/v23.2/architecture/overview#architecture-range">range</a>, displayed as a <a href="/docs/v23.2/sql-constants#string-literals-with-character-escapes">hexadecimal byte value</a>.</td><td><code>KEYS</code></td></tr><tr><td><code>raw&#95;end&#95;key</code></td><td>The end key for the <a href="/docs/v23.2/architecture/overview#architecture-range">range</a>, displayed as a <a href="/docs/v23.2/sql-constants#string-literals-with-character-escapes">hexadecimal byte value</a>.</td><td><code>KEYS</code></td></tr><tr><td><code>range&#95;id</code></td><td>The internal <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> ID.</td><td>Always emitted.</td></tr><tr><td><code>voting&#95;replicas</code></td><td>The <a href="/docs/v23.2/architecture/glossary#node">nodes</a> that contain the range's voting replicas (that is, the replicas that participate in <a href="/docs/v23.2/architecture/replication-layer#raft">Raft</a> elections).</td><td>Always emitted.</td></tr><tr><td><code>non&#95;voting&#95;replicas</code></td><td>The <a href="/docs/v23.2/architecture/glossary#node">nodes</a> that contain the range's <a href="/docs/v23.2/architecture/replication-layer#non-voting-replicas">non-voting replicas</a>.</td><td>Always emitted.</td></tr><tr><td><code>replicas</code></td><td>The <a href="/docs/v23.2/architecture/glossary#node">nodes</a> that contain the range's <a href="/docs/v23.2/architecture/glossary#replica">replicas</a>.</td><td>Always emitted.</td></tr><tr><td><code>replica&#95;localities</code></td><td>The <a href="/docs/v23.2/cockroach-start#locality">localities</a> of the range's <a href="/docs/v23.2/architecture/glossary#replica">replicas</a>.</td><td>Always emitted.</td></tr><tr><td><code>range&#95;size</code></td><td>The size of the <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> in bytes.</td><td><code>DETAILS</code></td></tr><tr><td><code>range&#95;size&#95;mb</code></td><td>The size of the <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> in MiB.</td><td><code>DETAILS</code></td></tr><tr><td><code>lease&#95;holder</code></td><td>The <a href="/docs/v23.2/architecture/glossary#node">node</a> that contains the range's <a href="/docs/v23.2/architecture/glossary#leaseholder">leaseholder</a>.</td><td><code>DETAILS</code></td></tr><tr><td><code>lease&#95;holder&#95;locality</code></td><td>The <a href="/docs/v23.2/cockroach-start#locality">locality</a> of the range's <a href="/docs/v23.2/architecture/glossary#leaseholder">leaseholder</a>.</td><td><code>DETAILS</code></td></tr><tr><td><code>learner&#95;replicas</code></td><td>The <em>learner replicas</em> of the range. A learner replica is a replica that has just been added to a range, and is thus in an interim state. It accepts messages but doesn't vote in <a href="/docs/v23.2/architecture/replication-layer#raft">Raft</a> elections. This means it doesn't affect quorum and thus doesn't affect the stability of the range, even if it's very far behind.</td><td>Always emitted.</td></tr><tr><td><code>split&#95;enforced&#95;until</code></td><td>The time a <a href="/docs/v23.2/architecture/distribution-layer#range-splits">range split</a> is enforced until. This can be set using <a href="/docs/v23.2/alter-table#split-at"><code>ALTER TABLE ... SPLIT AT</code></a> using the <a href="/docs/v23.2/alter-table#set-the-expiration-on-a-split-enforcement"><code>WITH EXPIRATION</code> clause</a>. Example: <code>2262-04-11 23:47:16.854776</code> (this is a default value which means "never").</td><td>Always emitted.</td></tr><tr><td><code>schema&#95;name</code></td><td>The name of the <a href="/docs/v23.2/create-schema">schema</a> this <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> holds data for.</td><td><code>TABLES</code>, <code>INDEXES</code></td></tr><tr><td><code>table&#95;name</code></td><td>The name of the <a href="/docs/v23.2/create-table">table</a> this <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> holds data for.</td><td><code>TABLES</code>, <code>INDEXES</code></td></tr><tr><td><code>table&#95;id</code></td><td>The internal ID of the <a href="/docs/v23.2/create-table">table</a> this <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> holds data for.</td><td><code>TABLES</code>, <code>INDEXES</code></td></tr><tr><td><code>table&#95;start&#95;key</code></td><td>The start key of the first <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> that holds data for this table.</td><td><code>TABLES</code></td></tr><tr><td><code>table&#95;end&#95;key</code></td><td>The end key of the last <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> that holds data for this table.</td><td><code>TABLES</code></td></tr><tr><td><code>raw&#95;table&#95;start&#95;key</code></td><td>The start key of the first <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> that holds data for this table, expressed as <a href="/docs/v23.2/bytes"><code>BYTES</code></a>.</td><td><code>TABLES</code>, <code>KEYS</code></td></tr><tr><td><code>raw&#95;table&#95;end&#95;key</code></td><td>The end key of the last <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> that holds data for this table, expressed as <a href="/docs/v23.2/bytes"><code>BYTES</code></a>.</td><td><code>TABLES</code>, <code>KEYS</code></td></tr><tr><td><code>index&#95;name</code></td><td>The name of the <a href="/docs/v23.2/indexes">index</a> this <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> holds data for.</td><td><code>INDEXES</code></td></tr><tr><td><code>index&#95;id</code></td><td>The internal ID of the <a href="/docs/v23.2/indexes">index</a> this <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> holds data for.</td><td><code>INDEXES</code></td></tr><tr><td><code>index&#95;start&#95;key</code></td><td>The start key of the first <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> of <a href="/docs/v23.2/indexes">index</a> data.</td><td><code>INDEXES</code></td></tr><tr><td><code>index&#95;end&#95;key</code></td><td>The end key of the last <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> of <a href="/docs/v23.2/indexes">index</a> data.</td><td><code>INDEXES</code></td></tr><tr><td><code>raw&#95;index&#95;start&#95;key</code></td><td>The start key of the first <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> of <a href="/docs/v23.2/indexes">index</a> data, expressed as <a href="/docs/v23.2/bytes"><code>BYTES</code></a>.</td><td><code>INDEXES</code>, <code>KEYS</code></td></tr><tr><td><code>raw&#95;index&#95;end&#95;key</code></td><td>The end key of the last <a href="/docs/v23.2/architecture/overview#architecture-range">range</a> of <a href="/docs/v23.2/indexes">index</a> data, expressed as <a href="/docs/v23.2/bytes"><code>BYTES</code></a>.</td><td><code>INDEXES</code>, <code>KEYS</code></td></tr><tr><td><code>span&#95;stats</code></td><td>A <code>JSON</code> object containing span statistics. For more details, see <a href="#span-statistics">Span Statistics</a>.</td><td><code>DETAILS</code></td></tr></tbody></table>
+
+### Span Statistics
+
+CockroachDB stores all user data in a sorted map of key-value pairs, also known as a keyspace. A span refers to an interval within this keyspace.
+
+<InlineImage alt="Megaphone" src="/images/common/icon-megaphone.png" /> New in v23.2: The `SHOW RANGES` command emits span statistics when the `DETAILS` option is specified. The statistics are included in a column named `span_stats`, as a `JSON` object.
+
+The statistics are calculated for the identifier of each row. For example:
+
+- `SHOW RANGES WITH DETAILS` will compute span statistics for each [range](/docs/v23.2/ui-replication-dashboard#review-of-cockroachdb-terminology).
+- `SHOW RANGES WITH TABLES, DETAILS` will compute span statistics for each table.
+
+The `span_stats` `JSON` object has the following keys:
+
+<table><thead><tr><th>Key</th><th>Description</th></tr></thead><tbody><tr><td><code>approximate&#95;disk&#95;bytes</code></td><td>An approximation of the total on-disk size of the given object, across all <a href="/docs/v23.2/architecture/glossary#replica">replicas</a> (after compression).</td></tr><tr><td><code>key&#95;count</code></td><td>The number of non-system keys, including live and deleted keys, as well as new, uncommitted keys.</td></tr><tr><td><code>key&#95;bytes</code></td><td>The total key size (in bytes) of the keys tracked in <code>key&#95;count</code>.</td></tr><tr><td><code>val&#95;count</code></td><td>The number of values, or versions, of the keys tracked in <code>key&#95;count</code>, including deletion tombstones. A key will always have at least one value, but may have several historical values.</td></tr><tr><td><code>val&#95;bytes</code></td><td>Total value size (in bytes) of the values tracked in <code>val&#95;count</code>.</td></tr><tr><td><code>sys&#95;count</code></td><td>The number of system keys, which are not included in <code>key&#95;count</code>.</td></tr><tr><td><code>sys&#95;bytes</code></td><td>The total size (in bytes) of the keys in <code>sys&#95;count</code> and all of their values, or versions.</td></tr><tr><td><code>live&#95;count</code></td><td>The number of live (committed and non-deleted) non-system keys.</td></tr><tr><td><code>live&#95;bytes</code></td><td>Total size (in bytes) of the keys tracked in <code>live&#95;count</code> and their most recent value.</td></tr><tr><td><code>intent&#95;count</code></td><td>The number of <a href="/docs/v23.2/architecture/transaction-layer#write-intents">intents</a> (keys with new, uncommitted values).</td></tr><tr><td><code>intent&#95;bytes</code></td><td>The total size (in bytes) of the keys tracked in <code>intent&#95;count</code> and their uncommitted values.</td></tr></tbody></table>
+
+## Examples
+
+<Note>
+The statement syntax and output documented on this page use the updated `SHOW RANGES` that **is the default in CockroachDB v23.2**. To disable this syntax and output, set the [cluster setting `sql.show_ranges_deprecated_behavior.enabled`](/docs/v23.2/cluster-settings#setting-sql-show-ranges-deprecated-behavior-enabled) to `true`:
+
+```sql
+SET CLUSTER SETTING sql.show_ranges_deprecated_behavior.enabled = true;
+```
+
+The pre-v23.1 output of `SHOW RANGES` was deprecated in v23.1 and will be removed in a future release.
+
+When you use the deprecated version of the `SHOW RANGES` statement, the following message will appear, reminding you to update [the cluster setting](/docs/v23.2/cluster-settings#setting-sql-show-ranges-deprecated-behavior-enabled):
+
+```text
+NOTICE: deprecated use of SHOW RANGES or crdb_internal.ranges{,_no_leases} in combination with range coalescing - expect invalid results
+HINT: Consider enabling the new functionality by setting 'sql.show_ranges_deprecated_behavior.enabled' to 'false'.
+```
+</Note>
+
+#### Setup
+
+The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](/docs/v23.2/movr).
+
+To follow along, run [`cockroach demo`](/docs/v23.2/cockroach-demo) with the `--geo-partitioned-replicas` flag. This command opens an interactive SQL shell to a temporary, 9-node in-memory cluster with the `movr` database.
+
+```shell
+$ cockroach demo --geo-partitioned-replicas
+```
+
+### Show ranges for a database
+
+- [Show ranges for a database (without options)](#show-ranges-for-a-database-without-options)
+- [Show ranges for a database (with tables, keys, details)](#show-ranges-for-a-database-with-tables-keys-details)
+- [Show ranges for a database (with tables)](#show-ranges-for-a-database-with-tables)
+- [Show ranges for a database (with indexes)](#show-ranges-for-a-database-with-indexes)
+- [Show ranges for a database (with details)](#show-ranges-for-a-database-with-details)
+- [Show ranges for a database (with keys)](#show-ranges-for-a-database-with-keys)
+
+```sql
+SHOW DATABASES;
+```
+
+```text
+  database_name | owner | primary_region | secondary_region | regions | survival_goal
+----------------+-------+----------------+------------------+---------+----------------
+  defaultdb     | root  | NULL           | NULL             | {}      | NULL
+  movr          | demo  | NULL           | NULL             | {}      | NULL
+  postgres      | root  | NULL           | NULL             | {}      | NULL
+  system        | node  | NULL           | NULL             | {}      | NULL
+(4 rows)
+```
+
+#### Show ranges for a database (without options)
+
+```sql
+SHOW RANGES FROM DATABASE movr;
+```
+
+```text
+                                           start_key                                           |                                           end_key                                            | range_id | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until
+-----------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+----------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------------
+  /Table/106                                                                                   | /Table/106/1/"amsterdam"                                                                     |      109 | {2,4,9}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=d"}         | {2,9,4}         | {}                  | {}               | NULL
+  /Table/106/1/"amsterdam"                                                                     | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |      178 | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL
+  ...
+  /Table/111/1/"washington dc"/PrefixEnd                                                       | /Max                                                                                         |      284 | {1,4,8}  | {"region=us-east1,az=b","region=us-west1,az=a","region=europe-west1,az=c"}         | {1,8,4}         | {}                  | {}               | NULL
+(175 rows)
+```
+
+#### Show ranges for a database (with tables, keys, details)
+
+```sql
+SHOW RANGES FROM DATABASE movr WITH TABLES, KEYS, DETAILS;
+```
+
+```text
+                                           start_key                                           |                                           end_key                                            |                                            raw_start_key                                             |                                             raw_end_key                                              | range_id | schema_name |         table_name         | table_id |                                       table_start_key                                        |                                        table_end_key                                         |                                         raw_table_start_key                                          |                                          raw_table_end_key                                           |       range_size_mb        | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until    | range_size |                                                                                                              span_stats
+-----------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+----------+-------------+----------------------------+----------+----------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+----------------------------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+----------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  /Table/106                                                                                   | /Table/106/1/"amsterdam"                                                                     | \xf2                                                                                                 | \xf28912616d7374657264616d0001                                                                       |      109 | public      | users                      |      106 | /Table/106                                                                                   | /Table/106/1/"amsterdam"                                                                     | \xf2                                                                                                 | \xf28912616d7374657264616d0001                                                                       |                          0 |            2 | region=us-east1,az=c     | {2,4,9}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=d"}         | {2,9,4}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 44299, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 1025, "sys_count": 7, "val_bytes": 0, "val_count": 0}
+  /Table/106/1/"amsterdam"                                                                     | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | \xf28912616d7374657264616d0001                                                                       | \xf28912616d7374657264616d000112b333333333334000ff8000ff00ff00ff00ff00ff00ff230001                   |      178 | public      | users                      |      106 | /Table/106/1/"amsterdam"                                                                     | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | \xf28912616d7374657264616d0001                                                                       | \xf28912616d7374657264616d000112b333333333334000ff8000ff00ff00ff00ff00ff00ff230001                   |  0.00010300000000000000000 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL                       |        103 | {"approximate_disk_bytes": 52021, "intent_bytes": 0, "intent_count": 0, "key_bytes": 54, "key_count": 1, "live_bytes": 103, "live_count": 1, "sys_bytes": 2190, "sys_count": 7, "val_bytes": 49, "val_count": 1}
+  ...
+  /Table/111/1/"washington dc"/PrefixEnd                                                       | /Max                                                                                         | \xf66f891277617368696e67746f6e2064630002                                                             | \xffff                                                                                               |      284 | public      | user_promo_codes           |      111 | /Table/111/1/"washington dc"/PrefixEnd                                                       | /Table/112                                                                                   | \xf66f891277617368696e67746f6e2064630002                                                             | \xf670                                                                                               |                          0 |            4 | region=us-west1,az=a     | {1,4,8}  | {"region=us-east1,az=b","region=us-west1,az=a","region=europe-west1,az=c"}         | {1,8,4}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 0, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 0, "sys_count": 0, "val_bytes": 0, "val_count": 0}
+(178 rows)
+```
+
+#### Show ranges for a database (with tables)
+
+```sql
+SHOW RANGES FROM DATABASE movr WITH TABLES;
+```
+
+```text
+                                           start_key                                           |                                           end_key                                            | range_id | schema_name |         table_name         | table_id |                                       table_start_key                                        |                                        table_end_key                                         | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until
+-----------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+----------+-------------+----------------------------+----------+----------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------------
+  /Table/106                                                                                   | /Table/106/1/"amsterdam"                                                                     |      109 | public      | users                      |      106 | /Table/106                                                                                   | /Table/106/1/"amsterdam"                                                                     | {2,4,9}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=d"}         | {2,9,4}         | {}                  | {}               | NULL
+  /Table/106/1/"amsterdam"                                                                     | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |      178 | public      | users                      |      106 | /Table/106/1/"amsterdam"                                                                     | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL
+  ...
+  /Table/111/1/"washington dc"/PrefixEnd                                                       | /Max                                                                                         |      284 | public      | user_promo_codes           |      111 | /Table/111/1/"washington dc"/PrefixEnd                                                       | /Table/112                                                                                   | {1,4,8}  | {"region=us-east1,az=b","region=us-west1,az=a","region=europe-west1,az=c"}         | {1,8,4}         | {}                  | {}               | NULL
+(178 rows)
+```
+
+#### Show ranges for a database (with indexes)
+
+```sql
+SHOW RANGES FROM DATABASE movr WITH INDEXES;
+```
+
+```text
+                                           start_key                                           |                                           end_key                                            | range_id | schema_name |         table_name         | table_id |                  index_name                   | index_id |                                       index_start_key                                        |                                        index_end_key                                         | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until
+-----------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+----------+-------------+----------------------------+----------+-----------------------------------------------+----------+----------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------------
+  /Table/106                                                                                   | /Table/106/1/"amsterdam"                                                                     |      109 | public      | users                      |      106 | users_pkey                                    |        1 | /Table/106/1                                                                                 | /Table/106/1/"amsterdam"                                                                     | {2,4,9}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=d"}         | {2,9,4}         | {}                  | {}               | NULL
+  /Table/106/1/"amsterdam"                                                                     | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |      178 | public      | users                      |      106 | users_pkey                                    |        1 | /Table/106/1/"amsterdam"                                                                     | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL
+  ...
+  /Table/111/1/"washington dc"/PrefixEnd                                                       | /Max                                                                                         |      284 | public      | user_promo_codes           |      111 | user_promo_codes_pkey                         |        1 | /Table/111/1/"washington dc"/PrefixEnd                                                       | /Table/111/2                                                                                 | {1,4,8}  | {"region=us-east1,az=b","region=us-west1,az=a","region=europe-west1,az=c"}         | {1,8,4}         | {}                  | {}               | NULL
+(179 rows)
+```
+
+#### Show ranges for a database (with details)
+
+```sql
+SHOW RANGES FROM DATABASE movr WITH DETAILS;
+```
+
+```text
+                                           start_key                                           |                                           end_key                                            | range_id |       range_size_mb        | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until    | range_size |                                                                                                              span_stats
+-----------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+----------+----------------------------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+----------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  /Table/106                                                                                   | /Table/106/1/"amsterdam"                                                                     |      109 |                          0 |            2 | region=us-east1,az=c     | {2,4,9}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=d"}         | {2,9,4}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 42328, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 1025, "sys_count": 7, "val_bytes": 0, "val_count": 0}
+  /Table/106/1/"amsterdam"                                                                     | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |      178 |  0.00010300000000000000000 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL                       |        103 | {"approximate_disk_bytes": 48533, "intent_bytes": 0, "intent_count": 0, "key_bytes": 54, "key_count": 1, "live_bytes": 103, "live_count": 1, "sys_bytes": 2190, "sys_count": 7, "val_bytes": 49, "val_count": 1}
+  ...
+  /Table/111/1/"washington dc"/PrefixEnd                                                       | /Max                                                                                         |      284 |                          0 |            4 | region=us-west1,az=a     | {1,4,8}  | {"region=us-east1,az=b","region=us-west1,az=a","region=europe-west1,az=c"}         | {1,8,4}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 0, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 1144, "sys_count": 7, "val_bytes": 0, "val_count": 0}
+(175 rows)
+```
+
+#### Show ranges for a database (with keys)
+
+```sql
+SHOW RANGES FROM DATABASE movr WITH KEYS;
+```
+
+```text
+                                           start_key                                           |                                           end_key                                            |                                            raw_start_key                                             |                                             raw_end_key                                              | range_id | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until
+-----------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+----------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------------
+  /Table/106                                                                                   | /Table/106/1/"amsterdam"                                                                     | \xf2                                                                                                 | \xf28912616d7374657264616d0001                                                                       |      109 | {2,4,9}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=d"}         | {2,9,4}         | {}                  | {}               | NULL
+  /Table/106/1/"amsterdam"                                                                     | /Table/106/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | \xf28912616d7374657264616d0001                                                                       | \xf28912616d7374657264616d000112b333333333334000ff8000ff00ff00ff00ff00ff00ff230001                   |      178 | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL
+  ...
+  /Table/111/1/"washington dc"/PrefixEnd                                                       | /Max                                                                                         | \xf66f891277617368696e67746f6e2064630002                                                             | \xffff                                                                                               |      284 | {1,4,8}  | {"region=us-east1,az=b","region=us-west1,az=a","region=europe-west1,az=c"}         | {1,8,4}         | {}                  | {}               | NULL
+(175 rows)
+```
+
+### Show ranges for a table
+
+- [Show ranges for a table (without options)](#show-ranges-for-a-table-without-options)
+- [Show ranges for a table (with indexes, keys, details)](#show-ranges-for-a-table-with-indexes-keys-details)
+- [Show ranges for a table (with indexes)](#show-ranges-for-a-table-with-indexes)
+- [Show ranges for a table (with details)](#show-ranges-for-a-table-with-details)
+- [Show ranges for a table (with keys)](#show-ranges-for-a-table-with-keys)
+
+```sql
+SHOW TABLES;
+```
+
+```text
+  schema_name |         table_name         | type  | owner | estimated_row_count | locality
+--------------+----------------------------+-------+-------+---------------------+-----------
+  public      | promo_codes                | table | demo  |                1000 | NULL
+  public      | rides                      | table | demo  |                 500 | NULL
+  public      | user_promo_codes           | table | demo  |                   5 | NULL
+  public      | users                      | table | demo  |                  50 | NULL
+  public      | vehicle_location_histories | table | demo  |                1000 | NULL
+  public      | vehicles                   | table | demo  |                  15 | NULL
+(6 rows)
+```
+
+#### Show ranges for a table (without options)
+
+```sql
+SHOW RANGES FROM TABLE movr.users;
+```
+
+```text
+                                       start_key                                      |                                       end_key                                       | range_id | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until
+--------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------+----------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------------
+  …/<TableMin>                                                                        | …/1/"amsterdam"                                                                     |      178 | {2,5,7}  | {"region=us-east1,az=c","region=us-west1,az=b","region=europe-west1,az=b"}         | {2,7,5}         | {}                  | {}               | NULL
+  …/1/"amsterdam"                                                                     | …/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |      181 | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL
+  ...
+  …/1/"washington dc"/PrefixEnd                                                       | <after:/Table/107/1/"amsterdam">                                                    |       94 | {2,5,7}  | {"region=us-east1,az=c","region=us-west1,az=b","region=europe-west1,az=b"}         | {2,7,5}         | {}                  | {}               | NULL
+(27 rows)
+```
+
+#### Show ranges for a table (with indexes, keys, details)
+
+```sql
+SHOW RANGES FROM TABLE movr.users with INDEXES, KEYS, DETAILS;
+```
+
+```text
+                                       start_key                                      |                                       end_key                                       |                                            raw_start_key                                             |                                             raw_end_key                                              | range_id | index_name | index_id |                                   index_start_key                                   |                                    index_end_key                                    |                                         raw_index_start_key                                          |                                          raw_index_end_key                                           |       range_size_mb       | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until    | range_size |                                                                                                     span_stats
+--------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+----------+------------+----------+-------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+---------------------------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+----------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  …/<TableMin>                                                                        | …/1/"amsterdam"                                                                     | \xf2                                                                                                 | \xf28912616d7374657264616d0001                                                                       |      178 | users_pkey |        1 | …/1                                                                                 | …/1/"amsterdam"                                                                     | \xf289                                                                                               | \xf28912616d7374657264616d0001                                                                       |                         0 |            2 | region=us-east1,az=c     | {2,5,7}  | {"region=us-east1,az=c","region=us-west1,az=b","region=europe-west1,az=b"}         | {2,7,5}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 42077, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 0, "sys_count": 0, "val_bytes": 0, "val_count": 0}
+  …/1/"amsterdam"                                                                     | …/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | \xf28912616d7374657264616d0001                                                                       | \xf28912616d7374657264616d000112b333333333334000ff8000ff00ff00ff00ff00ff00ff230001                   |      181 | users_pkey |        1 | …/1/"amsterdam"                                                                     | …/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | \xf28912616d7374657264616d0001                                                                       | \xf28912616d7374657264616d000112b333333333334000ff8000ff00ff00ff00ff00ff00ff230001                   | 0.00011300000000000000000 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL                       |        113 | {"approximate_disk_bytes": 40626, "intent_bytes": 0, "intent_count": 0, "key_bytes": 54, "key_count": 1, "live_bytes": 113, "live_count": 1, "sys_bytes": 1698, "sys_count": 7, "val_bytes": 59, "val_count": 1}
+  ...
+  …/1/"washington dc"/PrefixEnd                                                       | <after:/Table/107/1/"amsterdam">                                                    | \xf2891277617368696e67746f6e2064630002                                                               | \xf38912616d7374657264616d0001                                                                       |       94 | users_pkey |        1 | …/1/"washington dc"/PrefixEnd                                                       | …/2                                                                                 | \xf2891277617368696e67746f6e2064630002                                                               | \xf28a                                                                                               |                         0 |            5 | region=us-west1,az=b     | {2,5,7}  | {"region=us-east1,az=c","region=us-west1,az=b","region=europe-west1,az=b"}         | {2,7,5}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 42077, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 0, "sys_count": 0, "val_bytes": 0, "val_count": 0}
+(27 rows)
+```
+
+#### Show ranges for a table (with indexes)
+
+```sql
+SHOW RANGES FROM TABLE movr.users WITH INDEXES;
+```
+
+```text
+                                       start_key                                      |                                       end_key                                       | range_id | index_name | index_id |                                   index_start_key                                   |                                    index_end_key                                    | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until
+--------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------+----------+------------+----------+-------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------------
+  …/<TableMin>                                                                        | …/1/"amsterdam"                                                                     |      178 | users_pkey |        1 | …/1                                                                                 | …/1/"amsterdam"                                                                     | {2,5,7}  | {"region=us-east1,az=c","region=us-west1,az=b","region=europe-west1,az=b"}         | {2,7,5}         | {}                  | {}               | NULL
+  …/1/"amsterdam"                                                                     | …/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |      181 | users_pkey |        1 | …/1/"amsterdam"                                                                     | …/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL
+  ...
+  …/1/"washington dc"/PrefixEnd                                                       | <after:/Table/107/1/"amsterdam">                                                    |       94 | users_pkey |        1 | …/1/"washington dc"/PrefixEnd                                                       | …/2                                                                                 | {2,5,7}  | {"region=us-east1,az=c","region=us-west1,az=b","region=europe-west1,az=b"}         | {2,7,5}         | {}                  | {}               | NULL
+(27 rows)
+```
+
+#### Show ranges for a table (with details)
+
+```sql
+SHOW RANGES FROM TABLE movr.users WITH DETAILS;
+```
+
+```text
+                                       start_key                                      |                                       end_key                                       | range_id |       range_size_mb       | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until    | range_size |                                                                                                     span_stats
+--------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------+----------+---------------------------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+----------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  …/<TableMin>                                                                        | …/1/"amsterdam"                                                                     |      178 |                         0 |            2 | region=us-east1,az=c     | {2,5,7}  | {"region=us-east1,az=c","region=us-west1,az=b","region=europe-west1,az=b"}         | {2,7,5}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 44716, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 919, "sys_count": 5, "val_bytes": 0, "val_count": 0}
+  …/1/"amsterdam"                                                                     | …/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |      181 | 0.00011300000000000000000 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL                       |        113 | {"approximate_disk_bytes": 42734, "intent_bytes": 0, "intent_count": 0, "key_bytes": 54, "key_count": 1, "live_bytes": 113, "live_count": 1, "sys_bytes": 1698, "sys_count": 7, "val_bytes": 59, "val_count": 1}
+  ...
+  …/1/"washington dc"/PrefixEnd                                                       | <after:/Table/107/1/"amsterdam">                                                    |       94 |                         0 |            5 | region=us-west1,az=b     | {2,5,7}  | {"region=us-east1,az=c","region=us-west1,az=b","region=europe-west1,az=b"}         | {2,7,5}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 44716, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 794, "sys_count": 5, "val_bytes": 0, "val_count": 0}
+(27 rows)
+```
+
+#### Show ranges for a table (with keys)
+
+```sql
+SHOW RANGES FROM TABLE movr.users WITH KEYS;
+```
+
+```text
+                                       start_key                                      |                                       end_key                                       |                                            raw_start_key                                             |                                             raw_end_key                                              | range_id | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until
+--------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+----------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------------
+  …/<TableMin>                                                                        | …/1/"amsterdam"                                                                     | \xf2                                                                                                 | \xf28912616d7374657264616d0001                                                                       |      178 | {2,5,7}  | {"region=us-east1,az=c","region=us-west1,az=b","region=europe-west1,az=b"}         | {2,7,5}         | {}                  | {}               | NULL
+  …/1/"amsterdam"                                                                     | …/1/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | \xf28912616d7374657264616d0001                                                                       | \xf28912616d7374657264616d000112b333333333334000ff8000ff00ff00ff00ff00ff00ff230001                   |      181 | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,9,7}         | {}                  | {}               | NULL
+  ...
+  …/1/"washington dc"/PrefixEnd                                                       | <after:/Table/107/1/"amsterdam">                                                    | \xf2891277617368696e67746f6e2064630002                                                               | \xf38912616d7374657264616d0001                                                                       |       94 | {2,5,7}  | {"region=us-east1,az=c","region=us-west1,az=b","region=europe-west1,az=b"}         | {2,7,5}         | {}                  | {}               | NULL
+(27 rows)
+```
+
+### Show ranges for an index
+
+- [Show ranges for an index (without options)](#show-ranges-for-an-index-without-options)
+- [Show ranges for an index (with keys, details)](#show-ranges-for-an-index-with-keys-details)
+- [Show ranges for an index (with details)](#show-ranges-for-an-index-with-details)
+- [Show ranges for an index (with keys)](#show-ranges-for-an-index-with-keys)
+
+```sql
+SHOW INDEXES FROM movr.users;
+```
+
+```text
+  table_name | index_name | non_unique | seq_in_index | column_name | definition  | direction | storing | implicit | visible
+-------------+------------+------------+--------------+-------------+-------------+-----------+---------+----------+----------
+  users      | users_pkey |     f      |            1 | city        | city        | ASC       |    f    |    f     |    t
+  users      | users_pkey |     f      |            2 | id          | id          | ASC       |    f    |    f     |    t
+  users      | users_pkey |     f      |            3 | name        | name        | N/A       |    t    |    f     |    t
+  users      | users_pkey |     f      |            4 | address     | address     | N/A       |    t    |    f     |    t
+  users      | users_pkey |     f      |            5 | credit_card | credit_card | N/A       |    t    |    f     |    t
+(5 rows)
+```
+
+#### Show ranges for an index (without options)
+
+```sql
+SHOW RANGES FROM INDEX movr.users_pkey;
+```
+
+```text
+                                      start_key                                     |                                      end_key                                      | range_id | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until
+------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+----------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------------
+  …/TableMin                                                                        | …/"amsterdam"                                                                     |       72 | {3,5,8}  | {"region=us-east1,az=d","region=us-west1,az=b","region=europe-west1,az=c"}         | {3,5,8}         | {}                  | {}               | NULL
+  …/"amsterdam"                                                                     | …/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |       73 | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,7,9}         | {}                  | {}               | NULL
+  ...
+  …/"washington dc"/PrefixEnd                                                       | <after:/Table/107/1/"amsterdam">                                                  |       96 | {2,4,7}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=b"}         | {2,4,7}         | {}                  | {}               | NULL
+(27 rows)
+```
+
+#### Show ranges for an index (with keys, details)
+
+```sql
+SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS, DETAILS;
+```
+
+```text
+                                      start_key                                     |                                      end_key                                      |                                            raw_start_key                                             |                                             raw_end_key                                              | range_id |       range_size_mb       | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until    | range_size |                                                                                                     span_stats
+------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+----------+---------------------------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+----------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  …/TableMin                                                                        | …/"amsterdam"                                                                     | \xf2                                                                                                 | \xf28912616d7374657264616d0001                                                                       |       72 |                         0 |            3 | region=us-east1,az=d     | {3,5,8}  | {"region=us-east1,az=d","region=us-west1,az=b","region=europe-west1,az=c"}         | {3,5,8}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 46895, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 0, "sys_count": 0, "val_bytes": 0, "val_count": 0}
+  …/"amsterdam"                                                                     | …/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | \xf28912616d7374657264616d0001                                                                       | \xf28912616d7374657264616d000112b333333333334000ff8000ff00ff00ff00ff00ff00ff230001                   |       73 | 0.00010500000000000000000 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,7,9}         | {}                  | {}               | NULL                       |        105 | {"approximate_disk_bytes": 44545, "intent_bytes": 0, "intent_count": 0, "key_bytes": 54, "key_count": 1, "live_bytes": 105, "live_count": 1, "sys_bytes": 2172, "sys_count": 7, "val_bytes": 51, "val_count": 1}
+  ...
+  …/"washington dc"/PrefixEnd                                                       | <after:/Table/107/1/"amsterdam">                                                  | \xf2891277617368696e67746f6e2064630002                                                               | \xf38912616d7374657264616d0001                                                                       |       96 |                         0 |            2 | region=us-east1,az=c     | {2,4,7}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=b"}         | {2,4,7}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 49218, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 0, "sys_count": 0, "val_bytes": 0, "val_count": 0}
+(27 rows)
+```
+
+#### Show ranges for an index (with details)
+
+```sql
+SHOW RANGES FROM INDEX movr.users_pkey WITH DETAILS;
+```
+
+```text
+                                      start_key                                     |                                      end_key                                      | range_id |       range_size_mb       | lease_holder |  lease_holder_locality   | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until    | range_size |                                                                                                     span_stats
+------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+----------+---------------------------+--------------+--------------------------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+----------------------------+------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  …/TableMin                                                                        | …/"amsterdam"                                                                     |       72 |                         0 |            3 | region=us-east1,az=d     | {3,5,8}  | {"region=us-east1,az=d","region=us-west1,az=b","region=europe-west1,az=c"}         | {3,5,8}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 46895, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 0, "sys_count": 0, "val_bytes": 0, "val_count": 0}
+  …/"amsterdam"                                                                     | …/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       |       73 | 0.00010500000000000000000 |            8 | region=europe-west1,az=c | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,7,9}         | {}                  | {}               | NULL                       |        105 | {"approximate_disk_bytes": 44545, "intent_bytes": 0, "intent_count": 0, "key_bytes": 54, "key_count": 1, "live_bytes": 105, "live_count": 1, "sys_bytes": 2172, "sys_count": 7, "val_bytes": 51, "val_count": 1}
+  ...
+  …/"washington dc"/PrefixEnd                                                       | <after:/Table/107/1/"amsterdam">                                                  |       96 |                         0 |            2 | region=us-east1,az=c     | {2,4,7}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=b"}         | {2,4,7}         | {}                  | {}               | NULL                       |          0 | {"approximate_disk_bytes": 49218, "intent_bytes": 0, "intent_count": 0, "key_bytes": 0, "key_count": 0, "live_bytes": 0, "live_count": 0, "sys_bytes": 0, "sys_count": 0, "val_bytes": 0, "val_count": 0}
+(27 rows)
+```
+
+#### Show ranges for an index (with keys)
+
+```sql
+SHOW RANGES FROM INDEX movr.users_pkey WITH KEYS;
+```
+
+```text
+                                      start_key                                     |                                      end_key                                      |                                            raw_start_key                                             |                                             raw_end_key                                              | range_id | replicas |                                 replica_localities                                 | voting_replicas | non_voting_replicas | learner_replicas |    split_enforced_until
+------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------+----------+----------+------------------------------------------------------------------------------------+-----------------+---------------------+------------------+-----------------------------
+  …/TableMin                                                                        | …/"amsterdam"                                                                     | \xf2                                                                                                 | \xf28912616d7374657264616d0001                                                                       |       72 | {3,5,8}  | {"region=us-east1,az=d","region=us-west1,az=b","region=europe-west1,az=c"}         | {3,5,8}         | {}                  | {}               | NULL
+  …/"amsterdam"                                                                     | …/"amsterdam"/"\xb333333@\x00\x80\x00\x00\x00\x00\x00\x00#"                       | \xf28912616d7374657264616d0001                                                                       | \xf28912616d7374657264616d000112b333333333334000ff8000ff00ff00ff00ff00ff00ff230001                   |       73 | {7,8,9}  | {"region=europe-west1,az=b","region=europe-west1,az=c","region=europe-west1,az=d"} | {8,7,9}         | {}                  | {}               | NULL
+  ...
+  …/"washington dc"/PrefixEnd                                                       | <after:/Table/107/1/"amsterdam">                                                  | \xf2891277617368696e67746f6e2064630002                                                               | \xf38912616d7374657264616d0001                                                                       |       96 | {2,4,7}  | {"region=us-east1,az=c","region=us-west1,az=a","region=europe-west1,az=b"}         | {2,4,7}         | {}                  | {}               | NULL
+(27 rows)
+```
+
+### Video Demo
+
+For a deep dive demo on ranges and how data is stored within them, watch the following video:
+
+<Frame>
+  <iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen frameborder="0" height="315" src="https://www.youtube.com/embed/BVqnI4tnLA8" title="YouTube video player" width="560"></iframe>
+</Frame>
+
+## See also
+
+- [`SHOW RANGE... FOR ROW`](/docs/v23.2/show-range-for-row)
+- [`ALTER TABLE... SPLIT AT`](/docs/v23.2/alter-table#split-at)
+- [`ALTER INDEX... SPLIT AT`](/docs/v23.2/alter-index#split-at)
+- [`CREATE TABLE`](/docs/v23.2/create-table)
+- [`CREATE INDEX`](/docs/v23.2/create-index)
+- [Indexes](/docs/v23.2/indexes)
+- [Partitioning tables](/docs/v23.2/partitioning)
+- [Architecture Overview](/docs/v23.2/architecture/overview)

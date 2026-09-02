@@ -1,0 +1,973 @@
+---
+title: "BACKUP"
+old_description: "Back up your CockroachDB cluster to cloud storage services such as AWS S3, Google Cloud Storage, or other NFS."
+---
+
+import { Backup6 } from "/snippets/syntax-diagrams/Backup6.jsx";
+
+CockroachDB's `BACKUP` [statement](/docs/v25.4/sql-statements) allows you to create [full or incremental backups](/docs/v25.4/take-full-and-incremental-backups) of your cluster's schema and data that are consistent as of a given timestamp.
+
+You can [back up a full cluster](#back-up-a-cluster), which includes:
+
+- Relevant system tables
+- All [databases](/docs/v25.4/create-database)
+- All [tables](/docs/v25.4/create-table) (which automatically includes their [indexes](/docs/v25.4/indexes) )
+- All [views](/docs/v25.4/views)
+- All [scheduled jobs](/docs/v25.4/manage-a-backup-schedule#view-and-control-a-backup-initiated-by-a-schedule)
+
+You can also backup:
+
+- [An individual database](#back-up-a-database), which includes all of its tables and views.
+- [An individual table](#back-up-a-table-or-view), which includes its indexes and views.
+
+  `BACKUP` only backs up entire tables; it **does not** support backing up subsets of a table.
+
+Because CockroachDB is designed with high fault tolerance, these backups are designed primarily for disaster recovery (i.e., if your cluster loses a majority of its nodes) through [`RESTORE`](/docs/v25.4/restore). Isolated issues (such as small-scale node outages) do not require any intervention. You can check that backups in external storage are valid by using a [backup validation](/docs/v25.4/backup-validation) command.
+
+To view the contents of an backup created with the `BACKUP` statement, use [`SHOW BACKUP`](/docs/v25.4/show-backup).
+
+<Tip>We recommend using scheduled backups to automate daily backups of your cluster.</Tip>
+
+<Warning>
+The `BACKUP... TO` and `RESTORE... FROM {storage_uri}` syntax has been removed from CockroachDB v24.3 and later.
+
+For details on the syntax to run `BACKUP` and `RESTORE`, refer to the [backup](#examples) and [restore](/docs/v25.4/restore#examples) examples.
+
+</Warning>
+
+## Considerations
+
+- [Full cluster backups](#back-up-a-cluster) include [license keys](/docs/v25.4/licensing-faqs#set-a-license). When you [restore](/docs/v25.4/restore) a full cluster backup that includes a license, the license is also restored.
+- You cannot restore a backup of a multi-region database into a single-region database.
+- Exclude a table's row data from a backup using the [`exclude_data_from_backup`](/docs/v25.4/take-full-and-incremental-backups#exclude-a-tables-data-from-backups) parameter.
+- `BACKUP` is a blocking statement. To run a backup job asynchronously, use the `DETACHED` option. See the [options](#options) below.
+- During a [cluster restore](/docs/v25.4/restore#full-cluster), any [zone configurations](/docs/v25.4/configure-replication-zones) present on the destination cluster are **overwritten** with the zone configurations from the [backed-up cluster](/docs/v25.4/backup#back-up-a-cluster). If no customized zone configurations were on the cluster when the backup was taken, then after the restore the destination cluster will use the zone configuration from the [`RANGE DEFAULT` configuration](/docs/v25.4/configure-replication-zones#view-the-default-replication-zone).
+
+### Storage considerations
+
+- Cockroach Labs tests functionality with AWS S3, Google Cloud Storage (GCS), and Azure Blob Storage. Other S3-compatible storage solutions are untested, but common compatibility issues in v24.3 and later may be fixed by adding the `AWS_SKIP_CHECKSUM` option to the S3 URLs.
+- [HTTP storage](/docs/v25.4/use-a-local-file-server) is not supported for `BACKUP` and `RESTORE`.
+- Modifying backup files in the storage location could invalidate a backup, and therefore, prevent a restore. In v22.1 and later, **we recommend enabling [object locking](/docs/v25.4/use-cloud-storage#immutable-storage) in your cloud storage bucket.**
+
+<Warning>
+  Cockroach Labs does not officially support untested storage systems. If you encounter issues when using unsupported
+  S3-compatible storage, drivers, or frameworks, contact the maintainer.
+</Warning>
+
+<Tip>
+  You can test the connection from each node in the cluster to your external storage with the [`CHECK EXTERNAL
+  CONNECTION`](/docs/v25.4/check-external-connection) statement.
+</Tip>
+
+## Required privileges
+
+<Note>
+Starting in v22.2, CockroachDB introduces a new [system-level privilege model](/docs/v25.4/security-reference/authorization#supported-privileges) that provides finer control over a user's privilege to work with the database, including taking backups.
+
+There is continued support for the [legacy privilege model](#required-privileges-using-the-legacy-privilege-model) for backups in v22.2, however it **will be removed** in a future release of CockroachDB. We recommend implementing the new privilege model that follows in this section for all new and existing backups.
+
+</Note>
+
+You can [grant](/docs/v25.4/grant#grant-privileges-on-specific-tables-in-a-database) the `BACKUP` privilege to a user or role depending on the type of backup:
+
+<table>
+  <thead>
+    <tr>
+      <th>Backup</th>
+      <th>Privilege</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Cluster</td>
+      <td>
+        Grant a user the <code>BACKUP</code>
+        <a href="/docs/v25.4/security-reference/authorization#supported-privileges">system-level privilege</a>. For
+        example, <code>GRANT SYSTEM BACKUP TO user;</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>Database</td>
+      <td>
+        Grant a user the <code>BACKUP</code> privilege on the target database. For example,{" "}
+        <code>GRANT BACKUP ON DATABASE test&#95;db TO user;</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>Table</td>
+      <td>
+        Grant a user the <code>BACKUP</code> privilege at the table level. This gives the user the privilege to back up
+        the schema and all user-defined types that are associated with the table. For example,{" "}
+        <code>GRANT BACKUP ON TABLE test&#95;db.table TO user;</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+The listed privileges do not cascade to objects lower in the schema tree. For example, if you are granted database-level `BACKUP` privileges, this does not give you the privilege to back up a table. If you need the `BACKUP` privilege on a database to apply to all newly created tables in that database, use [`DEFAULT PRIVILEGES`](/docs/v25.4/security-reference/authorization#default-privileges). You can add `BACKUP` to the user or role's default privileges with [`ALTER DEFAULT PRIVILEGES`](/docs/v25.4/alter-default-privileges#grant-default-privileges-to-a-specific-role).
+
+<Note>
+  You can grant the `BACKUP` privilege to a user or role **without** the `SELECT` privilege on a table. As a result,
+  these users will be able to take backups, but they will not be able to run a `SELECT` query on that data directly.
+  However, these users could still read this data indirectly, by restoring it from any backups they produce.
+</Note>
+
+Members of the [`admin` role](/docs/v25.4/security-reference/authorization#admin-role) can run all three types of backups (cluster, database, and table) without the need to grant a specific `BACKUP` privilege. However, we recommend using the `BACKUP` privilege model to create users or roles and grant them `BACKUP` privileges as necessary for stronger access control.
+
+### Privileges for managing a backup job
+
+To manage a backup job with [`PAUSE JOB`](/docs/v25.4/pause-job), [`RESUME JOB`](/docs/v25.4/resume-job), or [`CANCEL JOB`](/docs/v25.4/cancel-job), users must have at least one of the following:
+
+- Be a member of the [`admin` role](/docs/v25.4/security-reference/authorization#admin-role).
+- The [`CONTROLJOB` role option](/docs/v25.4/security-reference/authorization#role-options).
+
+To view a backup job with [`SHOW JOB`](/docs/v25.4/show-jobs), users must have at least one of the following:
+
+- The [`VIEWJOB` privilege](/docs/v25.4/security-reference/authorization#supported-privileges), which allows you to view all jobs (including `admin` -owned jobs).
+- Be a member of the [`admin` role](/docs/v25.4/security-reference/authorization#admin-role).
+- The [`CONTROLJOB` role option](/docs/v25.4/security-reference/authorization#role-options).
+
+See [`GRANT`](/docs/v25.4/grant) for detail on granting privileges to a role or user.
+
+## Required privileges using the legacy privilege model
+
+The following details the legacy privilege model that CockroachDB supports in v22.2 and earlier. Support for this privilege model will be removed in a future release of CockroachDB:
+
+- [Full cluster backups](/docs/v25.4/take-full-and-incremental-backups#full-backups) can only be run by members of the [`admin` role](/docs/v25.4/security-reference/authorization#admin-role). By default, the `root` user belongs to the `admin` role.
+- For all other backups, the user must have [read access](/docs/v25.4/security-reference/authorization#managing-privileges) on all objects being backed up. Database backups require `CONNECT` privileges, and table backups require `SELECT` privileges. Backups of user-defined schemas, or backups containing user-defined types, require `USAGE` privileges.
+
+See the [Required privileges](#required-privileges) section for the updated privilege model.
+
+## Destination privileges
+
+You can grant a user the `EXTERNALIOIMPLICITACCESS` [system-level privilege](/docs/v25.4/security-reference/authorization#supported-privileges).
+
+Either the `EXTERNALIOIMPLICITACCESS` system-level privilege or the [`admin`](/docs/v25.4/security-reference/authorization#admin-role) role is required for the following scenarios:
+
+- Interacting with a cloud storage resource using [`IMPLICIT` authentication](/docs/v25.4/cloud-storage-authentication).
+- Using a [custom endpoint](https://docs.aws.amazon.com/sdk-for-go/api/aws/endpoints) on S3.
+- Using the [`cockroach nodelocal upload`](/docs/v25.4/cockroach-nodelocal-upload) command.
+
+No special privilege is required for:
+
+- Interacting with an Amazon S3 and Google Cloud Storage resource using `SPECIFIED` credentials. Azure Storage is always `SPECIFIED` by default.
+- Using [Userfile](/docs/v25.4/use-userfile-storage) storage.
+
+We recommend using [cloud storage](/docs/v25.4/use-cloud-storage). You also need to ensure that the permissions at your storage destination are configured for the operation. See [Storage Permissions](/docs/v25.4/use-cloud-storage#storage-permissions) for a list of the necessary permissions that each bulk operation requires.
+
+<Warning>
+  While Cockroach Labs actively tests Amazon S3, Google Cloud Storage, and Azure Storage, we **do not** test
+  [S3-compatible services](/docs/v25.4/cloud-storage-authentication) (e.g., [MinIO](https://min.io/), [Red Hat
+  Ceph](https://docs.ceph.com/en/pacific/radosgw/s3)).
+</Warning>
+
+## Synopsis
+
+<Backup6 />
+
+## Parameters
+
+CockroachDB stores full backups in a backup collection. Each full backup in a collection may also have incremental backups. For more detail on this, see [Backup collections](/docs/v25.4/take-full-and-incremental-backups#backup-collections).
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>targets</code>
+      </td>
+      <td>
+        Back up the listed <a href="#targets">targets</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>subdirectory</code>
+        <a></a>
+      </td>
+      <td>
+        The name of the specific backup (e.g., <code>2021/03/23-213101.37</code>) in the collection to which you want to
+        add an <a href="/docs/v25.4/take-full-and-incremental-backups#incremental-backups">incremental backup</a>. To
+        view available backup subdirectories, use{" "}
+        <a href="/docs/v25.4/show-backup">
+          <code>SHOW BACKUPS IN collectionURI</code>
+        </a>
+        . If the backup <code>subdirectory</code> is not provided, incremental backups will be stored in the default{" "}
+        <code>/incrementals</code> directory at the root of the collection URI. See the{" "}
+        <a href="#create-incremental-backups">Create incremental backups</a> example.
+        <br />
+        <br />
+        <strong>Warning:</strong> If you use an arbitrary <code>STRING</code> as the subdirectory, a new full backup
+        will be created, but it will never be shown in <code>SHOW BACKUPS IN</code>. We do not recommend using arbitrary
+        strings as subdirectory names.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>LATEST</code>
+      </td>
+      <td>Append an incremental backup to the latest completed full backup's subdirectory.</td>
+    </tr>
+    <tr>
+      <td>
+        <a></a>
+        <code>collectionURI</code>
+      </td>
+      <td>
+        The URI where you want to store the backup. (Or, the default locality for a locality-aware backup.) The storage
+        URI for each <a href="/docs/v25.4/take-full-and-incremental-backups#backup-collections">backup collection</a>{" "}
+        must be unique. You will encounter an error if you run multiple backup collections to the same storage URI.
+        <br />
+        <br />
+        For information about this URL structure, see <a href="#backup-file-urls">Backup File URLs</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>localityURI</code>
+      </td>
+      <td>
+        The URI containing the <code>COCKROACH&#95;LOCALITY</code> parameter for a non-default locality that is part of
+        a single locality-aware backup.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>timestamp</code>
+      </td>
+      <td>
+        Back up data as it existed as of{" "}
+        <a href="/docs/v25.4/as-of-system-time">
+          <code>timestamp</code>
+        </a>
+        . The <code>timestamp</code> must be more recent than your data's garbage collection TTL (which is controlled by
+        the{" "}
+        <a href="/docs/v25.4/configure-replication-zones#gc-ttlseconds">
+          <code>gc.ttlseconds</code> replication zone variable
+        </a>
+        ).
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>backup&#95;options</code>
+      </td>
+      <td>
+        Control the backup behavior with a comma-separated list of <a href="#options">these options</a>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Targets
+
+<table>
+  <thead>
+    <tr>
+      <th>Target</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>N/A</td>
+      <td>
+        Back up the cluster. For an example of a full cluster backup, refer to{" "}
+        <a href="#back-up-a-cluster">Back up a cluster</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>DATABASE &#123;database&#95;name&#125; &#91;, ...&#93;</code>
+      </td>
+      <td>
+        The names of the databases to back up. A database backup includes all tables and views in the database. Refer to{" "}
+        <a href="#back-up-a-database">Back Up a Database</a>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>TABLE &#123;table&#95;name&#125; &#91;, ...&#93;</code>
+      </td>
+      <td>
+        The names of the tables and <a href="/docs/v25.4/views">views</a> to back up. Refer to{" "}
+        <a href="#back-up-a-table-or-view">Back Up a Table or View</a>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Query parameters
+
+<table>
+  <thead>
+    <tr>
+      <th>Query parameter</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>ASSUME&#95;ROLE</code>
+      </td>
+      <td>
+        <a href="/docs/v25.4/string">
+          <code>STRING</code>
+        </a>
+      </td>
+      <td>
+        Pass the <a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces">ARN</a> of the role to
+        assume. Use in combination with <code>AUTH=implicit</code> or <code>specified</code>.<br />
+        <code>external&#95;id</code>: Use as a value to <code>ASSUME&#95;ROLE</code> to specify the{" "}
+        <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid">external ID</a>{" "}
+        for third-party access to your S3 bucket. Refer to{" "}
+        <a href="/docs/v25.4/cloud-storage-authentication">Cloud Storage Authentication</a> for setup details.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>AUTH</code>
+      </td>
+      <td>
+        <a href="/docs/v25.4/string">
+          <code>STRING</code>
+        </a>
+      </td>
+      <td>
+        The authentication parameter can define either <code>specified</code> (default) or <code>implicit</code>{" "}
+        authentication. To use <code>specified</code> authentication, pass your{" "}
+        <a href="https://cloud.google.com/iam/docs/understanding-service-accounts">Service Account</a> credentials with
+        the URI. To use <code>implicit</code> authentication, configure these credentials via an environment variable.
+        Refer to the <a href="/docs/v25.4/cloud-storage-authentication">Cloud Storage Authentication page</a> page for
+        examples of each of these.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>AWS&#95;ENDPOINT</code>
+      </td>
+      <td>
+        <a href="/docs/v25.4/string">
+          <code>STRING</code>
+        </a>
+      </td>
+      <td>
+        Specify a custom endpoint for Amazon S3 or S3-compatible services. Use to define a particular region or a
+        Virtual Private Cloud (VPC) endpoint.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>AWS&#95;SESSION&#95;TOKEN</code>
+      </td>
+      <td>
+        <a href="/docs/v25.4/string">
+          <code>STRING</code>
+        </a>
+      </td>
+      <td>
+        (Optional) Use as part of temporary security credentials when accessing AWS S3. For more information, refer to
+        Amazon's guide on{" "}
+        <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources">
+          temporary credentials
+        </a>
+        .
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>AWS&#95;USE&#95;PATH&#95;STYLE</code>
+      </td>
+      <td>
+        <a href="/docs/v25.4/string">
+          <code>STRING</code>
+        </a>
+      </td>
+      <td>
+        Change the URL format to path style from the default AWS S3 virtual-hosted–style URLs when connecting to Amazon
+        S3 or S3-compatible services.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>COCKROACH&#95;LOCALITY</code>
+      </td>
+      <td>Key-value pairs</td>
+      <td>
+        Define a locality-aware backup with a list of URIs using <code>COCKROACH&#95;LOCALITY</code>. The value is
+        either <code>default</code> or a single locality key-value pair, such as <code>region=us-east</code>. At least
+        one <code>COCKROACH&#95;LOCALITY</code> must the <code>default</code> per locality-aware backup. Refer to{" "}
+        <a href="/docs/v25.4/take-and-restore-locality-aware-backups">Take and Restore Locality-aware Backups</a> for
+        more detail and examples.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>S3&#95;STORAGE&#95;CLASS</code>
+      </td>
+      <td>
+        <a href="/docs/v25.4/string">
+          <code>STRING</code>
+        </a>
+      </td>
+      <td>
+        Specify the Amazon S3 storage class for files created by the backup job. Refer to{" "}
+        <a href="#back-up-with-an-s3-storage-class">Back up with an S3 storage class</a> for the available classes and
+        an example.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+If you are creating an [external connection](/docs/v25.4/create-external-connection) with [`BACKUP` query parameters](/docs/v25.4/backup#query-parameters) or [authentication](/docs/v25.4/cloud-storage-authentication) parameters, you must pass them in uppercase otherwise you will receive an `unknown query parameters` error.
+
+### Options
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>revision&#95;history</code>
+        <a></a>
+      </td>
+      <td>
+        <a href="/docs/v25.4/bool">
+          <code>BOOL</code>
+        </a>{" "}
+        / None
+      </td>
+      <td>
+        Create a backup with full{" "}
+        <a href="/docs/v25.4/take-backups-with-revision-history-and-restore-from-a-point-in-time">revision history</a>,
+        which records every change made to the cluster within the garbage collection period leading up to and including
+        the given timestamp.
+        <br />
+        <br />
+        You can specify a backup with revision history without any value e.g., <code>WITH revision&#95;history</code>.
+        Or, you can explicitly define <code>WITH revision&#95;history = 'true' / 'false'</code>.{" "}
+        <code>revision&#95;history</code> defaults to <code>true</code> when used with <code>BACKUP</code> or{" "}
+        <code>CREATE SCHEDULE FOR BACKUP</code>. A value is <strong>required</strong> when using{" "}
+        <a href="/docs/v25.4/alter-backup-schedule">
+          <code>ALTER BACKUP SCHEDULE</code>
+        </a>
+        .
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>encryption&#95;passphrase</code>
+        <a></a>
+      </td>
+      <td>
+        <a href="/docs/v25.4/string">
+          <code>STRING</code>
+        </a>
+      </td>
+      <td>
+        The passphrase used to <a href="/docs/v25.4/take-and-restore-encrypted-backups">encrypt the files</a> (
+        <code>BACKUP</code> manifest and data files) that the <code>BACKUP</code> statement generates. This same
+        passphrase is needed to decrypt the file when it is used to{" "}
+        <a href="/docs/v25.4/take-and-restore-encrypted-backups">restore</a> and to list the contents of the backup when
+        using{" "}
+        <a href="/docs/v25.4/show-backup">
+          <code>SHOW BACKUP</code>
+        </a>
+        . There is no practical limit on the length of the passphrase.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>detached</code>
+        <a></a>
+      </td>
+      <td>
+        <a href="/docs/v25.4/bool">
+          <code>BOOL</code>
+        </a>{" "}
+        / None
+      </td>
+      <td>
+        When a backup runs in <code>detached</code> mode, it will execute asynchronously. The job ID will be returned
+        after the backup <a href="/docs/v25.4/backup-architecture#job-creation-phase">job creation</a> completes. Note
+        that with <code>detached</code> specified, further job information and the job completion status will not be
+        returned. For more on the differences between the returned job data, see the{" "}
+        <a href="/docs/v25.4/backup#run-a-backup-asynchronously">example</a>. To check on the job status, use the{" "}
+        <a href="/docs/v25.4/show-jobs">
+          <code>SHOW JOBS</code>
+        </a>{" "}
+        statement. Backups running on a <a href="/docs/v25.4/create-schedule-for-backup">schedule</a> have the{" "}
+        <code>detached</code> option applied implicitly.
+        <br />
+        <br />
+        To run a backup within a <a href="/docs/v25.4/transactions">transaction</a>, use the <code>detached</code>{" "}
+        option.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>EXECUTION LOCALITY</code>
+      </td>
+      <td>Key-value pairs</td>
+      <td>
+        Restricts the execution of the backup to nodes that match the defined locality filter requirements. For example,{" "}
+        <code>WITH EXECUTION LOCALITY = 'region=us-west-1a,cloud=aws'</code>.<br />
+        <br />
+        Refer to <a href="/docs/v25.4/take-locality-restricted-backups">Take Locality-restricted backups</a> for usage
+        and reference detail.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>kms</code>
+      </td>
+      <td>
+        <a href="/docs/v25.4/string">
+          <code>STRING</code>
+        </a>
+      </td>
+      <td>
+        The URI of the cryptographic key stored in a key management service (KMS), or a comma-separated list of key
+        URIs, used to{" "}
+        <a href="/docs/v25.4/take-and-restore-encrypted-backups#examples">take and restore encrypted backups</a>. Refer
+        to <a href="/docs/v25.4/take-and-restore-encrypted-backups#uri-formats">URI Formats</a>. The key or keys are
+        used to encrypt the manifest and data files that the <code>BACKUP</code> statement generates and to decrypt them
+        during a <a href="/docs/v25.4/take-and-restore-encrypted-backups#examples">restore</a> operation, and to list
+        the contents of the backup when using{" "}
+        <a href="/docs/v25.4/show-backup">
+          <code>SHOW BACKUP</code>
+        </a>
+        .<br />
+        <br />
+        AWS KMS, Google Cloud KMS, and Azure Key Vault are supported.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>incremental&#95;location</code>
+        <a></a>
+      </td>
+      <td>
+        <a href="/docs/v25.4/string">
+          <code>STRING</code>
+        </a>
+      </td>
+      <td>
+        Create an incremental backup in a different location than the default incremental backup location.
+        <br />
+        <br />
+        <code>WITH incremental&#95;location = 'explicit&#95;incrementals&#95;URI'</code>
+        <br />
+        <br />
+        See{" "}
+        <a href="/docs/v25.4/take-full-and-incremental-backups#incremental-backups-with-explicitly-specified-destinations">
+          Incremental backups with explicitly specified destinations
+        </a>{" "}
+        for usage.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Backup file URLs
+
+CockroachDB uses the URL provided to construct a secure API call to the service you specify. The URL structure depends on the type of file storage you are using. For more information, see the following:
+
+- [URL format](/docs/v25.4/use-cloud-storage#url-format)
+- [Example file URLs](/docs/v25.4/use-cloud-storage#example-file-urls)
+- [Authentication parameters](/docs/v25.4/cloud-storage-authentication)
+
+You can create an external connection to represent an external storage or sink URI. This allows you to specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](/docs/v25.4/create-external-connection) page.
+
+<Tip>
+  Backups support cloud object locking and [Amazon S3 storage classes](#back-up-with-an-s3-storage-class). For more
+  detail, see [Additional cloud storage feature
+  support](/docs/v25.4/use-cloud-storage#additional-cloud-storage-feature-support).
+</Tip>
+
+## Functional details
+
+### Object dependencies
+
+Dependent objects must be backed up at the same time as the objects they depend on. When you back up a table, it will not include any dependent tables, [views](/docs/v25.4/views), or [sequences](/docs/v25.4/create-sequence).
+
+For example, if you back up [view](/docs/v25.4/views) `v` that depends on table `t`, it will only back up `v`, not `t`. When you try to restore `v`, the restore will fail because the referenced table is not present in the backup.
+
+Alternatively, you can pass a `skip` option with [`RESTORE`](/docs/v25.4/restore) to skip the dependency instead:
+
+<table>
+  <thead>
+    <tr>
+      <th>Dependent object</th>
+      <th>Depends on</th>
+      <th>Skip option</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        Table with <a href="/docs/v25.4/foreign-key">foreign key</a> constraints
+      </td>
+      <td>
+        The table it <code>REFERENCES</code>.
+      </td>
+      <td>
+        <a href="/docs/v25.4/restore#skip_missing_foreign_keys">
+          <code>skip&#95;missing&#95;foreign&#95;keys</code>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Table with a <a href="/docs/v25.4/create-sequence">sequence</a>
+      </td>
+      <td>The sequence.</td>
+      <td>
+        <a href="/docs/v25.4/restore#skip-missing-sequences">
+          <code>skip&#95;missing&#95;sequences</code>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="/docs/v25.4/views">Views</a>
+      </td>
+      <td>
+        The tables used in the view's <code>SELECT</code> statement.
+      </td>
+      <td>
+        <a href="/docs/v25.4/restore#skip-missing-views">
+          <code>skip&#95;missing&#95;views</code>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+We recommend treating tables with [foreign keys](/docs/v25.4/foreign-key), which contribute to [views](/docs/v25.4/views), or that use sequences or user-defined types as a single unit with their dependencies. While you can restore individual tables, you may find that backing up and restoring at the database level is more convenient.
+
+<Note>
+To exclude a table's row data from a backup, use the `exclude_data_from_backup` parameter with [`CREATE TABLE`](/docs/v25.4/create-table#create-a-table-with-data-excluded-from-backup) or [`ALTER TABLE`](/docs/v25.4/alter-table#exclude-a-tables-data-from-backups).
+
+For more detail, see the [Exclude a table's data from backups](/docs/v25.4/take-full-and-incremental-backups#exclude-a-tables-data-from-backups) example.
+
+</Note>
+
+### Users and privileges
+
+The `system.users` table stores your users and their passwords. To restore your users and privilege [grants](/docs/v25.4/grant), do a cluster backup and restore the cluster to a fresh cluster with no user data. You can also backup the `system.users` table, and then use [this procedure](/docs/v25.4/restore#restoring-users-from-system-users-backup).
+
+## Performance
+
+The backup job process minimizes its impact to the cluster's performance with:
+
+- Even distribution of work to a node that has a replica of the range to back up. If a locality filter is specified, work is distributed to a node from those that match the locality filter and has the most locality tiers in common with a node that has a replica. Refer to the [Backup Architecture](/docs/v25.4/backup-architecture) page for a detailed explanation of how a backup job works.
+- Integration with elastic CPU limiter by default, which helps to minimize the impact backups have on foreground traffic. This integration will limit the amount of CPU time used by a backup thereby allowing foreground SQL traffic to continue largely unaffected.
+
+A backup job, like any read, cannot export a range if the range contains an [unresolved intent](/docs/v25.4/architecture/transaction-layer#resolving-write-intents). While it is important to minimize the impact of bulk, background jobs like `BACKUP` on your foreground traffic, it is still crucial for backups to finish (in order to maintain your [recovery point objective (RPO)](https://en.wikipedia.org/wiki/Disaster_recovery#Recovery_Point_Objective)).
+
+Unlike a normal [read transaction](/docs/v25.4/architecture/reads-and-writes-overview#read-scenario) that will block until any uncommitted writes it encounters are resolved, a backup job's read request will be allotted a fixed amount of CPU time to read the required keys and values. Once the backup's read request has exhausted this time, the backup will resume once it has been allocated more CPU time. This process allows for other requests, such as foreground SQL traffic to continue, almost unaffected, because there is a cap on how much CPU a backup job will take.
+
+You can monitor your cluster's [admission control system](/docs/v25.4/admission-control) on the [Overload dashboard](/docs/v25.4/ui-overload-dashboard). To monitor your backup jobs, refer to the [Backup and Restore Monitoring](/docs/v25.4/backup-and-restore-monitoring) page.
+
+For a more technical explanation of elastic CPU, refer to the [Rubbing control theory on the Go scheduler](https://www.cockroachlabs.com/blog/rubbing-control-theory) blog post.
+
+We recommend always starting backups with a specific [timestamp](/docs/v25.4/timestamp) at least 10 seconds in the past. For example:
+
+```sql
+BACKUP...AS OF SYSTEM TIME '-10s';
+```
+
+This improves performance by decreasing the likelihood that the `BACKUP` will be [retried because it contends with other statements/transactions](/docs/v25.4/transactions#transaction-retries). However, because [`AS OF SYSTEM TIME`](/docs/v25.4/as-of-system-time) returns historical data, your reads might be stale. Taking backups with `AS OF SYSTEM TIME '-10s'` is a good best practice to reduce the number of still-running transactions you may encounter, because a backup will eventually push the contending transactions to a higher timestamp, which causes the transactions to retry.
+
+A backup job will initially ask individual ranges to back up but to skip if they encounter an intent. Any range that is skipped is placed at the end of the queue. When a backup job has completed its initial pass and is revisiting ranges, it will ask any range that did not resolve within the given time limit (default 1 minute) to attempt to resolve any intents that it encounters and to **not** skip. Additionally, the backup's read transaction priority is eventually set to `high`. This will result in contending transactions being pushed and retried at a higher timestamp.
+
+If a backup job encounters too many retryable errors, it will enter a [`failed` state](/docs/v25.4/show-jobs#job-status) with the most recent error, which allows subsequent backups the chance to succeed. Refer to the [Backup and Restore Monitoring](/docs/v25.4/backup-and-restore-monitoring) page for metrics to track backup failures.
+
+### Backup performance configuration
+
+Cluster settings provide a means to tune a CockroachDB cluster. The following cluster settings are helpful for configuring backup files and performance:
+
+#### `bulkio.backup.file_size`
+
+Set a target for the amount of backup data written to each backup file. This is the maximum target size the backup will reach, but it is possible files of a smaller size are created during the backup job.
+
+Note that if you lower `bulkio.backup.file_size` below the default, it will cause the backup job to create many small SST files, which could impact a restore job’s performance because it will need to keep track of so many small files.
+
+**Default:** `128 MiB`
+
+#### `cloudstorage.azure.concurrent_upload_buffers`
+
+Improve the speed of backups to Azure Storage by increasing `cloudstorage.azure.concurrent_upload_buffers` to `3`. This setting configures the number of concurrent buffers that are used during file uploads to Azure Storage. Note that the higher this setting the more data that is held in memory, which can increase the risk of OOMs if there is not sufficient memory on each node.
+
+**Default:** `1`
+
+#### Cluster settings for cloud storage
+
+The following cluster settings limit the read and write rates to [cloud storage](/docs/v25.4/use-cloud-storage). A user may choose to use these settings if their backups overwhelm the network. These settings limit throughput and as a result backups and [changefeeds](/docs/v25.4/change-data-capture-overview) will take longer. The designated `<provider>`s include `s3`, `gs`, and `azure`.
+
+##### `cloudstorage.<provider>.write.node_rate_limit`
+
+Limit the number of bytes per second per node across operations writing to the designated cloud storage provider if non-zero.
+
+**Default:** unlimited, `0 B`
+
+##### `cloudstorage.<provider>.write.node_burst_limit`
+
+Limit the number of bytes per second per node handled concurrently across operations writing to the designated cloud storage provider if non-zero.
+
+**Default:** unlimited, `0 B`
+
+##### `cloudstorage.<provider>.read.node_rate_limit`
+
+Limit the number of bytes per second per node across operations reading to the designated cloud storage provider if non-zero.
+
+**Default:** unlimited, `0 B`
+
+##### `cloudstorage.<provider>.read.node_burst_limit`
+
+Limit the number of bytes per second per node handled concurrently across operations reading to the designated cloud storage provider if non-zero.
+
+**Default:** unlimited, `0 B`
+
+For a complete list, including all cluster settings related to backups, see the [Cluster Settings](/docs/v25.4/cluster-settings) page.
+
+## Viewing and controlling backups jobs
+
+After CockroachDB successfully initiates a backup, it registers the backup as a job, and you can do the following:
+
+<table>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>SQL Statement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>View the backup status</td>
+      <td>
+        <a href="/docs/v25.4/show-jobs">
+          <code>SHOW JOBS</code>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Pause the backup</td>
+      <td>
+        <a href="/docs/v25.4/pause-job">
+          <code>PAUSE JOB</code>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Resume the backup</td>
+      <td>
+        <a href="/docs/v25.4/resume-job">
+          <code>RESUME JOB</code>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>Cancel the backup</td>
+      <td>
+        <a href="/docs/v25.4/cancel-job">
+          <code>CANCEL JOB</code>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+You can also visit the [**Jobs** page](/docs/v25.4/ui-jobs-page) of the DB Console to view job details. The `BACKUP` statement will return when the backup is finished or if it encounters an error.
+
+<Note>
+  The presence of the `BACKUP MANIFEST` file in the backup subdirectory is an indicator that the backup job completed
+  successfully.
+</Note>
+
+## Examples
+
+Per our guidance in the [Performance](#performance) section, we recommend starting backups from a time at least 10 seconds in the past using [`AS OF SYSTEM TIME`](/docs/v25.4/as-of-system-time).
+
+The examples in this section use one of the following storage URIs:
+
+- External connections, which allow you to represent an external storage or sink URI. You can then specify the external connection's name in statements rather than the provider-specific URI. For detail on using external connections, see the [`CREATE EXTERNAL CONNECTION`](/docs/v25.4/create-external-connection) page.
+- Amazon S3 connection strings with the **default** `AUTH=specified` parameter. For guidance on using `AUTH=implicit` authentication with Amazon S3 buckets instead, read [Cloud Storage Authentication](/docs/v25.4/cloud-storage-authentication).
+
+For guidance on connecting to other storage options or using other authentication parameters instead, read [Use Cloud Storage](/docs/v25.4/use-cloud-storage#example-file-urls).
+
+If you need to limit the control specific users have over your storage buckets, see [Assume role authentication](/docs/v25.4/cloud-storage-authentication) for setup instructions.
+
+<Warning>
+The `BACKUP... TO` and `RESTORE... FROM {storage_uri}` syntax has been removed from CockroachDB v24.3 and later.
+
+For details on the syntax to run `BACKUP` and `RESTORE`, refer to the [backup](#examples) and [restore](/docs/v25.4/restore#examples) examples.
+
+</Warning>
+
+### Back up a cluster
+
+To take a [full backup](/docs/v25.4/take-full-and-incremental-backups#full-backups) of a cluster:
+
+```sql
+BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+You will encounter an error if you run multiple [backup collections](/docs/v25.4/take-full-and-incremental-backups#backup-collections) to the same storage URI. Backup collections can contain multiple full and incremental backups, but each collection's URI must be unique. If you are using backup schedules, each schedule must have a unique URI.
+
+### Back up a database
+
+To take a [full backup](/docs/v25.4/take-full-and-incremental-backups#full-backups) of a single database:
+
+```sql
+BACKUP DATABASE bank INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+To take a [full backup](/docs/v25.4/take-full-and-incremental-backups#full-backups) of multiple databases:
+
+```sql
+BACKUP DATABASE bank, employees INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+### Back up a table or view
+
+To take a [full backup](/docs/v25.4/take-full-and-incremental-backups#full-backups) of a single table or view:
+
+```sql
+BACKUP bank.customers INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+To take a [full backup](/docs/v25.4/take-full-and-incremental-backups#full-backups) of multiple tables:
+
+```sql
+BACKUP bank.customers, bank.accounts INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+### Back up all tables in a schema
+
+To back up all tables in a [schema](/docs/v25.4/create-schema), use a wildcard (`*`) with the schema name:
+
+```sql
+BACKUP test_schema.* INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+Alternatively, use a [fully qualified name](/docs/v25.4/sql-name-resolution#lookup-with-fully-qualified-names): `database.schema.*`.
+
+With this syntax, schemas will be resolved before databases. `test_object.*` will resolve to a _schema_ of `test_object` within the set current database before matching to a database of `test_object`.
+
+If a database and schema have the same name, such as `bank.bank`, running `BACKUP bank.*` will result in the schema resolving first. All the tables within that schema will be backed up. However, if this were to be run from a different database that does not have a `bank` schema, all tables in the `bank` database will be backed up.
+
+See [Name Resolution](/docs/v25.4/sql-name-resolution) for more details on how naming hierarchy and name resolution work in CockroachDB.
+
+### Create incremental backups
+
+<Warning>
+  The `incremental_location` parameter is deprecated as of v25.4 and will be removed in a future release. Until the
+  parameter is removed, you can continue to work with existing backups that use a custom `incremental_location`.
+</Warning>
+
+When a `BACKUP` statement specifies an existing subdirectory in the collection, explicitly or via the `LATEST` keyword, an incremental backup will be added to the default `/incrementals` directory at the root of the [collection](/docs/v25.4/take-full-and-incremental-backups#backup-collections) storage location.
+
+To take an incremental backup using the `LATEST` keyword:
+
+```sql
+BACKUP INTO LATEST IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+To store the backup in an existing subdirectory in the collection:
+
+```sql
+BACKUP INTO {'subdirectory'} IN 'external://backup_s3' AS OF SYSTEM TIME '-10s';
+```
+
+<Note>
+  If you intend to take a **full** backup, we recommend running `BACKUP INTO {collectionURI}` without specifying a
+  subdirectory.
+</Note>
+
+To explicitly control where you store your incremental backups, use the [`incremental_location`](/docs/v25.4/backup#options) option. For more detail, see [this example](/docs/v25.4/take-full-and-incremental-backups#incremental-backups-with-explicitly-specified-destinations) demonstrating the `incremental_location` option.
+
+### Run a backup asynchronously
+
+Use the `DETACHED` [option](#options) to execute the backup [job](/docs/v25.4/show-jobs) asynchronously:
+
+```sql
+BACKUP INTO 'external://backup_s3' AS OF SYSTEM TIME '-10s' WITH DETACHED;
+```
+
+The job ID is returned after the backup [job creation](/docs/v25.4/backup-architecture#job-creation-phase) completes:
+
+```text
+        job_id
+----------------------
+  592786066399264769
+(1 row)
+```
+
+**Without** the `DETACHED` option, `BACKUP` will block the SQL connection until the job completes. Once finished, the job status and more detailed job data is returned:
+
+```text
+job_id             |  status   | fraction_completed | rows | index_entries | bytes
+-------------------+-----------+--------------------+------+---------------+--------
+652471804772712449 | succeeded |                  1 |   50 |             0 |  4911
+(1 row)
+```
+
+### Back up with an S3 storage class
+
+To associate your backup objects with a [specific storage class](/docs/v25.4/use-cloud-storage#amazon-s3-storage-classes) in your Amazon S3 bucket, use the `S3_STORAGE_CLASS` parameter with the class. For example, the following S3 connection URI specifies the `INTELLIGENT_TIERING` storage class:
+
+```sql
+BACKUP DATABASE movr INTO 's3://{BUCKET NAME}?AWS_ACCESS_KEY_ID={KEY ID}&AWS_SECRET_ACCESS_KEY={SECRET ACCESS KEY}&S3_STORAGE_CLASS=INTELLIGENT_TIERING' AS OF SYSTEM TIME '-10s';
+```
+
+To use an external connection URI to back up to cloud storage with an associated S3 storage class, you need to include the `S3_STORAGE_CLASS` parameter when you [create the external connection](/docs/v25.4/create-external-connection).
+
+Use the parameter to set one of these [storage classes](https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject#AmazonS3-PutObject-request-header-StorageClass) listed in Amazon's documentation. For more general usage information, see Amazon's [Using Amazon S3 storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro) documentation.
+
+<Warning>
+[Incremental backups](/docs/v25.4/take-full-and-incremental-backups#incremental-backups) are **not** compatible with the [S3 Glacier Flexible Retrieval or Glacier Deep Archive storage classes](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro#sc-glacier). Incremental backups require the reading of previous backups on an ad-hoc basis, which is not possible with backup files already in Glacier Flexible Retrieval or Glacier Deep Archive. This is because these storage classes do not allow immediate access to an S3 object without first [restoring the archived objects](https://docs.aws.amazon.com/AmazonS3/latest/userguide/restoring-objects) to its S3 bucket.
+
+Refer to [Incremental backups and storage classes](/docs/v25.4/use-cloud-storage#incremental-backups-and-archive-storage-classes) for more detail.
+
+</Warning>
+
+### Advanced examples
+
+For examples of advanced `BACKUP` and `RESTORE` use cases, see:
+
+- [Incremental backups with a specified destination](/docs/v25.4/take-full-and-incremental-backups#incremental-backups-with-explicitly-specified-destinations)
+- [Backup with revision history and point-in-time restore](/docs/v25.4/take-backups-with-revision-history-and-restore-from-a-point-in-time)
+- [Locality-aware backup and restore](/docs/v25.4/take-and-restore-locality-aware-backups)
+- [Encrypted backup and restore](/docs/v25.4/take-and-restore-encrypted-backups)
+- [Restore into a different database](/docs/v25.4/restore#restore-tables-into-a-different-database)
+- [Remove the foreign key before restore](/docs/v25.4/restore#remove-the-foreign-key-before-restore)
+- [Restoring users from `system.users` backup](/docs/v25.4/restore#restoring-users-from-system-users-backup)
+- [Show an incremental backup at a different location](/docs/v25.4/show-backup#show-a-backup-taken-with-the-incremental-location-option)
+- [Exclude a table's data from backups](/docs/v25.4/take-full-and-incremental-backups#exclude-a-tables-data-from-backups)
+
+## See also
+
+- [Take Full and Incremental Backups](/docs/v25.4/take-full-and-incremental-backups)
+- [Take and Restore Encrypted Backups](/docs/v25.4/take-and-restore-encrypted-backups)
+- [Take and Restore Locality-aware Backups](/docs/v25.4/take-and-restore-locality-aware-backups)
+- [Take Backups with Revision History and Restore from a Point-in-time](/docs/v25.4/take-backups-with-revision-history-and-restore-from-a-point-in-time)
+- [`SHOW BACKUP`](/docs/v25.4/show-backup)
+- [`CREATE SCHEDULE FOR BACKUP`](/docs/v25.4/create-schedule-for-backup)
+- [`RESTORE`](/docs/v25.4/restore)
+- [Replication Controls](/docs/v25.4/configure-replication-zones)
+- [Troubleshoot Replication Zones](/docs/v25.4/troubleshoot-replication-zones)

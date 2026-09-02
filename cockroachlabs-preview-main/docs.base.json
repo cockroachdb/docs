@@ -1,0 +1,175 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "CockroachDB",
+  "seo": {
+    "metatags": {
+      "robots": "noindex"
+    }
+  },
+  "colors": {
+    "primary": "#6933ff",
+    "light": "#6933ff",
+    "dark": "#6933ff"
+  },
+  "styling": {
+    "codeblocks": {
+      "theme": {
+        "light": "catppuccin-mocha",
+        "dark": "catppuccin-mocha"
+      }
+    }
+  },
+  "favicon": "/favicon.png",
+  "appearance": {
+    "default": "light"
+  },
+  "fonts": {
+    "heading": {
+      "family": "Poppins"
+    },
+    "body": {
+      "family": "Open Sans"
+    }
+  },
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/darklogo.png",
+    "href": "https://www.cockroachlabs.com/"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Sign in",
+        "href": "https://cockroachlabs.cloud/?_ga=2.242886210.1147139380.1759903632-41552699.1759903632"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get started free",
+      "href": "https://cockroachlabs.cloud/signup?referralId=cc_nav_global&_ga=2.242886210.1147139380.1759903632-41552699.1759903632"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Home",
+        "pages": [
+          "index"
+        ]
+      },
+      {
+        "tab": "Guides",
+        "versions": [
+          {
+            "version": "V26.1.2 (Stable)",
+            "$ref": "navigation/guides/v26.1.2-stable.json"
+          },
+          {
+            "version": "V25.4",
+            "$ref": "navigation/guides/v25.4.json"
+          },
+          {
+            "version": "V25.2",
+            "$ref": "navigation/guides/v25.2.json"
+          },
+          {
+            "version": "V24.3",
+            "$ref": "navigation/guides/v24.3.json"
+          },
+          {
+            "version": "V24.1",
+            "$ref": "navigation/guides/v24.1.json"
+          },
+          {
+            "version": "V23.2",
+            "$ref": "navigation/guides/v23.2.json"
+          }
+        ]
+      },
+      {
+        "tab": "Cloud API",
+        "versions": [
+          {
+            "version": "Latest",
+            "pages": [
+              {
+                "group": "Cloud API",
+                "openapi": {
+                  "directory": "docs/api/cloud",
+                  "source": "/openapi/cloud/latest.json"
+                }
+              }
+            ]
+          },
+          {
+            "version": "2023-04-10",
+            "pages": [
+              {
+                "group": "Cloud API",
+                "openapi": {
+                  "directory": "docs/api/cloud/2023-04-10",
+                  "source": "/openapi/cloud/2023-04-10.json"
+                }
+              }
+            ]
+          },
+          {
+            "version": "2022-09-20",
+            "pages": [
+              {
+                "group": "Cloud API",
+                "openapi": {
+                  "directory": "docs/api/cloud/2022-09-20",
+                  "source": "/openapi/cloud/2022-09-20.json"
+                }
+              }
+            ]
+          },
+          {
+            "version": "2022-03-31",
+            "pages": [
+              {
+                "group": "Cloud API",
+                "openapi": {
+                  "directory": "docs/api/cloud/2022-03-31",
+                  "source": "/openapi/cloud/2022-03-31.json"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Cluster API",
+        "openapi": {
+          "directory": "docs/api/cluster/v2",
+          "source": "/openapi/cluster-api-v2.json"
+        }
+      }
+    ]
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "youtube": "https://www.youtube.com/@cockroachdb",
+      "x": "https://x.com/CockroachDB",
+      "linkedin": "https://www.linkedin.com/company/cockroach-labs/mycompany/verification/",
+      "instagram": "https://www.instagram.com/cockroachdb/"
+    }
+  },
+  "redirects": {
+    "$ref": "redirects.json"
+  }
+}

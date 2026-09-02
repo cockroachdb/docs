@@ -1,0 +1,836 @@
+---
+title: "Build a Java App with CockroachDB and Hibernate"
+old_description: "Learn how to use CockroachDB from a simple Java application with the Hibernate ORM."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v25.2/build-a-java-app-with-cockroachdb-hibernate"
+  items={[
+    {
+      title: "Use JDBC",
+      href: "/docs/v25.2/build-a-java-app-with-cockroachdb",
+    },
+    {
+      title: "Use Hibernate",
+      href: "/docs/v25.2/build-a-java-app-with-cockroachdb-hibernate",
+    },
+    {
+      title: "Use jOOQ",
+      href: "/docs/v25.2/build-a-java-app-with-cockroachdb-jooq",
+    },
+    {
+      title: "Use MyBatis-Spring",
+      href: "/docs/v25.2/build-a-spring-app-with-cockroachdb-mybatis",
+    },
+  ]}
+/>
+
+This tutorial shows you how build a simple Java application with CockroachDB and the Hibernate ORM.
+
+<Note>
+We recommend using Java versions 8+ with CockroachDB.
+</Note>
+
+<Tip>
+For a sample app and tutorial that uses Spring Data JPA (Hibernate) and CockroachDB, see [Build a Spring App with CockroachDB and JPA](/docs/v25.2/build-a-spring-app-with-cockroachdb-jpa).
+
+For another use of Hibernate with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+</Tip>
+
+## Step 1. Start CockroachDB
+
+<Tabs>
+<Tab title="Use CockroachDB Basic">
+
+### Choose your installation method
+
+You can install a CockroachDB Basic cluster using either the CockroachDB Cloud Console, a web-based graphical user interface (GUI) tool, or `ccloud`, a command-line interface (CLI) tool.
+
+<Tabs>
+<Tab title="Use the Cloud Console (GUI)">
+
+### Create a free cluster
+
+<Note>
+Organizations without billing information on file can only create one CockroachDB Basic cluster.
+</Note>
+
+1. If you haven't already, [sign up for a CockroachDB Cloud account](https://cockroachlabs.cloud/signup?referralId=docs_java_hibernate).
+2. [Log in](https://cockroachlabs.cloud/) to your CockroachDB Cloud account.
+3. On the **Clusters** page, click **Create cluster**.
+4. On the **Select a plan** page, select **Basic**.
+5. On the **Cloud &amp; Regions** page, select a cloud provider (GCP or AWS) in the **Cloud provider** section.
+6. In the **Regions** section, select a region for the cluster. Refer to [CockroachDB Cloud Regions](/docs/cockroachcloud/regions) for the regions where CockroachDB Basic clusters can be deployed. To create a multi-region cluster, click **Add region** and select additional regions.
+7. Click **Next: Capacity**.
+8. On the **Capacity** page, select **Start for free**. Click **Next: Finalize**.
+9. On the **Finalize** page, click **Create cluster**.
+
+    Your cluster will be created in a few seconds and the **Create SQL user** dialog will display.
+
+### Create a SQL user
+
+The **Create SQL user** dialog allows you to create a new SQL user and password.
+
+1. Enter a username in the **SQL user** field or use the one provided by default.
+2. Click **Generate &amp; save password**.
+3. Copy the generated password and save it in a secure location.
+4. Click **Next**.
+
+    Currently, all new SQL users are created with admin privileges. For more information and to change the default settings, see [Manage SQL users on a cluster](/docs/cockroachcloud/managing-access#manage-sql-users-on-a-cluster).
+
+### Get the connection information
+
+The **Connect to cluster** dialog shows information about how to connect to your cluster.
+
+1. Select **Parameters only** from the **Select option** dropdown.
+2. Copy the connection information for each parameter displayed and save it in a secure location.
+
+</Tab>
+<Tab title="Use ccloud (CLI)">
+
+Follow these steps to create a CockroachDB Basic cluster using the `ccloud` CLI tool.
+
+<Note>
+The `ccloud` CLI tool is in Preview.
+</Note>
+
+### Install `ccloud`
+
+Choose your OS:
+
+<Tabs>
+<Tab title="Mac">
+
+You can install `ccloud` using either Homebrew or by downloading the binary.
+
+### Use Homebrew
+
+1. [Install Homebrew](http://brew.sh/).
+2. Install using the `ccloud` tap:
+
+    ```shell
+    brew install cockroachdb/tap/ccloud
+    ```
+
+### Download the binary
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-amd64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+Use the ARM 64 binary if you have an M-series Mac:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_darwin-arm64_0.6.12.tar.gz | tar -xJ && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Linux">
+
+In a terminal, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+curl https://binaries.cockroachdb.com/ccloud/ccloud_linux-amd64_0.6.12.tar.gz | tar -xz && cp -i ccloud /usr/local/bin/
+```
+
+</Tab>
+<Tab title="Windows">
+
+In a PowerShell window, enter the following command to download and extract the `ccloud` binary and add it to your `PATH`:
+
+```shell
+$ErrorActionPreference = "Stop"; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $ProgressPreference = 'SilentlyContinue'; $null = New-Item -Type Directory -Force $env:appdata/ccloud; Invoke-WebRequest -Uri https://binaries.cockroachdb.com/ccloud/ccloud_windows-amd64_0.6.12.zip -OutFile ccloud.zip; Expand-Archive -Force -Path ccloud.zip; Copy-Item -Force ccloud/ccloud.exe -Destination $env:appdata/ccloud; $Env:PATH += ";$env:appdata/ccloud"; # We recommend adding ";$env:appdata/ccloud" to the Path variable for your system environment. See https://docs.microsoft.com/powershell/module/microsoft.powershell.core/about/about_environment_variables#saving-changes-to-environment-variables for more information.
+```
+
+</Tab>
+</Tabs>
+
+### Run `ccloud quickstart` to create a new cluster, create a SQL user, and retrieve the connection string.
+
+The easiest way of getting started with CockroachDB Cloud is to use `ccloud quickstart`. The `ccloud quickstart` command guides you through logging in to CockroachDB Cloud, creating a new CockroachDB Basic cluster, and connecting to the new cluster. Run `ccloud quickstart` and follow the instructions:
+
+```shell
+ccloud quickstart
+```
+
+The `ccloud quickstart` command will open a browser window to log you in to CockroachDB Cloud. If you are new to CockroachDB Cloud, you can register using one of the single sign-on (SSO) options, or create a new account using an email address.
+
+The `ccloud quickstart` command will prompt you for the cluster name, cloud provider, and cloud provider region, then ask if you want to connect to the cluster. Each prompt has default values that you can select, or change if you want a different option.
+
+Select **Parameters only** then copy the connection parameters displayed and save them in a secure location.
+
+```text
+? How would you like to connect? Parameters only
+Looking up cluster ID: succeeded
+Creating SQL user: succeeded
+Success! Created SQL user
+ name: maxroach
+ cluster: 37174250-b944-461f-b1c1-3a99edb6af32
+Retrieving cluster info: succeeded
+Connection parameters
+ Database:  defaultdb
+ Host:      blue-dog-147.6wr.cockroachlabs.cloud
+ Password:  ThisIsNotAGoodPassword
+ Port:      26257
+ Username:  maxroach
+```
+
+</Tab>
+</Tabs>
+
+## Step 2. Get the sample code
+
+Clone the `example-app-java-hibernate` repo to your machine:
+
+```shell
+git clone https://github.com/cockroachlabs/example-app-java-hibernate/
+```
+
+<Note>
+The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](/docs/v25.2/install-client-drivers).
+</Note>
+
+## Step 3. Run the code
+
+The sample code in this tutorial ([`Sample.java`](#code-contents)) uses Hibernate to map Java methods to SQL operations. The code performs the following operations, which roughly correspond to method calls in the `Sample` class:
+
+1. Creates an `accounts` table as specified by the `Account` mapping class.
+2. Inserts rows into the table with the `addAccounts()` method.
+3. Transfers money from one account to another with the `transferFunds()` method.
+4. Prints out account balances before and after the transfer with the `getAccountBalance()` method.
+
+In addition, the code shows a pattern for automatically handling [transaction retries](/docs/v25.2/transaction-retry-error-example) by wrapping transactions in a higher-order function named `runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+
+It does all of the above using the practices we recommend for using Hibernate (and the underlying JDBC connection) with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
+
+The contents of `Sample.java`:
+
+```java
+package com.cockroachlabs;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Random;
+import java.util.function.Function;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import org.hibernate.JDBCException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class Sample implements Serializable {
+
+    private static final Random RAND = new Random();
+    private static final boolean FORCE_RETRY = false;
+    private static final String RETRY_SQL_STATE = "40001";
+    private static final int MAX_ATTEMPT_COUNT = 6;
+
+    private static Function<Session, BigDecimal> addAccounts() throws JDBCException {
+        Function<Session, BigDecimal> f = s -> {
+            BigDecimal rv = new BigDecimal(0);
+            try {
+                s.save(new Account(1, 1000));
+                s.save(new Account(2, 250));
+                s.save(new Account(3, 314159));
+                rv = BigDecimal.valueOf(1);
+                System.out.printf("APP: addAccounts() --> %.2f\n", rv);
+            } catch (JDBCException e) {
+                throw e;
+            }
+            return rv;
+        };
+        return f;
+    }
+
+    private static Function<Session, BigDecimal> transferFunds(long fromId, long toId, BigDecimal amount) throws JDBCException {
+        Function<Session, BigDecimal> f = s -> {
+            BigDecimal rv = new BigDecimal(0);
+            try {
+                Account fromAccount = (Account) s.get(Account.class, fromId);
+                Account toAccount = (Account) s.get(Account.class, toId);
+                if (!(amount.compareTo(fromAccount.getBalance()) > 0)) {
+                    fromAccount.balance = fromAccount.balance.subtract(amount);
+                    toAccount.balance = toAccount.balance.add(amount);
+                    s.save(fromAccount);
+                    s.save(toAccount);
+                    rv = amount;
+                    System.out.printf("APP: transferFunds(%d, %d, %.2f) --> %.2f\n", fromId, toId, amount, rv);
+                }
+            } catch (JDBCException e) {
+                throw e;
+            }
+            return rv;
+        };
+        return f;
+    }
+
+    // Test our retry handling logic if FORCE_RETRY is true.  This
+    // method is only used to test the retry logic.  It is not
+    // intended for production code.
+    private static Function<Session, BigDecimal> forceRetryLogic() throws JDBCException {
+        Function<Session, BigDecimal> f = s -> {
+            BigDecimal rv = new BigDecimal(-1);
+            try {
+                System.out.printf("APP: testRetryLogic: BEFORE EXCEPTION\n");
+                s.createNativeQuery("SELECT crdb_internal.force_retry('1s')").executeUpdate();
+            } catch (JDBCException e) {
+                System.out.printf("APP: testRetryLogic: AFTER EXCEPTION\n");
+                throw e;
+            }
+            return rv;
+        };
+        return f;
+    }
+
+    private static Function<Session, BigDecimal> getAccountBalance(long id) throws JDBCException {
+        Function<Session, BigDecimal> f = s -> {
+            BigDecimal balance;
+            try {
+                Account account = s.get(Account.class, id);
+                balance = account.getBalance();
+                System.out.printf("APP: getAccountBalance(%d) --> %.2f\n", id, balance);
+            } catch (JDBCException e) {
+                throw e;
+            }
+            return balance;
+        };
+        return f;
+    }
+
+    // Run SQL code in a way that automatically handles the
+    // transaction retry logic so we don't have to duplicate it in
+    // various places.
+    private static BigDecimal runTransaction(Session session, Function<Session, BigDecimal> fn) {
+        BigDecimal rv = new BigDecimal(0);
+        int attemptCount = 0;
+
+        while (attemptCount < MAX_ATTEMPT_COUNT) {
+            attemptCount++;
+
+            if (attemptCount > 1) {
+                System.out.printf("APP: Entering retry loop again, iteration %d\n", attemptCount);
+            }
+
+            Transaction txn = session.beginTransaction();
+            System.out.printf("APP: BEGIN;\n");
+
+            if (attemptCount == MAX_ATTEMPT_COUNT) {
+                String err = String.format("hit max of %s attempts, aborting", MAX_ATTEMPT_COUNT);
+                throw new RuntimeException(err);
+            }
+
+            // This block is only used to test the retry logic.
+            // It is not necessary in production code.  See also
+            // the method 'testRetryLogic()'.
+            if (FORCE_RETRY) {
+                session.createNativeQuery("SELECT now()").list();
+            }
+
+            try {
+                rv = fn.apply(session);
+                if (!rv.equals(-1)) {
+                    txn.commit();
+                    System.out.printf("APP: COMMIT;\n");
+                    break;
+                }
+            } catch (JDBCException e) {
+                if (RETRY_SQL_STATE.equals(e.getSQLState())) {
+                    // Since this is a transaction retry error, we
+                    // roll back the transaction and sleep a little
+                    // before trying again.  Each time through the
+                    // loop we sleep for a little longer than the last
+                    // time (A.K.A. exponential backoff).
+                    System.out.printf("APP: retryable exception occurred:\n    sql state = [%s]\n    message = [%s]\n    retry counter = %s\n", e.getSQLState(), e.getMessage(), attemptCount);
+                    System.out.printf("APP: ROLLBACK;\n");
+                    txn.rollback();
+                    int sleepMillis = (int) (Math.pow(2, attemptCount) * 100) + RAND.nextInt(100);
+                    System.out.printf("APP: Hit 40001 transaction retry error, sleeping %s milliseconds\n", sleepMillis);
+                    try {
+                        Thread.sleep(sleepMillis);
+                    } catch (InterruptedException ignored) {
+                        // no-op
+                    }
+                    rv = BigDecimal.valueOf(-1);
+                } else {
+                    throw e;
+                }
+            }
+        }
+        return rv;
+    }
+
+    public static void main(String[] args) {
+        // Create a SessionFactory based on our hibernate.cfg.xml configuration
+        // file, which defines how to connect to the database.
+        SessionFactory sessionFactory
+                = new Configuration()
+                        .configure("hibernate.cfg.xml")
+                        .addAnnotatedClass(Account.class)
+                        .buildSessionFactory();
+
+        try (Session session = sessionFactory.openSession()) {
+            long fromAccountId = 1;
+            long toAccountId = 2;
+            BigDecimal transferAmount = BigDecimal.valueOf(100);
+
+            if (FORCE_RETRY) {
+                System.out.printf("APP: About to test retry logic in 'runTransaction'\n");
+                runTransaction(session, forceRetryLogic());
+            } else {
+
+                runTransaction(session, addAccounts());
+                BigDecimal fromBalance = runTransaction(session, getAccountBalance(fromAccountId));
+                BigDecimal toBalance = runTransaction(session, getAccountBalance(toAccountId));
+                if (!fromBalance.equals(-1) && !toBalance.equals(-1)) {
+                    // Success!
+                    System.out.printf("APP: getAccountBalance(%d) --> %.2f\n", fromAccountId, fromBalance);
+                    System.out.printf("APP: getAccountBalance(%d) --> %.2f\n", toAccountId, toBalance);
+                }
+
+                // Transfer $100 from account 1 to account 2
+                BigDecimal transferResult = runTransaction(session, transferFunds(fromAccountId, toAccountId, transferAmount));
+                if (!transferResult.equals(-1)) {
+                    // Success!
+                    System.out.printf("APP: transferFunds(%d, %d, %.2f) --> %.2f \n", fromAccountId, toAccountId, transferAmount, transferResult);
+
+                    BigDecimal fromBalanceAfter = runTransaction(session, getAccountBalance(fromAccountId));
+                    BigDecimal toBalanceAfter = runTransaction(session, getAccountBalance(toAccountId));
+                    if (!fromBalanceAfter.equals(-1) && !toBalanceAfter.equals(-1)) {
+                        // Success!
+                        System.out.printf("APP: getAccountBalance(%d) --> %.2f\n", fromAccountId, fromBalanceAfter);
+                        System.out.printf("APP: getAccountBalance(%d) --> %.2f\n", toAccountId, toBalanceAfter);
+                    }
+                }
+            }
+        } finally {
+            sessionFactory.close();
+        }
+    }
+}
+```
+
+### Update the connection configuration
+
+Open `src/main/resources/hibernate.cfg.xml`, and set the `hibernate.connection.url`, `hibernate.connection.username`, and `hibernate.connection.password` properties, using the connection information that you obtained from the Cloud Console:
+
+```xml
+<property name="hibernate.connection.url">jdbc:postgresql://{host}:{port}/defaultdb?sslmode=verify-full</property>
+<property name="hibernate.connection.username">{username}</property>
+<property name="hibernate.connection.password">{password}</property>
+```
+
+### Run the code
+
+Compile and run the code using `gradlew`, which will also download the dependencies:
+
+```shell
+$ cd example-app-java-hibernate
+```
+
+```shell
+$ ./gradlew run
+```
+
+Toward the end of the output, you should see:
+
+```text
+APP: BEGIN;
+APP: addAccounts() --> 1.00
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(1) --> 1000.00
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(2) --> 250.00
+APP: COMMIT;
+APP: getAccountBalance(1) --> 1000.00
+APP: getAccountBalance(2) --> 250.00
+APP: BEGIN;
+APP: transferFunds(1, 2, 100.00) --> 100.00
+APP: COMMIT;
+APP: transferFunds(1, 2, 100.00) --> 100.00
+APP: BEGIN;
+APP: getAccountBalance(1) --> 900.00
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(2) --> 350.00
+APP: COMMIT;
+APP: getAccountBalance(1) --> 900.00
+APP: getAccountBalance(2) --> 350.00
+```
+
+## Recommended Practices
+
+### Generate PKCS8 keys for client authentication
+
+You can pass the [`--also-generate-pkcs8-key` flag](/docs/v25.2/cockroach-cert#flag-pkcs8) to [`cockroach cert`](/docs/v25.2/cockroach-cert) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. For example, if you have the user `max`:
+
+```shell
+$ cockroach cert create-client max --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
+```
+
+The generated PKCS8 key will be named `client.max.key.pk8`.
+
+<Note>
+CockroachDB Cloud does not yet support certificate-based user authentication.
+</Note>
+
+</Tab>
+<Tab title="Use a Local Cluster">
+
+1. If you haven't already, [download the CockroachDB binary](/docs/v25.2/install-cockroachdb).
+2. Run the [`cockroach start-single-node`](/docs/v25.2/cockroach-start-single-node) command:
+
+    ```shell
+    $ cockroach start-single-node --advertise-addr 'localhost' --insecure
+    ```
+
+    This starts an insecure, single-node cluster.
+3. Take note of the following connection information in the SQL shell welcome text:
+
+    ```text
+    CockroachDB node starting at 2021-08-30 17:25:30.06524 +0000 UTC (took 4.3s)
+    build:               CCL v21.1.6 @ 2021/07/20 15:33:43 (go1.15.11)
+    webui:               http://localhost:8080
+    sql:                 postgresql://root@localhost:26257?sslmode=disable
+    ```
+
+    You'll use the `sql` connection string to connect to the cluster later in this tutorial.
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+## Step 2. Get the sample code
+
+Clone the `example-app-java-hibernate` repo to your machine:
+
+```shell
+git clone https://github.com/cockroachlabs/example-app-java-hibernate/
+```
+
+<Note>
+The version of the CockroachDB Hibernate dialect in `hibernate.cfg.xml` corresponds to a version of CockroachDB. For more information, see [Install Client Drivers: Hibernate](/docs/v25.2/install-client-drivers).
+</Note>
+
+## Step 3. Run the code
+
+The sample code in this tutorial ([`Sample.java`](#code-contents)) uses Hibernate to map Java methods to SQL operations. The code performs the following operations, which roughly correspond to method calls in the `Sample` class:
+
+1. Creates an `accounts` table as specified by the `Account` mapping class.
+2. Inserts rows into the table with the `addAccounts()` method.
+3. Transfers money from one account to another with the `transferFunds()` method.
+4. Prints out account balances before and after the transfer with the `getAccountBalance()` method.
+
+In addition, the code shows a pattern for automatically handling [transaction retries](/docs/v25.2/transaction-retry-error-example) by wrapping transactions in a higher-order function named `runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+
+It does all of the above using the practices we recommend for using Hibernate (and the underlying JDBC connection) with CockroachDB, which are listed in the [Recommended Practices](#recommended-practices) section below.
+
+The contents of `Sample.java`:
+
+```java
+package com.cockroachlabs;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Random;
+import java.util.function.Function;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import org.hibernate.JDBCException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class Sample implements Serializable {
+
+    private static final Random RAND = new Random();
+    private static final boolean FORCE_RETRY = false;
+    private static final String RETRY_SQL_STATE = "40001";
+    private static final int MAX_ATTEMPT_COUNT = 6;
+
+    private static Function<Session, BigDecimal> addAccounts() throws JDBCException {
+        Function<Session, BigDecimal> f = s -> {
+            BigDecimal rv = new BigDecimal(0);
+            try {
+                s.save(new Account(1, 1000));
+                s.save(new Account(2, 250));
+                s.save(new Account(3, 314159));
+                rv = BigDecimal.valueOf(1);
+                System.out.printf("APP: addAccounts() --> %.2f\n", rv);
+            } catch (JDBCException e) {
+                throw e;
+            }
+            return rv;
+        };
+        return f;
+    }
+
+    private static Function<Session, BigDecimal> transferFunds(long fromId, long toId, BigDecimal amount) throws JDBCException {
+        Function<Session, BigDecimal> f = s -> {
+            BigDecimal rv = new BigDecimal(0);
+            try {
+                Account fromAccount = (Account) s.get(Account.class, fromId);
+                Account toAccount = (Account) s.get(Account.class, toId);
+                if (!(amount.compareTo(fromAccount.getBalance()) > 0)) {
+                    fromAccount.balance = fromAccount.balance.subtract(amount);
+                    toAccount.balance = toAccount.balance.add(amount);
+                    s.save(fromAccount);
+                    s.save(toAccount);
+                    rv = amount;
+                    System.out.printf("APP: transferFunds(%d, %d, %.2f) --> %.2f\n", fromId, toId, amount, rv);
+                }
+            } catch (JDBCException e) {
+                throw e;
+            }
+            return rv;
+        };
+        return f;
+    }
+
+    // Test our retry handling logic if FORCE_RETRY is true.  This
+    // method is only used to test the retry logic.  It is not
+    // intended for production code.
+    private static Function<Session, BigDecimal> forceRetryLogic() throws JDBCException {
+        Function<Session, BigDecimal> f = s -> {
+            BigDecimal rv = new BigDecimal(-1);
+            try {
+                System.out.printf("APP: testRetryLogic: BEFORE EXCEPTION\n");
+                s.createNativeQuery("SELECT crdb_internal.force_retry('1s')").executeUpdate();
+            } catch (JDBCException e) {
+                System.out.printf("APP: testRetryLogic: AFTER EXCEPTION\n");
+                throw e;
+            }
+            return rv;
+        };
+        return f;
+    }
+
+    private static Function<Session, BigDecimal> getAccountBalance(long id) throws JDBCException {
+        Function<Session, BigDecimal> f = s -> {
+            BigDecimal balance;
+            try {
+                Account account = s.get(Account.class, id);
+                balance = account.getBalance();
+                System.out.printf("APP: getAccountBalance(%d) --> %.2f\n", id, balance);
+            } catch (JDBCException e) {
+                throw e;
+            }
+            return balance;
+        };
+        return f;
+    }
+
+    // Run SQL code in a way that automatically handles the
+    // transaction retry logic so we don't have to duplicate it in
+    // various places.
+    private static BigDecimal runTransaction(Session session, Function<Session, BigDecimal> fn) {
+        BigDecimal rv = new BigDecimal(0);
+        int attemptCount = 0;
+
+        while (attemptCount < MAX_ATTEMPT_COUNT) {
+            attemptCount++;
+
+            if (attemptCount > 1) {
+                System.out.printf("APP: Entering retry loop again, iteration %d\n", attemptCount);
+            }
+
+            Transaction txn = session.beginTransaction();
+            System.out.printf("APP: BEGIN;\n");
+
+            if (attemptCount == MAX_ATTEMPT_COUNT) {
+                String err = String.format("hit max of %s attempts, aborting", MAX_ATTEMPT_COUNT);
+                throw new RuntimeException(err);
+            }
+
+            // This block is only used to test the retry logic.
+            // It is not necessary in production code.  See also
+            // the method 'testRetryLogic()'.
+            if (FORCE_RETRY) {
+                session.createNativeQuery("SELECT now()").list();
+            }
+
+            try {
+                rv = fn.apply(session);
+                if (!rv.equals(-1)) {
+                    txn.commit();
+                    System.out.printf("APP: COMMIT;\n");
+                    break;
+                }
+            } catch (JDBCException e) {
+                if (RETRY_SQL_STATE.equals(e.getSQLState())) {
+                    // Since this is a transaction retry error, we
+                    // roll back the transaction and sleep a little
+                    // before trying again.  Each time through the
+                    // loop we sleep for a little longer than the last
+                    // time (A.K.A. exponential backoff).
+                    System.out.printf("APP: retryable exception occurred:\n    sql state = [%s]\n    message = [%s]\n    retry counter = %s\n", e.getSQLState(), e.getMessage(), attemptCount);
+                    System.out.printf("APP: ROLLBACK;\n");
+                    txn.rollback();
+                    int sleepMillis = (int) (Math.pow(2, attemptCount) * 100) + RAND.nextInt(100);
+                    System.out.printf("APP: Hit 40001 transaction retry error, sleeping %s milliseconds\n", sleepMillis);
+                    try {
+                        Thread.sleep(sleepMillis);
+                    } catch (InterruptedException ignored) {
+                        // no-op
+                    }
+                    rv = BigDecimal.valueOf(-1);
+                } else {
+                    throw e;
+                }
+            }
+        }
+        return rv;
+    }
+
+    public static void main(String[] args) {
+        // Create a SessionFactory based on our hibernate.cfg.xml configuration
+        // file, which defines how to connect to the database.
+        SessionFactory sessionFactory
+                = new Configuration()
+                        .configure("hibernate.cfg.xml")
+                        .addAnnotatedClass(Account.class)
+                        .buildSessionFactory();
+
+        try (Session session = sessionFactory.openSession()) {
+            long fromAccountId = 1;
+            long toAccountId = 2;
+            BigDecimal transferAmount = BigDecimal.valueOf(100);
+
+            if (FORCE_RETRY) {
+                System.out.printf("APP: About to test retry logic in 'runTransaction'\n");
+                runTransaction(session, forceRetryLogic());
+            } else {
+
+                runTransaction(session, addAccounts());
+                BigDecimal fromBalance = runTransaction(session, getAccountBalance(fromAccountId));
+                BigDecimal toBalance = runTransaction(session, getAccountBalance(toAccountId));
+                if (!fromBalance.equals(-1) && !toBalance.equals(-1)) {
+                    // Success!
+                    System.out.printf("APP: getAccountBalance(%d) --> %.2f\n", fromAccountId, fromBalance);
+                    System.out.printf("APP: getAccountBalance(%d) --> %.2f\n", toAccountId, toBalance);
+                }
+
+                // Transfer $100 from account 1 to account 2
+                BigDecimal transferResult = runTransaction(session, transferFunds(fromAccountId, toAccountId, transferAmount));
+                if (!transferResult.equals(-1)) {
+                    // Success!
+                    System.out.printf("APP: transferFunds(%d, %d, %.2f) --> %.2f \n", fromAccountId, toAccountId, transferAmount, transferResult);
+
+                    BigDecimal fromBalanceAfter = runTransaction(session, getAccountBalance(fromAccountId));
+                    BigDecimal toBalanceAfter = runTransaction(session, getAccountBalance(toAccountId));
+                    if (!fromBalanceAfter.equals(-1) && !toBalanceAfter.equals(-1)) {
+                        // Success!
+                        System.out.printf("APP: getAccountBalance(%d) --> %.2f\n", fromAccountId, fromBalanceAfter);
+                        System.out.printf("APP: getAccountBalance(%d) --> %.2f\n", toAccountId, toBalanceAfter);
+                    }
+                }
+            }
+        } finally {
+            sessionFactory.close();
+        }
+    }
+}
+```
+
+### Run the code
+
+Compile and run the code using `gradlew`, which will also download the dependencies:
+
+```shell
+$ cd example-app-java-hibernate
+```
+
+```shell
+$ ./gradlew run
+```
+
+Toward the end of the output, you should see:
+
+```text
+APP: BEGIN;
+APP: addAccounts() --> 1.00
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(1) --> 1000.00
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(2) --> 250.00
+APP: COMMIT;
+APP: getAccountBalance(1) --> 1000.00
+APP: getAccountBalance(2) --> 250.00
+APP: BEGIN;
+APP: transferFunds(1, 2, 100.00) --> 100.00
+APP: COMMIT;
+APP: transferFunds(1, 2, 100.00) --> 100.00
+APP: BEGIN;
+APP: getAccountBalance(1) --> 900.00
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(2) --> 350.00
+APP: COMMIT;
+APP: getAccountBalance(1) --> 900.00
+APP: getAccountBalance(2) --> 350.00
+```
+
+## Recommended Practices
+
+### Generate PKCS8 keys for client authentication
+
+You can pass the [`--also-generate-pkcs8-key` flag](/docs/v25.2/cockroach-cert#flag-pkcs8) to [`cockroach cert`](/docs/v25.2/cockroach-cert) to generate a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. For example, if you have the user `max`:
+
+```shell
+$ cockroach cert create-client max --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
+```
+
+The generated PKCS8 key will be named `client.max.key.pk8`.
+
+</Tab>
+</Tabs>
+
+### Use `IMPORT INTO` to read in large data sets
+
+If you are trying to get a large data set into CockroachDB all at once (a bulk import), avoid writing client-side code altogether and use the [`IMPORT INTO`](/docs/v25.2/import-into) statement instead. It is much faster and more efficient than making a series of [`INSERT`s](/docs/v25.2/insert) and [`UPDATE`s](/docs/v25.2/update). It bypasses the [SQL layer](/docs/v25.2/architecture/sql-layer) altogether and writes directly to the [storage layer](/docs/v25.2/architecture/storage-layer) of the database.
+
+For more information about importing data from PostgreSQL, see [Migrate from PostgreSQL](/docs/molt/migrate-to-cockroachdb).
+
+For more information about importing data from MySQL, see [Migrate from MySQL](/docs/molt/migrate-to-cockroachdb?filters=mysql).
+
+### Use `reWriteBatchedInserts` for increased speed
+
+We strongly recommend setting `reWriteBatchedInserts=true`; we have seen 2-3x performance improvements with it enabled. From [the JDBC connection parameters documentation](https://jdbc.postgresql.org/documentation/use#connection-parameters):
+
+> This will change batch inserts from `insert into foo (col1, col2, col3) values (1,2,3)` into `insert into foo (col1, col2, col3) values (1,2,3), (4,5,6)` this provides 2-3x performance improvement
+
+### Retrieve large data sets in chunks using cursors
+
+CockroachDB now supports the PostgreSQL wire-protocol cursors for implicit transactions and explicit transactions executed to completion. This means the [PGJDBC driver](https://jdbc.postgresql.org/) can use this protocol to stream queries with large result sets. This is much faster than [paginating through results in SQL using `LIMIT.. OFFSET`](/docs/v25.2/pagination).
+
+For instructions showing how to use cursors in your Java code, see [Getting results based on a cursor](https://jdbc.postgresql.org/documentation/query#getting-results-based-on-a-cursor) from the PGJDBC documentation.
+
+Note that interleaved execution (partial execution of multiple statements within the same connection and transaction) is not supported when [`Statement.setFetchSize()`](https://docs.oracle.com/javase/8/docs/api/java/sql/Statement#setFetchSize-int-) is used.
+
+## What's next?
+
+Read more about using the [Hibernate ORM](http://hibernate.org/orm), or check out a more realistic implementation of Hibernate with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+
+You might also be interested in the following pages:
+
+- [Client Connection Parameters](/docs/v25.2/connection-parameters)
+- [Connection Pooling](/docs/v25.2/connection-pooling)
+- [Data Replication](/docs/v25.2/demo-replication-and-rebalancing)
+- [CockroachDB Resilience](/docs/v25.2/demo-cockroachdb-resilience)
+- [Replication &amp; Rebalancing](/docs/v25.2/demo-replication-and-rebalancing)
+- [Cross-Cloud Migration](/docs/v25.2/demo-automatic-cloud-migration)
+- [Automated Operations](/docs/v25.2/orchestrate-a-local-cluster-with-kubernetes-insecure)

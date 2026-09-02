@@ -1,0 +1,302 @@
+---
+title: "information_schema"
+old_description: "The information_schema schema contains read-only views that you can use for introspection into your database's tables, columns, indexes, and views."
+---
+
+The `information_schema` [system catalog](/docs/v26.1/system-catalogs) contains information about your database's tables, columns, indexes, and views. This information can be used for introspection and reflection.
+
+## Data exposed by `information_schema`
+
+To perform introspection on objects, you can either read from the related `information_schema` table or use one of CockroachDB's `SHOW` statements. `information_schema` tables are read-only.
+
+<table><thead><tr><th>Object</th><th><code>information&#95;schema</code> Table</th><th>Corresponding <code>SHOW</code> Statement</th></tr></thead><tbody><tr><td>Columns</td><td><a href="#columns"><code>columns</code></a></td><td><a href="/docs/v26.1/show-columns"><code>SHOW COLUMNS</code></a></td></tr><tr><td>Constraints</td><td><a href="#check_constraints"><code>check&#95;constraints</code></a>, <a href="#key_column_usage"><code>key&#95;column&#95;usage</code></a>, <a href="#referential_constraints"><code>referential&#95;constraints</code></a>, <a href="#table_constraints"><code>table&#95;constraints</code></a></td><td><a href="/docs/v26.1/show-constraints"><code>SHOW CONSTRAINTS</code></a></td></tr><tr><td>Databases</td><td><a href="#schemata"><code>schemata</code></a></td><td><a href="/docs/v26.1/show-vars"><code>SHOW DATABASE</code></a></td></tr><tr><td>Indexes</td><td><a href="#statistics"><code>statistics</code></a></td><td><a href="/docs/v26.1/show-index"><code>SHOW INDEX</code></a></td></tr><tr><td>Privileges</td><td><a href="#schema_privileges"><code>schema&#95;privileges</code></a>, <a href="#table_privileges"><code>table&#95;privileges</code></a></td><td><a href="/docs/v26.1/show-grants"><code>SHOW GRANTS</code></a></td></tr><tr><td>Roles</td><td><a href="#role_table_grants"><code>role&#95;table&#95;grants</code></a></td><td><a href="/docs/v26.1/show-roles"><code>SHOW ROLES</code></a></td></tr><tr><td>Sequences</td><td><a href="#sequences"><code>sequences</code></a></td><td><a href="/docs/v26.1/show-create"><code>SHOW CREATE SEQUENCE</code></a></td></tr><tr><td>Tables</td><td><a href="#tables"><code>tables</code></a></td><td><a href="/docs/v26.1/show-tables"><code>SHOW TABLES</code></a></td></tr><tr><td>Views</td><td><a href="#tables"><code>tables</code></a>, <a href="#views"><code>views</code></a></td><td><a href="/docs/v26.1/show-create"><code>SHOW CREATE</code></a></td></tr></tbody></table>
+
+## Tables in `information_schema`
+
+The virtual schema `information_schema` contains virtual tables, also called "system views," representing the database's objects, each of which is detailed below.
+
+These differ from regular [SQL views](/docs/v26.1/views) in that they do not show data created from the content of other tables. Instead, CockroachDB generates the data for virtual tables when they are accessed.
+
+<Note>
+A query can specify a table name without a database name (e.g., `SELECT * FROM information_schema.sequences`). See [Name Resolution](/docs/v26.1/sql-name-resolution) for more information.
+</Note>
+
+<Tip>
+The virtual tables in `information_schema` contain useful comments with links to further documentation. To view these comments, use `SHOW TABLES FROM information_schema WITH COMMENT`:
+</Tip>
+
+### administrable_role_authorizations
+
+`administrable_role_authorizations` identifies all roles that the current user has the admin option for.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>grantee</code></td><td>Name of the user to which this role membership was granted (always the current user).</td></tr><tr><td><code>role&#95;name</code></td><td>Name of a role.</td></tr><tr><td><code>is&#95;grantable</code></td><td><code>YES</code> if the grantee has the admin option on the role; <code>NO</code> if not.</td></tr></tbody></table>
+
+### applicable_roles
+
+`applicable_roles` identifies all roles whose privileges the current user can use. This implies there is a chain of role grants from the current user to the role in question. The current user itself is also an applicable role, but is not listed.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>grantee</code></td><td>Name of the user to which this role membership was granted (always the current user).</td></tr><tr><td><code>role&#95;name</code></td><td>Name of a role.</td></tr><tr><td><code>is&#95;grantable</code></td><td><code>YES</code> if the grantee has the admin option on the role; <code>NO</code> if not.</td></tr></tbody></table>
+
+### character_sets
+
+`character_sets` identifies the character sets available in the current database.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>character&#95;set&#95;catalog</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>character&#95;set&#95;schema</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>character&#95;set&#95;name</code></td><td>Name of the character set (i.e., the name of the database encoding). Always <code>UTF8</code>.</td></tr><tr><td><code>character&#95;repertoire</code></td><td>Character repertoire. <code>UCS</code> if the encoding is UTF8; the encoding name if not.</td></tr><tr><td><code>form&#95;of&#95;use</code></td><td>Character encoding form (i.e., the name of the database encoding). Always <code>UTF8</code>.</td></tr><tr><td><code>default&#95;collate&#95;catalog</code></td><td>Name of the database containing the default collation (if any collation is identified, always the current database).</td></tr><tr><td><code>default&#95;collate&#95;schema</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>default&#95;collate&#95;name</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr></tbody></table>
+
+### check_constraints
+
+`check_constraints` contains information about the [`CHECK`](/docs/v26.1/check) constraints applied to columns in a database.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>constraint&#95;catalog</code></td><td>Name of the database containing the constraint.</td></tr><tr><td><code>constraint&#95;schema</code></td><td>Name of the schema containing the constraint.</td></tr><tr><td><code>constraint&#95;name</code></td><td>Name of the constraint.</td></tr><tr><td><code>check&#95;clause</code></td><td>Definition of the <code>CHECK</code> constraint.</td></tr></tbody></table>
+
+### collations
+
+`collations` identifies the collations available in the current database.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>collation&#95;catalog</code></td><td>Name of the database containing the collation (always the current database).</td></tr><tr><td><code>collation&#95;schema</code></td><td>Name of the schema containing the collation (always <code>pg&#95;catalog</code>).</td></tr><tr><td><code>collation&#95;name</code></td><td>Name of the collation.</td></tr><tr><td><code>pad&#95;attribute</code></td><td>Always <code>NO PAD</code> (<code>PAD SPACE</code> is not supported by CockroachDB).</td></tr></tbody></table>
+
+### collation_character_set_applicability
+
+`collation_character_set_applicability` identifies which character set the available collations are applicable to.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>collation&#95;catalog</code></td><td>Name of the database containing the collation (always the current database).</td></tr><tr><td><code>collation&#95;schema</code></td><td>Name of the schema containing the collation (always <code>pg&#95;catalog</code>).</td></tr><tr><td><code>collation&#95;name</code></td><td>Name of the collation.</td></tr><tr><td><code>character&#95;set&#95;catalog</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>character&#95;set&#95;schema</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>character&#95;set&#95;name</code></td><td>Name of the character set (always <code>UTF8</code>).</td></tr></tbody></table>
+
+### columns
+
+`columns` contains information about the columns in each table.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;catalog</code></td><td>Name of the database containing the table.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema containing the table.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the table.</td></tr><tr><td><code>column&#95;name</code></td><td>Name of the column.</td></tr><tr><td><code>column&#95;comment</code></td><td>Comment on the column.</td></tr><tr><td><code>ordinal&#95;position</code></td><td>Ordinal position of the column in the table (begins at 1).</td></tr><tr><td><code>column&#95;default</code></td><td>Default value for the column.</td></tr><tr><td><code>is&#95;nullable</code></td><td><code>YES</code> if the column accepts <code>NULL</code> values; <code>NO</code> if it doesn't (e.g., it has the <a href="/docs/v26.1/not-null"><code>NOT NULL</code> constraint</a>).</td></tr><tr><td><code>data&#95;type</code></td><td><a href="/docs/v26.1/data-types">Data type</a> of the column.</td></tr><tr><td><code>character&#95;maximum&#95;length</code></td><td>If <code>data&#95;type</code> is <code>STRING</code>, the maximum length in characters of a value; otherwise <code>NULL</code>.</td></tr><tr><td><code>character&#95;octet&#95;length</code></td><td>If <code>data&#95;type</code> is <code>STRING</code>, the maximum length in octets (bytes) of a value; otherwise <code>NULL</code>.</td></tr><tr><td><code>numeric&#95;precision</code></td><td>If <code>data&#95;type</code> is numeric, the declared or implicit precision (i.e., number of significant digits); otherwise <code>NULL</code>.</td></tr><tr><td><code>numeric&#95;precision&#95;radix</code></td><td>If <code>data&#95;type</code> identifies a numeric type, the base in which the values in the columns <code>numeric&#95;precision</code> and <code>numeric&#95;scale</code> are expressed (either <code>2</code> or <code>10</code>). For all other data types, column is <code>NULL</code>.</td></tr><tr><td><code>numeric&#95;scale</code></td><td>If <code>data&#95;type</code> is an exact numeric type, the scale (i.e., number of digits to the right of the decimal point); otherwise <code>NULL</code>.</td></tr><tr><td><code>datetime&#95;precision</code></td><td>The precision level of columns with data type <a href="/docs/v26.1/time"><code>TIME</code>/<code>TIMETZ</code></a>, <a href="/docs/v26.1/timestamp"><code>TIMESTAMP</code>/<code>TIMESTAMPTZ</code></a>, or <a href="/docs/v26.1/interval"><code>INTERVAL</code></a>. For all other data types, this column is <code>NULL</code>.</td></tr><tr><td><code>interval&#95;type</code></td><td>If <code>data&#95;type</code> is <a href="/docs/v26.1/interval"><code>INTERVAL</code></a>, the specified fields (e.g., <code>YEAR TO MONTH</code>); otherwise <code>NULL</code>.</td></tr><tr><td><code>interval&#95;precision</code></td><td>If <code>data&#95;type</code> is <a href="/docs/v26.1/interval"><code>INTERVAL</code></a>, the declared or implicit precision (i.e., number of significant digits); otherwise <code>NULL</code>.</td></tr><tr><td><code>character&#95;set&#95;catalog</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>character&#95;set&#95;schema</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>character&#95;set&#95;name</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>collation&#95;catalog</code></td><td>Name of the database containing the collation (always the current database); <code>NULL</code> if the default collation is used, or if <code>data&#95;type</code> is not collatable.</td></tr><tr><td><code>collation&#95;schema</code></td><td>Name of the schema containing the collation; <code>NULL</code> if the default collation is used, or if <code>data&#95;type</code> is not collatable.</td></tr><tr><td><code>collation&#95;name</code></td><td>Name of the collation; <code>NULL</code> if the default collation is used, or if <code>data&#95;type</code> is not collatable.</td></tr><tr><td><code>domain&#95;catalog</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>domain&#95;schema</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>domain&#95;name</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>udt&#95;catalog</code></td><td>Name of the column data type's database (always the current database).</td></tr><tr><td><code>udt&#95;schema</code></td><td>Name of the column data type's schema.</td></tr><tr><td><code>udt&#95;name</code></td><td>Name of the column data type.</td></tr><tr><td><code>scope&#95;catalog</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>scope&#95;schema</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>scope&#95;name</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>maximum&#95;cardinality</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>dtd&#95;identifier</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>is&#95;self&#95;referencing</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>is&#95;identity</code></td><td>Whether or not the column is an identity column (always <code>NO</code>).</td></tr><tr><td><code>identity&#95;generation</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>identity&#95;start</code></td><td>If the column is an identity column, then the start value of the internal sequence, else <code>NULL</code>.</td></tr><tr><td><code>identity&#95;increment</code></td><td>If the column is an identity column, then the increment of the internal sequence, else <code>NULL</code>.</td></tr><tr><td><code>identity&#95;maximum</code></td><td>If the column is an identity column, then the maximum value of the internal sequence, else <code>NULL</code>.</td></tr><tr><td><code>identity&#95;minimum</code></td><td>If the column is an identity column, then the minimum value of the internal sequence, else <code>NULL</code>.</td></tr><tr><td><code>identity&#95;cycle</code></td><td>If the column is an identity column, then <code>YES</code> if the internal sequence cycles or <code>NO</code> if it does not; otherwise <code>NULL</code>.</td></tr><tr><td><code>is&#95;generated</code></td><td>Whether or not the column is generated (i.e., a <a href="/docs/v26.1/computed-columns">computed column</a>). Possible values: <code>YES</code> or <code>NO</code>.</td></tr><tr><td><code>generation&#95;expression</code></td><td>The expression used for computing the column value in a computed column.</td></tr><tr><td><code>is&#95;updatable</code></td><td>Whether or not the column is able to be updated. Possible values: <code>YES</code> or <code>NO</code>.</td></tr><tr><td><code>is&#95;hidden</code></td><td>Whether or not the column is hidden. Possible values: <code>YES</code> or <code>NO</code>.</td></tr><tr><td><code>crdb&#95;sql&#95;type</code></td><td><a href="/docs/v26.1/data-types">Data type</a> of the column.</td></tr></tbody></table>
+
+### column_privileges
+
+`column_privileges` identifies all privileges granted on columns to or by a currently enabled role. There is one row for each combination of `grantor`, `grantee`, and column (defined by `table_catalog`, `table_schema`, `table_name`, and `column_name`).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>grantor</code></td><td>Name of the role that granted the privilege.</td></tr><tr><td><code>grantee</code></td><td>Name of the role that was granted the privilege.</td></tr><tr><td><code>table&#95;catalog</code></td><td>Name of the database containing the table that contains the column (always the current database).</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema containing the table that contains the column.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the table.</td></tr><tr><td><code>column&#95;name</code></td><td>Name of the column.</td></tr><tr><td><code>privilege&#95;type</code></td><td>Name of the <a href="/docs/v26.1/security-reference/authorization#managing-privileges">privilege</a>.</td></tr><tr><td><code>is&#95;grantable</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr></tbody></table>
+
+### column_udt_usage
+
+`column_udt_usage` identifies all columns that use data types owned by a currently-enabled role.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>udt&#95;catalog</code></td><td>Name of the database in which the column data type is defined (always the current database).</td></tr><tr><td><code>udt&#95;schema</code></td><td>Name of the schema in which the column data type is defined.</td></tr><tr><td><code>udt&#95;name</code></td><td>Name of the column data type.</td></tr><tr><td><code>table&#95;catalog</code></td><td>Name of the database containing the table (always the current database).</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema containing the table.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the table.</td></tr><tr><td><code>column&#95;name</code></td><td>Name of the column.</td></tr></tbody></table>
+
+### constraint_column_usage
+
+`constraint_column_usage` identifies all columns in a database that are used by some [constraint](/docs/v26.1/constraints).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;catalog</code></td><td>Name of the database that contains the table that contains the column that is used by some constraint.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema that contains the table that contains the column that is used by some constraint.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the table that contains the column that is used by some constraint.</td></tr><tr><td><code>column&#95;name</code></td><td>Name of the column that is used by some constraint.</td></tr><tr><td><code>constraint&#95;catalog</code></td><td>Name of the database that contains the constraint.</td></tr><tr><td><code>constraint&#95;schema</code></td><td>Name of the schema that contains the constraint.</td></tr><tr><td><code>constraint&#95;name</code></td><td>Name of the constraint.</td></tr></tbody></table>
+
+### enabled_roles
+
+The `enabled_roles` view identifies enabled roles for the current user. This includes both direct and indirect roles.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>role&#95;name</code></td><td>Name of a role.</td></tr></tbody></table>
+
+### key_column_usage
+
+`key_column_usage` identifies columns with [`PRIMARY KEY`](/docs/v26.1/primary-key), [`UNIQUE`](/docs/v26.1/unique), or [foreign key / `REFERENCES`](/docs/v26.1/foreign-key) constraints.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>constraint&#95;catalog</code></td><td>Name of the database containing the constraint.</td></tr><tr><td><code>constraint&#95;schema</code></td><td>Name of the schema containing the constraint.</td></tr><tr><td><code>constraint&#95;name</code></td><td>Name of the constraint.</td></tr><tr><td><code>table&#95;catalog</code></td><td>Name of the database containing the constrained table.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema containing the constrained table.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the constrained table.</td></tr><tr><td><code>column&#95;name</code></td><td>Name of the constrained column.</td></tr><tr><td><code>ordinal&#95;position</code></td><td>Ordinal position of the column within the constraint (begins at 1).</td></tr><tr><td><code>position&#95;in&#95;unique&#95;constraint</code></td><td>For foreign key constraints, ordinal position of the referenced column within its uniqueness constraint (begins at 1).</td></tr></tbody></table>
+
+### referential_constraints
+
+`referential_constraints` identifies all referential ([foreign key](/docs/v26.1/foreign-key)) constraints.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>constraint&#95;catalog</code></td><td>Name of the database containing the constraint.</td></tr><tr><td><code>constraint&#95;schema</code></td><td>Name of the schema containing the constraint.</td></tr><tr><td><code>constraint&#95;name</code></td><td>Name of the constraint.</td></tr><tr><td><code>unique&#95;constraint&#95;catalog</code></td><td>Name of the database containing the <code>UNIQUE</code> or <code>PRIMARY KEY</code> constraint that the foreign key constraint references (always the current database).</td></tr><tr><td><code>unique&#95;constraint&#95;schema</code></td><td>Name of the schema containing the <code>UNIQUE</code> or <code>PRIMARY KEY</code> constraint that the foreign key constraint references.</td></tr><tr><td><code>unique&#95;constraint&#95;name</code></td><td>Name of the <code>UNIQUE</code> or <code>PRIMARY KEY</code> constraint.</td></tr><tr><td><code>match&#95;option</code></td><td>Match option of the foreign key constraint: <code>FULL</code>, <code>PARTIAL</code>, or <code>NONE</code>.</td></tr><tr><td><code>update&#95;rule</code></td><td>Update rule of the foreign key constraint: <code>CASCADE</code>, <code>SET NULL</code>, <code>SET DEFAULT</code>, <code>RESTRICT</code>, or <code>NO ACTION</code>.</td></tr><tr><td><code>delete&#95;rule</code></td><td>Delete rule of the foreign key constraint: <code>CASCADE</code>, <code>SET NULL</code>, <code>SET DEFAULT</code>, <code>RESTRICT</code>, or <code>NO ACTION</code>.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the table containing the constraint.</td></tr><tr><td><code>referenced&#95;table&#95;name</code></td><td>Name of the table containing the <code>UNIQUE</code> or <code>PRIMARY KEY</code> constraint that the foreign key constraint references.</td></tr></tbody></table>
+
+### role_table_grants
+
+`role_table_grants` identifies which [privileges](/docs/v26.1/security-reference/authorization#managing-privileges) have been granted on tables or views where the grantor or grantee is a currently enabled role. This table is identical to [`table_privileges`](#table_privileges).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>grantor</code></td><td>Name of the role that granted the privilege.</td></tr><tr><td><code>grantee</code></td><td>Name of the role that was granted the privilege.</td></tr><tr><td><code>table&#95;catalog</code></td><td>Name of the database containing the table.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema containing the table.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the table.</td></tr><tr><td><code>privilege&#95;type</code></td><td>Name of the <a href="/docs/v26.1/security-reference/authorization#managing-privileges">privilege</a>.</td></tr><tr><td><code>is&#95;grantable</code></td><td><code>TRUE</code> if the grantee has the grant option on the object; <code>FALSE</code> if not.</td></tr><tr><td><code>with&#95;hierarchy</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr></tbody></table>
+
+### schema_privileges
+
+`schema_privileges` identifies which [privileges](/docs/v26.1/security-reference/authorization#managing-privileges) have been granted to each user at the database level.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>grantee</code></td><td>Username of user with grant.</td></tr><tr><td><code>table&#95;catalog</code></td><td>Name of the database containing the constrained table.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema containing the constrained table.</td></tr><tr><td><code>privilege&#95;type</code></td><td>Name of the <a href="/docs/v26.1/security-reference/authorization#managing-privileges">privilege</a>.</td></tr><tr><td><code>is&#95;grantable</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr></tbody></table>
+
+### schemata
+
+`schemata` identifies the database's schemas.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;catalog</code></td><td>Name of the database.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema.</td></tr><tr><td><code>default&#95;character&#95;set&#95;name</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>sql&#95;path</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr></tbody></table>
+
+### sequences
+
+`sequences` identifies [sequences](/docs/v26.1/create-sequence) defined in a database.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>sequence&#95;catalog</code></td><td>Name of the database that contains the sequence.</td></tr><tr><td><code>sequence&#95;schema</code></td><td>Name of the schema that contains the sequence.</td></tr><tr><td><code>sequence&#95;name</code></td><td>Name of the sequence.</td></tr><tr><td><code>data&#95;type</code></td><td>The data type of the sequence.</td></tr><tr><td><code>numeric&#95;precision</code></td><td>The (declared or implicit) precision of the sequence <code>data&#95;type</code>.</td></tr><tr><td><code>numeric&#95;precision&#95;radix</code></td><td>The base of the values in which the columns <code>numeric&#95;precision</code> and <code>numeric&#95;scale</code> are expressed. The value is either <code>2</code> or <code>10</code>.</td></tr><tr><td><code>numeric&#95;scale</code></td><td>The (declared or implicit) scale of the sequence <code>data&#95;type</code>. The scale indicates the number of significant digits to the right of the decimal point. It can be expressed in decimal (base 10) or binary (base 2) terms, as specified in the column <code>numeric&#95;precision&#95;radix</code>.</td></tr><tr><td><code>start&#95;value</code></td><td>The first value of the sequence.</td></tr><tr><td><code>minimum&#95;value</code></td><td>The minimum value of the sequence.</td></tr><tr><td><code>maximum&#95;value</code></td><td>The maximum value of the sequence.</td></tr><tr><td><code>increment</code></td><td>The value by which the sequence is incremented. A negative number creates a descending sequence. A positive number creates an ascending sequence.</td></tr><tr><td><code>cycle&#95;option</code></td><td>Currently, all sequences are set to <code>NO CYCLE</code> and the sequence will not wrap.</td></tr></tbody></table>
+
+### session_variables
+
+`session_variables` contains information about the [session variable settings](/docs/v26.1/set-vars) for your session. `session_variables` contains a `variable` column and a `value` column. The `value` column corresponds to the output of the [`SHOW {session variable}`](/docs/v26.1/show-vars) statement.
+
+For a list of the session variables, see [supported variables](/docs/v26.1/show-vars#supported-variables).
+
+For a list of the session variables that have been updated from default values, see [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`](/docs/v26.1/show-default-session-variables-for-role).
+
+### statistics
+
+`statistics` identifies table [indexes](/docs/v26.1/indexes).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;catalog</code></td><td>Name of the database that contains the constrained table.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema that contains the constrained table.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the table.</td></tr><tr><td><code>non&#95;unique</code></td><td><code>NO</code> if the index was created with the <code>UNIQUE</code> constraint; <code>YES</code> if the index was not created with <code>UNIQUE</code>.</td></tr><tr><td><code>index&#95;schema</code></td><td>Name of the schema that contains the index.</td></tr><tr><td><code>index&#95;name</code></td><td>Name of the index.</td></tr><tr><td><code>seq&#95;in&#95;index</code></td><td>Ordinal position of the column within the index (begins at 1).</td></tr><tr><td><code>column&#95;name</code></td><td>Name of the column being indexed.</td></tr><tr><td><code>collation</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>cardinality</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>direction</code></td><td><code>ASC</code> (ascending) or <code>DESC</code> (descending) order.</td></tr><tr><td><code>storing</code></td><td><code>YES</code> if column is <a href="/docs/v26.1/create-index#store-columns">stored</a>; <code>NO</code> if it's indexed or implicit.</td></tr><tr><td><code>implicit</code></td><td><code>YES</code> if column is implicit (i.e., it is not specified in the index and not stored); <code>NO</code> if it's indexed or stored.</td></tr></tbody></table>
+
+### table_constraints
+
+`table_constraints` identifies [constraints](/docs/v26.1/constraints) applied to tables.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>constraint&#95;catalog</code></td><td>Name of the database containing the constraint.</td></tr><tr><td><code>constraint&#95;schema</code></td><td>Name of the schema containing the constraint.</td></tr><tr><td><code>constraint&#95;name</code></td><td>Name of the constraint.</td></tr><tr><td><code>table&#95;catalog</code></td><td>Name of the database containing the constrained table.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema containing the constrained table.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the constrained table.</td></tr><tr><td><code>constraint&#95;type</code></td><td>Type of <a href="/docs/v26.1/constraints">constraint</a>: <code>CHECK</code>, <code>FOREIGN KEY</code>, <code>PRIMARY KEY</code>, or <code>UNIQUE</code>.<br/><code>NOT NULL</code> constraints appear as <code>CHECK</code> constraints in this column.</td></tr><tr><td><code>is&#95;deferrable</code></td><td><code>YES</code> if the constraint can be deferred; <code>NO</code> if not.</td></tr><tr><td><code>initially&#95;deferred</code></td><td><code>YES</code> if the constraint is deferrable and initially deferred; <code>NO</code> if not.</td></tr></tbody></table>
+
+### table_privileges
+
+`table_privileges` identifies which [privileges](/docs/v26.1/security-reference/authorization#managing-privileges) have been granted to each user at the table level.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>grantor</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>grantee</code></td><td>Username of the user with grant.</td></tr><tr><td><code>table&#95;catalog</code></td><td>Name of the database that the grant applies to.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema that the grant applies to.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the table that the grant applies to.</td></tr><tr><td><code>privilege&#95;type</code></td><td>Type of <a href="/docs/v26.1/security-reference/authorization#managing-privileges">privilege</a>: <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>TRUNCATE</code>, <code>REFERENCES</code>, or <code>TRIGGER</code>.</td></tr><tr><td><code>is&#95;grantable</code></td><td><code>TRUE</code> if the grantee has the grant option on the object; <code>FALSE</code> if not.</td></tr><tr><td><code>with&#95;hierarchy</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr></tbody></table>
+
+### tables
+
+`tables` identifies tables and views in the database.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;catalog</code></td><td>Name of the database that contains the table.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema that contains the table.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the table.</td></tr><tr><td><code>table&#95;type</code></td><td>Type of the table: <code>BASE TABLE</code> for a normal table, <code>VIEW</code> for a view, or <code>SYSTEM VIEW</code> for a view created by CockroachDB.</td></tr><tr><td><code>version</code></td><td>Version number of the table; versions begin at 1 and are incremented each time an <code>ALTER TABLE</code> statement is issued on the table. Note that this column is an experimental feature used for internal purposes inside CockroachDB and its definition is subject to change without notice.</td></tr></tbody></table>
+
+### type_privileges
+
+`type_privileges` contains information about privileges on the user-defined types in the current database.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>grantee</code></td><td>Username of user with privilege grant.</td></tr><tr><td><code>type&#95;catalog</code></td><td>Name of the database that contains the type (always the current database).</td></tr><tr><td><code>type&#95;schema</code></td><td>Name of the schema that contains the type.</td></tr><tr><td><code>type&#95;name</code></td><td>Name of the type.</td></tr><tr><td><code>privilege&#95;type</code></td><td>Type of <a href="/docs/v26.1/security-reference/authorization#managing-privileges">privilege</a>.</td></tr></tbody></table>
+
+### user_privileges
+
+`user_privileges` identifies global [privileges](/docs/v26.1/security-reference/authorization#managing-privileges).
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>grantee</code></td><td>Username of user with grant.</td></tr><tr><td><code>table&#95;catalog</code></td><td>Name of the database that the privilege applies to.</td></tr><tr><td><code>privilege&#95;type</code></td><td>Type of <a href="/docs/v26.1/security-reference/authorization#managing-privileges">privilege</a>.</td></tr><tr><td><code>is&#95;grantable</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr></tbody></table>
+
+### views
+
+`views` identifies [views](/docs/v26.1/views) in the database.
+
+<table><thead><tr><th>Column</th><th>Description</th></tr></thead><tbody><tr><td><code>table&#95;catalog</code></td><td>Name of the database that contains the view.</td></tr><tr><td><code>table&#95;schema</code></td><td>Name of the schema that contains the view.</td></tr><tr><td><code>table&#95;name</code></td><td>Name of the view.</td></tr><tr><td><code>view&#95;definition</code></td><td><code>AS</code> clause used to <a href="/docs/v26.1/views#creating-views">create the view</a>.</td></tr><tr><td><code>check&#95;option</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>is&#95;updatable</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>is&#95;insertable&#95;into</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>is&#95;trigger&#95;updatable</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>is&#95;trigger&#95;deletable</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr><tr><td><code>is&#95;trigger&#95;insertable&#95;into</code></td><td>Always <code>NULL</code> (unsupported by CockroachDB).</td></tr></tbody></table>
+
+### Empty tables
+
+For compatibility with third-party [PostgreSQL](https://www.postgresql.org/docs/13/information-schema) and [MySQL](https://dev.mysql.com/doc/refman/8.0/en/information-schema-table-reference) tooling, `information_schema` includes the following empty tables:
+
+- `attributes`
+- `check_constraint_routine_usage`
+- `column_column_usage`
+- `column_domain_usage`
+- `column_options`
+- `column_statistics`
+- `columns_extensions`
+- `constraint_table_usage`
+- `data_type_privileges`
+- `domain_constraints`
+- `domain_udt_usage`
+- `domains`
+- `element_types`
+- `engines`
+- `events`
+- `files`
+- `foreign_data_wrapper_options`
+- `foreign_data_wrappers`
+- `foreign_server_options`
+- `foreign_servers`
+- `foreign_table_options`
+- `foreign_tables`
+- `information_schema_catalog_name`
+- `keywords`
+- `optimizer_trace`
+- `parameters`
+- `partitions`
+- `plugins`
+- `processlist`
+- `profiling`
+- `resource_groups`
+- `role_column_grants`
+- `role_routine_grants`
+- `role_udt_grants`
+- `role_usage_grants`
+- `routines`
+- `routine_privileges`
+- `schemata_extensions`
+- `sql_features`
+- `sql_implementation_info`
+- `sql_parts`
+- `sql_sizing`
+- `st_geometry_columns`
+- `st_spatial_reference_systems`
+- `st_units_of_measure`
+- `table_constraints_extensions`
+- `tables_extensions`
+- `tablespaces`
+- `tablespaces_extensions`
+- `transforms`
+- `triggered_update_columns`
+- `triggers`
+- `udt_privileges`
+- `usage_privileges`
+- `user_attributes`
+- `user_defined_types`
+- `user_mapping_options`
+- `user_mappings`
+- `view_column_usage`
+- `view_routine_usage`
+- `view_table_usage`
+
+## Querying `information_schema` tables
+
+You can run [`SELECT` queries](/docs/v26.1/selection-queries) on the tables in `information_schema`.
+
+<Tip>
+The `information_schema` views typically represent objects that the current user has privilege to access. To ensure you can view all the objects in a database, access it as a user with [`admin` privileges](/docs/v26.1/security-reference/authorization#admin-role).
+</Tip>
+
+<Note>
+Unless specified otherwise, queries to `information_schema` assume the [current database](/docs/v26.1/sql-name-resolution#current-database).
+</Note>
+
+For example, to retrieve all columns from the `table_constraints` table:
+
+```sql
+> SELECT * FROM movr.information_schema.table_constraints;
+```
+
+```text
+  constraint_catalog | constraint_schema |       constraint_name        | table_catalog | table_schema |         table_name         | constraint_type | is_deferrable | initially_deferred
+---------------------+-------------------+------------------------------+---------------+--------------+----------------------------+-----------------+---------------+---------------------
+  movr               | public            | users_pkey                   | movr          | public       | users                      | PRIMARY KEY     | NO            | NO
+  movr               | public            | 3426283741_53_1_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
+  movr               | public            | 3426283741_53_2_not_null     | movr          | public       | users                      | CHECK           | NO            | NO
+  movr               | public            | vehicles_pkey                | movr          | public       | vehicles                   | PRIMARY KEY     | NO            | NO
+...
+(25 rows)
+```
+
+And to retrieve specific columns from the `table_constraints` table:
+
+```sql
+> SELECT table_name, constraint_name FROM movr.information_schema.table_constraints;
+```
+
+```text
+          table_name         |       constraint_name
+-----------------------------+-------------------------------
+  users                      | primary
+  users                      | 3426283741_53_1_not_null
+  users                      | 3426283741_53_2_not_null
+  vehicles                   | primary
+...
+(25 rows)
+```
+
+## See also
+
+- [System Catalogs](/docs/v26.1/system-catalogs)
+- [`SHOW`](/docs/v26.1/show-vars)
+- [`SHOW COLUMNS`](/docs/v26.1/show-columns)
+- [`SHOW CONSTRAINTS`](/docs/v26.1/show-constraints)
+- [`SHOW CREATE`](/docs/v26.1/show-create)
+- [`SHOW DATABASES`](/docs/v26.1/show-databases)
+- [`SHOW GRANTS`](/docs/v26.1/show-grants)
+- [`SHOW INDEX`](/docs/v26.1/show-index)
+- [`SHOW TABLES`](/docs/v26.1/show-tables)

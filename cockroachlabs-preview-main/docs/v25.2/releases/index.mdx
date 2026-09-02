@@ -1,0 +1,20 @@
+---
+title: "CockroachDB Releases Overview"
+old_description: "Information about CockroachDB releases with an index of available releases and their release notes and binaries."
+---
+
+import Index from "/snippets/releases/index.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<Index />

@@ -1,0 +1,20 @@
+---
+title: "Physical Cluster Replication for Resiliency"
+old_description: "Set up physical cluster replication (PCR) in a Cloud deployment."
+---
+
+import PhysicalClusterReplication from "/snippets/cockroachcloud/physical-cluster-replication.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<PhysicalClusterReplication />

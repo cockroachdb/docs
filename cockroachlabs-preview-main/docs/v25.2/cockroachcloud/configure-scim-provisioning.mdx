@@ -1,0 +1,20 @@
+---
+title: "Configure SCIM Provisioning"
+old_description: "Learn how to automatically provision and deprovision Cockroach Cloud organization users using SCIM."
+---
+
+import ConfigureScimProvisioning from "/snippets/cockroachcloud/configure-scim-provisioning.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ConfigureScimProvisioning />

@@ -1,0 +1,60 @@
+---
+title: "SHOW ENUMS"
+old_description: "The SHOW ENUMS statement lists the enumerated data types in a database."
+---
+
+import { ShowEnums } from "/snippets/syntax-diagrams/ShowEnums.jsx";
+
+The `SHOW ENUMS` statement lists the [enumerated data types](/docs/v26.1/enum) in the current database.
+
+## Syntax
+
+<ShowEnums />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code><br/><code>name.name</code></td><td>The name of the <a href="/docs/v26.1/create-schema">schema</a> from which to show enumerated data types, or the name of the <a href="/docs/v26.1/create-database">database</a> and the <a href="/docs/v26.1/create-schema">schema</a>, separated by a "<code>.</code>".</td></tr></tbody></table>
+
+## Examples
+
+The following example creates a [user-defined type](/docs/v26.1/create-type).
+
+```sql
+> CREATE TYPE weekday AS ENUM ('monday', 'tuesday', 'wednesday', 'thursday', 'friday');
+```
+
+```sql
+> CREATE TYPE weekend AS ENUM ('sunday', 'saturday');
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema |  name   |                   values                   | owner
+---------+---------+--------------------------------------------+--------
+  public | weekday | {monday,tuesday,wednesday,thursday,friday} | demo
+  public | weekend | {sunday,saturday}                          | demo
+(2 rows)
+```
+
+```sql
+> SHOW ENUMS FROM movr.public;
+```
+
+```text
+  schema |  name   |                   values                   | owner
+---------+---------+--------------------------------------------+--------
+  public | weekday | {monday,tuesday,wednesday,thursday,friday} | demo
+  public | weekend | {sunday,saturday}                          | demo
+(2 rows)
+```
+
+## See also
+
+- [`ENUM`](/docs/v26.1/enum)
+- [Data types](/docs/v26.1/data-types)
+- [`CREATE TYPE`](/docs/v26.1/create-type)
+- [`ALTER TYPE`](/docs/v26.1/alter-type)
+- [`DROP TYPE`](/docs/v26.1/drop-type)

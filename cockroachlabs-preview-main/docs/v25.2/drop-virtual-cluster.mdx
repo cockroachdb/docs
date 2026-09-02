@@ -1,0 +1,76 @@
+---
+title: "DROP VIRTUAL CLUSTER"
+old_description: "The DROP VIRTUAL CLUSTER statement deletes a virtual cluster."
+---
+
+import { DropVirtualCluster } from "/snippets/syntax-diagrams/DropVirtualCluster.jsx";
+
+<Note>
+**This feature is in [preview](/docs/v25.2/cockroachdb-feature-availability)** and subject to change. To share feedback and/or issues, contact [Support](https://support.cockroachlabs.com/hc/en-us).
+</Note>
+
+The `DROP VIRTUAL CLUSTER` statement removes virtual clusters in order to restart a **physical cluster replication (PCR)** stream. Virtual clusters are used only as part of the [PCR](/docs/v25.2/physical-cluster-replication-overview) workflow.
+
+PCR happens between an *active* primary cluster and a *passive* standby cluster that accepts updates from the primary cluster. The unit of replication is a *virtual cluster*, which is part of the underlying infrastructure in the primary and standby clusters. The CockroachDB cluster has:
+
+- The system virtual cluster manages the cluster's control plane and the replication of the cluster's data. Admins connect to the system virtual cluster to configure and manage the underlying CockroachDB cluster, set up PCR, create and manage a virtual cluster, and observe metrics and logs for the CockroachDB cluster and each virtual cluster.
+- The application virtual cluster manages the cluster’s data plane. Application virtual clusters contain user data and run application workloads.
+
+For more detail, refer to the [Physical Cluster Replication Overview](/docs/v25.2/physical-cluster-replication-overview).
+
+<Warning>
+The `DROP VIRTUAL CLUSTER` statement will delete all data related to the specified virtual cluster.
+</Warning>
+
+## Required privileges
+
+`DROP VIRTUAL CLUSTER` requires one of the following privileges:
+
+- The `admin` role.
+- The `MANAGEVIRTUALCLUSTER` [system privilege](/docs/v25.2/security-reference/authorization#privileges).
+
+Use the [`GRANT SYSTEM`](/docs/v25.2/grant) statement:
+
+```sql
+GRANT SYSTEM MANAGEVIRTUALCLUSTER TO user;
+```
+
+## Synopsis
+
+xml version="1.0" encoding="UTF-8"?
+
+<DropVirtualCluster />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>IF EXISTS</code></td><td>Drop a virtual cluster if it exists. If it does not exist, do not return an error.</td></tr><tr><td><code>virtual&#95;cluster&#95;spec</code></td><td>The name of the virtual cluster.</td></tr><tr><td><code>IMMEDIATE</code></td><td>Drop a virtual cluster immediately instead of waiting for garbage collection (<a href="/docs/v25.2/configure-replication-zones#gc-ttlseconds">GC TTL</a>).</td></tr></tbody></table>
+
+## Examples
+
+### Restart a PCR stream
+
+To restart a PCR stream, drop the virtual cluster:
+
+```sql
+DROP VIRTUAL CLUSTER IF EXISTS main;
+```
+
+Next, restart the PCR stream with the [`CREATE VIRTUAL CLUSTER`](/docs/v25.2/create-virtual-cluster) syntax:
+
+```sql
+CREATE VIRTUAL CLUSTER main FROM REPLICATION OF main ON 'postgresql://{connection string to primary}';
+```
+
+### Remove a virtual cluster without waiting for garbage collection
+
+Use `IMMEDIATE` to drop a virtual cluster instead of waiting for data to be garbage collected:
+
+```sql
+DROP VIRTUAL CLUSTER IF EXISTS main IMMEDIATE;
+```
+
+## See also
+
+- [`CREATE VIRTUAL CLUSTER`](/docs/v25.2/create-virtual-cluster)
+- [`ALTER VIRTUAL CLUSTER`](/docs/v25.2/alter-virtual-cluster)
+- [`SHOW VIRTUAL CLUSTER`](/docs/v25.2/show-virtual-cluster)

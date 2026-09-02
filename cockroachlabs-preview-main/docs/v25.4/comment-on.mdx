@@ -1,0 +1,255 @@
+---
+title: "COMMENT ON"
+old_description: "The COMMENT ON statement associates comments to databases, tables, columns, indexes, or types."
+---
+
+import { CommentOn6 } from "/snippets/syntax-diagrams/CommentOn6.jsx";
+
+The `COMMENT ON` [statement](/docs/v25.4/sql-statements) associates comments to [databases](/docs/v25.4/create-database), [tables](/docs/v25.4/create-table), [columns](/docs/v25.4/alter-table#add-column), [indexes](/docs/v25.4/indexes), or [types](/docs/v25.4/show-types).
+
+<Note>
+The `COMMENT ON` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.4/online-schema-changes).
+</Note>
+
+## Required privileges
+
+The user must have the `CREATE` [privilege](/docs/v25.4/security-reference/authorization#managing-privileges) on the object they are commenting on.
+
+## Synopsis
+
+<CommentOn6 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>database&#95;name</code></td><td>The name of the <a href="/docs/v25.4/create-database">database</a> on which you are commenting.</td></tr><tr><td><code>schema&#95;name</code></td><td>The name of the <a href="/docs/v25.4/create-schema">schema</a> on which you are commenting.</td></tr><tr><td><code>type&#95;name</code></td><td>The name of the <a href="/docs/v25.4/show-types">type</a> on which you are commenting.</td></tr><tr><td><code>table&#95;name</code></td><td>The name of the <a href="/docs/v25.4/create-table">table</a> on which you are commenting.</td></tr><tr><td><code>column&#95;name</code></td><td>The name of the <a href="/docs/v25.4/alter-table#add-column">column</a> on which you are commenting.</td></tr><tr><td><code>table&#95;index&#95;name</code></td><td>The name of the <a href="/docs/v25.4/indexes">index</a> on which you are commenting.</td></tr><tr><td><code>comment&#95;text</code></td><td>The comment (<a href="/docs/v25.4/string"><code>STRING</code></a>) you are associating to the object. You can remove a comment by replacing the string with <code>NULL</code>.</td></tr></tbody></table>
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v25.4/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v25.4/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Add a comment to a database
+
+To add a comment to a database:
+
+```sql
+> COMMENT ON DATABASE movr IS 'This database contains information about users, vehicles, and rides.';
+```
+
+To view database comments, use [`SHOW DATABASES`](/docs/v25.4/show-databases):
+
+```sql
+> SHOW DATABASES WITH COMMENT;
+```
+
+```text
+  database_name | owner | primary_region | regions | survival_goal |                               comment
+----------------+-------+----------------+---------+---------------+-----------------------------------------------------------------------
+  defaultdb     | root  | NULL           | {}      | NULL          | NULL
+  movr          | demo  | NULL           | {}      | NULL          | This database contains information about users, vehicles, and rides.
+  postgres      | root  | NULL           | {}      | NULL          | NULL
+  system        | node  | NULL           | {}      | NULL          | NULL
+(4 rows)
+```
+
+### Add a comment to a table
+
+To add a comment to a table:
+
+```sql
+> COMMENT ON TABLE vehicles IS 'This table contains information about vehicles registered with MovR.';
+```
+
+To view table comments, use [`SHOW TABLES`](/docs/v25.4/show-tables):
+
+```sql
+> SHOW TABLES FROM movr WITH COMMENT;
+```
+
+```text
+          table_name         |                               comment
++----------------------------+----------------------------------------------------------------------+
+  users                      |
+  vehicles                   | This table contains information about vehicles registered with MovR.
+  rides                      |
+  vehicle_location_histories |
+  promo_codes                |
+  user_promo_codes           |
+(6 rows)
+```
+
+You can also view comments on a table with [`SHOW CREATE`](/docs/v25.4/show-create):
+
+```sql
+> SHOW CREATE TABLE vehicles;
+```
+
+```text
+  table_name |                                          create_statement
+-------------+------------------------------------------------------------------------------------------------------
+  vehicles   | CREATE TABLE vehicles (
+             |     id UUID NOT NULL,
+             |     city VARCHAR NOT NULL,
+             |     type VARCHAR NULL,
+             |     owner_id UUID NULL,
+             |     creation_time TIMESTAMP NULL,
+             |     status VARCHAR NULL,
+             |     current_location VARCHAR NULL,
+             |     ext JSONB NULL,
+             |     CONSTRAINT "primary" PRIMARY KEY (city ASC, id ASC),
+             |     CONSTRAINT fk_city_ref_users FOREIGN KEY (city, owner_id) REFERENCES users(city, id),
+             |     INDEX vehicles_auto_index_fk_city_ref_users (city ASC, owner_id ASC),
+             |     FAMILY "primary" (id, city, type, owner_id, creation_time, status, current_location, ext)
+             | );
+             | COMMENT ON TABLE vehicles IS 'This table contains information about vehicles registered with MovR.'
+(1 row)
+```
+
+### Add a comment to a column
+
+To add a comment to a column:
+
+```sql
+> COMMENT ON COLUMN users.credit_card IS 'This column contains user payment information.';
+```
+
+To view column comments, use [`SHOW COLUMNS`](/docs/v25.4/show-columns):
+
+```sql
+> SHOW COLUMNS FROM users WITH COMMENT;
+```
+
+```text
+  column_name | data_type | is_nullable | column_default | generation_expression |   indices    | is_hidden |                    comment
+--------------+-----------+-------------+----------------+-----------------------+--------------+-----------+-------------------------------------------------
+  id          | UUID      |      f      | NULL           |                       | {users_pkey} |     f     | NULL
+  city        | VARCHAR   |      f      | NULL           |                       | {users_pkey} |     f     | NULL
+  name        | VARCHAR   |      t      | NULL           |                       | {users_pkey} |     f     | NULL
+  address     | VARCHAR   |      t      | NULL           |                       | {users_pkey} |     f     | NULL
+  credit_card | VARCHAR   |      t      | NULL           |                       | {users_pkey} |     f     | This column contains user payment information.
+(5 rows)
+```
+
+### Add a comment to an index
+
+Suppose we [create an index](/docs/v25.4/create-index) on the `name` column of the `users` table:
+
+```sql
+> CREATE INDEX ON users(name);
+```
+
+To add a comment to the index:
+
+```sql
+> COMMENT ON INDEX users_name_idx IS 'This index improves performance on queries that filter by name.';
+```
+
+To view column comments, use [`SHOW INDEXES... WITH COMMENT`](/docs/v25.4/show-index):
+
+```sql
+> SHOW INDEXES FROM users WITH COMMENT;
+```
+
+```text
+  table_name |   index_name   | non_unique | seq_in_index | column_name | direction | storing | implicit | visible |                             comment
+-------------+----------------+------------+--------------+-------------+-----------+---------+----------+---------+------------------------------------------------------------------
+  users      | users_name_idx |     t      |            1 | name        | ASC       |    f    |    f     |    t    | This index improves performance on queries that filter by name.
+  users      | users_name_idx |     t      |            2 | city        | ASC       |    f    |    t     |    t    | This index improves performance on queries that filter by name.
+  users      | users_name_idx |     t      |            3 | id          | ASC       |    f    |    t     |    t    | This index improves performance on queries that filter by name.
+  users      | users_pkey     |     f      |            1 | city        | ASC       |    f    |    f     |    t    | NULL
+  users      | users_pkey     |     f      |            2 | id          | ASC       |    f    |    f     |    t    | NULL
+  users      | users_pkey     |     f      |            3 | name        | N/A       |    t    |    f     |    t    | NULL
+  users      | users_pkey     |     f      |            4 | address     | N/A       |    t    |    f     |    t    | NULL
+  users      | users_pkey     |     f      |            5 | credit_card | N/A       |    t    |    f     |    t    | NULL
+(8 rows)
+```
+
+### Add a comment to a type
+
+Issue a SQL statement to [create a type](/docs/v25.4/create-type):
+
+```sql
+CREATE TYPE IF NOT EXISTS my_point AS (x FLOAT, y FLOAT, z FLOAT);
+```
+
+To view the type you just created, use [`SHOW TYPES`](/docs/v25.4/show-types):
+
+```sql
+SHOW TYPES;
+```
+
+```text
+  schema |   name   | owner
+---------+----------+--------
+  public | my_point | root
+(1 row)
+```
+
+To add a comment on the type, use a statement like the following:
+
+```sql
+COMMENT ON TYPE my_point IS '3D point';
+```
+
+To view all comments on types, make a [selection query](/docs/v25.4/select-clause) against the `system.comments` table:
+
+```sql
+SELECT * FROM system.comments;
+```
+
+```text
+  type | object_id | sub_id | comment
+-------+-----------+--------+-----------
+     7 |       112 |      0 | 3D POINT
+(1 row)
+```
+
+### Remove a comment from a database
+
+To remove a comment from a database:
+
+```sql
+> COMMENT ON DATABASE movr IS NULL;
+```
+
+```sql
+> SHOW DATABASES WITH COMMENT;
+```
+
+```text
+  database_name | owner | primary_region | regions | survival_goal | comment
+----------------+-------+----------------+---------+---------------+----------
+  defaultdb     | root  | NULL           | {}      | NULL          | NULL
+  movr          | demo  | NULL           | {}      | NULL          | NULL
+  postgres      | root  | NULL           | {}      | NULL          | NULL
+  system        | node  | NULL           | {}      | NULL          | NULL
+(4 rows)
+```
+
+### Remove a comment from a type
+
+To remove the comment from the type you created in the [preceding example](#add-a-comment-to-a-type), add a `NULL` comment:
+
+```sql
+COMMENT ON TYPE my_point IS NULL;
+```
+
+## Known limitations
+
+- The [`COMMENT ON`](/docs/v25.4/comment-on) statement associates comments to databases, tables, or columns. However, the internal table ( `system.comments` ) in which these comments are stored is not captured by a [`BACKUP`](/docs/v25.4/backup) of an individual table or database. As a workaround, take a cluster backup instead, as the `system.comments` table is included in cluster backups. [#44396](https://github.com/cockroachdb/cockroach/issues/44396)
+
+## See also
+
+- [`CREATE DATABASE`](/docs/v25.4/create-database)
+- [`CREATE TABLE`](/docs/v25.4/create-table)
+- [`ADD COLUMN`](/docs/v25.4/alter-table#add-column)
+- [`CREATE INDEX`](/docs/v25.4/create-index)
+- [`SHOW TABLES`](/docs/v25.4/show-tables)
+- [SQL Statements](/docs/v25.4/sql-statements)
+- [dBeaver](/docs/v25.4/dbeaver)
+- [Online Schema Changes](/docs/v25.4/online-schema-changes)

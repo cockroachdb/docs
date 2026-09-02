@@ -1,0 +1,32 @@
+---
+title: "DROP FUNCTION"
+old_description: "The DROP FUNCTION statement drops a user-defined function from a database."
+---
+
+import { DropFunction } from "/snippets/syntax-diagrams/DropFunction.jsx";
+
+The `DROP FUNCTION` [statement](/docs/v26.1/sql-statements) removes one or more [user-defined functions](/docs/v26.1/user-defined-functions) from a database.
+
+<Note>
+The `DROP FUNCTION` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v26.1/online-schema-changes).
+</Note>
+
+## Required privileges
+
+To drop a function, a user must have the `DROP` [privilege](/docs/v26.1/security-reference/authorization#managing-privileges) on the function.
+
+## Synopsis
+
+<DropFunction />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>func&#95;name</code></td><td>The name of one of more functions to drop.</td></tr><tr><td><code>func&#95;params&#95;list</code></td><td>An optional list of the function parameters.</td></tr></tbody></table>
+
+## See also
+
+- [User-Defined Functions](/docs/v26.1/user-defined-functions)
+- [`CREATE FUNCTION`](/docs/v26.1/create-function)
+- [`ALTER FUNCTION`](/docs/v26.1/alter-function)
+- [SQL Statements](/docs/v26.1/sql-statements)
+- [Online Schema Changes](/docs/v26.1/online-schema-changes)

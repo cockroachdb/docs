@@ -1,0 +1,327 @@
+---
+title: "SHOW ZONE CONFIGURATIONS"
+old_description: "Use the SHOW ZONE CONFIGURATIONS statement to list details about existing replication zones."
+---
+
+import { ShowZoneConfigurations3 } from "/snippets/syntax-diagrams/ShowZoneConfigurations3.jsx";
+
+Use the `SHOW ZONE CONFIGURATIONS` [statement](/docs/v24.1/sql-statements) to view details about existing [replication zones](/docs/v24.1/configure-replication-zones).
+
+## Synopsis
+
+<ShowZoneConfigurations3 />
+
+## Required privileges
+
+No [privileges](/docs/v24.1/security-reference/authorization#managing-privileges) are required to list replication zones.
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>zone&#95;name</code></td><td>The name of the system <a href="/docs/v24.1/architecture/overview#architecture-range">range</a> for which to show <a href="/docs/v24.1/configure-replication-zones">replication zone configurations</a>.</td></tr><tr><td><code>database&#95;name</code></td><td>The name of the <a href="/docs/v24.1/create-database">database</a> for which to show <a href="/docs/v24.1/configure-replication-zones">replication zone configurations</a>.</td></tr><tr><td><code>table&#95;name</code></td><td>The name of the <a href="/docs/v24.1/create-table">table</a> for which to show <a href="/docs/v24.1/configure-replication-zones">replication zone configurations</a>.</td></tr><tr><td><code>partition&#95;name</code></td><td>The name of the <a href="/docs/v24.1/partitioning">partition</a> for which to show <a href="/docs/v24.1/configure-replication-zones">replication zone configurations</a>.</td></tr><tr><td><code>index&#95;name</code></td><td>The name of the <a href="/docs/v24.1/indexes">index</a> for which to show <a href="/docs/v24.1/configure-replication-zones">replication zone configurations</a>.</td></tr></tbody></table>
+
+## Examples
+
+#### Setup
+
+The following examples use MovR, a fictional vehicle-sharing application, to demonstrate CockroachDB SQL statements. For more information about the MovR example application and dataset, see [MovR: A Global Vehicle-sharing App](/docs/v24.1/movr).
+
+To follow along, run [`cockroach demo`](/docs/v24.1/cockroach-demo) with the `--geo-partitioned-replicas` flag. This command opens an interactive SQL shell to a temporary, 9-node in-memory cluster with the `movr` database.
+
+```shell
+$ cockroach demo --geo-partitioned-replicas
+```
+
+### View all replication zones
+
+```sql
+> SHOW ALL ZONE CONFIGURATIONS;
+```
+
+```text
+                                              target                                             |                                                      raw_config_sql
+-------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------
+  RANGE default                                                                                  | ALTER RANGE default CONFIGURE ZONE USING
+                                                                                                 |     range_min_bytes = 134217728,
+                                                                                                 |     range_max_bytes = 536870912,
+                                                                                                 |     gc.ttlseconds = 90000,
+                                                                                                 |     num_replicas = 3,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  DATABASE system                                                                                | ALTER DATABASE system CONFIGURE ZONE USING
+                                                                                                 |     range_min_bytes = 134217728,
+                                                                                                 |     range_max_bytes = 536870912,
+                                                                                                 |     gc.ttlseconds = 90000,
+                                                                                                 |     num_replicas = 5,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  RANGE meta                                                                                     | ALTER RANGE meta CONFIGURE ZONE USING
+                                                                                                 |     range_min_bytes = 134217728,
+                                                                                                 |     range_max_bytes = 536870912,
+                                                                                                 |     gc.ttlseconds = 3600,
+                                                                                                 |     num_replicas = 5,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  RANGE system                                                                                   | ALTER RANGE system CONFIGURE ZONE USING
+                                                                                                 |     range_min_bytes = 134217728,
+                                                                                                 |     range_max_bytes = 536870912,
+                                                                                                 |     gc.ttlseconds = 90000,
+                                                                                                 |     num_replicas = 5,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  RANGE liveness                                                                                 | ALTER RANGE liveness CONFIGURE ZONE USING
+                                                                                                 |     range_min_bytes = 134217728,
+                                                                                                 |     range_max_bytes = 536870912,
+                                                                                                 |     gc.ttlseconds = 600,
+                                                                                                 |     num_replicas = 5,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  TABLE system.public.replication_constraint_stats                                               | ALTER TABLE system.public.replication_constraint_stats CONFIGURE ZONE USING
+                                                                                                 |     gc.ttlseconds = 600,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  TABLE system.public.replication_stats                                                          | ALTER TABLE system.public.replication_stats CONFIGURE ZONE USING
+                                                                                                 |     gc.ttlseconds = 600,
+                                                                                                 |     constraints = '[]',
+                                                                                                 |     lease_preferences = '[]'
+  PARTITION us_west OF INDEX movr.public.users@primary                                           | ALTER PARTITION us_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_east OF INDEX movr.public.users@primary                                           | ALTER PARTITION us_east OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION europe_west OF INDEX movr.public.users@primary                                       | ALTER PARTITION europe_west OF INDEX movr.public.users@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION us_west OF INDEX movr.public.vehicles@primary                                        | ALTER PARTITION us_west OF INDEX movr.public.vehicles@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users          | ALTER PARTITION us_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_east OF INDEX movr.public.vehicles@primary                                        | ALTER PARTITION us_east OF INDEX movr.public.vehicles@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION us_east OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users          | ALTER PARTITION us_east OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION europe_west OF INDEX movr.public.vehicles@primary                                    | ALTER PARTITION europe_west OF INDEX movr.public.vehicles@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION europe_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users      | ALTER PARTITION europe_west OF INDEX movr.public.vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION us_west OF INDEX movr.public.rides@primary                                           | ALTER PARTITION us_west OF INDEX movr.public.rides@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | ALTER PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | ALTER PARTITION us_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_east OF INDEX movr.public.rides@primary                                           | ALTER PARTITION us_east OF INDEX movr.public.rides@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users                | ALTER PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles     | ALTER PARTITION us_east OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION europe_west OF INDEX movr.public.rides@primary                                       | ALTER PARTITION europe_west OF INDEX movr.public.rides@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users            | ALTER PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles | ALTER PARTITION europe_west OF INDEX movr.public.rides@rides_auto_index_fk_vehicle_city_ref_vehicles CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  PARTITION us_west OF INDEX movr.public.vehicle_location_histories@primary                      | ALTER PARTITION us_west OF INDEX movr.public.vehicle_location_histories@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_east OF INDEX movr.public.vehicle_location_histories@primary                      | ALTER PARTITION us_east OF INDEX movr.public.vehicle_location_histories@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION europe_west OF INDEX movr.public.vehicle_location_histories@primary                  | ALTER PARTITION europe_west OF INDEX movr.public.vehicle_location_histories@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+  TABLE movr.public.promo_codes                                                                  | ALTER TABLE movr.public.promo_codes CONFIGURE ZONE USING
+                                                                                                 |     num_replicas = 3,
+                                                                                                 |     constraints = '{+region=us-east1: 1}',
+                                                                                                 |     lease_preferences = '[[+region=us-east1]]'
+  INDEX movr.public.promo_codes@promo_codes_idx_us_west                                          | ALTER INDEX movr.public.promo_codes@promo_codes_idx_us_west CONFIGURE ZONE USING
+                                                                                                 |     num_replicas = 3,
+                                                                                                 |     constraints = '{+region=us-west1: 1}',
+                                                                                                 |     lease_preferences = '[[+region=us-west1]]'
+  INDEX movr.public.promo_codes@promo_codes_idx_europe_west                                      | ALTER INDEX movr.public.promo_codes@promo_codes_idx_europe_west CONFIGURE ZONE USING
+                                                                                                 |     num_replicas = 3,
+                                                                                                 |     constraints = '{+region=europe-west1: 1}',
+                                                                                                 |     lease_preferences = '[[+region=europe-west1]]'
+  PARTITION us_west OF INDEX movr.public.user_promo_codes@primary                                | ALTER PARTITION us_west OF INDEX movr.public.user_promo_codes@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-west1]'
+  PARTITION us_east OF INDEX movr.public.user_promo_codes@primary                                | ALTER PARTITION us_east OF INDEX movr.public.user_promo_codes@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=us-east1]'
+  PARTITION europe_west OF INDEX movr.public.user_promo_codes@primary                            | ALTER PARTITION europe_west OF INDEX movr.public.user_promo_codes@primary CONFIGURE ZONE USING
+                                                                                                 |     constraints = '[+region=europe-west1]'
+(34 rows)
+```
+
+### View the default replication zone for the cluster
+
+```sql
+> SHOW ZONE CONFIGURATION FROM RANGE default;
+```
+
+```text
+     target     |              raw_config_sql
+----------------+-------------------------------------------
+  RANGE default | ALTER RANGE default CONFIGURE ZONE USING
+                |     range_min_bytes = 134217728,
+                |     range_max_bytes = 536870912,
+                |     gc.ttlseconds = 90000,
+                |     num_replicas = 3,
+                |     constraints = '[]',
+                |     lease_preferences = '[]'
+(1 row)
+```
+
+### View the replication zone for a database
+
+To control replication for a specific database, use the `ALTER DATABASE... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
+
+```sql
+> ALTER DATABASE movr CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> SHOW ZONE CONFIGURATION FROM DATABASE movr;
+```
+
+```text
+     target     |              raw_config_sql
+----------------+-------------------------------------------
+  DATABASE movr | ALTER DATABASE movr CONFIGURE ZONE USING
+                |     range_min_bytes = 134217728,
+                |     range_max_bytes = 536870912,
+                |     gc.ttlseconds = 100000,
+                |     num_replicas = 5,
+                |     constraints = '[]',
+                |     lease_preferences = '[]'
+(1 row)
+```
+
+### View the replication zone for a table
+
+To control replication for a specific table, use the `ALTER TABLE... CONFIGURE ZONE` statement to define the relevant values (other values will be inherited from the parent zone):
+
+```sql
+> ALTER TABLE users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> SHOW ZONE CONFIGURATION FROM TABLE users;
+```
+
+```text
+    target    |             raw_config_sql
+--------------+-----------------------------------------
+  TABLE users | ALTER TABLE users CONFIGURE ZONE USING
+              |     range_min_bytes = 134217728,
+              |     range_max_bytes = 536870912,
+              |     gc.ttlseconds = 100000,
+              |     num_replicas = 5,
+              |     constraints = '[]',
+              |     lease_preferences = '[]'
+(1 row)
+```
+
+You can also use [`SHOW CREATE TABLE`](/docs/v24.1/show-create) to view zone configurations for a table. If a table is partitioned, but no zones are configured, the `SHOW CREATE TABLE` output includes a warning.
+
+### View the replication zone for an index
+
+To control replication for a specific index, use the [`ALTER INDEX... CONFIGURE ZONE`](/docs/v24.1/alter-index#configure-zone) statement to define the relevant values (other values will be inherited from the parent zone):
+
+```sql
+> ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING num_replicas = 5, gc.ttlseconds = 100000;
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> SHOW ZONE CONFIGURATION FROM INDEX vehicles@vehicles_auto_index_fk_city_ref_users;
+```
+
+```text
+                         target                        |                                 raw_config_sql
+-------------------------------------------------------+----------------------------------------------------------------------------------
+  INDEX vehicles@vehicles_auto_index_fk_city_ref_users | ALTER INDEX vehicles@vehicles_auto_index_fk_city_ref_users CONFIGURE ZONE USING
+                                                       |     range_min_bytes = 134217728,
+                                                       |     range_max_bytes = 536870912,
+                                                       |     gc.ttlseconds = 100000,
+                                                       |     num_replicas = 5,
+                                                       |     constraints = '[]',
+                                                       |     lease_preferences = '[]'
+(1 row)
+```
+
+### View the replication zone for a partition
+
+<Tip>
+Most users should not need to use partitioning directly. Instead, they should use CockroachDB's built-in [multi-region capabilities](/docs/v24.1/multiregion-overview), which automatically handle geo-partitioning and other low-level details.
+</Tip>
+
+Once [partitions have been defined for a table or a secondary index](/docs/v24.1/partitioning), to control replication for a partition, use `ALTER PARTITION <partition> OF INDEX <table@index> CONFIGURE ZONE`:
+
+```sql
+> ALTER PARTITION us_west OF INDEX vehicles@primary
+    CONFIGURE ZONE USING
+      num_replicas = 5,
+      constraints = '[+region=us-west1]';
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+```sql
+> ALTER PARTITION us_west OF INDEX vehicles@vehicles_auto_index_fk_city_ref_users
+    CONFIGURE ZONE USING
+      num_replicas = 5,
+      constraints = '[+region=us-west1]';
+```
+
+```text
+CONFIGURE ZONE 1
+```
+
+To define replication zones for identically named partitions of a table and its secondary indexes, you can use the `<table>@*` syntax to save several steps:
+
+```sql
+> ALTER PARTITION us_west OF INDEX vehicles@*
+    CONFIGURE ZONE USING
+      num_replicas = 5,
+      constraints = '[+region=us-west1]';
+```
+
+To view the zone configuration for a partition, use `SHOW ZONE CONFIGURATION FROM PARTITION <partition> OF INDEX <table@index>`:
+
+```sql
+> SHOW ZONE CONFIGURATION FROM PARTITION us_west OF INDEX vehicles@primary;
+```
+
+```text
+                    target                    |                             raw_config_sql
+----------------------------------------------+-------------------------------------------------------------------------
+  PARTITION us_west OF INDEX vehicles@primary | ALTER PARTITION us_west OF INDEX vehicles@primary CONFIGURE ZONE USING
+                                              |     range_min_bytes = 134217728,
+                                              |     range_max_bytes = 536870912,
+                                              |     gc.ttlseconds = 90000,
+                                              |     num_replicas = 5,
+                                              |     constraints = '[+region=us-west1]',
+                                              |     lease_preferences = '[]'
+(1 row)
+```
+
+<Tip>
+You can also use the [`SHOW CREATE TABLE`](/docs/v24.1/show-create) statement or [`SHOW PARTITIONS`](/docs/v24.1/show-partitions) statements to view details about all of the replication zones defined for the partitions of a table and its secondary indexes.
+</Tip>
+
+## See also
+
+- [Replication Controls](/docs/v24.1/configure-replication-zones)
+- [`ALTER DATABASE... CONFIGURE ZONE`](/docs/v24.1/alter-database#configure-zone)
+- [`ALTER INDEX... CONFIGURE ZONE`](/docs/v24.1/alter-index#configure-zone)
+- [`ALTER RANGE... CONFIGURE ZONE`](/docs/v24.1/alter-range#configure-zone)
+- [`ALTER TABLE... CONFIGURE ZONE`](/docs/v24.1/alter-table#configure-zone)
+- [SQL Statements](/docs/v24.1/sql-statements)
+- [Troubleshoot Replication Zones](/docs/v24.1/troubleshoot-replication-zones)

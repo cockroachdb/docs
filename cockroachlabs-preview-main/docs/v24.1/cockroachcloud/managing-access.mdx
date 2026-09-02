@@ -1,0 +1,20 @@
+---
+title: "Manage Users, Roles, and Service Accounts"
+old_description: "Learn how to manage the lifecycle of CockroachDB Cloud organization users and roles."
+---
+
+import ManagingAccess from "/snippets/cockroachcloud/managing-access.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ManagingAccess />

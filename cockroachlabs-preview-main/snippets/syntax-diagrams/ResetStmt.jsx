@@ -1,0 +1,59 @@
+export const ResetStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="81" width="247" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon><a xlink:href="#reset_session_stmt" xlink:title="reset_session_stmt">
+<rect height="32" width="146" x="51" y="3"></rect>
+<rect class="nonterminal" height="32" width="146" x="49" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="122" font-size="10" class="nonterminal" x="61" y="21">reset_session_stmt</text></a><a xlink:href="#reset_csetting_stmt" xlink:title="reset_csetting_stmt">
+<rect height="32" width="148" x="51" y="47"></rect>
+<rect class="nonterminal" height="32" width="148" x="49" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="124" font-size="10" class="nonterminal" x="61" y="65">reset_csetting_stmt</text></a><path class="line" d="m17 17 h2 m20 0 h10 m146 0 h10 m0 0 h2 m-188 0 h20 m168 0 h20 m-208 0 q10 0 10 10 m188 0 q0 -10 10 -10 m-198 10 v24 m188 0 v-24 m-188 24 q0 10 10 10 m168 0 q10 0 10 -10 m-178 10 h10 m148 0 h10 m23 -44 h-3"></path>
+<polygon points="237 17 245 13 245 21"></polygon>
+<polygon points="237 17 229 13 229 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

@@ -1,0 +1,67 @@
+---
+title: Overview Page
+summary: How to use the Overview page to view cluster details on CockroachDB Cloud.
+docs_area: manage
+---
+
+The **Overview** page displays details and key metrics about your CockroachDB Cloud cluster. To view this page, click on a cluster from the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-management#view-clusters-page" data-versioned="true">**Clusters** page</a>.
+
+The information displayed on this page in the Console may differ for you based on your assigned <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/authorization" data-versioned="true">roles</a>.
+
+## Settings
+
+The **Settings** section displays high-level details about the cluster, including the <a href="/docs/VERSION_PLACEHOLDER/releases/" data-versioned="true">CockroachDB version</a> running on the cluster. Clicking on this section expands the **Cluster settings** panel that displays the values for the following cluster settings:
+
+| Field | Description |
+| --- | --- |
+| Plan type | The plan type of the cluster. |
+| Cloud | The cluster's cloud provider. |
+| Region(s) | The cluster's regions. |
+| Compute | The cluster's provisioned compute power as appropriate for the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/costs" data-versioned="true">plan type</a>. |
+| Storage | The cluster's provisioned storage as appropriate for the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/costs" data-versioned="true">plan type</a>. |
+| Nodes (Advanced only) | The number of nodes the cluster has and the status of each. |
+| Labels | The <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/labels" data-versioned="true">labels</a> applied to the cluster. |
+| Cluster created on | The creation date of the cluster. |
+| Maintenance window (Advanced only) | The enabled/disabled state of the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/advanced-cluster-management#set-a-maintenance-window" data-versioned="true">Maintenance window</a> feature. |
+| Delay patch upgrades (Advanced only) | The enabled/disabled state of the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/advanced-cluster-management#set-a-maintenance-window" data-versioned="true">Delayed patch upgrades</a> feature. |
+| Deletion protection | The enabled/disabled state of the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-management#enable-deletion-protection" data-versioned="true">Deletion protection</a> feature. |
+| Manual upgrades (Standard only) | The enabled/disabled state of the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cluster-management#manage-cluster-upgrades" data-versioned="true">Manual upgrades</a> feature. |
+
+Click the **Edit** button next to a field to modify the corresponding setting.
+
+## Usage graphs
+
+The Overview page includes graphs that display real-time metrics about the high level performance and usage of the cluster. You can modify the timeframe displayed on these graphs with the timeframe dropdown. You can also click on the **View all metrics** link to go to the <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/metrics" data-versioned="true">**Metrics** page</a>.
+
+### SQL throughput and SQL latency
+
+The **SQL throughput and SQL latency** graph displays the average queries-per-second (QPS) and 99th percentile of service latency (p99 latency) of <a href="/docs/VERSION_PLACEHOLDER/select-clause" data-versioned="true">`SELECT`</a>, <a href="/docs/VERSION_PLACEHOLDER/insert" data-versioned="true">`INSERT`</a>, <a href="/docs/VERSION_PLACEHOLDER/update" data-versioned="true">`UPDATE`</a>, and <a href="/docs/VERSION_PLACEHOLDER/delete" data-versioned="true">`DELETE`</a> statements successfully executed per second on the cluster.
+
+### Compute used
+
+The **Compute used** graph displays your cluster compute usage statistics for the specified timeframe. On Basic clusters this graph displays request units (RUs) per second. On Standard and Advanced clusters this graph displays total vCPU compute per second.
+
+## Cluster resource totals
+
+The Overview page describes the total provisioned compute and storage for the cluster. Usage costs are <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/costs" data-versioned="true">calculated differently based on the cluster's plan</a> so the displayed information differs based on the cluster's plan:
+
+### Basic cluster resources
+
+| Section | Description |
+| --- | --- |
+| Request units | The CPU and I/O resources being used by queries on the cluster, and whether throttling is in effect. The total available RUs are determined by your configured capacity. |
+| Storage | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your configured capacity. |
+
+### Standard cluster resources
+
+| Section | Description |
+| --- | --- |
+| Provisioned compute | The number of vCPUs provisioned to process queries on the cluster. |
+| Storage | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your configured capacity. |
+
+### Advanced cluster resources
+
+| Section | Description |
+| --- | --- |
+| Nodes | The number of nodes the cluster has and the status of each. |
+| Storage | The amount of data currently stored in the cluster. This value does not account for compression or replication. The total available storage is determined by your configured capacity. |

@@ -1,0 +1,495 @@
+---
+title: "Connect to a CockroachDB Standard Cluster"
+old_description: "Learn how to connect and start interacting with your cluster."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<Note>
+CockroachDB Standard is currently in [Preview](/docs/v25.4/cockroachdb-feature-availability).
+</Note>
+
+<LinkedPageTabs
+  currentPath="/docs/cockroachcloud/connect-to-your-cluster"
+  items={[
+    {
+      title: "CockroachDB Basic",
+      href: "/docs/cockroachcloud/connect-to-a-basic-cluster",
+    },
+    {
+      title: "CockroachDB Standard",
+      href: "/docs/cockroachcloud/connect-to-your-cluster",
+    },
+    {
+      title: "CockroachDB Advanced",
+      href: "/docs/cockroachcloud/connect-to-an-advanced-cluster",
+    },
+  ]}
+/>
+
+This page shows you how to connect to your CockroachDB Standard cluster. This includes the administrative task of configuring allowed networks to support SQL client connections, as well as the steps for connecting to the cluster with CockroachDB's [built-in SQL client](/docs/v25.4/cockroach-sql).
+
+## Before you start
+
+- [Create a cluster](/docs/cockroachcloud/create-your-cluster).
+- [Create a SQL user](/docs/cockroachcloud/managing-access#create-a-sql-user).
+- Understand [Network Authorization for CockroachDB Cloud Clusters](/docs/cockroachcloud/network-authorization)
+
+## Authorize your network
+
+By default, CockroachDB Standard clusters are locked down to all network access. You must authorized certain network connections in order to allow SQL clients to connect to your clusters. Standard clusters can accept connections via two types of authorized network:
+
+- Allowed IP address ranges on the internet.
+- Cloud-provider-specific peer networking options:
+    - Google Cloud Platform (GCP) Private Service Connect (Preview)
+    - Amazon Web Services (AWS) Privatelink
+
+<Note>
+Removing or adding an authorized network on your CockroachDB Standard cluster may take a few seconds to take effect.
+</Note>
+
+<Note>
+IPv6 addresses are currently not supported.
+</Note>
+
+To prevent denial-of-service attacks, brute force password attacks, and other forms of malicious activity, it is recommended to restrict your cluster network to allow access only from specific IP address ranges controlled by your organization, corresponding to, for example, your application deployments, hardened administrator access points, or disaster recovery pipelines.
+
+### Add IP addresses to the allowlist
+
+1. Navigate to your cluster's **Networking &gt; IP Allowlist** tab.
+
+    The **IP Allowlist** tab displays a list of authorized networks (i.e., an IP network allowlist) that can access the cluster.
+2. If the network is not listed, authorize it:
+    1. Click the **Add Network** button. The **Add Network** dialog displays.
+    2. *(Optional)* Enter a **Network name**.
+    3. From the **Network** dropdown, select:
+        - **New Network** to authorize the network of your local machine or application deployment or another valid source. Enter the public IPv4 address of the source machine in the **Network** field. To add a range of source IP addresses, use the CIDR (Classless Inter-Domain Routing) notation. For a general introduction to IP routing, refer to [Digital Ocean—Understanding IP Addresses, Subnets, and CIDR Notation for Networking](https://www.digitalocean.com/community/tutorials/understanding-ip-addresses-subnets-and-cidr-notation-for-networking#cidr-notation).
+        - **Current Network** to auto-populate your local machine's IP address.
+        - **Public (Insecure)** to allow all networks, use `0.0.0.0/0`. Use this with caution as your cluster will be vulnerable to denial-of-service and brute force password attacks.
+3. Select whether the network can connect to the cluster's **DB Console to monitor the cluster**, **CockroachDB Client to access databases**, or both.
+
+    The DB Console is where you can observe your cluster's health and performance. For more information, see [DB Console Overview](/docs/v25.4/ui-overview).
+4. Click **Apply**.
+
+### Establish private connectivity
+
+Private connectivity allows you to establish SQL access to a CockroachDB Advanced cluster entirely through cloud provider private infrastructure, without exposing the cluster to the public internet, affording enhanced security and performance.
+
+- Clusters deployed on GCP can connect privately using [GCP Private Service Connect (PSC)](#gcp-private-service-connect) or [GCP VPC peering](#gcp-vpc-peering). PSC allows you to connect your cluster directly to a VPC within your Google Cloud project, while VPC Peering allows you to peer your cluster's VPC in CockroachDB Cloud to a VPC within your Google Cloud project.
+- Clusters deployed on AWS can connect privately using [AWS PrivateLink](#aws-privatelink), which allows you to connect your cluster to a VPC within your AWS account.
+
+CockroachDB Standard is not yet available on Azure.
+
+For more information, refer to [Network authorization](/docs/cockroachcloud/network-authorization).
+
+<Tip>
+Private connectivity cannot be configured during cluster creation.
+</Tip>
+
+<Note>
+[VPC Peering](/docs/cockroachcloud/network-authorization#vpc-peering) and [AWS PrivateLink](/docs/cockroachcloud/network-authorization#aws-privatelink) in CockroachDB Advanced clusters do **not** support connecting to a [Kafka](/docs/v25.4/changefeed-sinks#kafka) sink's internal IP addresses for [changefeeds](/docs/v25.4/change-data-capture-overview). To connect to a Kafka sink from CockroachDB Advanced, it is necessary to expose the Kafka cluster's external IP address and open ports with firewall rules to allow access from the cluster.
+</Note>
+
+#### GCP VPC Peering
+
+For GKE, we recommend deploying your application to a VPC-native cluster that uses [alias IP addresses](https://cloud.google.com/kubernetes-engine/docs/how-to/alias-ips). If you are connecting from a [routes-based GKE cluster](https://cloud.google.com/kubernetes-engine/docs/how-to/routes-based-cluster) instead, you must [export custom routes](https://cloud.google.com/vpc/docs/vpc-peering#importing-exporting-routes). CockroachDB Cloud will import your custom routes by default.
+
+<Tabs>
+<Tab title="Command line">
+
+After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+<Note>
+Self-service VPC peering setup is not supported for CockroachDB Advanced clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](/docs/cockroachcloud/create-your-cluster) with VPC peering enabled, then [export your data](/docs/cockroachcloud/managed-backups) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB's default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
+</Note>
+
+#### GCP Private Service Connect
+
+1. Navigate to your cluster's **Networking &gt; Private endpoint** tab.
+2. Click **Add a private endpoint**. Copy the value provided for **Target service**. Do not close this browser window.
+3. In a new browser window, log in to Google Cloud Console, go to **Private Service Connect** section, and create a new endpoint in the same VPC as your application. For details, refer to [Create an endpoint](https://cloud.google.com/vpc/docs/configure-private-service-connect-services#create-endpoint) in the Google Cloud documentation.
+    - Set **Target** to **Published service**.
+    - Set **Target service** to the value you copied from CockroachDB Cloud Console. If the endpoint's configured target service does not match, validation will fail.
+    - Provide a value for **Endpoint name**. This is not used by CockroachDB Cloud.
+    - If it is not enabled, enable the Service Directory API, click **Enable global access**, and create a namespace in each region where your cluster is deployed.
+    - Click **Add endpoint**.
+    - After the endpoint is created, copy the connection ID.
+4. Return to the CockroachDB Cloud Console browser tab and click **Validate**.
+5. Enter the endpoint's ID, then click **Validate**. CockroachDB Cloud attempts to connect to the endpoint's VPC and verifies that the target service matches the cluster. If validation fails, verify the endpoint's configuration, then try again. After validation succeeds, click **Complete** to finish creating the connection.
+6. On the **Networking &gt; Private endpoint** tab, verify that the connection status is **Available**.
+
+<Tip>
+After validation succeeds for an endpoint, additional endpoints in the same VPC are automatically automatically accepted if they are configured with the cluster's target service ID. Additional VPCs must be added separately.
+</Tip>
+
+If you remove the endpoint from GCP or change its target service, the endpoint will be removed from the cluster automatically.
+
+After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+#### AWS PrivateLink
+
+To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink for a cluster](/docs/cockroachcloud/aws-privatelink). After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+#### Azure Private Link
+
+1. Navigate to your cluster's **Networking &gt; Private endpoint** tab.
+2. Click **Add a private endpoint**. Copy the value provided for **Alias**. Do not close this browser window.
+3. In a new browser window, log in to Azure Console and create a new private endpoint for your cluster.
+    - Set the connection method to “by resource ID or alias”.
+    - Set the resource ID to the **Alias** you previously copied. For details, refer to [Create a private endpoint](https://learn.microsoft.com/azure/private-link/create-private-endpoint-portal?tabs=dynamic-ip) in the Azure documentation.
+
+        After the private endpoint is created, view it, then click **Properties** and copy its Resource ID.
+
+        <Note>
+        Copy the resource ID for the private endpoint you just created, not for the Private Link resource itself.
+        </Note>
+
+        Do not close this browser window.
+4. Return to the CockroachDB Cloud Console browser tab and click **Next**.
+5. Paste the resource ID for the Azure private endpoint, then click **Validate**. If validation fails, verify the resource ID and try again. If you encounter the error `This resource is invalid`, be sure that you are using the resource ID for the Azure private endpoint, rather than the resource ID for Azure Private Link itself.
+
+    When validation succeeds, click **Next** to configure private DNS. Make a note of the Internal DNS Name. Do not close this browser window.
+6. Return to the Azure Console. Go to the **Private DNS Zone** page and create private DNS records for your cluster in the&#96; region where you will connect privately.
+    - Create a private DNS zone named with the Internal DNS Name you previously copied. Refer to [Quickstart: Create an Azure private DNS zone using the Azure portal](https://learn.microsoft.com/azure/dns/private-dns-getstarted-portal).
+    - In the new DNS zone, create an `@` record with the Internal DNS Name you previously copied.
+    - Click **Complete** to finish creating the DNS records.
+7. Associate the new DNS zone with the private endpoint's virtual network. View the private endpoint's configuration, click **Virtual network links**, then click **Add**.
+    - Name the link, then select the resource group and select the DNS zone you just created.
+    - Enable auto-registration.
+    - Click **OK**.
+
+        For details, refer to [Link the virtual network](https://learn.microsoft.com/azure/dns/private-dns-getstarted-portal#link-the-virtual-network).
+8. Return to the CockroachDB Cloud Console browser tab and click **Complete**.
+9. On the **Networking** page, verify the connection status is **Available**.
+
+## Connect to your cluster
+
+<Warning>
+PostgreSQL connection URIs do not support special characters. If you have special characters in your password, you will have to [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) them (e.g., `password!` should be entered as `password%21`) to connect to your cluster.
+</Warning>
+
+<Note>
+If you forget your SQL user's password, an [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+</Note>
+
+1. In the top right corner of the CockroachDB Cloud Console, click **Connect**.
+
+    The **Setup** page of the **Connect to cluster** dialog displays.
+2. If you have set up a private connection, select it to connect privately. Otherwise, click **IP Allowlist**.
+3. Select the **SQL User**. If you have only one SQL user, it is automatically selected.
+
+- [Build a Python App with CockroachDB](/docs/v25.4/build-a-python-app-with-cockroachdb)
+- [Build a Go App with CockroachDB](/docs/v25.4/build-a-go-app-with-cockroachdb)
+- [Build a Java App with CockroachDB](/docs/v25.4/build-a-java-app-with-cockroachdb)
+- [Build a Ruby App with CockroachDB](/docs/v25.4/build-a-ruby-app-with-cockroachdb)
+- [Build a Javascript App with CockroachDB](/docs/v25.4/build-a-nodejs-app-with-cockroachdb)
+
+1. If you need to download the CA certificate, first set **Select option/language** to **General Connection String** and expand the **Download CA Cert** section. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+2. Select the **Parameters only** option of the **Select option/language** dropdown.
+3. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](/docs/v25.4/third-party-database-tools).
+
+    <table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;username&#125;</code></td><td>The <a href="/docs/cockroachcloud/managing-access#create-a-sql-user">SQL user</a> connecting to the cluster.</td></tr><tr><td><code>&#123;host&#125;</code></td><td>The host on which the CockroachDB node is running.</td></tr><tr><td><code>&#123;port&#125;</code></td><td>The port at which the CockroachDB node is listening.</td></tr><tr><td><code>&#123;database&#125;</code></td><td>The name of the (existing) database.</td></tr></tbody></table>
+
+Additionally, you will need the SQL user's [password](/docs/cockroachcloud/managing-access#create-a-sql-user). If you forget your SQL user's password, an [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+
+You can connect to your cluster with any [supported version](/docs/releases/release-support-policy#supported-versions) of the full CockroachDB binary or the [built-in SQL client](/docs/v25.4/cockroach-sql).
+
+1. Select **CockroachDB Client** from the **Select option/language** dropdown.
+2. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install the latest downloadable version of CockroachDB on your local system.
+3. Copy the [`cockroach sql`](/docs/v25.4/cockroach-sql) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
+4. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](/docs/v25.4/cockroach-sql).
+5. Enter the SQL user's password and hit enter.
+
+    <Warning>
+    PostgreSQL connection URIs do not support special characters. If you have special characters in your password, you will have to [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) them (e.g., `password!` should be entered as `password%21`) to connect to your cluster.
+    </Warning>
+
+    A welcome message displays:
+
+    ```text
+    #
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    ```
+
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](/docs/v25.4/sql-statements).
+
+</Tab>
+<Tab title="General connection string">
+
+After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+<Note>
+Self-service VPC peering setup is not supported for CockroachDB Advanced clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](/docs/cockroachcloud/create-your-cluster) with VPC peering enabled, then [export your data](/docs/cockroachcloud/managed-backups) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB's default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
+</Note>
+
+#### GCP Private Service Connect
+
+1. Navigate to your cluster's **Networking &gt; Private endpoint** tab.
+2. Click **Add a private endpoint**. Copy the value provided for **Target service**. Do not close this browser window.
+3. In a new browser window, log in to Google Cloud Console, go to **Private Service Connect** section, and create a new endpoint in the same VPC as your application. For details, refer to [Create an endpoint](https://cloud.google.com/vpc/docs/configure-private-service-connect-services#create-endpoint) in the Google Cloud documentation.
+    - Set **Target** to **Published service**.
+    - Set **Target service** to the value you copied from CockroachDB Cloud Console. If the endpoint's configured target service does not match, validation will fail.
+    - Provide a value for **Endpoint name**. This is not used by CockroachDB Cloud.
+    - If it is not enabled, enable the Service Directory API, click **Enable global access**, and create a namespace in each region where your cluster is deployed.
+    - Click **Add endpoint**.
+    - After the endpoint is created, copy the connection ID.
+4. Return to the CockroachDB Cloud Console browser tab and click **Validate**.
+5. Enter the endpoint's ID, then click **Validate**. CockroachDB Cloud attempts to connect to the endpoint's VPC and verifies that the target service matches the cluster. If validation fails, verify the endpoint's configuration, then try again. After validation succeeds, click **Complete** to finish creating the connection.
+6. On the **Networking &gt; Private endpoint** tab, verify that the connection status is **Available**.
+
+<Tip>
+After validation succeeds for an endpoint, additional endpoints in the same VPC are automatically automatically accepted if they are configured with the cluster's target service ID. Additional VPCs must be added separately.
+</Tip>
+
+If you remove the endpoint from GCP or change its target service, the endpoint will be removed from the cluster automatically.
+
+After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+#### AWS PrivateLink
+
+To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink for a cluster](/docs/cockroachcloud/aws-privatelink). After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+#### Azure Private Link
+
+1. Navigate to your cluster's **Networking &gt; Private endpoint** tab.
+2. Click **Add a private endpoint**. Copy the value provided for **Alias**. Do not close this browser window.
+3. In a new browser window, log in to Azure Console and create a new private endpoint for your cluster.
+    - Set the connection method to “by resource ID or alias”.
+    - Set the resource ID to the **Alias** you previously copied. For details, refer to [Create a private endpoint](https://learn.microsoft.com/azure/private-link/create-private-endpoint-portal?tabs=dynamic-ip) in the Azure documentation.
+
+        After the private endpoint is created, view it, then click **Properties** and copy its Resource ID.
+
+        <Note>
+        Copy the resource ID for the private endpoint you just created, not for the Private Link resource itself.
+        </Note>
+
+        Do not close this browser window.
+4. Return to the CockroachDB Cloud Console browser tab and click **Next**.
+5. Paste the resource ID for the Azure private endpoint, then click **Validate**. If validation fails, verify the resource ID and try again. If you encounter the error `This resource is invalid`, be sure that you are using the resource ID for the Azure private endpoint, rather than the resource ID for Azure Private Link itself.
+
+    When validation succeeds, click **Next** to configure private DNS. Make a note of the Internal DNS Name. Do not close this browser window.
+6. Return to the Azure Console. Go to the **Private DNS Zone** page and create private DNS records for your cluster in the&#96; region where you will connect privately.
+    - Create a private DNS zone named with the Internal DNS Name you previously copied. Refer to [Quickstart: Create an Azure private DNS zone using the Azure portal](https://learn.microsoft.com/azure/dns/private-dns-getstarted-portal).
+    - In the new DNS zone, create an `@` record with the Internal DNS Name you previously copied.
+    - Click **Complete** to finish creating the DNS records.
+7. Associate the new DNS zone with the private endpoint's virtual network. View the private endpoint's configuration, click **Virtual network links**, then click **Add**.
+    - Name the link, then select the resource group and select the DNS zone you just created.
+    - Enable auto-registration.
+    - Click **OK**.
+
+        For details, refer to [Link the virtual network](https://learn.microsoft.com/azure/dns/private-dns-getstarted-portal#link-the-virtual-network).
+8. Return to the CockroachDB Cloud Console browser tab and click **Complete**.
+9. On the **Networking** page, verify the connection status is **Available**.
+
+## Connect to your cluster
+
+<Warning>
+PostgreSQL connection URIs do not support special characters. If you have special characters in your password, you will have to [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) them (e.g., `password!` should be entered as `password%21`) to connect to your cluster.
+</Warning>
+
+<Note>
+If you forget your SQL user's password, an [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+</Note>
+
+1. In the top right corner of the CockroachDB Cloud Console, click **Connect**.
+
+    The **Setup** page of the **Connect to cluster** dialog displays.
+2. If you have set up a private connection, select it to connect privately. Otherwise, click **IP Allowlist**.
+3. Select the **SQL User**. If you have only one SQL user, it is automatically selected.
+
+- [Build a Python App with CockroachDB](/docs/v25.4/build-a-python-app-with-cockroachdb)
+- [Build a Go App with CockroachDB](/docs/v25.4/build-a-go-app-with-cockroachdb)
+- [Build a Java App with CockroachDB](/docs/v25.4/build-a-java-app-with-cockroachdb)
+- [Build a Ruby App with CockroachDB](/docs/v25.4/build-a-ruby-app-with-cockroachdb)
+- [Build a Javascript App with CockroachDB](/docs/v25.4/build-a-nodejs-app-with-cockroachdb)
+
+1. If you need to download the CA certificate, first set **Select option/language** to **General Connection String** and expand the **Download CA Cert** section. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+2. Select the **Parameters only** option of the **Select option/language** dropdown.
+3. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](/docs/v25.4/third-party-database-tools).
+
+    <table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;username&#125;</code></td><td>The <a href="/docs/cockroachcloud/managing-access#create-a-sql-user">SQL user</a> connecting to the cluster.</td></tr><tr><td><code>&#123;host&#125;</code></td><td>The host on which the CockroachDB node is running.</td></tr><tr><td><code>&#123;port&#125;</code></td><td>The port at which the CockroachDB node is listening.</td></tr><tr><td><code>&#123;database&#125;</code></td><td>The name of the (existing) database.</td></tr></tbody></table>
+
+Additionally, you will need the SQL user's [password](/docs/cockroachcloud/managing-access#create-a-sql-user). If you forget your SQL user's password, an [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+
+You can connect to your cluster with any [supported version](/docs/releases/release-support-policy#supported-versions) of the full CockroachDB binary or the [built-in SQL client](/docs/v25.4/cockroach-sql).
+
+1. Select **CockroachDB Client** from the **Select option/language** dropdown.
+2. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install the latest downloadable version of CockroachDB on your local system.
+3. Copy the [`cockroach sql`](/docs/v25.4/cockroach-sql) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
+4. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](/docs/v25.4/cockroach-sql).
+5. Enter the SQL user's password and hit enter.
+
+    <Warning>
+    PostgreSQL connection URIs do not support special characters. If you have special characters in your password, you will have to [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) them (e.g., `password!` should be entered as `password%21`) to connect to your cluster.
+    </Warning>
+
+    A welcome message displays:
+
+    ```text
+    #
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    ```
+
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](/docs/v25.4/sql-statements).
+
+To connect to your cluster from your application:
+
+1. Select the **Connection string** tab.
+2. If the CA certificate for the cluster is not downloaded locally, copy the command to download it. In your terminal, run the command.
+3. Copy the connection string, which begins with `postgresql://`. This will be used to connect your application to CockroachDB Advanced.
+4. Add your copied connection string to your application code. Refer to [Connect to a CockroachDB Cluster](/docs/v25.4/connect-to-the-database).
+5. Click **Close**.
+
+<Warning>
+PostgreSQL connection URIs do not support special characters. If you have special characters in your password, you will have to [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) them (e.g., `password!` should be entered as `password%21`) to connect to your cluster.
+</Warning>
+
+For examples, see the following:
+
+- [Build a Python App with CockroachDB](/docs/v25.4/build-a-python-app-with-cockroachdb)
+- [Build a Go App with CockroachDB](/docs/v25.4/build-a-go-app-with-cockroachdb)
+- [Build a Java App with CockroachDB](/docs/v25.4/build-a-java-app-with-cockroachdb)
+
+</Tab>
+<Tab title="Connection parameters">
+
+After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+<Note>
+Self-service VPC peering setup is not supported for CockroachDB Advanced clusters deployed before March 5, 2020. If your cluster was deployed before March 5, 2020, you will have to [create a new cluster](/docs/cockroachcloud/create-your-cluster) with VPC peering enabled, then [export your data](/docs/cockroachcloud/managed-backups) from the old cluster to the new cluster. If your cluster was deployed on or after March 5, 2020, it will be locked into CockroachDB's default IP range (`172.28.0.0/14`) unless you explicitly configured a different IP range during cluster creation.
+</Note>
+
+#### GCP Private Service Connect
+
+1. Navigate to your cluster's **Networking &gt; Private endpoint** tab.
+2. Click **Add a private endpoint**. Copy the value provided for **Target service**. Do not close this browser window.
+3. In a new browser window, log in to Google Cloud Console, go to **Private Service Connect** section, and create a new endpoint in the same VPC as your application. For details, refer to [Create an endpoint](https://cloud.google.com/vpc/docs/configure-private-service-connect-services#create-endpoint) in the Google Cloud documentation.
+    - Set **Target** to **Published service**.
+    - Set **Target service** to the value you copied from CockroachDB Cloud Console. If the endpoint's configured target service does not match, validation will fail.
+    - Provide a value for **Endpoint name**. This is not used by CockroachDB Cloud.
+    - If it is not enabled, enable the Service Directory API, click **Enable global access**, and create a namespace in each region where your cluster is deployed.
+    - Click **Add endpoint**.
+    - After the endpoint is created, copy the connection ID.
+4. Return to the CockroachDB Cloud Console browser tab and click **Validate**.
+5. Enter the endpoint's ID, then click **Validate**. CockroachDB Cloud attempts to connect to the endpoint's VPC and verifies that the target service matches the cluster. If validation fails, verify the endpoint's configuration, then try again. After validation succeeds, click **Complete** to finish creating the connection.
+6. On the **Networking &gt; Private endpoint** tab, verify that the connection status is **Available**.
+
+<Tip>
+After validation succeeds for an endpoint, additional endpoints in the same VPC are automatically automatically accepted if they are configured with the cluster's target service ID. Additional VPCs must be added separately.
+</Tip>
+
+If you remove the endpoint from GCP or change its target service, the endpoint will be removed from the cluster automatically.
+
+After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+#### AWS PrivateLink
+
+To establish an AWS PrivateLink connection, refer to [Managing AWS PrivateLink for a cluster](/docs/cockroachcloud/aws-privatelink). After the connection is established, you can use it to [connect to your cluster](#connect-to-your-cluster).
+
+#### Azure Private Link
+
+1. Navigate to your cluster's **Networking &gt; Private endpoint** tab.
+2. Click **Add a private endpoint**. Copy the value provided for **Alias**. Do not close this browser window.
+3. In a new browser window, log in to Azure Console and create a new private endpoint for your cluster.
+    - Set the connection method to “by resource ID or alias”.
+    - Set the resource ID to the **Alias** you previously copied. For details, refer to [Create a private endpoint](https://learn.microsoft.com/azure/private-link/create-private-endpoint-portal?tabs=dynamic-ip) in the Azure documentation.
+
+        After the private endpoint is created, view it, then click **Properties** and copy its Resource ID.
+
+        <Note>
+        Copy the resource ID for the private endpoint you just created, not for the Private Link resource itself.
+        </Note>
+
+        Do not close this browser window.
+4. Return to the CockroachDB Cloud Console browser tab and click **Next**.
+5. Paste the resource ID for the Azure private endpoint, then click **Validate**. If validation fails, verify the resource ID and try again. If you encounter the error `This resource is invalid`, be sure that you are using the resource ID for the Azure private endpoint, rather than the resource ID for Azure Private Link itself.
+
+    When validation succeeds, click **Next** to configure private DNS. Make a note of the Internal DNS Name. Do not close this browser window.
+6. Return to the Azure Console. Go to the **Private DNS Zone** page and create private DNS records for your cluster in the&#96; region where you will connect privately.
+    - Create a private DNS zone named with the Internal DNS Name you previously copied. Refer to [Quickstart: Create an Azure private DNS zone using the Azure portal](https://learn.microsoft.com/azure/dns/private-dns-getstarted-portal).
+    - In the new DNS zone, create an `@` record with the Internal DNS Name you previously copied.
+    - Click **Complete** to finish creating the DNS records.
+7. Associate the new DNS zone with the private endpoint's virtual network. View the private endpoint's configuration, click **Virtual network links**, then click **Add**.
+    - Name the link, then select the resource group and select the DNS zone you just created.
+    - Enable auto-registration.
+    - Click **OK**.
+
+        For details, refer to [Link the virtual network](https://learn.microsoft.com/azure/dns/private-dns-getstarted-portal#link-the-virtual-network).
+8. Return to the CockroachDB Cloud Console browser tab and click **Complete**.
+9. On the **Networking** page, verify the connection status is **Available**.
+
+## Connect to your cluster
+
+<Warning>
+PostgreSQL connection URIs do not support special characters. If you have special characters in your password, you will have to [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) them (e.g., `password!` should be entered as `password%21`) to connect to your cluster.
+</Warning>
+
+<Note>
+If you forget your SQL user's password, an [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+</Note>
+
+1. In the top right corner of the CockroachDB Cloud Console, click **Connect**.
+
+    The **Setup** page of the **Connect to cluster** dialog displays.
+2. If you have set up a private connection, select it to connect privately. Otherwise, click **IP Allowlist**.
+3. Select the **SQL User**. If you have only one SQL user, it is automatically selected.
+
+- [Build a Python App with CockroachDB](/docs/v25.4/build-a-python-app-with-cockroachdb)
+- [Build a Go App with CockroachDB](/docs/v25.4/build-a-go-app-with-cockroachdb)
+- [Build a Java App with CockroachDB](/docs/v25.4/build-a-java-app-with-cockroachdb)
+- [Build a Ruby App with CockroachDB](/docs/v25.4/build-a-ruby-app-with-cockroachdb)
+- [Build a Javascript App with CockroachDB](/docs/v25.4/build-a-nodejs-app-with-cockroachdb)
+
+1. If you need to download the CA certificate, first set **Select option/language** to **General Connection String** and expand the **Download CA Cert** section. In the **Download CA Cert** section of the dialog, select your operating system, and use the command provided to download the CA certificate to the default PostgreSQL certificate directory on your machine.
+2. Select the **Parameters only** option of the **Select option/language** dropdown.
+3. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](/docs/v25.4/third-party-database-tools).
+
+    <table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;username&#125;</code></td><td>The <a href="/docs/cockroachcloud/managing-access#create-a-sql-user">SQL user</a> connecting to the cluster.</td></tr><tr><td><code>&#123;host&#125;</code></td><td>The host on which the CockroachDB node is running.</td></tr><tr><td><code>&#123;port&#125;</code></td><td>The port at which the CockroachDB node is listening.</td></tr><tr><td><code>&#123;database&#125;</code></td><td>The name of the (existing) database.</td></tr></tbody></table>
+
+Additionally, you will need the SQL user's [password](/docs/cockroachcloud/managing-access#create-a-sql-user). If you forget your SQL user's password, an [Organization Admin](/docs/cockroachcloud/authorization#organization-admin) or a Cluster Admin on the cluster can change the password on the **SQL Users** page.
+
+You can connect to your cluster with any [supported version](/docs/releases/release-support-policy#supported-versions) of the full CockroachDB binary or the [built-in SQL client](/docs/v25.4/cockroach-sql).
+
+1. Select **CockroachDB Client** from the **Select option/language** dropdown.
+2. In the **Download the latest CockroachDB Client** section of the dialog, select your operating system, and use the command provided to install the latest downloadable version of CockroachDB on your local system.
+3. Copy the [`cockroach sql`](/docs/v25.4/cockroach-sql) command and connection string provided in the **Connect** dialog, which will be used in the next step (and to connect to your cluster in the future).
+4. In your terminal, enter the copied `cockroach sql` command and connection string to start the [built-in SQL client](/docs/v25.4/cockroach-sql).
+5. Enter the SQL user's password and hit enter.
+
+    <Warning>
+    PostgreSQL connection URIs do not support special characters. If you have special characters in your password, you will have to [URL encode](https://www.w3schools.com/tags/ref_urlencode.ASP) them (e.g., `password!` should be entered as `password%21`) to connect to your cluster.
+    </Warning>
+
+    A welcome message displays:
+
+    ```text
+    #
+    # Welcome to the CockroachDB SQL shell.
+    # All statements must be terminated by a semicolon.
+    # To exit, type: \q.
+    #
+    ```
+
+    You are now connected to the built-in SQL client, and can now run [CockroachDB SQL statements](/docs/v25.4/sql-statements).
+
+To connect to your cluster with a [CockroachDB-compatible tool](/docs/v25.4/third-party-database-tools):
+
+1. If the CA certificate for the cluster is not downloaded locally, select the **Connection string** tab, then copy the command to download the CA certificate. In your terminal, run the command.
+2. Select the **Connection parameters** tab.
+3. Use the connection parameters provided in the dialog to connect to your cluster using a [CockroachDB-compatible tool](/docs/v25.4/third-party-database-tools).
+
+    <table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>&#123;username&#125;</code></td><td>The <a href="/docs/cockroachcloud/managing-access#create-a-sql-user">SQL user</a> connecting to the cluster.</td></tr><tr><td><code>&#123;password&#125;</code></td><td>The password for the SQL user connecting to the cluster.</td></tr><tr><td><code>&#123;host&#125;</code></td><td>The host on which the CockroachDB node is running.</td></tr><tr><td><code>&#123;port&#125;</code></td><td>The port at which the CockroachDB node is listening.</td></tr><tr><td><code>&#123;database&#125;</code></td><td>The name of the (existing) database.</td></tr></tbody></table>
+4. Click **Close**.
+
+</Tab>
+</Tabs>
+
+## What's next
+
+- [Build a "Hello, World" app](/docs/v25.4/build-a-python-app-with-cockroachdb-django)

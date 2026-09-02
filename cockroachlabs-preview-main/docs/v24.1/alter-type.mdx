@@ -1,0 +1,137 @@
+---
+title: "ALTER TYPE"
+old_description: "The ALTER TYPE statement modifies a user-defined data type in a database."
+---
+
+import { AlterType3 } from "/snippets/syntax-diagrams/AlterType3.jsx";
+
+The `ALTER TYPE` [statement](/docs/v24.1/sql-statements) modifies a [user-defined data type](/docs/v24.1/create-type) in the current database.
+
+<Note>
+The `ALTER TYPE` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v24.1/online-schema-changes).
+</Note>
+
+## Synopsis
+
+<AlterType3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>type&#95;name</code></td><td>The name of the user-defined type.</td></tr><tr><td><code>ADD VALUE value</code></td><td>Add a constant value to the user-defined type's list of values. You can optionally specify <code>BEFORE value</code> or <code>AFTER value</code> to add the value in sort order relative to an existing value.</td></tr><tr><td><code>DROP VALUE value</code></td><td>Drop a specific value from the user-defined type's list of values.</td></tr><tr><td><code>RENAME TO name</code></td><td>Rename the user-defined type.</td></tr><tr><td><code>RENAME VALUE value TO value</code></td><td>Rename a constant value in the user-defined type's list of values.</td></tr><tr><td><code>SET SCHEMA</code></td><td>Set <a href="/docs/v24.1/sql-name-resolution">the schema</a> of the user-defined type.</td></tr><tr><td><code>OWNER TO</code></td><td>Change the <a href="/docs/v24.1/grant">role specification</a> for the user-defined type's owner.</td></tr></tbody></table>
+
+## Required privileges
+
+- To [alter a type](/docs/v24.1/alter-type), the user must be the owner of the type.
+- To set the schema of a user-defined type, the user must have the `CREATE` [privilege](/docs/v24.1/security-reference/authorization#managing-privileges) on the schema and the `DROP` privilege on the type.
+- To alter the owner of a user-defined type:
+    - The user executing the command must be a member of the new owner role.
+    - The new owner role must have the `CREATE` privilege on the schema the type belongs to.
+
+## Known limitations
+
+- When running the [`ALTER TYPE`](/docs/v24.1/alter-type) statement, you can only reference a user-defined type from the database that contains the type.
+- You can only [cancel](/docs/v24.1/cancel-job) `ALTER TYPE` [schema change jobs](/docs/v24.1/online-schema-changes) that drop values. This is because when you drop a value, CockroachDB searches through every row that could contain the type's value, which could take a long time. All other `ALTER TYPE` schema change jobs are [non-cancellable](/docs/v24.1/cancel-job#known-limitations).
+
+## Example
+
+The following example uses a [user-defined type](/docs/v24.1/create-type).
+
+```sql
+> CREATE TYPE status AS ENUM ('open', 'closed', 'inactive');
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema |  name  |         values         | owner
+---------+--------+------------------------+--------
+  public | status | {open,closed,inactive} | demo
+(1 row)
+```
+
+### Add a value to a user-defined type
+
+To add a value to the `status` type, use an `ADD VALUE` clause:
+
+```sql
+> ALTER TYPE status ADD VALUE 'pending';
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema |  name  |             values             | owner
+---------+--------+--------------------------------+--------
+  public | status | {open,closed,inactive,pending} | demo
+(1 row)
+```
+
+### Rename a value in a user-defined type
+
+To rename a value in the `status` type, use a `RENAME VALUE` clause:
+
+```sql
+> ALTER TYPE status RENAME VALUE 'open' TO 'active';
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema |  name  |              values              | owner
+---------+--------+----------------------------------+--------
+  public | status | {active,closed,inactive,pending} | demo
+(1 row)
+```
+
+### Rename a user-defined type
+
+To rename the `status` type, use a `RENAME TO` clause:
+
+```sql
+> ALTER TYPE status RENAME TO account_status;
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema |      name      |              values              | owner
+---------+----------------+----------------------------------+--------
+  public | account_status | {active,closed,inactive,pending} | demo
+(1 row)
+```
+
+### Drop a value in a user-defined type
+
+To drop a value from the `account_status` type, use a `DROP VALUE` clause:
+
+```sql
+> ALTER TYPE account_status DROP VALUE 'inactive';
+```
+
+```sql
+> SHOW ENUMS;
+```
+
+```text
+  schema |      name      |         values          | owner
+---------+----------------+-------------------------+--------
+  public | account_status | {active,closed,pending} | demo
+(1 row)
+```
+
+## See also
+
+- [`CREATE TYPE`](/docs/v24.1/create-type)
+- [`ENUM`](/docs/v24.1/enum)
+- [`SHOW ENUMS`](/docs/v24.1/show-enums)
+- [`SHOW TYPES`](/docs/v24.1/show-types)
+- [`DROP TYPE`](/docs/v24.1/drop-type)
+- [Online Schema Changes](/docs/v24.1/online-schema-changes)

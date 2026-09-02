@@ -1,0 +1,802 @@
+---
+title: "Build a Java App with CockroachDB and jOOQ"
+old_description: "Learn how to use CockroachDB from a simple Java application with jOOQ."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  currentPath="/docs/v25.2/build-a-java-app-with-cockroachdb-jooq"
+  items={[
+    {
+      title: "Use JDBC",
+      href: "/docs/v25.2/build-a-java-app-with-cockroachdb",
+    },
+    {
+      title: "Use Hibernate",
+      href: "/docs/v25.2/build-a-java-app-with-cockroachdb-hibernate",
+    },
+    {
+      title: "Use jOOQ",
+      href: "/docs/v25.2/build-a-java-app-with-cockroachdb-jooq",
+    },
+    {
+      title: "Use MyBatis-Spring",
+      href: "/docs/v25.2/build-a-spring-app-with-cockroachdb-mybatis",
+    },
+  ]}
+/>
+
+This tutorial shows you how build a simple Java application with CockroachDB and [jOOQ](https://www.jooq.org/).
+
+CockroachDB is supported in jOOQ [Professional and Enterprise editions](https://www.jooq.org/download#databases).
+
+<Note>
+We recommend using Java versions 8+ with CockroachDB.
+</Note>
+
+<Tip>
+For another use of jOOQ with CockroachDB, see our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+</Tip>
+
+## Before you begin
+
+1. [Install CockroachDB](/docs/v25.2/install-cockroachdb).
+2. Start up a [secure](/docs/v25.2/secure-a-cluster) or [insecure](/docs/v25.2/start-a-local-cluster) local cluster.
+3. Choose the instructions that correspond to whether your cluster is secure or insecure:
+
+<Tabs>
+<Tab title="Secure">
+
+## Step 1. Install Maven
+
+This tutorial uses the [Maven build tool](https://gradle.org/) to manage application dependencies.
+
+To install Maven on Mac, run the following command:
+
+```shell
+$ brew install maven
+```
+
+To install Maven on a Debian-based Linux distribution like Ubuntu:
+
+```shell
+$ apt-get install maven
+```
+
+For other ways to install Maven, see [its official documentation](https://maven.apache.org/install).
+
+## Step 2. Install jOOQ
+
+Download the free trial of jOOQ Professional or Enterprise edition from [jOOQ's website](https://www.jooq.org/download), and unzip the file.
+
+To install jOOQ to your machine's local Maven repository, run the `maven-install.sh` script included in the jOOQ install folder:
+
+```shell
+$ chmod +x maven-install.sh
+```
+
+```shell
+$ ./maven-install.sh
+```
+
+## Step 3. Create the `maxroach` user and `bank` database
+
+Start the [built-in SQL shell](/docs/v25.2/cockroach-sql):
+
+```shell
+$ cockroach sql --certs-dir=certs
+```
+
+In the SQL shell, issue the following statements to create the `maxroach` user and `bank` database:
+
+```sql
+> CREATE USER IF NOT EXISTS maxroach;
+```
+
+```sql
+> CREATE DATABASE bank;
+```
+
+Give the `maxroach` user the necessary permissions:
+
+```sql
+> GRANT ALL ON DATABASE bank TO maxroach;
+```
+
+Exit the SQL shell:
+
+```sql
+> \q
+```
+
+## Step 4. Generate a certificate for the `maxroach` user
+
+Create a certificate and key for the `maxroach` user by running the following command. The code samples will run as this user.
+
+The [`--also-generate-pkcs8-key` flag](/docs/v25.2/cockroach-cert#flag-pkcs8) generates a key in [PKCS#8 format](https://tools.ietf.org/html/rfc5208), which is the standard key encoding format in Java. In this case, the generated PKCS8 key will be named `client.maxroach.key.pk8`.
+
+```shell
+$ cockroach cert create-client maxroach --certs-dir=certs --ca-key=my-safe-directory/ca.key --also-generate-pkcs8-key
+```
+
+## Step 5. Run the Java code
+
+The code below uses jOOQ to map Java methods to SQL operations. It performs the following steps, some of which correspond to method calls of the `Sample` class.
+
+1. Inputs the `db.sql` file to the database. `db.sql` includes SQL statements that create an `accounts` table in the `bank` database.
+2. Inserts rows into the `accounts` table using `session.save(new Account(int id, int balance))` (see `Sample.addAccounts()` ).
+3. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)` ).
+4. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)` ).
+
+In addition, the code shows a pattern for automatically handling [transaction retries](/docs/v25.2/transaction-retry-error-example) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+
+To run it:
+
+1. Download and unzip [jooq-basic-sample.zip](https://github.com/cockroachdb/docs/raw/master/_includes/v25.2/app/jooq-basic-sample/jooq-basic-sample.zip).
+2. Open `jooq-basic-sample/src/main/java/com/cockroachlabs/Sample.java`, and edit the connection string passed to `DriverManager.getConnection()` in the `Sample` class's `main()` method so that the certificate paths are fully and correctly specified.
+3. Compile and run the code using Maven:
+
+    ```shell
+    $ cd jooq-basic-sample
+    ```
+
+    ```shell
+    $ mvn compile
+    ```
+
+    ```shell
+    $ mvn exec:java -Dexec.mainClass=com.cockroachlabs.Sample
+    ```
+
+Here are the contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v25.2/app/jooq-basic-sample/Sample.java), the Java file containing the main `Sample` class:
+
+```java
+package com.cockroachlabs;
+
+import com.cockroachlabs.example.jooq.db.Tables;
+import com.cockroachlabs.example.jooq.db.tables.records.AccountsRecord;
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.Source;
+import org.jooq.conf.RenderQuotedNames;
+import org.jooq.conf.Settings;
+import org.jooq.exception.DataAccessException;
+import org.jooq.impl.DSL;
+
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
+
+import static com.cockroachlabs.example.jooq.db.Tables.ACCOUNTS;
+
+public class Sample {
+
+    private static final Random RAND = new Random();
+    private static final boolean FORCE_RETRY = false;
+    private static final String RETRY_SQL_STATE = "40001";
+    private static final int MAX_ATTEMPT_COUNT = 6;
+
+    private static Function<DSLContext, Long> addAccounts() {
+        return ctx -> {
+            long rv = 0;
+
+            ctx.delete(ACCOUNTS).execute();
+            ctx.batchInsert(
+                new AccountsRecord(1L,   1000L),
+                new AccountsRecord(2L,    250L),
+                new AccountsRecord(3L, 314159L)
+            ).execute();
+
+            rv = 1;
+            System.out.printf("APP: addAccounts() --> %d\n", rv);
+            return rv;
+        };
+    }
+
+    private static Function<DSLContext, Long> transferFunds(long fromId, long toId, long amount) {
+        return ctx -> {
+            long rv = 0;
+
+            AccountsRecord fromAccount = ctx.fetchSingle(ACCOUNTS, ACCOUNTS.ID.eq(fromId));
+            AccountsRecord toAccount = ctx.fetchSingle(ACCOUNTS, ACCOUNTS.ID.eq(toId));
+
+            if (!(amount > fromAccount.getBalance())) {
+                fromAccount.setBalance(fromAccount.getBalance() - amount);
+                toAccount.setBalance(toAccount.getBalance() + amount);
+
+                ctx.batchUpdate(fromAccount, toAccount).execute();
+                rv = amount;
+                System.out.printf("APP: transferFunds(%d, %d, %d) --> %d\n", fromId, toId, amount, rv);
+            }
+
+            return rv;
+        };
+    }
+
+    // Test our retry handling logic if FORCE_RETRY is true.  This
+    // method is only used to test the retry logic.  It is not
+    // intended for production code.
+    private static Function<DSLContext, Long> forceRetryLogic() {
+        return ctx -> {
+            long rv = -1;
+            try {
+                System.out.printf("APP: testRetryLogic: BEFORE EXCEPTION\n");
+                ctx.execute("SELECT crdb_internal.force_retry('1s')");
+            } catch (DataAccessException e) {
+                System.out.printf("APP: testRetryLogic: AFTER EXCEPTION\n");
+                throw e;
+            }
+            return rv;
+        };
+    }
+
+    private static Function<DSLContext, Long> getAccountBalance(long id) {
+        return ctx -> {
+            AccountsRecord account = ctx.fetchSingle(ACCOUNTS, ACCOUNTS.ID.eq(id));
+            long balance = account.getBalance();
+            System.out.printf("APP: getAccountBalance(%d) --> %d\n", id, balance);
+            return balance;
+        };
+    }
+
+    // Run SQL code in a way that automatically handles the
+    // transaction retry logic so we do not have to duplicate it in
+    // various places.
+    private static long runTransaction(DSLContext session, Function<DSLContext, Long> fn) {
+        AtomicLong rv = new AtomicLong(0L);
+        AtomicInteger attemptCount = new AtomicInteger(0);
+
+        while (attemptCount.get() < MAX_ATTEMPT_COUNT) {
+            attemptCount.incrementAndGet();
+
+            if (attemptCount.get() > 1) {
+                System.out.printf("APP: Entering retry loop again, iteration %d\n", attemptCount.get());
+            }
+
+            if (session.connectionResult(connection -> {
+                connection.setAutoCommit(false);
+                System.out.printf("APP: BEGIN;\n");
+
+                if (attemptCount.get() == MAX_ATTEMPT_COUNT) {
+                    String err = String.format("hit max of %s attempts, aborting", MAX_ATTEMPT_COUNT);
+                    throw new RuntimeException(err);
+                }
+
+                // This block is only used to test the retry logic.
+                // It is not necessary in production code.  See also
+                // the method 'testRetryLogic()'.
+                if (FORCE_RETRY) {
+                    session.fetch("SELECT now()");
+                }
+
+                try {
+                    rv.set(fn.apply(session));
+                    if (rv.get() != -1) {
+                        connection.commit();
+                        System.out.printf("APP: COMMIT;\n");
+                        return true;
+                    }
+                } catch (DataAccessException | SQLException e) {
+                    String sqlState = e instanceof SQLException ? ((SQLException) e).getSQLState() : ((DataAccessException) e).sqlState();
+
+                    if (RETRY_SQL_STATE.equals(sqlState)) {
+                        // Since this is a transaction retry error, we
+                        // roll back the transaction and sleep a little
+                        // before trying again.  Each time through the
+                        // loop we sleep for a little longer than the last
+                        // time (A.K.A. exponential backoff).
+                        System.out.printf("APP: retryable exception occurred:\n    sql state = [%s]\n    message = [%s]\n    retry counter = %s\n", sqlState, e.getMessage(), attemptCount.get());
+                        System.out.printf("APP: ROLLBACK;\n");
+                        connection.rollback();
+                        int sleepMillis = (int)(Math.pow(2, attemptCount.get()) * 100) + RAND.nextInt(100);
+                        System.out.printf("APP: Hit 40001 transaction retry error, sleeping %s milliseconds\n", sleepMillis);
+                        try {
+                            Thread.sleep(sleepMillis);
+                        } catch (InterruptedException ignored) {
+                            // no-op
+                        }
+                        rv.set(-1L);
+                    } else {
+                        throw e;
+                    }
+                }
+
+                return false;
+            })) {
+                break;
+            }
+        }
+
+        return rv.get();
+    }
+
+    public static void main(String[] args) throws Exception {
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:26257/bank?ssl=true&sslmode=require&sslrootcert=certs/ca.crt&sslkey=certs/client.maxroach.key.pk8&sslcert=certs/client.maxroach.crt",
+                "maxroach",
+                ""
+        )) {
+            DSLContext ctx = DSL.using(connection, SQLDialect.COCKROACHDB, new Settings()
+                .withExecuteLogging(true)
+                .withRenderQuotedNames(RenderQuotedNames.NEVER));
+
+            // Initialise database with db.sql script
+            try (InputStream in = Sample.class.getResourceAsStream("/db.sql")) {
+                ctx.parser().parse(Source.of(in).readString()).executeBatch();
+            }
+
+            long fromAccountId = 1;
+            long toAccountId = 2;
+            long transferAmount = 100;
+
+            if (FORCE_RETRY) {
+                System.out.printf("APP: About to test retry logic in 'runTransaction'\n");
+                runTransaction(ctx, forceRetryLogic());
+            } else {
+
+                runTransaction(ctx, addAccounts());
+                long fromBalance = runTransaction(ctx, getAccountBalance(fromAccountId));
+                long toBalance = runTransaction(ctx, getAccountBalance(toAccountId));
+                if (fromBalance != -1 && toBalance != -1) {
+                    // Success!
+                    System.out.printf("APP: getAccountBalance(%d) --> %d\n", fromAccountId, fromBalance);
+                    System.out.printf("APP: getAccountBalance(%d) --> %d\n", toAccountId, toBalance);
+                }
+
+                // Transfer $100 from account 1 to account 2
+                long transferResult = runTransaction(ctx, transferFunds(fromAccountId, toAccountId, transferAmount));
+                if (transferResult != -1) {
+                    // Success!
+                    System.out.printf("APP: transferFunds(%d, %d, %d) --> %d \n", fromAccountId, toAccountId, transferAmount, transferResult);
+
+                    long fromBalanceAfter = runTransaction(ctx, getAccountBalance(fromAccountId));
+                    long toBalanceAfter = runTransaction(ctx, getAccountBalance(toAccountId));
+                    if (fromBalanceAfter != -1 && toBalanceAfter != -1) {
+                        // Success!
+                        System.out.printf("APP: getAccountBalance(%d) --> %d\n", fromAccountId, fromBalanceAfter);
+                        System.out.printf("APP: getAccountBalance(%d) --> %d\n", toAccountId, toBalanceAfter);
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+Toward the end of the output, you should see:
+
+```text
+APP: BEGIN;
+APP: addAccounts() --> 1
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(1) --> 1000
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(2) --> 250
+APP: COMMIT;
+APP: getAccountBalance(1) --> 1000
+APP: getAccountBalance(2) --> 250
+APP: BEGIN;
+APP: transferFunds(1, 2, 100) --> 100
+APP: COMMIT;
+APP: transferFunds(1, 2, 100) --> 100
+APP: BEGIN;
+APP: getAccountBalance(1) --> 900
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(2) --> 350
+APP: COMMIT;
+APP: getAccountBalance(1) --> 900
+APP: getAccountBalance(2) --> 350
+```
+
+To verify that the account balances were updated successfully, start the [built-in SQL client](/docs/v25.2/cockroach-sql):
+
+```shell
+$ cockroach sql --certs-dir=certs
+```
+
+To check the account balances, issue the following statement:
+
+```sql
+SELECT id, balance FROM accounts;
+```
+
+```text
+  id | balance
++----+---------+
+   1 |     900
+   2 |     350
+   3 |  314159
+(3 rows)
+```
+
+</Tab>
+<Tab title="Insecure">
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+## Step 1. Install Maven
+
+This tutorial uses the [Maven build tool](https://gradle.org/) to manage application dependencies.
+
+To install Maven on Mac, run the following command:
+
+```shell
+$ brew install maven
+```
+
+To install Maven on a Debian-based Linux distribution like Ubuntu:
+
+```shell
+$ apt-get install maven
+```
+
+For other ways to install Maven, see [its official documentation](https://maven.apache.org/install).
+
+## Step 2. Install jOOQ
+
+Download the free trial of jOOQ Professional or Enterprise edition from [jOOQ's website](https://www.jooq.org/download), and unzip the file.
+
+To install jOOQ to your machine's local Maven repository, run the `maven-install.sh` script included in the jOOQ install folder:
+
+```shell
+$ chmod +x maven-install.sh
+```
+
+```shell
+$ ./maven-install.sh
+```
+
+## Step 3. Create the `maxroach` user and `bank` database
+
+Start the [built-in SQL shell](/docs/v25.2/cockroach-sql):
+
+```shell
+$ cockroach sql --insecure
+```
+
+In the SQL shell, issue the following statements to create the `maxroach` user and `bank` database:
+
+```sql
+> CREATE USER IF NOT EXISTS maxroach;
+```
+
+```sql
+> CREATE DATABASE bank;
+```
+
+Give the `maxroach` user the necessary permissions:
+
+```sql
+> GRANT ALL ON DATABASE bank TO maxroach;
+```
+
+Exit the SQL shell:
+
+```sql
+> \q
+```
+
+## Step 4. Run the Java code
+
+The code below uses jOOQ to map Java methods to SQL operations. It performs the following steps, some of which correspond to method calls of the `Sample` class.
+
+1. Inputs the `db.sql` file to the database. `db.sql` includes SQL statements that create an `accounts` table in the `bank` database.
+2. Inserts rows into the `accounts` table using `session.save(new Account(int id, int balance))` (see `Sample.addAccounts()` ).
+3. Transfers money from one account to another, printing out account balances before and after the transfer (see `transferFunds(long fromId, long toId, long amount)` ).
+4. Prints out account balances before and after the transfer (see `Sample.getAccountBalance(long id)` ).
+
+In addition, the code shows a pattern for automatically handling [transaction retries](/docs/v25.2/transaction-retry-error-example) by wrapping transactions in a higher-order function `Sample.runTransaction()`. It also includes a method for testing the retry handling logic (`Sample.forceRetryLogic()`), which will be run if you set the `FORCE_RETRY` variable to `true`.
+
+To run it:
+
+1. Download and unzip [jooq-basic-sample.zip](https://github.com/cockroachdb/docs/raw/master/_includes/v25.2/app/insecure/jooq-basic-sample/jooq-basic-sample.zip).
+2. Compile and run the code using Maven:
+
+    ```shell
+    $ cd jooq-basic-sample
+    ```
+
+    ```shell
+    $ mvn compile
+    ```
+
+    ```shell
+    $ mvn exec:java -Dexec.mainClass=com.cockroachlabs.Sample
+    ```
+
+Here are the contents of [`Sample.java`](https://raw.githubusercontent.com/cockroachdb/docs/master/_includes/v25.2/app/insecure/jooq-basic-sample/Sample.java), the Java file containing the main `Sample` class:
+
+```java
+package com.cockroachlabs;
+
+import com.cockroachlabs.example.jooq.db.Tables;
+import com.cockroachlabs.example.jooq.db.tables.records.AccountsRecord;
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.Source;
+import org.jooq.conf.RenderQuotedNames;
+import org.jooq.conf.Settings;
+import org.jooq.exception.DataAccessException;
+import org.jooq.impl.DSL;
+
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
+
+import static com.cockroachlabs.example.jooq.db.Tables.ACCOUNTS;
+
+public class Sample {
+
+    private static final Random RAND = new Random();
+    private static final boolean FORCE_RETRY = false;
+    private static final String RETRY_SQL_STATE = "40001";
+    private static final int MAX_ATTEMPT_COUNT = 6;
+
+    private static Function<DSLContext, Long> addAccounts() {
+        return ctx -> {
+            long rv = 0;
+
+            ctx.delete(ACCOUNTS).execute();
+            ctx.batchInsert(
+                new AccountsRecord(1L,   1000L),
+                new AccountsRecord(2L,    250L),
+                new AccountsRecord(3L, 314159L)
+            ).execute();
+
+            rv = 1;
+            System.out.printf("APP: addAccounts() --> %d\n", rv);
+            return rv;
+        };
+    }
+
+    private static Function<DSLContext, Long> transferFunds(long fromId, long toId, long amount) {
+        return ctx -> {
+            long rv = 0;
+
+            AccountsRecord fromAccount = ctx.fetchSingle(ACCOUNTS, ACCOUNTS.ID.eq(fromId));
+            AccountsRecord toAccount = ctx.fetchSingle(ACCOUNTS, ACCOUNTS.ID.eq(toId));
+
+            if (!(amount > fromAccount.getBalance())) {
+                fromAccount.setBalance(fromAccount.getBalance() - amount);
+                toAccount.setBalance(toAccount.getBalance() + amount);
+
+                ctx.batchUpdate(fromAccount, toAccount).execute();
+                rv = amount;
+                System.out.printf("APP: transferFunds(%d, %d, %d) --> %d\n", fromId, toId, amount, rv);
+            }
+
+            return rv;
+        };
+    }
+
+    // Test our retry handling logic if FORCE_RETRY is true.  This
+    // method is only used to test the retry logic.  It is not
+    // intended for production code.
+    private static Function<DSLContext, Long> forceRetryLogic() {
+        return ctx -> {
+            long rv = -1;
+            try {
+                System.out.printf("APP: testRetryLogic: BEFORE EXCEPTION\n");
+                ctx.execute("SELECT crdb_internal.force_retry('1s')");
+            } catch (DataAccessException e) {
+                System.out.printf("APP: testRetryLogic: AFTER EXCEPTION\n");
+                throw e;
+            }
+            return rv;
+        };
+    }
+
+    private static Function<DSLContext, Long> getAccountBalance(long id) {
+        return ctx -> {
+            AccountsRecord account = ctx.fetchSingle(ACCOUNTS, ACCOUNTS.ID.eq(id));
+            long balance = account.getBalance();
+            System.out.printf("APP: getAccountBalance(%d) --> %d\n", id, balance);
+            return balance;
+        };
+    }
+
+    // Run SQL code in a way that automatically handles the
+    // transaction retry logic so we do not have to duplicate it in
+    // various places.
+    private static long runTransaction(DSLContext session, Function<DSLContext, Long> fn) {
+        AtomicLong rv = new AtomicLong(0L);
+        AtomicInteger attemptCount = new AtomicInteger(0);
+
+        while (attemptCount.get() < MAX_ATTEMPT_COUNT) {
+            attemptCount.incrementAndGet();
+
+            if (attemptCount.get() > 1) {
+                System.out.printf("APP: Entering retry loop again, iteration %d\n", attemptCount.get());
+            }
+
+            if (session.connectionResult(connection -> {
+                connection.setAutoCommit(false);
+                System.out.printf("APP: BEGIN;\n");
+
+                if (attemptCount.get() == MAX_ATTEMPT_COUNT) {
+                    String err = String.format("hit max of %s attempts, aborting", MAX_ATTEMPT_COUNT);
+                    throw new RuntimeException(err);
+                }
+
+                // This block is only used to test the retry logic.
+                // It is not necessary in production code.  See also
+                // the method 'testRetryLogic()'.
+                if (FORCE_RETRY) {
+                    session.fetch("SELECT now()");
+                }
+
+                try {
+                    rv.set(fn.apply(session));
+                    if (rv.get() != -1) {
+                        connection.commit();
+                        System.out.printf("APP: COMMIT;\n");
+                        return true;
+                    }
+                } catch (DataAccessException | SQLException e) {
+                    String sqlState = e instanceof SQLException ? ((SQLException) e).getSQLState() : ((DataAccessException) e).sqlState();
+
+                    if (RETRY_SQL_STATE.equals(sqlState)) {
+                        // Since this is a transaction retry error, we
+                        // roll back the transaction and sleep a little
+                        // before trying again.  Each time through the
+                        // loop we sleep for a little longer than the last
+                        // time (A.K.A. exponential backoff).
+                        System.out.printf("APP: retryable exception occurred:\n    sql state = [%s]\n    message = [%s]\n    retry counter = %s\n", sqlState, e.getMessage(), attemptCount.get());
+                        System.out.printf("APP: ROLLBACK;\n");
+                        connection.rollback();
+                        int sleepMillis = (int)(Math.pow(2, attemptCount.get()) * 100) + RAND.nextInt(100);
+                        System.out.printf("APP: Hit 40001 transaction retry error, sleeping %s milliseconds\n", sleepMillis);
+                        try {
+                            Thread.sleep(sleepMillis);
+                        } catch (InterruptedException ignored) {
+                            // no-op
+                        }
+                        rv.set(-1L);
+                    } else {
+                        throw e;
+                    }
+                }
+
+                return false;
+            })) {
+                break;
+            }
+        }
+
+        return rv.get();
+    }
+
+    public static void main(String[] args) throws Exception {
+        try (Connection connection = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:26257/bank?sslmode=disable",
+                "maxroach",
+                ""
+        )) {
+            DSLContext ctx = DSL.using(connection, SQLDialect.COCKROACHDB, new Settings()
+                .withExecuteLogging(true)
+                .withRenderQuotedNames(RenderQuotedNames.NEVER));
+
+            // Initialise database with db.sql script
+            try (InputStream in = Sample.class.getResourceAsStream("/db.sql")) {
+                ctx.parser().parse(Source.of(in).readString()).executeBatch();
+            }
+
+            long fromAccountId = 1;
+            long toAccountId = 2;
+            long transferAmount = 100;
+
+            if (FORCE_RETRY) {
+                System.out.printf("APP: About to test retry logic in 'runTransaction'\n");
+                runTransaction(ctx, forceRetryLogic());
+            } else {
+
+                runTransaction(ctx, addAccounts());
+                long fromBalance = runTransaction(ctx, getAccountBalance(fromAccountId));
+                long toBalance = runTransaction(ctx, getAccountBalance(toAccountId));
+                if (fromBalance != -1 && toBalance != -1) {
+                    // Success!
+                    System.out.printf("APP: getAccountBalance(%d) --> %d\n", fromAccountId, fromBalance);
+                    System.out.printf("APP: getAccountBalance(%d) --> %d\n", toAccountId, toBalance);
+                }
+
+                // Transfer $100 from account 1 to account 2
+                long transferResult = runTransaction(ctx, transferFunds(fromAccountId, toAccountId, transferAmount));
+                if (transferResult != -1) {
+                    // Success!
+                    System.out.printf("APP: transferFunds(%d, %d, %d) --> %d \n", fromAccountId, toAccountId, transferAmount, transferResult);
+
+                    long fromBalanceAfter = runTransaction(ctx, getAccountBalance(fromAccountId));
+                    long toBalanceAfter = runTransaction(ctx, getAccountBalance(toAccountId));
+                    if (fromBalanceAfter != -1 && toBalanceAfter != -1) {
+                        // Success!
+                        System.out.printf("APP: getAccountBalance(%d) --> %d\n", fromAccountId, fromBalanceAfter);
+                        System.out.printf("APP: getAccountBalance(%d) --> %d\n", toAccountId, toBalanceAfter);
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+Toward the end of the output, you should see:
+
+```text
+APP: BEGIN;
+APP: addAccounts() --> 1
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(1) --> 1000
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(2) --> 250
+APP: COMMIT;
+APP: getAccountBalance(1) --> 1000
+APP: getAccountBalance(2) --> 250
+APP: BEGIN;
+APP: transferFunds(1, 2, 100) --> 100
+APP: COMMIT;
+APP: transferFunds(1, 2, 100) --> 100
+APP: BEGIN;
+APP: getAccountBalance(1) --> 900
+APP: COMMIT;
+APP: BEGIN;
+APP: getAccountBalance(2) --> 350
+APP: COMMIT;
+APP: getAccountBalance(1) --> 900
+APP: getAccountBalance(2) --> 350
+```
+
+To verify that the account balances were updated successfully, start the [built-in SQL client](/docs/v25.2/cockroach-sql):
+
+```shell
+$ cockroach sql --insecure
+```
+
+To check the account balances, issue the following statement:
+
+```sql
+SELECT id, balance FROM accounts;
+```
+
+```text
+  id | balance
++----+---------+
+   1 |     900
+   2 |     350
+   3 |  314159
+(3 rows)
+```
+
+</Tab>
+</Tabs>
+
+## What's next?
+
+Read more about using [jOOQ](https://www.jooq.org/), or check out a more realistic implementation of jOOQ with CockroachDB in our [`examples-orms`](https://github.com/cockroachdb/examples-orms) repository.
+
+You might also be interested in the following pages:
+
+- [Client Connection Parameters](/docs/v25.2/connection-parameters)
+- [Connection Pooling](/docs/v25.2/connection-pooling)
+- [Data Replication](/docs/v25.2/demo-replication-and-rebalancing)
+- [CockroachDB Resilience](/docs/v25.2/demo-cockroachdb-resilience)
+- [Replication &amp; Rebalancing](/docs/v25.2/demo-replication-and-rebalancing)
+- [Cross-Cloud Migration](/docs/v25.2/demo-automatic-cloud-migration)
+- [Automated Operations](/docs/v25.2/orchestrate-a-local-cluster-with-kubernetes-insecure)

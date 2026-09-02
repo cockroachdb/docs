@@ -1,0 +1,118 @@
+---
+title: "Slow Requests Dashboard"
+old_description: "The Slow Requests dashboard lets you monitor important cluster tasks that take longer than expected to complete."
+---
+
+The **Slow Requests** dashboard lets you monitor important cluster tasks that take longer than expected to complete.
+
+To view this dashboard, [access the DB Console](/docs/v24.3/ui-overview#db-console-access) and click **Metrics** on the left-hand navigation, and then select **Dashboard** &gt; **Slow Requests**.
+
+## Dashboard navigation
+
+Use the **Graph** menu to display metrics for your entire cluster or for a specific node.
+
+To the right of the Graph and Dashboard menus, a time interval selector allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected in the [SQL Activity](/docs/v24.3/ui-overview#sql-activity) pages. However, if you select 10 or 30 minutes, the interval defaults to 1 hour in SQL Activity pages.
+
+Hovering your mouse pointer over the graph title will display a tooltip with a description and the [metrics](/docs/v24.3/essential-metrics-self-hosted) used to create the graph.
+
+When hovering on graphs, crosshair lines will appear at your mouse pointer. The series' values corresponding to the given time in the cross hairs are displayed in the legend under the graph. Hovering the mouse pointer on a given series displays the corresponding value near the mouse pointer and highlights the series line (graying out other series lines). Click anywhere within the graph to freeze the values in place. Click anywhere within the graph again to cause the values to change with your mouse movements once more.
+
+In the legend, click on an individual series to isolate it on the graph. The other series will be hidden, while the hover will still work. Click the individual series again to make the other series visible. If there are many series, a scrollbar may appear on the right of the legend. This is to limit the size of the legend so that it does not get endlessly large, particularly on clusters with many nodes.
+
+<Note>
+All timestamps in the DB Console are shown in Coordinated Universal Time (UTC).
+</Note>
+
+The **Slow Requests** dashboard displays the following time series graphs:
+
+## Slow Raft Proposals
+
+<Frame>
+  ![DB Console slow Raft proposals graph](/images/common/ui/ui_slow_raft.png)
+</Frame>
+
+The **Slow Raft Proposals** graph displays requests that have been stuck for longer than usual in [Raft](/docs/v24.3/architecture/replication-layer#raft).
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Slow Raft Proposals</td><td>The number of requests that have been stuck for longer than usual in <a href="/docs/v24.3/architecture/replication-layer#raft">Raft</a>, as tracked by the <code>requests.slow.raft</code> metric. This can be a symptom of a <a href="/docs/v24.3/architecture/replication-layer#leader-leaseholder-splits">leader-leaseholder split</a>.</td></tr></tbody></table>
+
+## Slow DistSender RPCs
+
+<Frame>
+  ![DB Console slow DistSender RPCs graph](/images/common/ui/ui_slow_distsender.png)
+</Frame>
+
+The **Slow DistSender RPCs** graph displays requests that have been stuck for longer than usual in [`DistSender`](/docs/v24.3/architecture/distribution-layer#distsender).
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Slow DistSender RPCs</td><td>The number of requests that have been stuck for longer than usual in <a href="/docs/v24.3/architecture/distribution-layer#distsender"><code>DistSender</code></a>, as tracked by the <code>requests.slow.distsender</code> metric.</td></tr></tbody></table>
+
+## Slow Lease Acquisitions
+
+<Frame>
+  ![DB Console slow lease acquisitions graph](/images/common/ui/ui_slow_lease.png)
+</Frame>
+
+The **Slow Lease Acquisitions** graph displays requests that have been stuck for longer than usual while attempting to acquire a [lease](/docs/v24.3/architecture/replication-layer#leases).
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Slow Lease Acquisitions</td><td>The number of requests that have been stuck for longer than usual while attempting to acquire a <a href="/docs/v24.3/architecture/replication-layer#leases">lease</a>, as tracked by the <code>requests.slow.lease</code> metric.</td></tr></tbody></table>
+
+## Slow Latch Acquisitions
+
+<Frame>
+  ![DB Console slow latch acquisitions graph](/images/common/ui/ui_slow_latch.png)
+</Frame>
+
+The **Slow Latch Acquisitions** graph displays requests that have been stuck for longer than usual while attempting to acquire a [latch](/docs/v24.3/architecture/transaction-layer#latch-manager).
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Slow Latch Acquisitions</td><td>The number of requests that have been stuck for longer than usual while attempting to acquire a <a href="/docs/v24.3/architecture/transaction-layer#latch-manager">latch</a>.</td></tr></tbody></table>
+
+## Summary and events
+
+### Summary panel
+
+A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Total Nodes</td><td>The total number of nodes in the cluster. <a href="/docs/v24.3/node-shutdown?filters=decommission">Decommissioned nodes</a> are not included in this count.</td></tr><tr><td>Capacity Used</td><td>The storage capacity used as a percentage of <a href="/docs/v24.3/ui-cluster-overview-page#capacity-metrics">usable capacity</a> allocated across all nodes.</td></tr><tr><td>Unavailable Ranges</td><td>The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.</td></tr><tr><td>Queries per second</td><td>The total number of <code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, and <code>DELETE</code> queries executed per second across the cluster.</td></tr><tr><td>P99 Latency</td><td>The 99th percentile of service latency.</td></tr></tbody></table>
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v24.3/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v24.3/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+### Events panel
+
+Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
+
+<Frame>
+  ![DB Console Events](/images/v24.3/ui_events.png)
+</Frame>
+
+The following types of events are listed:
+
+- Database created
+- Database dropped
+- Table created
+- Table dropped
+- Table altered
+- Index created
+- Index dropped
+- View created
+- View dropped
+- Schema change reversed
+- Schema change finished
+- Node joined
+- Node decommissioned
+- Node restarted
+- Cluster setting changed
+
+## See also
+
+- [Troubleshooting Overview](/docs/v24.3/troubleshooting-overview)
+- [Support Resources](/docs/v24.3/support-resources)
+- [Raw Status Endpoints](/docs/v24.3/monitoring-and-alerting#raw-status-endpoints)

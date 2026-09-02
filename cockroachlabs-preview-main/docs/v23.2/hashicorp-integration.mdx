@@ -1,0 +1,69 @@
+---
+title: "CockroachDB - HashiCorp Vault Integration"
+old_description: "Overview of uses cases for integrating CockroachDB with HashiCorp Vault"
+---
+
+This pages reviews the supported integrations between CockroachDB and [HashiCorp's Vault](https://www.vaultproject.io/).
+
+Vault is an identity-based secrets and encryption management service, which can either be self-hosted or accessed as a software as a service (SaaS) product through HashiCorp Cloud Platform (HCP). Vault's tooling can complement CockroachDB's data security capabilities to significantly bolster your organizational security posture.
+
+## Use Vault's KMS secrets engine to manage a CockroachDB Advanced cluster's customer-managed encryption key
+
+CockroachDB Advanced supports the use of customer-managed encrypted keys (CMEK) for the encryption of data at rest.
+
+[Vault's Key Management secrets engine](https://www.vaultproject.io/docs/secrets/key-management) allows customers to manage encryption keys on external key management services (KMS) such as those offered by Google Cloud Platform (GCP) or Amazon Web Services (AWS).
+
+CockroachDB customers can integrate these services, using Vault's KMS secrets engine to handle the full lifecycle of the encryption keys that CockroachDB Advanced uses to protect their data.
+
+Resources:
+
+- [CMEK overview](/docs/cockroachcloud/cmek)
+- [Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Advanced](/docs/cockroachcloud/managing-cmek)
+
+## Use Vault's PKI Secrets Engine to manage a CockroachDB Advanced cluster's certificate authority (CA) and client certificates.
+
+CockroachDB Advanced customers can use Vault's public key infrastructure (PKI) secrets engine to manage PKI certificates for client authentication to the cluster. Vault's PKI Secrets Engine greatly eases the security-critical work involved in maintaining a certificate authority (CA), generating, signing and distributing PKI certificates.
+
+By using Vault to manage certificates, you can use only certificates with short validity durations, an important component of PKI security.
+
+Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](/docs/v23.2/security-reference/transport-layer-security) for an overview.
+
+Refer to [Certificate Authentication for SQL Clients in CockroachDB Advanced Clusters](/docs/cockroachcloud/client-certs-advanced) for procedures in involved in administering PKI for a CockroachDB Advanced cluster.
+
+## Use Vault's PKI Secrets Engine to manage a CockroachDB self-hosted cluster's certificate authority (CA), server, and client certificates
+
+CockroachDB self-hosted customers can use Vault's public key infrastructure (PKI) secrets engine to manage PKI certificates for internode as well as client-cluster authentication. Vault's PKI Secrets Engine greatly eases the security-critical work involved in securely maintaining a certificate authority (CA), generating, signing and distributing PKI certificates.
+
+By using Vault to manage certificates, you can use only certificates with short validity durations, an important component of PKI security.
+
+Refer to [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](/docs/v23.2/security-reference/transport-layer-security) for an overview.
+
+Refer to [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](/docs/v23.2/manage-certs-vault) for procedures in involved in administering PKI for a CockroachDB self-hosted cluster.
+
+## Use Vault's PostgreSQL Database Secrets Engine to manage CockroachDB SQL users and their credentials
+
+CockroachDB users can use Vault's PostgreSQL Database Secrets Engine to handle the full lifecycle of SQL user credentials (creation, password rotation, deletion). Vault is capable of managing SQL user credentials in two ways:
+
+- As [Static Roles](https://www.vaultproject.io/docs/secrets/databases#static-roles), meaning that a single SQL user/role is mapped to a Vault role.
+- As [Dynamic Secrets](https://www.vaultproject.io/use-cases/dynamic-secrets), meaning that credentials are generated and issued on demand from pre-configured templates, rather than created and persisted. Credentials are issued for specific clients and for short validity durations, further minimizing both the likelihood of a credential compromise, and the possible impact of any compromise that might occur.
+
+Try the tutorial: [Using HashiCorp Vault's Dynamic Secrets for Enhanced Database Credential Security in CockroachDB](/docs/v23.2/vault-db-secrets-tutorial)
+
+## Use Vault's Transit Secrets Engine to manage a CockroachDB self-hosted cluster's Enterprise Encryption At Rest store key
+
+When deploying Enterprise, customers can provide their own externally managed encryption keys for use as the *store key* for CockroachDB's [Enterprise Encryption At Rest](/docs/v23.2/security-reference/encryption#encryption-at-rest-enterprise).
+
+Vault's [Transit Secrets Engine](https://www.vaultproject.io/docs/secrets/transit) can be used to generate suitable encryption keys for use as your cluster's store key.
+
+## See also
+
+- [CMEK overview](/docs/cockroachcloud/cmek)
+- [Manage Customer-Managed Encryption Keys (CMEK) for CockroachDB Advanced](/docs/cockroachcloud/managing-cmek)
+- [Transport Layer Security (TLS) and Public Key Infrastructure (PKI)](/docs/v23.2/security-reference/transport-layer-security)
+- [Certificate Authentication for SQL Clients in Advanced Clusters](/docs/cockroachcloud/client-certs-advanced)
+- [Manage PKI certificates for a CockroachDB deployment with HashiCorp Vault](/docs/v23.2/manage-certs-vault)
+- [Using HashiCorp Vault's Dynamic Secrets for Enhanced Database Credential Security in CockroachDB](/docs/v23.2/vault-db-secrets-tutorial)
+- [Roles](/docs/v23.2/security-reference/authorization#roles)
+- [Online Schema Changes](/docs/v23.2/online-schema-changes)
+- [`GRANT`](/docs/v23.2/grant)
+- [`REVOKE`](/docs/v23.2/revoke)

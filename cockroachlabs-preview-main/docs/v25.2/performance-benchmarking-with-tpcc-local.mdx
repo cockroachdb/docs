@@ -1,0 +1,184 @@
+---
+title: "Performance Benchmarking with TPC-C"
+old_description: "Learn how to benchmark CockroachDB against TPC-C 13k on 3 nodes on your laptop"
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+This page shows you how to reproduce [CockroachDB TPC-C performance benchmarking results](/docs/v25.2/performance#scale). Across all scales, CockroachDB can process tpmC (new order transactions per minute) at near maximum efficiency. Start by choosing the scale you're interested in:
+
+<LinkedPageTabs
+  currentPath="/docs/v25.2/performance-benchmarking-with-tpcc-local"
+  items={[
+    {
+      title: "Local",
+      href: "/docs/v25.2/performance-benchmarking-with-tpcc-local",
+    },
+    {
+      title: "Local (Multi-Region)",
+      href: "/docs/v25.2/performance-benchmarking-with-tpcc-local-multiregion",
+    },
+    {
+      title: "Small",
+      href: "/docs/v25.2/performance-benchmarking-with-tpcc-small",
+    },
+    {
+      title: "Medium",
+      href: "/docs/v25.2/performance-benchmarking-with-tpcc-medium",
+    },
+    {
+      title: "Large",
+      href: "/docs/v25.2/performance-benchmarking-with-tpcc-large",
+    },
+  ]}
+/>
+
+<table><thead><tr><th>Workload</th><th>Cluster size</th><th>Warehouses</th><th>Data size</th></tr></thead><tbody><tr><td>Local</td><td>3 nodes on your laptop</td><td>10</td><td>2 GB</td></tr><tr><td>Local (multi-region)</td><td>9 in-memory nodes on your laptop using <code>cockroach demo</code></td><td>10</td><td>2 GB</td></tr><tr><td>Small</td><td>3 nodes on <code>c5d.4xlarge</code> machines</td><td>2500</td><td>200 GB</td></tr><tr><td>Medium</td><td>15 nodes on <code>c5d.4xlarge</code> machines</td><td>13,000</td><td>1.04 TB</td></tr><tr><td>Large</td><td>81 nodes on <code>c5d.9xlarge</code> machines</td><td>140,000</td><td>11.2 TB</td></tr></tbody></table>
+
+## Before you begin
+
+- TPC-C provides the most realistic and objective measure for OLTP performance at various scale factors. Before you get started, consider reviewing [what TPC-C is and how it is measured](/docs/v25.2/performance#tpc-c).
+- Make sure you have already [installed CockroachDB](/docs/v25.2/install-cockroachdb).
+
+## Step 1. Start CockroachDB
+
+<Warning>
+The `--insecure` flag used in this tutorial is intended for non-production testing only. To run CockroachDB in production, use a secure cluster instead.
+</Warning>
+
+1. In separate terminal windows, use the [`cockroach start`](/docs/v25.2/cockroach-start) command to start 3 nodes:
+
+    ```shell
+    $ cockroach start \
+    --insecure \
+    --store=tpcc-local1 \
+    --listen-addr=localhost:26257 \
+    --http-addr=localhost:8080 \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ```
+
+    ```shell
+    $ cockroach start \
+    --insecure \
+    --store=tpcc-local2 \
+    --listen-addr=localhost:26258 \
+    --http-addr=localhost:8081 \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ```
+
+    ```shell
+    $ cockroach start \
+    --insecure \
+    --store=tpcc-local3 \
+    --listen-addr=localhost:26259 \
+    --http-addr=localhost:8082 \
+    --join=localhost:26257,localhost:26258,localhost:26259
+    ```
+2. Use the [`cockroach init`](/docs/v25.2/cockroach-init) command to perform a one-time initialization of the cluster:
+
+    ```shell
+    $ cockroach init \
+    --insecure \
+    --host=localhost:26257
+    ```
+
+## Step 2. Import the TPC-C dataset
+
+CockroachDB comes with a number of [built-in workloads](/docs/v25.2/cockroach-workload) for simulating client traffic. This step features CockroachDB's version of the [TPC-C](http://www.tpc.org/tpcc) workload.
+
+Use [`cockroach workload`](/docs/v25.2/cockroach-workload) to load the initial schema and data:
+
+```shell
+$ cockroach workload fixtures import tpcc \
+--warehouses=10 \
+'postgresql://root@localhost:26257?sslmode=disable'
+```
+
+This will load 2 GB of data for 10 "warehouses".
+
+## Step 3. Run the benchmark
+
+Run the workload for ten "warehouses" of data for ten minutes:
+
+```shell
+$ cockroach workload run tpcc \
+--warehouses=10 \
+--ramp=3m \
+--duration=10m \
+'postgresql://root@localhost:26257?sslmode=disable'
+```
+
+You'll see per-operation statistics every second:
+
+```text
+Initializing 20 connections...
+Initializing 100 workers and preparing statements...
+_elapsed___errors__ops/sec(inst)___ops/sec(cum)__p50(ms)__p95(ms)__p99(ms)_pMax(ms)
+    1.0s        0            0.0            0.0      0.0      0.0      0.0      0.0 delivery
+    1.0s        0            0.0            0.0      0.0      0.0      0.0      0.0 newOrder
+...
+  105.0s        0            0.0            0.2      0.0      0.0      0.0      0.0 delivery
+  105.0s        0            4.0            1.8     44.0     46.1     46.1     46.1 newOrder
+  105.0s        0            0.0            0.2      0.0      0.0      0.0      0.0 orderStatus
+  105.0s        0            1.0            2.0     14.7     14.7     14.7     14.7 payment
+  105.0s        0            0.0            0.2      0.0      0.0      0.0      0.0 stockLevel
+...
+```
+
+<Tip>
+For more `tpcc` options, use `cockroach workload run tpcc --help`. For details about other built-in load generators, use `cockroach workload run --help`.
+</Tip>
+
+## Step 4. Interpret the results
+
+Once the `workload` has finished running, you'll see a final output line:
+
+```text
+_elapsed_______tpmC____efc__avg(ms)__p50(ms)__p90(ms)__p95(ms)__p99(ms)_pMax(ms)
+  300.0s      121.6  94.6%     41.0     39.8     54.5     71.3     96.5    130.0
+```
+
+You will also see some audit checks and latency statistics for each individual query. For this run, some of those checks might indicate that they were `SKIPPED` due to insufficient data. For a more comprehensive test, run `workload` for a longer duration (e.g., two hours). The `tpmC` (new order transactions/minute) number is the headline number and `efc` ("efficiency") tells you how close CockroachDB gets to theoretical maximum `tpmC`.
+
+The [TPC-C specification](http://www.tpc.org/tpc_documents_current_versions/pdf/tpc-c_v5.11.0.pdf) has p90 latency requirements in the order of seconds, but as you see here, CockroachDB far surpasses that requirement with p90 latencies in the tens of milliseconds.
+
+## Step 5. Clean up
+
+1. When you're done with your test cluster, stop the nodes.
+
+    Get the process IDs of the nodes:
+
+    ```shell
+    ps -ef | grep cockroach | grep -v grep
+    ```
+
+    ```text
+      501  4482     1   0  2:41PM ttys000    0:09.78 cockroach start --insecure --store=tpcc-local1 --listen-addr=localhost:26257 --http-addr=localhost:8080 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4497     1   0  2:41PM ttys000    0:08.54 cockroach start --insecure --store=tpcc-local2 --listen-addr=localhost:26258 --http-addr=localhost:8081 --join=localhost:26257,localhost:26258,localhost:26259
+      501  4503     1   0  2:41PM ttys000    0:08.54 cockroach start --insecure --store=tpcc-local3 --listen-addr=localhost:26259 --http-addr=localhost:8082 --join=localhost:26257,localhost:26258,localhost:26259
+    ```
+
+    Gracefully shut down each node, specifying its process ID:
+
+    ```shell
+    kill -TERM 4482
+    ```
+
+    ```shell
+    kill -TERM 4497
+    ```
+
+    <Note>
+    For the last node, the shutdown process will take longer (about a minute) and will eventually stop the node. This is because, with only 1 of 3 nodes left, all ranges no longer have a majority of replicas available, and so the cluster is no longer operational.
+    </Note>
+
+    ```shell
+    kill -TERM 4503
+    ```
+2. To restart the cluster at a later time, run the same `cockroach start` commands as earlier from the directory containing the nodes' data stores.
+
+    If you do not plan to restart the cluster, you may want to remove the nodes' data stores:
+
+    ```shell
+    $ rm -rf tpcc-local1 tpcc-local2 tpcc-local3
+    ```

@@ -1,0 +1,162 @@
+---
+title: "What's New in v25.3"
+sidebarTitle: "Latest Production Release"
+old_description: "CockroachDB v25.3 is an [Innovation Release](https://www.cockroachlabs.com/docs/releases/release-support-policy#support-types), which is optional for CockroachDB Advanced, CockroachDB Standard, and CockroachDB self-hosted clusters but is required for CockroachDB Basic."
+rss: true
+---
+
+
+Refer to [Major release types](https://www.cockroachlabs.com/docs/releases/release-support-policy#support-types) before installing or upgrading for release timing and support details. To learn what's new in this release, refer to its [Feature Highlights](https://www.cockroachlabs.com/docs/releases/#feature-highlights).
+
+On this page, you can read about changes and find downloads for all production and testing releases of CockroachDB v25.3
+
+- For key feature enhancements in v25.3 and other upgrade considerations, refer to the notes for [v25.3.0](https://www.cockroachlabs.com/docs/releases/#v25-3-0).
+- For details about release types, naming, and licensing, refer to the [Releases](https://www.cockroachlabs.com/docs/releases/) page.
+- Be sure to also review the [Release Support Policy](https://www.cockroachlabs.com/docs/releases/release-support-policy).
+- After downloading a supported CockroachDB binary, learn how to [install CockroachDB](https://www.cockroachlabs.com/docs/v25.3/install-cockroachdb) or [upgrade your cluster](https://www.cockroachlabs.com/docs/v25.3/upgrade-cockroach-version).
+
+Get future release notes emailed to you:
+
+<div class="flex items-center">
+  <input type="email" placeholder="Email*" class="w-full px-4 py-2 mr-2 text-sm border rounded" />
+  <button class="px-6 py-2 text-sm text-white bg-[#14274e] rounded hover:bg-[#1d3461]">SUBMIT</button>
+</div>
+
+<Update label="V25.3.2" description="September 22, 2025">
+
+### Downloads
+
+<Note>
+**Note:**
+
+Experimental downloads are not qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
+
+</Note>
+
+| Operating System | Architecture | Full executable | SQL-only executable |
+|:-----------------|:--------------|:-----------------|:---------------------|
+| Linux | Intel | [cockroach-v25.3.2.linux-amd64.tgz](https://binaries.cockroachdb.com/cockroach-v25.3.2.linux-amd64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-v25.3.2.linux-amd64.tgz.sha256sum)) | [cockroach-sql-v25.3.2.linux-amd64.tgz](https://binaries.cockroachdb.com/cockroach-sql-v25.3.2.linux-amd64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-sql-v25.3.2.linux-amd64.tgz.sha256sum)) |
+| Linux | ARM | [cockroach-v25.3.2.linux-arm64.tgz](https://binaries.cockroachdb.com/cockroach-v25.3.2.linux-arm64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-v25.3.2.linux-arm64.tgz.sha256sum)) | [cockroach-sql-v25.3.2.linux-arm64.tgz](https://binaries.cockroachdb.com/cockroach-sql-v25.3.2.linux-arm64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-sql-v25.3.2.linux-arm64.tgz.sha256sum)) |
+| Mac<br/>(Experimental) | Intel | [cockroach-v25.3.2.darwin-10.9-amd64.tgz](https://binaries.cockroachdb.com/cockroach-v25.3.2.darwin-10.9-amd64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-v25.3.2.darwin-10.9-amd64.tgz.sha256sum)) | [cockroach-sql-v25.3.2.darwin-10.9-amd64.tgz](https://binaries.cockroachdb.com/cockroach-sql-v25.3.2.darwin-10.9-amd64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-sql-v25.3.2.darwin-10.9-amd64.tgz.sha256sum)) |
+| Mac<br/>(Experimental) | ARM | [cockroach-v25.3.2.darwin-11.0-arm64.tgz](https://binaries.cockroachdb.com/cockroach-v25.3.2.darwin-11.0-arm64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-v25.3.2.darwin-11.0-arm64.tgz.sha256sum)) | [cockroach-sql-v25.3.2.darwin-11.0-arm64.tgz](https://binaries.cockroachdb.com/cockroach-sql-v25.3.2.darwin-11.0-arm64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-sql-v25.3.2.darwin-11.0-arm64.tgz.sha256sum)) |
+| Windows<br/>(Experimental) | Intel | [cockroach-v25.3.2.windows-6.2-amd64.zip](https://binaries.cockroachdb.com/cockroach-v25.3.2.windows-6.2-amd64.zip)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-v25.3.2.windows-6.2-amd64.zip.sha256sum)) | [cockroach-sql-v25.3.2.windows-6.2-amd64.zip](https://binaries.cockroachdb.com/cockroach-sql-v25.3.2.windows-6.2-amd64.zip)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-sql-v25.3.2.windows-6.2-amd64.zip.sha256sum)) |
+
+
+### Docker image
+
+
+[Multi-platform images](https://docs.docker.com/build/building/multi-platform/) include support for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.
+
+Within the multi-platform image, both Intel and ARM images are **generally available** for production use.
+
+To download the Docker image:
+
+```bash
+docker pull cockroachdb/cockroach:v25.3.2
+```
+
+### Source tag
+
+To view or download the source code for CockroachDB v25.3.2 on Github, visit [v25.3.2 source tag](https://github.com/cockroachdb/cockroach/releases/tag/v25.3.2).
+
+### Changelog
+
+View a detailed changelog on GitHub: [v25.3.1...v25.3.2](https://github.com/cockroachdb/cockroach/compare/v25.3.1...v25.3.2)
+
+### General changes
+
+- Introduced support for running CockroachDB on s390x. Production binaries are delivered via IBM Passport Advantage.
+
+### SQL language changes
+
+- Added a new session variable, `disable_optimizer_rules`, which allows users to provide a comma-separated list of optimizer rules to disable during query optimization. This allows users to avoid rules that are known to create a suboptimal query plan for specific queries. [#152350](https://github.com/cockroachdb/cockroach/pull/152350)
+- When `sql_safe_updates` is enabled, the `ALTER TABLE ... LOCALITY` statement will be blocked when trying to convert an existing table to `REGIONAL BY ROW`, unless a region column has been added to the table. This protects against undesired behavior that caused `UPDATE` or `DELETE` statements to fail against the table while the locality change was in progress. [#152594](https://github.com/cockroachdb/cockroach/pull/152594)
+
+### Operational changes
+
+- `auth.ldap.conn.latency.internal` has been added to denote the internal authentication time for ldap auth method. [#152341](https://github.com/cockroachdb/cockroach/pull/152341)
+
+### Bug fixes
+
+- Addressed a bug on `schema_locked` tables when a column is dropped, and `schema_locked` is toggled for the user. [#151527](https://github.com/cockroachdb/cockroach/pull/151527)
+- Fixed a bug that could cause excessive memory allocations when compacting timeseries keys. [#151815](https://github.com/cockroachdb/cockroach/pull/151815)
+- Fixed a bug where `DROP USER` succeeded even though a role owned default privileges, which could leave invalid privilege entries in the system. [#151818](https://github.com/cockroachdb/cockroach/pull/151818)
+- Previously, CockroachDB could hit an error `ERROR: span with results after resume span...` when evaluating some queries with `ORDER BY ... DESC` in an edge case. This bug was present since v22.1 and is now fixed. [#152138](https://github.com/cockroachdb/cockroach/pull/152138)
+- Fixed a bug where `SHOW TABLES` would show inaccurate row counts if the most recent statistics collection was partial. [#152200](https://github.com/cockroachdb/cockroach/pull/152200)
+- Fixed a bug that prevented `RESTORE` from working if there were computed columns or `ON UPDATE` expressions that referenced user-defined functions (UDFs). This bug was introduced in v25.3.0. [#152217](https://github.com/cockroachdb/cockroach/pull/152217)
+- Fixed a bug where updating column default expressions would incorrectly remove sequence ownerships for the affected column. [#152315](https://github.com/cockroachdb/cockroach/pull/152315)
+- Fixed a bug that allowed foreign-key violations to result from some combinations of concurrent `READ COMMITTED` and `SERIALIZABLE` transactions. If both `SERIALIZABLE` and weaker-isolation transactions will concurrently modify rows involved in foreign-key relationships, the `SERIALIZABLE` transactions must have the following session variables set in order to prevent any possible foreign-key violations:
+	- `SET enable_implicit_fk_locking_for_serializable = on;`
+	- `SET enable_shared_locking_for_serializable = on;`
+	- `SET enable_durable_locking_for_serializable = on;` [#152374](https://github.com/cockroachdb/cockroach/pull/152374)
+- Added an automatic repair for dangling or invalid entries in the `system.comments` table. [#152473](https://github.com/cockroachdb/cockroach/pull/152473)
+- Added the `use_soft_limit_for_distribute_scan` session variable (default: `false`), which controls whether CockroachDB uses the soft row count estimate when deciding whether an execution plan should be distributed. In v25.1, the physical planning heuristics were changed such that large constrained table scans, estimated to scan at least 10,000 rows (controlled via `distribute_scan_row_count_threshold`), would force plan distribution when `distsql=auto`. However, if the scan had a "soft limit" CockroachDB would still use the full estimate (for example, `10,000` in `estimated row count: 100–10,000`), sometimes unnecessarily distributing queries and increasing latency. The `use_soft_limit_for_distribute_scan` session variable addresses this by allowing the planner to use the soft limit when deciding whether a scan is "large". [#152556](https://github.com/cockroachdb/cockroach/pull/152556)
+- Fixed a bug where views could not reference the `crdb_region` column from their underlying tables in expressions. [#152680](https://github.com/cockroachdb/cockroach/pull/152680)
+
+### Performance improvements
+
+- Lookup joins can now be used on tables with virtual columns even if the type of the search argument is not identical to the column type referenced in the virtual column. [#152632](https://github.com/cockroachdb/cockroach/pull/152632)
+
+### Miscellaneous
+
+- Tunes S3 client retry behavior to be more reliable in the presence of correlated errors. [#151873](https://github.com/cockroachdb/cockroach/pull/151873)
+</Update>
+
+<Update label="V25.3.1" description="August 29, 2025">
+
+### Downloads
+
+<Note>
+**Note:**
+
+Experimental downloads are not qualified for production use and not eligible for support or uptime SLA commitments, whether they are for testing releases or production releases.
+</Note>
+
+| Operating System | Architecture | Full executable | SQL-only executable |
+|-----------------|--------------|-----------------|---------------------|
+| Linux | Intel | [cockroach-v25.3.1.linux-amd64.tgz](https://binaries.cockroachdb.com/cockroach-v25.3.1.linux-amd64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-v25.3.1.linux-amd64.tgz.sha256sum)) | [cockroach-sql-v25.3.1.linux-amd64.tgz](https://binaries.cockroachdb.com/cockroach-sql-v25.3.1.linux-amd64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-sql-v25.3.1.linux-amd64.tgz.sha256sum)) |
+| Linux | ARM | [cockroach-v25.3.1.linux-arm64.tgz](https://binaries.cockroachdb.com/cockroach-v25.3.1.linux-arm64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-v25.3.1.linux-arm64.tgz.sha256sum)) | [cockroach-sql-v25.3.1.linux-arm64.tgz](https://binaries.cockroachdb.com/cockroach-sql-v25.3.1.linux-arm64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-sql-v25.3.1.linux-arm64.tgz.sha256sum)) |
+| Mac<br/>(Experimental) | Intel | [cockroach-v25.3.1.darwin-10.9-amd64.tgz](https://binaries.cockroachdb.com/cockroach-v25.3.1.darwin-10.9-amd64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-v25.3.1.darwin-10.9-amd64.tgz.sha256sum)) | [cockroach-sql-v25.3.1.darwin-10.9-amd64.tgz](https://binaries.cockroachdb.com/cockroach-sql-v25.3.1.darwin-10.9-amd64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-sql-v25.3.1.darwin-10.9-amd64.tgz.sha256sum)) |
+| Mac<br/>(Experimental) | ARM | [cockroach-v25.3.1.darwin-11.0-arm64.tgz](https://binaries.cockroachdb.com/cockroach-v25.3.1.darwin-11.0-arm64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-v25.3.1.darwin-11.0-arm64.tgz.sha256sum)) | [cockroach-sql-v25.3.1.darwin-11.0-arm64.tgz](https://binaries.cockroachdb.com/cockroach-sql-v25.3.1.darwin-11.0-arm64.tgz)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-sql-v25.3.1.darwin-11.0-arm64.tgz.sha256sum)) |
+| Windows<br/>(Experimental) | Intel | [cockroach-v25.3.1.windows-6.2-amd64.zip](https://binaries.cockroachdb.com/cockroach-v25.3.1.windows-6.2-amd64.zip)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-v25.3.1.windows-6.2-amd64.zip.sha256sum)) | [cockroach-sql-v25.3.1.windows-6.2-amd64.zip](https://binaries.cockroachdb.com/cockroach-sql-v25.3.1.windows-6.2-amd64.zip)<br/>([SHA256](https://binaries.cockroachdb.com/cockroach-sql-v25.3.1.windows-6.2-amd64.zip.sha256sum)) |
+
+
+### Docker image
+
+[Multi-platform images](https://docs.docker.com/build/building/multi-platform/) include support for both Intel and ARM. Multi-platform images do not take up additional space on your Docker host.
+
+Within the multi-platform image, both Intel and ARM images are **generally available** for production use.
+
+To download the Docker image:
+
+```bash
+docker pull cockroachdb/cockroach:v25.3.1
+```
+
+### Source tag
+
+To view or download the source code for CockroachDB v25.3.1 on Github, visit [v25.3.1 source tag](https://github.com/cockroachdb/cockroach/releases/tag/v25.3.1).
+
+### Changelog
+
+View a detailed changelog on GitHub: [v25.3.0...v25.3.1](https://github.com/cockroachdb/cockroach/compare/v25.3.0...v25.3.1)
+
+### Operational changes
+
+- Updated TTL job replanning to be less sensitive by focusing specifically on detecting when nodes become unavailable rather than reacting to all plan differences. The cluster setting `sql.ttl.replan_flow_threshold` may have been set to `0` to work around the TTL replanner being too sensitive; this fix will alleviate that and any instance that had set `replan_flow_threshold` to `0` can be reset back to the default. [#151483](https://github.com/cockroachdb/cockroach/pull/151483)
+
+### Bug fixes
+
+- Fixed a bug where the entire schema would become inaccessible if a table was referenced as an implicit record type by a user-defined function (UDF) while the table was undergoing an `IMPORT`. [#150440](https://github.com/cockroachdb/cockroach/pull/150440)
+- Fixed invalid zone configurations that were generated when adding a super region to a 3-region database with a secondary region and region survivability. Previously, this could result in assigning more than the allowed number of replicas. [#150620](https://github.com/cockroachdb/cockroach/pull/150620)
+- Fixed a bug that could cause some errors returned by attempts to upload backup data to external storage providers to go undetected, potentially causing incomplete backups. [#151080](https://github.com/cockroachdb/cockroach/pull/151080)
+- Fixed a memory accounting issue in the client certificate cache that caused multiple allocations to be reported for the same certificate. The cache now accurately tracks memory usage and includes a safeguard to prevent it from negatively affecting SQL operations. [#151136](https://github.com/cockroachdb/cockroach/pull/151136)
+- Previously, CockroachDB could encounter an internal error `trying to add a column of UNKNOWN type at ...` in rare cases when handling `CASE` or `OR` operations. This bug was present since v20.2 and is now fixed. [#151160](https://github.com/cockroachdb/cockroach/pull/151160)
+- Fixed a bug where `debug.zip` files collected from clusters with `disallow_full_table_scans` enabled were missing system table data. [#151247](https://github.com/cockroachdb/cockroach/pull/151247)
+- Fixed a bug where sequences could lose references to triggers, allowing them to be dropped incorrectly. [#151593](https://github.com/cockroachdb/cockroach/pull/151593)
+- Previously, CockroachDB could hit an error `ERROR: span with results after resume span...` when evaluating some queries with `ORDER BY ... DESC` in an edge case. This bug was present since v22.1 and is now fixed. [#152183](https://github.com/cockroachdb/cockroach/pull/152183)
+
+### Miscellaneous
+
+- Updated Go version to 1.23.11. [#150868](https://github.com/cockroachdb/cockroach/pull/150868)
+</Update>

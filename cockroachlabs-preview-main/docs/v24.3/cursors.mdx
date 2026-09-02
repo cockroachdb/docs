@@ -1,0 +1,119 @@
+---
+title: "Cursors"
+old_description: "Paginate results from queries against your cluster using SQL cursors"
+---
+
+import { Cursors10 } from "/snippets/syntax-diagrams/Cursors10.jsx";
+import { Cursors11 } from "/snippets/syntax-diagrams/Cursors11.jsx";
+import { Cursors12 } from "/snippets/syntax-diagrams/Cursors12.jsx";
+
+A cursor is a placeholder into a selection query that allows you to iterate over subsets of the rows returned by that query.
+
+<Tip>
+This document describes cursor usage within SQL transactions. For information about using cursors in PL/pgSQL functions and procedures, see [PL/pgSQL](/docs/v24.3/plpgsql#declare-cursor-variables).
+</Tip>
+
+Cursors differ from [keyset pagination](/docs/v24.3/pagination) and [`LIMIT`/`OFFSET`](/docs/v24.3/limit-offset) in that:
+
+- Each cursor is a stateful SQL object that is referred to by a unique name.
+- Each cursor requires holding open its own dedicated (read-only) [transaction](/docs/v24.3/transactions).
+- Each cursor operates on a snapshot of the database at the moment that cursor is opened.
+
+## Synopsis
+
+Cursors are declared and used with the following keywords:
+
+- [`DECLARE`](/docs/v24.3/sql-grammar#declare_cursor_stmt)
+- [`FETCH`](/docs/v24.3/sql-grammar#fetch_cursor_stmt)
+- [`CLOSE`](/docs/v24.3/sql-grammar#close_cursor_stmt)
+
+<Cursors10 />
+
+<Cursors11 />
+
+<Cursors12 />
+
+## Examples
+
+These examples assume the presence of the [MovR data set](/docs/v24.3/movr).
+
+### Use a cursor
+
+```sql
+BEGIN;
+DECLARE rides_cursor CURSOR FOR SELECT * FROM movr.rides;
+```
+
+```sql
+FETCH FORWARD 5 FROM rides_cursor;
+```
+
+```text
+                   id                  |     city      | vehicle_city  |               rider_id               |              vehicle_id              |        start_address        |        end_address         |     start_time      |      end_time       | revenue
+---------------------------------------+---------------+---------------+--------------------------------------+--------------------------------------+-----------------------------+----------------------------+---------------------+---------------------+----------
+  8ccccccc-cccc-4000-8000-000000000113 | san francisco | san francisco | 80000000-0000-4000-8000-000000000019 | 77777777-7777-4800-8000-000000000007 | 69313 Jody Tunnel Apt. 17   | 5210 Kim Canyon Suite 84   | 2018-12-22 03:04:05 | 2018-12-22 07:04:05 |   36.00
+  8d4fdf3b-645a-4000-8000-000000000114 | san francisco | san francisco | 80000000-0000-4000-8000-000000000019 | 88888888-8888-4800-8000-000000000008 | 54797 Lauren Cliffs Apt. 37 | 7425 Matthews Harbors      | 2018-12-18 03:04:05 | 2018-12-20 04:04:05 |   45.00
+  8dd2f1a9-fbe7-4000-8000-000000000115 | san francisco | san francisco | 75c28f5c-28f5-4400-8000-000000000017 | 77777777-7777-4800-8000-000000000007 | 23053 Brown Creek           | 15838 Preston Unions       | 2018-12-26 03:04:05 | 2018-12-27 15:04:05 |   34.00
+  55810624-dd2f-4c00-8000-0000000000a7 | seattle       | seattle       | 570a3d70-a3d7-4c00-8000-000000000011 | 55555555-5555-4400-8000-000000000005 | 78340 Ashley Common Apt. 4  | 19798 Riggs Spring         | 2018-12-08 03:04:05 | 2018-12-10 06:04:05 |   13.00
+  56041893-74bc-4c00-8000-0000000000a8 | seattle       | seattle       | 570a3d70-a3d7-4c00-8000-000000000011 | 66666666-6666-4800-8000-000000000006 | 6431 Robert Forest          | 83655 Michael Cape Apt. 94 | 2018-12-09 03:04:05 | 2018-12-09 14:04:05 |   48.00
+(5 rows)
+```
+
+```sql
+CLOSE rides_cursor;
+```
+
+```sql
+COMMIT;
+```
+
+### View all open cursors
+
+```sql
+SELECT * FROM pg_cursors;
+```
+
+```text
+      name     |      statement      | is_holdable | is_binary | is_scrollable |         creation_time
+---------------+---------------------+-------------+-----------+---------------+--------------------------------
+  rides_cursor | SELECT * FROM rides |      f      |     f     |       f       | 2023-03-30 15:24:37.568054+00
+(1 row)
+```
+
+## Known limitations
+
+CockroachDB implements SQL cursor support with the following limitations:
+
+- `DECLARE` only supports forward cursors. Reverse cursors created with `DECLARE SCROLL` are not supported. [#77102](https://github.com/cockroachdb/cockroach/issues/77102)
+- `FETCH` supports forward, relative, and absolute variants, but only for forward cursors. [#77102](https://github.com/cockroachdb/cockroach/issues/77102)
+- `BINARY CURSOR`, which returns data in the Postgres binary format, is not supported. [#77099](https://github.com/cockroachdb/cockroach/issues/77099)
+- `WITH HOLD`, which allows keeping a cursor open for longer than a transaction by writing its results into a buffer, is accepted as valid syntax within a single transaction but is not supported. It acts as a no-op and does not actually perform the function of `WITH HOLD`, which is to make the cursor live outside its parent transaction. Instead, if you are using `WITH HOLD`, you will be forced to close that cursor within the transaction it was created in. [#77101](https://github.com/cockroachdb/cockroach/issues/77101)
+    - This syntax is accepted (but does not have any effect):
+
+        ```sql
+        BEGIN;
+        DECLARE test_cur CURSOR WITH HOLD FOR SELECT * FROM foo ORDER BY bar;
+        CLOSE test_cur;
+        COMMIT;
+        ```
+    - This syntax is not accepted, and will result in an error:
+
+        ```sql
+        BEGIN;
+        DECLARE test_cur CURSOR WITH HOLD FOR SELECT * FROM foo ORDER BY bar;
+        COMMIT; -- This will fail with an error because CLOSE test_cur was not called inside the transaction.
+        ```
+- Scrollable cursor (also known as reverse `FETCH`) is not supported. [#77102](https://github.com/cockroachdb/cockroach/issues/77102)
+- [`SELECT... FOR UPDATE`](/docs/v24.3/select-for-update) with a cursor is not supported. [#77103](https://github.com/cockroachdb/cockroach/issues/77103)
+- Respect for [`SAVEPOINT`s](/docs/v24.3/savepoint) is not supported. Cursor definitions do not disappear properly if rolled back to a `SAVEPOINT` from before they were created. [#77104](https://github.com/cockroachdb/cockroach/issues/77104)
+
+## Differences between cursors and keyset pagination
+
+*Cursors* are stateful objects that use more database resources than keyset pagination, since each cursor holds open a transaction. However, they are easier to use, and make it easier to get consistent results without having to write complex queries from your application logic. They do not require that the results be returned in a particular order (that is, you don't have to include an `ORDER BY` clause), which makes them more flexible.
+
+*Keyset pagination* queries are usually much faster than cursors since they order by indexed columns. However, in order to get that performance they require that you return results in some defined order that can be calculated by your application's queries. Because that ordering involves calculating the start/end point of pages of results based on an indexed key, they require more care to write correctly.
+
+## See also
+
+- [Keyset pagination](/docs/v24.3/pagination)
+- [`LIMIT`/`OFFSET`](/docs/v24.3/limit-offset)

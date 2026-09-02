@@ -1,0 +1,20 @@
+---
+title: "Use the CockroachDB Cloud API"
+old_description: "The Cloud API is used to manage clusters within an organization"
+---
+
+import CloudApi from "/snippets/cockroachcloud/cloud-api.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CloudApi />

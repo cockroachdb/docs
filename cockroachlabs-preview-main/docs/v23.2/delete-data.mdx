@@ -1,0 +1,227 @@
+---
+title: "Delete Data"
+old_description: "How to delete data from CockroachDB during application development"
+---
+
+This page has instructions for deleting rows of data from CockroachDB, using the [`DELETE`](/docs/v23.2/delete) [SQL statement](/docs/v23.2/sql-statements).
+
+## Before you begin
+
+Before reading this page, do the following:
+
+- [Create a CockroachDB Standard cluster](/docs/cockroachcloud/quickstart) or [start a local cluster](/docs/cockroachcloud/quickstart?filters=local).
+- [Install a Driver or ORM Framework](/docs/v23.2/install-client-drivers).
+- [Connect to the database](/docs/v23.2/connect-to-the-database).
+- [Create a database schema](/docs/v23.2/schema-design-overview).
+- [Insert data](/docs/v23.2/insert-data) that you now want to delete.
+
+    In the examples on this page, we use sample [`movr`](/docs/v23.2/movr) data imported with the [`cockroach workload` command](/docs/v23.2/cockroach-workload).
+
+## Use `DELETE`
+
+To delete rows in a table, use a [`DELETE` statement](/docs/v23.2/update) with a `WHERE` clause that filters on the columns that identify the rows that you want to delete.
+
+### SQL syntax
+
+In SQL, `DELETE` statements generally take the following form:
+
+```text
+DELETE FROM {table} WHERE {filter_column} {comparison_operator} {filter_value}
+```
+
+Where:
+
+- `{table}` is a table with rows that you want to delete.
+- `{filter_column}` is the column to filter on.
+- `{comparison_operator}` is a [comparison operator](/docs/v23.2/functions-and-operators#operators) that resolves to `TRUE` or `FALSE` (e.g., `=` ).
+- `{filter_value}` is the matching value for the filter.
+
+<Tip>
+For detailed reference documentation on the `DELETE` statement, including additional examples, see the [`DELETE` syntax page](/docs/v23.2/delete).
+</Tip>
+
+### Best practices
+
+Here are some best practices to follow when deleting rows:
+
+- Limit the number of `DELETE` statements that you execute. It's more efficient to delete multiple rows with a single statement than to execute multiple `DELETE` statements that each delete a single row.
+- Always specify a `WHERE` clause in `DELETE` queries. If no `WHERE` clause is specified, CockroachDB will delete all of the rows in the specified table.
+- To delete all of the rows in a table, use a [`TRUNCATE` statement](/docs/v23.2/truncate) instead of a `DELETE` statement.
+- To delete a large number of rows (i.e., tens of thousands of rows or more), use a [batch-delete loop](/docs/v23.2/bulk-delete-data#batch-delete-on-an-indexed-column).
+- When executing `DELETE` statements from an application, make sure that you wrap the SQL-executing functions in [a retry loop that handles transaction errors](/docs/v23.2/query-behavior-troubleshooting#transaction-retry-errors) that can occur under [contention](/docs/v23.2/performance-best-practices-overview#transaction-contention).
+- Review the [performance considerations below](#performance-considerations).
+
+### Examples
+
+#### Delete rows filtered on a non-unique column
+
+Suppose that you want to delete the vehicle location history data recorded during a specific hour of a specific day. To delete all of the rows in the `vehicle_location_histories` table where the `timestamp` is between two [`TIMESTAMP`](/docs/v23.2/timestamp) values:
+
+<Tabs>
+<Tab title="SQL">
+
+```sql
+DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN '2021-03-17 14:00:00' AND '2021-03-17 15:00:00';
+```
+
+For more information about how to use the built-in SQL client, see the [`cockroach sql`](/docs/v23.2/cockroach-sql) reference docs.
+
+</Tab>
+<Tab title="Go (lib/pq)">
+
+```go
+// 'db' is an open database connection
+
+tsOne := "2021-03-17 14:00:00"
+tsTwo := "2021-03-17 15:00:00"
+
+if _, err := db.Exec("DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN $1 AND $2", tsOne, tsTwo); err != nil {
+  return err
+}
+return nil
+```
+
+</Tab>
+<Tab title="Java (jdbc)">
+
+```java
+// ds is an org.postgresql.ds.PGSimpleDataSource
+
+String tsOne = "2021-03-17 14:00:00";
+String tsTwo = "2021-03-17 15:00:00";
+
+try (Connection connection = ds.getConnection()) {
+    PreparedStatement p = connection.prepareStatement("DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN ? AND ?");
+    p.setString(1, tsOne);
+    p.setString(2, tsTwo);
+    p.executeUpdate();
+
+} catch (SQLException e) {
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
+            e.getMessage());
+}
+```
+
+</Tab>
+<Tab title="Python (psycopg2)">
+
+```python
+# conn is a psycopg2 connection
+
+tsOne = '2021-03-17 14:00:00'
+tsTwo = '2021-03-17 15:00:00'
+
+with conn.cursor() as cur:
+    cur.execute(
+        "DELETE FROM vehicle_location_histories WHERE timestamp BETWEEN %s AND %s", (tsOne, tsTwo))
+```
+
+</Tab>
+</Tabs>
+
+<Tip>
+If the `WHERE` clause evaluates to `TRUE` for a large number of rows (i.e., tens of thousands of rows), use a [batch-delete loop](/docs/v23.2/bulk-delete-data#batch-delete-on-an-indexed-column) instead of executing a simple `DELETE` query.
+</Tip>
+
+#### Delete rows filtered on a unique column
+
+Suppose that you want to delete the promo code data for a specific set of codes. To delete the rows in the `promo_codes` table where the `code` matches a string in a set of string values:
+
+<Tabs>
+<Tab title="SQL">
+
+```sql
+DELETE from promo_codes WHERE code IN ('0_explain_theory_something', '100_address_garden_certain', '1000_do_write_words');
+```
+
+For more information about how to use the built-in SQL client, see the [`cockroach sql`](/docs/v23.2/cockroach-sql) reference docs.
+
+</Tab>
+<Tab title="Go (lib/pq)">
+
+```go
+// 'db' is an open database connection
+
+codeOne := "0_explain_theory_something"
+codeTwo := "100_address_garden_certain"
+codeThree := "1000_do_write_words"
+
+if _, err := db.Exec("DELETE from promo_codes WHERE code IN ($1, $2, $3)", codeOne, codeTwo, codeThree); err != nil {
+  return err
+}
+return nil
+```
+
+</Tab>
+<Tab title="Java (jdbc)">
+
+```java
+// ds is an org.postgresql.ds.PGSimpleDataSource
+
+String codeOne = "0_explain_theory_something";
+String codeTwo = "100_address_garden_certain";
+String codeThree = "1000_do_write_words";
+
+try (Connection connection = ds.getConnection()) {
+    PreparedStatement p = connection.prepareStatement("DELETE from promo_codes WHERE code IN(?, ?, ?)");
+    p.setString(1, codeOne);
+    p.setString(2, codeTwo);
+    p.setString(3, codeThree);
+    p.executeUpdate();
+
+} catch (SQLException e) {
+    System.out.printf("sql state = [%s]\ncause = [%s]\nmessage = [%s]\n", e.getSQLState(), e.getCause(),
+            e.getMessage());
+}
+```
+
+</Tab>
+<Tab title="Python (psycopg2)">
+
+```python
+# conn is a psycopg2 connection
+
+codeOne = '0_explain_theory_something'
+codeTwo = '100_address_garden_certain'
+codeThree = '1000_do_write_words'
+
+with conn.cursor() as cur:
+    cur.execute("DELETE from promo_codes WHERE code IN (%s, %s, %s)", (codeOne, codeTwo, codeThree)),
+```
+
+</Tab>
+</Tabs>
+
+## Performance considerations
+
+Because of the way CockroachDB works under the hood, deleting data from the database does not immediately reduce disk usage. Instead, records are marked as "deleted" and processed asynchronously by a background garbage collection process. Once the marked records are older than [the specified TTL interval](/docs/v23.2/configure-replication-zones#gc-ttlseconds), they are eligible to be removed. The garbage collection interval is designed to allow sufficient time for running [backups](/docs/v23.2/take-full-and-incremental-backups) and [time travel queries using `AS OF SYSTEM TIME`](/docs/v23.2/as-of-system-time). The garbage collection interval is controlled by the [`gc.ttlseconds`](/docs/v23.2/configure-replication-zones#gc-ttlseconds) setting.
+
+The practical implications of the above are:
+
+- Deleting data will not immediately decrease disk usage.
+- If you issue multiple [`DELETE`](/docs/v23.2/delete) statements in sequence that each delete large amounts of data, each subsequent `DELETE` statement will run more slowly. For details, see [Preserving `DELETE` performance over time](/docs/v23.2/delete#preserving-delete-performance-over-time).
+
+For more information about how the storage layer of CockroachDB works, see the [storage layer reference documentation](/docs/v23.2/architecture/storage-layer).
+
+## See also
+
+Reference information related to this task:
+
+- [`DELETE`](/docs/v23.2/delete)
+- [Bulk-delete data](/docs/v23.2/bulk-delete-data)
+- [Batch Delete Expired Data with Row-Level TTL](/docs/v23.2/row-level-ttl)
+- [Disk space usage after deletes](/docs/v23.2/delete#disk-space-usage-after-deletes)
+- [`TRUNCATE`](/docs/v23.2/truncate)
+- [`DROP TABLE`](/docs/v23.2/drop-table)
+- [Transaction Contention](/docs/v23.2/performance-best-practices-overview#transaction-contention)
+
+Other common tasks:
+
+- [Connect to the Database](/docs/v23.2/connect-to-the-database)
+- [Insert Data](/docs/v23.2/insert-data)
+- [Query Data](/docs/v23.2/query-data)
+- [Update Data](/docs/v23.2/update-data)
+- [Run Multi-Statement Transactions](/docs/v23.2/run-multi-statement-transactions)
+- [Troubleshoot SQL Statements](/docs/v23.2/query-behavior-troubleshooting)
+- [Optimize Statement Performance](/docs/v23.2/make-queries-fast)
+- [Example Apps](/docs/v23.2/example-apps)

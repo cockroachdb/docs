@@ -1,0 +1,20 @@
+---
+title: "Alerts Page"
+old_description: "The Alerts page allows you to toggle CockroachDB Cloud alerts and view alert history."
+---
+
+import AlertsPage from "/snippets/cockroachcloud/alerts-page.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<AlertsPage />

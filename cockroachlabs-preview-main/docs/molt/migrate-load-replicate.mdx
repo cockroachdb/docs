@@ -1,0 +1,2358 @@
+---
+title: "Load and Replicate"
+old_description: "Learn how to migrate data from a source database (such as PostgreSQL, MySQL, or Oracle) into a CockroachDB cluster."
+---
+
+Perform an initial bulk load of the source data using [MOLT Fetch](/docs/molt/molt-fetch), then use [MOLT Replicator](/docs/molt/molt-replicator) to replicate ongoing changes to the target.
+
+<Note>
+For CockroachDB-to-CockroachDB migrations, contact your account team for guidance.
+</Note>
+
+<Tabs>
+<Tab title="PostgreSQL">
+
+## Before you begin
+
+- Create a CockroachDB [Cloud](/docs/cockroachcloud/create-your-cluster) or [self-hosted](/docs/v25.4/install-cockroachdb) cluster.
+- Install the [MOLT (Migrate Off Legacy Technology)](/docs/releases/molt#installation) tools.
+- Review the [Fetch](/docs/molt/molt-fetch#best-practices) and [Replicator](/docs/molt/molt-replicator#best-practices) best practices.
+- Review [Migration Strategy](/docs/molt/migration-strategy).
+
+### Limitations
+
+#### Fetch limitations
+
+- `OID LOB` types in PostgreSQL are not supported, although similar types like `BYTEA` are supported.
+
+- Only tables with [primary key](/docs/v25.4/primary-key) types of [`INT`](/docs/v25.4/int), [`FLOAT`](/docs/v25.4/float), or [`UUID`](/docs/v25.4/uuid) can be sharded with [`--export-concurrency`](/docs/molt/molt-fetch#best-practices).
+
+#### Replicator limitations
+
+- Replication modes require connection to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). MOLT cannot obtain replication checkpoints or transaction metadata from replicas.
+
+- Running DDL on the source or target while replication is in progress can cause replication failures.
+- `TRUNCATE` operations on the source are not captured. Only `INSERT`, `UPDATE`, `UPSERT`, and `DELETE` events are replicated.
+- Changes to virtual columns are not replicated automatically. To migrate these columns, you must define them explicitly with [transformation rules](/docs/molt/molt-fetch#transformations).
+
+## Prepare the source database
+
+#### Create migration user on source database
+
+Create a dedicated migration user (for example, `MIGRATION_USER`) on the source database. This user is responsible for reading data from source tables during the migration. You will pass this username in the [source connection string](#source-connection-string).
+
+```sql
+CREATE USER migration_user WITH PASSWORD 'password';
+```
+
+Grant the user privileges to connect, view schema objects, and select the tables you migrate.
+
+```sql
+GRANT CONNECT ON DATABASE migration_db TO migration_user;
+GRANT USAGE ON SCHEMA migration_schema TO migration_user;
+GRANT SELECT ON ALL TABLES IN SCHEMA migration_schema TO migration_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema GRANT SELECT ON TABLES TO migration_user;
+```
+
+Grant the `SUPERUSER` role to the user (recommended for replication configuration):
+
+```sql
+ALTER USER migration_user WITH SUPERUSER;
+```
+
+Alternatively, grant the following permissions to create replication slots, access replication data, create publications, and add tables to publications:
+
+```sql
+ALTER USER migration_user WITH LOGIN REPLICATION;
+GRANT CREATE ON DATABASE migration_db TO migration_user;
+ALTER TABLE migration_schema.table_name OWNER TO migration_user;
+```
+
+Run the `ALTER TABLE` command for each table to replicate.
+
+#### Configure source database for replication
+
+<Note>
+Connect to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary), **not** a replica. Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
+</Note>
+
+Verify that you are connected to the primary server:
+
+```sql
+SELECT pg_is_in_recovery();
+```
+
+You should get a false result:
+
+```text
+ pg_is_in_recovery
+-------------------
+ f
+```
+
+Enable logical replication by setting `wal_level` to `logical` in `postgresql.conf` or in the SQL shell. For example:
+
+```sql
+ALTER SYSTEM SET wal_level = 'logical';
+```
+
+## Prepare the target database
+
+### Define the target tables
+
+Convert the source table definitions into CockroachDB-compatible equivalents. CockroachDB supports the PostgreSQL wire protocol and is largely [compatible with PostgreSQL syntax](/docs/v25.4/postgresql-compatibility#features-that-differ-from-postgresql).
+
+- The source and target table definitions must **match**. Review [Type mapping](/docs/molt/molt-fetch#type-mapping) to understand which source types can be mapped to CockroachDB types.
+
+    For example, a PostgreSQL source table defined as `CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);` must have a corresponding schema and table in CockroachDB:
+
+    ```sql
+    CREATE SCHEMA migration_schema;
+    CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);
+    ```
+
+    - MOLT Fetch can automatically define matching CockroachDB tables using the [`drop-on-target-and-recreate`](#table-handling-mode) option.
+    - If you define the target tables manually, review how MOLT Fetch handles [type mismatches](/docs/molt/molt-fetch#mismatch-handling). You can use the [MOLT Schema Conversion Tool](#schema-conversion-tool) to create matching table definitions.
+- Every table **must** have an explicit primary key.
+
+    <Warning>
+    Avoid using sequential keys. To learn more about the performance issues that can result from their use, refer to the [guidance on indexing with sequential keys](/docs/v25.4/sql-faqs#how-do-i-generate-unique-slowly-increasing-sequential-numbers-in-cockroachdb). If a sequential key is necessary in your CockroachDB table, you must create it manually, after using [MOLT Fetch](/docs/molt/molt-fetch) to load and replicate the data.
+    </Warning>
+- Review [Transformations](/docs/molt/molt-fetch#transformations) to understand how computed columns and partitioned tables can be mapped to the target, and how target tables can be renamed.
+- By default on CockroachDB, `INT` is an alias for `INT8`, which creates 64-bit signed integers. PostgreSQL and MySQL default to 32-bit integers. Depending on your source database or application requirements, you may need to change the integer size to `4`. For more information, refer to [Considerations for 64-bit signed integers](/docs/v25.4/int#considerations-for-64-bit-signed-integers).
+
+#### Schema Conversion Tool
+
+The [MOLT Schema Conversion Tool](/docs/cockroachcloud/migrations-page) (SCT) converts source table definitions to CockroachDB-compatible syntax. It requires a free [CockroachDB Cloud account](/docs/cockroachcloud/create-an-account).
+
+1. Upload a source `.sql` file to convert the syntax and identify [unimplemented features and syntax incompatibilities](/docs/molt/migration-strategy#unimplemented-features-and-syntax-incompatibilities) in the table definitions.
+2. Import the converted table definitions to a CockroachDB cluster:
+    - When migrating to CockroachDB Cloud, the Schema Conversion Tool automatically [applies the converted table definitions to a new Cloud database](/docs/cockroachcloud/migrations-page#migrate-the-schema).
+    - When migrating to a self-hosted CockroachDB cluster, [export a converted DDL file](/docs/cockroachcloud/migrations-page#export-the-schema) and pipe the [data definition language (DDL)](/docs/v25.4/sql-statements#data-definition-statements) directly into [`cockroach sql`](/docs/v25.4/cockroach-sql).
+
+#### Drop constraints and indexes
+
+To optimize data load performance, drop all non-`PRIMARY KEY` [constraints](/docs/v25.4/alter-table#drop-constraint) and [indexes](/docs/v25.4/drop-index) on the target CockroachDB database before migrating:
+
+- [`FOREIGN KEY`](/docs/v25.4/foreign-key)
+- [`UNIQUE`](/docs/v25.4/unique)
+- [Secondary indexes](/docs/v25.4/schema-design-indexes)
+- [`CHECK`](/docs/v25.4/check)
+- [`DEFAULT`](/docs/v25.4/default-value)
+- [`NOT NULL`](/docs/v25.4/not-null) (you do not need to drop this constraint when using `drop-on-target-and-recreate` for [table handling](#table-handling-mode) )
+
+<Warning>
+Do **not** drop [`PRIMARY KEY`](/docs/v25.4/primary-key) constraints.
+</Warning>
+
+You can [recreate the constraints and indexes after loading the data](#add-constraints-and-indexes).
+
+### Create the SQL user
+
+Create a SQL user in the CockroachDB cluster that has the necessary privileges.
+
+To create a user `crdb_user` in the default database (you will pass this username in the [target connection string](#target-connection-string)):
+
+```sql
+CREATE USER crdb_user WITH PASSWORD 'password';
+```
+
+Grant database-level privileges for schema creation within the target database:
+
+```sql
+GRANT ALL ON DATABASE defaultdb TO crdb_user;
+```
+
+Grant permission to modify cluster settings:
+
+```sql
+GRANT SYSTEM MODIFYCLUSTERSETTING TO crdb_user;
+```
+
+Grant usage on schemas being migrated:
+
+```sql
+GRANT USAGE ON SCHEMA migration_schema TO crdb_user;
+GRANT USAGE ON SCHEMA public TO crdb_user;
+```
+
+Grant user privileges to create tables in the `migration_schema` schema and internal MOLT tables like `_molt_fetch_exceptions` in the `public` CockroachDB schema:
+
+<Note>
+Ensure that you are connected to the target database.
+</Note>
+
+```sql
+GRANT CREATE ON SCHEMA migration_schema TO crdb_user;
+GRANT CREATE ON SCHEMA public TO crdb_user;
+```
+
+If you manually defined the target tables (which means that [`drop-on-target-and-recreate`](#table-handling-mode) will not be used), grant the following privileges on the schema:
+
+```sql
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA migration_schema TO crdb_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
+```
+
+Grant the same privileges for internal MOLT tables in the `public` CockroachDB schema:
+
+```sql
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO crdb_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
+```
+
+If you will be running Fetch with [`drop-on-target-and-recreate`](#table-handling-mode), and the target schema has pre-existing tables that were created by a different user, you may need to change table ownership to allow the migration user to drop those tables. Make the following alteration for each table:
+
+```sql
+ALTER TABLE migration_schema.table1 OWNER TO crdb_user;
+```
+
+Depending on the MOLT Fetch [data load mode](#data-load-mode) you will use, grant the necessary privileges to run either [`IMPORT INTO`](#import-into-privileges) or [`COPY FROM`](#copy-from-privileges) on the target tables:
+
+#### `IMPORT INTO` privileges
+
+Grant `SELECT`, `INSERT`, and `DROP` (required because the table is taken offline during the `IMPORT INTO`) privileges on all tables being migrated:
+
+```sql
+GRANT SELECT, INSERT, DROP ON ALL TABLES IN SCHEMA migration_schema TO crdb_user;
+```
+
+</Tab>
+<Tab title="MySQL">
+
+## Before you begin
+
+- Create a CockroachDB [Cloud](/docs/cockroachcloud/create-your-cluster) or [self-hosted](/docs/v25.4/install-cockroachdb) cluster.
+- Install the [MOLT (Migrate Off Legacy Technology)](/docs/releases/molt#installation) tools.
+- Review the [Fetch](/docs/molt/molt-fetch#best-practices) and [Replicator](/docs/molt/molt-replicator#best-practices) best practices.
+- Review [Migration Strategy](/docs/molt/migration-strategy).
+
+### Limitations
+
+#### Fetch limitations
+
+- Only tables with [primary key](/docs/v25.4/primary-key) types of [`INT`](/docs/v25.4/int), [`FLOAT`](/docs/v25.4/float), or [`UUID`](/docs/v25.4/uuid) can be sharded with [`--export-concurrency`](/docs/molt/molt-fetch#best-practices).
+
+#### Replicator limitations
+
+- Replication modes require connection to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). MOLT cannot obtain replication checkpoints or transaction metadata from replicas.
+
+- MySQL replication is supported only with [GTID](https://dev.mysql.com/doc/refman/8.0/en/replication-gtids) -based configurations. Binlog-based features that do not use GTID are not supported.
+
+- Running DDL on the source or target while replication is in progress can cause replication failures.
+- `TRUNCATE` operations on the source are not captured. Only `INSERT`, `UPDATE`, `UPSERT`, and `DELETE` events are replicated.
+- Changes to virtual columns are not replicated automatically. To migrate these columns, you must define them explicitly with [transformation rules](/docs/molt/molt-fetch#transformations).
+
+## Prepare the source database
+
+#### Create migration user on source database
+
+Create a dedicated migration user (for example, `MIGRATION_USER`) on the source database. This user is responsible for reading data from source tables during the migration. You will pass this username in the [source connection string](#source-connection-string).
+
+```sql
+CREATE USER 'migration_user'@'%' IDENTIFIED BY 'password';
+```
+
+Grant the user privileges to select the tables you migrate and access GTID information for snapshot consistency:
+
+```sql
+GRANT SELECT ON migration_db.* TO 'migration_user'@'%';
+GRANT SELECT ON mysql.gtid_executed TO 'migration_user'@'%';
+FLUSH PRIVILEGES;
+```
+
+For replication, grant additional privileges for binlog access:
+
+```sql
+GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'migration_user'@'%';
+FLUSH PRIVILEGES;
+```
+
+#### Configure source database for replication
+
+<Note>
+Connect to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary), **not** a replica. Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
+</Note>
+
+Enable [global transaction identifiers (GTID)](https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids) and configure binary logging. Set `binlog-row-metadata` or `binlog-row-image` to `full` to provide complete metadata for replication.
+
+Configure binlog retention to ensure GTIDs remain available throughout the migration:
+
+- MySQL 8.0.1+: Set `binlog_expire_logs_seconds` (default: 2592000 = 30 days) based on your migration timeline.
+- MySQL &lt; 8.0: Set `expire_logs_days`, or manually manage retention by setting `max_binlog_size` and using `PURGE BINARY LOGS BEFORE NOW() - INTERVAL 1 HOUR` (adjusting the interval as needed). Force binlog rotation with `FLUSH BINARY LOGS` if needed.
+- Managed services: Refer to provider-specific configuration for [Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/mysql-stored-proc-configuring) or [Google Cloud SQL](https://cloud.google.com/sql/docs/mysql/flags#mysql-b).
+
+<Note>
+GTID replication sends all database changes to Replicator. To limit replication to specific tables or schemas, [apply a userscript](#replicator-flags) when you run Replicator. Refer to the [Filter multiple tables](/docs/molt/userscript-cookbook#filter-multiple-tables) cookbook example.
+</Note>
+
+<table><thead><tr><th>Version</th><th>Configuration</th></tr></thead><tbody><tr><td>MySQL 5.6</td><td><code>--gtid-mode=on</code><br/><code>--enforce-gtid-consistency=on</code><br/><code>--server-id=&#123;unique&#95;id&#125;</code><br/><code>--log-bin=mysql-binlog</code><br/><code>--binlog-format=row</code><br/><code>--binlog-row-image=full</code><br/><code>--log-slave-updates=ON</code></td></tr><tr><td>MySQL 5.7</td><td><code>--gtid-mode=on</code><br/><code>--enforce-gtid-consistency=on</code><br/><code>--binlog-row-image=full</code><br/><code>--server-id=&#123;unique&#95;id&#125;</code><br/><code>--log-bin=log-bin</code></td></tr><tr><td>MySQL 8.0+</td><td><code>--gtid-mode=on</code><br/><code>--enforce-gtid-consistency=on</code><br/><code>--binlog-row-metadata=full</code></td></tr><tr><td>MariaDB</td><td><code>--log-bin</code><br/><code>--server&#95;id=&#123;unique&#95;id&#125;</code><br/><code>--log-basename=master1</code><br/><code>--binlog-format=row</code><br/><code>--binlog-row-metadata=full</code></td></tr></tbody></table>
+
+## Prepare the target database
+
+### Define the target tables
+
+Convert the source table definitions into CockroachDB-compatible equivalents. CockroachDB supports the PostgreSQL wire protocol and is largely [compatible with PostgreSQL syntax](/docs/v25.4/postgresql-compatibility#features-that-differ-from-postgresql).
+
+- The source and target table definitions must **match**. Review [Type mapping](/docs/molt/molt-fetch#type-mapping) to understand which source types can be mapped to CockroachDB types.
+
+    MySQL tables belong directly to the database specified in the connection string. A MySQL source table defined as `CREATE TABLE tbl (id INT PRIMARY KEY);` should map to CockroachDB's default `public` schema:
+
+    ```sql
+    CREATE TABLE tbl (id INT PRIMARY KEY);
+    ```
+
+    - MOLT Fetch can automatically define matching CockroachDB tables using the [`drop-on-target-and-recreate`](#table-handling-mode) option.
+    - If you define the target tables manually, review how MOLT Fetch handles [type mismatches](/docs/molt/molt-fetch#mismatch-handling). You can use the [MOLT Schema Conversion Tool](#schema-conversion-tool) to create matching table definitions.
+- Every table **must** have an explicit primary key.
+
+    <Warning>
+    Avoid using sequential keys. To learn more about the performance issues that can result from their use, refer to the [guidance on indexing with sequential keys](/docs/v25.4/sql-faqs#how-do-i-generate-unique-slowly-increasing-sequential-numbers-in-cockroachdb). If a sequential key is necessary in your CockroachDB table, you must create it manually, after using [MOLT Fetch](/docs/molt/molt-fetch) to load and replicate the data.
+    </Warning>
+- Review [Transformations](/docs/molt/molt-fetch#transformations) to understand how computed columns and partitioned tables can be mapped to the target, and how target tables can be renamed.
+- By default on CockroachDB, `INT` is an alias for `INT8`, which creates 64-bit signed integers. PostgreSQL and MySQL default to 32-bit integers. Depending on your source database or application requirements, you may need to change the integer size to `4`. For more information, refer to [Considerations for 64-bit signed integers](/docs/v25.4/int#considerations-for-64-bit-signed-integers).
+
+#### Schema Conversion Tool
+
+The [MOLT Schema Conversion Tool](/docs/cockroachcloud/migrations-page) (SCT) converts source table definitions to CockroachDB-compatible syntax. It requires a free [CockroachDB Cloud account](/docs/cockroachcloud/create-an-account).
+
+1. Upload a source `.sql` file to convert the syntax and identify [unimplemented features and syntax incompatibilities](/docs/molt/migration-strategy#unimplemented-features-and-syntax-incompatibilities) in the table definitions.
+2. Import the converted table definitions to a CockroachDB cluster:
+    - When migrating to CockroachDB Cloud, the Schema Conversion Tool automatically [applies the converted table definitions to a new Cloud database](/docs/cockroachcloud/migrations-page#migrate-the-schema).
+    - When migrating to a self-hosted CockroachDB cluster, [export a converted DDL file](/docs/cockroachcloud/migrations-page#export-the-schema) and pipe the [data definition language (DDL)](/docs/v25.4/sql-statements#data-definition-statements) directly into [`cockroach sql`](/docs/v25.4/cockroach-sql).
+
+Syntax that cannot automatically be converted will be displayed in the [**Summary Report**](/docs/cockroachcloud/migrations-page?filters=mysql#summary-report). These may include the following:
+
+##### String case sensitivity
+
+Strings are case-insensitive in MySQL and case-sensitive in CockroachDB. You may need to edit your MySQL data to get the results you expect from CockroachDB. For example, you may have been doing string comparisons in MySQL that will need to be changed to work with CockroachDB.
+
+For more information about the case sensitivity of strings in MySQL, refer to [Case Sensitivity in String Searches](https://dev.mysql.com/doc/refman/8.0/en/case-sensitivity) from the MySQL documentation. For more information about CockroachDB strings, refer to [`STRING`](/docs/v25.4/string).
+
+##### Identifier case sensitivity
+
+Identifiers are case-sensitive in MySQL and [case-insensitive in CockroachDB](/docs/v25.4/keywords-and-identifiers#identifiers). When [using the Schema Conversion Tool](/docs/cockroachcloud/migrations-page?filters=mysql#convert-a-schema), you can either keep case sensitivity by enclosing identifiers in double quotes, or make identifiers case-insensitive by converting them to lowercase.
+
+##### `AUTO_INCREMENT` attribute
+
+The MySQL [`AUTO_INCREMENT`](https://dev.mysql.com/doc/refman/8.0/en/example-auto-increment) attribute, which creates sequential column values, is not supported in CockroachDB. When [using the Schema Conversion Tool](/docs/cockroachcloud/migrations-page?filters=mysql#convert-a-schema), columns with `AUTO_INCREMENT` can be converted to use [sequences](/docs/v25.4/create-sequence), `UUID` values with [`gen_random_uuid()`](/docs/v25.4/functions-and-operators#id-generation-functions), or unique `INT8` values using [`unique_rowid()`](/docs/v25.4/functions-and-operators#id-generation-functions). Cockroach Labs does not recommend using a sequence to define a primary key column. For more information, refer to [Unique ID best practices](/docs/v25.4/performance-best-practices-overview#unique-id-best-practices).
+
+<Note>
+Changing a column type during table definition conversion will cause [MOLT Verify](/docs/molt/molt-verify) to identify a type mismatch during data validation. This is expected behavior.
+</Note>
+
+##### `ENUM` type
+
+MySQL `ENUM` types are defined in table columns. On CockroachDB, [`ENUM`](/docs/v25.4/enum) is a standalone type. When [using the Schema Conversion Tool](/docs/cockroachcloud/migrations-page?filters=mysql#convert-a-schema), you can either deduplicate the `ENUM` definitions or create a separate type for each column.
+
+##### `TINYINT` type
+
+`TINYINT` data types are not supported in CockroachDB. The [Schema Conversion Tool](/docs/cockroachcloud/migrations-page?filters=mysql) automatically converts `TINYINT` columns to [`INT2`](/docs/v25.4/int) (`SMALLINT`).
+
+##### Geospatial types
+
+MySQL geometry types are not converted to CockroachDB [geospatial types](/docs/v25.4/spatial-data-overview#spatial-objects) by the [Schema Conversion Tool](/docs/cockroachcloud/migrations-page?filters=mysql). They should be manually converted to the corresponding types in CockroachDB.
+
+##### `FIELD` function
+
+The MYSQL `FIELD` function is not supported in CockroachDB. Instead, you can use the [`array_position`](/docs/v25.4/functions-and-operators#array-functions) function, which returns the index of the first occurrence of element in the array.
+
+Example usage:
+
+```sql
+SELECT array_position(ARRAY[4,1,3,2],1);
+```
+
+```text
+  array_position
+------------------
+               2
+(1 row)
+```
+
+While MySQL returns 0 when the element is not found, CockroachDB returns `NULL`. So if you are using the `ORDER BY` clause in a statement with the `array_position` function, the caveat is that sort is applied even when the element is not found. As a workaround, you can use the [`COALESCE`](/docs/v25.4/functions-and-operators#conditional-and-function-like-operators) operator.
+
+```sql
+SELECT * FROM table_a ORDER BY COALESCE(array_position(ARRAY[4,1,3,2],5),999);
+```
+
+#### Drop constraints and indexes
+
+To optimize data load performance, drop all non-`PRIMARY KEY` [constraints](/docs/v25.4/alter-table#drop-constraint) and [indexes](/docs/v25.4/drop-index) on the target CockroachDB database before migrating:
+
+- [`FOREIGN KEY`](/docs/v25.4/foreign-key)
+- [`UNIQUE`](/docs/v25.4/unique)
+- [Secondary indexes](/docs/v25.4/schema-design-indexes)
+- [`CHECK`](/docs/v25.4/check)
+- [`DEFAULT`](/docs/v25.4/default-value)
+- [`NOT NULL`](/docs/v25.4/not-null) (you do not need to drop this constraint when using `drop-on-target-and-recreate` for [table handling](#table-handling-mode) )
+
+<Warning>
+Do **not** drop [`PRIMARY KEY`](/docs/v25.4/primary-key) constraints.
+</Warning>
+
+You can [recreate the constraints and indexes after loading the data](#add-constraints-and-indexes).
+
+### Create the SQL user
+
+Create a SQL user in the CockroachDB cluster that has the necessary privileges.
+
+To create a user `crdb_user` in the default database (you will pass this username in the [target connection string](#target-connection-string)):
+
+```sql
+CREATE USER crdb_user WITH PASSWORD 'password';
+```
+
+Grant database-level privileges for schema creation within the target database:
+
+```sql
+GRANT ALL ON DATABASE defaultdb TO crdb_user;
+```
+
+Grant permission to modify cluster settings:
+
+```sql
+GRANT SYSTEM MODIFYCLUSTERSETTING TO crdb_user;
+```
+
+Grant usage on schemas being migrated:
+
+```sql
+GRANT USAGE ON SCHEMA migration_schema TO crdb_user;
+GRANT USAGE ON SCHEMA public TO crdb_user;
+```
+
+Grant user privileges to create tables in the `migration_schema` schema and internal MOLT tables like `_molt_fetch_exceptions` in the `public` CockroachDB schema:
+
+<Note>
+Ensure that you are connected to the target database.
+</Note>
+
+```sql
+GRANT CREATE ON SCHEMA migration_schema TO crdb_user;
+GRANT CREATE ON SCHEMA public TO crdb_user;
+```
+
+If you manually defined the target tables (which means that [`drop-on-target-and-recreate`](#table-handling-mode) will not be used), grant the following privileges on the schema:
+
+If you will be running Fetch with [`drop-on-target-and-recreate`](#table-handling-mode), and the target schema has pre-existing tables that were created by a different user, you may need to change table ownership to allow the migration user to drop those tables. Make the following alteration for each table:
+
+```sql
+ALTER TABLE migration_schema.table1 OWNER TO crdb_user;
+```
+
+Depending on the MOLT Fetch [data load mode](#data-load-mode) you will use, grant the necessary privileges to run either [`IMPORT INTO`](#import-into-privileges) or [`COPY FROM`](#copy-from-privileges) on the target tables:
+
+#### `IMPORT INTO` privileges
+
+Grant `SELECT`, `INSERT`, and `DROP` (required because the table is taken offline during the `IMPORT INTO`) privileges on all tables being migrated:
+
+```sql
+GRANT SELECT, INSERT, DROP ON ALL TABLES IN SCHEMA public TO crdb_user;
+```
+
+</Tab>
+<Tab title="Oracle">
+
+## Before you begin
+
+- Create a CockroachDB [Cloud](/docs/cockroachcloud/create-your-cluster) or [self-hosted](/docs/v25.4/install-cockroachdb) cluster.
+- Install the [MOLT (Migrate Off Legacy Technology)](/docs/releases/molt#installation) tools.
+- Review the [Fetch](/docs/molt/molt-fetch#best-practices) and [Replicator](/docs/molt/molt-replicator#best-practices) best practices.
+- Review [Migration Strategy](/docs/molt/migration-strategy).
+
+### Prerequisites
+
+#### Oracle Instant Client
+
+Install Oracle Instant Client on the machine that will run `molt` and `replicator`. If using the MOLT Replicator binary (instead of Docker), the Oracle Instant Client libraries must be accessible at `/usr/lib`.
+
+- On macOS ARM machines, download the [Oracle Instant Client](https://www.oracle.com/database/technologies/instant-client/macos-arm64-downloads#ic_osx_inst). After installation, you should have a new directory at `/Users/$USER/Downloads/instantclient_23_3` containing `.dylib` files. Set the `LD_LIBRARY_PATH` environment variable to this directory:
+
+    ```shell
+    export LD_LIBRARY_PATH=/Users/$USER/Downloads/instantclient_23_3
+    ```
+- On Linux machines, install the Oracle Instant Client dependencies and set the `LD_LIBRARY_PATH` to the client library path:
+
+    ```shell
+    sudo apt-get install -yqq --no-install-recommends libaio1t64
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1
+    unzip -d /tmp /tmp/instantclient-basiclite-linux-amd64.zip
+    sudo mv /tmp/instantclient_21_13/* /usr/lib
+    export LD_LIBRARY_PATH=/usr/lib
+    ```
+
+    <Tip>
+    You can also download Oracle Instant Client directly from the Oracle site for [Linux ARM64](https://www.oracle.com/database/technologies/instant-client/linux-amd64-downloads) or [Linux x86-64](https://www.oracle.com/ca-en/database/technologies/instant-client/linux-x86-64-downloads).
+    </Tip>
+
+### Limitations
+
+#### Fetch limitations
+
+- Migrations must be performed from a single Oracle schema. You **must** include [`--schema-filter`](#schema-and-table-filtering) so that MOLT Fetch only loads data from the specified schema. Refer to [Schema and table filtering](#schema-and-table-filtering).
+    - Specifying [`--table-filter`](#schema-and-table-filtering) is also strongly recommended to ensure that only necessary tables are migrated from the Oracle schema.
+- Oracle advises against `LONG RAW` columns and [recommends converting them to `BLOB`](https://www.orafaq.com/wiki/LONG_RAW#History). `LONG RAW` can only store binary values up to 2GB, and only one `LONG RAW` column per table is supported.
+
+- Only tables with [primary key](/docs/v25.4/primary-key) types of [`INT`](/docs/v25.4/int), [`FLOAT`](/docs/v25.4/float), or [`UUID`](/docs/v25.4/uuid) can be sharded with [`--export-concurrency`](/docs/molt/molt-fetch#best-practices).
+
+#### Replicator limitations
+
+- Replication modes require connection to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). MOLT cannot obtain replication checkpoints or transaction metadata from replicas.
+
+- Replication will not work for tables or column names exceeding 30 characters. This is a [limitation of Oracle LogMiner](https://docs.oracle.com/en/database/oracle/oracle-database/21/sutil/oracle-logminer-utility#GUID-7594F0D7-0ACD-46E6-BD61-2751136ECDB4).
+- The following data types are not supported for replication:
+    - User-defined types (UDTs)
+    - Nested tables
+    - `VARRAY`
+    - `LONGBLOB` / `CLOB` columns (over 4000 characters)
+- If your Oracle workload executes `UPDATE` statements that modify only LOB columns, these `UPDATE` statements are not supported by Oracle LogMiner and will not be replicated.
+- If you are using Oracle 11 and execute `UPDATE` statements on `XMLTYPE` or LOB columns, those changes are not supported by Oracle LogMiner and will be excluded from ongoing replication.
+- If you are migrating LOB columns from Oracle 12c, use [AWS DMS Binary Reader](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.Oracle#CHAP_Source.Oracle.CDC) instead of LogMiner. Oracle LogMiner does not support LOB replication in 12c.
+
+- Running DDL on the source or target while replication is in progress can cause replication failures.
+- `TRUNCATE` operations on the source are not captured. Only `INSERT`, `UPDATE`, `UPSERT`, and `DELETE` events are replicated.
+- Changes to virtual columns are not replicated automatically. To migrate these columns, you must define them explicitly with [transformation rules](/docs/molt/molt-fetch#transformations).
+
+## Prepare the source database
+
+#### Create migration user on source database
+
+Create a dedicated migration user (for example, `MIGRATION_USER`) on the source database. This user is responsible for reading data from source tables during the migration. You will pass this username in the [source connection string](#source-connection-string).
+
+```sql
+CREATE USER MIGRATION_USER IDENTIFIED BY 'password';
+```
+
+<Note>
+When migrating from Oracle Multitenant (PDB/CDB), this should be a [common user](https://docs.oracle.com/database/121/ADMQS/GUID-DA54EBE5-43EF-4B09-B8CC-FAABA335FBB8.htm). Prefix the username with `C##` (e.g., `C##MIGRATION_USER`).
+</Note>
+
+Grant the user privileges to connect, read metadata, and `SELECT` and `FLASHBACK` the tables you plan to migrate. The tables should all reside in a single schema (for example, `migration_schema`). For details, refer to [Schema and table filtering](#schema-and-table-filtering).
+
+##### Oracle Multitenant (PDB/CDB) user privileges
+
+Connect to the Oracle CDB as a DBA and grant the following:
+
+```sql
+-- Basic access
+GRANT CONNECT TO C##MIGRATION_USER;
+GRANT CREATE SESSION TO C##MIGRATION_USER;
+
+-- General metadata access
+GRANT EXECUTE_CATALOG_ROLE TO C##MIGRATION_USER;
+GRANT SELECT_CATALOG_ROLE TO C##MIGRATION_USER;
+
+-- Access to necessary V$ views
+GRANT SELECT ON V_$LOG TO C##MIGRATION_USER;
+GRANT SELECT ON V_$LOGFILE TO C##MIGRATION_USER;
+GRANT SELECT ON V_$LOGMNR_CONTENTS TO C##MIGRATION_USER;
+GRANT SELECT ON V_$ARCHIVED_LOG TO C##MIGRATION_USER;
+GRANT SELECT ON V_$DATABASE TO C##MIGRATION_USER;
+GRANT SELECT ON V_$LOG_HISTORY TO C##MIGRATION_USER;
+
+-- Direct grants to specific DBA views
+GRANT SELECT ON ALL_USERS TO C##MIGRATION_USER;
+GRANT SELECT ON DBA_USERS TO C##MIGRATION_USER;
+GRANT SELECT ON DBA_OBJECTS TO C##MIGRATION_USER;
+GRANT SELECT ON DBA_SYNONYMS TO C##MIGRATION_USER;
+GRANT SELECT ON DBA_TABLES TO C##MIGRATION_USER;
+```
+
+Connect to the Oracle PDB (not the CDB) as a DBA and grant the following:
+
+```sql
+-- Allow C##MIGRATION_USER to connect to the PDB and see active transaction metadata
+GRANT CONNECT TO C##MIGRATION_USER;
+GRANT CREATE SESSION TO C##MIGRATION_USER;
+
+-- General metadata access
+GRANT SELECT_CATALOG_ROLE TO C##MIGRATION_USER;
+
+-- Access to necessary V$ views
+GRANT SELECT ON V_$SESSION TO C##MIGRATION_USER;
+GRANT SELECT ON V_$TRANSACTION TO C##MIGRATION_USER;
+
+-- Grant these two for every table to migrate in the migration_schema
+GRANT SELECT, FLASHBACK ON migration_schema.tbl TO C##MIGRATION_USER;
+```
+
+##### Single-tenant Oracle user privileges
+
+Connect to the Oracle database as a DBA and grant the following:
+
+```sql
+-- Basic access
+GRANT CONNECT TO MIGRATION_USER;
+GRANT CREATE SESSION TO MIGRATION_USER;
+
+-- General metadata access
+GRANT SELECT_CATALOG_ROLE TO MIGRATION_USER;
+GRANT EXECUTE_CATALOG_ROLE TO MIGRATION_USER;
+
+-- Access to necessary V$ views
+GRANT SELECT ON V_$DATABASE TO MIGRATION_USER;
+GRANT SELECT ON V_$SESSION TO MIGRATION_USER;
+GRANT SELECT ON V_$TRANSACTION TO MIGRATION_USER;
+
+-- Direct grants to specific DBA views
+GRANT SELECT ON ALL_USERS TO MIGRATION_USER;
+GRANT SELECT ON DBA_USERS TO MIGRATION_USER;
+GRANT SELECT ON DBA_OBJECTS TO MIGRATION_USER;
+GRANT SELECT ON DBA_SYNONYMS TO MIGRATION_USER;
+GRANT SELECT ON DBA_TABLES TO MIGRATION_USER;
+
+-- Grant these two for every table to migrate in the migration_schema
+GRANT SELECT, FLASHBACK ON migration_schema.tbl TO MIGRATION_USER;
+```
+
+#### Configure source database for replication
+
+<Note>
+Connect to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary), **not** a replica. Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
+</Note>
+
+##### Enable ARCHIVELOG and FORCE LOGGING
+
+Enable `ARCHIVELOG` mode for LogMiner to access archived redo logs:
+
+```sql
+-- Check current log mode
+SELECT log_mode FROM v$database;
+
+-- Enable ARCHIVELOG (requires database restart)
+SHUTDOWN IMMEDIATE;
+STARTUP MOUNT;
+ALTER DATABASE ARCHIVELOG;
+ALTER DATABASE OPEN;
+
+-- Verify ARCHIVELOG is enabled
+SELECT log_mode FROM v$database; -- Expected: ARCHIVELOG
+```
+
+Enable supplemental logging for primary keys:
+
+```sql
+-- Enable minimal supplemental logging for primary keys
+ALTER DATABASE ADD SUPPLEMENTAL LOG DATA (PRIMARY KEY) COLUMNS;
+
+-- Verify supplemental logging status
+SELECT supplemental_log_data_min, supplemental_log_data_pk FROM v$database;
+-- Expected:
+--   SUPPLEMENTAL_LOG_DATA_MIN: IMPLICIT (or YES)
+--   SUPPLEMENTAL_LOG_DATA_PK: YES
+```
+
+Enable `FORCE LOGGING` to ensure all changes are logged:
+
+```sql
+ALTER DATABASE FORCE LOGGING;
+
+-- Verify FORCE LOGGING is enabled
+SELECT force_logging FROM v$database; -- Expected: YES
+```
+
+##### Create source sentinel table
+
+Create a checkpoint table called `REPLICATOR_SENTINEL` in the Oracle schema you will migrate:
+
+```sql
+CREATE TABLE migration_schema."REPLICATOR_SENTINEL" (
+  keycol NUMBER PRIMARY KEY,
+  lastSCN NUMBER
+);
+```
+
+Grant privileges to modify the checkpoint table. In Oracle Multitenant, grant the privileges on the PDB:
+
+```sql
+GRANT SELECT, INSERT, UPDATE ON migration_schema."REPLICATOR_SENTINEL" TO C##MIGRATION_USER;
+```
+
+##### Grant LogMiner privileges
+
+Grant LogMiner privileges. In Oracle Multitenant, grant the permissions on the CDB:
+
+```sql
+-- Access to necessary V$ views
+GRANT SELECT ON V_$LOG TO C##MIGRATION_USER;
+GRANT SELECT ON V_$LOGFILE TO C##MIGRATION_USER;
+GRANT SELECT ON V_$LOGMNR_CONTENTS TO C##MIGRATION_USER;
+GRANT SELECT ON V_$ARCHIVED_LOG TO C##MIGRATION_USER;
+GRANT SELECT ON V_$LOG_HISTORY TO C##MIGRATION_USER;
+
+-- SYS-prefixed views (for full dictionary access)
+GRANT SELECT ON SYS.V_$LOGMNR_DICTIONARY TO C##MIGRATION_USER;
+GRANT SELECT ON SYS.V_$LOGMNR_LOGS TO C##MIGRATION_USER;
+GRANT SELECT ON SYS.V_$LOGMNR_PARAMETERS TO C##MIGRATION_USER;
+GRANT SELECT ON SYS.V_$LOGMNR_SESSION TO C##MIGRATION_USER;
+
+-- Access to LogMiner views and controls
+GRANT LOGMINING TO C##MIGRATION_USER;
+GRANT EXECUTE ON DBMS_LOGMNR TO C##MIGRATION_USER;
+```
+
+The user must:
+
+- Query [redo logs from LogMiner](#verify-logminer-privileges).
+- Retrieve active transaction information to determine the starting point for ongoing replication.
+- Update the internal [`REPLICATOR_SENTINEL` table](#create-source-sentinel-table) created on the Oracle source schema by the DBA.
+
+##### Verify LogMiner privileges
+
+Query the locations of redo files in the Oracle database:
+
+```sql
+SELECT
+    l.GROUP#,
+    lf.MEMBER,
+    l.FIRST_CHANGE# AS START_SCN,
+    l.NEXT_CHANGE# AS END_SCN
+FROM
+    V$LOG l
+JOIN
+    V$LOGFILE lf
+ON
+    l.GROUP# = lf.GROUP#;
+```
+
+```text
+   GROUP# MEMBER                                       START_SCN                END_SCN
+_________ _________________________________________ ____________ ______________________
+        3 /opt/oracle/oradata/ORCLCDB/redo03.log         1232896    9295429630892703743
+        2 /opt/oracle/oradata/ORCLCDB/redo02.log         1155042                1232896
+        1 /opt/oracle/oradata/ORCLCDB/redo01.log         1141934                1155042
+
+3 rows selected.
+```
+
+Get the current snapshot System Change Number (SCN):
+
+```sql
+SELECT CURRENT_SCN FROM V$DATABASE;
+```
+
+```text
+CURRENT_SCN
+-----------
+2358840
+
+1 row selected.
+```
+
+Add the redo log files to LogMiner, using the redo log file paths you queried:
+
+```sql
+EXEC DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '/opt/oracle/oradata/ORCLCDB/redo01.log', OPTIONS => DBMS_LOGMNR.NEW);
+EXEC DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '/opt/oracle/oradata/ORCLCDB/redo02.log', OPTIONS => DBMS_LOGMNR.ADDFILE);
+EXEC DBMS_LOGMNR.ADD_LOGFILE(LOGFILENAME => '/opt/oracle/oradata/ORCLCDB/redo03.log', OPTIONS => DBMS_LOGMNR.ADDFILE);
+```
+
+Start LogMiner, specifying the SCN you queried:
+
+```sql
+EXEC DBMS_LOGMNR.START_LOGMNR(
+  STARTSCN => 2358840,
+  OPTIONS  => DBMS_LOGMNR.DICT_FROM_ONLINE_CATALOG
+);
+```
+
+```text
+PL/SQL procedure successfully completed.
+```
+
+<Tip>
+If you receive `ORA-01435: user does not exist`, the Oracle user lacks sufficient LogMiner privileges. Refer to [Grant LogMiner privileges](#grant-logminer-privileges).
+</Tip>
+
+## Prepare the target database
+
+### Define the target tables
+
+Convert the source table definitions into CockroachDB-compatible equivalents. CockroachDB supports the PostgreSQL wire protocol and is largely [compatible with PostgreSQL syntax](/docs/v25.4/postgresql-compatibility#features-that-differ-from-postgresql).
+
+- The source and target table definitions must **match**. Review [Type mapping](/docs/molt/molt-fetch#type-mapping) to understand which source types can be mapped to CockroachDB types.
+
+    For example, an Oracle source table defined as `CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);` must have a corresponding schema and table in CockroachDB:
+
+    ```sql
+    CREATE SCHEMA migration_schema;
+    CREATE TABLE migration_schema.tbl (pk INT PRIMARY KEY);
+    ```
+
+    - MOLT Fetch can automatically define matching CockroachDB tables using the [`drop-on-target-and-recreate`](#table-handling-mode) option.
+    - If you define the target tables manually, review how MOLT Fetch handles [type mismatches](/docs/molt/molt-fetch#mismatch-handling). You can use the [MOLT Schema Conversion Tool](#schema-conversion-tool) to create matching table definitions.
+    - By default, table and column names are case-insensitive in MOLT Fetch. If using the [`--case-sensitive`](/docs/molt/molt-fetch#global-flags) flag, schema, table, and column names must match Oracle's default uppercase identifiers. Use quoted names on the target to preserve case. For example, the following CockroachDB SQL statement will error:
+
+        ```sql
+        CREATE TABLE co.stores (... store_id ...);
+        ```
+
+        It should be written as:
+
+        ```sql
+        CREATE TABLE "CO"."STORES" (... "STORE_ID" ...);
+        ```
+
+        When using `--case-sensitive`, quote all identifiers and match the case exactly (for example, use `"CO"."STORES"` and `"STORE_ID"`).
+- Every table **must** have an explicit primary key.
+
+    <Warning>
+    Avoid using sequential keys. To learn more about the performance issues that can result from their use, refer to the [guidance on indexing with sequential keys](/docs/v25.4/sql-faqs#how-do-i-generate-unique-slowly-increasing-sequential-numbers-in-cockroachdb). If a sequential key is necessary in your CockroachDB table, you must create it manually, after using [MOLT Fetch](/docs/molt/molt-fetch) to load and replicate the data.
+    </Warning>
+- Review [Transformations](/docs/molt/molt-fetch#transformations) to understand how computed columns and partitioned tables can be mapped to the target, and how target tables can be renamed.
+- By default on CockroachDB, `INT` is an alias for `INT8`, which creates 64-bit signed integers. PostgreSQL and MySQL default to 32-bit integers. Depending on your source database or application requirements, you may need to change the integer size to `4`. For more information, refer to [Considerations for 64-bit signed integers](/docs/v25.4/int#considerations-for-64-bit-signed-integers).
+
+#### Schema Conversion Tool
+
+The [MOLT Schema Conversion Tool](/docs/cockroachcloud/migrations-page) (SCT) converts source table definitions to CockroachDB-compatible syntax. It requires a free [CockroachDB Cloud account](/docs/cockroachcloud/create-an-account).
+
+1. Upload a source `.sql` file to convert the syntax and identify [unimplemented features and syntax incompatibilities](/docs/molt/migration-strategy#unimplemented-features-and-syntax-incompatibilities) in the table definitions.
+2. Import the converted table definitions to a CockroachDB cluster:
+    - When migrating to CockroachDB Cloud, the Schema Conversion Tool automatically [applies the converted table definitions to a new Cloud database](/docs/cockroachcloud/migrations-page#migrate-the-schema).
+    - When migrating to a self-hosted CockroachDB cluster, [export a converted DDL file](/docs/cockroachcloud/migrations-page#export-the-schema) and pipe the [data definition language (DDL)](/docs/v25.4/sql-statements#data-definition-statements) directly into [`cockroach sql`](/docs/v25.4/cockroach-sql).
+
+#### Drop constraints and indexes
+
+To optimize data load performance, drop all non-`PRIMARY KEY` [constraints](/docs/v25.4/alter-table#drop-constraint) and [indexes](/docs/v25.4/drop-index) on the target CockroachDB database before migrating:
+
+- [`FOREIGN KEY`](/docs/v25.4/foreign-key)
+- [`UNIQUE`](/docs/v25.4/unique)
+- [Secondary indexes](/docs/v25.4/schema-design-indexes)
+- [`CHECK`](/docs/v25.4/check)
+- [`DEFAULT`](/docs/v25.4/default-value)
+- [`NOT NULL`](/docs/v25.4/not-null) (you do not need to drop this constraint when using `drop-on-target-and-recreate` for [table handling](#table-handling-mode) )
+
+<Warning>
+Do **not** drop [`PRIMARY KEY`](/docs/v25.4/primary-key) constraints.
+</Warning>
+
+You can [recreate the constraints and indexes after loading the data](#add-constraints-and-indexes).
+
+### Create the SQL user
+
+Create a SQL user in the CockroachDB cluster that has the necessary privileges.
+
+To create a user `crdb_user` in the default database (you will pass this username in the [target connection string](#target-connection-string)):
+
+```sql
+CREATE USER crdb_user WITH PASSWORD 'password';
+```
+
+Grant database-level privileges for schema creation within the target database:
+
+```sql
+GRANT ALL ON DATABASE defaultdb TO crdb_user;
+```
+
+Grant permission to modify cluster settings:
+
+```sql
+GRANT SYSTEM MODIFYCLUSTERSETTING TO crdb_user;
+```
+
+Grant usage on schemas being migrated:
+
+```sql
+GRANT USAGE ON SCHEMA migration_schema TO crdb_user;
+GRANT USAGE ON SCHEMA public TO crdb_user;
+```
+
+Grant user privileges to create tables in the `migration_schema` schema and internal MOLT tables like `_molt_fetch_exceptions` in the `public` CockroachDB schema:
+
+<Note>
+Ensure that you are connected to the target database.
+</Note>
+
+```sql
+GRANT CREATE ON SCHEMA migration_schema TO crdb_user;
+GRANT CREATE ON SCHEMA public TO crdb_user;
+```
+
+If you manually defined the target tables (which means that [`drop-on-target-and-recreate`](#table-handling-mode) will not be used), grant the following privileges on the schema:
+
+```sql
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA migration_schema TO crdb_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA migration_schema
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
+```
+
+Grant the same privileges for internal MOLT tables in the `public` CockroachDB schema:
+
+```sql
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO crdb_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO crdb_user;
+```
+
+If you will be running Fetch with [`drop-on-target-and-recreate`](#table-handling-mode), and the target schema has pre-existing tables that were created by a different user, you may need to change table ownership to allow the migration user to drop those tables. Make the following alteration for each table:
+
+```sql
+ALTER TABLE migration_schema.table1 OWNER TO crdb_user;
+```
+
+Depending on the MOLT Fetch [data load mode](#data-load-mode) you will use, grant the necessary privileges to run either [`IMPORT INTO`](#import-into-privileges) or [`COPY FROM`](#copy-from-privileges) on the target tables:
+
+#### `IMPORT INTO` privileges
+
+Grant `SELECT`, `INSERT`, and `DROP` (required because the table is taken offline during the `IMPORT INTO`) privileges on all tables being migrated:
+
+```sql
+GRANT SELECT, INSERT, DROP ON ALL TABLES IN SCHEMA migration_schema TO crdb_user;
+```
+
+</Tab>
+</Tabs>
+
+If you plan to use [cloud storage with implicit authentication](#cloud-storage-authentication) for data load, grant the `EXTERNALIOIMPLICITACCESS` [system-level privilege](/docs/v25.4/security-reference/authorization#supported-privileges):
+
+```sql
+GRANT SYSTEM EXTERNALIOIMPLICITACCESS TO crdb_user;
+```
+
+#### `COPY FROM` privileges
+
+Grant [`admin`](/docs/v25.4/security-reference/authorization#admin-role) privileges to the user:
+
+```sql
+GRANT admin TO crdb_user;
+```
+
+#### Replication privileges
+
+Grant permissions to create the staging schema for replication:
+
+```sql
+ALTER USER crdb_user CREATEDB;
+```
+
+### Configure GC TTL
+
+Before starting the [initial data load](#start-fetch), configure the [garbage collection (GC) TTL](/docs/v25.4/configure-replication-zones#gc-ttlseconds) on the source CockroachDB cluster to ensure that historical data remains available when replication begins. The GC TTL must be long enough to cover the full duration of the data load.
+
+Increase the GC TTL before starting the data load. For example, to set the GC TTL to 24 hours:
+
+```sql
+ALTER DATABASE defaultdb CONFIGURE ZONE USING gc.ttlseconds = 86400;
+```
+
+<Note>
+The GC TTL duration must be higher than your expected time for the initial data load.
+</Note>
+
+Once replication has started successfully (which automatically protects its own data range), you can restore the GC TTL to its original value. For example, to restore to 5 minutes:
+
+```sql
+ALTER DATABASE defaultdb CONFIGURE ZONE USING gc.ttlseconds = 300;
+```
+
+For details, refer to [Protect Changefeed Data from Garbage Collection](/docs/v25.4/protect-changefeed-data).
+
+## Configure Fetch
+
+When you run `molt fetch`, you can configure the following options for data load:
+
+- [Connection strings](#connection-strings): Specify URL‑encoded source and target connections.
+- [Intermediate file storage](#intermediate-file-storage): Export data to cloud storage or a local file server.
+- [Table handling mode](#table-handling-mode): Determine how existing target tables are initialized before load.
+- [Schema and table filtering](#schema-and-table-filtering): Specify schema and table names to migrate.
+- [Data load mode](#data-load-mode): Choose between `IMPORT INTO` and `COPY FROM`.
+- [Fetch metrics](#fetch-metrics): Configure metrics collection during initial data load.
+
+<Tabs>
+<Tab title="PostgreSQL">
+
+### Connection strings
+
+Define the connection strings for the [source](#source-connection-string) and [target](#target-connection-string) databases, and keep them [secure](#secure-connections).
+
+#### Source connection string
+
+The `--source` flag specifies the connection string for the source database:
+
+<Note>
+The source connection **must** point to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
+</Note>
+
+```text
+--source 'postgres://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
+```
+
+For example:
+
+```text
+--source 'postgres://migration_user:password@localhost:5432/migration_db?sslmode=verify-full'
+```
+
+</Tab>
+<Tab title="MySQL">
+
+### Connection strings
+
+Define the connection strings for the [source](#source-connection-string) and [target](#target-connection-string) databases, and keep them [secure](#secure-connections).
+
+#### Source connection string
+
+The `--source` flag specifies the connection string for the source database:
+
+<Note>
+The source connection **must** point to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
+</Note>
+
+```text
+--source 'mysql://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full&sslcert={path_to_client_crt}&sslkey={path_to_client_key}&sslrootcert={path_to_ca_crt}'
+```
+
+For example:
+
+```text
+--source 'mysql://migration_user:password@localhost/migration_db?sslcert=.%2fsource_certs%2fclient.root.crt&sslkey=.%2fsource_certs%2fclient.root.key&sslmode=verify-full&sslrootcert=.%2fsource_certs%2fca.crt'
+```
+
+</Tab>
+<Tab title="Oracle">
+
+### Connection strings
+
+Define the connection strings for the [source](#source-connection-string) and [target](#target-connection-string) databases, and keep them [secure](#secure-connections).
+
+#### Source connection string
+
+The `--source` flag specifies the connection string for the source database:
+
+<Note>
+The source connection **must** point to the primary instance (PostgreSQL primary, MySQL primary/master, or Oracle primary). Replicas cannot provide the necessary replication checkpoints and transaction metadata required for ongoing replication.
+</Note>
+
+```text
+--source 'oracle://{username}:{password}@{host}:{port}/{service_name}'
+```
+
+In [Oracle Multitenant](https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/CDBs-and-PDBs), `--source` specifies the connection string for the PDB. `--source-cdb` specifies the connection string for the CDB. The username specified in both `--source` and `--source-cdb` must be a common user with the privileges described in [Create migration user on source database](#create-migration-user-on-source-database).
+
+```text
+--source 'oracle://{username}:{password}@{host}:{port}/{PDB_service_name}'
+--source-cdb 'oracle://{username}:{password}@{host}:{port}/{CDB_service_name}'
+```
+
+Escape the `C##` prefix in the Oracle Multitenant username. For example, write `C##MIGRATION_USER` as `C%23%23`:
+
+```text
+--source 'oracle://C%23%23MIGRATION_USER:password@host:1521/ORCLPDB1'
+--source-cdb 'oracle://C%23%23MIGRATION_USER:password@host:1521/ORCLCDB'
+```
+
+</Tab>
+</Tabs>
+
+#### Target connection string
+
+The `--target` flag specifies the connection string for the target CockroachDB database:
+
+```text
+--target 'postgres://{username}:{password}@{host}:{port}/{database}?sslmode=verify-full'
+```
+
+For example:
+
+```text
+--target 'postgres://crdb_user:password@localhost:26257/defaultdb?sslmode=verify-full'
+```
+
+For details, refer to [Connect using a URL](/docs/v25.4/connection-parameters#connect-using-a-url).
+
+#### Secure connections
+
+- To keep your database credentials out of shell history and logs, follow these best practices when specifying your source and target connection strings:
+    - Avoid plaintext connection strings.
+    - Provide your connection strings as environment variables. For example:
+
+        ```shell
+        export SOURCE="postgres://migration_user:a%2452%26@localhost:5432/migration_db?sslmode=verify-full"
+        export TARGET="postgres://root@localhost:26257/defaultdb?sslmode=verify-full"
+        ```
+
+        Afterward, reference the environment variables in MOLT commands:
+
+        ```text
+        --source $SOURCE
+        --target $TARGET
+        ```
+    - If possible, use an external secrets manager to load the environment variables from stored secrets.
+- Use TLS-enabled connection strings to encrypt data in transit from MOLT to the database. When using TLS certificates, ensure certificate files are accessible to the MOLT binary on the same machine.
+
+    For example, a PostgreSQL connection string with TLS certificates:
+
+    ```text
+    postgresql://migration_user@db.example.com:5432/appdb?sslmode=verify-full&sslrootcert=/etc/migration_db/certs/ca.pem&sslcert=/etc/migration_db/certs/client.crt&sslkey=/etc/migration_db/certs/client.key
+    ```
+- URL-encode connection strings for the source database and [CockroachDB](/docs/v25.4/connect-to-the-database) so special characters in passwords are handled correctly.
+    - Given a password `a$52&`, pass it to the `molt escape-password` command with single quotes:
+
+        ```shell
+        molt escape-password --password 'a$52&'
+        ```
+
+        Use the encoded password in your connection string. For example:
+
+        ```text
+        postgres://migration_user:a%2452%26@localhost:5432/migration_db
+        ```
+- Remove `sslmode=disable` from production connection strings.
+
+### Intermediate file storage
+
+MOLT Fetch can write intermediate files to either a cloud storage bucket or a local file server:
+
+<table><thead><tr><th>Destination</th><th>MOLT Fetch flag(s)</th><th>Address and authentication</th></tr></thead><tbody><tr><td>Cloud storage</td><td><code>--bucket-path</code></td><td>Specify a <code>s3://bucket/path</code>, <code>gs://bucket/path</code>, or <code>azure-blob://bucket/path</code> URL.<br/><br/>- <strong>AWS S3</strong>: Set <code>AWS&#95;REGION</code>, <code>AWS&#95;SECRET&#95;ACCESS&#95;KEY</code>, <code>AWS&#95;ACCESS&#95;KEY&#95;ID</code> as environment variables or use <code>--use-implicit-auth</code>, <code>--assume-role</code>, and/or <code>--import-region</code>. Refer to <a href="#cloud-storage-authentication">Cloud storage authentication</a>.<br/><br/>- <strong>GCS</strong>: Authenticate with Application Default Credentials or use <code>--use-implicit-auth</code>. Refer to <a href="#cloud-storage-authentication">Cloud storage authentication</a>.<br/><br/>- <strong>Azure Blob Storage</strong>: Set <code>AZURE&#95;ACCOUNT&#95;NAME</code> and <code>AZURE&#95;ACCOUNT&#95;KEY</code> as environment variables or use <code>--use-implicit-auth</code>. Refer to <a href="#cloud-storage-authentication">Cloud storage authentication</a>.</td></tr><tr><td>Local file server</td><td><code>--local-path</code><br/><code>--local-path-listen-addr</code><br/><code>--local-path-crdb-access-addr</code></td><td>Write to <code>--local-path</code> on a local file server at <code>--local-path-listen-addr</code>; if the target CockroachDB cluster cannot reach this address, specify a publicly accessible address with <code>--local-path-crdb-access-addr</code>. No additional authentication is required.</td></tr></tbody></table>
+
+<Tip>
+Cloud storage is often preferred over a local file server, which may require significant disk space.
+</Tip>
+
+#### Cloud storage authentication
+
+Ensure that access control is properly configured for [Amazon S3](#amazon-s3), [Google Cloud Storage](#google-cloud-storage), or [Azure Blob Storage](#azure-blob-storage).
+
+<Tabs>
+<Tab title="S3">
+
+##### Amazon S3
+
+- Set the following environment variables in the terminal running `molt fetch`:
+
+    ```shell
+    export AWS_REGION='us-east-1'
+    export AWS_SECRET_ACCESS_KEY='key'
+    export AWS_ACCESS_KEY_ID='id'
+    ```
+
+    - To run `molt fetch` in a containerized environment (e.g., Docker), pass the required environment variables using `-e`. If your authentication method relies on local credential files, you may also need to volume map the host path to the appropriate location inside the container using `-v`. For example:
+
+        ```shell
+        docker run \
+          -e AWS_ACCESS_KEY_ID='your-access-key' \
+          -e AWS_SECRET_ACCESS_KEY='your-secret-key' \
+          -v ~/.aws:/root/.aws \
+          -it \
+          cockroachdb/molt fetch \
+          --bucket-path 's3://migration/data/cockroach' ...
+        ```
+- Alternatively, set `--use-implicit-auth` to use [implicit authentication](/docs/v25.4/cloud-storage-authentication). When using assume role authentication, specify the service account with `--assume-role`. For example:
+
+    ```text
+    --bucket-path 's3://migration/data/cockroach'
+    --assume-role 'arn:aws:iam::123456789012:role/MyMigrationRole'
+    --use-implicit-auth
+    ```
+- Set `--import-region` to specify an `AWS_REGION` (e.g., `--import-region 'ap-south-1'`).
+- Ensure the S3 bucket is created and accessible by authorized roles and users only.
+
+</Tab>
+<Tab title="GCS">
+
+##### Google Cloud Storage
+
+- Authenticate your local environment with [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials):
+
+    Using `gcloud`:
+
+    ```shell
+    gcloud init
+    gcloud auth application-default login
+    ```
+
+    Using the environment variable:
+
+    ```shell
+    export GOOGLE_APPLICATION_CREDENTIALS={path_to_cred_json}
+    ```
+
+    - To run `molt fetch` in a containerized environment (e.g., Docker), pass the required environment variables using `-e`. If your authentication method relies on local credential files, you may also need to volume map the host path to the appropriate location inside the container using `-v`. For example:
+
+        ```shell
+        docker run \
+          -e GOOGLE_APPLICATION_CREDENTIALS='/root/.config/gcloud/application_default_credentials.json' \
+          -v ~/.config/gcloud:/root/.config/gcloud \
+          -it \
+          cockroachdb/molt fetch \
+          --bucket-path 'gs://migration/data/cockroach' ...
+        ```
+- Alternatively, set `--use-implicit-auth` to use [implicit authentication](/docs/v25.4/cloud-storage-authentication). When using assume role authentication, specify the service account with `--assume-role`. For example:
+
+    ```text
+    --bucket-path 'gs://migration/data/cockroach
+    --use-implicit-auth
+    --assume-role 'user-test@cluster-ephemeral.iam.gserviceaccount.com'
+    ```
+- Ensure the Google Cloud Storage bucket is created and accessible by authorized roles and users only.
+
+</Tab>
+<Tab title="Azure">
+
+##### Azure Blob Storage
+
+- Set the following environment variables in the terminal running `molt fetch`:
+
+    ```shell
+    export AZURE_ACCOUNT_NAME='account'
+    export AZURE_ACCOUNT_KEY='key'
+    ```
+
+    You can also speicfy client and tenant credentials as environment variables:
+
+    ```shell
+    export AZURE_CLIENT_SECRET='secret'
+    export AZURE_TENANT_ID='id'
+    ```
+
+    - To run `molt fetch` in a containerized environment (e.g., Docker), pass the required environment variables using `-e`. If your authentication method relies on local credential files, you may also need to volume map the host path to the appropriate location inside the container using `-v`. For example:
+
+        ```shell
+        docker run \
+          -e AZURE_ACCOUNT_NAME='account' \
+          -e AZURE_ACCOUNT_KEY='key' \
+          -e AZURE_CLIENT_SECRET='secret' \
+          -e AZURE_TENANT_ID='id' \
+          -v ~/.azure:/root/.azure \
+          -it \
+          cockroachdb/molt fetch \
+          --bucket-path 'azure-blob://migration/data/cockroach' ...
+        ```
+- Alternatively, set `--use-implicit-auth` to use implicit authentication: For example:
+
+    ```text
+    --bucket-path 'azure-blob://migration/data/cockroach'
+    --use-implicit-auth
+    ```
+
+    This mode supports Azure [managed identities](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview) and [workload identities](https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview).
+- Ensure the Azure Blob Storage container is created and accessible by authorized roles and users only.
+
+</Tab>
+</Tabs>
+
+### Table handling mode
+
+MOLT Fetch can initialize target tables on the CockroachDB database in one of three modes using `--table-handling`:
+
+<table><thead><tr><th>Mode</th><th>MOLT Fetch flag</th><th>Description</th></tr></thead><tbody><tr><td><code>none</code></td><td>Default mode</td><td>- Loads data into existing tables without altering schema or data.<br/><br/>- Exits early if schemas mismatch in some cases.</td></tr><tr><td><code>truncate-if-exists</code></td><td><code>--table-handling truncate-if-exists</code></td><td>- Truncates target tables before loading data.<br/><br/>- Exits early if schemas mismatch in some cases.</td></tr><tr><td><code>drop-on-target-and-recreate</code></td><td><code>--table-handling drop-on-target-and-recreate</code></td><td>- Drops and recreates target tables before loading data.<br/><br/>- Automatically creates missing tables with <a href="/docs/v25.4/primary-key"><code>PRIMARY KEY</code></a> and <a href="/docs/v25.4/not-null"><code>NOT NULL</code></a> constraints.</td></tr></tbody></table>
+
+- Use `none` when you need to retain existing data and schema.
+- Use `--table-handling truncate-if-exists` to clear existing data while preserving schema definitions.
+- Use `--table-handling drop-on-target-and-recreate` for initial imports or when source and target schemas differ, letting MOLT Fetch generate compatible tables automatically.
+
+<Note>
+When using the `drop-on-target-and-recreate` option, only [`PRIMARY KEY`](/docs/v25.4/primary-key) and [`NOT NULL`](/docs/v25.4/not-null) constraints are preserved on the target tables. Other constraints, such as [`FOREIGN KEY`](/docs/v25.4/foreign-key) references, [`UNIQUE`](/docs/v25.4/unique), or [`DEFAULT`](/docs/v25.4/default-value) value expressions, are **not** retained.
+</Note>
+
+To guide schema creation with `drop-on-target-and-recreate`, you can explicitly map source types to CockroachDB types. Refer to [Type mapping](/docs/molt/molt-fetch#type-mapping).
+
+### Schema and table filtering
+
+Use the following flags to filter the data to be migrated.
+
+<Tabs>
+<Tab title="PostgreSQL">
+
+<table><thead><tr><th>Filter type</th><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td>Schema filter</td><td><code>--schema-filter</code></td><td><a href="https://wikipedia.org/wiki/Regular_expression">POSIX regex</a> matching schema names to include; all matching schemas and their tables are moved. <strong>Required</strong> when migrating from Oracle.</td></tr><tr><td>Table filter</td><td><code>--table-filter</code></td><td>POSIX regex matching table names to include across all selected schemas.</td></tr><tr><td>Table exclusion filter</td><td><code>--table-exclusion-filter</code></td><td>POSIX regex matching table names to exclude across all selected schemas.</td></tr></tbody></table>
+
+</Tab>
+<Tab title="MySQL">
+
+<table><thead><tr><th>Filter type</th><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td>Table filter</td><td><code>--table-filter</code></td><td>POSIX regex matching table names to include across all selected schemas.</td></tr><tr><td>Table exclusion filter</td><td><code>--table-exclusion-filter</code></td><td>POSIX regex matching table names to exclude across all selected schemas.</td></tr></tbody></table>
+
+<Note>
+`--schema-filter` does not apply to MySQL sources because MySQL tables belong directly to the database specified in the connection string, not to a separate schema.
+</Note>
+
+</Tab>
+<Tab title="Oracle">
+
+<table><thead><tr><th>Filter type</th><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td>Schema filter</td><td><code>--schema-filter</code></td><td><a href="https://wikipedia.org/wiki/Regular_expression">POSIX regex</a> matching schema names to include; all matching schemas and their tables are moved. <strong>Required</strong> when migrating from Oracle.</td></tr><tr><td>Table filter</td><td><code>--table-filter</code></td><td>POSIX regex matching table names to include across all selected schemas.</td></tr><tr><td>Table exclusion filter</td><td><code>--table-exclusion-filter</code></td><td>POSIX regex matching table names to exclude across all selected schemas.</td></tr></tbody></table>
+
+When migrating from Oracle, you **must** include `--schema-filter` to name an Oracle schema to migrate. This prevents Fetch from attempting to load tables owned by other users. For example:
+
+```text
+--schema-filter 'migration_schema'
+```
+
+</Tab>
+</Tabs>
+
+### Data load mode
+
+MOLT Fetch can use either [`IMPORT INTO`](/docs/v25.4/import-into) or [`COPY FROM`](/docs/v25.4/copy) to load data into CockroachDB:
+
+<table><thead><tr><th>Statement</th><th>MOLT Fetch flag</th><th>Description</th></tr></thead><tbody><tr><td><code>IMPORT INTO</code></td><td>Default mode</td><td>- Fastest option, but takes target tables offline during load.<br/><br/>- Supports compression using the <code>--compression</code> flag to reduce storage used during export.<br/><br/>- Executes as a distributed background job in CockroachDB, so is more efficient for large, wide, or heavily partitioned tables.</td></tr><tr><td><code>COPY FROM</code></td><td><code>--use-copy</code> or <code>--direct-copy</code></td><td>- Slower than <code>IMPORT INTO</code>, but keeps target tables online and queryable during load.<br/><br/>- Does not support compression.<br/><br/>- Runs on the MOLT host and streams data row-by-row, which can increase memory usage and limit concurrency for large tables (many rows) or wide tables (many columns or large values like <code>JSONB</code>).</td></tr></tbody></table>
+
+- Use `IMPORT INTO` (the default mode) for large datasets, wide rows, or partitioned tables.
+- Use `--use-copy` when tables must remain online during data load.
+- Use `--direct-copy` only when you cannot move data to a public cloud, or want to perform local testing without intermediate storage. In this case, no [intermediate file storage](#intermediate-file-storage) is used.
+
+### Fetch metrics
+
+By default, MOLT Fetch exports [Prometheus](https://prometheus.io/) metrics at `http://127.0.0.1:3030/metrics`. You can override the address with `--metrics-listen-addr '{host}:{port}'`, where the endpoint will be `http://{host}:{port}/metrics`.
+
+Cockroach Labs recommends monitoring the following metrics during data load:
+
+<table><thead><tr><th>Metric Name</th><th>Description</th></tr></thead><tbody><tr><td><code>molt&#95;fetch&#95;num&#95;tables</code></td><td>Number of tables that will be moved from the source.</td></tr><tr><td><code>molt&#95;fetch&#95;num&#95;task&#95;errors</code></td><td>Number of errors encountered by the fetch task.</td></tr><tr><td><code>molt&#95;fetch&#95;overall&#95;duration</code></td><td>Duration (in seconds) of the fetch task.</td></tr><tr><td><code>molt&#95;fetch&#95;rows&#95;exported</code></td><td>Number of rows that have been exported from a table. For example:<br/><code>molt&#95;fetch&#95;rows&#95;exported&#123;table="public.users"&#125;</code></td></tr><tr><td><code>molt&#95;fetch&#95;rows&#95;imported</code></td><td>Number of rows that have been imported from a table. For example:<br/><code>molt&#95;fetch&#95;rows&#95;imported&#123;table="public.users"&#125;</code></td></tr><tr><td><code>molt&#95;fetch&#95;table&#95;export&#95;duration&#95;ms</code></td><td>Duration (in milliseconds) of a table's export. For example:<br/><code>molt&#95;fetch&#95;table&#95;export&#95;duration&#95;ms&#123;table="public.users"&#125;</code></td></tr><tr><td><code>molt&#95;fetch&#95;table&#95;import&#95;duration&#95;ms</code></td><td>Duration (in milliseconds) of a table's import. For example:<br/><code>molt&#95;fetch&#95;table&#95;import&#95;duration&#95;ms&#123;table="public.users"&#125;</code></td></tr></tbody></table>
+
+To visualize the preceding metrics, use the Grafana dashboard [bundled with your binary (`grafana_dashboard.json`)](/docs/molt/molt-fetch#installation). The bundled dashboard matches your binary version. Alternatively, you can download the [latest dashboard](https://molt.cockroachdb.com/molt/cli/grafana_dashboard.json).
+
+<Tip>
+For details on Replicator metrics, refer to [Replicator Metrics](/docs/molt/replicator-metrics).
+</Tip>
+
+## Start Fetch
+
+Perform the initial load of the source data.
+
+<Tabs>
+<Tab title="PostgreSQL">
+
+1. Issue the [MOLT Fetch](/docs/molt/molt-fetch) command to move the source data to CockroachDB. This example command passes the source and target connection strings [as environment variables](#secure-connections), writes [intermediate files](#intermediate-file-storage) to S3 storage, and uses the `truncate-if-exists` [table handling mode](#table-handling-mode) to truncate the target tables before loading data. It also limits the migration to a single schema and filters three specific tables to migrate. The [data load mode](#data-load-mode) defaults to `IMPORT INTO`.
+
+    You **must** include `--pglogical-replication-slot-name` and `--pglogical-publication-and-slot-drop-and-recreate` to automatically create the publication and replication slot during the data load.
+
+    ```shell
+    molt fetch \
+    --source $SOURCE \
+    --target $TARGET \
+    --schema-filter 'migration_schema' \
+    --table-filter 'employees|payments|orders' \
+    --bucket-path 's3://migration/data/cockroach' \
+    --table-handling truncate-if-exists \
+    --pglogical-replication-slot-name molt_slot \
+    --pglogical-publication-and-slot-drop-and-recreate
+    ```
+2. Check the output to observe `fetch` progress.
+
+    If you included the `--pglogical-replication-slot-name` and `--pglogical-publication-and-slot-drop-and-recreate` flags, a publication named `molt_fetch` is automatically created:
+
+    ```json
+    {"level":"info","time":"2025-02-10T14:28:11-05:00","message":"dropping and recreating publication molt_fetch"}
+    ```
+
+    A `starting fetch` message indicates that the task has started:
+
+    ```json
+    {"level":"info","type":"summary","num_tables":3,"cdc_cursor":"0/43A1960","time":"2025-02-10T14:28:11-05:00","message":"starting fetch"}
+    ```
+
+    `data extraction` messages are written for each table that is exported to the location in `--bucket-path`:
+
+    ```json
+    {"level":"info","table":"migration_schema.employees","time":"2025-02-10T14:28:11-05:00","message":"data extraction phase starting"}
+    ```
+
+    ```json
+    {"level":"info","table":"migration_schema.employees","type":"summary","num_rows":200000,"export_duration_ms":1000,"export_duration":"000h 00m 01s","time":"2025-02-10T14:28:12-05:00","message":"data extraction from source complete"}
+    ```
+
+    `data import` messages are written for each table that is loaded into CockroachDB:
+
+    ```json
+    {"level":"info","table":"migration_schema.employees","time":"2025-02-10T14:28:12-05:00","message":"starting data import on target"}
+    ```
+
+    ```json
+    {"level":"info","table":"migration_schema.employees","type":"summary","net_duration_ms":1899.748333,"net_duration":"000h 00m 01s","import_duration_ms":1160.523875,"import_duration":"000h 00m 01s","export_duration_ms":1000,"export_duration":"000h 00m 01s","num_rows":200000,"cdc_cursor":"0/43A1960","time":"2025-02-10T14:28:13-05:00","message":"data import on target for table complete"}
+    ```
+
+    A `fetch complete` message is written when the fetch task succeeds:
+
+    ```json
+    {"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["migration_schema.employees","migration_schema.payments","migration_schema.payments"],"cdc_cursor":"0/3F41E40","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
+    ```
+
+</Tab>
+<Tab title="MySQL">
+
+1. Issue the [MOLT Fetch](/docs/molt/molt-fetch) command to move the source data to CockroachDB. This example command passes the source and target connection strings [as environment variables](#secure-connections), writes [intermediate files](#intermediate-file-storage) to S3 storage, and uses the `truncate-if-exists` [table handling mode](#table-handling-mode) to truncate the target tables before loading data. It also limits the migration to a single schema and filters three specific tables to migrate. The [data load mode](#data-load-mode) defaults to `IMPORT INTO`.
+
+    ```shell
+    molt fetch \
+    --source $SOURCE \
+    --target $TARGET \
+    --table-filter 'employees|payments|orders' \
+    --bucket-path 's3://migration/data/cockroach' \
+    --table-handling truncate-if-exists
+    ```
+2. Check the output to observe `fetch` progress.
+
+    A `starting fetch` message indicates that the task has started:
+
+    ```json
+    {"level":"info","type":"summary","num_tables":3,"cdc_cursor":"4c658ae6-e8ad-11ef-8449-0242ac140006:1-29","time":"2025-02-10T14:28:11-05:00","message":"starting fetch"}
+    ```
+
+    `data extraction` messages are written for each table that is exported to the location in `--bucket-path`:
+
+    ```json
+    {"level":"info","table":"public.employees","time":"2025-02-10T14:28:11-05:00","message":"data extraction phase starting"}
+    ```
+
+    ```json
+    {"level":"info","table":"public.employees","type":"summary","num_rows":200000,"export_duration_ms":1000,"export_duration":"000h 00m 01s","time":"2025-02-10T14:28:12-05:00","message":"data extraction from source complete"}
+    ```
+
+    `data import` messages are written for each table that is loaded into CockroachDB:
+
+    ```json
+    {"level":"info","table":"public.employees","time":"2025-02-10T14:28:12-05:00","message":"starting data import on target"}
+    ```
+
+    ```json
+    {"level":"info","table":"public.employees","type":"summary","net_duration_ms":1899.748333,"net_duration":"000h 00m 01s","import_duration_ms":1160.523875,"import_duration":"000h 00m 01s","export_duration_ms":1000,"export_duration":"000h 00m 01s","num_rows":200000,"cdc_cursor":"4c658ae6-e8ad-11ef-8449-0242ac140006:1-29","time":"2025-02-10T14:28:13-05:00","message":"data import on target for table complete"}
+    ```
+
+    A `fetch complete` message is written when the fetch task succeeds:
+
+    ```json
+    {"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["public.employees","public.payments","public.payments"],"cdc_cursor":"4c658ae6-e8ad-11ef-8449-0242ac140006:1-29","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
+    ```
+
+    This message includes a `cdc_cursor` value. You must set the `--defaultGTIDSet` replication flag to this value when [starting Replicator](#start-replicator):
+
+    ```text
+    --defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29
+    ```
+
+</Tab>
+<Tab title="Oracle">
+
+1. Issue the [MOLT Fetch](/docs/molt/molt-fetch) command to move the source data to CockroachDB. This example command passes the source and target connection strings [as environment variables](#secure-connections), writes [intermediate files](#intermediate-file-storage) to S3 storage, and uses the `truncate-if-exists` [table handling mode](#table-handling-mode) to truncate the target tables before loading data. It also limits the migration to a single schema and filters three specific tables to migrate. The [data load mode](#data-load-mode) defaults to `IMPORT INTO`.
+
+    The command assumes an Oracle Multitenant (CDB/PDB) source. `--source-cdb` specifies the container database (CDB) connection string.
+
+    ```shell
+    molt fetch \
+    --source $SOURCE \
+    --source-cdb $SOURCE_CDB \
+    --target $TARGET \
+    --schema-filter 'migration_schema' \
+    --table-filter 'employees|payments|orders' \
+    --bucket-path 's3://migration/data/cockroach' \
+    --table-handling truncate-if-exists
+    ```
+2. Check the output to observe `fetch` progress.
+
+    A `starting fetch` message indicates that the task has started:
+
+    ```json
+    {"level":"info","type":"summary","num_tables":3,"cdc_cursor":"backfillFromSCN=26685444,scn=26685786","time":"2025-02-10T14:28:11-05:00","message":"starting fetch"}
+    ```
+
+    `data extraction` messages are written for each table that is exported to the location in `--bucket-path`:
+
+    ```json
+    {"level":"info","table":"migration_schema.employees","time":"2025-02-10T14:28:11-05:00","message":"data extraction phase starting"}
+    ```
+
+    ```json
+    {"level":"info","table":"migration_schema.employees","type":"summary","num_rows":200000,"export_duration_ms":1000,"export_duration":"000h 00m 01s","time":"2025-02-10T14:28:12-05:00","message":"data extraction from source complete"}
+    ```
+
+    `data import` messages are written for each table that is loaded into CockroachDB:
+
+    ```json
+    {"level":"info","table":"migration_schema.employees","time":"2025-02-10T14:28:12-05:00","message":"starting data import on target"}
+    ```
+
+    ```json
+    {"level":"info","table":"migration_schema.employees","type":"summary","net_duration_ms":1899.748333,"net_duration":"000h 00m 01s","import_duration_ms":1160.523875,"import_duration":"000h 00m 01s","export_duration_ms":1000,"export_duration":"000h 00m 01s","num_rows":200000,"cdc_cursor":"backfillFromSCN=26685444,scn=26685786","time":"2025-02-10T14:28:13-05:00","message":"data import on target for table complete"}
+    ```
+
+    A `fetch complete` message is written when the fetch task succeeds:
+
+    ```json
+    {"level":"info","type":"summary","fetch_id":"f5cb422f-4bb4-4bbd-b2ae-08c4d00d1e7c","num_tables":3,"tables":["migration_schema.employees","migration_schema.payments","migration_schema.payments"],"cdc_cursor":"backfillFromSCN=26685444,scn=26685786","net_duration_ms":6752.847625,"net_duration":"000h 00m 06s","time":"2024-03-18T12:30:37-04:00","message":"fetch complete"}
+    ```
+
+    This message shows the appropriate values for the `--backfillFromSCN` and `--scn` flags to use when [starting Replicator](#start-replicator):
+
+    ```text
+    --backfillFromSCN 26685444
+    --scn 26685786
+    ```
+
+</Tab>
+</Tabs>
+
+## Verify the data load
+
+Use [MOLT Verify](/docs/molt/molt-verify) to confirm that the source and target data is consistent. This ensures that the data load was successful.
+
+<Tabs>
+<Tab title="PostgreSQL">
+
+1. Run the [MOLT Verify](/docs/molt/molt-verify) command, specifying the source and target [connection strings](#connection-strings) and the tables to validate.
+
+    ```shell
+    molt verify \
+    --source $SOURCE \ 
+    --target $TARGET \
+    --table-filter 'employees|payments|orders'
+    ```
+
+</Tab>
+<Tab title="MySQL">
+
+1. Run the [MOLT Verify](/docs/molt/molt-verify) command, specifying the source and target [connection strings](#connection-strings) and the tables to validate.
+
+    ```shell
+    molt verify \
+    --source $SOURCE \ 
+    --target $TARGET \
+    --table-filter 'employees|payments|orders'
+    ```
+
+</Tab>
+<Tab title="Oracle">
+
+1. Run the [MOLT Verify](/docs/molt/molt-verify) command, specifying the source and target [connection strings](#connection-strings) and the tables to validate.
+
+    ```shell
+    molt verify \
+    --source $SOURCE \ 
+    --target $TARGET \
+    --table-filter 'employees|payments|orders'
+    ```
+
+    <Note>
+    With Oracle Multitenant deployments, while `--source-cdb` is required for `fetch`, it is **not** necessary for `verify`.
+    </Note>
+
+</Tab>
+</Tabs>
+2. Check the output to observe `verify` progress.
+
+    A `verification in progress` indicates that the task has started:
+
+    ```json
+    {"level":"info","time":"2025-02-10T15:35:04-05:00","message":"verification in progress"}
+    ```
+
+    `starting verify` messages are written for each specified table:
+
+    ```json
+    {"level":"info","time":"2025-02-10T15:35:04-05:00","message":"starting verify on public.employees, shard 1/1"}
+    ```
+
+    A `finished row verification` message is written after each table is compared. If `num_success` equals `num_truth_rows` and the error counters (`num_missing`, `num_mismatch`, `num_extraneous`, and `num_column_mismatch`) are all `0`, the table verified successfully. Any non-zero values in the error counters indicate data discrepancies that need investigation. For details on each field, refer to the [MOLT Verify](/docs/molt/molt-verify#usage) page.
+
+    ```json
+    {"level":"info","type":"summary","table_schema":"public","table_name":"employees","num_truth_rows":200004,"num_success":200004,"num_conditional_success":0,"num_missing":0,"num_mismatch":0,"num_extraneous":0,"num_live_retry":0,"num_column_mismatch":0,"time":"2025-02-10T15:35:05-05:00","message":"finished row verification on public.employees (shard 1/1)"}
+    ```
+
+    A `verification complete` message is written when the verify task succeeds:
+
+    ```json
+    {"level":"info","net_duration_ms":699.804875,"net_duration":"000h 00m 00s","time":"2025-02-10T15:35:05-05:00","message":"verification complete"}
+    ```
+
+## Configure Replicator
+
+When you run `replicator`, you can configure the following options for replication:
+
+- [Replication connection strings](#replication-connection-strings): Specify URL-encoded source and target database connections.
+<Tabs>
+<Tab title="PostgreSQL">
+
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
+
+</Tab>
+<Tab title="MySQL">
+
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
+
+</Tab>
+<Tab title="Oracle">
+
+- [Replicator flags](#replicator-flags): Specify required and optional flags to configure replicator behavior.
+
+</Tab>
+</Tabs>
+- [Tuning parameters](#tuning-parameters): Optimize replication performance and resource usage.
+- [Replicator metrics](#replicator-metrics): Monitor replication progress and performance.
+
+<Tabs>
+<Tab title="PostgreSQL">
+
+### Replication connection strings
+
+MOLT Replicator uses `--sourceConn` and `--targetConn` to specify the source and target database connections.
+
+`--sourceConn` specifies the connection string of the source database:
+
+```text
+--sourceConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
+```
+
+`--targetConn` specifies the target CockroachDB connection string:
+
+```text
+--targetConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
+```
+
+<Tip>
+Follow best practices for securing connection strings. Refer to [Secure connections](#secure-connections).
+</Tip>
+
+### Replicator flags
+
+Configure the following [MOLT Replicator](/docs/molt/molt-replicator) flags for continuous replication. For details on all available flags, refer to [Replicator Flags](/docs/molt/replicator-flags).
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/molt/replicator-flags#slot-name"><code>--slotName</code></a></td><td><strong>Required.</strong> PostgreSQL replication slot name. Must match the slot name specified with <code>--pglogical-replication-slot-name</code> in the <a href="#start-fetch">MOLT Fetch command</a>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#publication-name"><code>--publicationName</code></a></td><td><strong>Required.</strong> PostgreSQL publication name. Must match the publication name created either manually or automatically with <code>--pglogical-publication-and-slot-drop-and-recreate</code> in the <a href="#start-fetch">MOLT Fetch command</a>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#target-schema"><code>--targetSchema</code></a></td><td><strong>Required.</strong> Target schema name on CockroachDB where tables will be replicated. Schema name must be fully qualified in the format <code>database.schema</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#staging-schema"><code>--stagingSchema</code></a></td><td><strong>Required.</strong> Staging schema name on CockroachDB for replication metadata and checkpoints. Schema name must be fully qualified in the format <code>database.schema</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#staging-create-schema"><code>--stagingCreateSchema</code></a></td><td>Automatically create the staging schema if it does not exist. Include this flag when starting replication for the first time.</td></tr><tr><td><a href="/docs/molt/replicator-flags#metrics-addr"><code>--metricsAddr</code></a></td><td>Enable Prometheus metrics at a specified <code>&#123;host&#125;:&#123;port&#125;</code>. Metrics are served at <code>http://&#123;host&#125;:&#123;port&#125;/&#95;/varz</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#userscript"><code>--userscript</code></a></td><td>Path to a <a href="/docs/molt/userscript-overview">userscript</a> that enables data filtering, routing, or transformations. For examples, refer to <a href="/docs/molt/userscript-cookbook">Userscript Cookbook</a>.</td></tr></tbody></table>
+
+### Tuning parameters
+
+Configure the following [`replicator` flags](/docs/molt/replicator-flags) to optimize replication throughput and resource usage. Test different combinations in a pre-production environment to find the optimal balance of stability and performance for your workload.
+
+<Note>
+The following parameters apply to PostgreSQL, Oracle, and CockroachDB (failback) sources.
+</Note>
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a></td><td>Control the maximum number of concurrent target transactions. Higher values increase throughput but require more target connections. Start with a conservative value and increase based on target database capacity.</td></tr><tr><td><a href="/docs/molt/replicator-flags#flush-size"><code>--flushSize</code></a></td><td>Balance throughput and latency. Controls how many mutations are batched into each query to the target. Increase for higher throughput at the cost of higher latency.</td></tr><tr><td><a href="/docs/molt/replicator-flags#target-apply-queue-size"><code>--targetApplyQueueSize</code></a></td><td>Control memory usage during operation. Increase to allow higher throughput at the expense of memory; decrease to apply backpressure and limit memory consumption.</td></tr><tr><td><a href="/docs/molt/replicator-flags#target-max-pool-size"><code>--targetMaxPoolSize</code></a></td><td>Set larger than <a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a> by a safety factor to avoid exhausting target pool connections. Replicator enforces setting parallelism to 80% of this value.</td></tr><tr><td><a href="/docs/molt/replicator-flags#collapse-mutations"><code>--collapseMutations</code></a></td><td>Reduce the number of queries to the target by combining multiple mutations on the same primary key within each batch. Disable only if exact mutation order matters more than end state.</td></tr><tr><td><a href="/docs/molt/replicator-flags#enable-parallel-applies"><code>--enableParallelApplies</code></a></td><td>Improve apply throughput for independent tables and table groups that share foreign key dependencies. Increases memory and target connection usage, so ensure you increase <a href="/docs/molt/replicator-flags#target-max-pool-size"><code>--targetMaxPoolSize</code></a> or reduce <a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#flush-period"><code>--flushPeriod</code></a></td><td>Set to the maximum allowable time between flushes (for example, <code>10s</code> if data must be applied within 10 seconds). Works with <a href="/docs/molt/replicator-flags#flush-size"><code>--flushSize</code></a> to control when buffered mutations are committed to the target.</td></tr><tr><td><a href="/docs/molt/replicator-flags#quiescent-period"><code>--quiescentPeriod</code></a></td><td>Lower this value if constraint violations resolve quickly on your workload to make retries more frequent and reduce latency. Do not lower if constraint violations take time to resolve.</td></tr><tr><td><a href="/docs/molt/replicator-flags#scan-size"><code>--scanSize</code></a></td><td>Applies to <a href="/docs/molt/migrate-failback">failback</a> (<code>replicator start</code>) scenarios <strong>only</strong>. Balance memory usage and throughput. Increase to read more rows at once from the CockroachDB staging cluster for higher throughput, at the cost of memory pressure. Decrease to reduce memory pressure and increase stability.</td></tr></tbody></table>
+
+### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+```text
+--metricsAddr :30005
+```
+
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics](/docs/molt/replicator-metrics?filters=postgres).
+
+## Start Replicator
+
+With initial load complete, start replication of ongoing changes on the source to CockroachDB using [MOLT Replicator](/docs/molt/molt-replicator).
+
+<Note>
+MOLT Fetch captures a consistent point-in-time checkpoint at the start of the data load (shown as `cdc_cursor` in the fetch output). Starting replication from this checkpoint ensures that all changes made during and after the data load are replicated to CockroachDB, preventing data loss or duplication. The following steps use the checkpoint values from the fetch output to start replication at the correct position.
+</Note>
+
+1. Run the `replicator` command, using the same slot name that you specified with `--pglogical-replication-slot-name` and the publication name created by `--pglogical-publication-and-slot-drop-and-recreate` in the [Fetch command](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database:
+
+    ```shell
+    replicator pglogical \
+    --sourceConn $SOURCE \
+    --targetConn $TARGET \
+    --targetSchema defaultdb.migration_schema \
+    --slotName molt_slot \
+    --publicationName molt_fetch \
+    --stagingSchema defaultdb._replicator \
+    --stagingCreateSchema \
+    --metricsAddr :30005 \
+    -v
+    ```
+
+## Verify replication
+
+1. Verify that Replicator is processing changes successfully. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see connection and row processing messages:
+
+    You should see periodic primary keepalive messages:
+
+    ```text
+    DEBUG  [Aug 25 14:38:10] primary keepalive received                    ReplyRequested=false ServerTime="2025-08-25 14:38:09.556773 -0500 CDT" ServerWALEnd=0/49913A58
+    DEBUG  [Aug 25 14:38:15] primary keepalive received                    ReplyRequested=false ServerTime="2025-08-25 14:38:14.556836 -0500 CDT" ServerWALEnd=0/49913E60
+    ```
+
+    When rows are successfully replicated, you should see debug output like the following:
+
+    ```text
+    DEBUG  [Aug 25 14:40:02] upserted rows                                 conflicts=0 duration=7.855333ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
+    DEBUG  [Aug 25 14:40:02] progressed to LSN: 0/49915DD0
+    ```
+
+    These messages confirm successful replication. You can disable verbose logging after verifying the connection.
+
+## Stop replication and verify data
+
+1. Stop application traffic to your source database. **This begins downtime.**
+2. Wait for replication to drain, which means that all transactions that occurred on the source database have been fully processed and replicated to CockroachDB. There are two ways to determine that replication has fully drained:
+    - When replication is caught up, you will not see new `upserted rows` logs.
+    - If you set up the replication metrics endpoint with [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) in the preceding steps, metrics are available at:
+
+        ```text
+        http://{host}:{port}/_/varz
+        ```
+
+        Use the following Prometheus alert expression to observe when the combined rate of upserts and deletes is `0` for each schema:
+
+        ```text
+        sum by (schema) (rate(apply_upserts_total[$__rate_interval]) + rate(apply_deletes_total[$__rate_interval]))
+        ```
+3. Cancel replication to CockroachDB by entering `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`.
+4. Repeat [Verify the data load](#verify-the-data-load) to verify the updated data.
+
+## Add constraints and indexes
+
+Add any constraints or indexes that you previously [removed from the CockroachDB schema](#drop-constraints-and-indexes) to facilitate data load.
+
+<Note>
+If you used the `--table-handling drop-on-target-and-recreate` option for data load, only [`PRIMARY KEY`](/docs/v25.4/primary-key) and [`NOT NULL`](/docs/v25.4/not-null) constraints are preserved. You **must** manually recreate all other constraints and indexes.
+</Note>
+
+For the appropriate SQL syntax, refer to [`ALTER TABLE... ADD CONSTRAINT`](/docs/v25.4/alter-table#add-constraint) and [`CREATE INDEX`](/docs/v25.4/create-index). Review the [best practices for creating secondary indexes](/docs/v25.4/schema-design-indexes#best-practices) on CockroachDB.
+
+## Cutover
+
+Perform a cutover by resuming application traffic, now to CockroachDB.
+
+## Troubleshooting
+
+### Fetch issues
+
+##### Fetch exits early due to mismatches
+
+When run in `none` or `truncate-if-exists` mode, `molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
+
+- A source table is missing a primary key.
+- A source primary key and target primary key have mismatching types.
+
+    <Tip>
+    These restrictions (missing or mismatching primary keys) can be bypassed with [`--skip-pk-check`](/docs/molt/molt-fetch#skip-primary-key-matching).
+    </Tip>
+- A [`STRING`](/docs/v25.4/string) primary key has a different [collation](/docs/v25.4/collate) on the source and target.
+- A source and target column have mismatching types that are not [allowable mappings](/docs/molt/molt-fetch#type-mapping).
+- A target table is missing a column that is in the corresponding source table.
+- A source column is nullable, but the corresponding target column is not nullable (i.e., the constraint is more strict on the target).
+
+`molt fetch` can continue in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `false`:
+
+- A target table has a column that is not in the corresponding source table.
+- A source column has a `NOT NULL` constraint, and the corresponding target column is nullable (i.e., the constraint is less strict on the target).
+- A [`DEFAULT`](/docs/v25.4/default-value), [`CHECK`](/docs/v25.4/check), [`FOREIGN KEY`](/docs/v25.4/foreign-key), or [`UNIQUE`](/docs/v25.4/unique) constraint is specified on a target column and not on the source column.
+
+### Forward replication issues
+
+##### Performance troubleshooting
+
+If MOLT Replicator appears hung or performs poorly:
+
+1. Enable trace logging with `-vv` to get more visibility into the replicator's state and behavior.
+2. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets. Replace `{host}` and `{metrics-port}` with your Replicator host and the port specified by [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr):
+
+    ```shell
+    curl '{host}:{metrics-port}/debug/pprof/trace?seconds=15' > trace.out
+    curl '{host}:{metrics-port}/debug/pprof/profile?seconds=15' > profile.out
+    curl '{host}:{metrics-port}/debug/pprof/goroutine?seconds=15' > gr.out
+    curl '{host}:{metrics-port}/debug/pprof/heap?seconds=15' > heap.out
+    ```
+3. Monitor lag metrics and adjust performance parameters as needed.
+
+##### Unable to create publication or slot
+
+This error occurs when logical replication is not supported.
+
+**Resolution:** If you are connected to a replica, connect to the primary instance instead. Replicas cannot create or manage logical replication slots or publications.
+
+Verify that the source database supports logical replication by checking the `wal_level` parameter on PostgreSQL:
+
+```sql
+SHOW wal_level;
+```
+
+If `wal_level` is not set to `logical`, update it and restart PostgreSQL:
+
+```sql
+ALTER SYSTEM SET wal_level = 'logical';
+```
+
+##### Replication slot already exists
+
+```text
+ERROR: replication slot "molt_slot" already exists
+```
+
+**Resolution:** Either create a new slot with a different name, or drop the existing slot to start fresh:
+
+```sql
+SELECT pg_drop_replication_slot('molt_slot');
+```
+
+<Warning>
+Dropping a replication slot can be destructive and delete data that is not yet replicated. Only use this if you want to restart replication from the current position.
+</Warning>
+
+##### Publication does not exist
+
+```text
+run CREATE PUBLICATION molt_fetch FOR ALL TABLES;
+```
+
+**Resolution:** Create the publication on the source database. Ensure you also create the replication slot:
+
+```sql
+CREATE PUBLICATION molt_publication FOR ALL TABLES;
+SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
+```
+
+##### Could not connect to PostgreSQL
+
+```text
+could not connect to source database: failed to connect to `user=migration_user database=migration_db`
+```
+
+**Resolution:** Verify the connection details including user, host, port, and database name. Ensure the database name in your `--sourceConn` connection string matches exactly where you created the publication and slot. Verify you're connecting to the same host and port where you ran the `CREATE PUBLICATION` and `SELECT pg_create_logical_replication_slot()` commands. Check if TLS certificates need to be included in the connection URI.
+
+##### Wrong replication slot name
+
+```text
+run SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput'); in source database
+```
+
+**Resolution:** [Create the replication slot](#configure-source-database-for-replication) or verify the correct slot name:
+
+```sql
+SELECT pg_create_logical_replication_slot('molt_slot', 'pgoutput');
+```
+
+</Tab>
+<Tab title="MySQL">
+
+### Replication connection strings
+
+MOLT Replicator uses `--sourceConn` and `--targetConn` to specify the source and target database connections.
+
+`--sourceConn` specifies the connection string of the source database:
+
+```text
+--sourceConn 'mysql://{username}:{password}@{protocol}({host}:{port})/{database}'
+```
+
+`--targetConn` specifies the target CockroachDB connection string:
+
+```text
+--targetConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
+```
+
+<Tip>
+Follow best practices for securing connection strings. Refer to [Secure connections](#secure-connections).
+</Tip>
+
+### Replicator flags
+
+Configure the following [MOLT Replicator](/docs/molt/molt-replicator) flags for continuous replication. For details on all available flags, refer to [Replicator Flags](/docs/molt/replicator-flags).
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/molt/replicator-flags#target-schema"><code>--targetSchema</code></a></td><td><strong>Required.</strong> Target schema name on CockroachDB where tables will be replicated. Schema name must be fully qualified in the format <code>database.schema</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#default-gtid-set"><code>--defaultGTIDSet</code></a></td><td><strong>Required.</strong> Default GTID set for changefeed.</td></tr><tr><td><a href="/docs/molt/replicator-flags#staging-schema"><code>--stagingSchema</code></a></td><td><strong>Required.</strong> Staging schema name on CockroachDB for replication metadata and checkpoints. Schema name must be fully qualified in the format <code>database.schema</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#staging-create-schema"><code>--stagingCreateSchema</code></a></td><td>Automatically create the staging schema if it does not exist. Include this flag when starting replication for the first time.</td></tr><tr><td><a href="/docs/molt/replicator-flags#fetch-metadata"><code>--fetchMetadata</code></a></td><td>Explicitly fetch column metadata for MySQL versions that do not support <code>binlog&#95;row&#95;metadata</code>. Requires <code>SELECT</code> permissions on the source database or <code>PROCESS</code> privileges.</td></tr><tr><td><a href="/docs/molt/replicator-flags#metrics-addr"><code>--metricsAddr</code></a></td><td>Enable Prometheus metrics at a specified <code>&#123;host&#125;:&#123;port&#125;</code>. Metrics are served at <code>http://&#123;host&#125;:&#123;port&#125;/&#95;/varz</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#userscript"><code>--userscript</code></a></td><td>Path to a <a href="/docs/molt/userscript-overview">userscript</a> that enables data filtering, routing, or transformations. For examples, refer to <a href="/docs/molt/userscript-cookbook">Userscript Cookbook</a>.</td></tr></tbody></table>
+
+You can find the starting GTID in the `cdc_cursor` field of the `fetch complete` message after the [initial data load](#start-fetch) completes.
+
+### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+```text
+--metricsAddr :30005
+```
+
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics](/docs/molt/replicator-metrics?filters=mysql).
+
+## Start Replicator
+
+With initial load complete, start replication of ongoing changes on the source to CockroachDB using [MOLT Replicator](/docs/molt/molt-replicator).
+
+<Note>
+MOLT Fetch captures a consistent point-in-time checkpoint at the start of the data load (shown as `cdc_cursor` in the fetch output). Starting replication from this checkpoint ensures that all changes made during and after the data load are replicated to CockroachDB, preventing data loss or duplication. The following steps use the checkpoint values from the fetch output to start replication at the correct position.
+</Note>
+
+1. Run the `replicator` command, specifying the GTID from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication](/docs/molt/userscript-cookbook#filter-multiple-tables) and specify the path with `--userscript`.
+
+    ```shell
+    replicator mylogical \
+    --sourceConn $SOURCE \
+    --targetConn $TARGET \
+    --targetSchema defaultdb.public \
+    --defaultGTIDSet 4c658ae6-e8ad-11ef-8449-0242ac140006:1-29 \
+    --stagingSchema defaultdb._replicator \
+    --stagingCreateSchema \
+    --metricsAddr :30005 \
+    --userscript table_filter.ts \
+    -v
+    ```
+
+    <Tip>
+    For MySQL versions that do not support `binlog_row_metadata`, include `--fetchMetadata` to explicitly fetch column metadata. This requires additional permissions on the source MySQL database. Grant `SELECT` permissions with `GRANT SELECT ON migration_db.* TO 'migration_user'@'localhost';`. If that is insufficient for your deployment, use `GRANT PROCESS ON *.* TO 'migration_user'@'localhost';`, though this is more permissive and allows seeing processes and server status.
+    </Tip>
+
+## Verify replication
+
+1. Verify that Replicator is processing changes successfully. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see connection and row processing messages:
+
+    You should see binlog syncer connection and row processing:
+
+    ```text
+    [2025/08/25 15:29:09] [info] binlogsyncer.go:463 begin to sync binlog from GTID set 77263736-7899-11f0-81a5-0242ac120002:1-38
+    [2025/08/25 15:29:09] [info] binlogsyncer.go:409 Connected to mysql 8.0.43 server
+    INFO   [Aug 25 15:29:09] connected to MySQL version 8.0.43
+    ```
+
+    When rows are successfully replicated, you should see debug output like the following:
+
+    ```text
+    DEBUG  [Aug 25 15:29:38] upserted rows                                 conflicts=0 duration=1.801ms proposed=1 target="\"molt\".\"public\".\"tbl1\"" upserted=1
+    DEBUG  [Aug 25 15:29:38] progressed to consistent point: 77263736-7899-11f0-81a5-0242ac120002:1-39
+    ```
+
+    These messages confirm successful replication. You can disable verbose logging after verifying the connection.
+
+## Stop replication and verify data
+
+1. Stop application traffic to your source database. **This begins downtime.**
+2. Wait for replication to drain, which means that all transactions that occurred on the source database have been fully processed and replicated to CockroachDB. There are two ways to determine that replication has fully drained:
+    - When replication is caught up, you will not see new `upserted rows` logs.
+    - If you set up the replication metrics endpoint with [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) in the preceding steps, metrics are available at:
+
+        ```text
+        http://{host}:{port}/_/varz
+        ```
+
+        Use the following Prometheus alert expression to observe when the combined rate of upserts and deletes is `0` for each schema:
+
+        ```text
+        sum by (schema) (rate(apply_upserts_total[$__rate_interval]) + rate(apply_deletes_total[$__rate_interval]))
+        ```
+3. Cancel replication to CockroachDB by entering `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`.
+4. Repeat [Verify the data load](#verify-the-data-load) to verify the updated data.
+
+## Add constraints and indexes
+
+Add any constraints or indexes that you previously [removed from the CockroachDB schema](#drop-constraints-and-indexes) to facilitate data load.
+
+<Note>
+If you used the `--table-handling drop-on-target-and-recreate` option for data load, only [`PRIMARY KEY`](/docs/v25.4/primary-key) and [`NOT NULL`](/docs/v25.4/not-null) constraints are preserved. You **must** manually recreate all other constraints and indexes.
+</Note>
+
+For the appropriate SQL syntax, refer to [`ALTER TABLE... ADD CONSTRAINT`](/docs/v25.4/alter-table#add-constraint) and [`CREATE INDEX`](/docs/v25.4/create-index). Review the [best practices for creating secondary indexes](/docs/v25.4/schema-design-indexes#best-practices) on CockroachDB.
+
+## Cutover
+
+Perform a cutover by resuming application traffic, now to CockroachDB.
+
+## Troubleshooting
+
+### Fetch issues
+
+##### Fetch exits early due to mismatches
+
+When run in `none` or `truncate-if-exists` mode, `molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
+
+- A source table is missing a primary key.
+- A source primary key and target primary key have mismatching types.
+
+    <Tip>
+    These restrictions (missing or mismatching primary keys) can be bypassed with [`--skip-pk-check`](/docs/molt/molt-fetch#skip-primary-key-matching).
+    </Tip>
+- A [`STRING`](/docs/v25.4/string) primary key has a different [collation](/docs/v25.4/collate) on the source and target.
+- A source and target column have mismatching types that are not [allowable mappings](/docs/molt/molt-fetch#type-mapping).
+- A target table is missing a column that is in the corresponding source table.
+- A source column is nullable, but the corresponding target column is not nullable (i.e., the constraint is more strict on the target).
+
+`molt fetch` can continue in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `false`:
+
+- A target table has a column that is not in the corresponding source table.
+- A source column has a `NOT NULL` constraint, and the corresponding target column is nullable (i.e., the constraint is less strict on the target).
+- A [`DEFAULT`](/docs/v25.4/default-value), [`CHECK`](/docs/v25.4/check), [`FOREIGN KEY`](/docs/v25.4/foreign-key), or [`UNIQUE`](/docs/v25.4/unique) constraint is specified on a target column and not on the source column.
+
+##### Failed to export snapshot: no rows in result set
+
+```text
+failed to export snapshot: please ensure that you have GTID-based replication enabled: sql: no rows in result set
+```
+
+This typically occurs on a new MySQL cluster that has not had any writes committed. The GTID set will not appear in `SHOW MASTER STATUS` until at least one transaction has been committed on the database.
+
+**Resolution:** Execute a minimal transaction to initialize the GTID set:
+
+```sql
+START TRANSACTION;
+SELECT 1;
+COMMIT;
+```
+
+Verify that the GTID set now appears:
+
+```sql
+SHOW MASTER STATUS;
+```
+
+This should return a valid GTID value instead of an empty result.
+
+### Forward replication issues
+
+##### Performance troubleshooting
+
+If MOLT Replicator appears hung or performs poorly:
+
+1. Enable trace logging with `-vv` to get more visibility into the replicator's state and behavior.
+2. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets. Replace `{host}` and `{metrics-port}` with your Replicator host and the port specified by [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr):
+
+    ```shell
+    curl '{host}:{metrics-port}/debug/pprof/trace?seconds=15' > trace.out
+    curl '{host}:{metrics-port}/debug/pprof/profile?seconds=15' > profile.out
+    curl '{host}:{metrics-port}/debug/pprof/goroutine?seconds=15' > gr.out
+    curl '{host}:{metrics-port}/debug/pprof/heap?seconds=15' > heap.out
+    ```
+3. Monitor lag metrics and adjust performance parameters as needed.
+
+##### Repeated binlog syncing restarts
+
+If Replicator repeatedly restarts binlog syncing or starts replication from an unexpectedly old location, this indicates an invalid or purged GTID. When an invalid GTID is provided, the binlog syncer will fall back to the first valid GTID.
+
+**Resolution:** Verify the GTID set is valid and **not** purged:
+
+```sql
+-- Check if GTID is in executed set
+SELECT GTID_SUBSET('your-gtid-set', @@GLOBAL.gtid_executed) AS in_executed;
+
+-- Check if GTID is purged
+SELECT GTID_SUBSET('your-gtid-set', @@GLOBAL.gtid_purged) AS in_purged;
+```
+
+Interpret the results as follows:
+
+- If `in_executed` returns `1` and `in_purged` returns `0`, the GTID is valid for replication.
+- If `in_purged` returns `1`, the GTID has been purged and you must find a newer consistent point.
+- If both return `0`, the GTID doesn't exist in the records and is invalid.
+
+If the GTID is purged or invalid, follow these steps:
+
+1. Increase binlog retention by configuring `binlog_expire_logs_seconds` in MySQL:
+
+    ```sql
+    -- Increase binlog retention (example: 7 days = 604800 seconds)
+    SET GLOBAL binlog_expire_logs_seconds = 604800;
+    ```
+
+    <Note>
+    For managed MySQL services (such as Amazon RDS, Google Cloud SQL, or Azure Database for MySQL), binlog retention is typically configured through the provider's console or CLI. Consult your provider's documentation for how to adjust binlog retention settings.
+    </Note>
+2. Get a current GTID set to restart replication:
+
+    ```sql
+    -- For MySQL < 8.0:
+    SHOW MASTER STATUS;
+    -- For MySQL 8.0+:
+    SHOW BINARY LOG STATUS;
+    ```
+
+    ```text
+    +---------------+----------+--------------+------------------+-------------------------------------------+
+    | File          | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set                         |
+    +---------------+----------+--------------+------------------+-------------------------------------------+
+    | binlog.000005 |      197 |              |                  | 77263736-7899-11f0-81a5-0242ac120002:1-38 |
+    +---------------+----------+--------------+------------------+-------------------------------------------+
+    ```
+
+    Use the `Executed_Gtid_Set` value for the `--defaultGTIDSet` flag.
+
+##### Invalid GTID format
+
+Invalid GTIDs can occur when GTIDs are purged due to insufficient binlog retention, when connecting to a replica instead of the primary host, or when passing a GTID that has valid format but doesn't exist in the binlog history.
+
+**Resolution:** Use a valid GTID from `SHOW MASTER STATUS` (MySQL &lt; 8.0) or `SHOW BINARY LOG STATUS` (MySQL 8.0+) and ensure you're connecting to the primary host. If GTIDs are being purged, increase binlog retention.
+
+</Tab>
+<Tab title="Oracle">
+
+### Replication connection strings
+
+MOLT Replicator uses `--sourceConn` and `--targetConn` to specify the source and target database connections.
+
+`--sourceConn` specifies the connection string of the source database:
+
+```text
+--sourceConn 'oracle://{username}:{password}@{host}:{port}/{service_name}'
+```
+
+For Oracle Multitenant databases, also specify `--sourcePDBConn` with the PDB connection string:
+
+```text
+--sourcePDBConn 'oracle://{username}:{password}@{host}:{port}/{pdb_service_name}'
+```
+
+`--targetConn` specifies the target CockroachDB connection string:
+
+```text
+--targetConn 'postgresql://{username}:{password}@{host}:{port}/{database}'
+```
+
+<Tip>
+Follow best practices for securing connection strings. Refer to [Secure connections](#secure-connections).
+</Tip>
+
+### Replicator flags
+
+Configure the following [MOLT Replicator](/docs/molt/molt-replicator) flags for continuous replication. For details on all available flags, refer to [Replicator Flags](/docs/molt/replicator-flags).
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/molt/replicator-flags#source-schema"><code>--sourceSchema</code></a></td><td><strong>Required.</strong> Oracle user that owns the tables to replicate. Oracle capitalizes identifiers by default, so use uppercase (for example, <code>MIGRATION&#95;USER</code>).</td></tr><tr><td><a href="/docs/molt/replicator-flags#target-schema"><code>--targetSchema</code></a></td><td><strong>Required.</strong> Target schema name on CockroachDB where tables will be replicated. Schema name must be fully qualified in the format <code>database.schema</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#scn"><code>--scn</code></a></td><td><strong>Required.</strong> Snapshot System Change Number (SCN) for the initial changefeed starting point.</td></tr><tr><td><a href="/docs/molt/replicator-flags#backfill-from-scn"><code>--backfillFromSCN</code></a></td><td><strong>Required.</strong> SCN of the earliest active transaction at the time of the snapshot. Ensures no transactions are skipped.</td></tr><tr><td><a href="/docs/molt/replicator-flags#staging-schema"><code>--stagingSchema</code></a></td><td><strong>Required.</strong> Staging schema name on CockroachDB for replication metadata and checkpoints. Schema name must be fully qualified in the format <code>database.schema</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#staging-create-schema"><code>--stagingCreateSchema</code></a></td><td>Automatically create the staging schema if it does not exist. Include this flag when starting replication for the first time.</td></tr><tr><td><a href="/docs/molt/replicator-flags#metrics-addr"><code>--metricsAddr</code></a></td><td>Enable Prometheus metrics at a specified <code>&#123;host&#125;:&#123;port&#125;</code>. Metrics are served at <code>http://&#123;host&#125;:&#123;port&#125;/&#95;/varz</code>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#userscript"><code>--userscript</code></a></td><td>Path to a <a href="/docs/molt/userscript-overview">userscript</a> that enables data filtering, routing, or transformations. For examples, refer to <a href="/docs/molt/userscript-cookbook">Userscript Cookbook</a>.</td></tr></tbody></table>
+
+You can find the SCN values in the message `replication-only mode should include the following replicator flags` after the [initial data load](#start-fetch) completes.
+
+### Tuning parameters
+
+Configure the following [`replicator` flags](/docs/molt/replicator-flags) to optimize replication throughput and resource usage. Test different combinations in a pre-production environment to find the optimal balance of stability and performance for your workload.
+
+<Note>
+The following parameters apply to PostgreSQL, Oracle, and CockroachDB (failback) sources.
+</Note>
+
+<table><thead><tr><th>Flag</th><th>Description</th></tr></thead><tbody><tr><td><a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a></td><td>Control the maximum number of concurrent target transactions. Higher values increase throughput but require more target connections. Start with a conservative value and increase based on target database capacity.</td></tr><tr><td><a href="/docs/molt/replicator-flags#flush-size"><code>--flushSize</code></a></td><td>Balance throughput and latency. Controls how many mutations are batched into each query to the target. Increase for higher throughput at the cost of higher latency.</td></tr><tr><td><a href="/docs/molt/replicator-flags#target-apply-queue-size"><code>--targetApplyQueueSize</code></a></td><td>Control memory usage during operation. Increase to allow higher throughput at the expense of memory; decrease to apply backpressure and limit memory consumption.</td></tr><tr><td><a href="/docs/molt/replicator-flags#target-max-pool-size"><code>--targetMaxPoolSize</code></a></td><td>Set larger than <a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a> by a safety factor to avoid exhausting target pool connections. Replicator enforces setting parallelism to 80% of this value.</td></tr><tr><td><a href="/docs/molt/replicator-flags#collapse-mutations"><code>--collapseMutations</code></a></td><td>Reduce the number of queries to the target by combining multiple mutations on the same primary key within each batch. Disable only if exact mutation order matters more than end state.</td></tr><tr><td><a href="/docs/molt/replicator-flags#enable-parallel-applies"><code>--enableParallelApplies</code></a></td><td>Improve apply throughput for independent tables and table groups that share foreign key dependencies. Increases memory and target connection usage, so ensure you increase <a href="/docs/molt/replicator-flags#target-max-pool-size"><code>--targetMaxPoolSize</code></a> or reduce <a href="/docs/molt/replicator-flags#parallelism"><code>--parallelism</code></a>.</td></tr><tr><td><a href="/docs/molt/replicator-flags#flush-period"><code>--flushPeriod</code></a></td><td>Set to the maximum allowable time between flushes (for example, <code>10s</code> if data must be applied within 10 seconds). Works with <a href="/docs/molt/replicator-flags#flush-size"><code>--flushSize</code></a> to control when buffered mutations are committed to the target.</td></tr><tr><td><a href="/docs/molt/replicator-flags#quiescent-period"><code>--quiescentPeriod</code></a></td><td>Lower this value if constraint violations resolve quickly on your workload to make retries more frequent and reduce latency. Do not lower if constraint violations take time to resolve.</td></tr><tr><td><a href="/docs/molt/replicator-flags#scan-size"><code>--scanSize</code></a></td><td>Applies to <a href="/docs/molt/migrate-failback">failback</a> (<code>replicator start</code>) scenarios <strong>only</strong>. Balance memory usage and throughput. Increase to read more rows at once from the CockroachDB staging cluster for higher throughput, at the cost of memory pressure. Decrease to reduce memory pressure and increase stability.</td></tr></tbody></table>
+
+### Replicator metrics
+
+MOLT Replicator metrics are not enabled by default. Enable Replicator metrics by specifying the [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) flag with a port (or `host:port`) when you start Replicator. This exposes Replicator metrics at `http://{host}:{port}/_/varz`. For example, the following flag exposes metrics on port `30005`:
+
+```text
+--metricsAddr :30005
+```
+
+For guidelines on using and interpreting replication metrics, refer to [Replicator Metrics](/docs/molt/replicator-metrics?filters=oracle).
+
+## Start Replicator
+
+With initial load complete, start replication of ongoing changes on the source to CockroachDB using [MOLT Replicator](/docs/molt/molt-replicator).
+
+<Note>
+MOLT Fetch captures a consistent point-in-time checkpoint at the start of the data load (shown as `cdc_cursor` in the fetch output). Starting replication from this checkpoint ensures that all changes made during and after the data load are replicated to CockroachDB, preventing data loss or duplication. The following steps use the checkpoint values from the fetch output to start replication at the correct position.
+</Note>
+
+1. Run the `replicator` command, specifying the backfill and starting SCN from the [checkpoint recorded during data load](#start-fetch). Use `--stagingSchema` to specify a unique name for the staging database, and include `--stagingCreateSchema` to have MOLT Replicator automatically create the staging database. If you [filtered tables during the initial load](#schema-and-table-filtering), [write a userscript to filter tables on replication](/docs/molt/userscript-cookbook#filter-multiple-tables) and specify the path with `--userscript`.
+
+    ```shell
+    replicator oraclelogminer \
+    --sourceConn $SOURCE \
+    --sourcePDBConn $SOURCE_PDB \
+    --targetConn $TARGET \
+    --sourceSchema MIGRATION_USER \
+    --targetSchema defaultdb.migration_schema \
+    --backfillFromSCN 26685444 \
+    --scn 26685786 \
+    --stagingSchema defaultdb._replicator \
+    --stagingCreateSchema \
+    --metricsAddr :30005 \
+    --userscript table_filter.ts \
+    -v
+    ```
+
+    <Note>
+    When [filtering out tables in a schema with a userscript](/docs/molt/userscript-cookbook#filter-multiple-tables), replication performance may decrease because filtered tables are still included in LogMiner queries and processed before being discarded.
+    </Note>
+
+## Verify replication
+
+1. Verify that Replicator is processing changes successfully. To do so, check the MOLT Replicator logs. Since you enabled debug logging with `-v`, you should see connection and row processing messages:
+
+    When transactions are read from the Oracle source, you should see registered transaction IDs (XIDs):
+
+    ```text
+    DEBUG  [Jul  3 15:55:12] registered xid 0f001f0040060000
+    DEBUG  [Jul  3 15:55:12] registered xid 0b001f00bb090000
+    ```
+
+    When rows are successfully replicated, you should see debug output like the following:
+
+    ```text
+    DEBUG  [Jul  3 15:55:12] upserted rows                                 conflicts=0 duration=2.620009ms proposed=13 target="\"molt_movies\".\"USERS\".\"CUSTOMER_CONTACT\"" upserted=13
+    DEBUG  [Jul  3 15:55:12] upserted rows                                 conflicts=0 duration=2.212807ms proposed=16 target="\"molt_movies\".\"USERS\".\"CUSTOMER_DEVICE\"" upserted=16
+    ```
+
+    These messages confirm successful replication. You can disable verbose logging after verifying the connection.
+
+## Stop replication and verify data
+
+1. Stop application traffic to your source database. **This begins downtime.**
+2. Wait for replication to drain, which means that all transactions that occurred on the source database have been fully processed and replicated to CockroachDB. There are two ways to determine that replication has fully drained:
+    - When replication is caught up, you will not see new `upserted rows` logs.
+    - If you set up the replication metrics endpoint with [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr) in the preceding steps, metrics are available at:
+
+        ```text
+        http://{host}:{port}/_/varz
+        ```
+
+        Use the following Prometheus alert expression to observe when the combined rate of upserts and deletes is `0` for each schema:
+
+        ```text
+        sum by (schema) (rate(apply_upserts_total[$__rate_interval]) + rate(apply_deletes_total[$__rate_interval]))
+        ```
+3. Cancel replication to CockroachDB by entering `ctrl-c` to issue a `SIGTERM` signal. This returns an exit code `0`.
+4. Repeat [Verify the data load](#verify-the-data-load) to verify the updated data.
+
+## Add constraints and indexes
+
+Add any constraints or indexes that you previously [removed from the CockroachDB schema](#drop-constraints-and-indexes) to facilitate data load.
+
+<Note>
+If you used the `--table-handling drop-on-target-and-recreate` option for data load, only [`PRIMARY KEY`](/docs/v25.4/primary-key) and [`NOT NULL`](/docs/v25.4/not-null) constraints are preserved. You **must** manually recreate all other constraints and indexes.
+</Note>
+
+For the appropriate SQL syntax, refer to [`ALTER TABLE... ADD CONSTRAINT`](/docs/v25.4/alter-table#add-constraint) and [`CREATE INDEX`](/docs/v25.4/create-index). Review the [best practices for creating secondary indexes](/docs/v25.4/schema-design-indexes#best-practices) on CockroachDB.
+
+## Cutover
+
+Perform a cutover by resuming application traffic, now to CockroachDB.
+
+## Troubleshooting
+
+### Fetch issues
+
+##### Fetch exits early due to mismatches
+
+When run in `none` or `truncate-if-exists` mode, `molt fetch` exits early in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `true`:
+
+- A source table is missing a primary key.
+- A source primary key and target primary key have mismatching types.
+
+    <Tip>
+    These restrictions (missing or mismatching primary keys) can be bypassed with [`--skip-pk-check`](/docs/molt/molt-fetch#skip-primary-key-matching).
+    </Tip>
+- A [`STRING`](/docs/v25.4/string) primary key has a different [collation](/docs/v25.4/collate) on the source and target.
+- A source and target column have mismatching types that are not [allowable mappings](/docs/molt/molt-fetch#type-mapping).
+- A target table is missing a column that is in the corresponding source table.
+- A source column is nullable, but the corresponding target column is not nullable (i.e., the constraint is more strict on the target).
+
+`molt fetch` can continue in the following cases, and will output a log with a corresponding `mismatch_tag` and `failable_mismatch` set to `false`:
+
+- A target table has a column that is not in the corresponding source table.
+- A source column has a `NOT NULL` constraint, and the corresponding target column is nullable (i.e., the constraint is less strict on the target).
+- A [`DEFAULT`](/docs/v25.4/default-value), [`CHECK`](/docs/v25.4/check), [`FOREIGN KEY`](/docs/v25.4/foreign-key), or [`UNIQUE`](/docs/v25.4/unique) constraint is specified on a target column and not on the source column.
+
+##### ORA-01950: no privileges on tablespace
+
+If you receive `ORA-01950: no privileges on tablespace 'USERS'`, it means the Oracle table owner (`migration_schema` in the preceding examples) does not have sufficient quota on the tablespace used to store its data. By default, this tablespace is `USERS`, but it can vary. To resolve this issue, grant a quota to the table owner. For example:
+
+```sql
+-- change UNLIMITED to a suitable limit for the table owner
+ALTER USER migration_schema QUOTA UNLIMITED ON USERS;
+```
+
+##### No tables to drop and recreate on target
+
+When expecting a bulk load but seeing `no tables to drop and recreate on the target`, ensure the migration user has `SELECT` and `FLASHBACK` privileges on each table to be migrated. For example:
+
+```sql
+GRANT SELECT, FLASHBACK ON migration_schema.employees TO C##MIGRATION_USER;
+GRANT SELECT, FLASHBACK ON migration_schema.payments TO C##MIGRATION_USER;
+GRANT SELECT, FLASHBACK ON migration_schema.orders TO C##MIGRATION_USER;
+```
+
+##### Table or view does not exist
+
+If the Oracle migration user lacks privileges on certain tables, you may receive errors stating that the table or view does not exist. Either use `--table-filter` to [limit the tables to be migrated](#schema-and-table-filtering), or grant the migration user `SELECT` privileges on all objects in the schema. Refer to [Create migration user on source database](#create-migration-user-on-source-database).
+
+##### Oracle sessions remain open after forcefully stopping `molt` or `replicator`
+
+If you shut down `molt` or `replicator` unexpectedly (e.g., with `kill -9` or a system crash), Oracle sessions opened by these tools may remain active.
+
+- Check your operating system for any running `molt` or `replicator` processes and terminate them manually.
+- After confirming that both processes have stopped, ask a DBA to check for active Oracle sessions using:
+
+    ```sql
+    SELECT sid, serial#, username, status, osuser, machine, program
+    FROM v$session
+    WHERE username = 'C##MIGRATION_USER';
+    ```
+
+    Wait until any remaining sessions display an `INACTIVE` status, then terminate them using:
+
+    ```sql
+    ALTER SYSTEM KILL SESSION 'sid,serial#' IMMEDIATE;
+    ```
+
+    Replace `sid` and `serial#` in the preceding statement with the values returned by the `SELECT` query.
+
+### Forward replication issues
+
+##### Performance troubleshooting
+
+If MOLT Replicator appears hung or performs poorly:
+
+1. Enable trace logging with `-vv` to get more visibility into the replicator's state and behavior.
+2. If MOLT Replicator is in an unknown, hung, or erroneous state, collect performance profiles to include with support tickets. Replace `{host}` and `{metrics-port}` with your Replicator host and the port specified by [`--metricsAddr`](/docs/molt/replicator-flags#metrics-addr):
+
+    ```shell
+    curl '{host}:{metrics-port}/debug/pprof/trace?seconds=15' > trace.out
+    curl '{host}:{metrics-port}/debug/pprof/profile?seconds=15' > profile.out
+    curl '{host}:{metrics-port}/debug/pprof/goroutine?seconds=15' > gr.out
+    curl '{host}:{metrics-port}/debug/pprof/heap?seconds=15' > heap.out
+    ```
+3. Monitor lag metrics and adjust performance parameters as needed.
+
+##### Table/column names exceed 30 characters
+
+Oracle LogMiner excludes tables and columns with names longer than 30 characters from redo logs.
+
+**Resolution:** Rename tables and columns to 30 characters or fewer before migration.
+
+##### Unsupported data types
+
+LogMiner and replication do not support:
+
+- Long `BLOB` / `CLOB` s (4000+ characters)
+- User-defined types (UDTs)
+- Nested tables
+- Varrays
+- `GEOGRAPHY` and `GEOMETRY`
+
+**Resolution:** Convert unsupported data types or exclude affected tables from replication.
+
+##### LOB column UPDATE statements
+
+UPDATE statements that only modify LOB columns are not supported by Oracle LogMiner.
+
+**Resolution:** Avoid LOB-only updates during replication, or use Binary Reader for Oracle 12c.
+
+##### JSONB null handling
+
+SQL NULL and JSON null values are not distinguishable in JSON payloads during replication.
+
+**Resolution:** Avoid using nullable JSONB columns where the distinction between SQL NULL and JSON null is important.
+
+##### Missing redo logs or unavailable SCN
+
+If the Oracle redo log files are too small or do not retain enough history, you may get errors indicating that required log files are missing for a given SCN range, or that a specific SCN is unavailable.
+
+**Resolution:** Increase the number and size of online redo log files, and verify that archived log files are being generated and retained correctly in your Oracle environment.
+
+##### Replicator lag
+
+If the `replicator` process is lagging significantly behind the current Oracle SCN, you may see log messages like: `replicator is catching up to the current SCN at 5000 from 1000…`. This indicates that replication is progressing but is still behind the most recent changes on the source database.
+
+</Tab>
+</Tabs>
+
+##### Schema drift errors
+
+Indicates source and target schemas are mismatched:
+
+```text
+WARNING: schema drift detected in "database"."table" at payload object offset 0: unexpected columns: column_name
+```
+
+**Resolution:** Align schemas or [use userscripts to transform data](/docs/molt/userscript-cookbook#filter-columns).
+
+##### Apply flow failures
+
+Apply flow failures occur when the target database encounters error conditions such as unique constraint violations, target database being unavailable, or incorrect data (missing or extraneous columns) during apply operations:
+
+```text
+WARNING: warning during tryCommit: ERROR: duplicate key value violates unique constraint
+ERROR: maximum number of retries (10) exceeded
+```
+
+**Resolution:** Check target database constraints and connection stability. MOLT Replicator will log warnings for each retry attempt. If you see warnings but no final error, the apply succeeded after retrying. If all retry attempts are exhausted, Replicator will surface a final error and restart the apply loop to continue processing.
+
+## See also
+
+- [Migration Overview](/docs/molt/migration-overview)
+- [Migration Strategy](/docs/molt/migration-strategy)
+- [MOLT Schema Conversion Tool](/docs/cockroachcloud/migrations-page)
+- [MOLT Fetch](/docs/molt/molt-fetch)
+- [MOLT Verify](/docs/molt/molt-verify)
+- [Migration Failback](/docs/molt/migrate-failback)

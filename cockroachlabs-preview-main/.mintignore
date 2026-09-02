@@ -1,0 +1,6 @@
+scripts/
+*py
+.venv
+docs-backup/*
+
+VERSION_PLACEHOLDER_LINKS.md

@@ -1,0 +1,20 @@
+---
+title: "Cluster Single Sign-on (SSO) using the Cloud Console"
+old_description: "Overview of Cluster Single Sign-on (SSO) for CockroachDB Cloud, review of authenticating users, configuring required cluster settings."
+---
+
+import CloudSsoSql from "/snippets/cockroachcloud/cloud-sso-sql.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CloudSsoSql />

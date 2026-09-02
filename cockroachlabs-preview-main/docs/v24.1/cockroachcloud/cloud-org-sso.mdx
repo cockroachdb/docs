@@ -1,0 +1,20 @@
+---
+title: "Single Sign-On (SSO) for CockroachDB Cloud organizations"
+old_description: "Learn about the options for Single Sign-On for your CockroachDB Cloud organization."
+---
+
+import CloudOrgSso from "/snippets/cockroachcloud/cloud-org-sso.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.1");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<CloudOrgSso />

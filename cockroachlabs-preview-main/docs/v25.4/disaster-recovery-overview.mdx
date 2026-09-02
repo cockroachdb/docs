@@ -1,0 +1,35 @@
+---
+title: "Disaster Recovery Overview"
+old_description: "Learn how to make your cluster resilient with high availability and disaster recovery features."
+---
+
+Resilient deployments aim for continuity in database operations to protect from data loss and downtime. CockroachDB's built-in [Raft replication](/docs/v25.4/architecture/replication-layer) and [fault tolerance](/docs/v25.4/demo-cockroachdb-resilience) provide high availability. However, it is still important to design a *disaster recovery* plan to recover from unforeseen incidents to minimize downtime and data loss.
+
+As you evaluate CockroachDB's disaster recovery features, consider your organization's requirements for the amount of tolerable data loss and the acceptable length of time to recover.
+
+- **Recovery Point Objective (RPO)**: The maximum amount of data loss (measured by time) that an organization can tolerate.
+- **Recovery Time Objective (RTO)**: The maximum length of time it should take to restore normal operations following an outage.
+
+When you use backups, RPO and RTO can be visualized as follows:
+
+<Frame>
+  ![Simulating RPO and RTO. With RPO representing the tolerable data loss, and RTO representing the tolerable time to recovery.](/images/v25.4/rpo-rto.png)
+</Frame>
+
+<Note>
+For an overview of resiliency features in CockroachDB, refer to [Data Resilience](/docs/v25.4/data-resilience).
+</Note>
+
+## Choose a disaster recovery strategy
+
+CockroachDB is designed to recover automatically; however, building [backups](/docs/v25.4/backup-and-restore-overview) or [physical cluster replication](/docs/v25.4/physical-cluster-replication-overview) into your disaster recovery planning protects against unforeseen incidents.
+
+<table class="comparison-chart"><tbody><tr><th></th><th>Point-in-time backup &amp; restore</th><th>Physical cluster replication (asynchronous)</th></tr><tr><td class="comparison-chart__feature"><b>RPO</b></td><td>&gt;=5 minutes</td><td>10s of seconds</td></tr><tr><td class="comparison-chart__feature"><b>RTO</b></td><td>Minutes to hours, depending on data size and number of nodes</td><td>Seconds to minutes, depending on cluster size, and time of failover</td></tr><tr><td class="comparison-chart__feature"><b>Write latency</b></td><td>No impact</td><td>No impact</td></tr><tr><td class="comparison-chart__feature"><b>Recovery</b></td><td>Manual restore</td><td>Manual failover</td></tr><tr><td class="comparison-chart__feature"><b>Fault tolerance</b></td><td>Not applicable</td><td>Zero RPO node, availability zone within a cluster, region failures with loss up to RPO in a two-region (or two-datacenter) setup</td></tr><tr><td class="comparison-chart__feature"><b>Minimum regions to achieve fault tolerance</b></td><td>1</td><td>2</td></tr></tbody></table>
+
+## See also
+
+- [Set Up Physical Cluster Replication](/docs/v25.4/set-up-physical-cluster-replication)
+- [Physical Cluster Replication Technical Overview](/docs/v25.4/physical-cluster-replication-technical-overview)
+- [Backup Architecture](/docs/v25.4/backup-architecture)
+- [Backup and Restore Overview](/docs/v25.4/backup-and-restore-overview)
+- [Managed Backups](/docs/cockroachcloud/managed-backups)

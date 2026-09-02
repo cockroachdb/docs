@@ -1,0 +1,212 @@
+---
+title: "Log Formats"
+old_description: "Reference documentation for structured and unstructured log formats."
+---
+
+The supported log output formats are documented below.
+
+- [`crdb-v1`](#format-crdb-v1)
+- [`crdb-v1-count`](#format-crdb-v1-count)
+- [`crdb-v1-tty`](#format-crdb-v1-tty)
+- [`crdb-v1-tty-count`](#format-crdb-v1-tty-count)
+- [`crdb-v2`](#format-crdb-v2)
+- [`crdb-v2-tty`](#format-crdb-v2-tty)
+- [`json`](#format-json)
+- [`json-compact`](#format-json-compact)
+- [`json-fluent`](#format-json-fluent)
+- [`json-fluent-compact`](#format-json-fluent-compact)
+
+## Format `crdb-v1`
+
+This is a legacy file format used from CockroachDB v1.0.
+
+Each log entry is emitted using a common prefix, described below, followed by:
+
+- The logging context tags enclosed between `[` and `]`, if any. It is possible for this to be omitted if there were no context tags.
+- Optionally, a counter column, if the option 'show-counter' is enabled. See below for details.
+- the text of the log entry.
+
+Beware that the text of the log entry can span multiple lines. The following caveats apply:
+
+- The text of the log entry can start with text enclosed between `[` and `]`. If there were no logging tags to start with, it is not possible to distinguish between logging context tag information and a `[...]` string in the main text of the log entry. This means that this format is ambiguous.
+
+To remove this ambiguity, you can use the option 'show-counter'.
+
+- The text of the log entry can embed arbitrary application-level strings, including strings that represent log entries. In particular, an accident of implementation can cause the common entry prefix (described below) to also appear on a line of its own, as part of the payload of a previous log entry. There is no automated way to recognize when this occurs. Care must be taken by a human observer to recognize these situations.
+- The log entry parser provided by CockroachDB to read log files is faulty and is unable to recognize the aforementioned pitfall; nor can it read entries larger than 64KiB successfully. Generally, use of this internal log entry parser is discouraged for entries written with this format.
+
+See the newer format `crdb-v2` for an alternative without these limitations.
+
+### Header lines
+
+At the beginning of each file, a header is printed using a similar format as regular log entries. This header reports when the file was created, which parameters were used to start the server, the server identifiers if known, and other metadata about the running process.
+
+- This header appears to be logged at severity `INFO` (with an `I` prefix at the start of the line) even though it does not really have a severity.
+- The header is printed unconditionally even when a filter is configured to omit entries at the `INFO` level.
+
+### Common log entry prefix
+
+Each line of output starts with the following prefix:
+
+Lyymmdd hh:mm:ss.uuuuuu goid [chan@]file:line marker tags counter
+
+Reminder, the tags may be omitted; and the counter is only printed if the option 'show-counter' is specified.
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td>L</td><td>A single character, representing the <a href="/docs/v26.1/logging#logging-levels-severities">log level</a> (e.g., <code>I</code> for <code>INFO</code>).</td></tr><tr><td>yy</td><td>The year (zero padded; i.e., 2016 is <code>16</code>).</td></tr><tr><td>mm</td><td>The month (zero padded; i.e., May is <code>05</code>).</td></tr><tr><td>dd</td><td>The day (zero padded).</td></tr><tr><td>hh:mm:ss.uuuuuu</td><td>Time in hours, minutes and fractional seconds. Timezone is UTC.</td></tr><tr><td>goid</td><td>The goroutine id (omitted if zero for use by tests).</td></tr><tr><td>chan</td><td>The channel number (omitted if zero for backward compatibility).</td></tr><tr><td>file</td><td>The file name where the entry originated.</td></tr><tr><td>line</td><td>The line number where the entry originated.</td></tr><tr><td>marker</td><td>Redactability marker <code>+ redactableIndicator +</code> (see below for details).</td></tr><tr><td>tags</td><td>The logging tags, enclosed between <code>&#91;</code> and <code>&#93;</code>. May be absent.</td></tr><tr><td>counter</td><td>The entry counter. Only included if 'show-counter' is enabled.</td></tr></tbody></table>
+
+The redactability marker can be empty; in this case, its position in the common prefix is a double ASCII space character which can be used to reliably identify this situation.
+
+If the marker `+ redactableIndicator +` is present, the remainder of the log entry contains delimiters (‹...›) around fields that are considered sensitive. These markers are automatically recognized by [`cockroach debug zip`](/docs/v26.1/cockroach-debug-zip) and [`cockroach debug merge-logs`](/docs/v26.1/cockroach-debug-merge-logs) when log redaction is requested.
+
+Additional options recognized via `format-options`:
+
+<table><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td><code>show-counter</code></td><td>Whether to include the counter column in the line header. Without it, the format may be ambiguous due to the optionality of tags.</td></tr><tr><td><code>colors</code></td><td>The color profile to use. Possible values: none, auto, ansi, 256color. Default is auto.</td></tr><tr><td><code>timezone</code></td><td>The timezone to use for the timestamp column. The value can be any timezone name recognized by the Go standard library. Default is <code>UTC</code></td></tr></tbody></table>
+
+## Format `crdb-v1-count`
+
+This format name is an alias for 'crdb-v1' with the following format option defaults:
+
+- `show-counter: true`
+- `colors: none`
+
+## Format `crdb-v1-tty`
+
+This format name is an alias for 'crdb-v1' with the following format option defaults:
+
+- `show-counter: false`
+- `colors: auto`
+
+## Format `crdb-v1-tty-count`
+
+This format name is an alias for 'crdb-v1' with the following format option defaults:
+
+- `show-counter: true`
+- `colors: auto`
+
+## Format `crdb-v2`
+
+This is the main file format used from CockroachDB v21.1.
+
+Each log entry is emitted using a common prefix, described below, followed by the text of the log entry.
+
+### Entry format
+
+Each line of output starts with the following prefix:
+
+Lyymmdd hh:mm:ss.uuuuuu goid [chan@]file:line marker [tags...] counter cont
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td>L</td><td>A single character, representing the <a href="/docs/v26.1/logging#logging-levels-severities">log level</a> (e.g., <code>I</code> for <code>INFO</code>).</td></tr><tr><td>yy</td><td>The year (zero padded; i.e., 2016 is <code>16</code>).</td></tr><tr><td>mm</td><td>The month (zero padded; i.e., May is <code>05</code>).</td></tr><tr><td>dd</td><td>The day (zero padded).</td></tr><tr><td>hh:mm:ss.uuuuuu</td><td>Time in hours, minutes and fractional seconds. Timezone is UTC.</td></tr><tr><td>goid</td><td>The goroutine id (zero when cannot be determined).</td></tr><tr><td>chan</td><td>The channel number (omitted if zero for backward compatibility).</td></tr><tr><td>file</td><td>The file name where the entry originated. Also see below.</td></tr><tr><td>line</td><td>The line number where the entry originated.</td></tr><tr><td>marker</td><td>Redactability marker "⋮" (see below for details).</td></tr><tr><td>tags</td><td>The logging tags, enclosed between <code>&#91;</code> and <code>&#93;</code>. See below.</td></tr><tr><td>counter</td><td>The optional entry counter (see below for details).</td></tr><tr><td>cont</td><td>Continuation mark for structured and multi-line entries. See below.</td></tr></tbody></table>
+
+The `chan@` prefix before the file name indicates the logging channel, and is omitted if the channel is `DEV`.
+
+The file name may be prefixed by the string `(gostd)` to indicate that the log entry was produced inside the Go standard library, instead of a CockroachDB component. Entry parsers must be configured to ignore this prefix when present.
+
+`marker` can be empty; in this case, its position in the common prefix is a double ASCII space character which can be used to reliably identify this situation. If the marker "⋮" is present, the remainder of the log entry contains delimiters (‹...›) around fields that are considered sensitive. These markers are automatically recognized by [`cockroach debug zip`](/docs/v26.1/cockroach-debug-zip) and [`cockroach debug merge-logs`](/docs/v26.1/cockroach-debug-merge-logs) when log redaction is requested.
+
+The logging `tags` are enclosed between square brackets `[...]`, and the syntax `[-]` is used when there are no logging tags associated with the log entry.
+
+`counter` is numeric, and is incremented for every log entry emitted to this sink. (There is thus one counter sequence per sink.) For entries that do not have a counter value associated (e.g., header entries in file sinks), the counter position in the common prefix is empty: `tags` is then followed by two ASCII space characters, instead of one space; the `counter`, and another space. The presence of the two ASCII spaces indicates reliably that no counter was present.
+
+`cont` is a format/continuation indicator:
+
+<table><thead><tr><th>Continuation indicator</th><th>ASCII</th><th>Description</th></tr></thead><tbody><tr><td>space</td><td>0x32</td><td>Start of an unstructured entry.</td></tr><tr><td>equal sign, "="</td><td>0x3d</td><td>Start of a structured entry.</td></tr><tr><td>exclamation mark, "!"</td><td>0x21</td><td>Start of an embedded stack trace.</td></tr><tr><td>plus sign, "+"</td><td>0x2b</td><td>Continuation of a multi-line entry. The payload contains a newline character at this position.</td></tr><tr><td>vertical bar</td><td>0x7c</td><td>Continuation of a large entry.</td></tr></tbody></table>
+
+### Examples
+
+Example single-line unstructured entry:
+
+```text
+I210116 21:49:17.073282 14 server/node.go:464 ⋮ [-] 23  started with engine type ‹2›
+```
+
+Example multi-line unstructured entry:
+
+```text
+I210116 21:49:17.083093 14 1@cli/start.go:690 ⋮ [-] 40  node startup completed:
+I210116 21:49:17.083093 14 1@cli/start.go:690 ⋮ [-] 40 +CockroachDB node starting at 2021-01-16 21:49 (took 0.0s)
+```
+
+Example structured entry:
+
+```text
+I210116 21:49:17.080713 14 1@util/log/event_log.go:32 ⋮ [-] 32 ={"Timestamp":1610833757080706620,"EventType":"node_restart"}
+```
+
+Example long entries broken up into multiple lines:
+
+```text
+I210116 21:49:17.073282 14 server/node.go:464 ⋮ [-] 23  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa....
+I210116 21:49:17.073282 14 server/node.go:464 ⋮ [-] 23 |aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+```
+
+```text
+I210116 21:49:17.080713 14 1@util/log/event_log.go:32 ⋮ [-] 32 ={"Timestamp":1610833757080706620,"EventTy...
+I210116 21:49:17.080713 14 1@util/log/event_log.go:32 ⋮ [-] 32 |pe":"node_restart"}
+```
+
+### Backward-compatibility notes
+
+Entries in this format can be read by most `crdb-v1` log parsers, in particular the one included in the DB console and also the [`cockroach debug merge-logs`](/docs/v26.1/cockroach-debug-merge-logs) facility.
+
+However, implementers of previous version parsers must understand that the logging tags field is now always included, and the lack of logging tags is included by a tag string set to `[-]`.
+
+Likewise, the entry counter is now also always included, and there is a special character after `counter` to indicate whether the remainder of the line is a structured entry, or a continuation of a previous entry.
+
+Finally, in the previous format, structured entries were prefixed with the string `Structured entry:`. In the new format, they are prefixed by the `=` continuation indicator.
+
+Additional options recognized via `format-options`:
+
+<table><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td><code>colors</code></td><td>The color profile to use. Possible values: none, auto, ansi, 256color. Default is auto.</td></tr><tr><td><code>timezone</code></td><td>The timezone to use for the timestamp column. The value can be any timezone name recognized by the Go standard library. Default is <code>UTC</code></td></tr></tbody></table>
+
+## Format `crdb-v2-tty`
+
+This format name is an alias for 'crdb-v2' with the following format option defaults:
+
+- `colors: auto`
+
+## Format `json`
+
+This format emits log entries as a JSON payload.
+
+The JSON object is guaranteed to not contain unescaped newlines or other special characters, and the entry as a whole is followed by a newline character. This makes the format suitable for processing over a stream unambiguously.
+
+Each entry contains at least the following fields:
+
+<table><thead><tr><th>Field name if <code>tag-style: compact</code> is specified</th><th>Field name if <code>tag-style: verbose</code> is specified</th><th>Description</th></tr></thead><tbody><tr><td><code>tag</code></td><td><code>tag</code></td><td>(Only if the option <code>fluent-tag: true</code> is given.) A Fluent tag for the event, formed by the process name and the logging channel.</td></tr><tr><td><code>d</code></td><td><code>datetime</code></td><td>The pretty-printed date/time of the event timestamp, if enabled via options.</td></tr><tr><td><code>f</code></td><td><code>file</code></td><td>The name of the source file where the event was emitted.</td></tr><tr><td><code>g</code></td><td><code>goroutine</code></td><td>The identifier of the goroutine where the event was emitted.</td></tr><tr><td><code>l</code></td><td><code>line</code></td><td>The line number where the event was emitted in the source.</td></tr><tr><td><code>r</code></td><td><code>redactable</code></td><td>Whether the payload is redactable (see below for details).</td></tr><tr><td><code>t</code></td><td><code>timestamp</code></td><td>The timestamp at which the event was emitted on the logging channel.</td></tr><tr><td><code>v</code></td><td><code>version</code></td><td>The binary version with which the event was generated.</td></tr></tbody></table>
+
+After a couple of *header* entries written at the beginning of each log sink, all subsequent log entries also contain the following fields:
+
+<table><thead><tr><th>Field name if <code>tag-style: compact</code> is specified</th><th>Field name if <code>tag-style: verbose</code> is specified</th><th>Description</th></tr></thead><tbody><tr><td><code>C</code></td><td><code>channel</code></td><td>The name of the logging channel where the event was sent.</td></tr><tr><td><code>sev</code></td><td><code>severity</code></td><td>The severity of the event.</td></tr><tr><td><code>c</code></td><td><code>channel&#95;numeric</code></td><td>The numeric identifier for the logging channel where the event was sent.</td></tr><tr><td><code>n</code></td><td><code>entry&#95;counter</code></td><td>The entry number on this logging sink, relative to the last process restart.</td></tr><tr><td><code>s</code></td><td><code>severity&#95;numeric</code></td><td>The numeric value of the severity of the event.</td></tr></tbody></table>
+
+Additionally, the following fields are conditionally present:
+
+<table><thead><tr><th>Field name if <code>tag-style: compact</code> is specified</th><th>Field name if <code>tag-style: verbose</code> is specified</th><th>Description</th></tr></thead><tbody><tr><td><code>N</code></td><td><code>node&#95;id</code></td><td>The node ID where the event was generated, once known. Only reported for single-tenant or KV servers.</td></tr><tr><td><code>x</code></td><td><code>cluster&#95;id</code></td><td>The cluster ID where the event was generated, once known. Only reported for single-tenant of KV servers.</td></tr><tr><td><code>q</code></td><td><code>instance&#95;id</code></td><td>The SQL instance ID where the event was generated, once known.</td></tr><tr><td><code>T</code></td><td><code>tenant&#95;id</code></td><td>The SQL tenant ID where the event was generated, once known.</td></tr><tr><td><code>V</code></td><td><code>tenant&#95;name</code></td><td>The SQL virtual cluster where the event was generated, once known.</td></tr><tr><td><code>tags</code></td><td><code>tags</code></td><td>The logging context tags for the entry, if there were context tags.</td></tr><tr><td><code>message</code></td><td><code>message</code></td><td>For unstructured events, the flat text payload.</td></tr><tr><td><code>event</code></td><td><code>event</code></td><td>The logging event, if structured (see below for details).</td></tr><tr><td><code>stacks</code></td><td><code>stacks</code></td><td>Goroutine stacks, for fatal events.</td></tr></tbody></table>
+
+When an entry is structured, the `event` field maps to a dictionary whose structure is one of the documented structured events. See the [reference documentation](/docs/v26.1/eventlog) for structured events for a list of possible payloads.
+
+When the entry is marked as `redactable`, the `tags`, `message`, and/or `event` payloads contain delimiters (‹...›) around fields that are considered sensitive. These markers are automatically recognized by [`cockroach debug zip`](/docs/v26.1/cockroach-debug-zip) and [`cockroach debug merge-logs`](/docs/v26.1/cockroach-debug-merge-logs) when log redaction is requested.
+
+Additional options recognized via `format-options`:
+
+<table><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td><code>datetime-format</code></td><td>The format to use for the <code>datetime</code> field. The value can be one of <code>none</code>, <code>iso8601</code>/<code>rfc3339</code> (synonyms), or <code>rfc1123</code>. Default is <code>none</code>.</td></tr><tr><td><code>datetime-timezone</code></td><td>The timezone to use for the <code>datetime</code> field. The value can be any timezone name recognized by the Go standard library. Default is <code>UTC</code></td></tr><tr><td><code>tag-style</code></td><td>The tags to include in the envelope. The value can be <code>compact</code> (one letter tags) or <code>verbose</code> (long-form tags). Default is <code>verbose</code>.</td></tr><tr><td><code>fluent-tag</code></td><td>Whether to produce an additional field called <code>tag</code> for Fluent compatibility. Default is <code>false</code>.</td></tr></tbody></table>
+
+## Format `json-compact`
+
+This format name is an alias for 'json' with the following format option defaults:
+
+- `fluent-tag: false`
+- `tag-style: compact`
+
+## Format `json-fluent`
+
+This format name is an alias for 'json' with the following format option defaults:
+
+- `fluent-tag: true`
+- `tag-style: verbose`
+
+## Format `json-fluent-compact`
+
+This format name is an alias for 'json' with the following format option defaults:
+
+- `fluent-tag: true`
+- `tag-style: compact`

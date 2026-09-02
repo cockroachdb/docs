@@ -1,0 +1,195 @@
+---
+title: "ALTER SCHEMA"
+old_description: "The ALTER SCHEMA statement modifies a user-defined schema in a database."
+---
+
+import { AlterSchema6 } from "/snippets/syntax-diagrams/AlterSchema6.jsx";
+
+The `ALTER SCHEMA` [statement](/docs/v25.4/sql-statements) modifies a user-defined [schema](/docs/v25.4/sql-name-resolution#naming-hierarchy). CockroachDB currently supports changing the name of the schema and the owner of the schema.
+
+<Note>
+The `ALTER SCHEMA` statement performs a schema change. For more information about how online schema changes work in CockroachDB, see [Online Schema Changes](/docs/v25.4/online-schema-changes).
+</Note>
+
+## Syntax
+
+<AlterSchema6 />
+
+### Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code><br/><code>name.name</code></td><td>The name of the schema to alter, or the name of the database containing the schema and the schema name, separated by a "<code>.</code>".</td></tr><tr><td><code>schema&#95;new&#95;name</code></td><td>The name of the new schema. The new schema name must be unique within the database and follow these <a href="/docs/v25.4/keywords-and-identifiers#identifiers">identifier rules</a>.</td></tr><tr><td><code>role&#95;spec</code></td><td>The role to set as the owner of the schema.</td></tr></tbody></table>
+
+## Required privileges
+
+- To rename a schema, the user must be the owner of the schema.
+- To change the owner of a schema, the user must be the current owner of the schema and a member of the new owner [role](/docs/v25.4/security-reference/authorization#roles). The new owner role must also have the `CREATE` [privilege](/docs/v25.4/security-reference/authorization#managing-privileges) on the database to which the schema belongs.
+
+## Examples
+
+#### Setup
+
+To follow along, run [`cockroach demo`](/docs/v25.4/cockroach-demo) to start a temporary, in-memory cluster with the [`movr`](/docs/v25.4/movr) sample dataset preloaded:
+
+```shell
+$ cockroach demo
+```
+
+### Rename a schema
+
+<Note>
+You cannot rename a schema if a [table](/docs/v25.4/create-table) in the schema is used by a [view](/docs/v25.4/create-view) or [user-defined function](/docs/v25.4/user-defined-functions).
+</Note>
+
+Suppose that you access the [SQL shell](/docs/v25.4/cockroach-sql) as user `root`, and [create a new user](/docs/v25.4/create-user) `max` and [a schema](/docs/v25.4/create-schema) `org_one` with `max` as the owner:
+
+```sql
+CREATE USER max;
+```
+
+```sql
+CREATE SCHEMA org_one AUTHORIZATION max;
+```
+
+```sql
+SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
+```
+
+Now, suppose you want to rename the schema:
+
+```sql
+ALTER SCHEMA org_one RENAME TO org_two;
+```
+
+```text
+ERROR: must be owner of schema "org_one"
+SQLSTATE: 42501
+```
+
+Because you are executing the `ALTER SCHEMA` command as a non-owner of the schema (i.e., `root`), CockroachDB returns an error.
+
+[Drop the schema](/docs/v25.4/drop-schema) and create it again, this time with `root` as the owner.
+
+```sql
+DROP SCHEMA org_one;
+```
+
+```sql
+CREATE SCHEMA org_one;
+```
+
+To verify that the owner is now `root`, query the `pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables:
+
+```sql
+SELECT
+  nspname, usename
+FROM
+  pg_catalog.pg_namespace
+  LEFT JOIN pg_catalog.pg_user ON pg_namespace.nspowner = pg_user.usesysid
+WHERE
+  nspname LIKE 'org_one';
+```
+
+```text
+  nspname | usename
+----------+----------
+  org_one | root
+(1 row)
+```
+
+As its owner, you can rename the schema:
+
+```sql
+ALTER SCHEMA org_one RENAME TO org_two;
+```
+
+```sql
+SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_two
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
+```
+
+### Change the owner of a schema
+
+Suppose that you access the [SQL shell](/docs/v25.4/cockroach-sql) as user `root`, and [create a new schema](/docs/v25.4/create-schema) named `org_one`:
+
+```sql
+CREATE SCHEMA org_one;
+```
+
+```sql
+SHOW SCHEMAS;
+```
+
+```text
+     schema_name
+----------------------
+  crdb_internal
+  information_schema
+  org_one
+  pg_catalog
+  pg_extension
+  public
+(6 rows)
+```
+
+Now, suppose that you want to change the owner of the schema `org_one` to an existing user named `max`. To change the owner of a schema, the current owner must belong to the role of the new owner (in this case, `max`), and the new owner must have `CREATE` privileges on the database.
+
+```sql
+GRANT max TO root;
+```
+
+```sql
+GRANT CREATE ON DATABASE defaultdb TO max;
+```
+
+```sql
+ALTER SCHEMA org_one OWNER TO max;
+```
+
+To verify that the owner is now `max`, query the `pg_catalog.pg_namespace` and `pg_catalog.pg_users` tables:
+
+```sql
+SELECT
+  nspname, usename
+FROM
+  pg_catalog.pg_namespace
+  LEFT JOIN pg_catalog.pg_user ON pg_namespace.nspowner = pg_user.usesysid
+WHERE
+  nspname LIKE 'org_one';
+```
+
+```text
+  nspname | usename
+----------+----------
+  org_one | max
+(1 row)
+```
+
+## See also
+
+- [`CREATE SCHEMA`](/docs/v25.4/create-schema)
+- [`SHOW SCHEMAS`](/docs/v25.4/show-schemas)
+- [`DROP SCHEMA`](/docs/v25.4/drop-schema)
+- [Online Schema Changes](/docs/v25.4/online-schema-changes)

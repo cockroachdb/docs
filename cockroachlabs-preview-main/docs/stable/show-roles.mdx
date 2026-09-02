@@ -1,0 +1,45 @@
+---
+title: "SHOW ROLES"
+old_description: "The SHOW ROLES statement lists the roles for all databases."
+---
+
+The `SHOW ROLES` [statement](/docs/v26.1/sql-statements) lists the roles for all databases.
+
+<Note>
+Since the keywords `ROLES` and `USERS` can now be used interchangeably in SQL statements for enhanced PostgreSQL compatibility, `SHOW ROLES` is now an alias for [`SHOW USERS`](/docs/v26.1/show-users).
+</Note>
+
+## Synopsis
+
+<Frame>
+  ![SQL syntax diagram](/images/generated/docs/stable/show-roles/syntax-diagram-00340742226e.svg)
+</Frame>
+
+## Required privileges
+
+The role must have the [`SELECT`](/docs/v26.1/select-clause) [privilege](/docs/v26.1/security-reference/authorization#managing-privileges) on the `system.users` and `system.role_members` tables.
+
+## Example
+
+```sql
+> SHOW ROLES;
+```
+
+```text
+  username |    options     | member_of | estimated_last_login_time
+-----------+----------------+-----------+------------------------------
+  admin    | {CREATEROLE}   | {}        | NULL
+  carl     | {NOLOGIN}      | {}        | NULL
+  petee    | {}             | {}        | 2025-08-04 19:18:00.201402+00
+  root     | {CREATEROLE}   | {admin}   | NULL
+(4 rows)
+```
+
+## See also
+
+- [Authorization](/docs/v26.1/authorization)
+- [`CREATE ROLE`](/docs/v26.1/create-role)
+- [`DROP ROLE`](/docs/v26.1/drop-role)
+- [`GRANT`](/docs/v26.1/grant)
+- [`REVOKE`](/docs/v26.1/revoke)
+- [Manage Users](/docs/v26.1/security-reference/authorization#create-and-manage-users)

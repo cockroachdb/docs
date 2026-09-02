@@ -1,0 +1,20 @@
+---
+title: "MOLT Replicator"
+old_description: "Learn how to use the MOLT Replicator tool to continuously replicate changes from source databases to CockroachDB."
+---
+
+import MoltReplicator from "/snippets/molt/molt-replicator.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v23.2");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MoltReplicator />

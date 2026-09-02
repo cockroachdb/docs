@@ -1,0 +1,61 @@
+---
+title: "GEOMETRYCOLLECTION"
+old_description: "A GEOMETRYCOLLECTION is used for gathering one or more of the spatial object types into a group."
+---
+
+A `GEOMETRYCOLLECTION` is a collection of heterogeneous [spatial objects](/docs/v25.4/spatial-data-overview#spatial-objects), such as [Points](/docs/v25.4/point), [LineStrings](/docs/v25.4/linestring), [Polygons](/docs/v25.4/polygon), or other `GEOMETRYCOLLECTION`s. It provides a way of referring to a group of spatial objects as one "thing" so that you can operate on it/them more conveniently using various SQL functions.
+
+You can also store a `GEOMETRYCOLLECTION` with the following additional dimensions:
+
+- A third dimension coordinate `Z` ( `GEOMETRYCOLLECTIONZ` ).
+- A measure coordinate `M` ( `GEOMETRYCOLLECTIONM` ).
+- Both a third dimension and a measure coordinate ( `GEOMETRYCOLLECTIONZM` ).
+
+The `Z` and `M` dimensions can be accessed or modified using a number of [built-in functions](/docs/v25.4/functions-and-operators#spatial-functions), including:
+
+- `ST_Z`
+- `ST_M`
+- `ST_Affine`
+- `ST_Zmflag`
+- `ST_MakePoint`
+- `ST_MakePointM`
+- `ST_Force3D`
+- `ST_Force3DZ`
+- `ST_Force3DM`
+- `ST_Force4D`
+- `ST_Snap`
+- `ST_SnapToGrid`
+- `ST_RotateZ`
+- `ST_AddMeasure`
+
+Note that CockroachDB's [spatial indexing](/docs/v25.4/spatial-indexes) is still based on the 2D coordinate system. This means that:
+
+- The Z/M dimension is not index accelerated when using spatial predicates.
+- Some spatial functions ignore the Z/M dimension, with transformations discarding the Z/M value.
+
+## Examples
+
+A GeometryCollection can be created from SQL by calling the `st_geomfromtext` function on a GeometryCollection definition expressed in the [Well Known Text (WKT)](/docs/v25.4/architecture/glossary#wkt) format as shown below.
+
+```sql
+SELECT ST_GeomFromText('GEOMETRYCOLLECTION(POINT(0 0), LINESTRING(0 0, 1440 900), POLYGON((0 0, 0 1024, 1024 1024, 1024 0, 0 0)))');
+```
+
+```text
+                                                                                                                                                              st_geomfromtext
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  0107000000030000000101000000000000000000000000000000000000000102000000020000000000000000000000000000000000000000000000008096400000000000208C40010300000001000000050000000000000000000000000000000000000000000000000000000000000000009040000000000000904000000000000090400000000000009040000000000000000000000000000000000000000000000000
+(1 row)
+```
+
+## See also
+
+- [Spatial tutorial](/docs/v25.4/spatial-tutorial)
+- [Spatial objects](/docs/v25.4/spatial-data-overview#spatial-objects)
+- [POINT](/docs/v25.4/point)
+- [LINESTRING](/docs/v25.4/linestring)
+- [POLYGON](/docs/v25.4/polygon)
+- [MULTIPOINT](/docs/v25.4/multipoint)
+- [MULTILINESTRING](/docs/v25.4/multilinestring)
+- [MULTIPOLYGON](/docs/v25.4/multipolygon)
+- [Using GeoServer with CockroachDB](/docs/v25.4/geoserver)

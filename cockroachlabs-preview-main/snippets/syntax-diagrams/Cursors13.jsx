@@ -1,0 +1,85 @@
+export const Cursors13 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="179" width="697" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="82" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="82" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">DECLARE</text><a xlink:href="/docs/v25.2/sql-grammar#cursor_name" xlink:title="cursor_name">
+<rect height="32" width="102" x="133" y="3"></rect>
+<rect class="nonterminal" height="32" width="102" x="131" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="78" font-size="11" class="nonterminal" x="143" y="21">cursor_name</text></a><a xlink:href="/docs/v25.2/sql-grammar#opt_binary" xlink:title="opt_binary">
+<rect height="32" width="88" x="255" y="3"></rect>
+<rect class="nonterminal" height="32" width="88" x="253" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="64" font-size="10" class="nonterminal" x="265" y="21">opt_binary</text></a><a xlink:href="/docs/v25.2/sql-grammar#opt_sensitivity" xlink:title="opt_sensitivity">
+<rect height="32" width="112" x="363" y="3"></rect>
+<rect class="nonterminal" height="32" width="112" x="361" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="88" font-size="10" class="nonterminal" x="373" y="21">opt_sensitivity</text></a><a xlink:href="/docs/v25.2/sql-grammar#opt_scroll" xlink:title="opt_scroll">
+<rect height="32" width="82" x="495" y="3"></rect>
+<rect class="nonterminal" height="32" width="82" x="493" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="505" y="21">opt_scroll</text></a><rect height="32" rx="10" width="78" x="597" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="78" x="595" y="1"></rect>
+<text class="terminal" x="605" y="21">CURSOR</text>
+<rect height="32" rx="10" width="58" x="281" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="279" y="99"></rect>
+<text class="terminal" x="289" y="119">WITH</text>
+<rect height="32" rx="10" width="88" x="281" y="145"></rect>
+<rect class="terminal" height="32" rx="10" width="88" x="279" y="143"></rect>
+<text class="terminal" x="289" y="163">WITHOUT</text>
+<rect height="32" rx="10" width="58" x="409" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="407" y="99"></rect>
+<text class="terminal" x="417" y="119">HOLD</text>
+<rect height="32" rx="10" width="48" x="507" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="505" y="67"></rect>
+<text class="terminal" x="515" y="87">FOR</text><a xlink:href="/docs/v25.2/sql-grammar#select_stmt" xlink:title="select_stmt">
+<rect height="32" width="94" x="575" y="69"></rect>
+<rect class="nonterminal" height="32" width="94" x="573" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="585" y="87">select_stmt</text></a><path class="line" d="m17 17 h2 m0 0 h10 m82 0 h10 m0 0 h10 m102 0 h10 m0 0 h10 m88 0 h10 m0 0 h10 m112 0 h10 m0 0 h10 m82 0 h10 m0 0 h10 m78 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-478 66 l2 0 m2 0 l2 0 m2 0 l2 0 m22 0 h10 m0 0 h216 m-246 0 h20 m226 0 h20 m-266 0 q10 0 10 10 m246 0 q0 -10 10 -10 m-256 10 v12 m246 0 v-12 m-246 12 q0 10 10 10 m226 0 q10 0 10 -10 m-216 10 h10 m58 0 h10 m0 0 h30 m-128 0 h20 m108 0 h20 m-148 0 q10 0 10 10 m128 0 q0 -10 10 -10 m-138 10 v24 m128 0 v-24 m-128 24 q0 10 10 10 m108 0 q10 0 10 -10 m-118 10 h10 m88 0 h10 m20 -44 h10 m58 0 h10 m20 -32 h10 m48 0 h10 m0 0 h10 m94 0 h10 m3 0 h-3"></path>
+<polygon points="687 83 695 79 695 87"></polygon>
+<polygon points="687 83 679 79 679 87"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

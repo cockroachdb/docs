@@ -1,0 +1,127 @@
+---
+title: "SHOW CLUSTER SETTING"
+old_description: "The SHOW CLUSTER SETTING statement displays the current cluster settings."
+---
+
+import { ShowClusterSetting3 } from "/snippets/syntax-diagrams/ShowClusterSetting3.jsx";
+
+The `SHOW CLUSTER SETTING` [statement](/docs/v24.1/sql-statements) displays the values of [cluster settings](/docs/v24.1/cluster-settings).
+
+To configure cluster settings, use [`SET CLUSTER SETTING`](/docs/v24.1/set-cluster-setting).
+
+<Note>
+The `SHOW` statement for cluster settings is unrelated to the other `SHOW` statements: [`SHOW {session variable}`](/docs/v24.1/show-vars), [`SHOW CREATE`](/docs/v24.1/show-create), [`SHOW USERS`](/docs/v24.1/show-users), [`SHOW DATABASES`](/docs/v24.1/show-databases), [`SHOW COLUMNS`](/docs/v24.1/show-columns), [`SHOW GRANTS`](/docs/v24.1/show-grants), and [`SHOW CONSTRAINTS`](/docs/v24.1/show-constraints).
+</Note>
+
+## Details
+
+- To display the value of a specific cluster setting, use the following syntax:
+
+    ```sql
+    SHOW CLUSTER SETTING <setting>;
+    ```
+- To display the values of *public* cluster settings (i.e., cluster settings that are documented and for which tuning is supported), use one of the following:
+
+    ```sql
+    SHOW CLUSTER SETTINGS;
+    ```
+
+    ```sql
+    SHOW PUBLIC CLUSTER SETTINGS;
+    ```
+- To display the values of all cluster settings use one of the following:
+
+    ```sql
+    SHOW ALL CLUSTER SETTINGS;
+    ```
+
+    ```sql
+    SHOW CLUSTER SETTING ALL;
+    ```
+
+    When you display all cluster settings, the table output includes a `public` column that denotes whether a setting is public or not.
+
+## Required privileges
+
+To use the `SHOW CLUSTER SETTING` statement, a user must have one of the following attributes:
+
+- Be a member of the `admin` role (the `root` user belongs to the `admin` role by default).
+- Have the `MODIFYCLUSTERSETTING` [system-level privilege](/docs/v24.1/security-reference/authorization#privileges) granted.
+- Have the `VIEWCLUSTERSETTING` [system-level privilege](/docs/v24.1/security-reference/authorization#supported-privileges) (or the legacy `VIEWCLUSTERSETTING` [role option](/docs/v24.1/security-reference/authorization#role-options) ) defined.
+- Have the `MODIFYSQLCLUSTERSETTING` [system-level privilege](/docs/v24.1/security-reference/authorization#privileges) granted. Users with this privilege are allowed to view only [`sql.defaults.*` cluster settings](/docs/v24.1/cluster-settings#setting-sql-defaults-cost-scans-with-default-col-size-enabled), not all cluster settings.
+
+## Synopsis
+
+<ShowClusterSetting3 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>var&#95;name</code></td><td>The name of the <a href="/docs/v24.1/cluster-settings">cluster setting</a> (case-insensitive).</td></tr><tr><td><code>ALL</code></td><td>Display all cluster settings.</td></tr><tr><td><code>PUBLIC</code></td><td>Display only the public cluster settings.<br/>By default, only public settings are listed by <code>SHOW CLUSTER SETTINGS</code>. <code>SHOW PUBLIC CLUSTER SETTINGS</code> and <code>SHOW CLUSTER SETTINGS</code> are equivalent.</td></tr></tbody></table>
+
+## Response
+
+When you query multiple cluster settings (e.g., with `SHOW CLUSTER SETTINGS`, or with `SHOW ALL CLUSTER SETTINGS`), the following fields are returned:
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>variable</code></td><td>The name of the cluster setting.</td></tr><tr><td><code>value</code></td><td>The value of the cluster setting.</td></tr><tr><td><code>setting&#95;type</code></td><td>The type of the cluster setting.<br/>Possible values for <code>setting&#95;type</code> include:<br/><br/>- <code>b</code> (<code>true</code> or <code>false</code>)<br/><br/>- <code>z</code> (size, in bytes)<br/><br/>- <code>d</code> (duration)<br/><br/>- <code>e</code> (one of a set of possible values)<br/><br/>- <code>f</code> (floating-point value)<br/><br/>- <code>i</code> (integer)<br/><br/>- <code>s</code> (string)</td></tr><tr><td><code>description</code></td><td>A brief description of the cluster setting, including possible values.</td></tr><tr><td><code>public</code></td><td><code>true</code> if the cluster setting is public.<br/>This field is only included if all cluster settings are displayed.</td></tr><tr><td><code>default&#95;value</code></td><td>The default value of the cluster setting.</td></tr><tr><td><code>origin</code></td><td>The origin of the current value of the cluster setting.<br/>Possible values for <code>origin</code> include:<br/><br/>- <code>default</code> (The current value has not been changed from the default value.)<br/><br/>- <code>override</code> (The current value has been changed from the default value.)</td></tr></tbody></table>
+
+## Examples
+
+### Show the value of a single cluster setting
+
+```sql
+> SHOW CLUSTER SETTING diagnostics.reporting.enabled;
+```
+
+```text
+  diagnostics.reporting.enabled
+---------------------------------
+              true
+(1 row)
+```
+
+### Show the values of all public cluster settings
+
+```sql
+> SHOW CLUSTER SETTINGS;
+```
+
+```text
+                     variable                    | value | setting_type |                                                 description
+-------------------------------------------------+-------+--------------+---------------------------------------------------------------------------------------------------------------
+  admission.kv.enabled                           | false | b            | when true, work performed by the KV layer is subject to admission control
+  admission.sql_kv_response.enabled              | false | b            | when true, work performed by the SQL layer when receiving a KV response is subject to admission control
+  admission.sql_sql_response.enabled             | false | b            | when true, work performed by the SQL layer when receiving a DistSQL response is subject to admission control
+  bulkio.stream_ingestion.minimum_flush_interval | 5s    | d            | the minimum timestamp between flushes; flushes may still occur if internal buffers fill up
+  ...
+```
+
+### Show the values of all cluster settings
+
+```sql
+> SHOW ALL CLUSTER SETTINGS;
+```
+
+```text
+                     variable                     | value | setting_type | public |                                                             description
+--------------------------------------------------+-------+--------------+--------+--------------------------------------------------------------------------------------------------------------------------------------
+  admission.kv.enabled                            | false | b            |  true  | when true, work performed by the KV layer is subject to admission control
+  admission.kv_slot_adjuster.overload_threshold   | 32    | i            | false  | when the number of runnable goroutines per CPU is greater than this threshold, the slot adjuster considers the cpu to be overloaded
+  admission.l0_file_count_overload_threshold      | 1000  | i            | false  | when the L0 file count exceeds this threshold, the store is considered overloaded
+  admission.l0_sub_level_count_overload_threshold | 20    | i            | false  | when the L0 sub-level count exceeds this threshold, the store is considered overloaded
+  ...
+```
+
+## See also
+
+- [`SET CLUSTER SETTING`](/docs/v24.1/set-cluster-setting)
+- [`RESET CLUSTER SETTING`](/docs/v24.1/reset-cluster-setting)
+- [Cluster settings](/docs/v24.1/cluster-settings)
+- [`SHOW {session variable}`](/docs/v24.1/show-vars)
+- [`SHOW COLUMNS`](/docs/v24.1/show-columns)
+- [`SHOW CONSTRAINTS`](/docs/v24.1/show-constraints)
+- [`SHOW CREATE`](/docs/v24.1/show-create)
+- [`SHOW DATABASES`](/docs/v24.1/show-databases)
+- [`SHOW GRANTS`](/docs/v24.1/show-grants)
+- [`SHOW INDEX`](/docs/v24.1/show-index)
+- [`SHOW USERS`](/docs/v24.1/show-users)
+- [`SHOW DEFAULT SESSION VARIABLES FOR ROLE`](/docs/v24.1/show-default-session-variables-for-role)

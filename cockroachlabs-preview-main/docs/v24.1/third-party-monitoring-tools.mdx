@@ -1,0 +1,59 @@
+---
+title: "Third-Party Monitoring Integrations"
+old_description: "Learn about third-party monitoring tools that are integrated with CockroachDB."
+---
+
+CockroachDB is officially integrated with the following third-party monitoring platforms. These integrations enable external tools and interfaces
+
+- to collect, visualize, and alert on CockroachDB [metrics](#metrics) and
+- to collect CockroachDB [logs](#logs).
+
+## Monitoring integration availability
+
+### Metrics
+
+<table><thead><tr><th>Platform</th><th>CockroachDB Standard</th><th>CockroachDB Advanced</th><th>CockroachDB self-hosted</th></tr></thead><tbody><tr><td><a href="#amazon-cloudwatch-metrics">Amazon CloudWatch</a></td><td>✔</td><td>✔</td><td></td></tr><tr><td><a href="#datadog">DataDog</a></td><td>✔</td><td>✔</td><td>✔</td></tr><tr><td><a href="#dbmarlin">DBmarlin</a></td><td></td><td></td><td>✔</td></tr><tr><td><a href="#kibana">Kibana</a></td><td></td><td></td><td>✔</td></tr><tr><td><a href="#prometheus">Prometheus</a></td><td>✔</td><td>✔</td><td>✔</td></tr></tbody></table>
+
+### Logs
+
+<table><thead><tr><th>Platform</th><th>CockroachDB Standard</th><th>CockroachDB Advanced</th><th>CockroachDB self-hosted</th></tr></thead><tbody><tr><td><a href="#amazon-cloudwatch-logs">Amazon CloudWatch</a></td><td>✔</td><td>✔</td><td></td></tr><tr><td><a href="#gcp-logging">GCP Logging</a></td><td>✔</td><td>✔</td><td></td></tr></tbody></table>
+
+## Monitoring integration resources
+
+### Amazon CloudWatch
+
+#### Metrics
+
+<table><thead><tr><th>CockroachDB Deployment</th><th>Integration</th><th>Metrics Source</th><th>Tutorial</th></tr></thead><tbody><tr><td>Standard</td><td><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics">Amazon CloudWatch metrics</a></td><td><a href="/docs/v24.1/monitoring-and-alerting#prometheus-endpoint">Prometheus endpoint</a></td><td><a href="/docs/cockroachcloud/export-metrics?filters=aws-metrics-export">Export Metrics From a CockroachDB Standard Cluster</a></td></tr><tr><td>Advanced</td><td><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics">Amazon CloudWatch metrics</a></td><td><a href="/docs/v24.1/monitoring-and-alerting#prometheus-endpoint">Prometheus endpoint</a></td><td><a href="/docs/cockroachcloud/export-metrics-advanced?filters=aws-metrics-export">Export Metrics From a CockroachDB Advanced Cluster</a></td></tr></tbody></table>
+
+#### Logs
+
+<table><thead><tr><th>CockroachDB Deployment</th><th>Integration</th><th>Tutorial</th></tr></thead><tbody><tr><td>Standard</td><td><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs">Amazon CloudWatch Logs</a></td><td><a href="/docs/cockroachcloud/export-logs">Export Logs From a CockroachDB Standard Cluster</a></td></tr><tr><td>Advanced</td><td><a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs">Amazon CloudWatch Logs</a></td><td><a href="/docs/cockroachcloud/export-logs-advanced">Export Logs From a CockroachDB Advanced Cluster</a></td></tr></tbody></table>
+
+### DataDog
+
+<table><thead><tr><th>CockroachDB Deployment</th><th>Integration</th><th>Metrics Source</th><th>Tutorial</th></tr></thead><tbody><tr><td>Standard</td><td><a href="https://docs.datadoghq.com/integrations/cockroachdb_dedicated">CockroachDB Cloud integration for Datadog</a></td><td><a href="/docs/v24.1/monitoring-and-alerting#prometheus-endpoint">Prometheus endpoint</a></td><td><a href="/docs/cockroachcloud/export-metrics?filters=datadog-metrics-export">Export Metrics From a CockroachDB Standard Cluster</a></td></tr><tr><td>Advanced</td><td><a href="https://docs.datadoghq.com/integrations/cockroachdb_dedicated">CockroachDB Cloud integration for Datadog</a></td><td><a href="/docs/v24.1/monitoring-and-alerting#prometheus-endpoint">Prometheus endpoint</a></td><td><a href="/docs/cockroachcloud/export-metrics-advanced?filters=datadog-metrics-export">Export Metrics From a CockroachDB Advanced Cluster</a></td></tr><tr><td>self-hosted</td><td><a href="https://docs.datadoghq.com/integrations/cockroachdb?tab=host">CockroachDB check for Datadog Agent</a></td><td><a href="/docs/v24.1/monitoring-and-alerting#prometheus-endpoint">Prometheus endpoint</a></td><td><a href="/docs/v24.1/datadog">Monitor CockroachDB self-hosted with Datadog</a></td></tr></tbody></table>
+
+### DBmarlin
+
+<table><thead><tr><th>CockroachDB Deployment</th><th>Integration</th><th>Metrics Source</th><th>Tutorial</th></tr></thead><tbody><tr><td>self-hosted</td><td><a href="https://docs.dbmarlin.com/docs/Monitored-Technologies/Databases/cockroachdb">DBmarlin</a></td><td><a href="/docs/v24.1/monitoring-and-alerting#crdb_internal-system-catalog"><code>crdb&#95;internal</code></a></td><td><a href="/docs/v24.1/dbmarlin">Monitor CockroachDB self-hosted with DBmarlin</a></td></tr></tbody></table>
+
+### GCP Logging
+
+<table><thead><tr><th>CockroachDB Deployment</th><th>Integration</th><th>Tutorial</th></tr></thead><tbody><tr><td>Standard</td><td><a href="https://cloud.google.com/logging">Google Cloud Logging</a></td><td><a href="/docs/cockroachcloud/export-logs?filters=gcp-log-export">Export Logs From a CockroachDB Standard Cluster</a></td></tr><tr><td>Advanced</td><td><a href="https://cloud.google.com/logging">Google Cloud Logging</a></td><td><a href="/docs/cockroachcloud/export-logs-advanced?filters=gcp-log-export">Export Logs From a CockroachDB Advanced Cluster</a></td></tr></tbody></table>
+
+### Kibana
+
+<table><thead><tr><th>CockroachDB Deployment</th><th>Integration</th><th>Metrics Source</th><th>Tutorial</th></tr></thead><tbody><tr><td>self-hosted</td><td><a href="https://www.elastic.co/guide/en/beats/metricbeat/current/metricbeat-module-cockroachdb">CockroachDB module for Metricbeat</a></td><td><a href="/docs/v24.1/monitoring-and-alerting#prometheus-endpoint">Prometheus endpoint</a></td><td><a href="/docs/v24.1/kibana">Monitor CockroachDB self-hosted with Kibana</a></td></tr></tbody></table>
+
+### Prometheus
+
+<table><thead><tr><th>CockroachDB Deployment</th><th>Integration</th><th>Metrics Source</th><th>Tutorial</th></tr></thead><tbody><tr><td>Standard</td><td><a href="https://prometheus.io/">Prometheus</a></td><td><a href="/docs/v24.1/monitoring-and-alerting#prometheus-endpoint">Prometheus endpoint</a></td><td><a href="/docs/cockroachcloud/export-metrics?filters=prometheus-metrics-export">Export Metrics From a CockroachDB Standard Cluster</a></td></tr><tr><td>Advanced</td><td><a href="https://prometheus.io/">Prometheus</a></td><td><a href="/docs/v24.1/monitoring-and-alerting#prometheus-endpoint">Prometheus endpoint</a></td><td><a href="/docs/cockroachcloud/export-metrics-advanced?filters=prometheus-metrics-export">Export Metrics From a CockroachDB Advanced Cluster</a></td></tr><tr><td>self-hosted</td><td><a href="https://prometheus.io/">Prometheus</a></td><td><a href="/docs/v24.1/monitoring-and-alerting#prometheus-endpoint">Prometheus endpoint</a></td><td><a href="/docs/v24.1/monitor-cockroachdb-with-prometheus">Monitor CockroachDB self-hosted with Prometheus</a></td></tr></tbody></table>
+
+## See Also
+
+- [Monitoring and Alerting](/docs/v24.1/monitoring-and-alerting)
+- [DB Console Overview](/docs/v24.1/ui-overview)
+- [Logging Overview](/docs/v24.1/logging-overview)
+- [Metrics](/docs/v24.1/metrics)
+- [Differences in Metrics between Third-Party Monitoring Integrations and DB Console](/docs/v24.1/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console)

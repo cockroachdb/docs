@@ -1,0 +1,188 @@
+---
+title: "CREATE PROCEDURE"
+old_description: "The CREATE PROCEDURE statement creates a stored procedure."
+---
+
+import { CreateProcedure6 } from "/snippets/syntax-diagrams/CreateProcedure6.jsx";
+
+The `CREATE PROCEDURE` [statement](/docs/v25.4/sql-statements) defines a [stored procedure](/docs/v25.4/stored-procedures).
+
+## Required privileges
+
+- To create a procedure, a user must have [`CREATE` privilege](/docs/v25.4/security-reference/authorization#supported-privileges) on the schema of the procedure. The user must also have privileges on all the objects referenced in the procedure body.
+- To create a procedure with a [user-defined type](/docs/v25.4/create-type), a user must have [`USAGE` privilege](/docs/v25.4/security-reference/authorization#supported-privileges) on the user-defined type.
+- To resolve a procedure, a user must have at least the [`USAGE` privilege](/docs/v25.4/security-reference/authorization#supported-privileges) on the schema of the procedure.
+- To [call a procedure](/docs/v25.4/call), a user must have [`EXECUTE` privilege](/docs/v25.4/security-reference/authorization#supported-privileges) on the procedure. By default, the user must also have privileges on all the objects referenced in the procedure body. However, a `SECURITY DEFINER` procedure executes with the privileges of the user that owns the procedure, not the user that calls it. A `SECURITY INVOKER` procedure executes with the privileges of the user that calls the procedure, thus matching the default behavior.
+
+<Tip>
+For an example of `SECURITY DEFINER`, refer to [Create a `SECURITY DEFINER` function](/docs/v25.4/create-function#create-a-security-definer-function).
+</Tip>
+
+If you grant `EXECUTE` privilege as a default privilege at the database level, newly created procedures inherit that privilege from the database.
+
+## Synopsis
+
+<CreateProcedure6 />
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>routine&#95;create&#95;name</code></td><td>The name of the procedure.</td></tr><tr><td><code>routine&#95;param</code></td><td>A comma-separated list of procedure parameters, specifying the mode, name, and type.</td></tr><tr><td><code>routine&#95;body&#95;str</code></td><td>The body of the procedure. For allowed contents, see <a href="/docs/v25.4/stored-procedures#structure">Stored Procedures</a>.</td></tr></tbody></table>
+
+## Examples
+
+The following are examples of basic stored procedures. For a more detailed example of a stored procedure, see [Create a stored procedure using PL/pgSQL](/docs/v25.4/stored-procedures#create-a-stored-procedure-using-pl-pgsql).
+
+### Create a stored procedure that uses a composite-type variable
+
+Create a [composite variable](/docs/v25.4/create-type#create-a-composite-data-type):
+
+```text
+CREATE TYPE comp AS (x INT, y STRING);
+```
+
+Create the procedure, declaring the `comp` variable you created:
+
+```sql
+CREATE OR REPLACE PROCEDURE proc() LANGUAGE PLpgSQL AS $$
+  DECLARE
+    v comp := ROW(1, 'foo');
+  BEGIN
+    RAISE NOTICE '%', v;
+  END
+  $$;
+```
+
+```sql
+CALL proc();
+```
+
+```text
+NOTICE: (1,foo)
+CALL
+```
+
+### Create a stored procedure that uses `OUT` and `INOUT` parameters
+
+The following example uses a combination of `OUT` and `INOUT` parameters to modify a provided value and output the result. An `OUT` parameter returns a value, while an `INOUT` parameter passes an input value and returns a value.
+
+```sql
+CREATE OR REPLACE PROCEDURE double_triple(INOUT double INT, OUT triple INT) AS
+  $$
+  BEGIN
+    double := double * 2;
+    triple := double * 3;
+  END;
+  $$ LANGUAGE PLpgSQL;
+```
+
+When calling a procedure, you need to supply placeholder values for any `OUT` parameters. A `NULL` value is commonly used. When [calling a procedure from another routine](#create-a-stored-procedure-that-calls-a-procedure), you should declare variables that will store the results of the `OUT` parameters.
+
+```sql
+CALL double_triple(1, NULL);
+```
+
+```text
+  double | triple
+---------+---------
+       2 |      6
+```
+
+### Create a stored procedure that calls a procedure
+
+The following example defines a procedure that calls the [`double_triple` example procedure](#create-a-stored-procedure-that-uses-out-and-inout-parameters). The `triple_result` variable is assigned the result of the `OUT` parameter, while the `double_input` variable both provides the input and stores the result of the `INOUT` parameter.
+
+<Note>
+A procedure with `OUT` parameters can only be [called from a PL/pgSQL routine](/docs/v25.4/plpgsql#call-a-procedure).
+</Note>
+
+```sql
+CREATE OR REPLACE PROCEDURE p(double_input INT) AS
+  $$
+  DECLARE
+    triple_result INT;
+  BEGIN
+    CALL double_triple(double_input, triple_result);    
+    RAISE NOTICE 'Doubled value: %', double_input;
+    RAISE NOTICE 'Tripled value: %', triple_result;
+  END
+  $$ LANGUAGE PLpgSQL;
+```
+
+```sql
+CALL p(1);
+```
+
+```text
+NOTICE: Doubled value: 2
+NOTICE: Tripled value: 6
+CALL
+```
+
+### Create a stored procedure that uses conditional logic
+
+The following example uses [PL/pgSQL conditional statements](/docs/v25.4/plpgsql#write-conditional-statements):
+
+```sql
+CREATE OR REPLACE PROCEDURE proc(a INT, b INT) AS 
+  $$
+  DECLARE
+    result INT;
+  BEGIN
+    IF a > b THEN
+      RAISE NOTICE 'Condition met: a is greater than b';
+    ELSE
+      RAISE NOTICE 'Condition not met: a is not greater than b';
+    END IF;
+  END;
+  $$ LANGUAGE PLpgSQL;
+```
+
+```sql
+CALL proc(1, 2);
+```
+
+```text
+NOTICE: Condition not met: a is not greater than b
+CALL
+```
+
+### Create a stored procedure that uses a `WHILE` loop
+
+The following example uses [PL/pgSQL loop statements](/docs/v25.4/plpgsql#write-loops):
+
+```sql
+CREATE OR REPLACE PROCEDURE arr_var() AS 
+  $$
+  DECLARE
+    x INT[] := ARRAY[1, 2, 3, 4, 5];
+    n INT;
+    i INT := 1;
+  BEGIN
+    n := array_length(x, 1);
+    WHILE i <= n LOOP
+      RAISE NOTICE '%: %', i, x[i];
+      i := i + 1;
+    END LOOP;
+  END
+  $$ LANGUAGE PLpgSQL;
+```
+
+```sql
+CALL arr_var();
+```
+
+```text
+NOTICE: 1: 1
+NOTICE: 2: 2
+NOTICE: 3: 3
+NOTICE: 4: 4
+NOTICE: 5: 5
+```
+
+## See also
+
+- [Stored Procedures](/docs/v25.4/stored-procedures)
+- [PL/pgSQL](/docs/v25.4/plpgsql)
+- [`CALL`](/docs/v25.4/call)
+- [`ALTER PROCEDURE`](/docs/v25.4/alter-procedure)
+- [`DROP PROCEDURE`](/docs/v25.4/drop-procedure)

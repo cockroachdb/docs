@@ -1,0 +1,116 @@
+---
+title: "Plan a CockroachDB Advanced Cluster"
+old_description: "Plan your cluster's configuration."
+---
+
+import { LinkedPageTabs } from "/snippets/LinkedPageTabs.jsx";
+
+<LinkedPageTabs
+  versioned={true}
+  currentPath="/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster-advanced"
+  items={[
+    {
+      title: "CockroachDB Basic",
+      href: "/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster-basic",
+    },
+    {
+      title: "CockroachDB Standard",
+      href: "/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster",
+    },
+    {
+      title: "CockroachDB Advanced",
+      href: "/docs/VERSION_PLACEHOLDER/cockroachcloud/plan-your-cluster-advanced",
+    },
+  ]}
+/>
+
+This page describes how to plan your CockroachDB Advanced cluster.
+
+Before making any changes to your cluster's configuration, review these requirements and recommendations for CockroachDB Advanced clusters. We recommend that you test configuration changes carefully before applying them to production clusters.
+
+## Advanced cluster architecture
+
+The following diagram shows the internal architecture and network flow of a CockroachDB Advanced cluster:
+
+<Frame>
+  ![Diagram showing the architecture of Advanced plan Cloud deployments](/images/cockroachcloud/advanced-architecture.png)
+</Frame>
+
+CockroachDB Cloud operations are split into logical layers for **control** and **data**:
+
+- Control operations manage the CockroachDB cluster as a whole. These requests are handled by the **CockroachDB Cloud control plane** which communicates directly with cluster nodes as needed. These connections include access to the Cloud Console, DB Console, <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cloud-api" data-versioned="true">Cloud API</a>, <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/metrics" data-versioned="true">observability features</a>, and other cluster management tools.
+- Data operations involve connections between data applications and your underlying CockroachDB nodes, including SQL queries and responses. Each region has a network load balancer (NLB) that handles and distributes requests across CockroachDB nodes within the region. Advanced clusters can utilize <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/private-clusters" data-versioned="true">private connectivity</a> across the cloud to limit the amount of network traffic that is sent over the public Internet.
+
+In a "bring your own cloud" (BYOC) deployment of CockroachDB Cloud, the data operations layer is hosted within your own cloud service account rather than an account managed by Cockroach Labs. To learn more, <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/byoc-deployment" data-versioned="true">read the BYOC deployment documentation</a>.
+
+## Cluster topology
+
+### Single-region clusters
+
+For single-region production deployments, Cockroach Labs recommends a minimum of 3 nodes. The number of nodes you choose also affects your storage capacity and performance. See the [Example](#example) for more information.
+
+Some of a CockroachDB Advanced cluster's provisioned memory capacity is used for system overhead factors such as filesystem cache and sidecars, so the full amount of memory may not be available to the cluster's workloads.
+
+CockroachDB Advanced clusters use three Availability Zones (AZs). For balanced data distribution and best performance, we recommend using a number of nodes that is a multiple of 3 (for example, 3, 6, or 9 nodes per region).
+
+You cannot scale a multi-node cluster down to a single-node cluster. If you need to scale down to a single-node cluster, <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/take-and-restore-self-managed-backups" data-versioned="true">back up</a> your cluster and <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/take-and-restore-self-managed-backups" data-versioned="true">restore</a> it into a new single-node cluster.
+
+### Multi-region clusters
+
+Multi-region CockroachDB Advanced clusters must contain at least three regions to ensure that data replicated across regions can survive the loss of one region. For example, this applies to internal system data that is important for overall cluster operations as well as tables with the <a href="/docs/VERSION_PLACEHOLDER/global-tables" data-versioned="true">`GLOBAL`</a> table locality or the <a href="/docs/VERSION_PLACEHOLDER/regional-tables#regional-tables" data-versioned="true">`REGIONAL BY TABLE`</a> table locality and <a href="/docs/VERSION_PLACEHOLDER/multiregion-survival-goals#survive-region-failures" data-versioned="true">`REGION` survival goal</a>.
+
+Each region of a multi-region cluster must contain at least 3 nodes to ensure that data located entirely in a region can survive the loss of one node in that region. For example, this applies to tables with the <a href="/docs/VERSION_PLACEHOLDER/regional-tables#regional-by-row-tables" data-versioned="true">`REGIONAL BY ROW`</a> table locality. For best performance and stability, we recommend you use the same number of nodes in each region of your cluster.
+
+You can configure a maximum of 9 regions per cluster through the Console. If you need to add more regions, [contact your Cockroach Labs account team](https://support.cockroachlabs.com/).
+
+<Tip>
+If your cluster's workload is subject to <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/compliance" data-versioned="true">compliance</a> requirements such as PCI DSS or HIPAA, or to access advanced security features such as <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/cmek" data-versioned="true">CMEK</a> or <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/egress-perimeter-controls" data-versioned="true">Egress Perimeter Controls</a>, you must enable <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/create-an-advanced-cluster#step-6-configure-advanced-security-features" data-versioned="true">advanced security features</a> during cluster creation. This cannot be changed after the cluster is created. Advanced security features incurs additional costs. Refer to [Pricing](https://www.cockroachlabs.com/pricing).
+</Tip>
+
+## Cluster sizing and scaling
+
+A cluster's number of nodes and node capacity together determine the node's total compute and storage capacity.
+
+When considering your cluster's scale, we recommend that you start by planning the compute requirements per node. If a workload requires more than 16 vCPUs per node, consider adding more nodes. For example, if a 3-node cluster with 8 vCPUs per node is not adequate for your workload, consider scaling up to 16 vCPUs before adding a fourth node. For most production applications, we recommend at minimum 8 vCPUs per node.
+
+<Warning>
+Cockroach Labs does not provide support for clusters with only 2 vCPUs per node.
+</Warning>
+
+We recommend you avoid adding or removing nodes from a cluster when its load is expected to be high. Adding or removing nodes incurs a non-trivial amount of load on the cluster and can take more than half an hour per region. Changing the cluster configuration during times of heavy traffic may negatively impact application performance, and changes may take longer to be applied.
+
+When considering scaling down a cluster's nodes, ensure that the remaining nodes have enough storage to contain the cluster's current and anticipated data.
+
+If you remove a region from a cluster, requests from that region will be served by nodes in other regions, and may be slower as a result.
+
+If you have changed the <a href="/docs/VERSION_PLACEHOLDER/configure-replication-zones" data-versioned="true">replication factor</a> for a cluster, you might need to reduce it before you can remove nodes from the cluster. For example, suppose you have a 5-node cluster with a replication factor of 5, up from the default of 3. Before you can scale the cluster down to 3 nodes, you must change the replication factor to 3.
+
+## Storage capacity
+
+When selecting your storage capacity, consider the following factors:
+
+<table><thead><tr><th>Factor</th><th>Description</th></tr></thead><tbody><tr><td>Capacity</td><td>Total raw data size you expect to store without replication.</td></tr><tr><td>Replication</td><td>The default replication factor for a CockroachDB Cloud cluster is 3.</td></tr><tr><td>Buffer</td><td>Additional buffer (overhead data, accounting for data growth, etc.). If you are importing an existing dataset, we recommend you provision at least 50% additional storage to account for the import functionality.</td></tr><tr><td>Compression</td><td>The percentage of savings you can expect to achieve with compression. With CockroachDB's default compression algorithm, we typically see about a 40% savings on raw data size.</td></tr></tbody></table>
+
+For more details about disk performance, refer to:
+
+- **AWS**: [Amazon EBS volume types](https://aws.amazon.com/ebs/features)
+- **Azure**: [Virtual machine and disk performance](https://learn.microsoft.com/azure/virtual-machines/disks-performance)
+- **GCP**: [Configure disks to meet performance requirements](https://cloud.google.com/compute/docs/disks/performance)
+
+## Example
+
+Let's say you want to create a cluster to connect with an application that is running on the Google Cloud Platform in the `us-east1` region, and that the application requires 2000 transactions per second.
+
+Suppose the raw data amount you expect to store without replication is 500 GiB. At 40% compression, you can expect a savings of 200 GiB, making the amount of data you need to store is 300 GiB.
+
+Assume a storage buffer of 50% to account for overhead and data growth. The net raw data amount you need to store is now 450 GiB.
+
+With the default replication factor of 3, the total amount of data stored is (3 * 450 GiB) = 1350 GiB.
+
+To determine the number of nodes and the hardware configuration to store 1350 GiB of data, refer to the table in <a href="/docs/VERSION_PLACEHOLDER/cockroachcloud/create-your-cluster#step-2-select-the-cloud-provider" data-versioned="true">Create Your Cluster</a>. One way to reach a 1350 GiB storage capacity is 3 nodes with 480 GiB per node, which gives you a capacity of (3*480 GiB) = 1440 GiB.
+
+To meet your performance requirement of 2000 TPS, consider a configuration of 3 nodes with 4 vCPUs per node. This configuration has (3*4 vCPUs) = 12 vCPUs. Each vCPU can handle around 1000 TPS, so this configuration provides 12000 TPS, which exceeds your performance requirements.
+
+Your final configuration is as follows:
+
+<table><thead><tr><th>Component</th><th>Selection</th></tr></thead><tbody><tr><td>Cloud provider</td><td>GCP</td></tr><tr><td>Region</td><td>us-east1</td></tr><tr><td>Number of nodes</td><td>3</td></tr><tr><td>Compute</td><td>4 vCPU</td></tr><tr><td>Storage</td><td>480 GiB</td></tr></tbody></table>

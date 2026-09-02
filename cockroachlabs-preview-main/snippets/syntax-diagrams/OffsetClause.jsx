@@ -1,0 +1,65 @@
+export const OffsetClause = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="81" width="485" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="72" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">OFFSET</text><a xlink:href="#a_expr" xlink:title="a_expr">
+<rect height="32" width="64" x="143" y="3"></rect>
+<rect class="nonterminal" height="32" width="64" x="141" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="40" font-size="10" class="nonterminal" x="153" y="21">a_expr</text></a><a xlink:href="#select_fetch_first_value" xlink:title="select_fetch_first_value">
+<rect height="32" width="172" x="143" y="47"></rect>
+<rect class="nonterminal" height="32" width="172" x="141" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="148" font-size="10" class="nonterminal" x="153" y="65">select_fetch_first_value</text></a><a xlink:href="#row_or_rows" xlink:title="row_or_rows">
+<rect height="32" width="102" x="335" y="47"></rect>
+<rect class="nonterminal" height="32" width="102" x="333" y="45"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="78" font-size="11" class="nonterminal" x="345" y="65">row_or_rows</text></a><path class="line" d="m17 17 h2 m0 0 h10 m72 0 h10 m20 0 h10 m64 0 h10 m0 0 h230 m-334 0 h20 m314 0 h20 m-354 0 q10 0 10 10 m334 0 q0 -10 10 -10 m-344 10 v24 m334 0 v-24 m-334 24 q0 10 10 10 m314 0 q10 0 10 -10 m-324 10 h10 m172 0 h10 m0 0 h10 m102 0 h10 m23 -44 h-3"></path>
+<polygon points="475 17 483 13 483 21"></polygon>
+<polygon points="475 17 467 13 467 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

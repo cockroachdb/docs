@@ -1,0 +1,41 @@
+---
+title: "Overview metrics"
+old_description: "The Metrics Overview graphs let you monitor SQL performance, Request Units, and storage."
+---
+
+The Overview metrics let you monitor SQL performance. For Basic deployments, you can also monitor Request Units. For Basic and Standard deployments, you can also monitor storage.
+
+To view these graphs, select a cluster from the [**Clusters** page](/docs/cockroachcloud/cluster-management#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation. On the **Metrics** page, click the **Overview** tab.
+
+## Time interval selection
+
+The time interval selector at the top of each tab allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected for all charts on the **Metrics** page.
+
+## SQL Connections
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Connections Per Second</td><td><code>sql.new&#95;conns</code></td><td>Number of SQL connections created</td><td>The rate of this metric shows how frequently new connections are being established. This can be useful in determining if a high rate of incoming new connections is causing additional load on the server due to a misconfigured application.</td></tr></tbody></table>
+
+## SQL Statements
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Select</td><td><code>sql.select.count</code></td><td>Number of SQL SELECT statements successfully executed</td><td>This high-level metric reflects workload volume. Monitor this metric to identify abnormal application behavior or patterns over time. If abnormal patterns emerge, apply the metric's time range to the SQL Activity pages to investigate interesting outliers or patterns. For example, on the Transactions page and the Statements page, sort on the Execution Count column. To find problematic sessions, on the Sessions page, sort on the Transaction Count column. Find the sessions with high transaction counts and trace back to a user or application.</td></tr><tr><td>Update</td><td><code>sql.update.count</code></td><td>Number of SQL UPDATE statements successfully executed</td><td>This high-level metric reflects workload volume. Monitor this metric to identify abnormal application behavior or patterns over time. If abnormal patterns emerge, apply the metric's time range to the SQL Activity pages to investigate interesting outliers or patterns. For example, on the Transactions page and the Statements page, sort on the Execution Count column. To find problematic sessions, on the Sessions page, sort on the Transaction Count column. Find the sessions with high transaction counts and trace back to a user or application.</td></tr><tr><td>Insert</td><td><code>sql.insert.count</code></td><td>Number of SQL INSERT statements successfully executed</td><td>This high-level metric reflects workload volume. Monitor this metric to identify abnormal application behavior or patterns over time. If abnormal patterns emerge, apply the metric's time range to the SQL Activity pages to investigate interesting outliers or patterns. For example, on the Transactions page and the Statements page, sort on the Execution Count column. To find problematic sessions, on the Sessions page, sort on the Transaction Count column. Find the sessions with high transaction counts and trace back to a user or application.</td></tr><tr><td>Delete</td><td><code>sql.delete.count</code></td><td>Number of SQL DELETE statements successfully executed</td><td>This high-level metric reflects workload volume. Monitor this metric to identify abnormal application behavior or patterns over time. If abnormal patterns emerge, apply the metric's time range to the SQL Activity pages to investigate interesting outliers or patterns. For example, on the Transactions page and the Statements page, sort on the Execution Count column. To find problematic sessions, on the Sessions page, sort on the Transaction Count column. Find the sessions with high transaction counts and trace back to a user or application.</td></tr></tbody></table>
+
+## Service Latency: SQL Statements
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>P90, P99, P99.9, P99.99</td><td><code>sql.service.latency</code></td><td>Latency of SQL request execution</td><td>These high-level metrics reflect workload performance. Monitor these metrics to understand latency over time. If abnormal patterns emerge, apply the metric's time range to the SQL Activity pages to investigate interesting outliers or patterns. The Statements page has P90 Latency and P99 latency columns to enable correlation with this metric.</td></tr></tbody></table>
+
+## Request Units
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>RU, Average RUs</td><td><code>tenant.consumption.request&#95;units</code></td><td>Total RU consumption</td><td>The CPU and I/O resources being used by queries in the cluster. Simple queries consume few RUs, while complicated queries with many reads and writes consume more RUs. To learn more about how RUs are calculated, refer to Resource Usage.</td></tr></tbody></table>
+
+## Storage
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Storage usage</td><td><code>livebytes</code></td><td>Number of bytes of live data (keys plus values)</td><td>The amount of data being stored in the cluster. In the Storage Used graph, this is the logical number of live bytes and does not account for compression or replication.</td></tr></tbody></table>
+
+## See also
+
+- [Metrics Overview](/docs/cockroachcloud/metrics)
+- [Request Unit metrics](/docs/cockroachcloud/metrics-request-units)
+- [SQL metrics](/docs/cockroachcloud/metrics-sql)
+- [Changefeed metrics](/docs/cockroachcloud/metrics-changefeeds)
+- [Row-Level TTL metrics](/docs/cockroachcloud/metrics-row-level-ttl)
+- [Essential Metrics for Standard](/docs/cockroachcloud/metrics-essential)

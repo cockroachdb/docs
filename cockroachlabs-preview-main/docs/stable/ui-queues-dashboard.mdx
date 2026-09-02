@@ -1,0 +1,210 @@
+---
+title: "Queues Dashboard"
+old_description: "The Queues dashboard lets you monitor the health and performance of various queueing systems in CockroachDB."
+---
+
+The **Queues** dashboard lets you monitor the health and performance of various queueing systems in CockroachDB.
+
+To view this dashboard, [access the DB Console](/docs/v26.1/ui-overview#db-console-access) and click **Metrics** on the left-hand navigation, and then select **Dashboard** &gt; **Queues**.
+
+## Dashboard navigation
+
+Use the **Graph** menu to display metrics for your entire cluster or for a specific node.
+
+To the right of the Graph and Dashboard menus, a time interval selector allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected in the [SQL Activity](/docs/v26.1/ui-overview#sql-activity) pages. However, if you select 10 or 30 minutes, the interval defaults to 1 hour in SQL Activity pages.
+
+Hovering your mouse pointer over the graph title will display a tooltip with a description and the [metrics](/docs/v26.1/essential-metrics-self-hosted) used to create the graph.
+
+When hovering on graphs, crosshair lines will appear at your mouse pointer. The series' values corresponding to the given time in the cross hairs are displayed in the legend under the graph. Hovering the mouse pointer on a given series displays the corresponding value near the mouse pointer and highlights the series line (graying out other series lines). Click anywhere within the graph to freeze the values in place. Click anywhere within the graph again to cause the values to change with your mouse movements once more.
+
+In the legend, click on an individual series to isolate it on the graph. The other series will be hidden, while the hover will still work. Click the individual series again to make the other series visible. If there are many series, a scrollbar may appear on the right of the legend. This is to limit the size of the legend so that it does not get endlessly large, particularly on clusters with many nodes.
+
+<Note>
+All timestamps in the DB Console are shown in Coordinated Universal Time (UTC).
+</Note>
+
+The **Queues** dashboard displays the following time series graphs:
+
+## Queue Processing Failures
+
+<Frame>
+  ![DB Console queue failures graph](/images/v26.1/ui_queue_failures.png)
+</Frame>
+
+The **Queue Processing Failures** graph displays processing failures experienced across various queuing systems.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>GC</td><td>The number of replicas which failed processing in the garbage collection queue, as tracked by the <code>queue.gc.process.failure</code> metric.</td></tr><tr><td>Replica GC</td><td>The number of replicas which failed processing in the replica garbage collection queue, as tracked by the <code>queue.replicagc.process.failure</code> metric.</td></tr><tr><td>Replication</td><td>The number of replicas which failed processing in the replica queue, as tracked by the <code>queue.replicate.process.failure</code> metric.</td></tr><tr><td>Split</td><td>The number of replicas which failed processing in the split queue, as tracked by the <code>queue.split.process.failure</code> metric.</td></tr><tr><td>Consistency</td><td>The number of replicas which failed processing in the consistency checker queue, as tracked by the <code>queue.consistency.process.failure</code> metric.</td></tr><tr><td>Raft Log</td><td>The number of replicas which failed processing in the Raft log queue, as tracked by the <code>queue.raftlog.process.failure</code> metric.</td></tr><tr><td>Raft Snapshot</td><td>The number of replicas which failed processing in the Raft repair queue, as tracked by the <code>queue.raftsnapshot.process.failure</code> metric.</td></tr><tr><td>Time Series Maintenance</td><td>The number of replicas which failed processing in the time series maintenance queue, as tracked by the <code>queue.tsmaintenance.process.failure</code> metric.</td></tr></tbody></table>
+
+## Queue Processing Times
+
+<Frame>
+  ![DB Console queue processing time graph](/images/v26.1/ui_queue_time.png)
+</Frame>
+
+The **Queue Processing Times** graph displays the processing rate across various queue systems.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>GC</td><td>The processing rate for the garbage collection queue, as tracked by the <code>queue.gc.processingnanos</code> metric.</td></tr><tr><td>Replica GC</td><td>The processing rate for the replica garbage collection queue, as tracked by the <code>queue.replicagc.processingnanos</code> metric.</td></tr><tr><td>Replication</td><td>The processing rate for the replication queue, as tracked by the <code>queue.replicate.processingnanos</code> metric.</td></tr><tr><td>Split</td><td>The processing rate for the split queue, as tracked by the <code>queue.split.processingnanos</code> metric.</td></tr><tr><td>Consistency</td><td>The processing rate for the consistency checker queue, as tracked by the <code>queue.consistency.processingnanos</code> metric.</td></tr><tr><td>Raft Log</td><td>The processing rate for the Raft log queue, as tracked by the <code>queue.raftlog.processingnanos</code> metric.</td></tr><tr><td>Raft Snapshot</td><td>The processing rate for the Raft repair queue, as tracked by the <code>queue.raftsnapshot.processingnanos</code> metric.</td></tr><tr><td>Time Series Maintenance</td><td>The processing rate for the time series maintenance queue, as tracked by the <code>queue.tsmaintenance.processingnanos</code> metric.</td></tr></tbody></table>
+
+## Replica GC Queue
+
+<Frame>
+  ![DB Console replica GC queue graph](/images/v26.1/ui_replicagc_queue.png)
+</Frame>
+
+The **Replica GC Queue** graph displays various details about the health and performance of the replica garbage collection queue.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Successful Actions</td><td>The number of replicas successfully processed by the replica garbage collection queue, as tracked by the <code>queue.replicagc.process.success</code> metric.</td></tr><tr><td>Pending Actions</td><td>The number of pending replicas in the replica garbage collection queue, as tracked by the <code>queue.replicagc.pending</code> metric.</td></tr><tr><td>Replicas Removed</td><td>The number of replica removals attempted in the replica garbage collection queue, as tracked by the <code>queue.replicagc.removereplica</code> metric.</td></tr></tbody></table>
+
+## Replication Queue
+
+<Frame>
+  ![DB Console replication queue graph](/images/v26.1/ui_replication_queue.png)
+</Frame>
+
+The **Replication Queue** graph displays various details about the health and performance of the replication queue.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Successful Actions</td><td>The number of replicas successfully processed by the replication queue, as tracked by the <code>queue.replicate.process.success</code> metric.</td></tr><tr><td>Pending Actions</td><td>The number of pending replicas in the replication queue, as tracked by the <code>queue.replicate.pending</code> metric.</td></tr><tr><td>Replicas Added</td><td>The number of replica additions attempted by the replication queue, as tracked by the <code>queue.replicate.addreplica</code> metric.</td></tr><tr><td>Replicas Removed</td><td>The number of replica removals attempted by the replication queue, as tracked by the <code>queue.replicate.removereplica</code> metric.</td></tr><tr><td>Dead Replicas Removed</td><td>The number of dead replica removals attempted by the replication queue, as tracked by the <code>queue.replicate.removedeadreplica</code> metric.</td></tr><tr><td>Learner Replicas Removed</td><td>The number of learner replica removals attempted by the replication queue, as tracked by the <code>queue.replicate.removelearnerreplica</code> metric.</td></tr><tr><td>Replicas Rebalanced</td><td>The number of replica rebalancer-initiated additions attempted by the replication queue, as tracked by the <code>queue.replicate.rebalancereplica</code> metric.</td></tr><tr><td>Leases Transferred</td><td>The number of range lease transfers attempted by the replication queue, as tracked by the <code>queue.replicate.transferlease</code> metric.</td></tr><tr><td>Replicas in Purgatory</td><td>The number of replicas in the replication queue's purgatory currently awaiting allocation options, as tracked by the <code>queue.replicate.purgatory</code> metric.</td></tr></tbody></table>
+
+## Split Queue
+
+<Frame>
+  ![DB Console split queue graph](/images/v26.1/ui_split_queue.png)
+</Frame>
+
+The **Split Queue** graph displays various details about the health and performance of the split queue.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Successful Actions</td><td>The number of replicas successfully processed by the split queue, as tracked by the <code>queue.split.process.success</code> metric.</td></tr><tr><td>Pending Actions</td><td>The number of pending replicas in the split queue, as tracked by the <code>queue.split.pending</code> metric.</td></tr></tbody></table>
+
+## Merge Queue
+
+<Frame>
+  ![DB Console merge queue graph](/images/v26.1/ui_merge_queue.png)
+</Frame>
+
+The **Merge Queue** graph displays various details about the health and performance of the merge queue.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Successful Actions</td><td>The number of replicas successfully processed by the merge queue, as tracked by the <code>queue.merge.process.success</code> metric.</td></tr><tr><td>Pending Actions</td><td>The number of pending replicas in the merge queue, as tracked by the <code>queue.merge.pending</code> metric.</td></tr></tbody></table>
+
+## Raft Log Queue
+
+<Frame>
+  ![DB Console Raft log queue graph](/images/v26.1/ui_raftlog_queue.png)
+</Frame>
+
+The **Raft Log Queue** graph displays various details about the health and performance of the Raft log queue.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Successful Actions</td><td>The number of replicas successfully processed by the Raft log queue, as tracked by the <code>queue.raftlog.process.success</code> metric.</td></tr><tr><td>Pending Actions</td><td>The number of pending replicas in the Raft log queue, as tracked by the <code>queue.raftlog.pending</code> metric.</td></tr></tbody></table>
+
+## Raft Snapshot Queue
+
+<Frame>
+  ![DB Console Raft snapshot queue graph](/images/v26.1/ui_raftsnapshot_queue.png)
+</Frame>
+
+The **Raft Snapshot Queue** graph displays various details about the health and performance of the Raft repair queue.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Successful Actions</td><td>The number of replicas successfully processed by the Raft repair queue, as tracked by the <code>queue.raftsnapshot.process.success</code> metric.</td></tr><tr><td>Pending Actions</td><td>The number of pending replicas in the Raft repair queue, as tracked by the <code>queue.raftsnapshot.pending</code> metric.</td></tr></tbody></table>
+
+## Consistency Checker Queue
+
+<Frame>
+  ![DB Console consistency checker queue graph](/images/v26.1/ui_consistencychecker_queue.png)
+</Frame>
+
+The **Consistency Checker Queue** graph displays various details about the health and performance of the consistency checker queue.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Successful Actions</td><td>The number of replicas successfully processed by the consistency checker queue, as tracked by the <code>queue.consistency.process.success</code> metric.</td></tr><tr><td>Pending Actions</td><td>The number of pending replicas in the consistency checker queue, as tracked by the <code>queue.consistency.pending</code> metric.</td></tr></tbody></table>
+
+## Time Series Maintenance Queue
+
+<Frame>
+  ![DB Console time series maintenance queue graph](/images/v26.1/ui_tsmaintenance_queue.png)
+</Frame>
+
+The **Time Series Maintenance Queue** graph displays various details about the health and performance of the time series maintenance queue.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Successful Actions</td><td>The number of replicas successfully processed by the time series maintenance queue, as tracked by the <code>queue.tsmaintenance.process.success</code> metric.</td></tr><tr><td>Pending Actions</td><td>The number of pending replicas in the time series maintenance queue, as tracked by the <code>queue.tsmaintenance.pending</code> metric.</td></tr></tbody></table>
+
+## MVCC GC Queue
+
+<Frame>
+  ![DB Console GC queue graph](/images/v26.1/ui_mvcc_gc_queue.png)
+</Frame>
+
+The **MVCC GC Queue** graph displays various details about the health and performance of the [garbage collection](/docs/v26.1/architecture/storage-layer#garbage-collection) queue.
+
+Hovering over the graph displays values for the following metrics:
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Successful Actions</td><td>The number of replicas successfully processed by the <a href="/docs/v26.1/architecture/storage-layer#garbage-collection">garbage collection</a> queue, as tracked by the <code>queue.gc.process.success</code> metric.</td></tr><tr><td>Pending Actions</td><td>The number of pending replicas in the <a href="/docs/v26.1/architecture/storage-layer#garbage-collection">garbage collection</a> queue, as tracked by the <code>queue.gc.pending</code> metric.</td></tr></tbody></table>
+
+## Protected Timestamp Records
+
+<Frame>
+  ![DB Console GC queue graph](/images/v26.1/ui_protected_timestamp_records.png)
+</Frame>
+
+The **Protected Timestamp Records** graph displays the number of [protected timestamp](/docs/v26.1/architecture/storage-layer#protected-timestamps) records (used by backups, changefeeds, etc. to prevent MVCC GC) per node, as tracked by the `spanconfig.kvsubscriber.protected_record_count` metric.
+
+## Summary and events
+
+### Summary panel
+
+A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
+
+<table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Total Nodes</td><td>The total number of nodes in the cluster. <a href="/docs/v26.1/node-shutdown?filters=decommission">Decommissioned nodes</a> are not included in this count.</td></tr><tr><td>Capacity Used</td><td>The storage capacity used as a percentage of <a href="/docs/v26.1/ui-cluster-overview-page#capacity-metrics">usable capacity</a> allocated across all nodes.</td></tr><tr><td>Unavailable Ranges</td><td>The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.</td></tr><tr><td>Queries per second</td><td>The total number of <code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, and <code>DELETE</code> queries executed per second across the cluster.</td></tr><tr><td>P99 Latency</td><td>The 99th percentile of service latency.</td></tr></tbody></table>
+
+<Note>
+If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not recommended in production](/docs/v26.1/recommended-production-settings#topology)), you must explicitly [set the store size](/docs/v26.1/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+### Events panel
+
+Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
+
+<Frame>
+  ![DB Console Events](/images/v26.1/ui_events.png)
+</Frame>
+
+The following types of events are listed:
+
+- Database created
+- Database dropped
+- Table created
+- Table dropped
+- Table altered
+- Index created
+- Index dropped
+- View created
+- View dropped
+- Schema change reversed
+- Schema change finished
+- Node joined
+- Node decommissioned
+- Node restarted
+- Cluster setting changed
+
+## See also
+
+- [Troubleshooting Overview](/docs/v26.1/troubleshooting-overview)
+- [Support Resources](/docs/v26.1/support-resources)
+- [Raw Status Endpoints](/docs/v26.1/monitoring-and-alerting#raw-status-endpoints)

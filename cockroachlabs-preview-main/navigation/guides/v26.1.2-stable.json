@@ -1,0 +1,1194 @@
+{
+  "pages": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "docs/stable/cockroachcloud/quickstart",
+        "docs/stable/install-cockroachdb",
+        {
+          "group": "Develop with CockroachDB",
+          "pages": [
+            "docs/stable/developer-guide-overview",
+            "docs/stable/developer-basics",
+            "docs/stable/build-a-nodejs-app-with-cockroachdb",
+            "docs/stable/build-a-python-app-with-cockroachdb-psycopg3",
+            "docs/stable/build-a-go-app-with-cockroachdb",
+            "docs/stable/build-a-java-app-with-cockroachdb",
+            "docs/stable/build-a-ruby-app-with-cockroachdb",
+            "docs/stable/build-a-csharp-app-with-cockroachdb",
+            "docs/stable/build-a-rust-app-with-cockroachdb",
+            "docs/stable/hasura-getting-started"
+          ]
+        },
+        {
+          "group": "Standard Examples",
+          "pages": [
+            "docs/stable/deploy-lambda-function",
+            "docs/stable/deploy-app-gcr",
+            "docs/stable/deploy-app-netlify",
+            "docs/stable/deploy-app-vercel",
+            "docs/stable/serverless-function-best-practices"
+          ]
+        },
+        "docs/stable/movr"
+      ]
+    },
+    {
+      "group": "CockroachDB and AI",
+      "pages": [
+        "docs/stable/cockroachdb-and-ai",
+        "docs/stable/agent-skills",
+        "docs/stable/cockroachcloud/connect-to-the-cockroachdb-cloud-mcp-server",
+        "docs/stable/docs-mcp-integration"
+      ]
+    },
+    {
+      "group": "CockroachDB Releases",
+      "pages": [
+        "docs/stable/releases/index",
+        "docs/stable/releases/v26.1",
+        "docs/stable/releases/v26.2",
+        "docs/stable/releases/release-support-policy",
+        "docs/stable/releases/cloud",
+        "docs/stable/releases/molt",
+        "docs/stable/releases/kubernetes-operator",
+        "docs/stable/releases/downloads-archive"
+      ]
+    },
+    {
+      "group": "Feature Overview",
+      "pages": [
+        {
+          "group": "CockroachDB Basics",
+          "pages": [
+            "docs/stable/why-cockroachdb",
+            "docs/stable/demo-replication-and-rebalancing",
+            "docs/stable/demo-cockroachdb-resilience",
+            "docs/stable/demo-serializable",
+            "docs/stable/multi-active-availability"
+          ]
+        },
+        {
+          "group": "CockroachDB SQL",
+          "pages": [
+            "docs/stable/postgresql-compatibility",
+            "docs/stable/sql-feature-support",
+            "docs/stable/sql-faqs"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Data Resilience",
+      "pages": [
+        "docs/stable/data-resilience",
+        "docs/stable/disaster-recovery-overview"
+      ]
+    },
+    {
+      "group": "Connect to an Application",
+      "pages": [
+        "docs/stable/install-client-drivers",
+        "docs/stable/connect-to-the-database",
+        "docs/stable/connection-parameters",
+        "docs/stable/connection-pooling"
+      ]
+    },
+    {
+      "group": "Migrate",
+      "pages": [
+        "docs/stable/molt/migration-overview",
+        "docs/stable/molt/migration-strategy",
+        {
+          "group": "Migration Flows",
+          "pages": [
+            "docs/stable/molt/migrate-bulk-load",
+            "docs/stable/molt/migrate-load-replicate",
+            "docs/stable/molt/migrate-resume-replication",
+            "docs/stable/molt/migrate-failback"
+          ]
+        },
+        {
+          "group": "MOLT Tools",
+          "pages": [
+            "docs/stable/cockroachcloud/migrations-page",
+            "docs/stable/molt/molt-fetch",
+            {
+              "group": "Replicator",
+              "pages": [
+                "docs/stable/molt/molt-replicator",
+                "docs/stable/molt/replicator-flags",
+                "docs/stable/molt/replicator-metrics",
+                {
+                  "group": "Userscripts",
+                  "pages": [
+                    "docs/stable/molt/userscript-overview",
+                    "docs/stable/molt/userscript-quickstart",
+                    "docs/stable/molt/userscript-api",
+                    "docs/stable/molt/userscript-cookbook",
+                    "docs/stable/molt/userscript-metrics"
+                  ]
+                }
+              ]
+            },
+            "docs/stable/molt/molt-verify"
+          ]
+        },
+        {
+          "group": "Third-Party Migration Tools",
+          "pages": [
+            "docs/stable/aws-dms",
+            "docs/stable/qlik",
+            "docs/stable/striim",
+            "docs/stable/goldengate",
+            "docs/stable/debezium"
+          ]
+        },
+        {
+          "group": "Migrate Data Types",
+          "pages": [
+            "docs/stable/migrate-from-csv",
+            "docs/stable/migrate-from-avro",
+            "docs/stable/migrate-from-shapefiles",
+            "docs/stable/migrate-from-openstreetmap",
+            "docs/stable/migrate-from-geojson",
+            "docs/stable/migrate-from-geopackage",
+            "docs/stable/import-performance-best-practices"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Cloud Deployments",
+      "pages": [
+        "docs/stable/cockroachcloud/index",
+        "docs/stable/cockroachcloud/create-an-account",
+        "docs/stable/cockroachcloud/costs",
+        "docs/stable/cockroachcloud/byoc-deployment",
+        {
+          "group": "Basic Deployments",
+          "pages": [
+            "docs/stable/cockroachcloud/plan-your-cluster-basic",
+            "docs/stable/cockroachcloud/create-a-basic-cluster",
+            "docs/stable/cockroachcloud/connect-to-a-basic-cluster",
+            "docs/stable/cockroachcloud/resource-usage-basic",
+            "docs/stable/cockroachcloud/basic-cluster-management",
+            "docs/stable/cockroachcloud/provision-a-cluster-with-terraform",
+            "docs/stable/cockroachcloud/change-plan-between-basic-and-standard"
+          ]
+        },
+        {
+          "group": "Standard Deployments (Preview)",
+          "pages": [
+            "docs/stable/cockroachcloud/plan-your-cluster",
+            "docs/stable/cockroachcloud/create-your-cluster",
+            "docs/stable/cockroachcloud/connect-to-your-cluster",
+            "docs/stable/cockroachcloud/resource-usage",
+            "docs/stable/cockroachcloud/cluster-management",
+            "docs/stable/cockroachcloud/production-checklist",
+            "docs/stable/cockroachcloud/provision-a-cluster-with-terraform",
+            "docs/stable/cockroachcloud/migrate-from-standard-to-advanced",
+            "docs/stable/cockroachcloud/change-plan-between-basic-and-standard"
+          ]
+        },
+        {
+          "group": "Advanced Deployments",
+          "pages": [
+            "docs/stable/cockroachcloud/plan-your-cluster-advanced",
+            "docs/stable/cockroachcloud/create-an-advanced-cluster",
+            "docs/stable/cockroachcloud/connect-to-an-advanced-cluster",
+            "docs/stable/cockroachcloud/advanced-cluster-management",
+            "docs/stable/cockroachcloud/production-checklist",
+            "docs/stable/cockroachcloud/provision-a-cluster-with-terraform",
+            "docs/stable/cockroachcloud/cockroachdb-advanced-on-azure",
+            "docs/stable/cockroachcloud/migrate-from-standard-to-advanced"
+          ]
+        },
+        "docs/stable/cockroachcloud/regions",
+        {
+          "group": "Security",
+          "pages": [
+            "docs/stable/cockroachcloud/security-overview",
+            "docs/stable/cockroachcloud/aws-privatelink",
+            "docs/stable/cockroachcloud/egress-private-endpoints",
+            "docs/stable/hashicorp-integration",
+            {
+              "group": "Customer-Managed Encryption Keys (CMEK)",
+              "pages": [
+                "docs/stable/cockroachcloud/cmek",
+                "docs/stable/cockroachcloud/managing-cmek"
+              ]
+            },
+            {
+              "group": "Compliance",
+              "pages": [
+                "docs/stable/cockroachcloud/compliance",
+                "docs/stable/cockroachcloud/pci-dss"
+              ]
+            },
+            {
+              "group": "Authentication",
+              "pages": [
+                "docs/stable/cockroachcloud/authentication",
+                "docs/stable/cockroachcloud/cloud-org-sso",
+                "docs/stable/cockroachcloud/configure-cloud-org-sso",
+                "docs/stable/cockroachcloud/configure-scim-provisioning",
+                "docs/stable/cockroachcloud/cloud-sso-sql",
+                "docs/stable/cockroachcloud/client-certs-advanced"
+              ]
+            },
+            {
+              "group": "Authorization",
+              "pages": [
+                "docs/stable/cockroachcloud/authorization",
+                "docs/stable/cockroachcloud/managing-access",
+                "docs/stable/cockroachcloud/folders",
+                "docs/stable/cockroachcloud/labels"
+              ]
+            },
+            {
+              "group": "Network Authorization",
+              "pages": [
+                "docs/stable/cockroachcloud/network-authorization",
+                "docs/stable/cockroachcloud/private-clusters",
+                "docs/stable/cockroachcloud/egress-perimeter-controls"
+              ]
+            },
+            {
+              "group": "Audit Logs",
+              "pages": [
+                "docs/stable/cockroachcloud/sql-audit-logging",
+                "docs/stable/cockroachcloud/cloud-org-audit-logs",
+                "docs/stable/cockroachcloud/export-logs",
+                "docs/stable/cockroachcloud/export-logs-advanced"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Monitoring and Alerting",
+          "pages": [
+            "docs/stable/cockroachcloud/overview-page",
+            "docs/stable/cockroachcloud/alerts-page",
+            "docs/stable/cockroachcloud/tools-page",
+            {
+              "group": "Metrics",
+              "pages": [
+                "docs/stable/cockroachcloud/metrics",
+                "docs/stable/cockroachcloud/metrics-overview",
+                "docs/stable/cockroachcloud/metrics-sql",
+                "docs/stable/cockroachcloud/metrics-changefeeds",
+                "docs/stable/cockroachcloud/metrics-row-level-ttl",
+                "docs/stable/cockroachcloud/metrics-request-units",
+                "docs/stable/cockroachcloud/custom-metrics-chart-page",
+                "docs/stable/cockroachcloud/export-metrics",
+                "docs/stable/cockroachcloud/export-metrics-advanced",
+                "docs/stable/cockroachcloud/metrics-essential",
+                "docs/stable/essential-metrics-advanced",
+                "docs/stable/essential-alerts-advanced"
+              ]
+            },
+            {
+              "group": "SQL Activity Page",
+              "pages": [
+                "docs/stable/cockroachcloud/statements-page",
+                "docs/stable/cockroachcloud/sessions-page",
+                "docs/stable/cockroachcloud/transactions-page"
+              ]
+            },
+            "docs/stable/cockroachcloud/insights-page",
+            "docs/stable/cockroachcloud/databases-page",
+            "docs/stable/cockroachcloud/jobs-page"
+          ]
+        },
+        {
+          "group": "Backups and Restores",
+          "pages": [
+            "docs/stable/cockroachcloud/backup-and-restore-overview",
+            {
+              "group": "Managed Backups",
+              "pages": [
+                "docs/stable/cockroachcloud/managed-backups-basic",
+                "docs/stable/cockroachcloud/managed-backups",
+                "docs/stable/cockroachcloud/managed-backups-advanced"
+              ]
+            },
+            "docs/stable/cockroachcloud/take-and-restore-self-managed-backups",
+            "docs/stable/cockroachcloud/backup-and-restore-monitoring"
+          ]
+        },
+        "docs/stable/cockroachcloud/physical-cluster-replication",
+        "docs/stable/cockroachcloud/billing-management",
+        {
+          "group": "Upgrade",
+          "pages": [
+            "docs/stable/cockroachcloud/upgrade-policy",
+            "docs/stable/cockroachcloud/upgrade-cockroach-version"
+          ]
+        },
+        "docs/stable/cockroachcloud/sql-shell",
+        "docs/stable/cockroachcloud/cloud-api",
+        {
+          "group": "ccloud CLI",
+          "pages": [
+            "docs/stable/cockroachcloud/ccloud-get-started",
+            "docs/stable/cockroachcloud/ccloud-reference"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Self-Hosted Deployments",
+      "pages": [
+        "docs/stable/recommended-production-settings",
+        "docs/stable/deployment-operations-skills-taxonomy",
+        {
+          "group": "Deploy Locally",
+          "pages": [
+            "docs/stable/secure-a-cluster",
+            "docs/stable/start-a-local-cluster-in-docker",
+            "docs/stable/simulate-a-multi-region-cluster-on-localhost"
+          ]
+        },
+        {
+          "group": "Deploy Manually",
+          "pages": [
+            "docs/stable/manual-deployment",
+            "docs/stable/deploy-cockroachdb-on-premises",
+            "docs/stable/deploy-cockroachdb-on-aws",
+            "docs/stable/deploy-cockroachdb-on-microsoft-azure",
+            "docs/stable/deploy-cockroachdb-on-google-cloud-platform",
+            "docs/stable/deploy-cockroachdb-on-digital-ocean"
+          ]
+        },
+        {
+          "group": "Deploy in Kubernetes with CockroachDB Operator (Recommended)",
+          "pages": [
+            "docs/stable/cockroachdb-operator-overview",
+            "docs/stable/deploy-cockroachdb-with-cockroachdb-operator",
+            {
+              "group": "Migrate from Other Kubernetes Deployments",
+              "pages": [
+                "docs/stable/migrate-cockroachdb-kubernetes-helm",
+                "docs/stable/migrate-cockroachdb-kubernetes-operator"
+              ]
+            },
+            {
+              "group": "Operate CockroachDB with Kubernetes",
+              "pages": [
+                "docs/stable/schedule-cockroachdb-operator",
+                "docs/stable/configure-cockroachdb-operator",
+                "docs/stable/secure-cockroachdb-operator",
+                "docs/stable/scale-cockroachdb-operator",
+                "docs/stable/monitor-cockroachdb-operator",
+                "docs/stable/upgrade-cockroachdb-operator",
+                "docs/stable/override-templates-cockroachdb-operator",
+                "docs/stable/cockroachdb-operator-performance"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Deploy on Kubernetes with Other Technologies",
+          "pages": [
+            "docs/stable/kubernetes-overview",
+            "docs/stable/deploy-cockroachdb-with-kubernetes",
+            "docs/stable/deploy-cockroachdb-with-kubernetes-openshift",
+            "docs/stable/orchestrate-cockroachdb-with-kubernetes-multi-cluster",
+            {
+              "group": "Operate on Kubernetes",
+              "pages": [
+                "docs/stable/schedule-cockroachdb-kubernetes",
+                "docs/stable/configure-cockroachdb-kubernetes",
+                "docs/stable/secure-cockroachdb-kubernetes",
+                "docs/stable/scale-cockroachdb-kubernetes",
+                "docs/stable/monitor-cockroachdb-kubernetes",
+                "docs/stable/upgrade-cockroachdb-kubernetes",
+                "docs/stable/kubernetes-performance"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Multi-Region for Self-Hosted Deployments",
+          "pages": [
+            "docs/stable/topology-patterns",
+            "docs/stable/topology-basic-production",
+            "docs/stable/topology-follower-reads",
+            "docs/stable/topology-follow-the-workload",
+            "docs/stable/regional-tables",
+            "docs/stable/global-tables"
+          ]
+        },
+        {
+          "group": "Security",
+          "pages": [
+            {
+              "group": "Certificates",
+              "pages": [
+                "docs/stable/manage-certs-cli",
+                "docs/stable/manage-certs-vault",
+                "docs/stable/create-security-certificates-openssl",
+                "docs/stable/manage-certs-revoke-ocsp",
+                "docs/stable/certificate-based-authentication-using-the-x509-subject-field"
+              ]
+            },
+            "docs/stable/authentication",
+            "docs/stable/encryption",
+            "docs/stable/authorization",
+            "docs/stable/sql-audit-logging",
+            "docs/stable/role-based-audit-logging",
+            "docs/stable/ldap-authentication",
+            "docs/stable/ldap-authorization",
+            "docs/stable/gssapi_authentication",
+            "docs/stable/sso-sql",
+            "docs/stable/jwt-authorization",
+            "docs/stable/sso-db-console",
+            "docs/stable/oidc-authorization",
+            "docs/stable/rotate-certificates",
+            "docs/stable/vault-db-secrets-tutorial"
+          ]
+        },
+        {
+          "group": "Monitoring and Alerting",
+          "pages": [
+            "docs/stable/monitoring-and-alerting",
+            "docs/stable/common-issues-to-monitor",
+            "docs/stable/enable-node-map",
+            "docs/stable/prometheus-endpoint",
+            "docs/stable/monitor-cockroachdb-with-prometheus",
+            "docs/stable/essential-metrics-self-hosted",
+            "docs/stable/essential-alerts-self-hosted"
+          ]
+        },
+        {
+          "group": "Administration",
+          "pages": [
+            "docs/stable/ui-overview",
+            "docs/stable/ui-cluster-overview-page",
+            {
+              "group": "Metrics Dashboards",
+              "pages": [
+                "docs/stable/ui-overview-dashboard",
+                "docs/stable/ui-hardware-dashboard",
+                "docs/stable/ui-runtime-dashboard",
+                "docs/stable/ui-networking-dashboard",
+                "docs/stable/ui-sql-dashboard",
+                "docs/stable/ui-storage-dashboard",
+                "docs/stable/ui-replication-dashboard",
+                "docs/stable/ui-distributed-dashboard",
+                "docs/stable/ui-queues-dashboard",
+                "docs/stable/ui-slow-requests-dashboard",
+                "docs/stable/ui-cdc-dashboard",
+                "docs/stable/ui-overload-dashboard",
+                "docs/stable/ui-ttl-dashboard",
+                "docs/stable/ui-physical-cluster-replication-dashboard",
+                "docs/stable/ui-logical-data-replication-dashboard",
+                "docs/stable/ui-custom-chart-debug-page"
+              ]
+            },
+            "docs/stable/ui-databases-page",
+            "docs/stable/ui-sessions-page",
+            "docs/stable/ui-statements-page",
+            "docs/stable/ui-transactions-page",
+            "docs/stable/ui-insights-page",
+            "docs/stable/ui-network-latency-page",
+            "docs/stable/ui-top-ranges-page",
+            "docs/stable/ui-jobs-page",
+            "docs/stable/ui-schedules-page",
+            "docs/stable/ui-debug-pages",
+            "docs/stable/ui-key-visualizer",
+            "docs/stable/wal-failover"
+          ]
+        },
+        {
+          "group": "Backups and Restores",
+          "pages": [
+            "docs/stable/backup-and-restore-overview",
+            "docs/stable/take-full-and-incremental-backups",
+            "docs/stable/take-backups-with-revision-history-and-restore-from-a-point-in-time",
+            "docs/stable/take-and-restore-encrypted-backups",
+            "docs/stable/take-locality-restricted-backups",
+            "docs/stable/take-and-restore-locality-aware-backups",
+            "docs/stable/manage-a-backup-schedule",
+            "docs/stable/backup-validation",
+            "docs/stable/expire-past-backups",
+            "docs/stable/backup-and-restore-monitoring"
+          ]
+        },
+        {
+          "group": "File Storage",
+          "pages": [
+            "docs/stable/use-cloud-storage",
+            "docs/stable/cloud-storage-authentication",
+            "docs/stable/use-userfile-storage",
+            "docs/stable/use-a-local-file-server"
+          ]
+        },
+        {
+          "group": "Cluster Maintenance",
+          "pages": [
+            "docs/stable/upgrade-cockroach-version",
+            "docs/stable/disaster-recovery-planning",
+            "docs/stable/restoring-backups-across-versions",
+            "docs/stable/manage-long-running-queries",
+            "docs/stable/node-shutdown"
+          ]
+        },
+        {
+          "group": "Logs",
+          "pages": [
+            "docs/stable/logging-overview",
+            "docs/stable/configure-logs",
+            "docs/stable/logging-use-cases",
+            "docs/stable/log-sql-activity-to-datadog",
+            "docs/stable/logging-best-practices",
+            "docs/stable/critical-log-messages"
+          ]
+        },
+        "docs/stable/cluster-api"
+      ]
+    },
+    {
+      "group": "Schema Design",
+      "pages": [
+        "docs/stable/schema-design-overview",
+        "docs/stable/computed-columns",
+        "docs/stable/column-families",
+        "docs/stable/multiregion-scale-application",
+        {
+          "group": "Indexes",
+          "pages": [
+            "docs/stable/schema-design-indexes",
+            "docs/stable/partial-indexes",
+            "docs/stable/hash-sharded-indexes",
+            "docs/stable/inverted-indexes",
+            "docs/stable/full-text-search",
+            "docs/stable/trigram-indexes",
+            "docs/stable/expression-indexes",
+            "docs/stable/spatial-indexes",
+            "docs/stable/vector-indexes"
+          ]
+        },
+        {
+          "group": "Update a Database Schema",
+          "pages": [
+            "docs/stable/online-schema-changes",
+            "docs/stable/alembic",
+            "docs/stable/flyway",
+            "docs/stable/liquibase"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Reads and Writes",
+      "pages": [
+        "docs/stable/architecture/reads-and-writes-overview",
+        {
+          "group": "Read Data",
+          "pages": [
+            "docs/stable/views",
+            "docs/stable/subqueries",
+            "docs/stable/temporary-tables",
+            "docs/stable/pagination",
+            "docs/stable/follower-reads",
+            "docs/stable/as-of-system-time",
+            "docs/stable/query-spatial-data"
+          ]
+        },
+        {
+          "group": "Write Data",
+          "pages": [
+            "docs/stable/bulk-update-data",
+            "docs/stable/bulk-delete-data",
+            "docs/stable/row-level-ttl"
+          ]
+        },
+        {
+          "group": "Transactions",
+          "pages": [
+            "docs/stable/transactions",
+            "docs/stable/advanced-client-side-transaction-retries",
+            "docs/stable/architecture/life-of-a-distributed-transaction",
+            "docs/stable/read-committed"
+          ]
+        },
+        "docs/stable/local-testing",
+        "links/tutorials/sql-playground",
+        {
+          "group": "Database Management Tools",
+          "pages": [
+            "docs/stable/dbeaver",
+            "docs/stable/intellij-idea"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Stream Data",
+      "pages": [
+        "docs/stable/change-data-capture-overview",
+        {
+          "group": "Get Started with Changefeeds",
+          "pages": [
+            "docs/stable/create-and-configure-changefeeds",
+            "docs/stable/changefeed-best-practices",
+            {
+              "group": "Changefeed Messages",
+              "pages": [
+                "docs/stable/changefeed-messages",
+                "docs/stable/changefeed-message-envelopes"
+              ]
+            },
+            "docs/stable/changefeed-sinks",
+            "docs/stable/changefeed-examples"
+          ]
+        },
+        {
+          "group": "Monitor Changefeeds",
+          "pages": [
+            "docs/stable/monitor-and-debug-changefeeds",
+            "docs/stable/changefeed-monitoring-guide",
+            "docs/stable/protect-changefeed-data"
+          ]
+        },
+        {
+          "group": "Optimize Changefeeds",
+          "pages": [
+            "docs/stable/cdc-queries",
+            "docs/stable/changefeeds-on-tables-with-column-families",
+            "docs/stable/export-data-with-changefeeds",
+            "docs/stable/changefeeds-in-multi-region-deployments"
+          ]
+        },
+        {
+          "group": "Changefeed Tutorials",
+          "pages": [
+            {
+              "group": "Stream a Changefeed to an Amazon MSK Cluster",
+              "pages": [
+                "docs/stable/stream-a-changefeed-to-amazon-msk",
+                "docs/stable/stream-a-changefeed-to-amazon-msk-serverless"
+              ]
+            },
+            "docs/stable/connect-to-a-changefeed-kafka-sink-with-oauth-using-okta",
+            "docs/stable/cockroachcloud/stream-changefeed-to-snowflake-aws",
+            "docs/stable/stream-a-changefeed-to-a-confluent-cloud-kafka-cluster"
+          ]
+        },
+        {
+          "group": "Technical Overview",
+          "pages": [
+            "docs/stable/how-does-a-changefeed-work"
+          ]
+        },
+        "docs/stable/advanced-changefeed-configuration"
+      ]
+    },
+    {
+      "group": "Cross-Cluster Replication",
+      "pages": [
+        {
+          "group": "Logical Data Replication",
+          "pages": [
+            "docs/stable/logical-data-replication-overview",
+            "docs/stable/set-up-logical-data-replication",
+            "docs/stable/manage-logical-data-replication",
+            "docs/stable/logical-data-replication-monitoring"
+          ]
+        },
+        {
+          "group": "Physical Cluster Replication",
+          "pages": [
+            "docs/stable/physical-cluster-replication-overview",
+            "docs/stable/set-up-physical-cluster-replication",
+            "docs/stable/upgrade-with-pcr",
+            "docs/stable/failover-replication",
+            "docs/stable/physical-cluster-replication-monitoring",
+            "docs/stable/read-from-standby",
+            "docs/stable/physical-cluster-replication-technical-overview",
+            {
+              "group": "Cluster Virtualization",
+              "pages": [
+                "docs/stable/cluster-virtualization-overview",
+                "docs/stable/work-with-virtual-clusters",
+                "docs/stable/cluster-virtualization-setting-scopes",
+                "docs/stable/cluster-virtualization-metric-scopes"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Multi-Region Capabilities",
+      "pages": [
+        "docs/stable/multiregion-overview",
+        "docs/stable/multiregion-survival-goals",
+        {
+          "group": "Data Domiciling and Performance",
+          "pages": [
+            "docs/stable/table-localities",
+            "docs/stable/partitioning"
+          ]
+        },
+        "docs/stable/choosing-a-multi-region-configuration",
+        "docs/stable/zone-config-extensions",
+        {
+          "group": "Multi-Region Tutorials",
+          "pages": [
+            "docs/stable/demo-low-latency-multi-region-deployment",
+            "docs/stable/data-domiciling",
+            "docs/stable/migrate-to-multiregion-sql"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Optimize Performance",
+      "pages": [
+        "docs/stable/make-queries-fast",
+        "docs/stable/performance-best-practices-overview",
+        "docs/stable/indexes",
+        "docs/stable/map-sql-activity-to-app",
+        "docs/stable/cost-based-optimizer",
+        "docs/stable/vectorized-execution",
+        "docs/stable/load-based-splitting",
+        "docs/stable/configure-replication-zones",
+        "docs/stable/admission-control",
+        "docs/stable/monitor-and-analyze-transaction-contention",
+        "docs/stable/performance-recipes",
+        {
+          "group": "Performance Tuning Tutorials",
+          "pages": [
+            "docs/stable/sql-tuning-with-explain",
+            "docs/stable/apply-statement-performance-rules",
+            "docs/stable/troubleshoot-lock-contention"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Troubleshooting",
+      "pages": [
+        "docs/stable/troubleshooting-overview",
+        "docs/stable/common-errors",
+        "docs/stable/cockroachcloud/troubleshooting-page",
+        "docs/stable/cluster-setup-troubleshooting",
+        "docs/stable/query-behavior-troubleshooting",
+        "docs/stable/transaction-retry-error-reference",
+        "docs/stable/transaction-retry-error-example",
+        "docs/stable/differences-in-metrics-between-third-party-monitoring-integrations-and-db-console",
+        "docs/stable/understand-hotspots",
+        "docs/stable/detect-hotspots",
+        "docs/stable/troubleshoot-query-plan-regressions",
+        "docs/stable/troubleshoot-replication-zones",
+        {
+          "group": "Benchmarking",
+          "pages": [
+            "docs/stable/performance",
+            "docs/stable/performance-benchmarking-with-tpcc-local"
+          ]
+        },
+        "docs/stable/support-resources",
+        "docs/stable/file-an-issue",
+        "docs/stable/automatic-cpu-profiler",
+        "docs/stable/automatic-go-execution-tracer",
+        "docs/stable/transaction-diagnostics"
+      ]
+    },
+    {
+      "group": "Integrate",
+      "pages": [
+        {
+          "group": "Ory",
+          "pages": [
+            "docs/stable/ory-overview",
+            "docs/stable/ory-integration-guide"
+          ]
+        },
+        "docs/stable/satori-integration"
+      ]
+    },
+    {
+      "group": "SQL",
+      "pages": [
+        {
+          "group": "Statements",
+          "pages": [
+            "docs/stable/sql-statements",
+            "docs/stable/alter-backup",
+            "docs/stable/alter-backup-schedule",
+            "docs/stable/alter-changefeed",
+            "docs/stable/alter-database",
+            "docs/stable/alter-default-privileges",
+            "docs/stable/alter-external-connection",
+            "docs/stable/alter-function",
+            "docs/stable/alter-index",
+            "docs/stable/alter-job",
+            "docs/stable/alter-partition",
+            "docs/stable/alter-policy",
+            "docs/stable/alter-procedure",
+            "docs/stable/alter-range",
+            "docs/stable/alter-role",
+            "docs/stable/alter-schema",
+            "docs/stable/alter-sequence",
+            "docs/stable/alter-table",
+            "docs/stable/alter-type",
+            "docs/stable/alter-user",
+            "docs/stable/alter-view",
+            "docs/stable/alter-virtual-cluster",
+            "docs/stable/backup",
+            "docs/stable/begin-transaction",
+            "docs/stable/call",
+            "docs/stable/cancel-job",
+            "docs/stable/cancel-query",
+            "docs/stable/cancel-session",
+            "docs/stable/check-external-connection",
+            "docs/stable/comment-on",
+            "docs/stable/commit-transaction",
+            "docs/stable/copy",
+            "docs/stable/create-changefeed",
+            "docs/stable/create-database",
+            "docs/stable/create-external-connection",
+            "docs/stable/create-function",
+            "docs/stable/create-index",
+            "docs/stable/create-logically-replicated",
+            "docs/stable/create-logical-replication-stream",
+            "docs/stable/create-policy",
+            "docs/stable/create-procedure",
+            "docs/stable/create-role",
+            "docs/stable/create-schedule-for-backup",
+            "docs/stable/create-schedule-for-changefeed",
+            "docs/stable/create-schema",
+            "docs/stable/create-sequence",
+            "docs/stable/create-statistics",
+            "docs/stable/create-table",
+            "docs/stable/create-table-as",
+            "docs/stable/create-trigger",
+            "docs/stable/create-type",
+            "docs/stable/create-user",
+            "docs/stable/create-view",
+            "docs/stable/create-virtual-cluster",
+            "docs/stable/delete",
+            "docs/stable/do",
+            "docs/stable/drop-database",
+            "docs/stable/drop-external-connection",
+            "docs/stable/drop-function",
+            "docs/stable/drop-owned-by",
+            "docs/stable/drop-policy",
+            "docs/stable/drop-trigger",
+            "docs/stable/drop-type",
+            "docs/stable/drop-index",
+            "docs/stable/drop-procedure",
+            "docs/stable/drop-role",
+            "docs/stable/drop-schedules",
+            "docs/stable/drop-schema",
+            "docs/stable/drop-sequence",
+            "docs/stable/drop-table",
+            "docs/stable/drop-user",
+            "docs/stable/drop-view",
+            "docs/stable/drop-virtual-cluster",
+            "docs/stable/changefeed-for",
+            "docs/stable/explain",
+            "docs/stable/explain-analyze",
+            "docs/stable/export",
+            "docs/stable/grant",
+            "docs/stable/import-into",
+            "docs/stable/insert",
+            "docs/stable/inspect",
+            "docs/stable/joins",
+            "docs/stable/limit-offset",
+            "docs/stable/order-by",
+            "docs/stable/pause-job",
+            "docs/stable/pause-schedules",
+            "docs/stable/reassign-owned",
+            "docs/stable/refresh",
+            "docs/stable/release-savepoint",
+            "docs/stable/reset-cluster-setting",
+            "docs/stable/reset-vars",
+            "docs/stable/restore",
+            "docs/stable/resume-job",
+            "docs/stable/resume-schedules",
+            "docs/stable/revoke",
+            "docs/stable/rollback-transaction",
+            "docs/stable/savepoint",
+            "docs/stable/select-clause",
+            "docs/stable/select-for-update",
+            "docs/stable/set-cluster-setting",
+            "docs/stable/set-vars",
+            "docs/stable/set-transaction",
+            "docs/stable/show-backup",
+            "docs/stable/show-cluster-setting",
+            "docs/stable/show-columns",
+            "docs/stable/show-constraints",
+            "docs/stable/show-create",
+            "docs/stable/show-create-external-connection",
+            "docs/stable/show-create-schedule",
+            "docs/stable/show-databases",
+            "docs/stable/show-default-privileges",
+            "docs/stable/show-default-session-variables-for-role",
+            "docs/stable/show-enums",
+            "docs/stable/show-external-connection",
+            "docs/stable/show-full-table-scans",
+            "docs/stable/show-grants",
+            "docs/stable/show-index",
+            "docs/stable/show-inspect-errors",
+            "docs/stable/show-jobs",
+            "docs/stable/show-locality",
+            "docs/stable/show-logical-replication-jobs",
+            "docs/stable/show-partitions",
+            "docs/stable/show-policies",
+            "docs/stable/show-ranges",
+            "docs/stable/show-range-for-row",
+            "docs/stable/show-regions",
+            "docs/stable/show-vars",
+            "docs/stable/show-super-regions",
+            "docs/stable/show-system-grants",
+            "docs/stable/show-roles",
+            "docs/stable/show-schedules",
+            "docs/stable/show-schemas",
+            "docs/stable/show-sequences",
+            "docs/stable/show-sessions",
+            "docs/stable/show-statement-hints",
+            "docs/stable/show-statements",
+            "docs/stable/show-statistics",
+            "docs/stable/show-savepoint-status",
+            "docs/stable/show-tables",
+            "docs/stable/show-trace",
+            "docs/stable/show-transactions",
+            "docs/stable/show-types",
+            "docs/stable/show-users",
+            "docs/stable/show-virtual-cluster",
+            "docs/stable/show-zone-configurations",
+            "docs/stable/truncate",
+            "docs/stable/update",
+            "docs/stable/upsert",
+            "docs/stable/with-storage-parameter"
+          ]
+        },
+        {
+          "group": "Syntax",
+          "pages": [
+            "docs/stable/keywords-and-identifiers",
+            "docs/stable/sql-constants",
+            "docs/stable/selection-queries",
+            "docs/stable/cursors",
+            "docs/stable/table-expressions",
+            "docs/stable/common-table-expressions",
+            "docs/stable/jsonpath",
+            "docs/stable/sql-name-resolution",
+            "docs/stable/null-handling",
+            "docs/stable/scalar-expressions",
+            "docs/stable/user-defined-functions",
+            "docs/stable/stored-procedures",
+            "docs/stable/triggers",
+            "docs/stable/window-functions",
+            "docs/stable/sql-grammar"
+          ]
+        },
+        {
+          "group": "Data Types",
+          "pages": [
+            "docs/stable/data-types",
+            "docs/stable/array",
+            "docs/stable/bit",
+            "docs/stable/bool",
+            "docs/stable/bytes",
+            "docs/stable/citext",
+            "docs/stable/collate",
+            "docs/stable/date",
+            "docs/stable/decimal",
+            "docs/stable/enum",
+            "docs/stable/float",
+            "docs/stable/inet",
+            "docs/stable/int",
+            "docs/stable/interval",
+            "docs/stable/jsonb",
+            "docs/stable/ltree",
+            "docs/stable/oid",
+            "docs/stable/serial",
+            "docs/stable/string",
+            "docs/stable/time",
+            "docs/stable/timestamp",
+            "docs/stable/tsquery",
+            "docs/stable/tsvector",
+            "docs/stable/uuid",
+            "docs/stable/vector"
+          ]
+        },
+        {
+          "group": "Spatial Data",
+          "pages": [
+            "docs/stable/spatial-data-overview",
+            "docs/stable/point",
+            "docs/stable/linestring",
+            "docs/stable/polygon",
+            "docs/stable/multipoint",
+            "docs/stable/multilinestring",
+            "docs/stable/multipolygon",
+            "docs/stable/geometrycollection",
+            "docs/stable/well-known-text",
+            "docs/stable/well-known-binary",
+            "docs/stable/geojson",
+            "docs/stable/srid-4326",
+            "docs/stable/st_contains",
+            "docs/stable/st_within",
+            "docs/stable/st_intersects",
+            "docs/stable/st_coveredby",
+            "docs/stable/st_covers",
+            "docs/stable/st_disjoint",
+            "docs/stable/st_equals",
+            "docs/stable/st_overlaps",
+            "docs/stable/st_touches",
+            "docs/stable/st_convexhull",
+            "docs/stable/st_union"
+          ]
+        },
+        {
+          "group": "Constraints",
+          "pages": [
+            "docs/stable/constraints",
+            "docs/stable/check",
+            "docs/stable/default-value",
+            "docs/stable/foreign-key",
+            "docs/stable/not-null",
+            "docs/stable/primary-key",
+            "docs/stable/unique"
+          ]
+        },
+        "docs/stable/functions-and-operators",
+        "docs/stable/session-variables",
+        "docs/stable/plpgsql"
+      ]
+    },
+    {
+      "group": "Reference",
+      "pages": [
+        "docs/stable/architecture/glossary",
+        {
+          "group": "Architecture",
+          "pages": [
+            "docs/stable/architecture/overview",
+            "docs/stable/architecture/sql-layer",
+            "docs/stable/architecture/transaction-layer",
+            "docs/stable/architecture/distribution-layer",
+            "docs/stable/architecture/replication-layer",
+            "docs/stable/architecture/storage-layer",
+            "docs/stable/backup-architecture"
+          ]
+        },
+        "links/api/cloud/v1",
+        "links/api/cluster/v2",
+        "docs/stable/docs-mcp-integration",
+        "docs/stable/cluster-settings",
+        {
+          "group": "Cockroach Commands",
+          "pages": [
+            "docs/stable/cockroach-commands",
+            "docs/stable/cockroach-start",
+            "docs/stable/cockroach-init",
+            "docs/stable/cockroach-start-single-node",
+            "docs/stable/cockroach-cert",
+            "docs/stable/cockroach-sql",
+            "docs/stable/cockroach-sqlfmt",
+            "docs/stable/cockroach-node",
+            "docs/stable/cockroach-nodelocal-upload",
+            "docs/stable/cockroach-auth-session",
+            "docs/stable/cockroach-demo",
+            "docs/stable/cockroach-debug-ballast",
+            "docs/stable/cockroach-debug-encryption-active-key",
+            "docs/stable/cockroach-debug-encryption-decrypt",
+            "docs/stable/cockroach-debug-job-trace",
+            "docs/stable/cockroach-debug-list-files",
+            "docs/stable/cockroach-debug-merge-logs",
+            "docs/stable/cockroach-debug-pebble-db-analyze-data",
+            "docs/stable/cockroach-debug-tsdump",
+            "docs/stable/cockroach-debug-zip",
+            "docs/stable/cockroach-statement-diag",
+            "docs/stable/cockroach-gen",
+            "docs/stable/cockroach-userfile-upload",
+            "docs/stable/cockroach-userfile-list",
+            "docs/stable/cockroach-userfile-get",
+            "docs/stable/cockroach-userfile-delete",
+            "docs/stable/cockroach-version",
+            "docs/stable/cockroach-workload",
+            "docs/stable/cockroach-sql-binary"
+          ]
+        },
+        "docs/stable/diagnostics-reporting",
+        {
+          "group": "Logs",
+          "pages": [
+            "docs/stable/logging",
+            "docs/stable/log-formats",
+            "docs/stable/eventlog"
+          ]
+        },
+        {
+          "group": "Metrics",
+          "pages": [
+            "docs/stable/metrics",
+            "docs/stable/multi-dimensional-metrics"
+          ]
+        },
+        {
+          "group": "Policies",
+          "pages": [
+            "docs/stable/cockroachdb-feature-availability",
+            "docs/stable/api-support-policy",
+            "docs/stable/telemetry"
+          ]
+        },
+        {
+          "group": "Third-Party Support",
+          "pages": [
+            "docs/stable/third-party-database-tools",
+            "docs/stable/third-party-monitoring-tools",
+            "docs/stable/community-tooling"
+          ]
+        },
+        {
+          "group": "Security",
+          "pages": [
+            "docs/stable/security-reference/security-overview",
+            {
+              "group": "Authentication",
+              "pages": [
+                "docs/stable/security-reference/authentication",
+                "docs/stable/security-reference/scram-authentication"
+              ]
+            },
+            "docs/stable/security-reference/authorization",
+            "docs/stable/security-reference/encryption",
+            "docs/stable/column-level-encryption",
+            "docs/stable/row-level-security",
+            "docs/stable/security-reference/transport-layer-security"
+          ]
+        },
+        {
+          "group": "System Catalogs",
+          "pages": [
+            "docs/stable/system-catalogs",
+            "docs/stable/crdb-internal",
+            "docs/stable/information-schema",
+            "docs/stable/pg-catalog",
+            "docs/stable/pg-extension"
+          ]
+        },
+        "docs/stable/advisories",
+        "docs/stable/releases/archived-documentation"
+      ]
+    },
+    {
+      "group": "FAQs",
+      "pages": [
+        "docs/stable/frequently-asked-questions",
+        "docs/stable/operational-faqs",
+        "docs/stable/licensing-faqs"
+      ]
+    },
+    "links/cockroach-university"
+  ]
+}

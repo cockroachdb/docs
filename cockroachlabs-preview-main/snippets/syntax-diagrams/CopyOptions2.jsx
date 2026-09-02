@@ -1,0 +1,86 @@
+export const CopyOptions2 = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="345" width="483" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="116" x="71" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="116" x="69" y="1"></rect>
+<text class="terminal" x="79" y="21">DESTINATION</text>
+<rect height="32" rx="10" width="30" x="207" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="30" x="205" y="1"></rect>
+<text class="terminal" x="215" y="21">=</text>
+<rect height="32" rx="10" width="96" x="71" y="47"></rect>
+<rect class="terminal" height="32" rx="10" width="96" x="69" y="45"></rect>
+<text class="terminal" x="79" y="65">DELIMITER</text>
+<rect height="32" rx="10" width="56" x="71" y="91"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="69" y="89"></rect>
+<text class="terminal" x="79" y="109">NULL</text><a xlink:href="#string_or_placeholder" xlink:title="string_or_placeholder">
+<rect height="32" width="158" x="277" y="3"></rect>
+<rect class="nonterminal" height="32" width="158" x="275" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="134" font-size="10" class="nonterminal" x="287" y="21">string_or_placeholder</text></a><rect height="32" rx="10" width="72" x="51" y="135"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="49" y="133"></rect>
+<text class="terminal" x="59" y="153">BINARY</text>
+<rect height="32" rx="10" width="46" x="51" y="179"></rect>
+<rect class="terminal" height="32" rx="10" width="46" x="49" y="177"></rect>
+<text class="terminal" x="59" y="197">CSV</text>
+<rect height="32" rx="10" width="74" x="51" y="223"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="49" y="221"></rect>
+<text class="terminal" x="59" y="241">HEADER</text>
+<rect height="32" rx="10" width="68" x="71" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="68" x="69" y="265"></rect>
+<text class="terminal" x="79" y="285">QUOTE</text>
+<rect height="32" rx="10" width="72" x="71" y="311"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="69" y="309"></rect>
+<text class="terminal" x="79" y="329">ESCAPE</text>
+<rect height="32" rx="10" width="76" x="183" y="267"></rect>
+<rect class="terminal" height="32" rx="10" width="76" x="181" y="265"></rect>
+<text class="terminal" x="191" y="285">SCONST</text>
+<path class="line" d="m17 17 h2 m40 0 h10 m116 0 h10 m0 0 h10 m30 0 h10 m-206 0 h20 m186 0 h20 m-226 0 q10 0 10 10 m206 0 q0 -10 10 -10 m-216 10 v24 m206 0 v-24 m-206 24 q0 10 10 10 m186 0 q10 0 10 -10 m-196 10 h10 m96 0 h10 m0 0 h70 m-196 -10 v20 m206 0 v-20 m-206 20 v24 m206 0 v-24 m-206 24 q0 10 10 10 m186 0 q10 0 10 -10 m-196 10 h10 m56 0 h10 m0 0 h110 m20 -88 h10 m158 0 h10 m-424 0 h20 m404 0 h20 m-444 0 q10 0 10 10 m424 0 q0 -10 10 -10 m-434 10 v112 m424 0 v-112 m-424 112 q0 10 10 10 m404 0 q10 0 10 -10 m-414 10 h10 m72 0 h10 m0 0 h312 m-414 -10 v20 m424 0 v-20 m-424 20 v24 m424 0 v-24 m-424 24 q0 10 10 10 m404 0 q10 0 10 -10 m-414 10 h10 m46 0 h10 m0 0 h338 m-414 -10 v20 m424 0 v-20 m-424 20 v24 m424 0 v-24 m-424 24 q0 10 10 10 m404 0 q10 0 10 -10 m-414 10 h10 m74 0 h10 m0 0 h310 m-414 -10 v20 m424 0 v-20 m-424 20 v24 m424 0 v-24 m-424 24 q0 10 10 10 m404 0 q10 0 10 -10 m-394 10 h10 m68 0 h10 m0 0 h4 m-112 0 h20 m92 0 h20 m-132 0 q10 0 10 10 m112 0 q0 -10 10 -10 m-122 10 v24 m112 0 v-24 m-112 24 q0 10 10 10 m92 0 q10 0 10 -10 m-102 10 h10 m72 0 h10 m20 -44 h10 m76 0 h10 m0 0 h176 m23 -264 h-3"></path>
+<polygon points="473 17 481 13 481 21"></polygon>
+<polygon points="473 17 465 13 465 21"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

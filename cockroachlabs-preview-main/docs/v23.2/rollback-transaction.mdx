@@ -1,0 +1,113 @@
+---
+title: "ROLLBACK"
+old_description: "Rolls back the current transaction and all of its nested sub-transactions, discarding all transactional updates made by statements inside the transaction."
+---
+
+import { RollbackTransaction2 } from "/snippets/syntax-diagrams/RollbackTransaction2.jsx";
+
+The `ROLLBACK` [statement](/docs/v23.2/sql-statements) aborts the current [transaction](/docs/v23.2/transactions) and all of its [nested transactions](/docs/v23.2/transactions#nested-transactions), discarding all transactional updates made by statements included in the transaction.
+
+There are two ways to use `ROLLBACK`:
+
+- The `ROLLBACK` statement [rolls back the entire transaction](#rollback-a-transaction).
+- The `ROLLBACK TO SAVEPOINT` statement [rolls back and restarts the nested transaction](#rollback-a-nested-transaction) started at the corresponding `SAVEPOINT` statement, for working with [standard savepoints](/docs/v23.2/savepoint#savepoints-for-nested-transactions). This is in addition to the existing support for working with [client-side transaction retries](/docs/v23.2/transaction-retry-error-reference#client-side-retry-handling). For examples of each usage, see:
+    - [Rollback a nested transaction](#rollback-a-nested-transaction)
+    - [Retry a transaction](#retry-a-transaction)
+
+<Warning>
+Rollbacks to savepoints over [DDL](https://en.wikipedia.org/wiki/Data_definition_language) statements are only supported if you're rolling back to a savepoint created at the beginning of the transaction.
+</Warning>
+
+## Synopsis
+
+<RollbackTransaction2 />
+
+## Required privileges
+
+No [privileges](/docs/v23.2/security-reference/authorization#managing-privileges) are required to rollback a transaction. However, privileges are required for each statement within a transaction.
+
+## Parameters
+
+<table><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody><tr><td><code>TO SAVEPOINT cockroach&#95;restart</code></td><td>If using <a href="/docs/v23.2/advanced-client-side-transaction-retries">advanced client-side transaction retries</a>, retry the transaction. You should execute this statement when a transaction returns a <code>40001</code> / <code>retry transaction</code> error.</td></tr><tr><td><code>TO SAVEPOINT &lt;name&gt;</code></td><td>If using <a href="/docs/v23.2/savepoint#savepoints-for-nested-transactions">nested transactions</a>, roll back and restart the <a href="/docs/v23.2/transactions#nested-transactions">nested transaction</a> started at the corresponding <code>SAVEPOINT</code> statement.</td></tr></tbody></table>
+
+## Savepoints and row locks
+
+CockroachDB supports exclusive row locks.
+
+- In PostgreSQL, row locks are released/cancelled upon [`ROLLBACK TO SAVEPOINT`](/docs/v23.2/rollback-transaction).
+- In CockroachDB, row locks are preserved upon [`ROLLBACK TO SAVEPOINT`](/docs/v23.2/rollback-transaction).
+
+This is an architectural difference that may or may not be lifted in a later CockroachDB version.
+
+The code of client applications that rely on row locks must be reviewed and possibly modified to account for this difference. In particular, if an application is relying on [`ROLLBACK TO SAVEPOINT`](/docs/v23.2/rollback-transaction) to release row locks and allow a concurrent transaction touching the same rows to proceed, this behavior will not work with CockroachDB.
+
+## Savepoints and high priority transactions
+
+[`ROLLBACK TO SAVEPOINT`](/docs/v23.2/rollback-transaction#rollback-a-nested-transaction) (for either regular savepoints or "restart savepoints" defined with `cockroach_restart`) causes a "feature not supported" error after a DDL statement in a [`HIGH PRIORITY` transaction](/docs/v23.2/transactions#transaction-priorities), in order to avoid a transaction deadlock. For more information, see GitHub issue [#46414](https://www.github.com/cockroachdb/cockroach/issues/46414).
+
+## Examples
+
+### Rollback a transaction
+
+Typically, an application conditionally executes rollbacks, but we can see their behavior by using `ROLLBACK` instead of `COMMIT` directly through SQL:
+
+```sql
+> SELECT * FROM accounts;
+```
+
+```text
++----------+---------+
+|   name   | balance |
++----------+---------+
+| Marciela |    1000 |
++----------+---------+
+```
+
+```sql
+> BEGIN;
+```
+
+```sql
+> UPDATE accounts SET balance = 2500 WHERE name = 'Marciela';
+```
+
+```sql
+> ROLLBACK;
+```
+
+```sql
+> SELECT * FROM accounts;
+```
+
+```text
++----------+---------+
+|   name   | balance |
++----------+---------+
+| Marciela |    1000 |
++----------+---------+
+```
+
+### Rollback a nested transaction
+
+The `ROLLBACK TO SAVEPOINT` statement rolls back and restarts the [nested transaction](/docs/v23.2/transactions#nested-transactions) started at the corresponding `SAVEPOINT` statement.
+
+For examples showing how to use `ROLLBACK TO SAVEPOINT` to rollback a nested transaction, see [the `SAVEPOINT` documentation on nested savepoints](/docs/v23.2/savepoint#savepoints-for-nested-transactions).
+
+### Retry a transaction
+
+When using [advanced client-side transaction retries](/docs/v23.2/advanced-client-side-transaction-retries), use `ROLLBACK TO SAVEPOINT` to handle a transaction that needs to be retried (identified via the `40001` error code or `restart transaction` string in the error message), and then re-execute the statements you want the transaction to contain.
+
+```sql
+> ROLLBACK TO SAVEPOINT cockroach_restart;
+```
+
+For examples of retrying transactions in an application, check out the transaction code samples in our [Build an App with CockroachDB](/docs/v23.2/example-apps) tutorials.
+
+## See also
+
+- [`SAVEPOINT`](/docs/v23.2/savepoint)
+- [Transactions](/docs/v23.2/transactions)
+- [`BEGIN`](/docs/v23.2/begin-transaction)
+- [`COMMIT`](/docs/v23.2/commit-transaction)
+- [`RELEASE SAVEPOINT`](/docs/v23.2/release-savepoint)
+- [`SHOW SAVEPOINT STATUS`](/docs/v23.2/show-savepoint-status)

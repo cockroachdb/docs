@@ -1,0 +1,78 @@
+export const BackupStmt = () => {
+  return (
+    <Frame>
+      <div
+        className="not-prose"
+        style={{ overflowX: "auto" }}
+        dangerouslySetInnerHTML={{
+          __html: `<svg height="179" width="691" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="9 17 1 13 1 21"></polygon>
+<polygon points="17 17 9 13 9 21"></polygon>
+<rect height="32" rx="10" width="74" x="31" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="74" x="29" y="1"></rect>
+<text class="terminal" x="39" y="21">BACKUP</text><a xlink:href="#opt_backup_targets" xlink:title="opt_backup_targets">
+<rect height="32" width="148" x="125" y="3"></rect>
+<rect class="nonterminal" height="32" width="148" x="123" y="1"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="124" font-size="11" class="nonterminal" x="135" y="21">opt_backup_targets</text></a><rect height="32" rx="10" width="56" x="293" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="56" x="291" y="1"></rect>
+<text class="terminal" x="301" y="21">INTO</text><a xlink:href="#sconst_or_placeholder" xlink:title="sconst_or_placeholder">
+<rect height="32" width="164" x="409" y="35"></rect>
+<rect class="nonterminal" height="32" width="164" x="407" y="33"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="140" font-size="10" class="nonterminal" x="419" y="53">sconst_or_placeholder</text></a><rect height="32" rx="10" width="70" x="409" y="79"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="407" y="77"></rect>
+<text class="terminal" x="417" y="97">LATEST</text>
+<rect height="32" rx="10" width="36" x="613" y="35"></rect>
+<rect class="terminal" height="32" rx="10" width="36" x="611" y="33"></rect>
+<text class="terminal" x="621" y="53">IN</text><a xlink:href="#string_or_placeholder_opt_list" xlink:title="string_or_placeholder_opt_list">
+<rect height="32" width="214" x="93" y="145"></rect>
+<rect class="nonterminal" height="32" width="214" x="91" y="143"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="190" font-size="10" class="nonterminal" x="103" y="163">string_or_placeholder_opt_list</text></a><a xlink:href="#opt_as_of_clause" xlink:title="opt_as_of_clause">
+<rect height="32" width="132" x="327" y="145"></rect>
+<rect class="nonterminal" height="32" width="132" x="325" y="143"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="108" font-size="10" class="nonterminal" x="337" y="163">opt_as_of_clause</text></a><a xlink:href="#opt_with_backup_options" xlink:title="opt_with_backup_options">
+<rect height="32" width="184" x="479" y="145"></rect>
+<rect class="nonterminal" height="32" width="184" x="477" y="143"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="160" font-size="11" class="nonterminal" x="489" y="163">opt_with_backup_options</text></a><path class="line" d="m17 17 h2 m0 0 h10 m74 0 h10 m0 0 h10 m148 0 h10 m0 0 h10 m56 0 h10 m20 0 h10 m0 0 h270 m-300 0 h20 m280 0 h20 m-320 0 q10 0 10 10 m300 0 q0 -10 10 -10 m-310 10 v12 m300 0 v-12 m-300 12 q0 10 10 10 m280 0 q10 0 10 -10 m-270 10 h10 m164 0 h10 m-204 0 h20 m184 0 h20 m-224 0 q10 0 10 10 m204 0 q0 -10 10 -10 m-214 10 v24 m204 0 v-24 m-204 24 q0 10 10 10 m184 0 q10 0 10 -10 m-194 10 h10 m70 0 h10 m0 0 h94 m20 -44 h10 m36 0 h10 m22 -32 l2 0 m2 0 l2 0 m2 0 l2 0 m-620 142 l2 0 m2 0 l2 0 m2 0 l2 0 m2 0 h10 m214 0 h10 m0 0 h10 m132 0 h10 m0 0 h10 m184 0 h10 m3 0 h-3"></path>
+<polygon points="681 159 689 155 689 163"></polygon>
+<polygon points="681 159 673 155 673 163"></polygon></svg>`,
+        }}
+      />
+    </Frame>
+  );
+};

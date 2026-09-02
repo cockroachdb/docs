@@ -1,0 +1,639 @@
+---
+title: "Replication Dashboard"
+old_description: "The Replication dashboard lets you monitor the replication metrics for your cluster."
+---
+
+The **Replication** dashboard in the DB Console lets you monitor the replication metrics for your cluster, such as range status, replicas per store, etc.
+
+To view this dashboard, [access the DB Console](/docs/v26.1/ui-overview#db-console-access), click **Metrics** in the left-hand navigation, and select **Dashboard** &gt; **Replication**.
+
+<Note>
+  The **Replication** dashboard is distinct from the [**Physical Cluster Replication**
+  dashboard](/docs/v26.1/ui-physical-cluster-replication-dashboard), which tracks metrics related to physical cluster
+  replication jobs.
+</Note>
+
+## Review of CockroachDB terminology
+
+- **Range**: CockroachDB stores all user data and almost all system data in a giant sorted map of key-value pairs. This keyspace is divided into "ranges", contiguous chunks of the keyspace, so that every key can always be found in a single range.
+- **Range Replica:** CockroachDB replicates each range (3 times by default) and stores each replica on a different node.
+- **Range Lease:** For each range, one of the replicas holds the "range lease". This replica, referred to as the "leaseholder", is the one that receives and coordinates all read and write requests for the range. The [Leader leases](/docs/v26.1/architecture/replication-layer#leader-leases) system ensures that the leaseholder is always the [Raft leader](/docs/v26.1/architecture/replication-layer#raft), except briefly during [lease transfers](/docs/v26.1/architecture/replication-layer#how-leases-are-transferred-from-a-dead-node).
+- **Under-replicated Ranges:** When a cluster is first initialized, the few default starting ranges have a single replica. As more nodes become available, the cluster replicates these ranges to other nodes until the number of replicas for each range reaches the desired [replication factor](/docs/v26.1/configure-replication-zones#num_replicas) (3 by default). If a range has fewer replicas than the replication factor, the range is said to be "under-replicated". [Non-voting replicas](/docs/v26.1/architecture/replication-layer#non-voting-replicas), if configured, are not counted when calculating replication status.
+- **Unavailable Ranges:** If a majority of a range's replicas are on nodes that are unavailable, then the entire range is unavailable and will be unable to process queries.
+
+For more details, see [Scalable SQL Made Easy: How CockroachDB Automates Operations](https://www.cockroachlabs.com/blog/automated-rebalance-and-repair).
+
+## Dashboard navigation
+
+Use the **Graph** menu to display metrics for your entire cluster or for a specific node.
+
+To the right of the Graph and Dashboard menus, a time interval selector allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected in the [SQL Activity](/docs/v26.1/ui-overview#sql-activity) pages. However, if you select 10 or 30 minutes, the interval defaults to 1 hour in SQL Activity pages.
+
+Hovering your mouse pointer over the graph title will display a tooltip with a description and the [metrics](/docs/v26.1/essential-metrics-self-hosted) used to create the graph.
+
+When hovering on graphs, crosshair lines will appear at your mouse pointer. The series' values corresponding to the given time in the cross hairs are displayed in the legend under the graph. Hovering the mouse pointer on a given series displays the corresponding value near the mouse pointer and highlights the series line (graying out other series lines). Click anywhere within the graph to freeze the values in place. Click anywhere within the graph again to cause the values to change with your mouse movements once more.
+
+In the legend, click on an individual series to isolate it on the graph. The other series will be hidden, while the hover will still work. Click the individual series again to make the other series visible. If there are many series, a scrollbar may appear on the right of the legend. This is to limit the size of the legend so that it does not get endlessly large, particularly on clusters with many nodes.
+
+The **Replication** dashboard displays the following time series graphs:
+
+## Ranges
+
+<Frame>![DB Console Ranges](/images/v26.1/ui_ranges.png)</Frame>
+
+The **Ranges** graph shows you various details about the status of ranges.
+
+- In the node view, the graph shows details about ranges on the node.
+- In the cluster view, the graph shows details about ranges across all nodes in the cluster.
+
+On hovering over the graph, the values for the following metrics are displayed:
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ranges</td>
+      <td>The number of ranges.</td>
+    </tr>
+    <tr>
+      <td>Leaders</td>
+      <td>
+        The number of ranges with leaders. If the number does not match the number of ranges for a long time,
+        troubleshoot your cluster.
+      </td>
+    </tr>
+    <tr>
+      <td>Lease Holders</td>
+      <td>The number of ranges that have leases.</td>
+    </tr>
+    <tr>
+      <td>Leaders w/o Leases</td>
+      <td>
+        The number of Raft leaders without leases. If the number if non-zero for a long time, troubleshoot your cluster.
+      </td>
+    </tr>
+    <tr>
+      <td>Unavailable</td>
+      <td>The number of unavailable ranges. If the number if non-zero for a long time, troubleshoot your cluster.</td>
+    </tr>
+    <tr>
+      <td>Under-replicated</td>
+      <td>The number of under-replicated ranges. Non-voting replicas are not included in this value.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Logical Bytes per Store
+
+<Frame>![DB Console Logical Bytes per Store](/images/v26.1/ui_logical_bytes_per_store.png)</Frame>
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Logical Bytes per Store</strong>
+      </td>
+      <td>
+        Number of logical bytes stored in{" "}
+        <a href="/docs/v26.1/architecture/distribution-layer#table-data">key-value pairs</a> on each node. This includes
+        historical and deleted data.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<Note>
+  Logical bytes reflect the approximate number of bytes stored in the database. This value may deviate from the number
+  of physical bytes on disk, due to factors such as compression and [write
+  amplification](https://wikipedia.org/wiki/Write_amplification).
+</Note>
+
+## Replicas Per Store
+
+<Frame>![DB Console Replicas per Store](/images/v26.1/ui_replicas_per_store.png)</Frame>
+
+- In the node view, the graph shows the number of range replicas on the store.
+- In the cluster view, the graph shows the number of range replicas on each store.
+
+You can [Replication Controls](/docs/v26.1/configure-replication-zones) to set the number and location of replicas. You can monitor the configuration changes using the DB Console, as described in [CockroachDB Resilience](/docs/v26.1/demo-cockroachdb-resilience).
+
+## Replica Quiescence
+
+<Frame>![DB Console Replica Quiescence](/images/v26.1/ui_replica_quiescence.png)</Frame>
+
+- In the node view, the graph shows the number of replicas on the node.
+- In the cluster view, the graph shows the number of replicas across all nodes.
+
+On hovering over the graph, the values for the following metrics are displayed:
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Replicas</td>
+      <td>The number of replicas.</td>
+    </tr>
+    <tr>
+      <td>Quiescent</td>
+      <td>The number of replicas that haven't been accessed for a while.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Range Operations
+
+- In the node view, the graph shows the number of range operation events on the node.
+- In the cluster view, the graph shows the number of range operation events across all nodes.
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>CockroachDB Metric Name</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Splits</td>
+      <td>
+        <code>range.splits</code>
+      </td>
+      <td>Number of range splits</td>
+    </tr>
+    <tr>
+      <td>Merges</td>
+      <td>
+        <code>range.merges</code>
+      </td>
+      <td>Number of range merges</td>
+    </tr>
+    <tr>
+      <td>Adds</td>
+      <td>
+        <code>range.adds</code>
+      </td>
+      <td>Number of range additions</td>
+    </tr>
+    <tr>
+      <td>Removes</td>
+      <td>
+        <code>range.removes</code>
+      </td>
+      <td>Number of range removals</td>
+    </tr>
+    <tr>
+      <td>Lease Transfers</td>
+      <td>
+        <code>leases.transfers.success</code>
+      </td>
+      <td>Number of successful lease transfers</td>
+    </tr>
+    <tr>
+      <td>Load-based Lease Transfers</td>
+      <td>
+        <code>rebalancing.lease.transfers</code>
+      </td>
+      <td>Number of lease transfers motivated by store-level load imbalances</td>
+    </tr>
+    <tr>
+      <td>Load-based Range Rebalances</td>
+      <td>
+        <code>rebalancing.range.rebalances</code>
+      </td>
+      <td>Number of range rebalance operations motivated by store-level load imbalances</td>
+    </tr>
+  </tbody>
+</table>
+
+## Snapshots
+
+<Frame>![DB Console Replica Snapshots](/images/v26.1/ui_replica_snapshots.png)</Frame>
+
+Usually the nodes in a [Raft group](/docs/v26.1/architecture/replication-layer#raft) stay synchronized by following along with the log message by message. However, if a node is far enough behind the log (e.g., if it was offline or is a new node getting up to speed), rather than send all the individual messages that changed the range, the cluster can send it a snapshot of the range and it can start following along from there. Commonly this is done preemptively, when the cluster can predict that a node will need to catch up, but occasionally the Raft protocol itself will request the snapshot.
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Generated</td>
+      <td>The number of snapshots created per second.</td>
+    </tr>
+    <tr>
+      <td>Applied (Raft-initiated)</td>
+      <td>The number of snapshots applied to nodes per second that were initiated within Raft.</td>
+    </tr>
+    <tr>
+      <td>Applied (Learner)</td>
+      <td>
+        The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node
+        was about to be added to a Raft group). This metric replaces the <code>Applied (Preemptive)</code> metric in
+        19.2 and onwards.
+      </td>
+    </tr>
+    <tr>
+      <td>Applied (Preemptive)</td>
+      <td>
+        The number of snapshots applied to nodes per second that were anticipated ahead of time (e.g., because a node
+        was about to be added to a Raft group). This metric was used in pre-v19.2 releases and will be removed in future
+        releases.
+      </td>
+    </tr>
+    <tr>
+      <td>Reserved</td>
+      <td>The number of slots reserved per second for incoming snapshots that will be sent to a node.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Snapshot Data Received
+
+<Frame>![DB Console Replica Snapshot Data Received](/images/v26.1/ui_replica_snapshots_data.png)</Frame>
+
+The **Snapshot Data Received** graph shows the rate per second of data received in bytes by each node via [Raft snapshot transfers](/docs/v26.1/architecture/replication-layer#snapshots). Data is split into recovery and rebalancing snapshot data received: recovery includes all upreplication due to decommissioning or node failure, and rebalancing includes all other snapshot data received.
+
+On hovering over the graph, the value for the following metrics are displayed:
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>&#123;node&#125;-recovery</code>
+      </td>
+      <td>
+        The rate per second of recovery snapshot data received (e.g., from node decommissioning or node failure) in
+        bytes per node, as tracked by the <code>range.snapshots.recovery.rcvd-bytes</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>&#123;node&#125;-rebalancing</code>
+      </td>
+      <td>
+        The rate per second of rebalancing snapshot data received (e.g., from all other snapshot data received) in bytes
+        per node, as tracked by the <code>range.snapshots.rebalancing.rcvd-bytes</code> metric.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Receiver Snapshots Queued
+
+<Frame>![DB Console Replica Receiver Snapshots Queued](/images/v26.1/ui_replica_snapshots_queued.png)</Frame>
+
+The **Receiver Snapshots Queued** graph shows the number of [Raft snapshot transfers](/docs/v26.1/architecture/replication-layer#snapshots) queued to be applied on a receiving node, which can only accept one snapshot at a time per store.
+
+On hovering over the graph, the value for the following metric is displayed:
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>&#123;node&#125;</code>
+      </td>
+      <td>
+        The number of queued snapshot transfers waiting to be applied per node, as tracked by the{" "}
+        <code>range.snapshots.recv-queue</code> metric.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Circuit Breaker Tripped Replicas
+
+<Frame>![DB Console Circuit Breaker Tripped Replicas](/images/v26.1/ui_replica_circuitbreaker_replicas.png)</Frame>
+
+When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker](/docs/v26.1/architecture/replication-layer#per-replica-circuit-breaker-overview) instead of hanging indefinitely.
+
+- In the node view, the graph shows the number of replicas for which the per-replica circuit breaker is currently tripped, for the selected node.
+- In the cluster view, the graph shows the number of replicas for which the per-replica circuit breaker is currently tripped, for each node in the cluster.
+
+On hovering over the graph, the value for the following metric is displayed:
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>&#123;node&#125;</code>
+      </td>
+      <td>The number of replicas on that node for which the per-replica circuit breaker is currently tripped.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Circuit Breaker Tripped Events
+
+<Frame>![DB Console Circuit Breaker Tripped Events](/images/v26.1/ui_replica_circuitbreaker_events.png)</Frame>
+
+When individual ranges become temporarily unavailable, requests to those ranges are refused by a [per-replica circuit breaker](/docs/v26.1/architecture/replication-layer#per-replica-circuit-breaker-overview) instead of hanging indefinitely. While a range's per-replica circuit breaker remains tripped, each incoming request to that range triggers a `ReplicaUnavailableError` event until the range becomes available again.
+
+- In the node view, the graph shows the rate of `ReplicaUnavailableError` events logged per aggregated interval of time since the `cockroach` process started, for the selected node.
+- In the cluster view, the graph shows the rate of `ReplicaUnavailableError` events logged per aggregated interval of time since the `cockroach` process started, for each node in the cluster.
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>&#123;node&#125;</code>
+      </td>
+      <td>
+        The rate of <code>ReplicaUnavailableError</code> events that have occurred per aggregated interval of time on
+        that node since the <code>cockroach</code> process started.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Replicate Queue Actions: Successes
+
+<Frame>![DB Console Replicate Queue Actions: Successes](/images/v26.1/ui_replica_queue_actions_successes.png)</Frame>
+
+The **Replicate Queue Actions: Successes** graph shows the rate of various successful replication queue actions per second.
+
+- In the node view, the graph shows the rate of successful replication queue actions for the selected node.
+- In the cluster view, the graph shows the average rate of successful replication queue actions across the cluster.
+
+On hovering over the graph, the value for the following metric is displayed:
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Replicas Added / Sec</td>
+      <td>
+        The number of successful replica additions processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.addreplica.success</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>Replicas Removed / Sec</td>
+      <td>
+        The number of successful replica removals processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.removereplica.success</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>Dead Replicas Replaced / Sec</td>
+      <td>
+        The number of successful dead replica replacements processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.replacedeadreplica.success</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>Dead Replicas Removed / Sec</td>
+      <td>
+        The number of successful dead replica removals processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.removedeadreplica.success</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>Decommissioning Replicas Replaced / Sec</td>
+      <td>
+        The number of successful decommissioning replica replacements processed by the replicate queue, as tracked by
+        the <code>queue.replicate.replacedecommissioningreplica.success</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>Decommissioning Replicas Removed / Sec</td>
+      <td>
+        The number of successful decommissioning replica removals processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.removedecommissioningreplica.success</code> metric.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Replicate Queue Actions: Failures
+
+<Frame>![DB Console Replicate Queue Actions: Failures](/images/v26.1/ui_replica_queue_actions_failure.png)</Frame>
+
+The **Replicate Queue Actions: Failures** graph shows the rate of various failed replication queue actions per second.
+
+- In the node view, the graph shows the rate of failed replication queue actions for the selected node.
+- In the cluster view, the graph shows the average rate of failed replication queue actions across the cluster.
+
+On hovering over the graph, the value for the following metric is displayed:
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Replicas Added Errors / Sec</td>
+      <td>
+        The number of failed replica additions processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.addreplica.error</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>Replicas Removed Errors / Sec</td>
+      <td>
+        The number of failed replica removals processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.removereplica.error</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>Dead Replicas Replaced Errors / Sec</td>
+      <td>
+        The number of failed dead replica replacements processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.replacedeadreplica.error</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>Dead Replicas Removed Errors / Sec</td>
+      <td>
+        The number of failed dead replica removals processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.removedeadreplica.error</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>Decommissioning Replicas Replaced Errors / Sec</td>
+      <td>
+        The number of failed decommissioning replica replacements processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.replacedecommissioningreplica.error</code> metric.
+      </td>
+    </tr>
+    <tr>
+      <td>Decommissioning Replicas Removed Errors / Sec</td>
+      <td>
+        The number of failed decommissioning replica removals processed by the replicate queue, as tracked by the{" "}
+        <code>queue.replicate.removedecommissioningreplica.error</code> metric.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Decommissioning Errors
+
+<Frame>![DB Console Replica Decommissioning Errors](/images/v26.1/ui_replica_decom_errors.png)</Frame>
+
+The **Decommissioning Errors** graph shows the rate per second of decommissioning replica replacement failures experienced by the replication queue, by node.
+
+On hovering over the graph, the value for the following metric is displayed:
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>&#123;node&#125; - Replaced Errors / Sec</code>
+      </td>
+      <td>
+        The rate per second of failed decommissioning replica replacements processed by the replicate queue by node, as
+        tracked by the <code>queue.replicate.replacedecommissioningreplica.error</code> metric.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Other graphs
+
+The **Replication** dashboard shows other time series graphs that are important for CockroachDB developers:
+
+- Leaseholders per Store
+- Average Queries per Store
+
+For monitoring CockroachDB, it is sufficient to use the [**Ranges**](#ranges), [**Replicas per Store**](#replicas-per-store), and [**Replica Quiescence**](#replica-quiescence) graphs.
+
+## Summary and events
+
+### Summary panel
+
+A **Summary** panel of key metrics is displayed to the right of the timeseries graphs.
+
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Total Nodes</td>
+      <td>
+        The total number of nodes in the cluster.{" "}
+        <a href="/docs/v26.1/node-shutdown?filters=decommission">Decommissioned nodes</a> are not included in this
+        count.
+      </td>
+    </tr>
+    <tr>
+      <td>Capacity Used</td>
+      <td>
+        The storage capacity used as a percentage of{" "}
+        <a href="/docs/v26.1/ui-cluster-overview-page#capacity-metrics">usable capacity</a> allocated across all nodes.
+      </td>
+    </tr>
+    <tr>
+      <td>Unavailable Ranges</td>
+      <td>The number of unavailable ranges in the cluster. A non-zero number indicates an unstable cluster.</td>
+    </tr>
+    <tr>
+      <td>Queries per second</td>
+      <td>
+        The total number of <code>SELECT</code>, <code>UPDATE</code>, <code>INSERT</code>, and <code>DELETE</code>{" "}
+        queries executed per second across the cluster.
+      </td>
+    </tr>
+    <tr>
+      <td>P99 Latency</td>
+      <td>The 99th percentile of service latency.</td>
+    </tr>
+  </tbody>
+</table>
+
+<Note>
+  If you are testing your deployment locally with multiple CockroachDB nodes running on a single machine (this is [not
+  recommended in production](/docs/v26.1/recommended-production-settings#topology)), you must explicitly [set the store
+  size](/docs/v26.1/cockroach-start#store) per node in order to display the correct capacity. Otherwise, the machine's
+  actual disk capacity will be counted as a separate store for each node, thus inflating the computed capacity.
+</Note>
+
+### Events panel
+
+Underneath the [Summary](#summary-panel) panel, the **Events** panel lists the 5 most recent events logged for all nodes across the cluster. To list all events, click **View all events**.
+
+<Frame>![DB Console Events](/images/v26.1/ui_events.png)</Frame>
+
+The following types of events are listed:
+
+- Database created
+- Database dropped
+- Table created
+- Table dropped
+- Table altered
+- Index created
+- Index dropped
+- View created
+- View dropped
+- Schema change reversed
+- Schema change finished
+- Node joined
+- Node decommissioned
+- Node restarted
+- Cluster setting changed
+
+## See also
+
+- [Troubleshooting Overview](/docs/v26.1/troubleshooting-overview)
+- [Support Resources](/docs/v26.1/support-resources)
+- [Raw Status Endpoints](/docs/v26.1/monitoring-and-alerting#raw-status-endpoints)

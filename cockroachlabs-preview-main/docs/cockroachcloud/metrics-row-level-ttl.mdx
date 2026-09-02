@@ -1,0 +1,37 @@
+---
+title: "Row-Level TTL metrics"
+old_description: "The Row-Level TTL metrics let you monitor the performance of your Row-Level TTL jobs."
+---
+
+The Row-Level TTL metrics let you monitor the performance of your [Row-Level TTL jobs](/docs/v25.4/row-level-ttl).
+
+To view these graphs, select a cluster from the [**Clusters** page](/docs/cockroachcloud/cluster-management#view-clusters-page), and click **Metrics** in the **Monitoring** section of the left side navigation. On the **Metrics** page, click the **Row-Level TTL** tab.
+
+## Time interval selection
+
+The time interval selector at the top of each tab allows you to filter the view for a predefined or custom time interval. Use the navigation buttons to move to the previous, next, or current time interval. When you select a time interval, the same interval is selected for all charts on the **Metrics** page.
+
+## Row-Level TTL Jobs
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Resume Completed</td><td><code>jobs.row&#95;level&#95;ttl.resume&#95;completed</code></td><td>Number of row&#95;level&#95;ttl jobs which successfully resumed to completion</td><td>If Row Level TTL is enabled, this metric should be nonzero and correspond to the ttl&#95;cron setting that was chosen. If this metric is zero, it means the job is not running</td></tr><tr><td>Running</td><td><code>jobs.row&#95;level&#95;ttl.currently&#95;running</code></td><td>Number of row&#95;level&#95;ttl jobs currently running in Resume or OnFailOrCancel state</td><td>Monitor this metric to ensure there are not too many Row Level TTL jobs running at the same time. Generally, this metric should be in the low single digits.</td></tr><tr><td>Paused</td><td><code>jobs.row&#95;level&#95;ttl.currently&#95;paused</code></td><td>Number of row&#95;level&#95;ttl jobs currently considered Paused</td><td>Monitor this metric to ensure the Row Level TTL job does not remain paused inadvertently for an extended period.</td></tr><tr><td>Resume Failed</td><td><code>jobs.row&#95;level&#95;ttl.resume&#95;failed</code></td><td>Number of row&#95;level&#95;ttl jobs which failed with a non-retriable error</td><td>This metric should remain at zero. Repeated errors means the Row Level TTL job is not deleting data.</td></tr><tr><td>Failed Schedules</td><td><code>schedules.scheduled-row-level-ttl-executor.failed</code></td><td>Number of scheduled-row-level-ttl-executor jobs failed</td><td>Monitor this metric to ensure the Row Level TTL job is running. If it is non-zero, it means the job could not be created.</td></tr></tbody></table>
+
+## Processing Rate
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Rows selected</td><td><code>jobs.row&#95;level&#95;ttl.rows&#95;selected</code></td><td>Number of rows selected for deletion by the row level TTL job.</td><td>Correlate this metric with the metric jobs.row&#95;level&#95;ttl.rows&#95;deleted to ensure all the rows that should be deleted are actually getting deleted.</td></tr><tr><td>Rows deleted</td><td><code>jobs.row&#95;level&#95;ttl.rows&#95;deleted</code></td><td>Number of rows deleted by the row level TTL job.</td><td>Correlate this metric with the metric jobs.row&#95;level&#95;ttl.rows&#95;selected to ensure all the rows that should be deleted are actually getting deleted.</td></tr></tbody></table>
+
+## Estimated Rows
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Total Rows</td><td><code>jobs.row&#95;level&#95;ttl.total&#95;rows</code></td><td>Approximate number of rows on the TTL table.</td><td>See Description.</td></tr><tr><td>Expired Rows</td><td><code>jobs.row&#95;level&#95;ttl.total&#95;expired&#95;rows</code></td><td>Approximate number of rows that have expired the TTL on the TTL table.</td><td>See Description.</td></tr></tbody></table>
+
+## Row-Level TTL Job Latency
+
+<table><thead><tr><td><b>Short Name</b></td><td><b>CockroachDB Metric Name</b></td><td><b>Description</b></td><td><b>Usage</b></td></tr></thead><tbody><tr><td>Select Latency (P90), Select Latency (P99)</td><td><code>jobs.row&#95;level&#95;ttl.select&#95;duration</code></td><td>Duration for select requests during row level TTL.</td><td>See Description.</td></tr><tr><td>Delete Latency (P90), Delete Latency (P99)</td><td><code>jobs.row&#95;level&#95;ttl.delete&#95;duration</code></td><td>Duration for delete requests during row level TTL.</td><td>See Description.</td></tr></tbody></table>
+
+## See also
+
+- [Metrics Overview](/docs/cockroachcloud/metrics)
+- [Overview metrics tab](/docs/cockroachcloud/metrics-overview)
+- [Request Unit metrics](/docs/cockroachcloud/metrics-request-units)
+- [SQL metrics](/docs/cockroachcloud/metrics-sql)
+- [Changefeed metrics](/docs/cockroachcloud/metrics-changefeeds)
+- [Essential Metrics for Standard](/docs/cockroachcloud/metrics-essential)

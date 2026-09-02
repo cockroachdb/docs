@@ -1,0 +1,20 @@
+---
+title: "Migrate from Standard or Basic to Advanced"
+old_description: "Learn how to migrate data from a CockroachDB Standard or Basic cluster into a CockroachDB Advanced cluster."
+---
+
+import MigrateFromStandardToAdvanced from "/snippets/cockroachcloud/migrate-from-standard-to-advanced.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v24.3");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<MigrateFromStandardToAdvanced />

@@ -1,0 +1,118 @@
+<svg height="255" width="1195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style>svg {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+text {
+  fill: #2f3337;
+  font-size: 14px;
+}
+rect {
+  fill: #ffffff;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+rect.terminal {
+  fill: #ffffff;
+}
+rect.nonterminal {
+  fill: #ffffff;
+}
+text.terminal {
+  fill: #2f3337;
+  font-weight: 600;
+}
+text.nonterminal {
+  fill: #2563eb;
+}
+a text.nonterminal {
+  text-decoration: underline;
+}
+path.line {
+  fill: none;
+  stroke: #3a3d40;
+  stroke-width: 2;
+}
+polygon {
+  fill: #2f3337;
+  stroke: #2f3337;
+}</style>
+<polygon points="11 17 3 13 3 21"></polygon>
+<polygon points="19 17 11 13 11 21"></polygon>
+<rect height="32" rx="10" width="72" x="33" y="3"></rect>
+<rect class="terminal" height="32" rx="10" width="72" x="31" y="1"></rect>
+<text class="terminal" x="41" y="21">CREATE</text><a xlink:href="/docs/v24.1/sql-grammar#opt_temp" xlink:title="opt_temp">
+<rect height="32" width="82" x="65" y="69"></rect>
+<rect class="nonterminal" height="32" width="82" x="63" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="11" class="nonterminal" x="75" y="87">opt_temp</text></a><rect height="32" rx="10" width="58" x="167" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="165" y="67"></rect>
+<text class="terminal" x="175" y="87">VIEW</text>
+<rect height="32" rx="10" width="34" x="265" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="34" x="263" y="99"></rect>
+<text class="terminal" x="273" y="119">IF</text>
+<rect height="32" rx="10" width="48" x="319" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="317" y="99"></rect>
+<text class="terminal" x="327" y="119">NOT</text>
+<rect height="32" rx="10" width="70" x="387" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="385" y="99"></rect>
+<text class="terminal" x="395" y="119">EXISTS</text>
+<rect height="32" rx="10" width="40" x="65" y="145"></rect>
+<rect class="terminal" height="32" rx="10" width="40" x="63" y="143"></rect>
+<text class="terminal" x="73" y="163">OR</text>
+<rect height="32" rx="10" width="80" x="125" y="145"></rect>
+<rect class="terminal" height="32" rx="10" width="80" x="123" y="143"></rect>
+<text class="terminal" x="133" y="163">REPLACE</text><a xlink:href="/docs/v24.1/sql-grammar#opt_temp" xlink:title="opt_temp">
+<rect height="32" width="82" x="225" y="145"></rect>
+<rect class="nonterminal" height="32" width="82" x="223" y="143"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="11" class="nonterminal" x="235" y="163">opt_temp</text></a><rect height="32" rx="10" width="58" x="327" y="145"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="325" y="143"></rect>
+<text class="terminal" x="335" y="163">VIEW</text><a xlink:href="/docs/v24.1/sql-grammar#view_name" xlink:title="view_name">
+<rect height="32" width="92" x="517" y="69"></rect>
+<rect class="nonterminal" height="32" width="92" x="515" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="68" font-size="12" class="nonterminal" x="527" y="87">view_name</text></a><rect height="32" rx="10" width="26" x="649" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="647" y="99"></rect>
+<text class="terminal" x="657" y="119">(</text><a xlink:href="/docs/v24.1/sql-grammar#name_list" xlink:title="name_list">
+<rect height="32" width="82" x="695" y="101"></rect>
+<rect class="nonterminal" height="32" width="82" x="693" y="99"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="705" y="119">name_list</text></a><rect height="32" rx="10" width="26" x="797" y="101"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="795" y="99"></rect>
+<text class="terminal" x="805" y="119">)</text>
+<rect height="32" rx="10" width="38" x="863" y="69"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="861" y="67"></rect>
+<text class="terminal" x="871" y="87">AS</text><a xlink:href="/docs/v24.1/sql-grammar#select_stmt" xlink:title="select_stmt">
+<rect height="32" width="94" x="921" y="69"></rect>
+<rect class="nonterminal" height="32" width="94" x="919" y="67"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="931" y="87">select_stmt</text></a><rect height="32" rx="10" width="122" x="45" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="122" x="43" y="187"></rect>
+<text class="terminal" x="53" y="207">MATERIALIZED</text>
+<rect height="32" rx="10" width="58" x="187" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="58" x="185" y="187"></rect>
+<text class="terminal" x="195" y="207">VIEW</text>
+<rect height="32" rx="10" width="34" x="285" y="221"></rect>
+<rect class="terminal" height="32" rx="10" width="34" x="283" y="219"></rect>
+<text class="terminal" x="293" y="239">IF</text>
+<rect height="32" rx="10" width="48" x="339" y="221"></rect>
+<rect class="terminal" height="32" rx="10" width="48" x="337" y="219"></rect>
+<text class="terminal" x="347" y="239">NOT</text>
+<rect height="32" rx="10" width="70" x="407" y="221"></rect>
+<rect class="terminal" height="32" rx="10" width="70" x="405" y="219"></rect>
+<text class="terminal" x="415" y="239">EXISTS</text><a xlink:href="/docs/v24.1/sql-grammar#view_name" xlink:title="view_name">
+<rect height="32" width="92" x="517" y="189"></rect>
+<rect class="nonterminal" height="32" width="92" x="515" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="68" font-size="12" class="nonterminal" x="527" y="207">view_name</text></a><rect height="32" rx="10" width="26" x="649" y="221"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="647" y="219"></rect>
+<text class="terminal" x="657" y="239">(</text><a xlink:href="/docs/v24.1/sql-grammar#name_list" xlink:title="name_list">
+<rect height="32" width="82" x="695" y="221"></rect>
+<rect class="nonterminal" height="32" width="82" x="693" y="219"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="58" font-size="10" class="nonterminal" x="705" y="239">name_list</text></a><rect height="32" rx="10" width="26" x="797" y="221"></rect>
+<rect class="terminal" height="32" rx="10" width="26" x="795" y="219"></rect>
+<text class="terminal" x="805" y="239">)</text>
+<rect height="32" rx="10" width="38" x="863" y="189"></rect>
+<rect class="terminal" height="32" rx="10" width="38" x="861" y="187"></rect>
+<text class="terminal" x="871" y="207">AS</text><a xlink:href="/docs/v24.1/sql-grammar#select_stmt" xlink:title="select_stmt">
+<rect height="32" width="94" x="921" y="189"></rect>
+<rect class="nonterminal" height="32" width="94" x="919" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="70" font-size="10" class="nonterminal" x="931" y="207">select_stmt</text></a><a xlink:href="/docs/v24.1/sql-grammar#opt_with_data" xlink:title="opt_with_data">
+<rect height="32" width="112" x="1035" y="189"></rect>
+<rect class="nonterminal" height="32" width="112" x="1033" y="187"></rect>
+<text lengthAdjust="spacingAndGlyphs" textLength="88" font-size="10" class="nonterminal" x="1045" y="207">opt_with_data</text></a><path class="line" d="m19 17 h2 m0 0 h10 m72 0 h10 m2 0 l2 0 m2 0 l2 0 m2 0 l2 0 m-124 66 l2 0 m2 0 l2 0 m2 0 l2 0 m42 0 h10 m82 0 h10 m0 0 h10 m58 0 h10 m20 0 h10 m0 0 h202 m-232 0 h20 m212 0 h20 m-252 0 q10 0 10 10 m232 0 q0 -10 10 -10 m-242 10 v12 m232 0 v-12 m-232 12 q0 10 10 10 m212 0 q10 0 10 -10 m-222 10 h10 m34 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m70 0 h10 m-432 -32 h20 m432 0 h20 m-472 0 q10 0 10 10 m452 0 q0 -10 10 -10 m-462 10 v56 m452 0 v-56 m-452 56 q0 10 10 10 m432 0 q10 0 10 -10 m-442 10 h10 m40 0 h10 m0 0 h10 m80 0 h10 m0 0 h10 m82 0 h10 m0 0 h10 m58 0 h10 m0 0 h92 m20 -76 h10 m92 0 h10 m20 0 h10 m0 0 h184 m-214 0 h20 m194 0 h20 m-234 0 q10 0 10 10 m214 0 q0 -10 10 -10 m-224 10 v12 m214 0 v-12 m-214 12 q0 10 10 10 m194 0 q10 0 10 -10 m-204 10 h10 m26 0 h10 m0 0 h10 m82 0 h10 m0 0 h10 m26 0 h10 m20 -32 h10 m38 0 h10 m0 0 h10 m94 0 h10 m0 0 h132 m-1142 0 h20 m1122 0 h20 m-1162 0 q10 0 10 10 m1142 0 q0 -10 10 -10 m-1152 10 v100 m1142 0 v-100 m-1142 100 q0 10 10 10 m1122 0 q10 0 10 -10 m-1132 10 h10 m122 0 h10 m0 0 h10 m58 0 h10 m20 0 h10 m0 0 h202 m-232 0 h20 m212 0 h20 m-252 0 q10 0 10 10 m232 0 q0 -10 10 -10 m-242 10 v12 m232 0 v-12 m-232 12 q0 10 10 10 m212 0 q10 0 10 -10 m-222 10 h10 m34 0 h10 m0 0 h10 m48 0 h10 m0 0 h10 m70 0 h10 m20 -32 h10 m92 0 h10 m20 0 h10 m0 0 h184 m-214 0 h20 m194 0 h20 m-234 0 q10 0 10 10 m214 0 q0 -10 10 -10 m-224 10 v12 m214 0 v-12 m-214 12 q0 10 10 10 m194 0 q10 0 10 -10 m-204 10 h10 m26 0 h10 m0 0 h10 m82 0 h10 m0 0 h10 m26 0 h10 m20 -32 h10 m38 0 h10 m0 0 h10 m94 0 h10 m0 0 h10 m112 0 h10 m23 -120 h-3"></path>
+<polygon points="1185 83 1193 79 1193 87"></polygon>
+<polygon points="1185 83 1177 79 1177 87"></polygon></svg>

@@ -1,0 +1,20 @@
+---
+title: "Understand the Resource Usage of your CockroachDB Basic Cluster"
+old_description: "Diagnose your RU consumption and tune your workload to reduce costs"
+---
+
+import ResourceUsageBasic from "/snippets/cockroachcloud/resource-usage-basic.mdx";
+
+export const PatchVersion = () => {
+  if (typeof document !== "undefined") {
+    requestAnimationFrame(() => {
+      document.querySelectorAll("[data-versioned]").forEach(a => {
+        a.href = a.href.replace("VERSION_PLACEHOLDER", "v25.4");
+      });
+    });
+  }
+  return null;
+};
+
+<PatchVersion />
+<ResourceUsageBasic />
