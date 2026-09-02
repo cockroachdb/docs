@@ -295,6 +295,10 @@ After Cloud Organization SSO is enabled, it cannot be disabled. To emulate the b
 
 Members must still sign in using your organization's custom URL.
 
+## Enable MFA enforcement for non-SSO access
+
+While Cockroach Labs recommends SSO for CockroachDB {{ site.data.products.cloud }} Console access, organizations commonly retain password-based accounts as a failsafe when SSO is unavailable. To ensure that these remaining password-based accounts are well-protected, [enable CockroachDB {{ site.data.products.cloud }}'s native MFA feature]({% link cockroachcloud/multi-factor-authentication.md %}#native-cockroachdb-cloud-mfa-for-password-based-access) for password-based access.
+
 ## What next?
 
 - [Cloud Organization SSO Frequently Asked Questions]({% link cockroachcloud/cloud-org-sso.md %}#frequently-asked-questions-faq).

@@ -294,6 +294,10 @@ There are two types of statement hints:
 
 [Active Session History (ASH)]({% link {{ page.version.version }}/active-session-history.md %}) is in preview, and is disabled by default. ASH is a time-series sampling-based observability feature that helps you troubleshoot workload performance issues by capturing what work was actively executing on your cluster at specific points in time.
 
+### Multi-factor authentication enforcement for the CockroachDB {{ site.data.products.cloud }} Console
+
+[Multi-factor authentication (MFA) enforcement]({% link cockroachcloud/multi-factor-authentication.md %}) for password-based access to the CockroachDB {{ site.data.products.cloud }} Console is in preview. This feature allows [Organization Admins]({% link cockroachcloud/authorization.md %}#organization-admin) to require all users who authenticate with a password (rather than SSO) to enroll in Time-based One-Time Password (TOTP) authentication. This ensures that password-based accounts, which are commonly retained as a failsafe when SSO is unavailable, are well-protected.
+
 ## See Also
 
 - [`SHOW {session variable}`]({% link {{ page.version.version }}/show-vars.md %})
