@@ -405,3 +405,95 @@ CREATE CHANGEFEED FOR TABLE table_name
 - [SQL Statements]({% link {{ page.version.version }}/sql-statements.md %})
 - [Changefeed Dashboard]({% link {{ page.version.version }}/ui-cdc-dashboard.md %})
 - [Monitor and Debug Changefeeds]({% link {{ page.version.version }}/monitor-and-debug-changefeeds.md %})
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## CREATE CHANGEFEED - Database-Level Table Exclusion
+
+### Enhancement to existing CREATE CHANGEFEED syntax
+
+This PR adds support for excluding specific tables when creating database-level changefeeds using the `EXCLUDE TABLES` clause.
+
+### Synopsis
+
+```sql
+CREATE CHANGEFEED FOR DATABASE database_name [EXCLUDE TABLES table_list] INTO sink_uri [WITH options]
+```
+
+Where `table_list` is a comma-separated list of table names to exclude from the changefeed.
+
+### Description
+
+The `EXCLUDE TABLES` clause allows you to create a database-level changefeed while excluding specific tables from being monitored. This provides fine-grained control over which tables in a database are included in the changefeed without having to specify each desired table individually.
+
+### Parameters
+
+| Parameter | Description | Required |
+|-----------|-------------|----------|
+| `database_name` | name of the database to monitor | Yes |
+| `table_list` | comma-separated list of table names to exclude from the changefeed | No |
+| `sink_uri` | destination URI for changefeed events | Yes |
+| `options` | changefeed configuration options | No |
+
+### Table name specification
+
+Tables in the exclusion list can be specified as:
+- Simple table names: `table1, table2`
+- Fully qualified names: `database.schema.table, database.table2`
+
+### Examples
+
+Exclude a single table from a database changefeed:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR DATABASE mydb EXCLUDE TABLES sensitive_data INTO 'kafka://localhost:9092';
+~~~
+
+Exclude multiple tables:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR DATABASE mydb EXCLUDE TABLES logs, temp_data, staging_table INTO 'kafka://localhost:9092';
+~~~
+
+Exclude tables with fully qualified names:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR DATABASE mydb EXCLUDE TABLES mydb.public.logs, mydb.temp_data, archive INTO 'kafka://localhost:9092';
+~~~
+
+Database-level changefeed with excluded tables and options:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+CREATE CHANGEFEED FOR DATABASE mydb EXCLUDE TABLES audit_log 
+INTO 'kafka://localhost:9092' 
+WITH updated, resolved = '10s';
+~~~
+
+### Limitations
+
+{{site.data.alerts.callout_info}}
+The `EXCLUDE TABLES` clause is only available for database-level changefeeds. It cannot be used with table-level changefeeds or query-based changefeeds.
+{{site.data.alerts.end}}
+
+### See also
+
+- [`CREATE CHANGEFEED`]({% link {{ page.version.version }}/create-changefeed.md %}) - Complete CREATE CHANGEFEED reference
+- [Changefeeds]({% link {{ page.version.version }}/change-data-capture-overview.md %}) - Overview of change data capture in CockroachDB
+
+---
+
+### Notes for review
+
+[NEEDS REVIEW] This documentation is based on the syntax changes and test cases in the diff. The implementation appears to be in progress, as the test comment mentions "TODO(#147421): Assert payload once the filter works", indicating the filtering functionality may not be fully implemented yet.
+
+[HUMAN REVIEW: completeness] Please verify:
+1. Whether there are any additional constraints on table name specification
+2. Whether the feature requires specific cluster settings or enterprise license
+3. Whether there are performance considerations for excluding many tables
+4. The complete list of changefeed options that work with this feature
+
+<!-- END REF DOC DRAFT -->
