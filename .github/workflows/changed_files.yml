@@ -28,6 +28,8 @@ jobs:
           files=($files)
           IFS=$SAVEIFS 
 
+          NETLIFY_SITE_NAME="${NETLIFY_SITE_NAME:-cockroachdb-docs}"
+
           function generateMainFiles() {
             html_file=`echo "${1%.md}.html" | sed -E 's/src\/[^\/]*\///g'`
             file="<li><a href=\"https://deploy-preview-$pr_num--${NETLIFY_SITE_NAME}.netlify.app/docs/$html_file\" target=\"_blank\" rel=\"noopener\">$1</a></li>"
