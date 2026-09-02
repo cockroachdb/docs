@@ -255,3 +255,126 @@ CREATE MATERIALIZED VIEW overdrawn_accounts
 - [Online Schema Changes]({% link {{ page.version.version }}/online-schema-changes.md %})
 - [`AS OF SYSTEM TIME`]({% link {{ page.version.version }}/as-of-system-time.md %})
 - [Follower Reads]({% link {{ page.version.version }}/follower-reads.md %})
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+## CREATE VIEW (Updated)
+
+The `CREATE VIEW` statement has been enhanced to support the `security_invoker` option.
+
+### Updated Synopsis
+
+```sql
+CREATE [TEMPORARY | TEMP] VIEW [IF NOT EXISTS] view_name [( column_list )] [WITH ( option [= value] [, ....] )] AS select_stmt
+```
+
+### New Parameters
+
+| Parameter | Description | Required |
+| --- | --- | --- |
+| `security_invoker` | controls whether the view runs with the permissions of the view owner (false) or the current user (true). Accepts `true`, `false`, `1`, or `0`. Defaults to `true` when specified without a value | No |
+
+{{site.data.alerts.callout_info}}
+The `security_invoker` option requires the `enable_view_security_invoker` feature flag to be enabled via the `allow_view_with_security_invoker_clause` session setting.
+{{site.data.alerts.end}}
+
+### Examples
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Enable the feature flag
+SET allow_view_with_security_invoker_clause = on;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Create a view with security invoker enabled (default value)
+CREATE VIEW security_view WITH ( security_invoker ) AS SELECT * FROM sensitive_table;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Create a view with security invoker explicitly set to true
+CREATE VIEW user_permissions_view WITH ( security_invoker = true ) AS SELECT * FROM users;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Create a view with security invoker disabled (runs with view owner permissions)
+CREATE VIEW admin_view WITH ( security_invoker = false ) AS SELECT * FROM admin_data;
+~~~
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Using integer values (1 = true, 0 = false)
+CREATE VIEW numeric_view WITH ( security_invoker = 1 ) AS SELECT count(*) FROM transactions;
+~~~
+
+---
+
+## ALTER VIEW SET OPTIONS [NEEDS REVIEW]
+
+{{site.data.alerts.callout_danger}}
+**Note**: This feature is currently unimplemented. The grammar support has been added but attempting to use this syntax will result in an "unimplemented" error.
+{{site.data.alerts.end}}
+
+### Synopsis
+
+```sql
+ALTER VIEW [IF EXISTS] view_name SET ( security_invoker = { true | false | 1 | 0 } )
+```
+
+### Description
+
+The `ALTER VIEW SET OPTIONS` statement would modify view options after creation, specifically the `security_invoker` setting that controls view permission behavior.
+
+### Parameters
+
+| Parameter | Description | Required |
+| --- | --- | --- |
+| `view_name` | the name of the view to modify | Yes |
+| `security_invoker` | controls whether the view runs with the permissions of the view owner (false) or the current user (true). Accepts `true`, `false`, `1`, or `0` | Yes |
+
+### Current Status
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- This will return an unimplemented error
+ALTER VIEW my_view SET ( security_invoker = false );
+~~~
+
+```
+ERROR: at or near ")": syntax error: unimplemented: this syntax
+HINT: You have attempted to use a feature that is not yet implemented.
+```
+
+### See Also
+
+- [`CREATE VIEW`]({% link {{ page.version.version }}/create-view.md %})
+- [`DROP VIEW`]({% link {{ page.version.version }}/drop-view.md %})
+- [`SHOW CREATE`]({% link {{ page.version.version }}/show-create.md %})
+
+---
+
+## Related Feature Flag
+
+The security invoker functionality is controlled by the `allow_view_with_security_invoker_clause` session setting:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+-- Enable security invoker support
+SET allow_view_with_security_invoker_clause = on;
+
+-- Verify the setting
+SHOW allow_view_with_security_invoker_clause;
+~~~
+
+When this setting is disabled (default), attempting to create views with the `security_invoker` option will result in:
+
+```
+ERROR: security invoker views are not supported
+```
+
+[HUMAN REVIEW: The security invoker feature appears to be related to PostgreSQL-style security definer/invoker views, but the specific behavior and security implications should be verified against the intended implementation.]
+
+<!-- END REF DOC DRAFT -->
