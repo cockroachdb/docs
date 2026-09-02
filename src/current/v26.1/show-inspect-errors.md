@@ -116,3 +116,85 @@ SHOW INSPECT ERRORS FOR TABLE movr.public.users WITH DETAILS;
 - [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
 - [Jobs page in DB Console]({% link {{ page.version.version }}/ui-jobs-page.md %})
 - [Authorization]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges)
+
+<!-- REF DOC DRAFT: The following content was auto-generated. Please integrate into the sections above and remove this comment block. -->
+
+```yaml
+---
+title: SHOW INSPECT ERRORS
+summary: Display errors from data consistency validation jobs in CockroachDB.
+toc: true
+docs_area: reference.sql
+---
+```
+
+The `SHOW INSPECT ERRORS` statement displays errors from data consistency validation jobs. This statement is currently unimplemented and will be fully functional in a future release.
+
+## Required privileges
+
+The user must have the `INSPECT` [system privilege]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges).
+
+## Synopsis
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW INSPECT ERRORS [FOR TABLE table_name] [FOR JOB job_id] [WITH DETAILS]
+~~~
+
+## Parameters
+
+Parameter | Description
+----------|------------
+`table_name` | Show errors only for the specified table
+`job_id` | Show errors only for the specified data consistency validation job ID
+`WITH DETAILS` | Include additional detailed information about each error
+
+## Examples
+
+Show all data consistency validation errors:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW INSPECT ERRORS;
+~~~
+
+Show errors for a specific table:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW INSPECT ERRORS FOR TABLE users;
+~~~
+
+Show errors for a specific validation job:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW INSPECT ERRORS FOR JOB 123456789;
+~~~
+
+Show detailed error information:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW INSPECT ERRORS WITH DETAILS;
+~~~
+
+Combine options to filter errors for a specific table and job with details:
+
+{% include_cached copy-clipboard.html %}
+~~~ sql
+SHOW INSPECT ERRORS FOR TABLE orders FOR JOB 987654321 WITH DETAILS;
+~~~
+
+{{site.data.alerts.callout_info}}
+This statement is currently unimplemented. The grammar has been added in preparation for future data consistency validation functionality.
+{{site.data.alerts.end}}
+
+## See also
+
+- [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %})
+- [System privileges]({% link {{ page.version.version }}/security-reference/authorization.md %}#supported-privileges)
+
+[NEEDS REVIEW: The exact output format and available columns are not specified since the statement is unimplemented. The system.inspect_errors table structure should be documented once the implementation is complete.]
+
+<!-- END REF DOC DRAFT -->
