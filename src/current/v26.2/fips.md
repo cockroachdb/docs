@@ -5,20 +5,14 @@ toc: true
 docs_area: deploy
 ---
 
-{{site.data.alerts.callout_danger}}
-**FIPS support is Preview in v26.1 and will be GA in v26.2**
+{{site.data.alerts.callout_info}}
+**FIPS support returns to GA in v26.2**
 
-CockroachDB v26.1 has been upgraded to use [Go's native FIPS 140-3 support](https://go.dev/doc/security/fips140), transitioning from a previous OpenSSL-based approach. v26.1 is built with `GOFIPS140=latest`, which uses the current (non-frozen) implementation of the FIPS 140-3 Go Cryptographic Module v1.0.0 as it ships with Go 1.25. This version is not under NIST review and will not be FIPS 140-3 validated. v26.2 will complete this transition by using `GOFIPS140=v1.0.0`, which locks to the frozen v1.0.0 module from early 2025. The frozen module is on the [CMVP Modules In Process List](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/modules-in-process/modules-in-process-list) and can be deployed in certain regulated environments.
+CockroachDB v26.2 completes the transition to [Go's native FIPS 140-3 support](https://go.dev/doc/security/fips140), built with `GOFIPS140=v1.0.0`. This locks to the frozen Go Cryptographic Module v1.0.0 from early 2025, which is on the [CMVP Modules In Process List](https://csrc.nist.gov/Projects/cryptographic-module-validation-program/modules-in-process/modules-in-process-list) and can be deployed in certain regulated environments.
 
-FIPS support is therefore marked as **Preview** in CockroachDB v26.1 and will return to **General Availability** (GA) status in v26.2.
+FIPS support was marked as **Preview** in CockroachDB v26.1, which used `GOFIPS140=latest` — a non-frozen implementation not under NIST review. It returns to **General Availability** (GA) status in v26.2.
 
-As an [Innovation release]({% link releases/index.md %}#major-versions), CockroachDB v26.1 can be skipped. Production clusters running a v25.4 FIPS binary should be upgraded directly to a v26.2 FIPS binary (available May 2026) for continuous GA support of FIPS.
-
-**Recommendation for Production Deployments:**
-
-- **Current FIPS users:** Stay on v25.4 or wait for v26.2.
-- **New FIPS deployments:** Wait for v26.2, or start on v25.4 and later upgrade directly to v26.2.
-- **Testing/non-production:** v26.1 can be used for testing and evaluation.
+Production clusters running a v25.4 or v26.1 FIPS binary can upgrade directly to v26.2.
 {{site.data.alerts.end}}
 
 {{site.data.alerts.callout_info}}
@@ -26,7 +20,7 @@ As an [Innovation release]({% link releases/index.md %}#major-versions), Cockroa
 
 When CockroachDB documentation refers to "FIPS support" or "FIPS-ready" deployments, this means CockroachDB can be configured to use FIPS 140-3-approved cryptographic algorithms and operate in accordance with a FIPS 140-3 cryptographic module's Security Policy. It does not mean that CockroachDB itself is FIPS 140-3 validated.
 
-CockroachDB v26.1 uses the current (non-frozen) implementation of the Go FIPS 140-3 Cryptographic Module, which is not under NIST review and will not be FIPS 140-3 validated. v26.2 will use the frozen module version submitted for CMVP validation, enabling FIPS 140-3 validated operation upon module certification.
+CockroachDB v26.2 uses the frozen Go Cryptographic Module v1.0.0, submitted for CMVP validation, enabling FIPS 140-3 validated operation upon module certification.
 {{site.data.alerts.end}}
 
 ## Overview of FIPS-ready CockroachDB
@@ -42,7 +36,7 @@ Starting with v26.1, FIPS-ready CockroachDB binaries are built using Go 1.25's n
 {{site.data.alerts.callout_info}}
 **Migration from FIPS 140-2 to FIPS 140-3**
 
-Previous versions of CockroachDB (v25.4 and earlier) supported FIPS 140-2. Starting with v26.1, CockroachDB supports a cryptographic module designed for FIPS 140-3 support, though the version of that module that is in review by NIST for FIPS 140-3 certification will not be used by CockroachDB until v26.2. (Refer to the note on Go's native FIPS support at the top of this page.)
+Previous versions of CockroachDB (v25.4 and earlier) supported FIPS 140-2. Starting with v26.1, CockroachDB uses a cryptographic module designed for FIPS 140-3 support. CockroachDB v26.2 uses `GOFIPS140=v1.0.0`, the frozen module version submitted for CMVP validation.
 
 FIPS 140-2 will transition to historical status on September 22, 2026, per [NIST's FIPS 140-3 Transition Effort](https://csrc.nist.gov/Projects/fips-140-3-transition-effort).
 {{site.data.alerts.end}}
@@ -76,7 +70,7 @@ Upgrading an existing CockroachDB cluster's binaries in-place to be FIPS-ready i
 
 ## Operating System Requirements
 
-FIPS-ready CockroachDB v26.1 uses Go's native cryptographic module, which is independent of the host operating system's libraries. The FIPS-ready binary can run on any Intel 64-bit Linux system.
+FIPS-ready CockroachDB v26.2 uses Go's native cryptographic module, which is independent of the host operating system's libraries. The FIPS-ready binary can run on any Intel 64-bit Linux system.
 
 The FIPS-ready CockroachDB Docker images are based on [Red Hat's Universal Base Image 10](https://catalog.redhat.com/software/containers/ubi10/ubi-minimal/). To [use the FIPS-ready CockroachDB Docker image](#use-the-fips-ready-cockroachdb-docker-image), skip directly to that section of this page.
 
@@ -195,9 +189,9 @@ No FIPS-ready runtimes are available at this time. Please check again later.
 After you [download](#downloads) a FIPS-ready CockroachDB binary, install it in the same way as the standard binary. Refer to [Install CockroachDB on Linux]({% link {{ page.version.version }}/install-cockroachdb-linux.md %}).
 
 {{site.data.alerts.callout_info}}
-**Upgrading from v25.4 FIPS to v26.1 FIPS**
+**Upgrading from v25.4 or v26.1 FIPS to v26.2 FIPS**
 
-CockroachDB v26.1 represents a major architectural change in FIPS implementation, transitioning from the previous OpenSSL-based approach to Go's native FIPS cryptographic module. Because FIPS support is Preview in v26.1 and will return to GA in v26.2, production FIPS-ready clusters should remain on v25.4 or wait for v26.2.
+CockroachDB v26.1 and v26.2 use Go's native FIPS cryptographic module, a significant architectural change from the OpenSSL-based approach used in v25.4 and earlier. FIPS support was Preview in v26.1 and returns to GA in v26.2.
 
 Upgrading an existing CockroachDB cluster's binary in-place from non-FIPS to FIPS is not supported. Instead, you can [restore your cluster]({% link {{ page.version.version }}/restore.md %}#full-cluster) to a new FIPS-ready cluster.
 {{site.data.alerts.end}}
@@ -225,7 +219,7 @@ This indicates that CockroachDB was built with Go's native FIPS 140-3 support.
 
 The FIPS-ready CockroachDB Docker image is based on Red Hat Universal Base Image 10 and includes the FIPS-ready CockroachDB binary.
 
-1. Go to [Download FIPS-ready Runtimes](#download-fips-ready-runtimes) and copy the name of a FIPS-ready Docker image tag. The image tag format is `cockroachdb/cockroach:v26.1.0-fips` (replace with the specific version).
+1. Go to [Download FIPS-ready Runtimes](#download-fips-ready-runtimes) and copy the name of a FIPS-ready Docker image tag. The image tag format is `cockroachdb/cockroach:v26.2.0-fips` (replace with the specific version).
 
 1. Pull the Docker image locally, create a new container that uses it, run the container, and attach to it. The following example gives the running container the name `cockroachdb-fips-container`. Replace `{image_tag}` with the name of the Docker image tag you copied.
 
@@ -243,7 +237,7 @@ The FIPS-ready CockroachDB Docker image is based on Red Hat Universal Base Image
 FIPS 140-3 has stricter requirements for password length compared to FIPS 140-2. When running a FIPS-ready CockroachDB binary, the minimum password length is **14 characters**. This aligns with NIST's recommendation that HMAC keys should have a length of at least 112 bits, which translates to 14 ASCII characters.
 
 {{site.data.alerts.callout_danger}}
-**Important for upgrades:** Users with passwords shorter than 14 characters may be locked out when upgrading to v26.1 FIPS from an earlier version. Ensure all user passwords meet the minimum length requirement before upgrading.
+**Important for upgrades:** Users with passwords shorter than 14 characters may be locked out when upgrading to a FIPS-ready binary from an earlier version. Ensure all user passwords meet the minimum length requirement before upgrading.
 {{site.data.alerts.end}}
 
 ## Details about cryptographic algorithms
