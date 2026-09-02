@@ -326,10 +326,13 @@ In Java, the code would look similar to:
 ~~~ java
 public static void deleteDataNonindexed(Connection conn) {
     boolean cont = true;
+    String select = "SELECT h_w_id, rowid FROM history WHERE h_date < current_date() - INTERVAL '1 MONTH' ORDER BY h_w_id, rowid LIMIT 20000";
+    String deleteStatement = "DELETE FROM history WHERE (h_w_id, rowid) = ANY ( ?)";
+    int batchsize=5000;
     try {
+       PreparedStatement pDeleteStmt = conn.prepareStatement(deleteStatement);
         do {
             // select the rows using the primary key
-            String select = "SELECT h_w_id, rowid FROM history WHERE h_date < current_date() - INTERVAL '1 MONTH' ORDER BY h_w_id, rowid LIMIT 20000";
             Statement st = conn.createStatement();
             ResultSet results = st.executeQuery(select);
             List<KeyFields> pkeys = new ArrayList<>();
@@ -350,15 +353,15 @@ public static void deleteDataNonindexed(Connection conn) {
                 // index of the batch size to the size of the list
                 int size = pkeys.size();
                 int lastIndex;
-                if (size > 5000) {
-                    lastIndex = 5000;
+                 if (size > batchsize) {
+                    lastIndex = batchsize;
                 } else {
                     lastIndex = size;
                 }
                 // slice the list of primary keys to the batch size
-                String pkeyList = String.join(",", pkeys.subList(0, lastIndex).toString());
-                String deleteStatement = new String("DELETE FROM history WHERE (h_w_id, rowid) = ANY ( ARRAY " + pkeyList + ")");
-                int deleteCount = conn.createStatement().executeUpdate(deleteStatement);
+                Array sqlArr = conn.createArrayOf("text", pkeys.subList(0, lastIndex).toArray());
+                pDeleteStmt.setArray(1, sqlArr);
+                int deleteCount = pDeleteStmt.executeUpdate();
                 System.out.println("Deleted " + deleteCount + " rows.");
                 // remove the deleted rows primary keys
                 pkeys.subList(0, lastIndex).clear();
