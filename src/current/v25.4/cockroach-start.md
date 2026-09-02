@@ -6,7 +6,7 @@ key: start-a-node.html
 docs_area: reference.cli
 ---
 
-This page explains the `cockroach start` [command]({% link {{ page.version.version }}/cockroach-commands.md %}), which you use to start a new multi-node cluster or add nodes to an existing cluster.
+This page explains the `cockroach start` [command]({% link {{ page.version.version }}/cockroach-commands.md %), which you use to start a new multi-node cluster or add nodes to an existing cluster.
 
 {{site.data.alerts.callout_success}}
 If you need a simple single-node backend for app development, use [`cockroach start-single-node`]({% link {{ page.version.version }}/cockroach-start-single-node.md %}) instead, and follow the best practices for local testing described in [Test Your Application]({% link {{ page.version.version }}/local-testing.md %}).
