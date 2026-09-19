@@ -59,6 +59,7 @@ If you have a tested or developed a third-party tool with CockroachDB, and would
 
 - [Beekeeper Studio](https://www.beekeeperstudio.io/db/cockroachdb-client/)
 - [DbVisualizer](https://www.cdata.com/kb/tech/cockroachdb-jdbc-dbv.rst)
+- [LibreDB Studio](https://libredb.org)
 - [Navicat for PostgreSQL](https://www.navicat.com/products/navicat-for-postgresql)/[Navicat Premium](https://www.navicat.com/products/navicat-premium)
 - [Pgweb](http://sosedoff.github.io/pgweb/)
 - [Postico](https://eggerapps.at/postico/)
