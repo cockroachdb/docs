@@ -27,7 +27,7 @@ ASH does not provide exact resource accounting per query or job, nor does it pro
 These point-in-time samples can be used to:
 
 - **Root-cause slow queries**: Understand exactly what a query was doing at specific points in time (e.g., [waiting for locks]({% link {{ page.version.version }}/architecture/transaction-layer.md %}#concurrency-control), performing I/O, consuming CPU).
-- **Identify bottlenecks**: Determine which resources (CPU, locks, I/O, network, admission control) are constraining workload performance.
+- **Identify bottlenecks**: Determine which activities (such as lock waits, remote RPCs, admission control queues, or Raft proposals) are constraining workload performance.
 - **Troubleshoot transient issues**: Diagnose performance problems that don't show up in aggregated statistics because they're intermittent or short-lived.
 - **Analyze resource usage patterns**: Understand how different workloads (user queries, [background jobs]({% link {{ page.version.version }}/show-jobs.md %}), system operations) consume cluster resources.
 - **Compare performance across time**: Analyze how workload behavior changes during different time periods (e.g., peak vs. off-peak hours).
@@ -76,7 +76,7 @@ The data for each sample is placed into a row with the following columns:
 | `workload_id` | `STRING` | Identifies the workload (refer to [`workload` columns](#workload-columns)) |
 | `workload_type` | `STRING NOT NULL` | Kind of workload (refer to [`workload` columns](#workload-columns)) |
 | `app_name` | `STRING` | Application name; only set for SQL statement workloads |
-| `work_event_type` | `STRING NOT NULL` | Resource category (refer to [`work_event` columns](#work_event-columns)) |
+| `work_event_type` | `STRING NOT NULL` | Static category associated with the `work_event` (refer to [`work_event` columns](#work_event-columns)) |
 | `work_event` | `STRING NOT NULL` | Specific activity label (refer to [`work_event` columns](#work_event-columns)) |
 | `goroutine_id` | `INT NOT NULL` | Go runtime goroutine ID |
 
@@ -93,11 +93,19 @@ Each sample is attributed to a workload via the `workload_type` and `workload_id
 
 ### `work_event` columns
 
-The `work_event_type` categorizes the resource being consumed or waited on. Types include `CPU`, `IO`, `LOCK`, `NETWORK`, `ADMISSION`, and `OTHER`. The `work_event` gives the specific activity.
+The `work_event` column identifies the specific activity a goroutine was performing or waiting on when it was sampled, such as `LockWait`, `DistSenderRemote`, or `KVEval`. It is the most precise description of what a sample represents, and it is generally the column to group or filter by when analyzing ASH data.
+
+The `work_event_type` column is a coarse category associated with each `work_event`: `CPU`, `IO`, `LOCK`, `NETWORK`, `ADMISSION`, or `OTHER`. This category is a static, predefined mapping: every sample with a given `work_event` always has the same `work_event_type`, regardless of what the goroutine was actually doing at the time. As a result, `work_event_type` describes the resource that a `work_event` is generally concerned with, not the resource the sample was actually consuming. For example, a `KVEval` sample is categorized as `IO`, but the goroutine may have been using CPU.
+
+{{site.data.alerts.callout_info}}
+Do not rely on `work_event_type` alone to determine whether a workload is CPU-bound, I/O-bound, or network-bound. Instead, look at the specific `work_event` values and the workloads they are attributed to, and correlate them with other signals such as [CPU profiles]({% link {{ page.version.version }}/automatic-cpu-profiler.md %}) and [hardware metrics]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}).
+{{site.data.alerts.end}}
+
+The following sections list the `work_event` values, grouped by their associated `work_event_type`.
 
 #### `CPU`
 
-`work_events` whose `work_event_type` is `CPU` represent active computation:
+`work_events` whose `work_event_type` is `CPU` are associated with active computation:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -110,7 +118,7 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 
 #### `IO`
 
-`work_events` whose `work_event_type` is `IO` represent storage I/O:
+`work_events` whose `work_event_type` is `IO` are associated with storage I/O:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -118,7 +126,7 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 
 #### `LOCK`
 
-`work_events` whose `work_event_type` is `LOCK` represent lock and latch contention:
+`work_events` whose `work_event_type` is `LOCK` are associated with lock and latch contention:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -129,7 +137,7 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 
 #### `NETWORK`
 
-`work_events` whose `work_event_type` is `NETWORK` represent remote RPCs:
+`work_events` whose `work_event_type` is `NETWORK` are associated with remote RPCs:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -139,7 +147,7 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 
 #### `ADMISSION`
 
-`work_events` whose `work_event_type` is `ADMISSION` represent admission control queues:
+`work_events` whose `work_event_type` is `ADMISSION` are associated with admission control queues:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -152,7 +160,7 @@ The `work_event_type` categorizes the resource being consumed or waited on. Type
 
 #### `OTHER`
 
-`work_events` whose `work_event_type` is `OTHER` represent miscellaneous wait points:
+`work_events` whose `work_event_type` is `OTHER` are associated with miscellaneous wait points:
 
 | `work_event` | Location | Description |
 |--------------|----------|-------------|
@@ -193,38 +201,38 @@ SET CLUSTER SETTING obs.ash.enabled = true;
 
 Enabling ASH begins collecting samples immediately. The in-memory buffer will fill up over time based on workload activity and the configured [ASH cluster settings](#configuration).
 
-### View a node's work event data from the past minute
+### View what a node has been doing in the past minute
 
-**Scenario**: A node is experiencing high resource utilization, but it's unclear which subsystem (CPU, I/O, locks, network) is consuming resources and what specific operations are involved.
+**Scenario**: A node is experiencing high resource utilization, but it's unclear what kinds of work are running on it and which activities that work is spending its time on.
 
-You can query the node-level ASH view to see what resources the node has been consuming:
+You can query the node-level ASH view to see which work events the node's workloads have been spending time on:
 
 {% include_cached copy-clipboard.html %}
 ~~~ sql
-SELECT work_event_type, work_event, count(*) AS sample_count
+SELECT workload_type, work_event, count(*) AS sample_count
 FROM information_schema.crdb_node_active_session_history
 WHERE sample_time > now() - INTERVAL '1 minute'
-GROUP BY work_event_type, work_event
+GROUP BY workload_type, work_event
 ORDER BY sample_count DESC;
 ~~~
 
-The query returns the count of samples for each work event type and specific event:
+The query returns the count of samples for each combination of workload type and work event:
 
 ~~~
-  work_event_type |      work_event        | sample_count
-------------------+------------------------+--------------
-  NETWORK         | DistSenderRemote       |           42
-  OTHER           | RaftProposalWait       |           38
-  CPU             | upsert                 |           19
-  ADMISSION       | ReplicationFlowControl |           12
-  LOCK            | LockWait               |            8
-  IO              | KVEval                 |            5
-  CPU             | ReplicaSend            |            3
-  NETWORK         | InboxRecv              |            2
+  workload_type |       work_event       | sample_count
+----------------+------------------------+--------------
+  STATEMENT     | DistSenderRemote       |           42
+  STATEMENT     | RaftProposalWait       |           38
+  STATEMENT     | upsert                 |           19
+  STATEMENT     | ReplicationFlowControl |           12
+  STATEMENT     | LockWait               |            8
+  SYSTEM        | KVEval                 |            5
+  JOB           | ReplicaSend            |            3
+  STATEMENT     | InboxRecv              |            2
 (8 rows)
 ~~~
 
-The results show this node's activity is dominated by network waits (`DistSenderRemote`) and Raft consensus waits (`RaftProposalWait`), which is typical for write-heavy workloads that must replicate data across nodes. The upsert `CPU` samples show time spent executing upsert statements, while `ReplicationFlowControl` admission samples indicate that the system is throttling writes due to replication backpressure. The `LockWait` samples indicate some [transaction-level lock contention]({% link {{ page.version.version }}/troubleshoot-lock-contention.md %}) on hot keys. To identify which specific workloads are causing these waits, add `workload_type`, `workload_id`, and `app_name` to the query and group by them.
+The results show this node's activity is dominated by SQL statements waiting on RPCs to other nodes (`DistSenderRemote`) and waiting for Raft proposals to be applied (`RaftProposalWait`), which is typical for write-heavy workloads that must replicate data across nodes. The `upsert` samples show time spent in the DistSQL processor executing upsert statements, while the `ReplicationFlowControl` samples indicate that writes are being throttled by [replication admission control]({% link {{ page.version.version }}/admission-control.md %}#replication-admission-control). The `LockWait` samples indicate some [transaction-level lock contention]({% link {{ page.version.version }}/troubleshoot-lock-contention.md %}) on hot keys. To identify which specific statements, jobs, or system tasks are responsible, add `workload_id` and `app_name` to the query and group by them.
 
 ### View cluster-wide workload data from the past 10 minutes
 
@@ -266,13 +274,13 @@ The results show that a single SQL statement fingerprint (`9bef06d795045524`) fr
 
 **Scenario**: Elevated p99 latency and increased [transaction retries]({% link {{ page.version.version }}/transactions.md %}#transaction-retries) indicate contention, but it's unclear which specific workloads are experiencing lock waits and what type of contention is occurring.
 
-You can filter ASH samples to show only lock-related wait events:
+You can filter ASH samples to show only the [lock and latch wait events](#lock):
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
 SELECT workload_id, work_event, app_name, count(*) AS sample_count
 FROM information_schema.crdb_node_active_session_history
-WHERE work_event_type = 'LOCK'
+WHERE work_event IN ('LockWait', 'LatchWait', 'TxnPushWait', 'TxnQueryWait')
   AND sample_time > now() - INTERVAL '5 minutes'
 GROUP BY workload_id, work_event, app_name
 ORDER BY sample_count DESC;
@@ -291,32 +299,32 @@ The results identify the statement fingerprint experiencing latch waits. Use the
 
 ### Get details about what a specific job is spending time on
 
-**Scenario**: A background job (such as a [backup]({% link {{ page.version.version }}/backup.md %}), schema change, or [import]({% link {{ page.version.version }}/import-into.md %})) is running longer than expected, but it's unclear whether the job is consuming CPU, waiting on I/O, or blocked by other resources.
+**Scenario**: A background job (such as a [backup]({% link {{ page.version.version }}/backup.md %}), schema change, or [import]({% link {{ page.version.version }}/import-into.md %})) is running longer than expected, but it's unclear whether the job is actively doing work or is blocked waiting on something such as locks, admission control, or remote nodes.
 
 You can filter by workload type and job ID to understand where the job is spending its time:
 
 {% include_cached copy-clipboard.html %}
 ~~~sql
-SELECT work_event_type, work_event, count(*) AS sample_count
+SELECT work_event, count(*) AS sample_count
 FROM information_schema.crdb_node_active_session_history
 WHERE workload_type = 'JOB'
   AND workload_id = '12345'
   AND sample_time > now() - INTERVAL '30 minutes'
-GROUP BY work_event_type, work_event
+GROUP BY work_event
 ORDER BY sample_count DESC;
 ~~~
 
-The query breaks down the job's resource consumption by work event type and specific activity:
+The query breaks down the job's samples by the specific activity it was performing:
 
 ~~~
-  work_event_type |     work_event      | sample_count
-  -----------------+---------------------+--------------
-  CPU              | backupDataProcessor |           10
-  CPU              | ReplicaSend         |           10
+      work_event      | sample_count
+----------------------+--------------
+  backupDataProcessor |           10
+  ReplicaSend         |           10
 (2 rows)
 ~~~
 
-The results show the job spent most of its time on active computation. This breakdown helps identify that the backup job is primarily CPU-bound rather than I/O or lock-constrained. To find the job ID for a running job, query the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) or use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}): `SELECT job_id, description, status FROM [SHOW JOBS]`. CockroachDB {{ site.data.products.cloud }} users can use the [Jobs page]({% link cockroachcloud/jobs-page.md %}) in the {{ site.data.products.cloud }} Console.
+The results show the job spent its time in the backup processor (`backupDataProcessor`) and in replica-level batch evaluation (`ReplicaSend`), rather than waiting on locks, admission control queues, or remote RPCs. This indicates the job is actively doing work rather than being blocked. To confirm which hardware resources that work is consuming, correlate these results with [CPU profiles]({% link {{ page.version.version }}/automatic-cpu-profiler.md %}) and [hardware metrics]({% link {{ page.version.version }}/ui-hardware-dashboard.md %}) for the same time period. To find the job ID for a running job, query the [Jobs page]({% link {{ page.version.version }}/ui-jobs-page.md %}) or use [`SHOW JOBS`]({% link {{ page.version.version }}/show-jobs.md %}): `SELECT job_id, description, status FROM [SHOW JOBS]`. CockroachDB {{ site.data.products.cloud }} users can use the [Jobs page]({% link cockroachcloud/jobs-page.md %}) in the {{ site.data.products.cloud }} Console.
 
 ## Known limitations
 

@@ -216,7 +216,7 @@ The `crdb_cluster_active_session_history` view tracks cluster-wide [Active Sessi
 | `workload_id` | Identifies the workload |
 | `workload_type` | Kind of workload |
 | `app_name` | Application name; only set for SQL statement workloads |
-| `work_event_type` | Resource category |
+| `work_event_type` | Static category associated with the `work_event` |
 | `work_event` | Specific activity label |
 | `goroutine_id` | Go runtime goroutine ID |
 
@@ -234,7 +234,7 @@ The `crdb_node_active_session_history` view tracks [Active Session History]({% l
 | `workload_id` | Identifies the workload |
 | `workload_type` | Kind of workload |
 | `app_name` | Application name; only set for SQL statement workloads |
-| `work_event_type` | Resource category |
+| `work_event_type` | Static category associated with the `work_event` |
 | `work_event` | Specific activity label |
 | `goroutine_id` | Go runtime goroutine ID |
 
